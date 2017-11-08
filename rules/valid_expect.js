@@ -1,17 +1,13 @@
-// @flow
-
 /*
  * This implementation is ported from from eslint-plugin-jasmine.
  * MIT license, Tom Vincent.
  */
 
-import type { EslintContext, CallExpression } from './types';
-
 const expectProperties = ['not', 'resolves', 'rejects'];
 
-export default (context: EslintContext) => {
+module.exports = context => {
   return {
-    CallExpression(node: CallExpression) {
+    CallExpression(node) {
       const calleeName = node.callee.name;
 
       if (calleeName === 'expect') {
@@ -99,7 +95,7 @@ export default (context: EslintContext) => {
     },
 
     // nothing called on "expect()"
-    'CallExpression:exit'(node: CallExpression) {
+    'CallExpression:exit'(node) {
       if (
         node.callee.name === 'expect' &&
         node.parent.type === 'ExpressionStatement'

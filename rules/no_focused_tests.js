@@ -1,7 +1,3 @@
-// @flow
-
-import type { EslintContext, CallExpression } from './types';
-
 const testFunctions = Object.assign(Object.create(null), {
   describe: true,
   it: true,
@@ -19,8 +15,8 @@ const isPropertyNamedOnly = property =>
 const isCallToTestOnlyFunction = callee =>
   matchesTestFunction(callee.object) && isPropertyNamedOnly(callee.property);
 
-export default (context: EslintContext) => ({
-  CallExpression(node: CallExpression) {
+module.exports = context => ({
+  CallExpression(node) {
     const callee = node.callee;
     if (!callee) {
       return;

@@ -1,7 +1,3 @@
-// @flow
-
-import type { EslintContext, CallExpression } from './types';
-
 const describeAliases = Object.assign(Object.create(null), {
   describe: true,
   'describe.only': true,
@@ -72,10 +68,10 @@ const handleTestSuiteTitles = (context, titles, node, title) => {
 const isFirstArgLiteral = node =>
   node.arguments && node.arguments[0] && node.arguments[0].type === 'Literal';
 
-export default (context: EslintContext) => {
+module.exports = context => {
   const contexts = [newDescribeContext()];
   return {
-    CallExpression(node: CallExpression) {
+    CallExpression(node) {
       const currentLayer = contexts[contexts.length - 1];
       if (isDescribe(node)) {
         contexts.push(newDescribeContext());
@@ -88,7 +84,7 @@ export default (context: EslintContext) => {
       handleTestCaseTitles(context, currentLayer.testTitles, node, title);
       handleTestSuiteTitles(context, currentLayer.describeTitles, node, title);
     },
-    'CallExpression:exit'(node: CallExpression) {
+    'CallExpression:exit'(node) {
       if (isDescribe(node)) {
         contexts.pop();
       }

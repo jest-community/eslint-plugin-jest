@@ -10,7 +10,7 @@
     "email": "hello@jkimbo.com",
     "url": "jkimbo.com"
   },
-  "main": "build/index.js",
+  "files": ["docs/", "rules/", "index.js"],
   "peerDependencies": {
     "eslint": ">=3.6"
   },
@@ -20,10 +20,6 @@
     "precommit": "lint-staged"
   },
   "devDependencies": {
-    "babel-core": "^6.26.0",
-    "babel-eslint": "^8.0.2",
-    "babel-preset-env": "^1.6.1",
-    "babel-preset-flow": "^6.23.0",
     "eslint": "^4.10.0",
     "eslint-config-prettier": "^2.7.0",
     "eslint-plugin-prettier": "^2.3.1",

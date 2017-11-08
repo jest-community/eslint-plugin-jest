@@ -1,6 +1,0 @@
-[options]
-include_warnings=true
-emoji=true
-
-[version]
-^0.58.0

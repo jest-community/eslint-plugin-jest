@@ -1,9 +1,5 @@
-// @flow
-
-import type { Node, EslintContext, CallExpression } from './types';
-
-function getName(node: ?Node): ?string {
-  function joinNames(a: ?string, b: ?string): ?string {
+function getName(node) {
+  function joinNames(a, b) {
     return a && b ? a + '.' + b : null;
   }
 
@@ -22,12 +18,12 @@ function getName(node: ?Node): ?string {
   return null;
 }
 
-export default (context: EslintContext) => {
+module.exports = context => {
   let suiteDepth = 0;
   let testDepth = 0;
 
   return {
-    CallExpression: (node: CallExpression) => {
+    CallExpression: node => {
       const functionName = getName(node.callee);
 
       switch (functionName) {
@@ -80,7 +76,7 @@ export default (context: EslintContext) => {
       }
     },
 
-    'CallExpression:exit': (node: CallExpression) => {
+    'CallExpression:exit': node => {
       const functionName = getName(node.callee);
 
       switch (functionName) {

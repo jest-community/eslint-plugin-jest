@@ -1,11 +1,7 @@
-// @flow
-
-/* eslint-disable sort-keys */
-
 'use strict';
 
-import { RuleTester } from 'eslint';
-const { rules } = require('../../');
+const { RuleTester } = require('eslint');
+const { rules } = require('../..');
 
 const ruleTester = new RuleTester();
 

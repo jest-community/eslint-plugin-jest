@@ -1,10 +1,6 @@
-// @flow
-
-import type { EslintContext, CallExpression } from './types';
-
-export default (context: EslintContext) => {
+module.exports = context => {
   return {
-    CallExpression(node: CallExpression) {
+    CallExpression(node) {
       const calleeName = node.callee.name;
 
       if (
