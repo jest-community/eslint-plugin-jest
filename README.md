@@ -1,5 +1,7 @@
 # eslint-plugin-jest
 
+[![Build Status](https://travis-ci.org/jest-community/eslint-plugin-jest.svg?branch=master)](https://travis-ci.org/jest-community/eslint-plugin-jest)
+
 Eslint plugin for Jest
 
 ## Installation
