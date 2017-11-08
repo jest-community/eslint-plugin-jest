@@ -4,11 +4,7 @@
   "description": "Eslint rules for Jest",
   "repository": "jest-community/eslint-plugin-jest",
   "license": "MIT",
-  "keywords": [
-    "eslint",
-    "eslintplugin",
-    "eslint-plugin"
-  ],
+  "keywords": ["eslint", "eslintplugin", "eslint-plugin"],
   "author": {
     "name": "Jonathan Kim",
     "email": "hello@jkimbo.com",
@@ -20,24 +16,29 @@
   },
   "scripts": {
     "lint": "eslint . --ignore-pattern '!.eslintrc.js'",
-    "test": "jest"
+    "test": "jest",
+    "precommit": "lint-staged"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
     "babel-eslint": "^8.0.2",
+    "babel-preset-env": "^1.6.1",
     "babel-preset-flow": "^6.23.0",
     "eslint": "^4.10.0",
     "eslint-config-prettier": "^2.7.0",
     "eslint-plugin-prettier": "^2.3.1",
     "flow-bin": "^0.58.0",
+    "husky": "^0.14.3",
     "jest": "^21.2.1",
+    "lint-staged": "^4.3.0",
     "prettier": "^1.8.1"
   },
   "prettier": {
     "singleQuote": true,
     "trailingComma": "all"
   },
-  "dependencies": {
-    "babel-preset-env": "^1.6.1"
+  "lint-staged": {
+    "*.js": ["eslint --fix", "git add"],
+    "*.{md,json}": ["prettier --write", "git add"]
   }
 }
