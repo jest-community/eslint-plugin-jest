@@ -2,10 +2,7 @@
   "name": "eslint-plugin-jest",
   "version": "21.2.0",
   "description": "Eslint rules for Jest",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/facebook/jest.git"
-  },
+  "repository": "jest-community/eslint-plugin-jest",
   "license": "MIT",
   "keywords": [
     "eslint",
@@ -20,5 +17,27 @@
   "main": "build/index.js",
   "peerDependencies": {
     "eslint": ">=3.6"
+  },
+  "scripts": {
+    "lint": "eslint . --ignore-pattern '!.eslintrc.js'",
+    "test": "jest"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-eslint": "^8.0.2",
+    "babel-preset-flow": "^6.23.0",
+    "eslint": "^4.10.0",
+    "eslint-config-prettier": "^2.7.0",
+    "eslint-plugin-prettier": "^2.3.1",
+    "flow-bin": "^0.58.0",
+    "jest": "^21.2.1",
+    "prettier": "^1.8.1"
+  },
+  "prettier": {
+    "singleQuote": true,
+    "trailingComma": "all"
+  },
+  "dependencies": {
+    "babel-preset-env": "^1.6.1"
   }
 }
