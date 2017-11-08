@@ -1,11 +1,13 @@
 # Enforce valid `expect()` usage (valid-expect)
 
-Ensure `expect()` is called with a single argument and there is an actual expectation made.
+Ensure `expect()` is called with a single argument and there is an actual
+expectation made.
 
 ## Rule details
 
-This rule triggers a warning if `expect()` is called with more than one argument or without arguments. 
-It would also issue a warning if there is nothing called on `expect()`, e.g.:
+This rule triggers a warning if `expect()` is called with more than one argument
+or without arguments. It would also issue a warning if there is nothing called
+on `expect()`, e.g.:
 
 ```js
 expect();

@@ -1,15 +1,19 @@
 # Disallow Focused Tests (no-focused-tests)
 
-Jest has a feature that allows you to focus tests by appending `.only` or prepending `f` to a test-suite or a test-case.
-This feature is really helpful to debug a failing test, so you don’t have to execute all of your tests.
-After you have fixed your test and before committing the changes you have to remove `.only` to ensure all tests are executed on your build system.
+Jest has a feature that allows you to focus tests by appending `.only` or
+prepending `f` to a test-suite or a test-case. This feature is really helpful to
+debug a failing test, so you don’t have to execute all of your tests. After you
+have fixed your test and before committing the changes you have to remove
+`.only` to ensure all tests are executed on your build system.
 
-This rule reminds you to remove `.only` from your tests by raising a warning whenever you are using the exclusivity feature.
+This rule reminds you to remove `.only` from your tests by raising a warning
+whenever you are using the exclusivity feature.
 
 ## Rule Details
 
-This rule looks for every `describe.only`, `it.only`, `test.only`, `fdescribe`, `fit` and `ftest` occurrences within the source code.
-Of course there are some edge-cases which can’t be detected by this rule e.g.:
+This rule looks for every `describe.only`, `it.only`, `test.only`, `fdescribe`,
+`fit` and `ftest` occurrences within the source code. Of course there are some
+edge-cases which can’t be detected by this rule e.g.:
 
 ```js
 const describeOnly = describe.only;

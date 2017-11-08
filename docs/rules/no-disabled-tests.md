@@ -10,6 +10,7 @@ This rule raises a warning about disabled tests.
 ## Rule Details
 
 There are a number of ways to disable tests in Jest:
+
 * by appending `.skip` to the test-suite or test-case
 * by prepending the test function name with `x`
 * by declaring a test with a name but no function body
@@ -34,7 +35,7 @@ it('bar');
 test('bar');
 
 it('foo', () => {
-  pending()
+  pending();
 });
 ```
 
