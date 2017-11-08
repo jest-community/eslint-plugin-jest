@@ -1,3 +1,5 @@
+'use strict';
+
 function getName(node) {
   function joinNames(a, b) {
     return a && b ? a + '.' + b : null;
@@ -5,13 +7,10 @@ function getName(node) {
 
   switch (node && node.type) {
     case 'Identifier':
-      // $FlowFixMe: ignore duck-typed node property
       return node.name;
     case 'Literal':
-      // $FlowFixMe: ignore duck-typed node property
       return node.value;
     case 'MemberExpression':
-      // $FlowFixMe: ignore duck-typed node properties
       return joinNames(getName(node.object), getName(node.property));
   }
 

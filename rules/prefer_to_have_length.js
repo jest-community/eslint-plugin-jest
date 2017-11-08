@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = context => {
   return {
     CallExpression(node) {
@@ -16,7 +18,6 @@ module.exports = context => {
         const argumentProperty = node.arguments[0].property;
 
         if (propertyName === 'toBe' && argumentProperty.name === 'length') {
-          // $FlowFixMe
           const propertyDot = context
             .getSourceCode()
             .getFirstTokenBetween(

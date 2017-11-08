@@ -1,3 +1,5 @@
+'use strict';
+
 const describeAliases = Object.assign(Object.create(null), {
   describe: true,
   'describe.only': true,

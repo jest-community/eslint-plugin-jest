@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = {
   extends: ['eslint:recommended', 'prettier'],
   plugins: ['prettier'],
@@ -8,6 +10,7 @@ module.exports = {
     node: true,
   },
   rules: {
+    strict: 'error',
     'prettier/prettier': 'error',
   },
 };

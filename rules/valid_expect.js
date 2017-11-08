@@ -1,3 +1,5 @@
+'use strict';
+
 /*
  * This implementation is ported from from eslint-plugin-jasmine.
  * MIT license, Tom Vincent.
@@ -75,7 +77,6 @@ module.exports = context => {
 
             // this next one should be the matcher
             parentNode = parentNode.parent;
-            // $FlowFixMe
             parentProperty = parentNode.property;
             propertyName = parentProperty.name;
           }

@@ -1,3 +1,5 @@
+'use strict';
+
 const noDisabledTests = require('./rules/no_disabled_tests');
 const noFocusedTests = require('./rules/no_focused_tests');
 const noIdenticalTitle = require('./rules/no_identical_title');

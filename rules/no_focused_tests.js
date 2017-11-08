@@ -1,3 +1,5 @@
+'use strict';
+
 const testFunctions = Object.assign(Object.create(null), {
   describe: true,
   it: true,
