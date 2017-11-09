@@ -18,8 +18,8 @@ module.exports = context => {
         const argumentProperty = node.arguments[0].property;
 
         if (
-          argumentProperty &&
           (propertyName === 'toBe' || propertyName === 'toEqual') &&
+          argumentProperty &&
           argumentProperty.name === 'length'
         ) {
           const propertyDot = context
