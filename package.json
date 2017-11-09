@@ -1,6 +1,6 @@
 {
   "name": "eslint-plugin-jest",
-  "version": "21.2.0",
+  "version": "21.3.0",
   "description": "Eslint rules for Jest",
   "repository": "jest-community/eslint-plugin-jest",
   "license": "MIT",
