@@ -17,7 +17,11 @@ module.exports = context => {
         const argumentObject = node.arguments[0].object;
         const argumentProperty = node.arguments[0].property;
 
-        if (propertyName === 'toBe' && argumentProperty.name === 'length') {
+        if (
+          argumentProperty &&
+          propertyName === 'toBe' &&
+          argumentProperty.name === 'length'
+        ) {
           const propertyDot = context
             .getSourceCode()
             .getFirstTokenBetween(
