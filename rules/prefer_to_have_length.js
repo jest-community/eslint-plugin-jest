@@ -19,7 +19,7 @@ module.exports = context => {
 
         if (
           argumentProperty &&
-          propertyName === 'toBe' &&
+          (propertyName === 'toBe' || propertyName === 'toEqual') &&
           argumentProperty.name === 'length'
         ) {
           const propertyDot = context

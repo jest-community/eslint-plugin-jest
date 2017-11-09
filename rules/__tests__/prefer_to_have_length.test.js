@@ -24,5 +24,16 @@ ruleTester.run('prefer_to_have_length', rules['prefer-to-have-length'], {
       ],
       output: 'expect(files).toHaveLength(1);',
     },
+    {
+      code: 'expect(files.length).toEqual(1);',
+      errors: [
+        {
+          message: 'Use toHaveLength() instead',
+          column: 22,
+          line: 1,
+        },
+      ],
+      output: 'expect(files).toHaveLength(1);',
+    },
   ],
 });
