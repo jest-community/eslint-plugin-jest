@@ -55,7 +55,8 @@ You can also whitelist the environment variables provided by Jest by doing:
 * [no-focused-tests](/docs/rules/no-focused-tests.md) - disallow focused tests.
 * [no-identical-title](/docs/rules/no-identical-title.md) - disallow identical
   titles.
-* [prefer-to-have-length](/docs/rules/prefer-to-have-length.md) - suggest using toHaveLength().
+* [prefer-to-have-length](/docs/rules/prefer-to-have-length.md) - suggest using
+  `toHaveLength()`.
 * [valid-expect](/docs/rules/valid-expect.md) - ensure expect is called
   correctly.
 

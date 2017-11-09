@@ -1,7 +1,7 @@
 # Suggest using `toHaveLength()` (prefer-to-have-length)
 
 In order to have a better failure message, `toHaveLength()` should be used upon
-asserting expections on object's length property.
+asserting expectations on object's length property.
 
 ## Rule details
 
