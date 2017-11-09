@@ -32,6 +32,7 @@ Then configure the rules you want to use under the rules section.
     "jest/no-disabled-tests": "warn",
     "jest/no-focused-tests": "error",
     "jest/no-identical-title": "error",
+    "jest/prefer-to-have-length": "warn",
     "jest/valid-expect": "error"
   }
 }
@@ -54,6 +55,7 @@ You can also whitelist the environment variables provided by Jest by doing:
 * [no-focused-tests](/docs/rules/no-focused-tests.md) - disallow focused tests.
 * [no-identical-title](/docs/rules/no-identical-title.md) - disallow identical
   titles.
+* [prefer-to-have-length](/docs/rules/prefer-to-have-length.md) - suggest using toHaveLength().
 * [valid-expect](/docs/rules/valid-expect.md) - ensure expect is called
   correctly.
 
@@ -82,6 +84,7 @@ The rules enabled in this configuration are:
 * [jest/no-disabled-tests](/docs/rules/no-disabled-tests.md)
 * [jest/no-focused-tests](/docs/rules/no-focused-tests.md)
 * [jest/no-identical-title](/docs/rules/no-identical-title.md)
+* [jest/prefer-to-have-length](/docs/rules/prefer-to-have-length.md)
 * [jest/valid-expect](/docs/rules/valid-expect.md)
 
 ## Credit
