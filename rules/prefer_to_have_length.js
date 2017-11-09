@@ -1,17 +1,8 @@
-/**
- * Copyright (c) 2014-present, Facebook, Inc. All rights reserved.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- * @flow
- */
+'use strict';
 
-import type {EslintContext, CallExpression} from './types';
-
-export default (context: EslintContext) => {
+module.exports = context => {
   return {
-    CallExpression(node: CallExpression) {
+    CallExpression(node) {
       const calleeName = node.callee.name;
 
       if (
@@ -27,7 +18,6 @@ export default (context: EslintContext) => {
         const argumentProperty = node.arguments[0].property;
 
         if (propertyName === 'toBe' && argumentProperty.name === 'length') {
-          // $FlowFixMe
           const propertyDot = context
             .getSourceCode()
             .getFirstTokenBetween(

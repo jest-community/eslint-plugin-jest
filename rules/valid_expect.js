@@ -1,24 +1,15 @@
-/**
- * Copyright (c) 2014-present, Facebook, Inc. All rights reserved.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- * @flow
- */
+'use strict';
 
 /*
  * This implementation is ported from from eslint-plugin-jasmine.
  * MIT license, Tom Vincent.
  */
 
-import type {EslintContext, CallExpression} from './types';
-
 const expectProperties = ['not', 'resolves', 'rejects'];
 
-export default (context: EslintContext) => {
+module.exports = context => {
   return {
-    CallExpression(node: CallExpression) {
+    CallExpression(node) {
       const calleeName = node.callee.name;
 
       if (calleeName === 'expect') {
@@ -86,7 +77,6 @@ export default (context: EslintContext) => {
 
             // this next one should be the matcher
             parentNode = parentNode.parent;
-            // $FlowFixMe
             parentProperty = parentNode.property;
             propertyName = parentProperty.name;
           }
@@ -106,7 +96,7 @@ export default (context: EslintContext) => {
     },
 
     // nothing called on "expect()"
-    'CallExpression:exit'(node: CallExpression) {
+    'CallExpression:exit'(node) {
       if (
         node.callee.name === 'expect' &&
         node.parent.type === 'ExpressionStatement'

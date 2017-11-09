@@ -1,13 +1,4 @@
-/**
- * Copyright (c) 2014-present, Facebook, Inc. All rights reserved.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- * @flow
- */
-
-import type {EslintContext, CallExpression} from './types';
+'use strict';
 
 const describeAliases = Object.assign(Object.create(null), {
   describe: true,
@@ -79,10 +70,10 @@ const handleTestSuiteTitles = (context, titles, node, title) => {
 const isFirstArgLiteral = node =>
   node.arguments && node.arguments[0] && node.arguments[0].type === 'Literal';
 
-export default (context: EslintContext) => {
+module.exports = context => {
   const contexts = [newDescribeContext()];
   return {
-    CallExpression(node: CallExpression) {
+    CallExpression(node) {
       const currentLayer = contexts[contexts.length - 1];
       if (isDescribe(node)) {
         contexts.push(newDescribeContext());
@@ -95,7 +86,7 @@ export default (context: EslintContext) => {
       handleTestCaseTitles(context, currentLayer.testTitles, node, title);
       handleTestSuiteTitles(context, currentLayer.describeTitles, node, title);
     },
-    'CallExpression:exit'(node: CallExpression) {
+    'CallExpression:exit'(node) {
       if (isDescribe(node)) {
         contexts.pop();
       }

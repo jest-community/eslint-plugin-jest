@@ -1,17 +1,10 @@
-/**
- * Copyright (c) 2014-present, Facebook, Inc. All rights reserved.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- * @flow
- */
+'use strict';
 
-import noDisabledTests from './rules/no_disabled_tests';
-import noFocusedTests from './rules/no_focused_tests';
-import noIdenticalTitle from './rules/no_identical_title';
-import preferToHaveLength from './rules/prefer_to_have_length';
-import validExpect from './rules/valid_expect';
+const noDisabledTests = require('./rules/no_disabled_tests');
+const noFocusedTests = require('./rules/no_focused_tests');
+const noIdenticalTitle = require('./rules/no_identical_title');
+const preferToHaveLength = require('./rules/prefer_to_have_length');
+const validExpect = require('./rules/valid_expect');
 
 module.exports = {
   configs: {

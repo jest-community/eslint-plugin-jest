@@ -1,5 +1,7 @@
 # eslint-plugin-jest
 
+[![Build Status](https://travis-ci.org/jest-community/eslint-plugin-jest.svg?branch=master)](https://travis-ci.org/jest-community/eslint-plugin-jest)
+
 Eslint plugin for Jest
 
 ## Installation
@@ -8,20 +10,19 @@ Eslint plugin for Jest
 $ yarn add --dev eslint eslint-plugin-jest
 ```
 
-**Note:** If you installed ESLint globally then you must also install `eslint-plugin-jest` globally.
+**Note:** If you installed ESLint globally then you must also install
+`eslint-plugin-jest` globally.
 
 ## Usage
 
-Add `jest` to the plugins section of your `.eslintrc` configuration file. You can omit the `eslint-plugin-` prefix:
+Add `jest` to the plugins section of your `.eslintrc` configuration file. You
+can omit the `eslint-plugin-` prefix:
 
 ```json
 {
-  "plugins": [
-    "jest"
-  ]
+  "plugins": ["jest"]
 }
 ```
-
 
 Then configure the rules you want to use under the rules section.
 
@@ -48,18 +49,24 @@ You can also whitelist the environment variables provided by Jest by doing:
 
 ## Supported Rules
 
-- [no-disabled-tests](/packages/eslint-plugin-jest/docs/rules/no-disabled-tests.md) - disallow disabled tests.
-- [no-focused-tests](/packages/eslint-plugin-jest/docs/rules/no-focused-tests.md) - disallow focused tests.
-- [no-identical-title](/packages/eslint-plugin-jest/docs/rules/no-identical-title.md) - disallow identical titles.
-- [valid-expect](/packages/eslint-plugin-jest/docs/rules/valid-expect.md) - ensure expect is called correctly.
+* [no-disabled-tests](/packages/eslint-plugin-jest/docs/rules/no-disabled-tests.md) -
+  disallow disabled tests.
+* [no-focused-tests](/packages/eslint-plugin-jest/docs/rules/no-focused-tests.md) -
+  disallow focused tests.
+* [no-identical-title](/packages/eslint-plugin-jest/docs/rules/no-identical-title.md) -
+  disallow identical titles.
+* [valid-expect](/packages/eslint-plugin-jest/docs/rules/valid-expect.md) -
+  ensure expect is called correctly.
 
 ## Shareable configurations
 
 ### Recommended
 
-This plugin exports a recommended configuration that enforces good testing practices.
+This plugin exports a recommended configuration that enforces good testing
+practices.
 
-To enable this configuration use the `extends` property in your `.eslintrc` config file:
+To enable this configuration use the `extends` property in your `.eslintrc`
+config file:
 
 ```json
 {
@@ -67,14 +74,16 @@ To enable this configuration use the `extends` property in your `.eslintrc` conf
 }
 ```
 
-See [ESLint documentation](http://eslint.org/docs/user-guide/configuring#extending-configuration-files) for more information about extending configuration files.
+See [ESLint
+documentation](http://eslint.org/docs/user-guide/configuring#extending-configuration-files)
+for more information about extending configuration files.
 
 The rules enabled in this configuration are:
 
-- [jest/no-disabled-tests](/packages/eslint-plugin-jest/docs/rules/no-disabled-tests.md)
-- [jest/no-focused-tests](/packages/eslint-plugin-jest/docs/rules/no-focused-tests.md)
-- [jest/no-identical-title](/packages/eslint-plugin-jest/docs/rules/no-identical-title.md)
-- [jest/valid-expect](/packages/eslint-plugin-jest/docs/rules/valid-expect.md)
+* [jest/no-disabled-tests](/packages/eslint-plugin-jest/docs/rules/no-disabled-tests.md)
+* [jest/no-focused-tests](/packages/eslint-plugin-jest/docs/rules/no-focused-tests.md)
+* [jest/no-identical-title](/packages/eslint-plugin-jest/docs/rules/no-identical-title.md)
+* [jest/valid-expect](/packages/eslint-plugin-jest/docs/rules/valid-expect.md)
 
 ## Credit
 

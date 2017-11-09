@@ -2,23 +2,41 @@
   "name": "eslint-plugin-jest",
   "version": "21.2.0",
   "description": "Eslint rules for Jest",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/facebook/jest.git"
-  },
+  "repository": "jest-community/eslint-plugin-jest",
   "license": "MIT",
-  "keywords": [
-    "eslint",
-    "eslintplugin",
-    "eslint-plugin"
-  ],
+  "keywords": ["eslint", "eslintplugin", "eslint-plugin"],
   "author": {
     "name": "Jonathan Kim",
     "email": "hello@jkimbo.com",
     "url": "jkimbo.com"
   },
-  "main": "build/index.js",
+  "files": ["docs/", "rules/", "index.js"],
   "peerDependencies": {
     "eslint": ">=3.6"
+  },
+  "scripts": {
+    "lint": "eslint . --ignore-pattern '!.eslintrc.js'",
+    "test": "jest",
+    "precommit": "lint-staged"
+  },
+  "devDependencies": {
+    "eslint": "^4.10.0",
+    "eslint-config-prettier": "^2.7.0",
+    "eslint-plugin-prettier": "^2.3.1",
+    "husky": "^0.14.3",
+    "jest": "^21.2.1",
+    "lint-staged": "^4.3.0",
+    "prettier": "^1.8.1"
+  },
+  "prettier": {
+    "singleQuote": true,
+    "trailingComma": "all"
+  },
+  "lint-staged": {
+    "*.js": ["eslint --fix", "git add"],
+    "*.{md,json}": ["prettier --write", "git add"]
+  },
+  "jest": {
+    "testEnvironment": "node"
   }
 }
