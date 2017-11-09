@@ -23,7 +23,7 @@ module.exports = context => {
             .getFirstTokenBetween(
               argumentObject,
               argumentProperty,
-              token => token.value === '.',
+              token => token.value === '.'
             );
           context.report({
             fix(fixer) {

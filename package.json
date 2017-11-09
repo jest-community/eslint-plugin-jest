@@ -30,7 +30,7 @@
   },
   "prettier": {
     "singleQuote": true,
-    "trailingComma": "all"
+    "trailingComma": "es5"
   },
   "lint-staged": {
     "*.js": ["eslint --fix", "git add"],
