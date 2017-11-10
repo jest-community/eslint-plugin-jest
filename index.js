@@ -5,7 +5,7 @@ const noFocusedTests = require('./rules/no_focused_tests');
 const noIdenticalTitle = require('./rules/no_identical_title');
 const noLargeSnapshots = require('./rules/no_large_snapshots');
 const preferToBeNull = require('./rules/prefer_to_be_null');
-const preferToBeUndefined = require('./rules/prefer_to_be_undefined');
+const preferToBeDefined = require('./rules/prefer_to_be_defined');
 const preferToHaveLength = require('./rules/prefer_to_have_length');
 const validExpect = require('./rules/valid_expect');
 
@@ -55,7 +55,7 @@ module.exports = {
     'no-identical-title': noIdenticalTitle,
     'no-large-snapshots': noLargeSnapshots,
     'prefer-to-be-null': preferToBeNull,
-    'prefer-to-be-undefined': preferToBeUndefined,
+    'prefer-to-be-defined': preferToBeDefined,
     'prefer-to-have-length': preferToHaveLength,
     'valid-expect': validExpect,
   },
