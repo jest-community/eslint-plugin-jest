@@ -64,6 +64,8 @@ You can also whitelist the environment variables provided by Jest by doing:
   titles.
 * [prefer-to-be-null](/docs/rules/prefer-to-be-null.md) - suggest using
   `toBeNull()`.
+* [prefer-to-be-undefined](/docs/rules/prefer-to-be-undefined.md) - suggest
+  using `toBeUndefined()`.
 * [prefer-to-have-length](/docs/rules/prefer-to-have-length.md) - suggest using
   `toHaveLength()`.
 * [valid-expect](/docs/rules/valid-expect.md) - ensure expect is called
