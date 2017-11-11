@@ -1,12 +1,15 @@
 language: node_js
 node_js:
-  - node
-  - 8
-  - 6
-  - 4
+- node
+- 8
+- 6
+- 4
 cache:
   yarn: true
 branches:
-   only:
-   - master
-   - /^greenkeeper/.*$/
+  only:
+  - master
+  - "/^greenkeeper/.*$/"
+env:
+  global:
+    secure: HN9UwIwZ0NIOgGaRHssKraQy5L4q0Jagtq4nsw75vUHmrc2tNYCpqREtIr7DlapurtVpXsOd5G8FiVMN6YWQA1WVuvoTD7AqJOXYF72gtSnIJ+mER6a4fFQe+2cPMu8l6/jYAFDzQ/ZJqd7QM8DZu6siYAmiJqmq1OmUSP3aohn/bCwyKcvD8MybNQvYvB9j1YzcypbE1LFUeV0oQX8rt9F+5PgY0vB/JE+X806sepgdv8LiVAfy2D/4IhHE55QtC1dfKsCl7Sn1nVriD16Z+OwsabQnp61wptOxaOsHM41eaXd1YlRyqYM1czNoFqgPMyo8uycSO/c7zl5cxWadZmvl21aZXHkb2HTH/XKP6BaZAa7DHwt1S2M8tP9YLDwhO24kSbxRA53Eiqnx+i3kgqsE+g2/XN7dMZpJ3MKgxyXB/dMC1G9qORGs1HdBgDIs4PXP4RMssXpntYJ+QW5JN/cByyA/K90V4K+QV9I4kVVBIXYvTyoyaTj/DwCXwC0zzU+F0BDcTHLtndFvJw6LND/WcYYKTJvwP0glPD/7okPtjYXzWMYPC0jkazLc85g31YvKDvfIel+OJ0j3Z/d2mbekIrL4j1+OSGv2rqSVaLT2H+QUO2WJaYvP8J0ITBVRSp5TopJL9Td9OOhIG/t6FxgKRDnKmoK3647NzcY4TFI=
