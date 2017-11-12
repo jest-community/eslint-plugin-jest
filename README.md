@@ -1,8 +1,14 @@
-# eslint-plugin-jest
-
 [![Build Status](https://travis-ci.org/jest-community/eslint-plugin-jest.svg?branch=master)](https://travis-ci.org/jest-community/eslint-plugin-jest) [![Greenkeeper badge](https://badges.greenkeeper.io/jest-community/eslint-plugin-jest.svg)](https://greenkeeper.io/)
 
-Eslint plugin for Jest
+<div align="center">
+  <!-- replace with accurate logo e.g from https://worldvectorlogo.com/ -->
+  <img width="150" height="150" src="https://cdn.worldvectorlogo.com/logos/eslint.svg">
+  <a href="https://facebook.github.io/jest/">
+    <img width="150" height="150" vspace="" hspace="25" src="https://cdn.worldvectorlogo.com/logos/jest.svg">
+  </a>
+  <h1>eslint-plugin-jest</h1>
+  <p>ESLint plugin for Jest</p>
+</div>
 
 ## Installation
 
