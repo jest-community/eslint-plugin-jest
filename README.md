@@ -1,4 +1,5 @@
-[![Build Status](https://travis-ci.org/jest-community/eslint-plugin-jest.svg?branch=master)](https://travis-ci.org/jest-community/eslint-plugin-jest) [![Greenkeeper badge](https://badges.greenkeeper.io/jest-community/eslint-plugin-jest.svg)](https://greenkeeper.io/)
+[![Build Status](https://travis-ci.org/jest-community/eslint-plugin-jest.svg?branch=master)](https://travis-ci.org/jest-community/eslint-plugin-jest)
+[![Greenkeeper badge](https://badges.greenkeeper.io/jest-community/eslint-plugin-jest.svg)](https://greenkeeper.io/)
 
 <div align="center">
   <a href="https://eslint.org/">
@@ -55,22 +56,6 @@ You can also whitelist the environment variables provided by Jest by doing:
 }
 ```
 
-## Supported Rules
-
-* [no-disabled-tests](/docs/rules/no-disabled-tests.md) - disallow disabled
-  tests.
-* [no-focused-tests](/docs/rules/no-focused-tests.md) - disallow focused tests.
-* [no-identical-title](/docs/rules/no-identical-title.md) - disallow identical
-  titles.
-* [prefer-to-be-null](/docs/rules/prefer-to-be-null.md) - suggest using
-  `toBeNull()`.
-* [prefer-to-be-undefined](/docs/rules/prefer-to-be-undefined.md) - suggest
-  using `toBeUndefined()`.
-* [prefer-to-have-length](/docs/rules/prefer-to-have-length.md) - suggest using
-  `toHaveLength()`.
-* [valid-expect](/docs/rules/valid-expect.md) - ensure expect is called
-  correctly.
-
 ## Shareable configurations
 
 ### Recommended
@@ -91,13 +76,17 @@ See [ESLint
 documentation](http://eslint.org/docs/user-guide/configuring#extending-configuration-files)
 for more information about extending configuration files.
 
-The rules enabled in this configuration are:
+## Rules
 
-* [jest/no-disabled-tests](/docs/rules/no-disabled-tests.md)
-* [jest/no-focused-tests](/docs/rules/no-focused-tests.md)
-* [jest/no-identical-title](/docs/rules/no-identical-title.md)
-* [jest/prefer-to-have-length](/docs/rules/prefer-to-have-length.md)
-* [jest/valid-expect](/docs/rules/valid-expect.md)
+| Rule                                                           | Description                   | Recommended                                                             | Fixable                                                     |
+| -------------------------------------------------------------- | ----------------------------- | ----------------------------------------------------------------------- | ----------------------------------------------------------- |
+| [no-disabled-tests](docs/rules/no-disabled-tests.md)           | Disallow disabled tests       | ![recommended](https://img.shields.io/badge/-recommended-lightgrey.svg) |                                                             |
+| [no-focused-tests](docs/rules/no-focused-tests.md)             | Disallow focused tests        | ![recommended](https://img.shields.io/badge/-recommended-lightgrey.svg) |                                                             |
+| [no-identical-title](docs/rules/no-unhandled-errors.md)        | Disallow identical titles     | ![recommended](https://img.shields.io/badge/-recommended-lightgrey.svg) |                                                             |
+| [prefer-to-have-length](docs/rules/prefer-to-have-length.md)   | Suggest using toHaveLength()  | ![recommended](https://img.shields.io/badge/-recommended-lightgrey.svg) | ![fixable](https://img.shields.io/badge/-fixable-green.svg) |
+| [prefer-to-be-null](docs/rules/prefer-to-be-null.md)           | Suggest using toBeNull()      |                                                                         | ![fixable](https://img.shields.io/badge/-fixable-green.svg) |
+| [prefer-to-be-undefined](docs/rules/prefer-to-be-undefined.md) | Suggest using toBeUndefined() |                                                                         | ![fixable](https://img.shields.io/badge/-fixable-green.svg) |
+| [valid-expect](docs/rules/valid-expect.md)                     | Enforce valid expect() usage  | ![recommended](https://img.shields.io/badge/-recommended-lightgrey.svg) |                                                             |
 
 ## Credit
 
