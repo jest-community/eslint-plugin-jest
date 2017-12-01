@@ -2,8 +2,7 @@
 
 module.exports = context => {
   if (context.getFilename().endsWith('.snap')) {
-    const lineLimit =
-      (context.options[0] && context.options[0].sizeThreshold) || 50;
+    const lineLimit = (context.options[0] && context.options[0].maxSize) || 50;
 
     return {
       ExpressionStatement: node => {

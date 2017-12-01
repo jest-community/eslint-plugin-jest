@@ -97,14 +97,15 @@ line 4
 
 ## Options
 
-This rule has option for modifying the threshold number of lines:
+This rule has option for modifying the max number of lines allowed for a
+snapshot:
 
 In an `eslintrc` file:
 
 ```json
 ...
   "rules": {
-    "jest/no-large-snapshots": ["warn", { "sizeThreshold": 12 }]
+    "jest/no-large-snapshots": ["warn", { "maxSize": 12 }]
   }
 ...
 ```

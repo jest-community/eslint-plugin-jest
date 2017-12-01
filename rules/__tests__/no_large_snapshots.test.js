@@ -55,7 +55,7 @@ describe('no-large-snapshots', () => {
       const mockReport = jest.fn();
       const mockContext = {
         getFilename: () => 'mock-component.jsx.snap',
-        options: [{ sizeThreshold: 70 }],
+        options: [{ maxSize: 70 }],
         report: mockReport,
       };
       const mockNode = {
