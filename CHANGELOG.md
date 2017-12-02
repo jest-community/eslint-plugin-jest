@@ -13,6 +13,8 @@ project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 
+* Add `no-large-snapshots` rule
+  ([#24](https://github.com/jest-community/eslint-plugin-jest/pull/24))
 * Add `prefer-to-be-null` rule
   ([#10](https://github.com/jest-community/eslint-plugin-jest/pull/10))
 * Add `prefer-to-be-undefined` rule

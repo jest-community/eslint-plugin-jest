@@ -10,7 +10,7 @@
     "email": "hello@jkimbo.com",
     "url": "jkimbo.com"
   },
-  "files": ["docs/", "rules/", "index.js"],
+  "files": ["docs/", "rules/", "processors/", "index.js"],
   "peerDependencies": {
     "eslint": ">=3.6"
   },
