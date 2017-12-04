@@ -1,46 +1,42 @@
 'use strict';
+const expectCase = require('./util').expectCase;
+const expectNotCase = require('./util').expectNotCase;
+const expectResolveCase = require('./util').expectResolveCase;
+const expectRejectCase = require('./util').expectRejectCase;
+const method = require('./util').method;
 
 module.exports = context => {
   return {
     CallExpression(node) {
-      const calleeName = node.callee.name;
-
       if (
-        calleeName === 'expect' &&
-        node.arguments.length == 1 &&
-        node.parent &&
-        node.parent.type === 'MemberExpression' &&
-        node.parent.parent
+        !(
+          expectNotCase(node) ||
+          expectResolveCase(node) ||
+          expectRejectCase(node)
+        ) &&
+        expectCase(node) &&
+        (method(node).name === 'toBe' || method(node).name === 'toEqual') &&
+        node.arguments[0].property &&
+        node.arguments[0].property.name === 'length'
       ) {
-        const parentProperty = node.parent.property;
-        const propertyName = parentProperty.name;
-        const argumentObject = node.arguments[0].object;
-        const argumentProperty = node.arguments[0].property;
-
-        if (
-          (propertyName === 'toBe' || propertyName === 'toEqual') &&
-          argumentProperty &&
-          argumentProperty.name === 'length'
-        ) {
-          const propertyDot = context
-            .getSourceCode()
-            .getFirstTokenBetween(
-              argumentObject,
-              argumentProperty,
-              token => token.value === '.'
-            );
-          context.report({
-            fix(fixer) {
-              return [
-                fixer.remove(propertyDot),
-                fixer.remove(argumentProperty),
-                fixer.replaceText(parentProperty, 'toHaveLength'),
-              ];
-            },
-            message: 'Use toHaveLength() instead',
-            node: parentProperty,
-          });
-        }
+        const propertyDot = context
+          .getSourceCode()
+          .getFirstTokenBetween(
+            node.arguments[0].object,
+            node.arguments[0].property,
+            token => token.value === '.'
+          );
+        context.report({
+          fix(fixer) {
+            return [
+              fixer.remove(propertyDot),
+              fixer.remove(node.arguments[0].property),
+              fixer.replaceText(method(node), 'toHaveLength'),
+            ];
+          },
+          message: 'Use toHaveLength() instead',
+          node: method(node),
+        });
       }
     },
   };
