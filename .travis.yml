@@ -27,6 +27,8 @@ cache:
 branches:
   only:
   - master
+  # Practical when batching releases
+  - next
   - "/^greenkeeper/.*$/"
 env:
   global:
