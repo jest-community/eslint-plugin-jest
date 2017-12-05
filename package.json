@@ -1,6 +1,6 @@
 {
   "name": "eslint-plugin-jest",
-  "version": "21.4.0",
+  "version": "0.0.0-development",
   "description": "Eslint rules for Jest",
   "repository": "jest-community/eslint-plugin-jest",
   "license": "MIT",
@@ -17,9 +17,12 @@
   "scripts": {
     "lint": "eslint . --ignore-pattern '!.eslintrc.js'",
     "test": "jest",
-    "precommit": "lint-staged"
+    "precommit": "lint-staged",
+    "commitmsg": "commitlint -e $GIT_PARAMS"
   },
   "devDependencies": {
+    "@commitlint/cli": "^5.2.0",
+    "@commitlint/config-conventional": "^5.1.3",
     "eslint": "^4.10.0",
     "eslint-config-prettier": "^2.7.0",
     "eslint-plugin-prettier": "^2.3.1",
@@ -38,5 +41,8 @@
   },
   "jest": {
     "testEnvironment": "node"
+  },
+  "commitlint": {
+    "extends": ["@commitlint/config-conventional"]
   }
 }
