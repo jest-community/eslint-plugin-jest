@@ -11,6 +11,10 @@ ruleTester.run('prefer_to_be_undefined', rules['prefer-to-be-undefined'], {
     'expect(true).not.toBeUndefined();',
     'expect({}).toEqual({});',
     'expect(null).toEqual(null);',
+    'expect(something).toBe(somethingElse)',
+    'expect(something).toEqual(somethingElse)',
+    'expect(something).not.toBe(somethingElse)',
+    'expect(something).not.toEqual(somethingElse)',
   ],
 
   invalid: [
