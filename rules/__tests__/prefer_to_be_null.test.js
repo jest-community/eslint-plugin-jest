@@ -6,7 +6,7 @@ const rules = require('../../').rules;
 const ruleTester = new RuleTester();
 
 ruleTester.run('prefer_to_be_null', rules['prefer-to-be-null'], {
-  valid: ['expect(null).toBeNull();'],
+  valid: ['expect(null).toBeNull();', 'expect(null).toEqual();'],
 
   invalid: [
     {
