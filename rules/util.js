@@ -26,22 +26,26 @@ const expectToBeCase = (node, arg) =>
   !(expectNotCase(node) || expectResolveCase(node) || expectRejectCase(node)) &&
   expectCase(node) &&
   methodName(node) === 'toBe' &&
+  argument(node) &&
   argument(node).value === arg;
 
 const expectNotToBeCase = (node, arg) =>
   expectNotCase(node) &&
   methodName2(node) === 'toBe' &&
+  argument2(node) &&
   argument2(node).value === arg;
 
 const expectToEqualCase = (node, arg) =>
   !(expectNotCase(node) || expectResolveCase(node) || expectRejectCase(node)) &&
   expectCase(node) &&
   methodName(node) === 'toEqual' &&
+  argument(node) &&
   argument(node).value === arg;
 
 const expectNotToEqualCase = (node, arg) =>
   expectNotCase(node) &&
   methodName2(node) === 'toEqual' &&
+  argument2(node) &&
   argument2(node).value === arg;
 
 const expectToBeUndefinedCase = node =>
