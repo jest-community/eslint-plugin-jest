@@ -36,8 +36,10 @@ const expectNotToBeCase = (node, arg) =>
   expectNotCase(node) &&
   methodName2(node) === 'toBe' &&
   argument2(node) &&
-  argument2(node).value === arg &&
-  (arg === null || argument2(node).name);
+  ((argument2(node).type === 'Literal' &&
+    argument2(node).value === null &&
+    arg === null) ||
+    (argument2(node).name === 'undefined' && arg === undefined));
 
 const expectToEqualCase = (node, arg) =>
   !(expectNotCase(node) || expectResolveCase(node) || expectRejectCase(node)) &&
@@ -53,8 +55,10 @@ const expectNotToEqualCase = (node, arg) =>
   expectNotCase(node) &&
   methodName2(node) === 'toEqual' &&
   argument2(node) &&
-  argument2(node).value === arg &&
-  (arg === null || argument2(node).name);
+  ((argument2(node).type === 'Literal' &&
+    argument2(node).value === null &&
+    arg === null) ||
+    (argument2(node).name === 'undefined' && arg === undefined));
 
 const expectToBeUndefinedCase = node =>
   !(expectNotCase(node) || expectResolveCase(node) || expectRejectCase(node)) &&

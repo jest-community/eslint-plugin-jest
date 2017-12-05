@@ -9,6 +9,14 @@ ruleTester.run('prefer_to_be_null', rules['prefer-to-be-null'], {
   valid: [
     'expect(null).toBeNull();',
     'expect(null).toEqual();',
+    'expect(null).not.toBeNull();',
+    'expect(null).not.toEqual();',
+    'expect(null).toBe(undefined);',
+    'expect(null).not.toBe(undefined);',
+    'expect(null).toBe();',
+    'expect(null).toMatchSnapshot();',
+    'expect("a string").toMatchSnapshot(null);',
+    'expect("a string").not.toMatchSnapshot();',
     "expect(something).toEqual('a string');",
   ],
 
@@ -34,6 +42,28 @@ ruleTester.run('prefer_to_be_null', rules['prefer-to-be-null'], {
         },
       ],
       output: 'expect(null).toBeNull();',
+    },
+    {
+      code: 'expect("a string").not.toBe(null);',
+      errors: [
+        {
+          message: 'Use toBeNull() instead',
+          column: 24,
+          line: 1,
+        },
+      ],
+      output: 'expect("a string").not.toBeNull();',
+    },
+    {
+      code: 'expect("a string").not.toEqual(null);',
+      errors: [
+        {
+          message: 'Use toBeNull() instead',
+          column: 24,
+          line: 1,
+        },
+      ],
+      output: 'expect("a string").not.toBeNull();',
     },
   ],
 });
