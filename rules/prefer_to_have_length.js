@@ -1,9 +1,9 @@
 'use strict';
-const expectCase = require('./util').expectCase;
-const expectNotCase = require('./util').expectNotCase;
-const expectResolveCase = require('./util').expectResolveCase;
-const expectRejectCase = require('./util').expectRejectCase;
-const method = require('./util').method;
+const expectCase = require('../guards').expectCase;
+const expectNotCase = require('../guards').expectNotCase;
+const expectResolveCase = require('../guards').expectResolveCase;
+const expectRejectCase = require('../guards').expectRejectCase;
+const method = require('../guards').method;
 
 module.exports = context => {
   return {

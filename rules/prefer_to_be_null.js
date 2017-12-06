@@ -1,12 +1,12 @@
 'use strict';
-const argument = require('./util').argument;
-const argument2 = require('./util').argument2;
-const expectToBeCase = require('./util').expectToBeCase;
-const expectToEqualCase = require('./util').expectToEqualCase;
-const expectNotToEqualCase = require('./util').expectNotToEqualCase;
-const expectNotToBeCase = require('./util').expectNotToBeCase;
-const method = require('./util').method;
-const method2 = require('./util').method2;
+const argument = require('../guards').argument;
+const argument2 = require('../guards').argument2;
+const expectToBeCase = require('../guards').expectToBeCase;
+const expectToEqualCase = require('../guards').expectToEqualCase;
+const expectNotToEqualCase = require('../guards').expectNotToEqualCase;
+const expectNotToBeCase = require('../guards').expectNotToBeCase;
+const method = require('../guards').method;
+const method2 = require('../guards').method2;
 
 module.exports = context => {
   return {
