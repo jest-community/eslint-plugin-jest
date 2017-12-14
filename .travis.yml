@@ -18,6 +18,11 @@ script:
 after_script: greenkeeper-lockfile-upload
 jobs:
   include:
+  - stage: danger
+    node_js: 8
+    os: linux
+    script: 
+      - npx -p danger@^3 danger ci
   - stage: release
     node_js: 8
     os: linux
