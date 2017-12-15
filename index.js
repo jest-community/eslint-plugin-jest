@@ -14,6 +14,12 @@ const snapshotProcessor = require('./processors/snapshot-processor');
 module.exports = {
   configs: {
     recommended: {
+      plugins: [
+        'jest'
+      ],
+      env: {
+        'jest/globals': true
+      },
       rules: {
         'jest/no-disabled-tests': 'warn',
         'jest/no-focused-tests': 'error',
