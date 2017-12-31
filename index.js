@@ -15,11 +15,9 @@ const snapshotProcessor = require('./processors/snapshot-processor');
 module.exports = {
   configs: {
     recommended: {
-      plugins: [
-        'jest'
-      ],
+      plugins: ['jest'],
       env: {
-        'jest/globals': true
+        'jest/globals': true,
       },
       rules: {
         'jest/no-disabled-tests': 'warn',
@@ -66,6 +64,6 @@ module.exports = {
     'prefer-to-be-undefined': preferToBeUndefined,
     'prefer-to-have-length': preferToHaveLength,
     'valid-expect': validExpect,
-    'missing-expect-assertions-call': missingExpectAssertions
+    'missing-expect-assertions-call': missingExpectAssertions,
   },
 };

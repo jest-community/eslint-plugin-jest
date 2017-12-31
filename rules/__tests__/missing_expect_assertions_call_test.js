@@ -7,8 +7,11 @@ const ruleTester = new RuleTester();
 const expectedMsg =
   'Every test should have expect.assertions({number of assertions}) as first expression';
 
-ruleTester.run('missing-expect-assertions-call', rules['missing-expect-assertions-call'], {
-  invalid: [
+ruleTester.run(
+  'missing-expect-assertions-call',
+  rules['missing-expect-assertions-call'],
+  {
+    invalid: [
       {
         code: 'it("it1", () => { foo()})',
         errors: [
@@ -16,13 +19,14 @@ ruleTester.run('missing-expect-assertions-call', rules['missing-expect-assertion
             message: expectedMsg,
           },
         ],
-        parserOptions: {ecmaVersion: 6},
+        parserOptions: { ecmaVersion: 6 },
       },
       {
-        code: 'it("it1", function() {' +
-        '\n\t\t\tsomeFunctionToDo();' +
-        '\n\t\t\tsomeFunctionToDo2();\n' +
-        '\t\t\t})',
+        code:
+          'it("it1", function() {' +
+          '\n\t\t\tsomeFunctionToDo();' +
+          '\n\t\t\tsomeFunctionToDo2();\n' +
+          '\t\t\t})',
         errors: [
           {
             message: expectedMsg,
@@ -37,17 +41,18 @@ ruleTester.run('missing-expect-assertions-call', rules['missing-expect-assertion
           },
         ],
       },
-  ],
+    ],
 
-  valid: [
-    {
-      code: 'test("it1", () => {expect.assertions(0);})',
-      parserOptions: {ecmaVersion: 6},
-    },
-    'test("it1", function() {expect.assertions(0);})',
-    'it("it1", function() {expect.assertions(0);})',
-    'it("it1", function() {\n\t\t\texpect.assertions(1);' +
-    '\n\t\t\texpect(someValue).toBe(true)\n' +
-    '\t\t\t})',
-  ],
-});
+    valid: [
+      {
+        code: 'test("it1", () => {expect.assertions(0);})',
+        parserOptions: { ecmaVersion: 6 },
+      },
+      'test("it1", function() {expect.assertions(0);})',
+      'it("it1", function() {expect.assertions(0);})',
+      'it("it1", function() {\n\t\t\texpect.assertions(1);' +
+        '\n\t\t\texpect(someValue).toBe(true)\n' +
+        '\t\t\t})',
+    ],
+  }
+);

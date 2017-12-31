@@ -5,24 +5,27 @@ const ruleMsg =
 
 const isExpectAssertionsCall = expression => {
   try {
-    return expression.type == 'CallExpression'
-      && expression.callee.type == 'MemberExpression'
-      && expression.callee.object.name == 'expect'
-      && expression.callee.property.name == 'assertions'
+    return (
+      expression.type == 'CallExpression' &&
+      expression.callee.type == 'MemberExpression' &&
+      expression.callee.object.name == 'expect' &&
+      expression.callee.property.name == 'assertions'
+    );
   } catch (e) {
-    return false
+    return false;
   }
 };
 
 const isTestOrItFunction = node => {
-  return node.type == 'CallExpression'
-    && node.callee
-    && (node.callee.name == 'it' || node.callee.name == 'test')
+  return (
+    node.type == 'CallExpression' &&
+    node.callee &&
+    (node.callee.name == 'it' || node.callee.name == 'test')
+  );
 };
 
 const getTestFunctionFirstLine = node => {
   try {
-    console.log(node.arguments[1].body.body[0])
     return node.arguments[1].body.body[0].expression;
   } catch (e) {
     return undefined;
@@ -31,7 +34,7 @@ const getTestFunctionFirstLine = node => {
 
 const isFirstLineExprStmt = node => {
   try {
-    return node.arguments[1].body.body[0].type == 'ExpressionStatement'
+    return node.arguments[1].body.body[0].type == 'ExpressionStatement';
   } catch (e) {
     return false;
   }
@@ -49,12 +52,11 @@ module.exports = context => {
     CallExpression(node) {
       if (isTestOrItFunction(node)) {
         if (!isFirstLineExprStmt(node)) {
-          reportMsg(context, node)
+          reportMsg(context, node);
         } else {
           const testFuncFirstLine = getTestFunctionFirstLine(node);
-          if (testFuncFirstLine
-            && !isExpectAssertionsCall(testFuncFirstLine)) {
-            reportMsg(context, node)
+          if (testFuncFirstLine && !isExpectAssertionsCall(testFuncFirstLine)) {
+            reportMsg(context, node);
           }
         }
       }
