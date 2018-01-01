@@ -41,6 +41,14 @@ ruleTester.run(
           },
         ],
       },
+      {
+        code: 'it("it1", function() {expect.assertions();})',
+        errors: [
+          {
+            message: expectedMsg,
+          },
+        ],
+      },
     ],
 
     valid: [

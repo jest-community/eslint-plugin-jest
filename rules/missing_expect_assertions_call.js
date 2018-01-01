@@ -3,13 +3,22 @@
 const ruleMsg =
   'Every test should have expect.assertions({number of assertions}) as first expression';
 
+const isValidArgument = expression => {
+  try {
+    return Number.isInteger(expression.arguments[0].value);
+  } catch (e) {
+    return false;
+  }
+};
+
 const isExpectAssertionsCall = expression => {
   try {
     return (
       expression.type == 'CallExpression' &&
       expression.callee.type == 'MemberExpression' &&
       expression.callee.object.name == 'expect' &&
-      expression.callee.property.name == 'assertions'
+      expression.callee.property.name == 'assertions' &&
+      isValidArgument(expression)
     );
   } catch (e) {
     return false;
