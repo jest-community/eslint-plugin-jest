@@ -1,25 +1,32 @@
 'use strict';
 
 const ruleMsg =
-  'Every test should have expect.assertions({number of assertions}) as first expression';
+  'Every test should have expect.assertions({number of assertions}) OR expect.hasAssertions() as first expression';
 
-const isValidArgument = expression => {
+const validateArguments = expression => {
   try {
-    return Number.isInteger(expression.arguments[0].value);
+    return (
+      expression.arguments.length == 1 &&
+      Number.isInteger(expression.arguments[0].value)
+    );
   } catch (e) {
     return false;
   }
 };
 
-const isExpectAssertionsCall = expression => {
+const isExpectAssertionsOrHasAssertionsCall = expression => {
   try {
-    return (
+    const expectAssertionOrHasAssertionCall =
       expression.type == 'CallExpression' &&
       expression.callee.type == 'MemberExpression' &&
       expression.callee.object.name == 'expect' &&
-      expression.callee.property.name == 'assertions' &&
-      isValidArgument(expression)
-    );
+      (expression.callee.property.name == 'assertions' ||
+        expression.callee.property.name == 'hasAssertions');
+
+    if (expression.callee.property.name == 'assertions') {
+      return expectAssertionOrHasAssertionCall && validateArguments(expression);
+    }
+    return expectAssertionOrHasAssertionCall;
   } catch (e) {
     return false;
   }
@@ -62,9 +69,10 @@ module.exports = context => {
       if (isTestOrItFunction(node)) {
         if (!isFirstLineExprStmt(node)) {
           reportMsg(context, node);
+          return;
         } else {
           const testFuncFirstLine = getTestFunctionFirstLine(node);
-          if (testFuncFirstLine && !isExpectAssertionsCall(testFuncFirstLine)) {
+          if (!isExpectAssertionsOrHasAssertionsCall(testFuncFirstLine)) {
             reportMsg(context, node);
           }
         }

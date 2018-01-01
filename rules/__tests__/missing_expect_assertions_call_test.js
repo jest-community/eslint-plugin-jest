@@ -5,7 +5,7 @@ const rules = require('../..').rules;
 
 const ruleTester = new RuleTester();
 const expectedMsg =
-  'Every test should have expect.assertions({number of assertions}) as first expression';
+  'Every test should have expect.assertions({number of assertions}) OR expect.hasAssertions() as first expression';
 
 ruleTester.run(
   'missing-expect-assertions-call',
@@ -49,6 +49,22 @@ ruleTester.run(
           },
         ],
       },
+      {
+        code: 'it("it1", function() {expect.assertions(1,2);})',
+        errors: [
+          {
+            message: expectedMsg,
+          },
+        ],
+      },
+      {
+        code: 'it("it1", function() {expect.assertions("1");})',
+        errors: [
+          {
+            message: expectedMsg,
+          },
+        ],
+      },
     ],
 
     valid: [
@@ -57,6 +73,7 @@ ruleTester.run(
         parserOptions: { ecmaVersion: 6 },
       },
       'test("it1", function() {expect.assertions(0);})',
+      'test("it1", function() {expect.hasAssertions();})',
       'it("it1", function() {expect.assertions(0);})',
       'it("it1", function() {\n\t\t\texpect.assertions(1);' +
         '\n\t\t\texpect(someValue).toBe(true)\n' +
