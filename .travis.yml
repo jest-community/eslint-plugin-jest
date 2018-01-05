@@ -12,7 +12,7 @@ before_script: greenkeeper-lockfile-update
 script:
 - yarn commitlint --from="$TRAVIS_BRANCH" --to="$TRAVIS_COMMIT"
 - yarn commitlint --from=$TRAVIS_COMMIT
-- yarn test
+- yarn lint && yarn test
 after_script: greenkeeper-lockfile-upload
 jobs:
   include:
