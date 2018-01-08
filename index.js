@@ -8,7 +8,7 @@ const preferToBeNull = require('./rules/prefer_to_be_null');
 const preferToBeUndefined = require('./rules/prefer_to_be_undefined');
 const preferToHaveLength = require('./rules/prefer_to_have_length');
 const validExpect = require('./rules/valid_expect');
-const missingExpectAssertions = require('./rules/missing_expect_assertions_call');
+const preferExpectAssertions = require('./rules/prefer_expect_assertions');
 
 const snapshotProcessor = require('./processors/snapshot-processor');
 
@@ -25,7 +25,7 @@ module.exports = {
         'jest/no-identical-title': 'error',
         'jest/prefer-to-have-length': 'warn',
         'jest/valid-expect': 'error',
-        'jest/missing-expect-assertions-call': 'error',
+        'jest/prefer-expect-assertions': 'error',
       },
     },
   },
@@ -64,6 +64,6 @@ module.exports = {
     'prefer-to-be-undefined': preferToBeUndefined,
     'prefer-to-have-length': preferToHaveLength,
     'valid-expect': validExpect,
-    'missing-expect-assertions-call': missingExpectAssertions,
+    'prefer-expect-assertions': preferExpectAssertions,
   },
 };
