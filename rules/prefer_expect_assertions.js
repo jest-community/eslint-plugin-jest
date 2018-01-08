@@ -69,7 +69,6 @@ module.exports = context => {
       if (isTestOrItFunction(node)) {
         if (!isFirstLineExprStmt(node)) {
           reportMsg(context, node);
-          return;
         } else {
           const testFuncFirstLine = getTestFunctionFirstLine(node);
           if (!isExpectAssertionsOrHasAssertionsCall(testFuncFirstLine)) {
