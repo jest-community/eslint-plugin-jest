@@ -1,7 +1,7 @@
 'use strict';
 
 const ruleMsg =
-  'Every test should have expect.assertions({number of assertions}) OR expect.hasAssertions() as first expression';
+  "Every test should have either `expect.assertions(<number of assertions>)` or `expect.hasAssertions()` as it's first expression";
 
 const validateArguments = expression => {
   try {
