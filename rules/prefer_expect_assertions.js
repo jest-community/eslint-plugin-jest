@@ -1,12 +1,12 @@
 'use strict';
 
 const ruleMsg =
-  "Every test should have either `expect.assertions(<number of assertions>)` or `expect.hasAssertions()` as it's first expression";
+  'Every test should have either `expect.assertions(<number of assertions>)` or `expect.hasAssertions()` as its first expression';
 
 const validateArguments = expression => {
   try {
     return (
-      expression.arguments.length == 1 &&
+      expression.arguments.length === 1 &&
       Number.isInteger(expression.arguments[0].value)
     );
   } catch (e) {
@@ -17,13 +17,13 @@ const validateArguments = expression => {
 const isExpectAssertionsOrHasAssertionsCall = expression => {
   try {
     const expectAssertionOrHasAssertionCall =
-      expression.type == 'CallExpression' &&
-      expression.callee.type == 'MemberExpression' &&
-      expression.callee.object.name == 'expect' &&
-      (expression.callee.property.name == 'assertions' ||
-        expression.callee.property.name == 'hasAssertions');
+      expression.type === 'CallExpression' &&
+      expression.callee.type === 'MemberExpression' &&
+      expression.callee.object.name === 'expect' &&
+      (expression.callee.property.name === 'assertions' ||
+        expression.callee.property.name === 'hasAssertions');
 
-    if (expression.callee.property.name == 'assertions') {
+    if (expression.callee.property.name === 'assertions') {
       return expectAssertionOrHasAssertionCall && validateArguments(expression);
     }
     return expectAssertionOrHasAssertionCall;
@@ -34,9 +34,9 @@ const isExpectAssertionsOrHasAssertionsCall = expression => {
 
 const isTestOrItFunction = node => {
   return (
-    node.type == 'CallExpression' &&
+    node.type === 'CallExpression' &&
     node.callee &&
-    (node.callee.name == 'it' || node.callee.name == 'test')
+    (node.callee.name === 'it' || node.callee.name === 'test')
   );
 };
 
@@ -50,7 +50,7 @@ const getTestFunctionFirstLine = node => {
 
 const isFirstLineExprStmt = node => {
   try {
-    return node.arguments[1].body.body[0].type == 'ExpressionStatement';
+    return node.arguments[1].body.body[0].type === 'ExpressionStatement';
   } catch (e) {
     return false;
   }

@@ -5,7 +5,7 @@ const rules = require('../..').rules;
 
 const ruleTester = new RuleTester();
 const expectedMsg =
-  "Every test should have either `expect.assertions(<number of assertions>)` or `expect.hasAssertions()` as it's first expression";
+  'Every test should have either `expect.assertions(<number of assertions>)` or `expect.hasAssertions()` as its first expression';
 
 ruleTester.run('prefer-expect-assertions', rules['prefer-expect-assertions'], {
   invalid: [
