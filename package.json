@@ -29,7 +29,8 @@
     "husky": "^0.14.3",
     "jest": "^22.0.4",
     "lint-staged": "^6.0.0",
-    "prettier": "^1.8.1"
+    "prettier": "^1.8.1",
+    "semantic-release": "^11.0.2"
   },
   "prettier": {
     "singleQuote": true,
