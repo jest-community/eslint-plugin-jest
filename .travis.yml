@@ -20,9 +20,7 @@ jobs:
   - stage: release
     node_js: 8
     os: linux
-    after_success:
-    - yarn add -D semantic-release@11.0.1
-    - yarn semantic-release
+    after_success: yarn semantic-release
 cache:
   yarn: true
 branches:
