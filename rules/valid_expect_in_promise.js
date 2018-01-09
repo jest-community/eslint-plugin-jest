@@ -45,7 +45,6 @@ const verifyExpectWithReturn = (argument, node, context) => {
   if (
     argument &&
     isFunction(argument.type) &&
-    //$FlowFixMe
     isBodyCallExpression(argument.body)
   ) {
     const calleeInThenOrCatch = argument.body.body[0].expression.callee.object;
@@ -57,18 +56,21 @@ const verifyExpectWithReturn = (argument, node, context) => {
   }
 };
 
+const isAwaitExpression = node => {
+  return node.parent.parent && node.parent.parent.type == 'AwaitExpression';
+};
+
 module.exports = context => {
   return {
     MemberExpression(node) {
       if (
         node.type == 'MemberExpression' &&
         isThenOrCatch(node) &&
-        node.parent.type == 'CallExpression'
+        node.parent.type == 'CallExpression' &&
+        !isAwaitExpression(node)
       ) {
         const parent = node.parent;
-        // $FlowFixMe
         const arg1 = parent.arguments[0];
-        // $FlowFixMe
         const arg2 = parent.arguments[1];
 
         // then block can have two args, fulfillment & rejection

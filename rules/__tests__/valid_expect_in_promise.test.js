@@ -3,7 +3,12 @@
 const RuleTester = require('eslint').RuleTester;
 const rules = require('../..').rules;
 
-const ruleTester = new RuleTester();
+const ruleTester = new RuleTester({
+  parserOptions: {
+    ecmaVersion: 8,
+  },
+});
+
 const expectedMsg =
   'Promise should be returned to test its fulfillment or rejection';
 
@@ -20,7 +25,6 @@ ruleTester.run('valid-expect-in-promise', rules['valid-expect-in-promise'], {
           message: expectedMsg,
         },
       ],
-      parserOptions: { ecmaVersion: 6 },
     },
     {
       code:
@@ -104,11 +108,7 @@ ruleTester.run('valid-expect-in-promise', rules['valid-expect-in-promise'], {
   ],
 
   valid: [
-    {
-      code:
-        'it("it1", () => { return somePromise.then(() => {expect(someThing).toEqual(true)})})',
-      parserOptions: { sourceType: 'module' },
-    },
+    'it("it1", () => { return somePromise.then(() => {expect(someThing).toEqual(true)})})',
 
     'it("it1", function() { return somePromise.catch(' +
       'function() {expect(someThing).toEqual(true)})})',
@@ -131,5 +131,14 @@ ruleTester.run('valid-expect-in-promise', rules['valid-expect-in-promise'], {
       'function() { /*rejection*/ expect(someThing).toEqual(true)})})',
 
     'it("it1", function() { return somePromise.then()})',
+
+    'it("it1", async () => { await Promise.resolve().then(' +
+      'function() {expect(someThing).toEqual(true)})})',
+
+    'it("it1", async () => ' +
+      '{ await somePromise.then(() => {expect(someThing).toEqual(true)})})',
+
+    'it("it1", async () => { await getSomeThing().getPromise().then(' +
+      'function() {expect(someThing).toEqual(true)})})',
   ],
 });
