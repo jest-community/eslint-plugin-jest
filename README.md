@@ -78,16 +78,17 @@ for more information about extending configuration files.
 
 ## Rules
 
-| Rule                                                           | Description                   | Recommended                                                             | Fixable                                                     |
-| -------------------------------------------------------------- | ----------------------------- | ----------------------------------------------------------------------- | ----------------------------------------------------------- |
-| [no-disabled-tests](docs/rules/no-disabled-tests.md)           | Disallow disabled tests       | ![recommended](https://img.shields.io/badge/-recommended-lightgrey.svg) |                                                             |
-| [no-focused-tests](docs/rules/no-focused-tests.md)             | Disallow focused tests        | ![recommended](https://img.shields.io/badge/-recommended-lightgrey.svg) |                                                             |
-| [no-identical-title](docs/rules/no-identical-title.md)         | Disallow identical titles     | ![recommended](https://img.shields.io/badge/-recommended-lightgrey.svg) |                                                             |
-| [no-large-snapshots](docs/rules/no-large-snapshots.md)         | Disallow large snapshots      |                                                                         |                                                             |
-| [prefer-to-have-length](docs/rules/prefer-to-have-length.md)   | Suggest using toHaveLength()  | ![recommended](https://img.shields.io/badge/-recommended-lightgrey.svg) | ![fixable](https://img.shields.io/badge/-fixable-green.svg) |
-| [prefer-to-be-null](docs/rules/prefer-to-be-null.md)           | Suggest using toBeNull()      |                                                                         | ![fixable](https://img.shields.io/badge/-fixable-green.svg) |
-| [prefer-to-be-undefined](docs/rules/prefer-to-be-undefined.md) | Suggest using toBeUndefined() |                                                                         | ![fixable](https://img.shields.io/badge/-fixable-green.svg) |
-| [valid-expect](docs/rules/valid-expect.md)                     | Enforce valid expect() usage  | ![recommended](https://img.shields.io/badge/-recommended-lightgrey.svg) |                                                             |
+| Rule                                                               | Description                                                     | Recommended                                                             | Fixable                                                     |
+| ------------------------------------------------------------------ | --------------------------------------------------------------- | ----------------------------------------------------------------------- | ----------------------------------------------------------- |
+| [no-disabled-tests](docs/rules/no-disabled-tests.md)               | Disallow disabled tests                                         | ![recommended](https://img.shields.io/badge/-recommended-lightgrey.svg) |                                                             |
+| [no-focused-tests](docs/rules/no-focused-tests.md)                 | Disallow focused tests                                          | ![recommended](https://img.shields.io/badge/-recommended-lightgrey.svg) |                                                             |
+| [no-identical-title](docs/rules/no-identical-title.md)             | Disallow identical titles                                       | ![recommended](https://img.shields.io/badge/-recommended-lightgrey.svg) |                                                             |
+| [no-large-snapshots](docs/rules/no-large-snapshots.md)             | Disallow large snapshots                                        |                                                                         |                                                             |
+| [prefer-to-have-length](docs/rules/prefer-to-have-length.md)       | Suggest using `toHaveLength()`                                  | ![recommended](https://img.shields.io/badge/-recommended-lightgrey.svg) | ![fixable](https://img.shields.io/badge/-fixable-green.svg) |
+| [prefer-to-be-null](docs/rules/prefer-to-be-null.md)               | Suggest using `toBeNull()`                                      |                                                                         | ![fixable](https://img.shields.io/badge/-fixable-green.svg) |
+| [prefer-to-be-undefined](docs/rules/prefer-to-be-undefined.md)     | Suggest using `toBeUndefined()`                                 |                                                                         | ![fixable](https://img.shields.io/badge/-fixable-green.svg) |
+| [prefer-expect-assertions](docs/rules/prefer-expect-assertions.md) | Suggest using `expect.assertions()` OR `expect.hasAssertions()` |                                                                         |                                                             |
+| [valid-expect](docs/rules/valid-expect.md)                         | Enforce valid `expect()` usage                                  | ![recommended](https://img.shields.io/badge/-recommended-lightgrey.svg) |                                                             |
 
 ## Credit
 
