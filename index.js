@@ -8,6 +8,7 @@ const preferToBeNull = require('./rules/prefer_to_be_null');
 const preferToBeUndefined = require('./rules/prefer_to_be_undefined');
 const preferToHaveLength = require('./rules/prefer_to_have_length');
 const validExpect = require('./rules/valid_expect');
+const preferExpectAssertions = require('./rules/prefer_expect_assertions');
 
 const snapshotProcessor = require('./processors/snapshot-processor');
 
@@ -62,5 +63,6 @@ module.exports = {
     'prefer-to-be-undefined': preferToBeUndefined,
     'prefer-to-have-length': preferToHaveLength,
     'valid-expect': validExpect,
+    'prefer-expect-assertions': preferExpectAssertions,
   },
 };
