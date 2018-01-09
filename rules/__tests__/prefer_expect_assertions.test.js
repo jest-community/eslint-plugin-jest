@@ -3,12 +3,25 @@
 const RuleTester = require('eslint').RuleTester;
 const rules = require('../..').rules;
 
-const ruleTester = new RuleTester();
+const ruleTester = new RuleTester({
+  parserOptions: {
+    ecmaVersion: 6,
+  },
+});
+
 const expectedMsg =
   'Every test should have either `expect.assertions(<number of assertions>)` or `expect.hasAssertions()` as its first expression';
 
 ruleTester.run('prefer-expect-assertions', rules['prefer-expect-assertions'], {
   invalid: [
+    {
+      code: 'it("it1", () => {})',
+      errors: [
+        {
+          message: expectedMsg,
+        },
+      ],
+    },
     {
       code: 'it("it1", () => { foo()})',
       errors: [
@@ -16,7 +29,6 @@ ruleTester.run('prefer-expect-assertions', rules['prefer-expect-assertions'], {
           message: expectedMsg,
         },
       ],
-      parserOptions: { ecmaVersion: 6 },
     },
     {
       code:
@@ -67,7 +79,6 @@ ruleTester.run('prefer-expect-assertions', rules['prefer-expect-assertions'], {
   valid: [
     {
       code: 'test("it1", () => {expect.assertions(0);})',
-      parserOptions: { ecmaVersion: 6 },
     },
     'test("it1", function() {expect.assertions(0);})',
     'test("it1", function() {expect.hasAssertions();})',
@@ -75,5 +86,6 @@ ruleTester.run('prefer-expect-assertions', rules['prefer-expect-assertions'], {
     'it("it1", function() {\n\t\t\texpect.assertions(1);' +
       '\n\t\t\texpect(someValue).toBe(true)\n' +
       '\t\t\t})',
+    'test("it1")',
   ],
 });

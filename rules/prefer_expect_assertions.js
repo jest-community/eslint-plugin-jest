@@ -4,14 +4,11 @@ const ruleMsg =
   'Every test should have either `expect.assertions(<number of assertions>)` or `expect.hasAssertions()` as its first expression';
 
 const validateArguments = expression => {
-  try {
-    return (
-      expression.arguments.length === 1 &&
-      Number.isInteger(expression.arguments[0].value)
-    );
-  } catch (e) {
-    return false;
-  }
+  return (
+    expression.arguments &&
+    expression.arguments.length === 1 &&
+    Number.isInteger(expression.arguments[0].value)
+  );
 };
 
 const isExpectAssertionsOrHasAssertionsCall = expression => {
@@ -40,19 +37,19 @@ const isTestOrItFunction = node => {
   );
 };
 
-const getTestFunctionFirstLine = node => {
-  try {
-    return node.arguments[1].body.body[0].expression;
-  } catch (e) {
-    return undefined;
-  }
+const getFunctionFirstLine = functionBody => {
+  return functionBody[0] && functionBody[0].expression;
 };
 
-const isFirstLineExprStmt = node => {
+const isFirstLineExprStmt = functionBody => {
+  return functionBody[0] && functionBody[0].type === 'ExpressionStatement';
+};
+
+const getTestFunctionBody = node => {
   try {
-    return node.arguments[1].body.body[0].type === 'ExpressionStatement';
+    return node.arguments[1].body.body;
   } catch (e) {
-    return false;
+    return undefined;
   }
 };
 
@@ -67,12 +64,15 @@ module.exports = context => {
   return {
     CallExpression(node) {
       if (isTestOrItFunction(node)) {
-        if (!isFirstLineExprStmt(node)) {
-          reportMsg(context, node);
-        } else {
-          const testFuncFirstLine = getTestFunctionFirstLine(node);
-          if (!isExpectAssertionsOrHasAssertionsCall(testFuncFirstLine)) {
+        const testFuncBody = getTestFunctionBody(node);
+        if (testFuncBody) {
+          if (!isFirstLineExprStmt(testFuncBody)) {
             reportMsg(context, node);
+          } else {
+            const testFuncFirstLine = getFunctionFirstLine(testFuncBody);
+            if (!isExpectAssertionsOrHasAssertionsCall(testFuncFirstLine)) {
+              reportMsg(context, node);
+            }
           }
         }
       }
