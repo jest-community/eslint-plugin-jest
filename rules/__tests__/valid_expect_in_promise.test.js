@@ -140,5 +140,13 @@ ruleTester.run('valid-expect-in-promise', rules['valid-expect-in-promise'], {
 
     'it("it1", async () => { await getSomeThing().getPromise().then(' +
       'function() {expect(someThing).toEqual(true)})})',
+
+    "it('it1', () => {return somePromise." +
+      'then(() => {expect(someThing).toEqual(true);})' +
+      '.then(() => {expect(someThing).toEqual(true);})});',
+
+    "it('it1', () => {return somePromise." +
+      'then(() => {expect(someThing).toEqual(true);})' +
+      '.catch(() => {expect(someThing).toEqual(false);})});',
   ],
 });

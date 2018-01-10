@@ -41,6 +41,18 @@ const reportReturnRequired = (context, node) => {
   });
 };
 
+const isParentThenOrReturn = node => {
+  try {
+    return (
+      node.parent.parent.type == 'ReturnStatement' ||
+      node.parent.parent.property.name === 'then' ||
+      node.parent.parent.property.name === 'catch'
+    );
+  } catch (e) {
+    return false;
+  }
+};
+
 const verifyExpectWithReturn = (argument, node, context) => {
   if (
     argument &&
@@ -49,7 +61,7 @@ const verifyExpectWithReturn = (argument, node, context) => {
   ) {
     const calleeInThenOrCatch = argument.body.body[0].expression.callee.object;
     if (isExpectCall(calleeInThenOrCatch)) {
-      if (node.parent.parent.type != 'ReturnStatement') {
+      if (!isParentThenOrReturn(node)) {
         reportReturnRequired(context, node);
       }
     }
