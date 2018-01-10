@@ -89,6 +89,7 @@ for more information about extending configuration files.
 | [prefer-to-be-undefined](docs/rules/prefer-to-be-undefined.md)     | Suggest using `toBeUndefined()`                                 |                                                                         | ![fixable](https://img.shields.io/badge/-fixable-green.svg) |
 | [prefer-expect-assertions](docs/rules/prefer-expect-assertions.md) | Suggest using `expect.assertions()` OR `expect.hasAssertions()` |                                                                         |                                                             |
 | [valid-expect](docs/rules/valid-expect.md)                         | Enforce valid `expect()` usage                                  | ![recommended](https://img.shields.io/badge/-recommended-lightgrey.svg) |                                                             |
+| [valid-expect-in-promise](docs/rules/valid-expect-in-promise.md)   | Enforce having return statement when testing with promises      |                                                                         |                                                             |
 
 ## Credit
 
