@@ -34,6 +34,10 @@ module.exports = context => {
           context.report({ message: 'Skipped test suite', node });
           break;
 
+        case 'describe.only':
+          context.report({ message: 'Skipped all but this test suite', node });
+          break;
+
         case 'it':
         case 'test':
           testDepth++;
@@ -48,6 +52,11 @@ module.exports = context => {
         case 'it.skip':
         case 'test.skip':
           context.report({ message: 'Skipped test', node });
+          break;
+
+        case 'it.only':
+        case 'test.only':
+          context.report({ message: 'Skipped all but this test', node });
           break;
 
         case 'pending':
