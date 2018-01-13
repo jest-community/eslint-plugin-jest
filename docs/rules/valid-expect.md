@@ -32,6 +32,7 @@ expect().toEqual('something');
 expect('something', 'else');
 expect('something');
 expect(true).toBeDefined;
+expect(Promise.resolve('hello')).resolves;
 ```
 
 The following patterns are not warnings:
@@ -40,4 +41,5 @@ The following patterns are not warnings:
 expect('something').toEqual('something');
 expect([1, 2, 3]).toEqual([1, 2, 3]);
 expect(true).toBeDefined();
+expect(Promise.resolve('hello')).resolves.toEqual('hello');
 ```
