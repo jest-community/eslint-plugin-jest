@@ -30,7 +30,7 @@
     "jest": "^22.0.4",
     "lint-staged": "^6.0.0",
     "prettier": "^1.10.2",
-    "semantic-release": "^11.0.2"
+    "semantic-release": "^12.2.2"
   },
   "prettier": {
     "singleQuote": true,
