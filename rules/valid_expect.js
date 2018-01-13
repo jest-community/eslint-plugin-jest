@@ -83,11 +83,18 @@ module.exports = context => {
 
           // matcher was not called
           if (grandParent.type === 'ExpressionStatement') {
+            let message;
+            if (expectProperties.indexOf(propertyName) > -1) {
+              message = `"${propertyName}" needs to call a matcher.`;
+            } else {
+              message = `"${propertyName}" was not called.`;
+            }
+
             context.report({
               // For some reason `endColumn` isn't set in tests if `loc` is not
               // added
               loc: parentProperty.loc,
-              message: `"${propertyName}" was not called.`,
+              message,
               node: parentProperty,
             });
           }

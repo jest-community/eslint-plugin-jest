@@ -101,5 +101,35 @@ ruleTester.run('valid-expect', rules['valid-expect'], {
         },
       ],
     },
+    {
+      code: 'expect(true).resolves;',
+      errors: [
+        {
+          endColumn: 22,
+          column: 14,
+          message: '"resolves" needs to call a matcher.',
+        },
+      ],
+    },
+    {
+      code: 'expect(true).rejects;',
+      errors: [
+        {
+          endColumn: 21,
+          column: 14,
+          message: '"rejects" needs to call a matcher.',
+        },
+      ],
+    },
+    {
+      code: 'expect(true).not;',
+      errors: [
+        {
+          endColumn: 17,
+          column: 14,
+          message: '"not" needs to call a matcher.',
+        },
+      ],
+    },
   ],
 });
