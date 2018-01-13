@@ -107,7 +107,7 @@ ruleTester.run('valid-expect', rules['valid-expect'], {
         {
           endColumn: 22,
           column: 14,
-          message: '"resolves" needs a matcher.',
+          message: '"resolves" needs to call a matcher.',
         },
       ],
     },
@@ -117,7 +117,7 @@ ruleTester.run('valid-expect', rules['valid-expect'], {
         {
           endColumn: 21,
           column: 14,
-          message: '"rejects" needs a matcher.',
+          message: '"rejects" needs to call a matcher.',
         },
       ],
     },
@@ -127,7 +127,7 @@ ruleTester.run('valid-expect', rules['valid-expect'], {
         {
           endColumn: 17,
           column: 14,
-          message: '"not" needs a matcher.',
+          message: '"not" needs to call a matcher.',
         },
       ],
     },

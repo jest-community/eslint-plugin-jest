@@ -85,7 +85,7 @@ module.exports = context => {
           if (grandParent.type === 'ExpressionStatement') {
             let message;
             if (expectProperties.indexOf(propertyName) > -1) {
-              message = `"${propertyName}" needs a matcher.`;
+              message = `"${propertyName}" needs to call a matcher.`;
             } else {
               message = `"${propertyName}" was not called.`;
             }
