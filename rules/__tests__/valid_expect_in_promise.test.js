@@ -148,5 +148,22 @@ ruleTester.run('valid-expect-in-promise', rules['valid-expect-in-promise'], {
     "it('it1', () => {return somePromise." +
       'then(() => {expect(someThing).toEqual(true);})' +
       '.catch(() => {expect(someThing).toEqual(false);})});',
+    `
+     test('later return', () => {
+       const promise = something().then(value => {
+         expect(value).toBe('red');
+       });
+
+       return promise;
+     });
+    `,
+    `
+     it('shorthand arrow', () =>
+       something().then(value => {
+         expect(() => {
+           value();
+         }).toThrow();
+       }));
+    `,
   ],
 });
