@@ -165,5 +165,7 @@ ruleTester.run('valid-expect-in-promise', rules['valid-expect-in-promise'], {
          }).toThrow();
        }));
     `,
+
+    "it('promise test', () => {const somePromise = getThatPromise();\nsomePromise.then((data) => {expect(data).toEqual('foo');});\nexpect(somePromise).toBeDefined();\nreturn somePromise;});",
   ],
 });

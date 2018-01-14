@@ -4,7 +4,10 @@ const reportMsg =
   'Promise should be returned to test its fulfillment or rejection';
 
 const isThenOrCatch = node => {
-  return node.property.name == 'then' || node.property.name == 'catch';
+  return (
+    node.property &&
+    (node.property.name == 'then' || node.property.name == 'catch')
+  );
 };
 
 const isFunction = type => {
@@ -41,16 +44,24 @@ const reportReturnRequired = (context, node) => {
   });
 };
 
-const isParentThenOrReturn = node => {
-  try {
+const isPromiseReturnedLater = node => {
+  if (node.parent.parent.type === 'ExpressionStatement') {
+    const promiseName = node.parent.parent.expression.callee.object.name;
+    const testFuncBody = node.parent.parent.parent.body;
+    const lastLineInTestFunc = testFuncBody[testFuncBody.length - 1];
     return (
-      node.parent.parent.type == 'ReturnStatement' ||
-      node.parent.parent.property.name === 'then' ||
-      node.parent.parent.property.name === 'catch'
+      lastLineInTestFunc.type === 'ReturnStatement' &&
+      lastLineInTestFunc.argument.name === promiseName
     );
-  } catch (e) {
-    return false;
   }
+};
+
+const isParentThenOrReturn = node => {
+  return (
+    node.parent.parent.type == 'ReturnStatement' ||
+    isThenOrCatch(node.parent.parent) ||
+    isPromiseReturnedLater(node)
+  );
 };
 
 const verifyExpectWithReturn = (argument, node, context) => {
