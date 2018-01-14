@@ -44,16 +44,14 @@ const reportReturnRequired = (context, node) => {
   });
 };
 
-const isPromiseReturnedLater = node => {
+const isPromiseReturnedLater = (node, testFunctionBody) => {
   let promiseName;
   if (node.parent.parent.type === 'ExpressionStatement') {
     promiseName = node.parent.parent.expression.callee.object.name;
-    getTestFuncBody(node);
   } else if (node.parent.parent.type === 'VariableDeclarator') {
     promiseName = node.parent.parent.id.name;
   }
-  const testFuncBody = getTestFuncBody(node);
-  const lastLineInTestFunc = testFuncBody[testFuncBody.length - 1];
+  const lastLineInTestFunc = testFunctionBody[testFunctionBody.length - 1];
   return (
     lastLineInTestFunc.type === 'ReturnStatement' &&
     lastLineInTestFunc.argument.name === promiseName
@@ -77,15 +75,15 @@ const getTestFuncBody = node => {
   }
 };
 
-const isParentThenOrReturn = node => {
+const isParentThenOrPromiseReturned = (node, testFunctionBody) => {
   return (
     node.parent.parent.type == 'ReturnStatement' ||
-    isPromiseReturnedLater(node) ||
+    isPromiseReturnedLater(node, testFunctionBody) ||
     isThenOrCatch(node.parent.parent)
   );
 };
 
-const verifyExpectWithReturn = (argument, node, context) => {
+const verifyExpectWithReturn = (argument, node, context, testFunctionBody) => {
   if (
     argument &&
     isFunction(argument.type) &&
@@ -93,7 +91,7 @@ const verifyExpectWithReturn = (argument, node, context) => {
   ) {
     const calleeInThenOrCatch = argument.body.body[0].expression.callee.object;
     if (isExpectCall(calleeInThenOrCatch)) {
-      if (!isParentThenOrReturn(node)) {
+      if (!isParentThenOrPromiseReturned(node, testFunctionBody)) {
         reportReturnRequired(context, node);
       }
     }
@@ -123,8 +121,8 @@ module.exports = context => {
           // then block can have one args, fulfillment
           // catch block can have one args, rejection
           // ref: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise
-          verifyExpectWithReturn(arg1, node, context);
-          verifyExpectWithReturn(arg2, node, context);
+          verifyExpectWithReturn(arg1, node, context, testFunctionBody);
+          verifyExpectWithReturn(arg2, node, context, testFunctionBody);
         }
       }
     },
