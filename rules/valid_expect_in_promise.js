@@ -45,22 +45,43 @@ const reportReturnRequired = (context, node) => {
 };
 
 const isPromiseReturnedLater = node => {
+  let promiseName;
   if (node.parent.parent.type === 'ExpressionStatement') {
-    const promiseName = node.parent.parent.expression.callee.object.name;
-    const testFuncBody = node.parent.parent.parent.body;
-    const lastLineInTestFunc = testFuncBody[testFuncBody.length - 1];
-    return (
-      lastLineInTestFunc.type === 'ReturnStatement' &&
-      lastLineInTestFunc.argument.name === promiseName
-    );
+    promiseName = node.parent.parent.expression.callee.object.name;
+    getTestFuncBody(node);
+  } else if (node.parent.parent.type === 'VariableDeclarator') {
+    promiseName = node.parent.parent.id.name;
+  }
+  const testFuncBody = getTestFuncBody(node);
+  const lastLineInTestFunc = testFuncBody[testFuncBody.length - 1];
+  return (
+    lastLineInTestFunc.type === 'ReturnStatement' &&
+    lastLineInTestFunc.argument.name === promiseName
+  );
+};
+
+const isTestFunc = node => {
+  return (
+    node.type === 'CallExpression' &&
+    (node.callee.name === 'it' || node.callee.name === 'test')
+  );
+};
+
+const getTestFuncBody = node => {
+  let parent = node.parent;
+  while (parent) {
+    if (isFunction(parent.type) && isTestFunc(parent.parent)) {
+      return parent.body.body;
+    }
+    parent = parent.parent;
   }
 };
 
 const isParentThenOrReturn = node => {
   return (
     node.parent.parent.type == 'ReturnStatement' ||
-    isThenOrCatch(node.parent.parent) ||
-    isPromiseReturnedLater(node)
+    isPromiseReturnedLater(node) ||
+    isThenOrCatch(node.parent.parent)
   );
 };
 

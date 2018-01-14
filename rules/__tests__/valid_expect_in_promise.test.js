@@ -166,6 +166,19 @@ ruleTester.run('valid-expect-in-promise', rules['valid-expect-in-promise'], {
        }));
     `,
 
-    "it('promise test', () => {const somePromise = getThatPromise();\nsomePromise.then((data) => {expect(data).toEqual('foo');});\nexpect(somePromise).toBeDefined();\nreturn somePromise;});",
+    "it('promise test', () => {const somePromise = getThatPromise();" +
+      "\nsomePromise.then((data) => {expect(data).toEqual('foo');});" +
+      '\nexpect(somePromise).toBeDefined();' +
+      '\nreturn somePromise;});',
+
+    "test('promise test', function() { let somePromise = getThatPromise();" +
+      "\nsomePromise.then((data) => {expect(data).toEqual('foo');});" +
+      '\nexpect(somePromise).toBeDefined();' +
+      '\nreturn somePromise;});',
+
+    "it('crawls for files based on patterns', () => {" +
+      'const promise = nodeCrawl({}).' +
+      "\nthen(data => {expect(childProcess.spawn).lastCalledWith('find');});" +
+      '\nreturn promise;});',
   ],
 });
