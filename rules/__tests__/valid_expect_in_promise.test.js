@@ -105,6 +105,19 @@ ruleTester.run('valid-expect-in-promise', rules['valid-expect-in-promise'], {
         },
       ],
     },
+    {
+      code:
+        "it('test function', " +
+        '\n() => {Builder.getPromiseBuilder()..get().build()' +
+        "\n.then((data) => {expect(data).toEqual('Hi');});});",
+      errors: [
+        {
+          column: 8,
+          endColumn: 48,
+          message: expectedMsg,
+        },
+      ],
+    },
   ],
 
   valid: [
@@ -180,5 +193,9 @@ ruleTester.run('valid-expect-in-promise', rules['valid-expect-in-promise'], {
       'const promise = nodeCrawl({}).' +
       "\nthen(data => {expect(childProcess.spawn).lastCalledWith('find');});" +
       '\nreturn promise;});',
+
+    "it('test function', " +
+      '\n() => {return Builder.getPromiseBuilder().get().build()' +
+      "\n.then((data) => {expect(data).toEqual('Hi');});});",
   ],
 });
