@@ -69,7 +69,10 @@ const getTestFuncBody = node => {
   let parent = node.parent;
   while (parent) {
     if (isFunction(parent.type) && isTestFunc(parent.parent)) {
-      return parent.body.body;
+      if (parent.body.type === 'BlockStatement') return parent.body.body;
+      if (parent.body.type === 'CallExpression')
+        //arrow-short-hand-fn
+        return parent.body;
     }
     parent = parent.parent;
   }
@@ -77,6 +80,7 @@ const getTestFuncBody = node => {
 
 const isParentThenOrPromiseReturned = (node, testFunctionBody) => {
   return (
+    testFunctionBody.type == 'CallExpression' ||
     node.parent.parent.type == 'ReturnStatement' ||
     isPromiseReturnedLater(node, testFunctionBody) ||
     isThenOrCatch(node.parent.parent)

@@ -201,5 +201,7 @@ ruleTester.run('valid-expect-in-promise', rules['valid-expect-in-promise'], {
     "notATestFunction('not a test function', " +
       '\n() => {Builder.getPromiseBuilder().get().build()' +
       "\n.then((data) => {expect(data).toEqual('Hi');});});",
+
+    'it("it1", () => somePromise.then(() => {expect(someThing).toEqual(true)}))',
   ],
 });
