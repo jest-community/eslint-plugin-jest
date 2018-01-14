@@ -20,7 +20,7 @@ jobs:
   - stage: release
     node_js: 8
     os: linux
-    after_success: yarn semantic-release
+    after_success: yarn travis-deploy-once "yarn semantic-release"
 cache:
   yarn: true
 branches:

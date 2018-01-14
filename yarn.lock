@@ -128,20 +128,11 @@
     import-from "^2.1.0"
     lodash "^4.17.4"
 
-"@semantic-release/condition-travis@^7.0.0":
-  version "7.1.4"
-  resolved "https://registry.yarnpkg.com/@semantic-release/condition-travis/-/condition-travis-7.1.4.tgz#8251fb3d5a6c2e2711f4948450d8622d53e083c0"
-  dependencies:
-    "@semantic-release/error" "^2.0.0"
-    github "^13.0.1"
-    parse-github-url "^1.0.1"
-    travis-deploy-once "^4.0.0"
-
-"@semantic-release/error@^2.0.0", "@semantic-release/error@^2.1.0":
+"@semantic-release/error@^2.1.0":
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/@semantic-release/error/-/error-2.1.0.tgz#44771f676f5b148da309111285a97901aa95a6e0"
 
-"@semantic-release/github@^3.0.0":
+"@semantic-release/github@^3.0.1":
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/@semantic-release/github/-/github-3.0.1.tgz#e1fe6128562dcd1d9acd9a4143ecb4ed8be6ace0"
   dependencies:
@@ -185,9 +176,9 @@
     into-stream "^3.1.0"
     lodash "^4.17.4"
 
-"@sindresorhus/is@^0.6.0":
-  version "0.6.0"
-  resolved "https://registry.yarnpkg.com/@sindresorhus/is/-/is-0.6.0.tgz#383f456b26bc96c7889f0332079f4358b16c58dc"
+"@sindresorhus/is@^0.7.0":
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/@sindresorhus/is/-/is-0.7.0.tgz#9a06f4f137ee84d7df0460c1fdb1135ffa6c50fd"
 
 "@types/node@*":
   version "9.3.0"
@@ -1534,6 +1525,13 @@ elegant-spinner@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/elegant-spinner/-/elegant-spinner-1.0.1.tgz#db043521c95d7e303fd8f345bedc3349cfb0729e"
 
+env-ci@^1.0.0:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/env-ci/-/env-ci-1.2.1.tgz#3973dd365289df494fe6fbacbf208486d79c4207"
+  dependencies:
+    execa "^0.9.0"
+    java-properties "^0.2.9"
+
 error-ex@^1.2.0, error-ex@^1.3.1:
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/error-ex/-/error-ex-1.3.1.tgz#f855a86ce61adc4e8621c3cda21e7a7612c3a8dc"
@@ -1710,6 +1708,18 @@ execa@^0.7.0:
 execa@^0.8.0:
   version "0.8.0"
   resolved "https://registry.yarnpkg.com/execa/-/execa-0.8.0.tgz#d8d76bbc1b55217ed190fd6dd49d3c774ecfc8da"
+  dependencies:
+    cross-spawn "^5.0.1"
+    get-stream "^3.0.0"
+    is-stream "^1.1.0"
+    npm-run-path "^2.0.0"
+    p-finally "^1.0.0"
+    signal-exit "^3.0.0"
+    strip-eof "^1.0.0"
+
+execa@^0.9.0:
+  version "0.9.0"
+  resolved "https://registry.yarnpkg.com/execa/-/execa-0.9.0.tgz#adb7ce62cf985071f60580deb4a88b9e34712d01"
   dependencies:
     cross-spawn "^5.0.1"
     get-stream "^3.0.0"
@@ -2015,7 +2025,7 @@ git-url-parse@^7.0.1:
   dependencies:
     git-up "^2.0.0"
 
-github@^13.0.0, github@^13.0.1:
+github@^13.0.0:
   version "13.1.0"
   resolved "https://registry.yarnpkg.com/github/-/github-13.1.0.tgz#fc925950beebdff0cb0583197598b86f41bedaa4"
   dependencies:
@@ -2104,10 +2114,10 @@ got@^6.7.1:
     url-parse-lax "^1.0.0"
 
 got@^8.0.1:
-  version "8.0.1"
-  resolved "https://registry.yarnpkg.com/got/-/got-8.0.1.tgz#6d7f8bb3eb99e5af912efe26a104476441e08e7f"
+  version "8.0.2"
+  resolved "https://registry.yarnpkg.com/got/-/got-8.0.2.tgz#94d2054767875df4d5eb330f703c63881fc9cd64"
   dependencies:
-    "@sindresorhus/is" "^0.6.0"
+    "@sindresorhus/is" "^0.7.0"
     cacheable-request "^2.1.1"
     decompress-response "^3.3.0"
     duplexer3 "^0.1.4"
@@ -2656,6 +2666,10 @@ isurl@^1.0.0-alpha5:
   dependencies:
     has-to-string-tag-x "^1.2.0"
     is-object "^1.0.1"
+
+java-properties@^0.2.9:
+  version "0.2.9"
+  resolved "https://registry.yarnpkg.com/java-properties/-/java-properties-0.2.9.tgz#d3de73e73c304f844c9e2a2be0ff24f6f93fda44"
 
 jest-changed-files@^22.0.6:
   version "22.0.6"
@@ -3323,7 +3337,7 @@ marked-terminal@^2.0.0:
     lodash.assign "^4.2.0"
     node-emoji "^1.4.1"
 
-marked@^0.3.6:
+marked@^0.3.9:
   version "0.3.12"
   resolved "https://registry.yarnpkg.com/marked/-/marked-0.3.12.tgz#7cf25ff2252632f3fe2406bde258e94eee927519"
 
@@ -4280,25 +4294,25 @@ sax@^1.2.1:
   version "1.2.4"
   resolved "https://registry.yarnpkg.com/sax/-/sax-1.2.4.tgz#2816234e2378bddc4e5354fab5caa895df7100d9"
 
-semantic-release@^11.0.2:
-  version "11.2.0"
-  resolved "https://registry.yarnpkg.com/semantic-release/-/semantic-release-11.2.0.tgz#d607a821a0b31dfaf60f7af4fef169334653da43"
+semantic-release@^12.2.2:
+  version "12.2.2"
+  resolved "https://registry.yarnpkg.com/semantic-release/-/semantic-release-12.2.2.tgz#6f114c2e2cb55040b78f985e11b0aa7d8d2ee111"
   dependencies:
     "@semantic-release/commit-analyzer" "^5.0.0"
-    "@semantic-release/condition-travis" "^7.0.0"
     "@semantic-release/error" "^2.1.0"
-    "@semantic-release/github" "^3.0.0"
+    "@semantic-release/github" "^3.0.1"
     "@semantic-release/npm" "^2.0.0"
     "@semantic-release/release-notes-generator" "^6.0.0"
     chalk "^2.3.0"
     commander "^2.11.0"
     cosmiconfig "^3.1.0"
     debug "^3.1.0"
-    execa "^0.8.0"
+    env-ci "^1.0.0"
+    execa "^0.9.0"
     get-stream "^3.0.0"
     git-log-parser "^1.2.0"
     lodash "^4.0.0"
-    marked "^0.3.6"
+    marked "^0.3.9"
     marked-terminal "^2.0.0"
     p-reduce "^1.0.0"
     read-pkg-up "^3.0.0"
@@ -4701,15 +4715,15 @@ traverse@~0.6.6:
   version "0.6.6"
   resolved "https://registry.yarnpkg.com/traverse/-/traverse-0.6.6.tgz#cbdf560fd7b9af632502fed40f918c157ea97137"
 
-travis-deploy-once@^4.0.0:
-  version "4.3.0"
-  resolved "https://registry.yarnpkg.com/travis-deploy-once/-/travis-deploy-once-4.3.0.tgz#f6615839b077b1c29867e2b96f1046963baa10c8"
+travis-deploy-once@^4.3.1:
+  version "4.3.1"
+  resolved "https://registry.yarnpkg.com/travis-deploy-once/-/travis-deploy-once-4.3.1.tgz#94fd3d3325acecc176798f35ee655bcd53f02fbb"
   dependencies:
     babel-polyfill "^6.26.0"
     babel-preset-env "^1.6.1"
     babel-register "^6.26.0"
     chalk "^2.1.0"
-    execa "^0.8.0"
+    execa "^0.9.0"
     got "^8.0.1"
     p-retry "^1.0.0"
     semver "^5.4.1"
