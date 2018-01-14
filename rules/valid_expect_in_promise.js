@@ -113,16 +113,19 @@ module.exports = context => {
         node.parent.type == 'CallExpression' &&
         !isAwaitExpression(node)
       ) {
-        const parent = node.parent;
-        const arg1 = parent.arguments[0];
-        const arg2 = parent.arguments[1];
+        const testFunctionBody = getTestFuncBody(node);
+        if (testFunctionBody) {
+          const parent = node.parent;
+          const arg1 = parent.arguments[0];
+          const arg2 = parent.arguments[1];
 
-        // then block can have two args, fulfillment & rejection
-        // then block can have one args, fulfillment
-        // catch block can have one args, rejection
-        // ref: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise
-        verifyExpectWithReturn(arg1, node, context);
-        verifyExpectWithReturn(arg2, node, context);
+          // then block can have two args, fulfillment & rejection
+          // then block can have one args, fulfillment
+          // catch block can have one args, rejection
+          // ref: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise
+          verifyExpectWithReturn(arg1, node, context);
+          verifyExpectWithReturn(arg2, node, context);
+        }
       }
     },
   };

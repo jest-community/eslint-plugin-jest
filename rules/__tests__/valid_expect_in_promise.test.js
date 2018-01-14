@@ -108,7 +108,7 @@ ruleTester.run('valid-expect-in-promise', rules['valid-expect-in-promise'], {
     {
       code:
         "it('test function', " +
-        '\n() => {Builder.getPromiseBuilder()..get().build()' +
+        '\n() => {Builder.getPromiseBuilder().get().build()' +
         "\n.then((data) => {expect(data).toEqual('Hi');});});",
       errors: [
         {
@@ -196,6 +196,10 @@ ruleTester.run('valid-expect-in-promise', rules['valid-expect-in-promise'], {
 
     "it('test function', " +
       '\n() => {return Builder.getPromiseBuilder().get().build()' +
+      "\n.then((data) => {expect(data).toEqual('Hi');});});",
+
+    "notATestFunction('not a test function', " +
+      '\n() => {Builder.getPromiseBuilder().get().build()' +
       "\n.then((data) => {expect(data).toEqual('Hi');});});",
   ],
 });
