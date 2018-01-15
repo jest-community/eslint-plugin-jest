@@ -133,6 +133,22 @@ ruleTester.run('valid-expect-in-promise', rules['valid-expect-in-promise'], {
         },
       ],
     },
+    {
+      code: `
+     test('invalid return', () => {
+       const promise = something().then(value => {
+         return expect(value).toBe('red');
+       });
+     });
+    `,
+      errors: [
+        {
+          column: 14,
+          endColumn: 10,
+          message: expectedMsg,
+        },
+      ],
+    },
   ],
 
   valid: [

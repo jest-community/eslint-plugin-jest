@@ -17,7 +17,9 @@ const isFunction = type => {
 const isExpectCallPresentInFunction = body => {
   if (body.type === 'BlockStatement') {
     return body.body.find(line => {
-      return isExpectCall(line.expression);
+      if (line.type === 'ExpressionStatement')
+        return isExpectCall(line.expression);
+      if (line.type === 'ReturnStatement') return isExpectCall(line.argument);
     });
   } else {
     return isExpectCall(body);
