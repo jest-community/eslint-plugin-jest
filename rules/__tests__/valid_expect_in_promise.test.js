@@ -220,5 +220,15 @@ ruleTester.run('valid-expect-in-promise', rules['valid-expect-in-promise'], {
     'it("it1", () => somePromise.then(() => {expect(someThing).toEqual(true)}))',
 
     'it("it1", () => somePromise.then(() => expect(someThing).toEqual(true)))',
+
+    `it('promise test with done', (done) => {
+      const promise = getPromise();
+      promise.then(() => expect(someThing).toEqual(true));
+    });`,
+
+    `it('name of done param does not matter', (nameDoesNotMatter) => {
+      const promise = getPromise();
+      promise.then(() => expect(someThing).toEqual(true));
+    });`,
   ],
 });

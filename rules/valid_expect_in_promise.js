@@ -69,14 +69,16 @@ const isTestFunc = node => {
   );
 };
 
-const getTestFuncBody = node => {
+const getFunctionBody = func => {
+  if (func.body.type === 'BlockStatement') return func.body.body;
+  return func.body; //arrow-short-hand-fn
+};
+
+const getTestFunction = node => {
   let parent = node.parent;
   while (parent) {
     if (isFunction(parent.type) && isTestFunc(parent.parent)) {
-      if (parent.body.type === 'BlockStatement') return parent.body.body;
-      if (parent.body.type === 'CallExpression')
-        //arrow-short-hand-fn
-        return parent.body;
+      return parent;
     }
     parent = parent.parent;
   }
@@ -105,6 +107,14 @@ const isAwaitExpression = node => {
   return node.parent.parent && node.parent.parent.type == 'AwaitExpression';
 };
 
+const isHavingAsyncCallBackParam = testFunction => {
+  try {
+    return testFunction.params[0].type === 'Identifier';
+  } catch (e) {
+    return false;
+  }
+};
+
 module.exports = context => {
   return {
     MemberExpression(node) {
@@ -114,8 +124,9 @@ module.exports = context => {
         node.parent.type == 'CallExpression' &&
         !isAwaitExpression(node)
       ) {
-        const testFunctionBody = getTestFuncBody(node);
-        if (testFunctionBody) {
+        const testFunction = getTestFunction(node);
+        if (testFunction && !isHavingAsyncCallBackParam(testFunction)) {
+          const testFunctionBody = getFunctionBody(testFunction);
           const parent = node.parent;
           const arg1 = parent.arguments[0];
           const arg2 = parent.arguments[1];
