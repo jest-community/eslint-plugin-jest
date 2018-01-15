@@ -14,22 +14,24 @@ const isFunction = type => {
   return type == 'FunctionExpression' || type == 'ArrowFunctionExpression';
 };
 
-const isBodyCallExpression = argumentBody => {
-  try {
-    return argumentBody.body[0].expression.type == 'CallExpression';
-  } catch (e) {
-    return false;
+const isExpectCallPresentInFunction = body => {
+  if (body.type === 'BlockStatement') {
+    return body.body.find(line => {
+      return isExpectCall(line.expression);
+    });
+  } else {
+    return isExpectCall(body);
   }
 };
 
-const isExpectCallPresent = body => {
-  return body.find(line => {
-    return (
-      line.expression.type === 'CallExpression' &&
-      line.expression.callee.type === 'MemberExpression' &&
-      line.expression.callee.object.callee.name === 'expect'
-    );
-  });
+const isExpectCall = expression => {
+  return (
+    expression &&
+    expression.type == 'CallExpression' &&
+    expression.callee.type === 'MemberExpression' &&
+    expression.callee.object.type === 'CallExpression' &&
+    expression.callee.object.callee.name === 'expect'
+  );
 };
 
 const reportReturnRequired = (context, node) => {
@@ -90,12 +92,8 @@ const isParentThenOrPromiseReturned = (node, testFunctionBody) => {
 };
 
 const verifyExpectWithReturn = (argument, node, context, testFunctionBody) => {
-  if (
-    argument &&
-    isFunction(argument.type) &&
-    isBodyCallExpression(argument.body)
-  ) {
-    if (isExpectCallPresent(argument.body.body)) {
+  if (argument && isFunction(argument.type)) {
+    if (isExpectCallPresentInFunction(argument.body)) {
       if (!isParentThenOrPromiseReturned(node, testFunctionBody)) {
         reportReturnRequired(context, node);
       }

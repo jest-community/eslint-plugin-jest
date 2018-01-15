@@ -218,5 +218,7 @@ ruleTester.run('valid-expect-in-promise', rules['valid-expect-in-promise'], {
       "\n.then((data) => {expect(data).toEqual('Hi');});});",
 
     'it("it1", () => somePromise.then(() => {expect(someThing).toEqual(true)}))',
+
+    'it("it1", () => somePromise.then(() => expect(someThing).toEqual(true)))',
   ],
 });
