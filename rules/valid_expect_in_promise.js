@@ -22,12 +22,14 @@ const isBodyCallExpression = argumentBody => {
   }
 };
 
-const isExpectCall = calleeObject => {
-  try {
-    return calleeObject.callee.name == 'expect';
-  } catch (e) {
-    return false;
-  }
+const isExpectCallPresent = body => {
+  return body.find(line => {
+    return (
+      line.expression.type === 'CallExpression' &&
+      line.expression.callee.type === 'MemberExpression' &&
+      line.expression.callee.object.callee.name === 'expect'
+    );
+  });
 };
 
 const reportReturnRequired = (context, node) => {
@@ -93,8 +95,7 @@ const verifyExpectWithReturn = (argument, node, context, testFunctionBody) => {
     isFunction(argument.type) &&
     isBodyCallExpression(argument.body)
   ) {
-    const calleeInThenOrCatch = argument.body.body[0].expression.callee.object;
-    if (isExpectCall(calleeInThenOrCatch)) {
+    if (isExpectCallPresent(argument.body.body)) {
       if (!isParentThenOrPromiseReturned(node, testFunctionBody)) {
         reportReturnRequired(context, node);
       }

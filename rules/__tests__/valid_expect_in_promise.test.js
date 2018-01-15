@@ -118,6 +118,21 @@ ruleTester.run('valid-expect-in-promise', rules['valid-expect-in-promise'], {
         },
       ],
     },
+    {
+      code:
+        'it("it1", () => { somePromise.' +
+        '\nthen(() => {\n' +
+        '\ndoSomeOperation();' +
+        '\nexpect(someThing).toEqual(true);' +
+        '\n})})',
+      errors: [
+        {
+          column: 19,
+          endColumn: 3,
+          message: expectedMsg,
+        },
+      ],
+    },
   ],
 
   valid: [
