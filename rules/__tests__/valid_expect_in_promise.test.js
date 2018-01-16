@@ -85,11 +85,6 @@ ruleTester.run('valid-expect-in-promise', rules['valid-expect-in-promise'], {
           endColumn: 170,
           message: expectedMsg,
         },
-        {
-          column: 24,
-          endColumn: 170,
-          message: expectedMsg,
-        },
       ],
     },
     {

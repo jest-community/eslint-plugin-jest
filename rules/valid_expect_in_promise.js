@@ -95,14 +95,23 @@ const isParentThenOrPromiseReturned = (node, testFunctionBody) => {
   );
 };
 
-const verifyExpectWithReturn = (argument, node, context, testFunctionBody) => {
-  if (argument && isFunction(argument.type)) {
-    if (isExpectCallPresentInFunction(argument.body)) {
-      if (!isParentThenOrPromiseReturned(node, testFunctionBody)) {
+const verifyExpectWithReturn = (
+  promiseCallbacks,
+  node,
+  context,
+  testFunctionBody
+) => {
+  promiseCallbacks.some(promiseCallback => {
+    if (promiseCallback && isFunction(promiseCallback.type)) {
+      if (
+        isExpectCallPresentInFunction(promiseCallback.body) &&
+        !isParentThenOrPromiseReturned(node, testFunctionBody)
+      ) {
         reportReturnRequired(context, node);
+        return true;
       }
     }
-  }
+  });
 };
 
 const isAwaitExpression = node => {
@@ -137,8 +146,7 @@ module.exports = context => {
           // then block can have one args, fulfillment
           // catch block can have one args, rejection
           // ref: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise
-          verifyExpectWithReturn(arg1, node, context, testFunctionBody);
-          verifyExpectWithReturn(arg2, node, context, testFunctionBody);
+          verifyExpectWithReturn([arg1, arg2], node, context, testFunctionBody);
         }
       }
     },
