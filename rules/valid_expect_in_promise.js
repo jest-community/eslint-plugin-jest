@@ -139,14 +139,19 @@ module.exports = context => {
         if (testFunction && !isHavingAsyncCallBackParam(testFunction)) {
           const testFunctionBody = getFunctionBody(testFunction);
           const parent = node.parent;
-          const arg1 = parent.arguments[0];
-          const arg2 = parent.arguments[1];
+          const fulfillmentCallback = parent.arguments[0];
+          const rejectionCallback = parent.arguments[1];
 
           // then block can have two args, fulfillment & rejection
           // then block can have one args, fulfillment
           // catch block can have one args, rejection
           // ref: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise
-          verifyExpectWithReturn([arg1, arg2], node, context, testFunctionBody);
+          verifyExpectWithReturn(
+            [fulfillmentCallback, rejectionCallback],
+            node,
+            context,
+            testFunctionBody
+          );
         }
       }
     },
