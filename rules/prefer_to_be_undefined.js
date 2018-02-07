@@ -8,33 +8,38 @@ const expectNotToEqualCase = require('./util').expectNotToEqualCase;
 const method = require('./util').method;
 const method2 = require('./util').method2;
 
-module.exports = context => {
-  return {
-    CallExpression(node) {
-      const is =
-        expectToBeCase(node, undefined) || expectToEqualCase(node, undefined);
-      const isNot =
-        expectNotToEqualCase(node, undefined) ||
-        expectNotToBeCase(node, undefined);
+module.exports = {
+  meta: {
+    fixable: 'code',
+  },
+  create(context) {
+    return {
+      CallExpression(node) {
+        const is =
+          expectToBeCase(node, undefined) || expectToEqualCase(node, undefined);
+        const isNot =
+          expectNotToEqualCase(node, undefined) ||
+          expectNotToBeCase(node, undefined);
 
-      if (is || isNot) {
-        context.report({
-          fix(fixer) {
-            if (is) {
+        if (is || isNot) {
+          context.report({
+            fix(fixer) {
+              if (is) {
+                return [
+                  fixer.replaceText(method(node), 'toBeUndefined'),
+                  fixer.remove(argument(node)),
+                ];
+              }
               return [
-                fixer.replaceText(method(node), 'toBeUndefined'),
-                fixer.remove(argument(node)),
+                fixer.replaceText(method2(node), 'toBeUndefined'),
+                fixer.remove(argument2(node)),
               ];
-            }
-            return [
-              fixer.replaceText(method2(node), 'toBeUndefined'),
-              fixer.remove(argument2(node)),
-            ];
-          },
-          message: 'Use toBeUndefined() instead',
-          node: is ? method(node) : method2(node),
-        });
-      }
-    },
-  };
+            },
+            message: 'Use toBeUndefined() instead',
+            node: is ? method(node) : method2(node),
+          });
+        }
+      },
+    };
+  },
 };

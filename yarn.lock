@@ -1587,6 +1587,10 @@ eslint-config-prettier@^2.7.0:
   dependencies:
     get-stdin "^5.0.1"
 
+eslint-plugin-eslint-plugin@^1.4.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-eslint-plugin/-/eslint-plugin-eslint-plugin-1.4.0.tgz#382dc6692a741a52072d5f3fff5dacdcf291ef49"
+
 eslint-plugin-prettier@^2.3.1:
   version "2.4.0"
   resolved "https://registry.yarnpkg.com/eslint-plugin-prettier/-/eslint-plugin-prettier-2.4.0.tgz#85cab0775c6d5e3344ef01e78d960f166fb93aae"
