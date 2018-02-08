@@ -60,22 +60,30 @@ const reportMsg = (context, node) => {
   });
 };
 
-module.exports = context => {
-  return {
-    CallExpression(node) {
-      if (isTestOrItFunction(node)) {
-        const testFuncBody = getTestFunctionBody(node);
-        if (testFuncBody) {
-          if (!isFirstLineExprStmt(testFuncBody)) {
-            reportMsg(context, node);
-          } else {
-            const testFuncFirstLine = getFunctionFirstLine(testFuncBody);
-            if (!isExpectAssertionsOrHasAssertionsCall(testFuncFirstLine)) {
+module.exports = {
+  meta: {
+    docs: {
+      url:
+        'https://github.com/jest-community/eslint-plugin-jest/blob/master/docs/rules/prefer-expect-assertions.md',
+    },
+  },
+  create(context) {
+    return {
+      CallExpression(node) {
+        if (isTestOrItFunction(node)) {
+          const testFuncBody = getTestFunctionBody(node);
+          if (testFuncBody) {
+            if (!isFirstLineExprStmt(testFuncBody)) {
               reportMsg(context, node);
+            } else {
+              const testFuncFirstLine = getFunctionFirstLine(testFuncBody);
+              if (!isExpectAssertionsOrHasAssertionsCall(testFuncFirstLine)) {
+                reportMsg(context, node);
+              }
             }
           }
         }
-      }
-    },
-  };
+      },
+    };
+  },
 };

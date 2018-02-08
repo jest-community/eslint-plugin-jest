@@ -17,6 +17,7 @@ module.exports = {
   },
   rules: {
     strict: 'error',
+    'eslint-plugin/require-meta-docs-url': 'error',
     'prettier/prettier': 'error',
   },
   overrides: [

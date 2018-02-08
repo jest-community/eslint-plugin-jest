@@ -1,6 +1,6 @@
 'use strict';
 
-const noLargeSnapshots = require('../no_large_snapshots');
+const noLargeSnapshots = require('../no_large_snapshots').create;
 
 // was not able to use https://eslint.org/docs/developer-guide/nodejs-api#ruletester for these because there is no way to configure RuleTester to run non .js files
 describe('no-large-snapshots', () => {

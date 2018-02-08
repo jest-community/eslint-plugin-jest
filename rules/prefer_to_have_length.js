@@ -7,6 +7,10 @@ const method = require('./util').method;
 
 module.exports = {
   meta: {
+    docs: {
+      url:
+        'https://github.com/jest-community/eslint-plugin-jest/blob/master/docs/rules/prefer-to-have-length.md',
+    },
     fixable: 'code',
   },
   create(context) {
