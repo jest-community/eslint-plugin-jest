@@ -17,7 +17,13 @@ module.exports = {
   },
   rules: {
     strict: 'error',
-    'eslint-plugin/require-meta-docs-url': 'error',
+    'eslint-plugin/require-meta-docs-url': [
+      'error',
+      {
+        pattern:
+          'https://github.com/jest-community/eslint-plugin-jest/blob/master/docs/rules/{{name}}.md',
+      },
+    ],
     'prettier/prettier': 'error',
   },
   overrides: [
