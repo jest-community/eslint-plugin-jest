@@ -70,26 +70,39 @@ const handleTestSuiteTitles = (context, titles, node, title) => {
 const isFirstArgLiteral = node =>
   node.arguments && node.arguments[0] && node.arguments[0].type === 'Literal';
 
-module.exports = context => {
-  const contexts = [newDescribeContext()];
-  return {
-    CallExpression(node) {
-      const currentLayer = contexts[contexts.length - 1];
-      if (isDescribe(node)) {
-        contexts.push(newDescribeContext());
-      }
-      if (!isFirstArgLiteral(node)) {
-        return;
-      }
+module.exports = {
+  meta: {
+    docs: {
+      url:
+        'https://github.com/jest-community/eslint-plugin-jest/blob/master/docs/rules/no-identical-title.md',
+    },
+  },
+  create(context) {
+    const contexts = [newDescribeContext()];
+    return {
+      CallExpression(node) {
+        const currentLayer = contexts[contexts.length - 1];
+        if (isDescribe(node)) {
+          contexts.push(newDescribeContext());
+        }
+        if (!isFirstArgLiteral(node)) {
+          return;
+        }
 
-      const title = node.arguments[0].value;
-      handleTestCaseTitles(context, currentLayer.testTitles, node, title);
-      handleTestSuiteTitles(context, currentLayer.describeTitles, node, title);
-    },
-    'CallExpression:exit'(node) {
-      if (isDescribe(node)) {
-        contexts.pop();
-      }
-    },
-  };
+        const title = node.arguments[0].value;
+        handleTestCaseTitles(context, currentLayer.testTitles, node, title);
+        handleTestSuiteTitles(
+          context,
+          currentLayer.describeTitles,
+          node,
+          title
+        );
+      },
+      'CallExpression:exit'(node) {
+        if (isDescribe(node)) {
+          contexts.pop();
+        }
+      },
+    };
+  },
 };

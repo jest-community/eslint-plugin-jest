@@ -17,30 +17,38 @@ const isPropertyNamedOnly = property =>
 const isCallToTestOnlyFunction = callee =>
   matchesTestFunction(callee.object) && isPropertyNamedOnly(callee.property);
 
-module.exports = context => ({
-  CallExpression(node) {
-    const callee = node.callee;
-    if (!callee) {
-      return;
-    }
-
-    if (
-      callee.type === 'MemberExpression' &&
-      isCallToTestOnlyFunction(callee)
-    ) {
-      context.report({
-        message: 'Unexpected focused test.',
-        node: callee.property,
-      });
-      return;
-    }
-
-    if (callee.type === 'Identifier' && isCallToFocusedTestFunction(callee)) {
-      context.report({
-        message: 'Unexpected focused test.',
-        node: callee,
-      });
-      return;
-    }
+module.exports = {
+  meta: {
+    docs: {
+      url:
+        'https://github.com/jest-community/eslint-plugin-jest/blob/master/docs/rules/no-focused-tests.md',
+    },
   },
-});
+  create: context => ({
+    CallExpression(node) {
+      const callee = node.callee;
+      if (!callee) {
+        return;
+      }
+
+      if (
+        callee.type === 'MemberExpression' &&
+        isCallToTestOnlyFunction(callee)
+      ) {
+        context.report({
+          message: 'Unexpected focused test.',
+          node: callee.property,
+        });
+        return;
+      }
+
+      if (callee.type === 'Identifier' && isCallToFocusedTestFunction(callee)) {
+        context.report({
+          message: 'Unexpected focused test.',
+          node: callee,
+        });
+        return;
+      }
+    },
+  }),
+};

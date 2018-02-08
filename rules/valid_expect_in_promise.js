@@ -126,34 +126,42 @@ const isHavingAsyncCallBackParam = testFunction => {
   }
 };
 
-module.exports = context => {
-  return {
-    MemberExpression(node) {
-      if (
-        node.type == 'MemberExpression' &&
-        isThenOrCatch(node) &&
-        node.parent.type == 'CallExpression' &&
-        !isAwaitExpression(node)
-      ) {
-        const testFunction = getTestFunction(node);
-        if (testFunction && !isHavingAsyncCallBackParam(testFunction)) {
-          const testFunctionBody = getFunctionBody(testFunction);
-          const parent = node.parent;
-          const fulfillmentCallback = parent.arguments[0];
-          const rejectionCallback = parent.arguments[1];
-
-          // then block can have two args, fulfillment & rejection
-          // then block can have one args, fulfillment
-          // catch block can have one args, rejection
-          // ref: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise
-          verifyExpectWithReturn(
-            [fulfillmentCallback, rejectionCallback],
-            node,
-            context,
-            testFunctionBody
-          );
-        }
-      }
+module.exports = {
+  meta: {
+    docs: {
+      url:
+        'https://github.com/jest-community/eslint-plugin-jest/blob/master/docs/rules/valid-expect-in-promise.md',
     },
-  };
+  },
+  create(context) {
+    return {
+      MemberExpression(node) {
+        if (
+          node.type == 'MemberExpression' &&
+          isThenOrCatch(node) &&
+          node.parent.type == 'CallExpression' &&
+          !isAwaitExpression(node)
+        ) {
+          const testFunction = getTestFunction(node);
+          if (testFunction && !isHavingAsyncCallBackParam(testFunction)) {
+            const testFunctionBody = getFunctionBody(testFunction);
+            const parent = node.parent;
+            const fulfillmentCallback = parent.arguments[0];
+            const rejectionCallback = parent.arguments[1];
+
+            // then block can have two args, fulfillment & rejection
+            // then block can have one args, fulfillment
+            // catch block can have one args, rejection
+            // ref: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise
+            verifyExpectWithReturn(
+              [fulfillmentCallback, rejectionCallback],
+              node,
+              context,
+              testFunctionBody
+            );
+          }
+        }
+      },
+    };
+  },
 };
