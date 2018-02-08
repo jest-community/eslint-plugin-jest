@@ -8,31 +8,36 @@ const expectNotToBeCase = require('./util').expectNotToBeCase;
 const method = require('./util').method;
 const method2 = require('./util').method2;
 
-module.exports = context => {
-  return {
-    CallExpression(node) {
-      const is = expectToBeCase(node, null) || expectToEqualCase(node, null);
-      const isNot =
-        expectNotToEqualCase(node, null) || expectNotToBeCase(node, null);
+module.exports = {
+  meta: {
+    fixable: 'code',
+  },
+  create(context) {
+    return {
+      CallExpression(node) {
+        const is = expectToBeCase(node, null) || expectToEqualCase(node, null);
+        const isNot =
+          expectNotToEqualCase(node, null) || expectNotToBeCase(node, null);
 
-      if (is || isNot) {
-        context.report({
-          fix(fixer) {
-            if (is) {
+        if (is || isNot) {
+          context.report({
+            fix(fixer) {
+              if (is) {
+                return [
+                  fixer.replaceText(method(node), 'toBeNull'),
+                  fixer.remove(argument(node)),
+                ];
+              }
               return [
-                fixer.replaceText(method(node), 'toBeNull'),
-                fixer.remove(argument(node)),
+                fixer.replaceText(method2(node), 'toBeNull'),
+                fixer.remove(argument2(node)),
               ];
-            }
-            return [
-              fixer.replaceText(method2(node), 'toBeNull'),
-              fixer.remove(argument2(node)),
-            ];
-          },
-          message: 'Use toBeNull() instead',
-          node: is ? method(node) : method2(node),
-        });
-      }
-    },
-  };
+            },
+            message: 'Use toBeNull() instead',
+            node: is ? method(node) : method2(node),
+          });
+        }
+      },
+    };
+  },
 };

@@ -3,8 +3,12 @@
 const globals = require('./index').environments.globals.globals;
 
 module.exports = {
-  extends: ['eslint:recommended', 'prettier'],
-  plugins: ['prettier'],
+  extends: [
+    'eslint:recommended',
+    'plugin:eslint-plugin/recommended',
+    'prettier',
+  ],
+  plugins: ['eslint-plugin', 'prettier'],
   parserOptions: {
     ecmaVersion: 2017,
   },
