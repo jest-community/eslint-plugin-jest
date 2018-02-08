@@ -1,15 +1,15 @@
 'use strict';
 
-const noDisabledTests = require('./rules/no_disabled_tests');
-const noFocusedTests = require('./rules/no_focused_tests');
-const noIdenticalTitle = require('./rules/no_identical_title');
-const noLargeSnapshots = require('./rules/no_large_snapshots');
-const preferToBeNull = require('./rules/prefer_to_be_null');
-const preferToBeUndefined = require('./rules/prefer_to_be_undefined');
-const preferToHaveLength = require('./rules/prefer_to_have_length');
-const validExpect = require('./rules/valid_expect');
-const preferExpectAssertions = require('./rules/prefer_expect_assertions');
-const validExpectInPromise = require('./rules/valid_expect_in_promise');
+const noDisabledTests = require('./rules/no-disabled-tests');
+const noFocusedTests = require('./rules/no-focused-tests');
+const noIdenticalTitle = require('./rules/no-identical-title');
+const noLargeSnapshots = require('./rules/no-large-snapshots');
+const preferToBeNull = require('./rules/prefer-to-be-null');
+const preferToBeUndefined = require('./rules/prefer-to-be-undefined');
+const preferToHaveLength = require('./rules/prefer-to-have-length');
+const validExpect = require('./rules/valid-expect');
+const preferExpectAssertions = require('./rules/prefer-expect-assertions');
+const validExpectInPromise = require('./rules/valid-expect-in-promise');
 
 const snapshotProcessor = require('./processors/snapshot-processor');
 
