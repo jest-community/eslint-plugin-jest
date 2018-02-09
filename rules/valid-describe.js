@@ -1,29 +1,26 @@
 'use strict';
 
-const describeAliases = Object.assign(Object.create(null), {
-  describe: true,
-  'describe.only': true,
-  'describe.skip': true,
-  fdescribe: true,
-  xdescribe: true,
-});
-
-const getNodeName = node => {
-  if (node.type === 'MemberExpression') {
-    return node.object.name + '.' + node.property.name;
-  }
-  return node.name;
-};
-
-const isDescribe = node =>
-  node.type === 'CallExpression' && describeAliases[getNodeName(node.callee)];
-
-const isFunction = node =>
-  node.type === 'FunctionExpression' || node.type === 'ArrowFunctionExpression';
+const isDescribe = require('./util').isDescribe;
+const isFunction = require('./util').isFunction;
 
 const isAsync = node => node.async;
 
 const hasParams = node => node.params.length > 0;
+
+const paramsLocation = params => {
+  const first = params[0];
+  const last = params[params.length - 1];
+  return {
+    start: {
+      line: first.loc.start.line,
+      column: first.loc.start.column,
+    },
+    end: {
+      line: last.loc.end.line,
+      column: last.loc.end.column,
+    },
+  };
+};
 
 module.exports = {
   meta: {
@@ -35,7 +32,7 @@ module.exports = {
   create(context) {
     return {
       CallExpression(node) {
-        if (node && isDescribe(node)) {
+        if (isDescribe(node)) {
           const callbackFunction = node.arguments[1];
           if (callbackFunction && isFunction(callbackFunction)) {
             if (isAsync(callbackFunction)) {
@@ -46,8 +43,8 @@ module.exports = {
             }
             if (hasParams(callbackFunction)) {
               context.report({
-                message: 'Unexpected argument in describe callback',
-                node: callbackFunction.params[0],
+                message: 'Unexpected argument(s) in describe callback',
+                loc: paramsLocation(callbackFunction.params),
               });
             }
             callbackFunction.body.body.forEach(node => {

@@ -154,7 +154,7 @@ ruleTester.run('valid-describe', rules['valid-describe'], {
       code: 'describe("foo", done => {})',
       errors: [
         {
-          message: 'Unexpected argument in describe callback',
+          message: 'Unexpected argument(s) in describe callback',
           line: 1,
           column: 17,
         },
@@ -164,7 +164,17 @@ ruleTester.run('valid-describe', rules['valid-describe'], {
       code: 'describe("foo", function (done) {})',
       errors: [
         {
-          message: 'Unexpected argument in describe callback',
+          message: 'Unexpected argument(s) in describe callback',
+          line: 1,
+          column: 27,
+        },
+      ],
+    },
+    {
+      code: 'describe("foo", function (one, two, three) {})',
+      errors: [
+        {
+          message: 'Unexpected argument(s) in describe callback',
           line: 1,
           column: 27,
         },
@@ -175,7 +185,7 @@ ruleTester.run('valid-describe', rules['valid-describe'], {
       errors: [
         { message: 'No async describe callback', line: 1, column: 17 },
         {
-          message: 'Unexpected argument in describe callback',
+          message: 'Unexpected argument(s) in describe callback',
           line: 1,
           column: 33,
         },

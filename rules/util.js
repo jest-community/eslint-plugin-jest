@@ -80,6 +80,27 @@ const argument = node => node.parent.parent.arguments[0];
 
 const argument2 = node => node.parent.parent.parent.arguments[0];
 
+const describeAliases = Object.assign(Object.create(null), {
+  describe: true,
+  'describe.only': true,
+  'describe.skip': true,
+  fdescribe: true,
+  xdescribe: true,
+});
+
+const getNodeName = node => {
+  if (node.type === 'MemberExpression') {
+    return node.object.name + '.' + node.property.name;
+  }
+  return node.name;
+};
+
+const isDescribe = node =>
+  node.type === 'CallExpression' && describeAliases[getNodeName(node.callee)];
+
+const isFunction = node =>
+  node.type === 'FunctionExpression' || node.type === 'ArrowFunctionExpression';
+
 module.exports = {
   method: method,
   method2: method2,
@@ -95,4 +116,6 @@ module.exports = {
   expectNotToEqualCase: expectNotToEqualCase,
   expectToBeUndefinedCase: expectToBeUndefinedCase,
   expectNotToBeUndefinedCase: expectNotToBeUndefinedCase,
+  isDescribe: isDescribe,
+  isFunction: isFunction,
 };
