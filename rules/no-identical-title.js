@@ -1,12 +1,6 @@
 'use strict';
 
-const describeAliases = Object.assign(Object.create(null), {
-  describe: true,
-  'describe.only': true,
-  'describe.skip': true,
-  fdescribe: true,
-  xdescribe: true,
-});
+const isDescribe = require('./util').isDescribe;
 
 const testCaseNames = Object.assign(Object.create(null), {
   fit: true,
@@ -26,11 +20,6 @@ const getNodeName = node => {
   }
   return node.name;
 };
-
-const isDescribe = node =>
-  node &&
-  node.type === 'CallExpression' &&
-  describeAliases[getNodeName(node.callee)];
 
 const isTestCase = node =>
   node &&

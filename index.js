@@ -7,6 +7,7 @@ const noLargeSnapshots = require('./rules/no-large-snapshots');
 const preferToBeNull = require('./rules/prefer-to-be-null');
 const preferToBeUndefined = require('./rules/prefer-to-be-undefined');
 const preferToHaveLength = require('./rules/prefer-to-have-length');
+const validDescribe = require('./rules/valid-describe');
 const validExpect = require('./rules/valid-expect');
 const preferExpectAssertions = require('./rules/prefer-expect-assertions');
 const validExpectInPromise = require('./rules/valid-expect-in-promise');
@@ -63,6 +64,7 @@ module.exports = {
     'prefer-to-be-null': preferToBeNull,
     'prefer-to-be-undefined': preferToBeUndefined,
     'prefer-to-have-length': preferToHaveLength,
+    'valid-describe': validDescribe,
     'valid-expect': validExpect,
     'prefer-expect-assertions': preferExpectAssertions,
     'valid-expect-in-promise': validExpectInPromise,

@@ -1,5 +1,7 @@
 'use strict';
 
+const isFunction = require('./util').isFunction;
+
 const reportMsg =
   'Promise should be returned to test its fulfillment or rejection';
 
@@ -8,10 +10,6 @@ const isThenOrCatch = node => {
     node.property &&
     (node.property.name == 'then' || node.property.name == 'catch')
   );
-};
-
-const isFunction = type => {
-  return type == 'FunctionExpression' || type == 'ArrowFunctionExpression';
 };
 
 const isExpectCallPresentInFunction = body => {
@@ -79,7 +77,7 @@ const getFunctionBody = func => {
 const getTestFunction = node => {
   let parent = node.parent;
   while (parent) {
-    if (isFunction(parent.type) && isTestFunc(parent.parent)) {
+    if (isFunction(parent) && isTestFunc(parent.parent)) {
       return parent;
     }
     parent = parent.parent;
@@ -102,7 +100,7 @@ const verifyExpectWithReturn = (
   testFunctionBody
 ) => {
   promiseCallbacks.some(promiseCallback => {
-    if (promiseCallback && isFunction(promiseCallback.type)) {
+    if (promiseCallback && isFunction(promiseCallback)) {
       if (
         isExpectCallPresentInFunction(promiseCallback.body) &&
         !isParentThenOrPromiseReturned(node, testFunctionBody)
