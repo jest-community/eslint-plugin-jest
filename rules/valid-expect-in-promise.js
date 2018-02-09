@@ -8,7 +8,7 @@ const reportMsg =
 const isThenOrCatch = node => {
   return (
     node.property &&
-    (node.property.name == 'then' || node.property.name == 'catch')
+    (node.property.name === 'then' || node.property.name === 'catch')
   );
 };
 
@@ -27,7 +27,7 @@ const isExpectCallPresentInFunction = body => {
 const isExpectCall = expression => {
   return (
     expression &&
-    expression.type == 'CallExpression' &&
+    expression.type === 'CallExpression' &&
     expression.callee.type === 'MemberExpression' &&
     expression.callee.object.type === 'CallExpression' &&
     expression.callee.object.callee.name === 'expect'
@@ -86,8 +86,8 @@ const getTestFunction = node => {
 
 const isParentThenOrPromiseReturned = (node, testFunctionBody) => {
   return (
-    testFunctionBody.type == 'CallExpression' ||
-    node.parent.parent.type == 'ReturnStatement' ||
+    testFunctionBody.type === 'CallExpression' ||
+    node.parent.parent.type === 'ReturnStatement' ||
     isPromiseReturnedLater(node, testFunctionBody) ||
     isThenOrCatch(node.parent.parent)
   );
@@ -113,7 +113,7 @@ const verifyExpectWithReturn = (
 };
 
 const isAwaitExpression = node => {
-  return node.parent.parent && node.parent.parent.type == 'AwaitExpression';
+  return node.parent.parent && node.parent.parent.type === 'AwaitExpression';
 };
 
 const isHavingAsyncCallBackParam = testFunction => {
@@ -135,9 +135,9 @@ module.exports = {
     return {
       MemberExpression(node) {
         if (
-          node.type == 'MemberExpression' &&
+          node.type === 'MemberExpression' &&
           isThenOrCatch(node) &&
-          node.parent.type == 'CallExpression' &&
+          node.parent.type === 'CallExpression' &&
           !isAwaitExpression(node)
         ) {
           const testFunction = getTestFunction(node);
