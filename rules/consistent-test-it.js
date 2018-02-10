@@ -51,7 +51,7 @@ module.exports = {
 
           context.report({
             message:
-              "Prefer using '{{ testKeyword }}' on '{{ opositeTestKeyword }}'",
+              "Prefer using '{{ testKeyword }}' instead of '{{ opositeTestKeyword }}'",
             node: node.callee,
             data: { testKeyword, opositeTestKeyword },
             fix(fixer) {
@@ -77,7 +77,7 @@ module.exports = {
 
           context.report({
             message:
-              "Prefer using '{{ testKeywordWithinDescribe }}' on '{{ opositeTestKeyword }}' within describe",
+              "Prefer using '{{ testKeywordWithinDescribe }}' instead of '{{ opositeTestKeyword }}' within describe",
             node: node.callee,
             data: { testKeywordWithinDescribe, opositeTestKeyword },
             fix(fixer) {

@@ -35,37 +35,39 @@ ruleTester.run('consistent-test-it with fn=test', rules['consistent-test-it'], {
     {
       code: 'it("foo")',
       options: [{ fn: 'test' }],
-      errors: [{ message: "Prefer using 'test' on 'it'" }],
+      errors: [{ message: "Prefer using 'test' instead of 'it'" }],
       output: 'test("foo")',
     },
     {
       code: 'xit("foo")',
       options: [{ fn: 'test' }],
-      errors: [{ message: "Prefer using 'test' on 'it'" }],
+      errors: [{ message: "Prefer using 'test' instead of 'it'" }],
       output: 'xtest("foo")',
     },
     {
       code: 'fit("foo")',
       options: [{ fn: 'test' }],
-      errors: [{ message: "Prefer using 'test' on 'it'" }],
+      errors: [{ message: "Prefer using 'test' instead of 'it'" }],
       output: 'test.only("foo")',
     },
     {
       code: 'it.skip("foo")',
       options: [{ fn: 'test' }],
-      errors: [{ message: "Prefer using 'test' on 'it'" }],
+      errors: [{ message: "Prefer using 'test' instead of 'it'" }],
       output: 'test.skip("foo")',
     },
     {
       code: 'it.only("foo")',
       options: [{ fn: 'test' }],
-      errors: [{ message: "Prefer using 'test' on 'it'" }],
+      errors: [{ message: "Prefer using 'test' instead of 'it'" }],
       output: 'test.only("foo")',
     },
     {
       code: 'describe("suite", () => { it("foo")})',
       options: [{ fn: 'test', withinDescribe: 'test' }],
-      errors: [{ message: "Prefer using 'test' on 'it' within describe" }],
+      errors: [
+        { message: "Prefer using 'test' instead of 'it' within describe" },
+      ],
       output: 'describe("suite", () => { test("foo")})',
     },
   ],
@@ -102,31 +104,33 @@ ruleTester.run('consistent-test-it with fn=it', rules['consistent-test-it'], {
     {
       code: 'test("foo")',
       options: [{ fn: 'it' }],
-      errors: [{ message: "Prefer using 'it' on 'test'" }],
+      errors: [{ message: "Prefer using 'it' instead of 'test'" }],
       output: 'it("foo")',
     },
     {
       code: 'xtest("foo")',
       options: [{ fn: 'it' }],
-      errors: [{ message: "Prefer using 'it' on 'test'" }],
+      errors: [{ message: "Prefer using 'it' instead of 'test'" }],
       output: 'xit("foo")',
     },
     {
       code: 'test.skip("foo")',
       options: [{ fn: 'it' }],
-      errors: [{ message: "Prefer using 'it' on 'test'" }],
+      errors: [{ message: "Prefer using 'it' instead of 'test'" }],
       output: 'it.skip("foo")',
     },
     {
       code: 'test.only("foo")',
       options: [{ fn: 'it' }],
-      errors: [{ message: "Prefer using 'it' on 'test'" }],
+      errors: [{ message: "Prefer using 'it' instead of 'test'" }],
       output: 'it.only("foo")',
     },
     {
       code: 'describe("suite", () => { test("foo")})',
       options: [{ fn: 'it', withinDescribe: 'it' }],
-      errors: [{ message: "Prefer using 'it' on 'test' within describe" }],
+      errors: [
+        { message: "Prefer using 'it' instead of 'test' within describe" },
+      ],
       output: 'describe("suite", () => { it("foo")})',
     },
   ],
@@ -162,25 +166,33 @@ ruleTester.run(
       {
         code: 'describe("suite",() => { test("foo"); })',
         options: [{ fn: 'test', withinDescribe: 'it' }],
-        errors: [{ message: "Prefer using 'it' on 'test' within describe" }],
+        errors: [
+          { message: "Prefer using 'it' instead of 'test' within describe" },
+        ],
         output: 'describe("suite",() => { it("foo"); })',
       },
       {
         code: 'describe("suite",() => { test.only("foo"); })',
         options: [{ fn: 'test', withinDescribe: 'it' }],
-        errors: [{ message: "Prefer using 'it' on 'test' within describe" }],
+        errors: [
+          { message: "Prefer using 'it' instead of 'test' within describe" },
+        ],
         output: 'describe("suite",() => { it.only("foo"); })',
       },
       {
         code: 'describe("suite",() => { xtest("foo"); })',
         options: [{ fn: 'test', withinDescribe: 'it' }],
-        errors: [{ message: "Prefer using 'it' on 'test' within describe" }],
+        errors: [
+          { message: "Prefer using 'it' instead of 'test' within describe" },
+        ],
         output: 'describe("suite",() => { xit("foo"); })',
       },
       {
         code: 'describe("suite",() => { test.skip("foo"); })',
         options: [{ fn: 'test', withinDescribe: 'it' }],
-        errors: [{ message: "Prefer using 'it' on 'test' within describe" }],
+        errors: [
+          { message: "Prefer using 'it' instead of 'test' within describe" },
+        ],
         output: 'describe("suite",() => { it.skip("foo"); })',
       },
     ],
@@ -217,25 +229,33 @@ ruleTester.run(
       {
         code: 'describe("suite",() => { it("foo"); })',
         options: [{ fn: 'it', withinDescribe: 'test' }],
-        errors: [{ message: "Prefer using 'test' on 'it' within describe" }],
+        errors: [
+          { message: "Prefer using 'test' instead of 'it' within describe" },
+        ],
         output: 'describe("suite",() => { test("foo"); })',
       },
       {
         code: 'describe("suite",() => { it.only("foo"); })',
         options: [{ fn: 'it', withinDescribe: 'test' }],
-        errors: [{ message: "Prefer using 'test' on 'it' within describe" }],
+        errors: [
+          { message: "Prefer using 'test' instead of 'it' within describe" },
+        ],
         output: 'describe("suite",() => { test.only("foo"); })',
       },
       {
         code: 'describe("suite",() => { xit("foo"); })',
         options: [{ fn: 'it', withinDescribe: 'test' }],
-        errors: [{ message: "Prefer using 'test' on 'it' within describe" }],
+        errors: [
+          { message: "Prefer using 'test' instead of 'it' within describe" },
+        ],
         output: 'describe("suite",() => { xtest("foo"); })',
       },
       {
         code: 'describe("suite",() => { it.skip("foo"); })',
         options: [{ fn: 'it', withinDescribe: 'test' }],
-        errors: [{ message: "Prefer using 'test' on 'it' within describe" }],
+        errors: [
+          { message: "Prefer using 'test' instead of 'it' within describe" },
+        ],
         output: 'describe("suite",() => { test.skip("foo"); })',
       },
     ],
@@ -260,13 +280,15 @@ ruleTester.run(
       {
         code: 'describe("suite", () => { it("foo")})',
         options: [{ fn: 'test', withinDescribe: 'test' }],
-        errors: [{ message: "Prefer using 'test' on 'it' within describe" }],
+        errors: [
+          { message: "Prefer using 'test' instead of 'it' within describe" },
+        ],
         output: 'describe("suite", () => { test("foo")})',
       },
       {
         code: 'it("foo")',
         options: [{ fn: 'test', withinDescribe: 'test' }],
-        errors: [{ message: "Prefer using 'test' on 'it'" }],
+        errors: [{ message: "Prefer using 'test' instead of 'it'" }],
         output: 'test("foo")',
       },
     ],
@@ -291,13 +313,15 @@ ruleTester.run(
       {
         code: 'describe("suite", () => { test("foo")})',
         options: [{ fn: 'it', withinDescribe: 'it' }],
-        errors: [{ message: "Prefer using 'it' on 'test' within describe" }],
+        errors: [
+          { message: "Prefer using 'it' instead of 'test' within describe" },
+        ],
         output: 'describe("suite", () => { it("foo")})',
       },
       {
         code: 'test("foo")',
         options: [{ fn: 'it', withinDescribe: 'it' }],
-        errors: [{ message: "Prefer using 'it' on 'test'" }],
+        errors: [{ message: "Prefer using 'it' instead of 'test'" }],
         output: 'it("foo")',
       },
     ],
@@ -318,7 +342,9 @@ ruleTester.run(
       {
         code: 'describe("suite",() => { test("foo"); })',
         options: [{ fn: 'test', withinDescribe: 'it' }],
-        errors: [{ message: "Prefer using 'it' on 'test' within describe" }],
+        errors: [
+          { message: "Prefer using 'it' instead of 'test' within describe" },
+        ],
         output: 'describe("suite",() => { it("foo"); })',
       },
     ],
