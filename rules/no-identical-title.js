@@ -1,30 +1,7 @@
 'use strict';
 
 const isDescribe = require('./util').isDescribe;
-
-const testCaseNames = Object.assign(Object.create(null), {
-  fit: true,
-  it: true,
-  'it.only': true,
-  'it.skip': true,
-  test: true,
-  'test.only': true,
-  'test.skip': true,
-  xit: true,
-  xtest: true,
-});
-
-const getNodeName = node => {
-  if (node.type === 'MemberExpression') {
-    return node.object.name + '.' + node.property.name;
-  }
-  return node.name;
-};
-
-const isTestCase = node =>
-  node &&
-  node.type === 'CallExpression' &&
-  testCaseNames[getNodeName(node.callee)];
+const isTestCase = require('./util').isTestCase;
 
 const newDescribeContext = () => ({
   describeTitles: [],
