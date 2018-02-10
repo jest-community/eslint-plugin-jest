@@ -16,6 +16,7 @@ module.exports = {
     node: true,
   },
   rules: {
+    eqeqeq: ['error', 'smart'],
     strict: 'error',
     'eslint-plugin/require-meta-docs-url': [
       'error',

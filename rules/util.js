@@ -2,7 +2,7 @@
 
 const expectCase = node =>
   node.callee.name === 'expect' &&
-  node.arguments.length == 1 &&
+  node.arguments.length === 1 &&
   node.parent &&
   node.parent.type === 'MemberExpression' &&
   node.parent.parent;
