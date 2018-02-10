@@ -11,7 +11,6 @@ const ruleTester = new RuleTester({
 
 ruleTester.run('valid-describe', rules['valid-describe'], {
   valid: [
-    'describe("foo")',
     'describe("foo", function() {})',
     'describe("foo", () => {})',
     'xdescribe("foo", () => {})',
@@ -36,6 +35,31 @@ ruleTester.run('valid-describe', rules['valid-describe'], {
     `,
   ],
   invalid: [
+    {
+      code: 'describe(() => {})',
+      errors: [
+        {
+          message: 'First argument must be name',
+          line: 1,
+          column: 10,
+        },
+        {
+          message: 'Describe requires name and callback arguments',
+          line: 1,
+          column: 10,
+        },
+      ],
+    },
+    {
+      code: 'describe("foo")',
+      errors: [
+        {
+          message: 'Describe requires name and callback arguments',
+          line: 1,
+          column: 10,
+        },
+      ],
+    },
     {
       code: 'describe("foo", async () => {})',
       errors: [{ message: 'No async describe callback', line: 1, column: 17 }],
