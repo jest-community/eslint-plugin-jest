@@ -33,7 +33,20 @@ module.exports = {
     return {
       CallExpression(node) {
         if (isDescribe(node)) {
+          const name = node.arguments[0];
           const callbackFunction = node.arguments[1];
+          if (name.type !== 'Literal') {
+            context.report({
+              message: 'First argument must be name',
+              loc: paramsLocation(node.arguments),
+            });
+          }
+          if (callbackFunction === undefined) {
+            context.report({
+              message: 'Describe requires name and callback arguments',
+              loc: paramsLocation(node.arguments),
+            });
+          }
           if (callbackFunction && isFunction(callbackFunction)) {
             if (isAsync(callbackFunction)) {
               context.report({
