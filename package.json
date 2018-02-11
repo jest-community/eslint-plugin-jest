@@ -12,7 +12,7 @@
   },
   "files": ["docs/", "rules/", "processors/", "index.js"],
   "engines": {
-    "node": ">= 6"
+    "node": ">= 4"
   },
   "peerDependencies": {
     "eslint": ">=3.6"
