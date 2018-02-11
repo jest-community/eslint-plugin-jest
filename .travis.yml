@@ -14,6 +14,7 @@ script:
 - yarn commitlint --from="$TRAVIS_BRANCH" --to="$TRAVIS_COMMIT"
 - yarn commitlint --from=$TRAVIS_COMMIT
 - yarn lint
+- yarn prettylint
 - yarn test
 after_script: greenkeeper-lockfile-upload
 jobs:
@@ -21,7 +22,7 @@ jobs:
   - stage: danger
     node_js: 8
     os: linux
-    script: 
+    script:
       - npx -p danger@^3 danger ci
   - stage: release
     node_js: 8

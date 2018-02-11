@@ -19,6 +19,7 @@
   },
   "scripts": {
     "lint": "eslint . --ignore-pattern '!.eslintrc.js'",
+    "prettylint": "prettylint docs/**/*.md README.md package.json",
     "test": "jest",
     "precommit": "lint-staged",
     "commitmsg": "commitlint -e $GIT_PARAMS"
@@ -35,6 +36,7 @@
     "jest": "^22.0.4",
     "lint-staged": "^6.0.0",
     "prettier": "^1.10.2",
+    "prettylint": "^1.0.0",
     "semantic-release": "^12.2.2",
     "travis-deploy-once": "^4.3.1"
   },
