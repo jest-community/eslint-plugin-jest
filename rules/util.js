@@ -129,7 +129,7 @@ const isFunction = node =>
  * package version to build the link to a tagged version of the
  * documentation file.
  *
- * @param {string} ruleName - Name of the eslint rule
+ * @param {string} filename - Name of the eslint rule
  * @returns {string} URL to the documentation for the given rule
  * @throws {Error} If the documentation file for the given rule is not present.
  */
@@ -137,6 +137,7 @@ const getDocsUrl = filename => {
   const ruleName = path.basename(filename, '.js');
 
   const docsFile = path.join(__dirname, `../docs/rules/${ruleName}.md`);
+  // istanbul ignore if
   if (!fs.existsSync(docsFile)) {
     throw new Error(`Could not find documentation file for rule "${ruleName}"`);
   }

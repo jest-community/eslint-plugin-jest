@@ -69,6 +69,11 @@ module.exports = {
                 message: 'Call to pending() within test suite',
                 node,
               });
+            } else {
+              context.report({
+                message: 'Call to pending()',
+                node,
+              });
             }
             break;
 
