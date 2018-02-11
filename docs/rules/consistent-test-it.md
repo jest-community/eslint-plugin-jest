@@ -1,6 +1,7 @@
 # Have control over `test` and `it` usages (consistent-test-it)
 
-Jest allows you to choose how you want to define your tests, using the `it` or the `test` keywords, with multiple permutations for each:
+Jest allows you to choose how you want to define your tests, using the `it` or
+the `test` keywords, with multiple permutations for each:
 
 * **it:** `it`, `xit`, `fit`, `it.only`, `it.skip`.
 * **test:** `test`, `xtest`, `test.only`, `test.skip`.
@@ -70,7 +71,8 @@ describe('foo', function() {
 
 ### Default configuration
 
-The default configuration forces top level test to use `test` and all tests nested within describe to use `it`.
+The default configuration forces top level test to use `test` and all tests
+nested within describe to use `it`.
 
 ```js
 /*eslint jest/consistent-test-it: ["error"]*/
