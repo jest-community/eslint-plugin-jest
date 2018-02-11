@@ -88,12 +88,29 @@ const describeAliases = Object.assign(Object.create(null), {
   xdescribe: true,
 });
 
+const testCaseNames = Object.assign(Object.create(null), {
+  fit: true,
+  it: true,
+  'it.only': true,
+  'it.skip': true,
+  test: true,
+  'test.only': true,
+  'test.skip': true,
+  xit: true,
+  xtest: true,
+});
+
 const getNodeName = node => {
   if (node.type === 'MemberExpression') {
     return node.object.name + '.' + node.property.name;
   }
   return node.name;
 };
+
+const isTestCase = node =>
+  node &&
+  node.type === 'CallExpression' &&
+  testCaseNames[getNodeName(node.callee)];
 
 const isDescribe = node =>
   node.type === 'CallExpression' && describeAliases[getNodeName(node.callee)];
@@ -116,6 +133,8 @@ module.exports = {
   expectNotToEqualCase: expectNotToEqualCase,
   expectToBeUndefinedCase: expectToBeUndefinedCase,
   expectNotToBeUndefinedCase: expectNotToBeUndefinedCase,
+  getNodeName: getNodeName,
   isDescribe: isDescribe,
   isFunction: isFunction,
+  isTestCase: isTestCase,
 };

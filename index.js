@@ -1,5 +1,6 @@
 'use strict';
 
+const consistentTestIt = require('./rules/consistent-test-it');
 const noDisabledTests = require('./rules/no-disabled-tests');
 const noFocusedTests = require('./rules/no-focused-tests');
 const noIdenticalTitle = require('./rules/no-identical-title');
@@ -57,6 +58,7 @@ module.exports = {
     '.snap': snapshotProcessor,
   },
   rules: {
+    'consistent-test-it': consistentTestIt,
     'no-disabled-tests': noDisabledTests,
     'no-focused-tests': noFocusedTests,
     'no-identical-title': noIdenticalTitle,
