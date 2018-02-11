@@ -11,6 +11,9 @@
     "url": "jkimbo.com"
   },
   "files": ["docs/", "rules/", "processors/", "index.js"],
+  "engines": {
+    "node": ">= 6"
+  },
   "peerDependencies": {
     "eslint": ">=3.6"
   },
