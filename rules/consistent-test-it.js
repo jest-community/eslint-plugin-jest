@@ -27,12 +27,10 @@ module.exports = {
     ],
   },
   create(context) {
-    const configObj = context.options[0];
-    const testKeyword = (configObj && configObj.fn) || 'test';
+    const configObj = context.options[0] || {};
+    const testKeyword = configObj.fn || 'test';
     const testKeywordWithinDescribe =
-      (configObj && configObj.withinDescribe) ||
-      (configObj && configObj.fn) ||
-      'it';
+      configObj.withinDescribe || configObj.fn || 'it';
 
     let describeNestingLevel = 0;
 
@@ -49,20 +47,20 @@ module.exports = {
           describeNestingLevel === 0 &&
           nodeName.indexOf(testKeyword) === -1
         ) {
-          const opositeTestKeyword = getOpositeTestKeyword(testKeyword);
+          const oppositeTestKeyword = getOppositeTestKeyword(testKeyword);
 
           context.report({
             message:
-              "Prefer using '{{ testKeyword }}' instead of '{{ opositeTestKeyword }}'",
+              "Prefer using '{{ testKeyword }}' instead of '{{ oppositeTestKeyword }}'",
             node: node.callee,
-            data: { testKeyword, opositeTestKeyword },
+            data: { testKeyword, oppositeTestKeyword },
             fix(fixer) {
               const nodeToReplace =
                 node.callee.type === 'MemberExpression'
                   ? node.callee.object
                   : node.callee;
 
-              const fixedNodeName = getPreferedNodeName(nodeName, testKeyword);
+              const fixedNodeName = getPreferredNodeName(nodeName, testKeyword);
               return [fixer.replaceText(nodeToReplace, fixedNodeName)];
             },
           });
@@ -73,22 +71,22 @@ module.exports = {
           describeNestingLevel > 0 &&
           nodeName.indexOf(testKeywordWithinDescribe) === -1
         ) {
-          const opositeTestKeyword = getOpositeTestKeyword(
+          const oppositeTestKeyword = getOppositeTestKeyword(
             testKeywordWithinDescribe
           );
 
           context.report({
             message:
-              "Prefer using '{{ testKeywordWithinDescribe }}' instead of '{{ opositeTestKeyword }}' within describe",
+              "Prefer using '{{ testKeywordWithinDescribe }}' instead of '{{ oppositeTestKeyword }}' within describe",
             node: node.callee,
-            data: { testKeywordWithinDescribe, opositeTestKeyword },
+            data: { testKeywordWithinDescribe, oppositeTestKeyword },
             fix(fixer) {
               const nodeToReplace =
                 node.callee.type === 'MemberExpression'
                   ? node.callee.object
                   : node.callee;
 
-              const fixedNodeName = getPreferedNodeName(
+              const fixedNodeName = getPreferredNodeName(
                 nodeName,
                 testKeywordWithinDescribe
               );
@@ -106,18 +104,18 @@ module.exports = {
   },
 };
 
-function getPreferedNodeName(nodeName, preferedTestKeyword) {
+function getPreferredNodeName(nodeName, preferredTestKeyword) {
   switch (nodeName) {
     case 'fit':
       return 'test.only';
     default:
       return nodeName.startsWith('f') || nodeName.startsWith('x')
-        ? nodeName.charAt(0) + preferedTestKeyword
-        : preferedTestKeyword;
+        ? nodeName.charAt(0) + preferredTestKeyword
+        : preferredTestKeyword;
   }
 }
 
-function getOpositeTestKeyword(test) {
+function getOppositeTestKeyword(test) {
   if (test === 'test') {
     return 'it';
   }
