@@ -25,7 +25,7 @@ module.exports = {
           'https://github.com/jest-community/eslint-plugin-jest/blob/master/docs/rules/{{name}}.md',
       },
     ],
-    'node/no-unsupported-features': ['error', { version: 4 }],
+    'node/no-unsupported-features': 'error',
     'prettier/prettier': 'error',
   },
   overrides: [
