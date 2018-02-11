@@ -1,6 +1,8 @@
 'use strict';
 
-const { getNodeName, isTestCase, isDescribe } = require('./util');
+const getNodeName = require('./util').getNodeName;
+const isTestCase = require('./util').isTestCase;
+const isDescribe = require('./util').isDescribe;
 
 module.exports = {
   meta: {
