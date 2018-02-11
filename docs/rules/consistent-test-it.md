@@ -35,7 +35,7 @@ Decides whether to use `test` or `it`.
 Decides whether to use `test` or `it` within a describe scope.
 
 ```js
-/*eslint consistent-test-it: ["error", {"fn": "test"}]*/
+/*eslint jest/consistent-test-it: ["error", {"fn": "test"}]*/
 
 test('foo'); // valid
 test.only('foo'); // valid
@@ -45,25 +45,25 @@ it.only('foo'); // invalid
 ```
 
 ```js
-/*eslint consistent-test-it: ["error", {"fn": "test"}]*/
-
-test('foo'); // valid
-test.only('foo'); // valid
-
-it('foo'); // invalid
-it.only('foo'); // invalid
-```
-
-```js
-/*eslint consistent-test-it: ["error", {"fn": "it", "withinDesrcibe": "test"}]*/
+/*eslint jest/consistent-test-it: ["error", {"fn": "it"}]*/
 
 it('foo'); // valid
-describe('foo', () => {
+it.only('foo'); // valid
+
+test('foo'); // invalid
+test.only('foo'); // invalid
+```
+
+```js
+/*eslint jest/consistent-test-it: ["error", {"fn": "it", "withinDescribe": "test"}]*/
+
+it('foo'); // valid
+describe('foo', function() {
   test('bar'); // valid
 });
 
 test('foo'); // invalid
-describe('foo', () => {
+describe('foo', function() {
   it('bar'); // invalid
 });
 ```
@@ -73,15 +73,15 @@ describe('foo', () => {
 The default configuration forces top level test to use `test` and all tests nested within describe to use `it`.
 
 ```js
-/*eslint consistent-test-it: ["error"]*/
+/*eslint jest/consistent-test-it: ["error"]*/
 
 test('foo'); // valid
-describe('foo', () => {
+describe('foo', function() {
   it('bar'); // valid
 });
 
 it('foo'); // invalid
-describe('foo', () => {
+describe('foo', function() {
   test('bar'); // invalid
 });
 ```
