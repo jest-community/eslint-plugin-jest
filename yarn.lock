@@ -1591,6 +1591,15 @@ eslint-plugin-eslint-plugin@^1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/eslint-plugin-eslint-plugin/-/eslint-plugin-eslint-plugin-1.4.0.tgz#382dc6692a741a52072d5f3fff5dacdcf291ef49"
 
+eslint-plugin-node@^6.0.0:
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-node/-/eslint-plugin-node-6.0.0.tgz#5ad5ee6b5346aec6cc9cde0b8619caed2c6d8f25"
+  dependencies:
+    ignore "^3.3.6"
+    minimatch "^3.0.4"
+    resolve "^1.3.3"
+    semver "^5.4.1"
+
 eslint-plugin-prettier@^2.3.1:
   version "2.4.0"
   resolved "https://registry.yarnpkg.com/eslint-plugin-prettier/-/eslint-plugin-prettier-2.4.0.tgz#85cab0775c6d5e3344ef01e78d960f166fb93aae"
@@ -2295,7 +2304,7 @@ iconv-lite@0.4.19, iconv-lite@^0.4.17:
   version "0.4.19"
   resolved "https://registry.yarnpkg.com/iconv-lite/-/iconv-lite-0.4.19.tgz#f7468f60135f5e5dad3399c0a81be9a1603a082b"
 
-ignore@^3.3.3, ignore@^3.3.5:
+ignore@^3.3.3, ignore@^3.3.5, ignore@^3.3.6:
   version "3.3.7"
   resolved "https://registry.yarnpkg.com/ignore/-/ignore-3.3.7.tgz#612289bfb3c220e186a58118618d5be8c1bab021"
 
@@ -4217,6 +4226,12 @@ resolve-global@^0.1.0:
 resolve@1.1.7:
   version "1.1.7"
   resolved "https://registry.yarnpkg.com/resolve/-/resolve-1.1.7.tgz#203114d82ad2c5ed9e8e0411b3932875e889e97b"
+
+resolve@^1.3.3:
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/resolve/-/resolve-1.5.0.tgz#1f09acce796c9a762579f31b2c1cc4c3cddf9f36"
+  dependencies:
+    path-parse "^1.0.5"
 
 responselike@1.0.2:
   version "1.0.2"

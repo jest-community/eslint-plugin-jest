@@ -1,5 +1,6 @@
 'use strict';
 
+// eslint-disable-next-line node/no-unsupported-features
 const { danger, fail } = require('danger');
 
 // Ensure that people include a description on their PRs

@@ -8,7 +8,7 @@ module.exports = {
     'plugin:eslint-plugin/recommended',
     'prettier',
   ],
-  plugins: ['eslint-plugin', 'prettier'],
+  plugins: ['eslint-plugin', 'node', 'prettier'],
   parserOptions: {
     ecmaVersion: 2017,
   },
@@ -25,6 +25,7 @@ module.exports = {
           'https://github.com/jest-community/eslint-plugin-jest/blob/master/docs/rules/{{name}}.md',
       },
     ],
+    'node/no-unsupported-features': 'error',
     'prettier/prettier': 'error',
   },
   overrides: [
