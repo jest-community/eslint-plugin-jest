@@ -1,8 +1,5 @@
 'use strict';
 
-const ruleMsg =
-  'it(), test() and describe() descriptions should begin with lowercase';
-
 const isItTestOrDescribeFunction = node => {
   return (
     node.type === 'CallExpression' &&
@@ -23,24 +20,29 @@ const isItDescription = node => {
 };
 
 const testDescription = node => {
-  const type = node.arguments[0].type;
+  const firstArgument = node.arguments[0];
+  const type = firstArgument.type;
+
   if (type === 'Literal') {
-    return node.arguments[0].value;
+    return firstArgument.value;
   }
-  if (type === 'TemplateLiteral') {
-    return node.arguments[0].quasis[0].value.raw;
-  }
+
+  // `isItDescription` guarantees this is `type === 'TemplateLiteral'`
+  return firstArgument.quasis[0].value.raw;
 };
 
 const descriptionBeginsWithLowerCase = node => {
   if (isItTestOrDescribeFunction(node) && isItDescription(node)) {
     const description = testDescription(node);
     if (!description[0]) {
-      return true;
+      return false;
     }
-    return description[0] === description[0].toLowerCase();
+
+    if (description[0] !== description[0].toLowerCase()) {
+      return node.callee.name;
+    }
   }
-  return true;
+  return false;
 };
 
 module.exports = {
@@ -53,9 +55,12 @@ module.exports = {
   create(context) {
     return {
       CallExpression(node) {
-        if (!descriptionBeginsWithLowerCase(node)) {
+        const erroneousMethod = descriptionBeginsWithLowerCase(node);
+
+        if (erroneousMethod) {
           context.report({
-            message: ruleMsg,
+            message: '`{{ method }}`s should begin with lowercase',
+            data: { method: erroneousMethod },
             node: node,
           });
         }

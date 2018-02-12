@@ -9,10 +9,6 @@ const ruleTester = new RuleTester({
   },
 });
 
-const errMessage =
-  'it(), test() and describe() descriptions should begin with lowercase';
-const errors = [{ message: errMessage, column: 1, line: 1 }];
-
 ruleTester.run('lowercase-description', rules['lowercase-description'], {
   valid: [
     "it(' ', function () {})",
@@ -36,44 +32,99 @@ ruleTester.run('lowercase-description', rules['lowercase-description'], {
     'describe("<Foo/>", function () {})',
     'describe("123 foo", function () {})',
     'describe("42", function () {})',
+    'describe(function () {})',
   ],
 
   invalid: [
     {
       code: "it('Foo', function () {})",
-      errors,
+      errors: [
+        {
+          message: '`it`s should begin with lowercase',
+          column: 1,
+          line: 1,
+        },
+      ],
     },
     {
       code: 'it("Foo", function () {})',
-      errors,
+      errors: [
+        {
+          message: '`it`s should begin with lowercase',
+          column: 1,
+          line: 1,
+        },
+      ],
     },
     {
       code: 'it(`Foo`, function () {})',
-      errors,
+      errors: [
+        {
+          message: '`it`s should begin with lowercase',
+          column: 1,
+          line: 1,
+        },
+      ],
     },
     {
       code: "test('Foo', function () {})",
-      errors,
+      errors: [
+        {
+          message: '`test`s should begin with lowercase',
+          column: 1,
+          line: 1,
+        },
+      ],
     },
     {
       code: 'test("Foo", function () {})',
-      errors,
+      errors: [
+        {
+          message: '`test`s should begin with lowercase',
+          column: 1,
+          line: 1,
+        },
+      ],
     },
     {
       code: 'test(`Foo`, function () {})',
-      errors,
+      errors: [
+        {
+          message: '`test`s should begin with lowercase',
+          column: 1,
+          line: 1,
+        },
+      ],
     },
     {
       code: "describe('Foo', function () {})",
-      errors,
+      errors: [
+        {
+          message: '`describe`s should begin with lowercase',
+          column: 1,
+          line: 1,
+        },
+      ],
     },
     {
       code: 'describe("Foo", function () {})',
-      errors,
+      errors: [
+        {
+          message: '`describe`s should begin with lowercase',
+          column: 1,
+          line: 1,
+        },
+      ],
     },
     {
       code: 'describe(`Foo`, function () {})',
-      errors,
+      errors: [
+        {
+          message: '`describe`s should begin with lowercase',
+          column: 1,
+          line: 1,
+        },
+      ],
     },
   ],
 });
