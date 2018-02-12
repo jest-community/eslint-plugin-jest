@@ -9,7 +9,7 @@ const ruleTester = new RuleTester({
   },
 });
 
-ruleTester.run('lowercase-description', rules['lowercase-description'], {
+ruleTester.run('lowercase-name', rules['lowercase-name'], {
   valid: [
     "it(' ', function () {})",
     'it(" ", function () {})',

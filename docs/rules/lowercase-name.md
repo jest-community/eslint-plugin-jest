@@ -1,9 +1,10 @@
-# Enforce lowercase descriptions in it() (lowercase-description)
+# Enforce lowercase test names (lowercase-name)
 
 ## Rule details
 
-Enforce `it()` tests to have descriptions that begin with a lowercase letter.
-This provides more readable test failures. This rule is not enabled by default.
+Enforce `it`, `test` and `describe` to have descriptions that begin with a
+lowercase letter. This provides more readable test failures. This rule is not
+enabled by default.
 
 The following pattern is considered a warning:
 

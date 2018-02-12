@@ -49,7 +49,7 @@ module.exports = {
   meta: {
     docs: {
       url:
-        'https://github.com/jest-community/eslint-plugin-jest/blob/master/docs/rules/lowercase-description.md',
+        'https://github.com/jest-community/eslint-plugin-jest/blob/master/docs/rules/lowercase-name.md',
     },
   },
   create(context) {
