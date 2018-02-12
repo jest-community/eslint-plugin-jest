@@ -6,6 +6,7 @@ const noFocusedTests = require('./rules/no-focused-tests');
 const noHooks = require('./rules/no-hooks');
 const noIdenticalTitle = require('./rules/no-identical-title');
 const noLargeSnapshots = require('./rules/no-large-snapshots');
+const noTestPrefixes = require('./rules/no-test-prefixes');
 const preferToBeNull = require('./rules/prefer-to-be-null');
 const preferToBeUndefined = require('./rules/prefer-to-be-undefined');
 const preferToHaveLength = require('./rules/prefer-to-have-length');
@@ -65,6 +66,7 @@ module.exports = {
     'no-hooks': noHooks,
     'no-identical-title': noIdenticalTitle,
     'no-large-snapshots': noLargeSnapshots,
+    'no-test-prefixes': noTestPrefixes,
     'prefer-to-be-null': preferToBeNull,
     'prefer-to-be-undefined': preferToBeUndefined,
     'prefer-to-have-length': preferToHaveLength,
