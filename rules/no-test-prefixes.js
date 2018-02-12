@@ -8,7 +8,7 @@ module.exports = {
   meta: {
     docs: {
       url:
-        'https://github.com/jest-community/eslint-plugin-jest/blob/master/docs/rules/prefer-only-skip.md',
+        'https://github.com/jest-community/eslint-plugin-jest/blob/master/docs/rules/no-test-prefixes.md',
     },
     fixable: 'code',
   },

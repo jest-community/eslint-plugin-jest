@@ -1,4 +1,4 @@
-# Use `.only` and `.skip` over `f` and `x` (prefer-only-skip)
+# Use `.only` and `.skip` over `f` and `x` (no-test-prefixes)
 
 Jest allows you to choose how you want to define focused and skipped tests, with
 multiple permutations for each:
@@ -15,7 +15,7 @@ This rule triggers a warning if you use one of the keywords from the **'f' &
 'x'** list to focus/skip a test.
 
 ```js
-/*eslint jest/prefer-only-skip: "error"*/
+/*eslint jest/no-test-prefixes: "error"*/
 
 it.only('foo'); // valid
 test.only('foo'); // valid

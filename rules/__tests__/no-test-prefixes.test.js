@@ -5,7 +5,7 @@ const rules = require('../..').rules;
 
 const ruleTester = new RuleTester();
 
-ruleTester.run('prefer-only-skip', rules['prefer-only-skip'], {
+ruleTester.run('no-test-prefixes', rules['no-test-prefixes'], {
   valid: [
     'describe("foo", function () {})',
     'it("foo", function () {})',
