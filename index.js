@@ -3,6 +3,7 @@
 const consistentTestIt = require('./rules/consistent-test-it');
 const noDisabledTests = require('./rules/no-disabled-tests');
 const noFocusedTests = require('./rules/no-focused-tests');
+const noHooks = require('./rules/no-hooks');
 const noIdenticalTitle = require('./rules/no-identical-title');
 const noLargeSnapshots = require('./rules/no-large-snapshots');
 const preferToBeNull = require('./rules/prefer-to-be-null');
@@ -61,6 +62,7 @@ module.exports = {
     'consistent-test-it': consistentTestIt,
     'no-disabled-tests': noDisabledTests,
     'no-focused-tests': noFocusedTests,
+    'no-hooks': noHooks,
     'no-identical-title': noIdenticalTitle,
     'no-large-snapshots': noLargeSnapshots,
     'prefer-to-be-null': preferToBeNull,
