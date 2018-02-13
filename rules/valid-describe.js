@@ -5,6 +5,10 @@ const isFunction = require('./util').isFunction;
 
 const isAsync = node => node.async;
 
+const isString = node =>
+  (node.type === 'Literal' && typeof node.value === 'string') ||
+  node.type === 'TemplateLiteral';
+
 const hasParams = node => node.params.length > 0;
 
 const paramsLocation = params => {
@@ -35,19 +39,19 @@ module.exports = {
         if (isDescribe(node)) {
           const name = node.arguments[0];
           const callbackFunction = node.arguments[1];
-          if (name.type !== 'Literal') {
+          if (!isString(name)) {
             context.report({
               message: 'First argument must be name',
               loc: paramsLocation(node.arguments),
             });
           }
           if (callbackFunction === undefined) {
-            context.report({
+            return context.report({
               message: 'Describe requires name and callback arguments',
               loc: paramsLocation(node.arguments),
             });
           }
-          if (callbackFunction && isFunction(callbackFunction)) {
+          if (isFunction(callbackFunction)) {
             if (isAsync(callbackFunction)) {
               context.report({
                 message: 'No async describe callback',

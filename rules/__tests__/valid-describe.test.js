@@ -13,6 +13,7 @@ ruleTester.run('valid-describe', rules['valid-describe'], {
   valid: [
     'describe("foo", function() {})',
     'describe("foo", () => {})',
+    'describe(`foo`, () => {})',
     'xdescribe("foo", () => {})',
     'fdescribe("foo", () => {})',
     'describe.only("foo", () => {})',
