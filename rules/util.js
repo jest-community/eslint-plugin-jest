@@ -1,6 +1,6 @@
 'use strict';
 
-const pkg = require('../package');
+const pkg = require('../package.json');
 
 const REPO_URL = 'https://github.com/jest-community/eslint-plugin-jest';
 
