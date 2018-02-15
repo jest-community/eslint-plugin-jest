@@ -1,5 +1,9 @@
 'use strict';
 
+const pkg = require('../package.json');
+
+const REPO_URL = 'https://github.com/jest-community/eslint-plugin-jest';
+
 const expectCase = node =>
   node.callee.name === 'expect' &&
   node.arguments.length === 1 &&
@@ -118,6 +122,17 @@ const isDescribe = node =>
 const isFunction = node =>
   node.type === 'FunctionExpression' || node.type === 'ArrowFunctionExpression';
 
+/**
+ * Generates the URL to documentation for the given rule name. It uses the
+ * package version to build the link to a tagged version of the
+ * documentation file.
+ *
+ * @param {string} ruleName - Name of the eslint rule
+ * @returns {string} URL to the documentation for the given rule
+ */
+const getDocsUrl = ruleName =>
+  `${REPO_URL}/blob/v${pkg.version}/docs/rules/${ruleName}.md`;
+
 module.exports = {
   method: method,
   method2: method2,
@@ -137,4 +152,5 @@ module.exports = {
   isDescribe: isDescribe,
   isFunction: isFunction,
   isTestCase: isTestCase,
+  getDocsUrl: getDocsUrl,
 };

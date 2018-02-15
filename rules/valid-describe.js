@@ -1,5 +1,6 @@
 'use strict';
 
+const getDocsUrl = require('./util').getDocsUrl;
 const isDescribe = require('./util').isDescribe;
 const isFunction = require('./util').isFunction;
 
@@ -29,8 +30,7 @@ const paramsLocation = params => {
 module.exports = {
   meta: {
     docs: {
-      url:
-        'https://github.com/jest-community/eslint-plugin-jest/blob/master/docs/rules/valid-describe.md',
+      url: getDocsUrl('valid-describe.md'),
     },
   },
   create(context) {

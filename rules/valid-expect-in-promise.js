@@ -1,5 +1,6 @@
 'use strict';
 
+const getDocsUrl = require('./util').getDocsUrl;
 const isFunction = require('./util').isFunction;
 
 const reportMsg =
@@ -127,8 +128,7 @@ const isHavingAsyncCallBackParam = testFunction => {
 module.exports = {
   meta: {
     docs: {
-      url:
-        'https://github.com/jest-community/eslint-plugin-jest/blob/master/docs/rules/valid-expect-in-promise.md',
+      url: getDocsUrl('valid-expect-in-promise.md'),
     },
   },
   create(context) {

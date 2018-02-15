@@ -1,5 +1,6 @@
 'use strict';
 
+const getDocsUrl = require('./util').getDocsUrl;
 const getNodeName = require('./util').getNodeName;
 const isTestCase = require('./util').isTestCase;
 const isDescribe = require('./util').isDescribe;
@@ -7,8 +8,7 @@ const isDescribe = require('./util').isDescribe;
 module.exports = {
   meta: {
     docs: {
-      url:
-        'https://github.com/jest-community/eslint-plugin-jest/blob/master/docs/rules/no-test-prefixes.md',
+      url: getDocsUrl('no-test-prefixes.md'),
     },
     fixable: 'code',
   },

@@ -1,5 +1,7 @@
 'use strict';
 
+const getDocsUrl = require('./util').getDocsUrl;
+
 const testFunctions = Object.assign(Object.create(null), {
   describe: true,
   it: true,
@@ -20,8 +22,7 @@ const isCallToTestOnlyFunction = callee =>
 module.exports = {
   meta: {
     docs: {
-      url:
-        'https://github.com/jest-community/eslint-plugin-jest/blob/master/docs/rules/no-focused-tests.md',
+      url: getDocsUrl('no-focused-tests.md'),
     },
   },
   create: context => ({

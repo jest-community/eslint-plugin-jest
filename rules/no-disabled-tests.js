@@ -1,5 +1,7 @@
 'use strict';
 
+const getDocsUrl = require('./util').getDocsUrl;
+
 function getName(node) {
   function joinNames(a, b) {
     return a && b ? a + '.' + b : null;
@@ -20,8 +22,7 @@ function getName(node) {
 module.exports = {
   meta: {
     docs: {
-      url:
-        'https://github.com/jest-community/eslint-plugin-jest/blob/master/docs/rules/no-disabled-tests.md',
+      url: getDocsUrl('no-disabled-tests.md'),
     },
   },
   create(context) {

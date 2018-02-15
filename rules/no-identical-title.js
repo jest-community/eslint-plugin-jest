@@ -1,5 +1,6 @@
 'use strict';
 
+const getDocsUrl = require('./util').getDocsUrl;
 const isDescribe = require('./util').isDescribe;
 const isTestCase = require('./util').isTestCase;
 
@@ -39,8 +40,7 @@ const isFirstArgLiteral = node =>
 module.exports = {
   meta: {
     docs: {
-      url:
-        'https://github.com/jest-community/eslint-plugin-jest/blob/master/docs/rules/no-identical-title.md',
+      url: getDocsUrl('no-identical-title.md'),
     },
   },
   create(context) {
