@@ -1,4 +1,6 @@
 'use strict';
+
+const getDocsUrl = require('./util').getDocsUrl;
 const argument = require('./util').argument;
 const argument2 = require('./util').argument2;
 const expectToBeCase = require('./util').expectToBeCase;
@@ -11,8 +13,7 @@ const method2 = require('./util').method2;
 module.exports = {
   meta: {
     docs: {
-      url:
-        'https://github.com/jest-community/eslint-plugin-jest/blob/master/docs/rules/prefer-to-be-null.md',
+      url: getDocsUrl('prefer-to-be-null.md'),
     },
     fixable: 'code',
   },

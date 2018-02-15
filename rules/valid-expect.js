@@ -5,13 +5,14 @@
  * MIT license, Tom Vincent.
  */
 
+const getDocsUrl = require('./util').getDocsUrl;
+
 const expectProperties = ['not', 'resolves', 'rejects'];
 
 module.exports = {
   meta: {
     docs: {
-      url:
-        'https://github.com/jest-community/eslint-plugin-jest/blob/master/docs/rules/valid-expect.md',
+      url: getDocsUrl('valid-expect.md'),
     },
   },
   create(context) {

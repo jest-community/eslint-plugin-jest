@@ -1,10 +1,11 @@
 'use strict';
 
+const getDocsUrl = require('./util').getDocsUrl;
+
 module.exports = {
   meta: {
     docs: {
-      url:
-        'https://github.com/jest-community/eslint-plugin-jest/blob/master/docs/rules/no-hooks.md',
+      url: getDocsUrl('no-hooks.md'),
     },
   },
   schema: [

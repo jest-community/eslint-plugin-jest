@@ -1,5 +1,7 @@
 'use strict';
 
+const getDocsUrl = require('./util').getDocsUrl;
+
 const ruleMsg =
   'Every test should have either `expect.assertions(<number of assertions>)` or `expect.hasAssertions()` as its first expression';
 
@@ -63,8 +65,7 @@ const reportMsg = (context, node) => {
 module.exports = {
   meta: {
     docs: {
-      url:
-        'https://github.com/jest-community/eslint-plugin-jest/blob/master/docs/rules/prefer-expect-assertions.md',
+      url: getDocsUrl('prefer-expect-assertions.md'),
     },
   },
   create(context) {

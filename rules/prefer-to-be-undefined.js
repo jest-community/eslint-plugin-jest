@@ -5,14 +5,14 @@ const expectToBeCase = require('./util').expectToBeCase;
 const expectNotToBeCase = require('./util').expectNotToBeCase;
 const expectToEqualCase = require('./util').expectToEqualCase;
 const expectNotToEqualCase = require('./util').expectNotToEqualCase;
+const getDocsUrl = require('./util').getDocsUrl;
 const method = require('./util').method;
 const method2 = require('./util').method2;
 
 module.exports = {
   meta: {
     docs: {
-      url:
-        'https://github.com/jest-community/eslint-plugin-jest/blob/master/docs/rules/prefer-to-be-undefined.md',
+      url: getDocsUrl('prefer-to-be-undefined.md'),
     },
     fixable: 'code',
   },

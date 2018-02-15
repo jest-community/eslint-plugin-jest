@@ -1,10 +1,11 @@
 'use strict';
 
+const getDocsUrl = require('./util').getDocsUrl;
+
 module.exports = {
   meta: {
     docs: {
-      url:
-        'https://github.com/jest-community/eslint-plugin-jest/blob/master/docs/rules/no-large-snapshots.md',
+      url: getDocsUrl('no-large-snapshots.md'),
     },
   },
   create(context) {

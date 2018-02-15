@@ -1,5 +1,7 @@
 'use strict';
 
+const getDocsUrl = require('./util').getDocsUrl;
+
 const isItTestOrDescribeFunction = node => {
   return (
     node.type === 'CallExpression' &&
@@ -48,8 +50,7 @@ const descriptionBeginsWithLowerCase = node => {
 module.exports = {
   meta: {
     docs: {
-      url:
-        'https://github.com/jest-community/eslint-plugin-jest/blob/master/docs/rules/lowercase-name.md',
+      url: getDocsUrl('lowercase-name.md'),
     },
   },
   create(context) {

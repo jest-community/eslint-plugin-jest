@@ -18,13 +18,6 @@ module.exports = {
   rules: {
     eqeqeq: ['error', 'smart'],
     strict: 'error',
-    'eslint-plugin/require-meta-docs-url': [
-      'error',
-      {
-        pattern:
-          'https://github.com/jest-community/eslint-plugin-jest/blob/master/docs/rules/{{name}}.md',
-      },
-    ],
     'node/no-unsupported-features': 'error',
     'prettier/prettier': 'error',
   },

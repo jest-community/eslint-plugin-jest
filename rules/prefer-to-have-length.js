@@ -1,4 +1,6 @@
 'use strict';
+
+const getDocsUrl = require('./util').getDocsUrl;
 const expectCase = require('./util').expectCase;
 const expectNotCase = require('./util').expectNotCase;
 const expectResolveCase = require('./util').expectResolveCase;
@@ -8,8 +10,7 @@ const method = require('./util').method;
 module.exports = {
   meta: {
     docs: {
-      url:
-        'https://github.com/jest-community/eslint-plugin-jest/blob/master/docs/rules/prefer-to-have-length.md',
+      url: getDocsUrl('prefer-to-have-length.md'),
     },
     fixable: 'code',
   },
