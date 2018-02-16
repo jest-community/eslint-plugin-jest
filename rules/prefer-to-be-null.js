@@ -13,7 +13,7 @@ const method2 = require('./util').method2;
 module.exports = {
   meta: {
     docs: {
-      url: getDocsUrl('prefer-to-be-null.md'),
+      url: getDocsUrl(__filename),
     },
     fixable: 'code',
   },

@@ -22,7 +22,7 @@ const isCallToTestOnlyFunction = callee =>
 module.exports = {
   meta: {
     docs: {
-      url: getDocsUrl('no-focused-tests.md'),
+      url: getDocsUrl(__filename),
     },
   },
   create: context => ({

@@ -65,7 +65,7 @@ const reportMsg = (context, node) => {
 module.exports = {
   meta: {
     docs: {
-      url: getDocsUrl('prefer-expect-assertions.md'),
+      url: getDocsUrl(__filename),
     },
   },
   create(context) {

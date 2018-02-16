@@ -22,7 +22,7 @@ function getName(node) {
 module.exports = {
   meta: {
     docs: {
-      url: getDocsUrl('no-disabled-tests.md'),
+      url: getDocsUrl(__filename),
     },
   },
   create(context) {

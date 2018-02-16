@@ -10,7 +10,7 @@ const method = require('./util').method;
 module.exports = {
   meta: {
     docs: {
-      url: getDocsUrl('prefer-to-have-length.md'),
+      url: getDocsUrl(__filename),
     },
     fixable: 'code',
   },

@@ -12,7 +12,7 @@ const expectProperties = ['not', 'resolves', 'rejects'];
 module.exports = {
   meta: {
     docs: {
-      url: getDocsUrl('valid-expect.md'),
+      url: getDocsUrl(__filename),
     },
   },
   create(context) {

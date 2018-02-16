@@ -12,7 +12,7 @@ const method2 = require('./util').method2;
 module.exports = {
   meta: {
     docs: {
-      url: getDocsUrl('prefer-to-be-undefined.md'),
+      url: getDocsUrl(__filename),
     },
     fixable: 'code',
   },

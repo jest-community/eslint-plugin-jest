@@ -50,7 +50,7 @@ const descriptionBeginsWithLowerCase = node => {
 module.exports = {
   meta: {
     docs: {
-      url: getDocsUrl('lowercase-name.md'),
+      url: getDocsUrl(__filename),
     },
   },
   create(context) {
