@@ -1,5 +1,7 @@
 'use strict';
 
+const fs = require('fs');
+const path = require('path');
 const pkg = require('../package.json');
 
 const REPO_URL = 'https://github.com/jest-community/eslint-plugin-jest';
@@ -129,9 +131,18 @@ const isFunction = node =>
  *
  * @param {string} ruleName - Name of the eslint rule
  * @returns {string} URL to the documentation for the given rule
+ * @throws {Error} If the documentation file for the given rule is not present.
  */
-const getDocsUrl = ruleName =>
-  `${REPO_URL}/blob/v${pkg.version}/docs/rules/${ruleName}.md`;
+const getDocsUrl = filename => {
+  const ruleName = path.basename(filename, '.js');
+
+  const docsFile = path.join(__dirname, `../docs/rules/${ruleName}.md`);
+  if (!fs.existsSync(docsFile)) {
+    throw new Error(`Could not find documentation file for rule "${ruleName}"`);
+  }
+
+  return `${REPO_URL}/blob/v${pkg.version}/docs/rules/${ruleName}.md`;
+};
 
 module.exports = {
   method: method,

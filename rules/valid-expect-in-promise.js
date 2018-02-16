@@ -128,7 +128,7 @@ const isHavingAsyncCallBackParam = testFunction => {
 module.exports = {
   meta: {
     docs: {
-      url: getDocsUrl('valid-expect-in-promise.md'),
+      url: getDocsUrl(__filename),
     },
   },
   create(context) {

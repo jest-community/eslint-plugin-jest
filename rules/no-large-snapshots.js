@@ -5,7 +5,7 @@ const getDocsUrl = require('./util').getDocsUrl;
 module.exports = {
   meta: {
     docs: {
-      url: getDocsUrl('no-large-snapshots.md'),
+      url: getDocsUrl(__filename),
     },
   },
   create(context) {

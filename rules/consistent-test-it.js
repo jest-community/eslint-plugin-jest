@@ -8,7 +8,7 @@ const isDescribe = require('./util').isDescribe;
 module.exports = {
   meta: {
     docs: {
-      url: getDocsUrl('consistent-test-it.md'),
+      url: getDocsUrl(__filename),
     },
     fixable: 'code',
     schema: [

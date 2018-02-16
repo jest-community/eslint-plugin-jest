@@ -5,7 +5,7 @@ const getDocsUrl = require('./util').getDocsUrl;
 module.exports = {
   meta: {
     docs: {
-      url: getDocsUrl('no-hooks.md'),
+      url: getDocsUrl(__filename),
     },
   },
   schema: [

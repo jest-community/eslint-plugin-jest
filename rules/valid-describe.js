@@ -30,7 +30,7 @@ const paramsLocation = params => {
 module.exports = {
   meta: {
     docs: {
-      url: getDocsUrl('valid-describe.md'),
+      url: getDocsUrl(__filename),
     },
   },
   create(context) {

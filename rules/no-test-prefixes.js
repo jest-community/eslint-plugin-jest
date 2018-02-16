@@ -8,7 +8,7 @@ const isDescribe = require('./util').isDescribe;
 module.exports = {
   meta: {
     docs: {
-      url: getDocsUrl('no-test-prefixes.md'),
+      url: getDocsUrl(__filename),
     },
     fixable: 'code',
   },

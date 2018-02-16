@@ -40,7 +40,7 @@ const isFirstArgLiteral = node =>
 module.exports = {
   meta: {
     docs: {
-      url: getDocsUrl('no-identical-title.md'),
+      url: getDocsUrl(__filename),
     },
   },
   create(context) {
