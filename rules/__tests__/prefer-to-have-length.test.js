@@ -1,11 +1,11 @@
 'use strict';
 
 const RuleTester = require('eslint').RuleTester;
-const rules = require('../..').rules;
+const rule = require('../prefer-to-have-length');
 
 const ruleTester = new RuleTester();
 
-ruleTester.run('prefer_to_have_length', rules['prefer-to-have-length'], {
+ruleTester.run('prefer-to-have-length', rule, {
   valid: [
     'expect(files).toHaveLength(1);',
     "expect(files.name).toBe('file');",

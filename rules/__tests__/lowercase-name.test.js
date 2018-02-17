@@ -1,7 +1,7 @@
 'use strict';
 
 const RuleTester = require('eslint').RuleTester;
-const rules = require('../..').rules;
+const rule = require('../lowercase-name');
 
 const ruleTester = new RuleTester({
   parserOptions: {
@@ -9,7 +9,7 @@ const ruleTester = new RuleTester({
   },
 });
 
-ruleTester.run('lowercase-name', rules['lowercase-name'], {
+ruleTester.run('lowercase-name', rule, {
   valid: [
     "it(' ', function () {})",
     'it(" ", function () {})',

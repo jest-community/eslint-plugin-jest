@@ -1,7 +1,7 @@
 'use strict';
 
 const RuleTester = require('eslint').RuleTester;
-const rules = require('../..').rules;
+const rule = require('../valid-expect-in-promise');
 
 const ruleTester = new RuleTester({
   parserOptions: {
@@ -12,7 +12,7 @@ const ruleTester = new RuleTester({
 const expectedMsg =
   'Promise should be returned to test its fulfillment or rejection';
 
-ruleTester.run('valid-expect-in-promise', rules['valid-expect-in-promise'], {
+ruleTester.run('valid-expect-in-promise', rule, {
   invalid: [
     {
       code: `

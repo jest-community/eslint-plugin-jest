@@ -1,11 +1,11 @@
 'use strict';
 
 const RuleTester = require('eslint').RuleTester;
-const rules = require('../..').rules;
+const rule = require('../no-test-prefixes');
 
 const ruleTester = new RuleTester();
 
-ruleTester.run('no-test-prefixes', rules['no-test-prefixes'], {
+ruleTester.run('no-test-prefixes', rule, {
   valid: [
     'describe("foo", function () {})',
     'it("foo", function () {})',

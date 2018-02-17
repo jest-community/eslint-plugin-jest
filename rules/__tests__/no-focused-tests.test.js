@@ -1,12 +1,12 @@
 'use strict';
 
 const RuleTester = require('eslint').RuleTester;
-const rules = require('../..').rules;
+const rule = require('../no-focused-tests');
 
 const ruleTester = new RuleTester();
 const expectedErrorMessage = 'Unexpected focused test.';
 
-ruleTester.run('no-focused-tests', rules['no-focused-tests'], {
+ruleTester.run('no-focused-tests', rule, {
   valid: [
     'describe()',
     'it()',

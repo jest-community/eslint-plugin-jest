@@ -1,7 +1,7 @@
 'use strict';
 
 const RuleTester = require('eslint').RuleTester;
-const rules = require('../..').rules;
+const rule = require('../prefer-expect-assertions');
 
 const ruleTester = new RuleTester({
   parserOptions: {
@@ -12,7 +12,7 @@ const ruleTester = new RuleTester({
 const expectedMsg =
   'Every test should have either `expect.assertions(<number of assertions>)` or `expect.hasAssertions()` as its first expression';
 
-ruleTester.run('prefer-expect-assertions', rules['prefer-expect-assertions'], {
+ruleTester.run('prefer-expect-assertions', rule, {
   invalid: [
     {
       code: 'it("it1", () => {})',

@@ -1,7 +1,7 @@
 'use strict';
 
 const RuleTester = require('eslint').RuleTester;
-const rules = require('../..').rules;
+const rule = require('../valid-describe');
 
 const ruleTester = new RuleTester({
   parserOptions: {
@@ -9,7 +9,7 @@ const ruleTester = new RuleTester({
   },
 });
 
-ruleTester.run('valid-describe', rules['valid-describe'], {
+ruleTester.run('valid-describe', rule, {
   valid: [
     'describe("foo", function() {})',
     'describe("foo", () => {})',

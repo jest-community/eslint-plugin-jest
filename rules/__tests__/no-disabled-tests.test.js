@@ -1,11 +1,11 @@
 'use strict';
 
 const RuleTester = require('eslint').RuleTester;
-const rules = require('../..').rules;
+const rule = require('../no-disabled-tests');
 
 const ruleTester = new RuleTester();
 
-ruleTester.run('no-disabled-tests', rules['no-disabled-tests'], {
+ruleTester.run('no-disabled-tests', rule, {
   valid: [
     'describe("foo", function () {})',
     'it("foo", function () {})',

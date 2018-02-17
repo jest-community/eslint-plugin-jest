@@ -1,14 +1,15 @@
 'use strict';
 
 const RuleTester = require('eslint').RuleTester;
-const rules = require('../..').rules;
+const rule = require('../no-hooks');
+
 const ruleTester = new RuleTester({
   parserOptions: {
     ecmaVersion: 6,
   },
 });
 
-ruleTester.run('no-hooks', rules['no-hooks'], {
+ruleTester.run('no-hooks', rule, {
   valid: [
     'test("foo")',
     'describe("foo", () => { it("bar") })',

@@ -1,11 +1,11 @@
 'use strict';
 
 const RuleTester = require('eslint').RuleTester;
-const rules = require('../..').rules;
+const rule = require('../valid-expect');
 
 const ruleTester = new RuleTester();
 
-ruleTester.run('valid-expect', rules['valid-expect'], {
+ruleTester.run('valid-expect', rule, {
   valid: [
     'expect("something").toEqual("else");',
     'expect(true).toBeDefined();',

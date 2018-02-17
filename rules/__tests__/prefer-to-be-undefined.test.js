@@ -1,11 +1,11 @@
 'use strict';
 
 const RuleTester = require('eslint').RuleTester;
-const rules = require('../../').rules;
+const rule = require('../prefer-to-be-undefined');
 
 const ruleTester = new RuleTester();
 
-ruleTester.run('prefer_to_be_undefined', rules['prefer-to-be-undefined'], {
+ruleTester.run('prefer-to-be-undefined', rule, {
   valid: [
     'expect(undefined).toBeUndefined();',
     'expect(true).not.toBeUndefined();',
