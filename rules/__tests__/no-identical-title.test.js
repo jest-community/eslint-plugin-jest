@@ -1,11 +1,11 @@
 'use strict';
 
 const RuleTester = require('eslint').RuleTester;
-const rules = require('../..').rules;
+const rule = require('../no-identical-title');
 
 const ruleTester = new RuleTester();
 
-ruleTester.run('no-identical-title', rules['no-identical-title'], {
+ruleTester.run('no-identical-title', rule, {
   valid: [
     [
       'describe("describe", function() {',

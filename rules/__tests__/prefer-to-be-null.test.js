@@ -1,11 +1,11 @@
 'use strict';
 
 const RuleTester = require('eslint').RuleTester;
-const rules = require('../../').rules;
+const rule = require('../prefer-to-be-null');
 
 const ruleTester = new RuleTester();
 
-ruleTester.run('prefer_to_be_null', rules['prefer-to-be-null'], {
+ruleTester.run('prefer-to-be-null', rule, {
   valid: [
     'expect(null).toBeNull();',
     'expect(null).toEqual();',
