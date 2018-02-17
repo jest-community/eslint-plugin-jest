@@ -14,7 +14,7 @@ module.exports = {
   },
   create(context) {
     return {
-      CallExpression: node => {
+      CallExpression(node) {
         const nodeName = getNodeName(node.callee);
 
         if (!isDescribe(node) && !isTestCase(node)) return;
@@ -40,10 +40,10 @@ function getPreferredNodeName(nodeName) {
   const firstChar = nodeName.charAt(0);
 
   if (firstChar === 'f') {
-    return nodeName.slice(1) + '.only';
+    return `${nodeName.slice(1)}.only`;
   }
 
   if (firstChar === 'x') {
-    return nodeName.slice(1) + '.skip';
+    return `${nodeName.slice(1)}.skip`;
   }
 }

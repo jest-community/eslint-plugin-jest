@@ -4,7 +4,7 @@ const getDocsUrl = require('./util').getDocsUrl;
 
 function getName(node) {
   function joinNames(a, b) {
-    return a && b ? a + '.' + b : null;
+    return a && b ? `${a}.${b}` : null;
   }
 
   switch (node && node.type) {
@@ -30,7 +30,7 @@ module.exports = {
     let testDepth = 0;
 
     return {
-      CallExpression: node => {
+      CallExpression(node) {
         const functionName = getName(node.callee);
 
         switch (functionName) {
@@ -83,7 +83,7 @@ module.exports = {
         }
       },
 
-      'CallExpression:exit': node => {
+      'CallExpression:exit'(node) {
         const functionName = getName(node.callee);
 
         switch (functionName) {

@@ -18,6 +18,8 @@ module.exports = {
   rules: {
     eqeqeq: ['error', 'smart'],
     strict: 'error',
+    'prefer-template': 'warn',
+    'object-shorthand': ['warn', 'always', { avoidExplicitReturnArrows: true }],
     'node/no-unsupported-features': 'error',
     'prettier/prettier': 'error',
   },
