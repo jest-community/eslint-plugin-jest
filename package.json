@@ -34,6 +34,7 @@
     "eslint-plugin-prettier": "^2.3.1",
     "husky": "^0.14.3",
     "jest": "^22.0.4",
+    "jest-runner-eslint": "^0.4.0",
     "lint-staged": "^6.0.0",
     "prettier": "^1.10.2",
     "prettylint": "^1.0.0",
@@ -50,7 +51,17 @@
     "*.{md,json}": ["prettier --write", "git add"]
   },
   "jest": {
-    "testEnvironment": "node"
+    "projects": [
+      {
+        "displayName": "test",
+        "testEnvironment": "node"
+      },
+      {
+        "displayName": "lint",
+        "runner": "jest-runner-eslint",
+        "testMatch": ["<rootDir>/**/*.js"]
+      }
+    ]
   },
   "commitlint": {
     "extends": ["@commitlint/config-conventional"]
