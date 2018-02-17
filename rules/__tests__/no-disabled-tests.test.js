@@ -15,6 +15,8 @@ ruleTester.run('no-disabled-tests', rule, {
     'test.only("foo", function () {})',
     'var appliedSkip = describe.skip; appliedSkip.apply(describe)',
     'var calledSkip = it.skip; calledSkip.call(it)',
+    '({ f: function () {} }).f()',
+    '(a || b).f()',
   ],
 
   invalid: [
@@ -79,6 +81,10 @@ ruleTester.run('no-disabled-tests', rule, {
       errors: [
         { message: 'Call to pending() within test', column: 48, line: 1 },
       ],
+    },
+    {
+      code: 'pending();',
+      errors: [{ message: 'Call to pending()', column: 1, line: 1 }],
     },
     {
       code: 'describe("contains a call to pending", function () { pending() })',

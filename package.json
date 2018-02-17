@@ -51,6 +51,14 @@
     "*.{md,json}": ["prettier --write", "git add"]
   },
   "jest": {
+    "coverageThreshold": {
+      "global": {
+        "branches": 96,
+        "functions": 97,
+        "lines": 99,
+        "statements": 99
+      }
+    },
     "projects": [
       {
         "displayName": "test",
