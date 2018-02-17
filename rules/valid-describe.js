@@ -68,7 +68,7 @@ module.exports = {
               if (node.type === 'ReturnStatement') {
                 context.report({
                   message: 'Unexpected return statement in describe callback',
-                  node: node,
+                  node,
                 });
               }
             });

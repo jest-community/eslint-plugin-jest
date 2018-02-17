@@ -14,7 +14,7 @@ module.exports = {
         (context.options[0] && context.options[0].maxSize) || 50;
 
       return {
-        ExpressionStatement: node => {
+        ExpressionStatement(node) {
           const startLine = node.loc.start.line;
           const endLine = node.loc.end.line;
           const lineCount = endLine - startLine;

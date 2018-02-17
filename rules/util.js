@@ -108,7 +108,7 @@ const testCaseNames = Object.assign(Object.create(null), {
 
 const getNodeName = node => {
   if (node.type === 'MemberExpression') {
-    return node.object.name + '.' + node.property.name;
+    return `${node.object.name}.${node.property.name}`;
   }
   return node.name;
 };
@@ -145,23 +145,23 @@ const getDocsUrl = filename => {
 };
 
 module.exports = {
-  method: method,
-  method2: method2,
-  argument: argument,
-  argument2: argument2,
-  expectCase: expectCase,
-  expectNotCase: expectNotCase,
-  expectResolveCase: expectResolveCase,
-  expectRejectCase: expectRejectCase,
-  expectToBeCase: expectToBeCase,
-  expectNotToBeCase: expectNotToBeCase,
-  expectToEqualCase: expectToEqualCase,
-  expectNotToEqualCase: expectNotToEqualCase,
-  expectToBeUndefinedCase: expectToBeUndefinedCase,
-  expectNotToBeUndefinedCase: expectNotToBeUndefinedCase,
-  getNodeName: getNodeName,
-  isDescribe: isDescribe,
-  isFunction: isFunction,
-  isTestCase: isTestCase,
-  getDocsUrl: getDocsUrl,
+  method,
+  method2,
+  argument,
+  argument2,
+  expectCase,
+  expectNotCase,
+  expectResolveCase,
+  expectRejectCase,
+  expectToBeCase,
+  expectNotToBeCase,
+  expectToEqualCase,
+  expectNotToEqualCase,
+  expectToBeUndefinedCase,
+  expectNotToBeUndefinedCase,
+  getNodeName,
+  isDescribe,
+  isFunction,
+  isTestCase,
+  getDocsUrl,
 };

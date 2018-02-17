@@ -62,7 +62,7 @@ module.exports = {
           context.report({
             message: '`{{ method }}`s should begin with lowercase',
             data: { method: erroneousMethod },
-            node: node,
+            node,
           });
         }
       },
