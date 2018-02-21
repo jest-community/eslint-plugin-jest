@@ -28,9 +28,6 @@ module.exports = {
   create: context => ({
     CallExpression(node) {
       const callee = node.callee;
-      if (!callee) {
-        return;
-      }
 
       if (
         callee.type === 'MemberExpression' &&
