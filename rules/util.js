@@ -66,14 +66,6 @@ const expectNotToEqualCase = (node, arg) =>
     arg === null) ||
     (argument2(node).name === 'undefined' && arg === undefined));
 
-const expectToBeUndefinedCase = node =>
-  !(expectNotCase(node) || expectResolveCase(node) || expectRejectCase(node)) &&
-  expectCase(node) &&
-  methodName(node) === 'toBeUndefined';
-
-const expectNotToBeUndefinedCase = node =>
-  expectNotCase(node) && methodName2(node) === 'toBeUndefined';
-
 const method = node => node.parent.property;
 
 const method2 = node => node.parent.parent.property;
@@ -158,8 +150,6 @@ module.exports = {
   expectNotToBeCase,
   expectToEqualCase,
   expectNotToEqualCase,
-  expectToBeUndefinedCase,
-  expectNotToBeUndefinedCase,
   getNodeName,
   isDescribe,
   isFunction,
