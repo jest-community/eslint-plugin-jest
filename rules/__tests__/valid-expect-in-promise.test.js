@@ -166,6 +166,7 @@ ruleTester.run('valid-expect-in-promise', rule, {
       code: `
          test('invalid return', () => {
            const promise = something().then(value => {
+             const foo = "foo";
              return expect(value).toBe('red');
            });
          });
