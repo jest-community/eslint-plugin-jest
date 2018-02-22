@@ -62,6 +62,16 @@ ruleTester.run('valid-describe', rule, {
       ],
     },
     {
+      code: 'describe("foo", "foo2")',
+      errors: [
+        {
+          message: 'Second argument must be function',
+          line: 1,
+          column: 10,
+        },
+      ],
+    },
+    {
       code: 'describe("foo", async () => {})',
       errors: [{ message: 'No async describe callback', line: 1, column: 17 }],
     },

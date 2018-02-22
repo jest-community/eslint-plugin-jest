@@ -51,28 +51,32 @@ module.exports = {
               loc: paramsLocation(node.arguments),
             });
           }
-          if (isFunction(callbackFunction)) {
-            if (isAsync(callbackFunction)) {
-              context.report({
-                message: 'No async describe callback',
-                node: callbackFunction,
-              });
-            }
-            if (hasParams(callbackFunction)) {
-              context.report({
-                message: 'Unexpected argument(s) in describe callback',
-                loc: paramsLocation(callbackFunction.params),
-              });
-            }
-            callbackFunction.body.body.forEach(node => {
-              if (node.type === 'ReturnStatement') {
-                context.report({
-                  message: 'Unexpected return statement in describe callback',
-                  node,
-                });
-              }
+          if (!isFunction(callbackFunction)) {
+            return context.report({
+              message: 'Second argument must be function',
+              loc: paramsLocation(node.arguments),
             });
           }
+          if (isAsync(callbackFunction)) {
+            context.report({
+              message: 'No async describe callback',
+              node: callbackFunction,
+            });
+          }
+          if (hasParams(callbackFunction)) {
+            context.report({
+              message: 'Unexpected argument(s) in describe callback',
+              loc: paramsLocation(callbackFunction.params),
+            });
+          }
+          callbackFunction.body.body.forEach(node => {
+            if (node.type === 'ReturnStatement') {
+              context.report({
+                message: 'Unexpected return statement in describe callback',
+                node,
+              });
+            }
+          });
         }
       },
     };

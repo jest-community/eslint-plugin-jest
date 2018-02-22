@@ -10,6 +10,8 @@ ruleTester.run('prefer-to-have-length', rule, {
     'expect(files).toHaveLength(1);',
     "expect(files.name).toBe('file');",
     'expect(result).toBe(true);',
+    `expect(user.getUserName(5)).resolves.toEqual('Paul')`,
+    `expect(user.getUserName(5)).rejects.toEqual('Paul')`,
   ],
 
   invalid: [
