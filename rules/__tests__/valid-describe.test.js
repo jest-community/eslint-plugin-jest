@@ -11,6 +11,7 @@ const ruleTester = new RuleTester({
 
 ruleTester.run('valid-describe', rule, {
   valid: [
+    'describe()',
     'describe("foo", function() {})',
     'describe("foo", () => {})',
     'describe(`foo`, () => {})',

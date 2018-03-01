@@ -37,6 +37,10 @@ module.exports = {
     return {
       CallExpression(node) {
         if (isDescribe(node)) {
+          if (!node.arguments.length) {
+            return;
+          }
+
           const name = node.arguments[0];
           const callbackFunction = node.arguments[1];
           if (!isString(name)) {
