@@ -6,6 +6,7 @@ const noDisabledTests = require('./rules/no-disabled-tests');
 const noFocusedTests = require('./rules/no-focused-tests');
 const noHooks = require('./rules/no-hooks');
 const noIdenticalTitle = require('./rules/no-identical-title');
+const noJestImport = require('./rules/no-jest-import');
 const noLargeSnapshots = require('./rules/no-large-snapshots');
 const noTestPrefixes = require('./rules/no-test-prefixes');
 const preferToBeNull = require('./rules/prefer-to-be-null');
@@ -29,6 +30,7 @@ module.exports = {
         'jest/no-disabled-tests': 'warn',
         'jest/no-focused-tests': 'error',
         'jest/no-identical-title': 'error',
+        'jest/no-jest-import': 'error',
         'jest/prefer-to-have-length': 'warn',
         'jest/valid-expect': 'error',
       },
@@ -67,6 +69,7 @@ module.exports = {
     'no-focused-tests': noFocusedTests,
     'no-hooks': noHooks,
     'no-identical-title': noIdenticalTitle,
+    'no-jest-import': noJestImport,
     'no-large-snapshots': noLargeSnapshots,
     'no-test-prefixes': noTestPrefixes,
     'prefer-to-be-null': preferToBeNull,
