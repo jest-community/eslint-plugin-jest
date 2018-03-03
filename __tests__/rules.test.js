@@ -7,7 +7,7 @@ const rules = require('../index').rules;
 describe('rules', () => {
   it('should have a corresponding doc for each rule', () => {
     Object.keys(rules).forEach(rule => {
-      const docPath = path.join(__dirname, '..', 'docs', 'rules', `${rule}.md`);
+      const docPath = path.resolve(__dirname, '../docs/rules', `${rule}.md`);
 
       if (!fs.existsSync(docPath)) {
         throw new Error(
