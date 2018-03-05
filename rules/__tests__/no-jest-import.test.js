@@ -3,6 +3,7 @@
 const rule = require('../no-jest-import.js');
 const RuleTester = require('eslint').RuleTester;
 const ruleTester = new RuleTester();
+const message = `Jest is automatically in scope. Do not import "jest", as Jest doesn't export anything.`;
 
 ruleTester.run('no-jest-import', rule, {
   valid: [
@@ -20,7 +21,7 @@ ruleTester.run('no-jest-import', rule, {
         {
           endColumn: 15,
           column: 9,
-          message: `Jest is automatically in scope. Do not import Jest, as it doesn't export anything.`,
+          message,
         },
       ],
     },
@@ -31,7 +32,7 @@ ruleTester.run('no-jest-import', rule, {
         {
           endColumn: 24,
           column: 1,
-          message: `Jest is automatically in scope. Do not import Jest, as it doesn't export anything.`,
+          message,
         },
       ],
     },
@@ -41,7 +42,7 @@ ruleTester.run('no-jest-import', rule, {
         {
           endColumn: 26,
           column: 20,
-          message: `Jest is automatically in scope. Do not import Jest, as it doesn't export anything.`,
+          message,
         },
       ],
     },
@@ -52,7 +53,7 @@ ruleTester.run('no-jest-import', rule, {
         {
           endColumn: 34,
           column: 1,
-          message: `Jest is automatically in scope. Do not import Jest, as it doesn't export anything.`,
+          message,
         },
       ],
     },
@@ -63,7 +64,7 @@ ruleTester.run('no-jest-import', rule, {
         {
           endColumn: 28,
           column: 22,
-          message: `Jest is automatically in scope. Do not import Jest, as it doesn't export anything.`,
+          message,
         },
       ],
     },

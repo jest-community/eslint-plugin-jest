@@ -2,6 +2,7 @@
 
 const getDocsUrl = require('./util').getDocsUrl;
 const getNodeName = require('./util').getNodeName;
+const message = `Jest is automatically in scope. Do not import "jest", as Jest doesn't export anything.`;
 
 module.exports = {
   meta: {
@@ -15,7 +16,7 @@ module.exports = {
         if (node.source.value === 'jest') {
           context.report({
             node,
-            message: `Jest is automatically in scope. Do not import Jest, as it doesn't export anything.`,
+            message,
           });
         }
       },
@@ -30,7 +31,7 @@ module.exports = {
               },
               start: node.arguments[0].loc.start,
             },
-            message: `Jest is automatically in scope. Do not import Jest, as it doesn't export anything.`,
+            message,
           });
         }
       },
