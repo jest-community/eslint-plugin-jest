@@ -173,5 +173,19 @@ ruleTester.run('valid-expect', rule, {
         { message: "Cannot use 'rejects' with an awaited expect expression" },
       ],
     },
+    {
+      code:
+        'test("foo", async () => { expect(await Promise.resolve(undefined)).resolves.not.toBeDefined(); });',
+      errors: [
+        { message: "Cannot use 'resolves' with an awaited expect expression" },
+      ],
+    },
+    {
+      code:
+        'test("foo", async () => { expect(await Promise.reject(undefined)).rejects.not.toBeDefined(); });',
+      errors: [
+        { message: "Cannot use 'rejects' with an awaited expect expression" },
+      ],
+    },
   ],
 });
