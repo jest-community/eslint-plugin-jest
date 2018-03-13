@@ -11,7 +11,6 @@ const ruleTester = new RuleTester({
 
 ruleTester.run('valid-describe', rule, {
   valid: [
-    'describe()',
     'describe("foo", function() {})',
     'describe("foo", () => {})',
     'describe(`foo`, () => {})',
@@ -69,6 +68,16 @@ ruleTester.run('valid-describe', rule, {
           message: 'Second argument must be function',
           line: 1,
           column: 10,
+        },
+      ],
+    },
+    {
+      code: 'describe()',
+      errors: [
+        {
+          message: 'Describe requires name and callback arguments',
+          line: 1,
+          column: 1,
         },
       ],
     },
