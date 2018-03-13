@@ -37,6 +37,13 @@ module.exports = {
     return {
       CallExpression(node) {
         if (isDescribe(node)) {
+          if (node.arguments.length === 0) {
+            return context.report({
+              message: 'Describe requires name and callback arguments',
+              loc: node.loc,
+            });
+          }
+
           const name = node.arguments[0];
           const callbackFunction = node.arguments[1];
           if (!isString(name)) {

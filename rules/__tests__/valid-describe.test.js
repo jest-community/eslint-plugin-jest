@@ -72,6 +72,16 @@ ruleTester.run('valid-describe', rule, {
       ],
     },
     {
+      code: 'describe()',
+      errors: [
+        {
+          message: 'Describe requires name and callback arguments',
+          line: 1,
+          column: 1,
+        },
+      ],
+    },
+    {
       code: 'describe("foo", async () => {})',
       errors: [{ message: 'No async describe callback', line: 1, column: 17 }],
     },
