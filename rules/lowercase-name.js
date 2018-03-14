@@ -54,11 +54,20 @@ module.exports = {
     },
   },
   create(context) {
+    const ignore = (context.options[0] && context.options[0].ignore) || [];
+    const ignoredFunctionNames = ignore.reduce((accumulator, value) => {
+      accumulator[value] = true;
+      return accumulator;
+    }, Object.create(null));
+
+    const isIgnoredFunctionName = node =>
+      ignoredFunctionNames[node.callee.name];
+
     return {
       CallExpression(node) {
         const erroneousMethod = descriptionBeginsWithLowerCase(node);
 
-        if (erroneousMethod) {
+        if (erroneousMethod && !isIgnoredFunctionName(node)) {
           context.report({
             message: '`{{ method }}`s should begin with lowercase',
             data: { method: erroneousMethod },
