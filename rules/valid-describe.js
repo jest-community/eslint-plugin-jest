@@ -10,6 +10,10 @@ const isString = node =>
   (node.type === 'Literal' && typeof node.value === 'string') ||
   node.type === 'TemplateLiteral';
 
+const isConciseBodyArrowFunction = node =>
+  node.type === 'ArrowFunctionExpression' &&
+  node.body.type === 'CallExpression';
+
 const hasParams = node => node.params.length > 0;
 
 const paramsLocation = params => {
@@ -74,6 +78,13 @@ module.exports = {
             context.report({
               message: 'Unexpected argument(s) in describe callback',
               loc: paramsLocation(callbackFunction.params),
+            });
+          }
+          if (isConciseBodyArrowFunction(callbackFunction)) {
+            return context.report({
+              message:
+                'Arrow function describe callback must have a block body',
+              node: callbackFunction,
             });
           }
           callbackFunction.body.body.forEach(node => {
