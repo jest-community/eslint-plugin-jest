@@ -13,7 +13,8 @@ const handleTestCaseTitles = (context, titles, node, title) => {
   if (isTestCase(node)) {
     if (titles.indexOf(title) !== -1) {
       context.report({
-        message: 'Test title is used multiple times in the same test suite.',
+        message:
+          'Test title is used multiple times in the same describe block.',
         node,
       });
     }
@@ -21,13 +22,14 @@ const handleTestCaseTitles = (context, titles, node, title) => {
   }
 };
 
-const handleTestSuiteTitles = (context, titles, node, title) => {
+const handleDescribeBlockTitles = (context, titles, node, title) => {
   if (!isDescribe(node)) {
     return;
   }
   if (titles.indexOf(title) !== -1) {
     context.report({
-      message: 'Test suite title is used multiple times.',
+      message:
+        'Describe block title is used multiple times in the same describe block.',
       node,
     });
   }
@@ -57,7 +59,7 @@ module.exports = {
 
         const title = node.arguments[0].value;
         handleTestCaseTitles(context, currentLayer.testTitles, node, title);
-        handleTestSuiteTitles(
+        handleDescribeBlockTitles(
           context,
           currentLayer.describeTitles,
           node,
