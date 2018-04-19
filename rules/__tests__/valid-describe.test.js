@@ -122,6 +122,20 @@ ruleTester.run('valid-describe', rule, {
     },
     {
       code: `
+      describe('foo', () =>
+        test('bar', () => {})
+      )
+      `,
+      errors: [
+        {
+          message: 'Arrow function describe callback must have a block body',
+          line: 2,
+          column: 23,
+        },
+      ],
+    },
+    {
+      code: `
       describe('foo', function () {
         return Promise.resolve().then(() => {
           it('breaks', () => {
