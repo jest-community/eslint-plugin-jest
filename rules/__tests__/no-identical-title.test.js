@@ -93,7 +93,8 @@ ruleTester.run('no-identical-title', rule, {
       ].join('\n'),
       errors: [
         {
-          message: 'Test title is used multiple times in the same test suite.',
+          message:
+            'Test title is used multiple times in the same describe block.',
           column: 4,
           line: 3,
         },
@@ -105,7 +106,8 @@ ruleTester.run('no-identical-title', rule, {
       ),
       errors: [
         {
-          message: 'Test title is used multiple times in the same test suite.',
+          message:
+            'Test title is used multiple times in the same describe block.',
           column: 1,
           line: 2,
         },
@@ -118,7 +120,8 @@ ruleTester.run('no-identical-title', rule, {
       ].join('\n'),
       errors: [
         {
-          message: 'Test title is used multiple times in the same test suite.',
+          message:
+            'Test title is used multiple times in the same describe block.',
           column: 1,
           line: 2,
         },
@@ -130,7 +133,8 @@ ruleTester.run('no-identical-title', rule, {
       ),
       errors: [
         {
-          message: 'Test title is used multiple times in the same test suite.',
+          message:
+            'Test title is used multiple times in the same describe block.',
           column: 1,
           line: 2,
         },
@@ -143,7 +147,8 @@ ruleTester.run('no-identical-title', rule, {
       ].join('\n'),
       errors: [
         {
-          message: 'Test title is used multiple times in the same test suite.',
+          message:
+            'Test title is used multiple times in the same describe block.',
           column: 1,
           line: 2,
         },
@@ -156,7 +161,8 @@ ruleTester.run('no-identical-title', rule, {
       ].join('\n'),
       errors: [
         {
-          message: 'Test suite title is used multiple times.',
+          message:
+            'Describe block title is used multiple times in the same describe block.',
           column: 1,
           line: 2,
         },
@@ -169,7 +175,8 @@ ruleTester.run('no-identical-title', rule, {
       ].join('\n'),
       errors: [
         {
-          message: 'Test suite title is used multiple times.',
+          message:
+            'Describe block title is used multiple times in the same describe block.',
           column: 1,
           line: 2,
         },
@@ -182,7 +189,8 @@ ruleTester.run('no-identical-title', rule, {
       ].join('\n'),
       errors: [
         {
-          message: 'Test suite title is used multiple times.',
+          message:
+            'Describe block title is used multiple times in the same describe block.',
           column: 1,
           line: 2,
         },
@@ -197,7 +205,8 @@ ruleTester.run('no-identical-title', rule, {
       ].join('\n'),
       errors: [
         {
-          message: 'Test suite title is used multiple times.',
+          message:
+            'Describe block title is used multiple times in the same describe block.',
           column: 1,
           line: 4,
         },
