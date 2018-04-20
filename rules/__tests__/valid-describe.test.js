@@ -34,6 +34,11 @@ ruleTester.run('valid-describe', rule, {
       })
     })
     `,
+    `
+    describe('foo', () =>
+      test('bar', () => {})
+    )
+    `,
   ],
   invalid: [
     {
@@ -119,20 +124,6 @@ ruleTester.run('valid-describe', rule, {
         });
       });`,
       errors: [{ message: 'No async describe callback', line: 6, column: 27 }],
-    },
-    {
-      code: `
-      describe('foo', () =>
-        test('bar', () => {})
-      )
-      `,
-      errors: [
-        {
-          message: 'Arrow function describe callback must have a block body',
-          line: 2,
-          column: 23,
-        },
-      ],
     },
     {
       code: `
