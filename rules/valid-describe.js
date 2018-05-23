@@ -76,14 +76,16 @@ module.exports = {
               loc: paramsLocation(callbackFunction.params),
             });
           }
-          callbackFunction.body.body.forEach(node => {
-            if (node.type === 'ReturnStatement') {
-              context.report({
-                message: 'Unexpected return statement in describe callback',
-                node,
-              });
-            }
-          });
+          if (callbackFunction.body.type === 'BlockStatement') {
+            callbackFunction.body.body.forEach(node => {
+              if (node.type === 'ReturnStatement') {
+                context.report({
+                  message: 'Unexpected return statement in describe callback',
+                  node,
+                });
+              }
+            });
+          }
         }
       },
     };

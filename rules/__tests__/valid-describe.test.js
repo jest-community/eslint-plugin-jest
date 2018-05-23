@@ -34,6 +34,11 @@ ruleTester.run('valid-describe', rule, {
       })
     })
     `,
+    `
+    describe('foo', () =>
+      test('bar', () => {})
+    )
+    `,
   ],
   invalid: [
     {
