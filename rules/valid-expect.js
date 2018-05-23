@@ -5,19 +5,72 @@
  * MIT license, Tom Vincent.
  */
 
-const getDocsUrl = require('./util').getDocsUrl;
+const get = require('lodash.get');
+const util = require('./util');
 
 const expectProperties = ['not', 'resolves', 'rejects'];
 
 module.exports = {
   meta: {
     docs: {
-      url: getDocsUrl(__filename),
+      url: util.getDocsUrl(__filename),
     },
   },
   create(context) {
+    function validateAsyncExpects(node) {
+      const callback = node.arguments[1];
+      if (
+        callback &&
+        util.isFunction(callback) &&
+        callback.body.type === 'BlockStatement'
+      ) {
+        callback.body.body
+          .filter(node => node.type === 'ExpressionStatement')
+          .filter(node => {
+            const objectName = get(
+              node,
+              'expression.callee.object.object.callee.name'
+            );
+            const propertyName = get(
+              node,
+              'expression.callee.object.property.name'
+            );
+
+            return (
+              node.expression.type === 'CallExpression' &&
+              objectName === 'expect' &&
+              (propertyName === 'resolves' || propertyName === 'rejects')
+            );
+          })
+          .forEach(node => {
+            const propertyName = get(
+              node,
+              'expression.callee.object.property.name'
+            );
+            const isAwaitInsideExpect =
+              get(node, 'expression.callee.object.object.arguments[0].type') ===
+              'AwaitExpression';
+
+            context.report({
+              node,
+              message: isAwaitInsideExpect
+                ? "Cannot use '{{ propertyName }}' with an awaited expect expression"
+                : callback.async
+                  ? "Must await 'expect.{{ propertyName }}' statement"
+                  : "Must return or await 'expect.{{ propertyName }}' statement",
+              data: { propertyName },
+            });
+          });
+      }
+    }
+
     return {
       CallExpression(node) {
+        if (util.isTestCase(node)) {
+          validateAsyncExpects(node);
+          return;
+        }
+
         const calleeName = node.callee.name;
 
         if (calleeName === 'expect') {

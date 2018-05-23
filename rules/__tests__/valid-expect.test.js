@@ -3,7 +3,11 @@
 const RuleTester = require('eslint').RuleTester;
 const rule = require('../valid-expect');
 
-const ruleTester = new RuleTester();
+const ruleTester = new RuleTester({
+  parserOptions: {
+    ecmaVersion: 8,
+  },
+});
 
 ruleTester.run('valid-expect', rule, {
   valid: [
@@ -11,8 +15,12 @@ ruleTester.run('valid-expect', rule, {
     'expect(true).toBeDefined();',
     'expect([1, 2, 3]).toEqual([1, 2, 3]);',
     'expect(undefined).not.toBeDefined();',
-    'expect(Promise.resolve(2)).resolves.toBeDefined();',
-    'expect(Promise.reject(2)).rejects.toBeDefined();',
+    'test("foo", () => { return expect(Promise.resolve(2)).resolves.toBeDefined(); });',
+    'test("foo", async () => { await expect(Promise.reject(2)).rejects.toBeDefined(); });',
+    'test("foo", () => expect(Promise.resolve(2)).resolves.toBeDefined());',
+    'test("foo", async () => await expect(Promise.reject(2)).rejects.toBeDefined());',
+    'test("foo", async () => { expect(await Promise.resolve(2)).toBeDefined(); });',
+    'test("foo", async () => { expect(await Promise.reject(2)).toBeDefined(); });',
   ],
 
   invalid: [
@@ -129,6 +137,54 @@ ruleTester.run('valid-expect', rule, {
           column: 14,
           message: '"not" needs to call a matcher.',
         },
+      ],
+    },
+    {
+      code:
+        'test("foo", () => { expect(Promise.resolve(2)).resolves.toBeDefined(); });',
+      errors: [{ message: "Must return or await 'expect.resolves' statement" }],
+    },
+    {
+      code:
+        'test("foo", async () => { expect(Promise.resolve(2)).resolves.toBeDefined(); });',
+      errors: [{ message: "Must await 'expect.resolves' statement" }],
+    },
+    {
+      code:
+        'test("foo", () => { expect(Promise.reject(2)).rejects.toBeDefined(); });',
+      errors: [{ message: "Must return or await 'expect.rejects' statement" }],
+    },
+    {
+      code:
+        'test("foo", async () => { expect(Promise.reject(2)).rejects.toBeDefined(); });',
+      errors: [{ message: "Must await 'expect.rejects' statement" }],
+    },
+    {
+      code:
+        'test("foo", async () => { expect(await Promise.resolve(2)).resolves.toBeDefined(); });',
+      errors: [
+        { message: "Cannot use 'resolves' with an awaited expect expression" },
+      ],
+    },
+    {
+      code:
+        'test("foo", async () => { expect(await Promise.reject(2)).rejects.toBeDefined(); });',
+      errors: [
+        { message: "Cannot use 'rejects' with an awaited expect expression" },
+      ],
+    },
+    {
+      code:
+        'test("foo", async () => { expect(await Promise.resolve(undefined)).resolves.not.toBeDefined(); });',
+      errors: [
+        { message: "Cannot use 'resolves' with an awaited expect expression" },
+      ],
+    },
+    {
+      code:
+        'test("foo", async () => { expect(await Promise.reject(undefined)).rejects.not.toBeDefined(); });',
+      errors: [
+        { message: "Cannot use 'rejects' with an awaited expect expression" },
       ],
     },
   ],

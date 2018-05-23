@@ -73,5 +73,8 @@
   },
   "commitlint": {
     "extends": ["@commitlint/config-conventional"]
+  },
+  "dependencies": {
+    "lodash.get": "^4.4.2"
   }
 }
