@@ -22,7 +22,11 @@ module.exports = {
       },
       CallExpression(node) {
         const calleeName = getNodeName(node.callee);
-        if (calleeName === 'require' && node.arguments[0].value === 'jest') {
+        if (
+          calleeName === 'require' &&
+          node.arguments[0] &&
+          node.arguments[0].value === 'jest'
+        ) {
           context.report({
             loc: {
               end: {
