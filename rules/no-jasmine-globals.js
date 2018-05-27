@@ -18,7 +18,7 @@ module.exports = {
         if (calleeName === 'spyOn' || calleeName === 'spyOnProperty') {
           context.report({
             node,
-            message: `Avoid using global \`${calleeName}\`, prefer \`jest.spyOn\``,
+            message: `Illegal usage of global \`${calleeName}\`, prefer \`jest.spyOn\``,
           });
           return;
         }
@@ -27,7 +27,7 @@ module.exports = {
           context.report({
             node,
             message:
-              'Avoid global `fail`, prefer throwing an error, or the `done` callback',
+              'Illegal usage of `fail`, prefer throwing an error, or the `done.fail` callback',
           });
           return;
         }
@@ -36,7 +36,7 @@ module.exports = {
           context.report({
             node,
             message:
-              'Avoid global `pending`, prefer explicitly skipping a test',
+              'Illegal usage of `pending`, prefer explicitly skipping a test using `test.skip`',
           });
           return;
         }
@@ -56,7 +56,7 @@ module.exports = {
                 return [fixer.replaceText(node.callee.object, 'expect')];
               },
               node,
-              message: `Avoid using \`${calleeName}\`, prefer \`expect.${functionName}\``,
+              message: `Illegal usage of \`${calleeName}\`, prefer \`expect.${functionName}\``,
             });
             return;
           }
@@ -64,7 +64,7 @@ module.exports = {
           if (functionName === 'addMatchers') {
             context.report({
               node,
-              message: `Avoid using \`${calleeName}\`, prefer \`expect.extend\``,
+              message: `Illegal usage of \`${calleeName}\`, prefer \`expect.extend\``,
             });
             return;
           }
@@ -72,14 +72,14 @@ module.exports = {
           if (functionName === 'createSpy') {
             context.report({
               node,
-              message: `Avoid using \`${calleeName}\`, prefer \`jest.fn\``,
+              message: `Illegal usage of \`${calleeName}\`, prefer \`jest.fn\``,
             });
             return;
           }
 
           context.report({
             node,
-            message: 'Avoid using jasmine global',
+            message: 'Illegal usage of jasmine global',
           });
         }
       },
@@ -97,14 +97,14 @@ module.exports = {
                   ];
                 },
                 node,
-                message: 'Avoid using jasmine global',
+                message: 'Illegal usage of jasmine global',
               });
               return;
             }
 
             context.report({
               node,
-              message: 'Avoid using jasmine global',
+              message: 'Illegal usage of jasmine global',
             });
           }
         }

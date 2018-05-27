@@ -46,7 +46,7 @@ The following patterns would not be considered warnings:
 jest.setTimeout(5000);
 
 test('my test', () => {
-  spyOn(some, 'object');
+  jest.spyOn(some, 'object');
 });
 
 test('my test', () => {

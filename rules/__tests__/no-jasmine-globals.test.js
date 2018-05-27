@@ -20,7 +20,7 @@ ruleTester.run('no-jasmine-globals', rule, {
       code: 'spyOn(some, "object")',
       errors: [
         {
-          message: 'Avoid using global `spyOn`, prefer `jest.spyOn`',
+          message: 'Illegal usage of global `spyOn`, prefer `jest.spyOn`',
           column: 1,
           line: 1,
         },
@@ -30,7 +30,8 @@ ruleTester.run('no-jasmine-globals', rule, {
       code: 'spyOnProperty(some, "object")',
       errors: [
         {
-          message: 'Avoid using global `spyOnProperty`, prefer `jest.spyOn`',
+          message:
+            'Illegal usage of global `spyOnProperty`, prefer `jest.spyOn`',
           column: 1,
           line: 1,
         },
@@ -41,7 +42,7 @@ ruleTester.run('no-jasmine-globals', rule, {
       errors: [
         {
           message:
-            'Avoid global `fail`, prefer throwing an error, or the `done` callback',
+            'Illegal usage of `fail`, prefer throwing an error, or the `done.fail` callback',
           column: 1,
           line: 1,
         },
@@ -51,7 +52,8 @@ ruleTester.run('no-jasmine-globals', rule, {
       code: 'pending()',
       errors: [
         {
-          message: 'Avoid global `pending`, prefer explicitly skipping a test',
+          message:
+            'Illegal usage of `pending`, prefer explicitly skipping a test using `test.skip`',
           column: 1,
           line: 1,
         },
@@ -61,7 +63,7 @@ ruleTester.run('no-jasmine-globals', rule, {
       code: 'jasmine.DEFAULT_TIMEOUT_INTERVAL = 5000;',
       errors: [
         {
-          message: 'Avoid using jasmine global',
+          message: 'Illegal usage of jasmine global',
           column: 1,
           line: 1,
         },
@@ -72,7 +74,8 @@ ruleTester.run('no-jasmine-globals', rule, {
       code: 'jasmine.addMatchers(matchers)',
       errors: [
         {
-          message: 'Avoid using `jasmine.addMatchers`, prefer `expect.extend`',
+          message:
+            'Illegal usage of `jasmine.addMatchers`, prefer `expect.extend`',
           column: 1,
           line: 1,
         },
@@ -82,7 +85,7 @@ ruleTester.run('no-jasmine-globals', rule, {
       code: 'jasmine.createSpy()',
       errors: [
         {
-          message: 'Avoid using `jasmine.createSpy`, prefer `jest.fn`',
+          message: 'Illegal usage of `jasmine.createSpy`, prefer `jest.fn`',
           column: 1,
           line: 1,
         },
@@ -92,7 +95,7 @@ ruleTester.run('no-jasmine-globals', rule, {
       code: 'jasmine.any()',
       errors: [
         {
-          message: 'Avoid using `jasmine.any`, prefer `expect.any`',
+          message: 'Illegal usage of `jasmine.any`, prefer `expect.any`',
           column: 1,
           line: 1,
         },
@@ -103,7 +106,8 @@ ruleTester.run('no-jasmine-globals', rule, {
       code: 'jasmine.anything()',
       errors: [
         {
-          message: 'Avoid using `jasmine.anything`, prefer `expect.anything`',
+          message:
+            'Illegal usage of `jasmine.anything`, prefer `expect.anything`',
           column: 1,
           line: 1,
         },
@@ -115,7 +119,7 @@ ruleTester.run('no-jasmine-globals', rule, {
       errors: [
         {
           message:
-            'Avoid using `jasmine.arrayContaining`, prefer `expect.arrayContaining`',
+            'Illegal usage of `jasmine.arrayContaining`, prefer `expect.arrayContaining`',
           column: 1,
           line: 1,
         },
@@ -127,7 +131,7 @@ ruleTester.run('no-jasmine-globals', rule, {
       errors: [
         {
           message:
-            'Avoid using `jasmine.objectContaining`, prefer `expect.objectContaining`',
+            'Illegal usage of `jasmine.objectContaining`, prefer `expect.objectContaining`',
           column: 1,
           line: 1,
         },
@@ -139,7 +143,7 @@ ruleTester.run('no-jasmine-globals', rule, {
       errors: [
         {
           message:
-            'Avoid using `jasmine.stringMatching`, prefer `expect.stringMatching`',
+            'Illegal usage of `jasmine.stringMatching`, prefer `expect.stringMatching`',
           column: 1,
           line: 1,
         },
@@ -150,7 +154,7 @@ ruleTester.run('no-jasmine-globals', rule, {
       code: 'jasmine.getEnv()',
       errors: [
         {
-          message: 'Avoid using jasmine global',
+          message: 'Illegal usage of jasmine global',
           column: 1,
           line: 1,
         },
@@ -160,7 +164,7 @@ ruleTester.run('no-jasmine-globals', rule, {
       code: 'jasmine.empty()',
       errors: [
         {
-          message: 'Avoid using jasmine global',
+          message: 'Illegal usage of jasmine global',
           column: 1,
           line: 1,
         },
@@ -170,7 +174,7 @@ ruleTester.run('no-jasmine-globals', rule, {
       code: 'jasmine.falsy()',
       errors: [
         {
-          message: 'Avoid using jasmine global',
+          message: 'Illegal usage of jasmine global',
           column: 1,
           line: 1,
         },
@@ -180,7 +184,7 @@ ruleTester.run('no-jasmine-globals', rule, {
       code: 'jasmine.truthy()',
       errors: [
         {
-          message: 'Avoid using jasmine global',
+          message: 'Illegal usage of jasmine global',
           column: 1,
           line: 1,
         },
@@ -190,7 +194,7 @@ ruleTester.run('no-jasmine-globals', rule, {
       code: 'jasmine.arrayWithExactContents()',
       errors: [
         {
-          message: 'Avoid using jasmine global',
+          message: 'Illegal usage of jasmine global',
           column: 1,
           line: 1,
         },
@@ -200,7 +204,7 @@ ruleTester.run('no-jasmine-globals', rule, {
       code: 'jasmine.clock()',
       errors: [
         {
-          message: 'Avoid using jasmine global',
+          message: 'Illegal usage of jasmine global',
           column: 1,
           line: 1,
         },
@@ -210,7 +214,7 @@ ruleTester.run('no-jasmine-globals', rule, {
       code: 'jasmine.MAX_PRETTY_PRINT_ARRAY_LENGTH = 42',
       errors: [
         {
-          message: 'Avoid using jasmine global',
+          message: 'Illegal usage of jasmine global',
           column: 1,
           line: 1,
         },
