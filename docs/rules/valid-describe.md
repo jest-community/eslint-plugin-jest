@@ -8,18 +8,18 @@ errors.
 This rule validates that the second parameter of a `describe()` function is a
 callback function. This callback function:
 
-* should not be
+- should not be
   [async](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function)
-* should not contain any parameters
-* should not contain any `return` statements
+- should not contain any parameters
+- should not contain any `return` statements
 
 The following `describe` function aliases are also validated:
 
-* `describe`
-* `describe.only`
-* `describe.skip`
-* `fdescribe`
-* `xdescribe`
+- `describe`
+- `describe.only`
+- `describe.skip`
+- `fdescribe`
+- `xdescribe`
 
 The following patterns are considered warnings:
 

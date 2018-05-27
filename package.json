@@ -4,13 +4,22 @@
   "description": "Eslint rules for Jest",
   "repository": "jest-community/eslint-plugin-jest",
   "license": "MIT",
-  "keywords": ["eslint", "eslintplugin", "eslint-plugin"],
+  "keywords": [
+    "eslint",
+    "eslintplugin",
+    "eslint-plugin"
+  ],
   "author": {
     "name": "Jonathan Kim",
     "email": "hello@jkimbo.com",
     "url": "jkimbo.com"
   },
-  "files": ["docs/", "rules/", "processors/", "index.js"],
+  "files": [
+    "docs/",
+    "rules/",
+    "processors/",
+    "index.js"
+  ],
   "engines": {
     "node": ">= 4"
   },
@@ -47,8 +56,14 @@
     "trailingComma": "es5"
   },
   "lint-staged": {
-    "*.js": ["eslint --fix", "git add"],
-    "*.{md,json}": ["prettier --write", "git add"]
+    "*.js": [
+      "eslint --fix",
+      "git add"
+    ],
+    "*.{md,json}": [
+      "prettier --write",
+      "git add"
+    ]
   },
   "jest": {
     "coverageThreshold": {
@@ -67,11 +82,15 @@
       {
         "displayName": "lint",
         "runner": "jest-runner-eslint",
-        "testMatch": ["<rootDir>/**/*.js"]
+        "testMatch": [
+          "<rootDir>/**/*.js"
+        ]
       }
     ]
   },
   "commitlint": {
-    "extends": ["@commitlint/config-conventional"]
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
   }
 }

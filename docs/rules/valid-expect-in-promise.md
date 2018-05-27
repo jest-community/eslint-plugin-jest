@@ -7,8 +7,8 @@ promise
 
 This rule triggers a warning if,
 
-* test is having assertions in `then` or `catch` block of a promise
-* and that promise is not returned from the test
+- test is having assertions in `then` or `catch` block of a promise
+- and that promise is not returned from the test
 
 ### Default configuration
 
