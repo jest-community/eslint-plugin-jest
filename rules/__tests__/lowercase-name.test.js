@@ -21,6 +21,7 @@ ruleTester.run('lowercase-name', rule, {
     'it("<Foo/>", function () {})',
     'it("123 foo", function () {})',
     'it(42, function () {})',
+    'it(``)',
     'test()',
     "test('foo', function () {})",
     'test("foo", function () {})',
@@ -28,6 +29,7 @@ ruleTester.run('lowercase-name', rule, {
     'test("<Foo/>", function () {})',
     'test("123 foo", function () {})',
     'test("42", function () {})',
+    'test(``)',
     'describe()',
     "describe('foo', function () {})",
     'describe("foo", function () {})',
@@ -36,11 +38,13 @@ ruleTester.run('lowercase-name', rule, {
     'describe("123 foo", function () {})',
     'describe("42", function () {})',
     'describe(function () {})',
+    'describe(``)',
   ],
 
   invalid: [
     {
       code: "it('Foo', function () {})",
+      output: "it('foo', function () {})",
       errors: [
         {
           message: '`it`s should begin with lowercase',
@@ -51,6 +55,7 @@ ruleTester.run('lowercase-name', rule, {
     },
     {
       code: 'it("Foo", function () {})',
+      output: 'it("foo", function () {})',
       errors: [
         {
           message: '`it`s should begin with lowercase',
@@ -61,6 +66,7 @@ ruleTester.run('lowercase-name', rule, {
     },
     {
       code: 'it(`Foo`, function () {})',
+      output: 'it(`foo`, function () {})',
       errors: [
         {
           message: '`it`s should begin with lowercase',
@@ -71,6 +77,7 @@ ruleTester.run('lowercase-name', rule, {
     },
     {
       code: "test('Foo', function () {})",
+      output: "test('foo', function () {})",
       errors: [
         {
           message: '`test`s should begin with lowercase',
@@ -81,6 +88,7 @@ ruleTester.run('lowercase-name', rule, {
     },
     {
       code: 'test("Foo", function () {})',
+      output: 'test("foo", function () {})',
       errors: [
         {
           message: '`test`s should begin with lowercase',
@@ -91,6 +99,7 @@ ruleTester.run('lowercase-name', rule, {
     },
     {
       code: 'test(`Foo`, function () {})',
+      output: 'test(`foo`, function () {})',
       errors: [
         {
           message: '`test`s should begin with lowercase',
@@ -101,6 +110,7 @@ ruleTester.run('lowercase-name', rule, {
     },
     {
       code: "describe('Foo', function () {})",
+      output: "describe('foo', function () {})",
       errors: [
         {
           message: '`describe`s should begin with lowercase',
@@ -111,6 +121,7 @@ ruleTester.run('lowercase-name', rule, {
     },
     {
       code: 'describe("Foo", function () {})',
+      output: 'describe("foo", function () {})',
       errors: [
         {
           message: '`describe`s should begin with lowercase',
@@ -121,6 +132,18 @@ ruleTester.run('lowercase-name', rule, {
     },
     {
       code: 'describe(`Foo`, function () {})',
+      output: 'describe(`foo`, function () {})',
+      errors: [
+        {
+          message: '`describe`s should begin with lowercase',
+          column: 1,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: 'describe(`Some longer description`, function () {})',
+      output: 'describe(`some longer description`, function () {})',
       errors: [
         {
           message: '`describe`s should begin with lowercase',
