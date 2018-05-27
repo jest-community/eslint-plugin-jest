@@ -14,6 +14,7 @@ ruleTester.run('no-jasmine-globals', rule, {
     'it("foo", function () {})',
     'test("foo", function () {})',
     'foo()',
+    `require('foo')('bar')`,
   ],
   invalid: [
     {

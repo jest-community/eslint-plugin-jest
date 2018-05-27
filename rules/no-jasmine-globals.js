@@ -15,6 +15,10 @@ module.exports = {
       CallExpression(node) {
         const calleeName = getNodeName(node.callee);
 
+        if (!calleeName) {
+          return;
+        }
+
         if (calleeName === 'spyOn' || calleeName === 'spyOnProperty') {
           context.report({
             node,
