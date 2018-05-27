@@ -61,7 +61,7 @@ ruleTester.run('no-jasmine-globals', rule, {
       code: 'jasmine.DEFAULT_TIMEOUT_INTERVAL = 5000;',
       errors: [
         {
-          message: 'Avoid using global `jasmine`',
+          message: 'Avoid using jasmine global',
           column: 1,
           line: 1,
         },
@@ -97,6 +97,7 @@ ruleTester.run('no-jasmine-globals', rule, {
           line: 1,
         },
       ],
+      output: 'expect.any()',
     },
     {
       code: 'jasmine.anything()',
@@ -107,6 +108,7 @@ ruleTester.run('no-jasmine-globals', rule, {
           line: 1,
         },
       ],
+      output: 'expect.anything()',
     },
     {
       code: 'jasmine.arrayContaining()',
@@ -118,6 +120,7 @@ ruleTester.run('no-jasmine-globals', rule, {
           line: 1,
         },
       ],
+      output: 'expect.arrayContaining()',
     },
     {
       code: 'jasmine.objectContaining()',
@@ -129,6 +132,7 @@ ruleTester.run('no-jasmine-globals', rule, {
           line: 1,
         },
       ],
+      output: 'expect.objectContaining()',
     },
     {
       code: 'jasmine.stringMatching()',
@@ -140,6 +144,7 @@ ruleTester.run('no-jasmine-globals', rule, {
           line: 1,
         },
       ],
+      output: 'expect.stringMatching()',
     },
     {
       code: 'jasmine.getEnv()',
@@ -193,6 +198,16 @@ ruleTester.run('no-jasmine-globals', rule, {
     },
     {
       code: 'jasmine.clock()',
+      errors: [
+        {
+          message: 'Avoid using jasmine global',
+          column: 1,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: 'jasmine.MAX_PRETTY_PRINT_ARRAY_LENGTH = 42',
       errors: [
         {
           message: 'Avoid using jasmine global',

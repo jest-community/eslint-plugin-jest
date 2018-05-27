@@ -57,6 +57,9 @@ module.exports = {
             functionName === 'stringMatching'
           ) {
             context.report({
+              fix(fixer) {
+                return [fixer.replaceText(node.callee.object, 'expect')];
+              },
               node,
               message: `Avoid using \`${calleeName}\`, prefer \`expect.${functionName}\``,
             });
@@ -87,29 +90,27 @@ module.exports = {
       },
       MemberExpression(node) {
         if (node.object.name === 'jasmine') {
-          if (node.property.type === 'Identifier') {
-            if (node.parent.type === 'AssignmentExpression') {
-              if (node.property.name === 'DEFAULT_TIMEOUT_INTERVAL') {
-                context.report({
-                  fix(fixer) {
-                    return [
-                      fixer.replaceText(
-                        node.parent,
-                        `jest.setTimeout(${node.parent.right.value})`
-                      ),
-                    ];
-                  },
-                  node,
-                  message: 'Avoid using global `jasmine`',
-                });
-                return;
-              }
-
+          if (node.parent.type === 'AssignmentExpression') {
+            if (node.property.name === 'DEFAULT_TIMEOUT_INTERVAL') {
               context.report({
+                fix(fixer) {
+                  return [
+                    fixer.replaceText(
+                      node.parent,
+                      `jest.setTimeout(${node.parent.right.value})`
+                    ),
+                  ];
+                },
                 node,
-                message: 'Avoid using global `jasmine`',
+                message: 'Avoid using jasmine global',
               });
+              return;
             }
+
+            context.report({
+              node,
+              message: 'Avoid using jasmine global',
+            });
           }
         }
       },
