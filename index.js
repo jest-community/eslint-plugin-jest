@@ -6,6 +6,7 @@ const noDisabledTests = require('./rules/no-disabled-tests');
 const noFocusedTests = require('./rules/no-focused-tests');
 const noHooks = require('./rules/no-hooks');
 const noIdenticalTitle = require('./rules/no-identical-title');
+const noJasmineGlobals = require('./rules/no-jasmine-globals');
 const noJestImport = require('./rules/no-jest-import');
 const noLargeSnapshots = require('./rules/no-large-snapshots');
 const noTestPrefixes = require('./rules/no-test-prefixes');
@@ -69,6 +70,7 @@ module.exports = {
     'no-focused-tests': noFocusedTests,
     'no-hooks': noHooks,
     'no-identical-title': noIdenticalTitle,
+    'no-jasmine-globals': noJasmineGlobals,
     'no-jest-import': noJestImport,
     'no-large-snapshots': noLargeSnapshots,
     'no-test-prefixes': noTestPrefixes,
