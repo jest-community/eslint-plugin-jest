@@ -52,6 +52,7 @@ module.exports = {
     docs: {
       url: getDocsUrl(__filename),
     },
+    fixable: 'code',
   },
   create(context) {
     const ignore = (context.options[0] && context.options[0].ignore) || [];
@@ -72,6 +73,22 @@ module.exports = {
             message: '`{{ method }}`s should begin with lowercase',
             data: { method: erroneousMethod },
             node,
+            fix(fixer) {
+              const firstArg = node.arguments[0];
+              const description = testDescription(node);
+
+              const rangeIgnoringQuotes = [
+                firstArg.start + 1,
+                firstArg.end - 1,
+              ];
+              const newDescription =
+                description.substring(0, 1).toLowerCase() +
+                description.substring(1);
+
+              return [
+                fixer.replaceTextRange(rangeIgnoringQuotes, newDescription),
+              ];
+            },
           });
         }
       },
