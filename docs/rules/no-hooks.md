@@ -8,10 +8,10 @@ shared state between tests.
 
 This rule reports for the following function calls:
 
-* `beforeAll`
-* `beforeEach`
-* `afterAll`
-* `afterEach`
+- `beforeAll`
+- `beforeEach`
+- `afterAll`
+- `afterEach`
 
 Examples of **incorrect** code for this rule:
 
@@ -104,10 +104,10 @@ describe('foo', () => {
 This array option whitelists setup and teardown hooks so that this rule does not
 report their usage as being incorrect. There are four possible values:
 
-* `"beforeAll"`
-* `"beforeEach"`
-* `"afterAll"`
-* `"afterEach"`
+- `"beforeAll"`
+- `"beforeEach"`
+- `"afterAll"`
+- `"afterEach"`
 
 By default, none of these options are enabled (the equivalent of
 `{ "allow": [] }`).
@@ -171,5 +171,5 @@ safely disable this rule.
 
 ## Further Reading
 
-* [Jest docs - Setup and Teardown](https://facebook.github.io/jest/docs/en/setup-teardown.html)
-* [@jamiebuilds Twitter thread](https://twitter.com/jamiebuilds/status/954906997169664000)
+- [Jest docs - Setup and Teardown](https://facebook.github.io/jest/docs/en/setup-teardown.html)
+- [@jamiebuilds Twitter thread](https://twitter.com/jamiebuilds/status/954906997169664000)

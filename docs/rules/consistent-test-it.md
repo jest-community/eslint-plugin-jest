@@ -3,8 +3,8 @@
 Jest allows you to choose how you want to define your tests, using the `it` or
 the `test` keywords, with multiple permutations for each:
 
-* **it:** `it`, `xit`, `fit`, `it.only`, `it.skip`.
-* **test:** `test`, `xtest`, `test.only`, `test.skip`.
+- **it:** `it`, `xit`, `fit`, `it.only`, `it.skip`.
+- **test:** `test`, `xtest`, `test.only`, `test.skip`.
 
 This rule gives you control over the usage of these keywords in your codebase.
 

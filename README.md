@@ -100,5 +100,5 @@ for more information about extending configuration files.
 
 ## Credit
 
-* [eslint-plugin-mocha](https://github.com/lo1tuma/eslint-plugin-mocha)
-* [eslint-plugin-jasmine](https://github.com/tlvince/eslint-plugin-jasmine)
+- [eslint-plugin-mocha](https://github.com/lo1tuma/eslint-plugin-mocha)
+- [eslint-plugin-jasmine](https://github.com/tlvince/eslint-plugin-jasmine)

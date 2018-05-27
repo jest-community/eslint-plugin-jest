@@ -40,9 +40,9 @@ it('adds 1 + 2 to equal 3', () => {
 This array option whitelists function names so that this rule does not report
 their usage as being incorrect. There are three possible values:
 
-* `"describe"`
-* `"test"`
-* `"it"`
+- `"describe"`
+- `"test"`
+- `"it"`
 
 By default, none of these options are enabled (the equivalent of
 `{ "ignore": [] }`).

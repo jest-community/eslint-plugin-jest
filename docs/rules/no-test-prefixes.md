@@ -3,9 +3,9 @@
 Jest allows you to choose how you want to define focused and skipped tests, with
 multiple permutations for each:
 
-* **only & skip:** `it.only`, `test.only`, `describe.only`, `it.skip`,
+- **only & skip:** `it.only`, `test.only`, `describe.only`, `it.skip`,
   `test.skip`, `describe.skip`.
-* **'f' & 'x':** `fit`, `fdescribe`, `xit`, `xtest`, `xdescribe`.
+- **'f' & 'x':** `fit`, `fdescribe`, `xit`, `xtest`, `xdescribe`.
 
 This rule enforces usages from the **only & skip** list.
 
