@@ -3,11 +3,6 @@
 const getDocsUrl = require('./util').getDocsUrl;
 const getNodeName = require('./util').getNodeName;
 
-/*
-fail
-pending
-*/
-
 module.exports = {
   meta: {
     docs: {
