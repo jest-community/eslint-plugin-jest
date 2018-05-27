@@ -12,6 +12,7 @@ ruleTester.run('no-jest-import', rule, {
       parserOptions: { sourceType: 'module' },
     },
     'require("somethingElse")',
+    'require()',
     'entirelyDifferent(fn)',
   ],
   invalid: [
