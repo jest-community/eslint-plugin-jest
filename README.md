@@ -78,27 +78,48 @@ for more information about extending configuration files.
 
 ## Rules
 
-| Rule                                                               | Description                                                       | Recommended                                                             | Fixable                                                      |
-| ------------------------------------------------------------------ | ----------------------------------------------------------------- | ----------------------------------------------------------------------- | ------------------------------------------------------------ |
-| [consistent-test-it](docs/rules/consistent-test-it.md)             | Enforce consistent test or it keyword                             |                                                                         | ![fixable](https://img.shields.io/badge/-fixable-green.svg)  |
-| [lowercase-name](docs/rules/lowercase-name.md)                     | Disallow capitalized test names                                   |                                                                         | ![fixable](https://img.shields.io/badge/-fixable-green.svg)  |
-| [no-disabled-tests](docs/rules/no-disabled-tests.md)               | Disallow disabled tests                                           | ![recommended](https://img.shields.io/badge/-recommended-lightgrey.svg) |                                                              |
-| [no-focused-tests](docs/rules/no-focused-tests.md)                 | Disallow focused tests                                            | ![recommended](https://img.shields.io/badge/-recommended-lightgrey.svg) |                                                              |
-| [no-hooks](docs/rules/no-hooks.md)                                 | Disallow setup and teardown hooks                                 |                                                                         |                                                              |
-| [no-identical-title](docs/rules/no-identical-title.md)             | Disallow identical titles                                         | ![recommended](https://img.shields.io/badge/-recommended-lightgrey.svg) |                                                              |
-| [no-jasmine-globals](docs/rules/no-jasmine-globals.md)             | Disallow Jasmine globals                                          |                                                                         | ![fixable](https://img.shields.io/badge/-fixable-yellow.svg) |
-| [no-jest-import](docs/rules/no-jest-import.md)                     | Disallow importing `jest`                                         | ![recommended](https://img.shields.io/badge/-recommended-lightgrey.svg) |                                                              |
-| [no-large-snapshots](docs/rules/no-large-snapshots.md)             | Disallow large snapshots                                          |                                                                         |                                                              |
-| [no-test-prefixes](docs/rules/no-test-prefixes.md)                 | Disallow using `f` & `x` prefixes to define focused/skipped tests |                                                                         | ![fixable](https://img.shields.io/badge/-fixable-green.svg)  |
-| [prefer-expect-assertions](docs/rules/prefer-expect-assertions.md) | Suggest using `expect.assertions()` OR `expect.hasAssertions()`   |                                                                         |                                                              |
-| [prefer-to-be-null](docs/rules/prefer-to-be-null.md)               | Suggest using `toBeNull()`                                        |                                                                         | ![fixable](https://img.shields.io/badge/-fixable-green.svg)  |
-| [prefer-to-be-undefined](docs/rules/prefer-to-be-undefined.md)     | Suggest using `toBeUndefined()`                                   |                                                                         | ![fixable](https://img.shields.io/badge/-fixable-green.svg)  |
-| [prefer-to-have-length](docs/rules/prefer-to-have-length.md)       | Suggest using `toHaveLength()`                                    | ![recommended](https://img.shields.io/badge/-recommended-lightgrey.svg) | ![fixable](https://img.shields.io/badge/-fixable-green.svg)  |
-| [valid-describe](docs/rules/valid-describe.md)                     | Enforce valid `describe()` callback                               |                                                                         |                                                              |
-| [valid-expect-in-promise](docs/rules/valid-expect-in-promise.md)   | Enforce having return statement when testing with promises        |                                                                         |                                                              |
-| [valid-expect](docs/rules/valid-expect.md)                         | Enforce valid `expect()` usage                                    | ![recommended](https://img.shields.io/badge/-recommended-lightgrey.svg) |                                                              |
+| Rule                         | Description                                                       | Recommended      | Fixable             |
+| ---------------------------- | ----------------------------------------------------------------- | ---------------- | ------------------- |
+| [consistent-test-it][]       | Enforce consistent test or it keyword                             |                  | ![fixable-green][]  |
+| [lowercase-name][]           | Disallow capitalized test names                                   |                  | ![fixable-green][]  |
+| [no-disabled-tests][]        | Disallow disabled tests                                           | ![recommended][] |                     |
+| [no-focused-tests][]         | Disallow focused tests                                            | ![recommended][] |                     |
+| [no-hooks][]                 | Disallow setup and teardown hooks                                 |                  |                     |
+| [no-identical-title][]       | Disallow identical titles                                         | ![recommended][] |                     |
+| [no-jasmine-globals][]       | Disallow Jasmine globals                                          |                  | ![fixable-yellow][] |
+| [no-jest-import][]           | Disallow importing `jest`                                         | ![recommended][] |                     |
+| [no-large-snapshots][]       | Disallow large snapshots                                          |                  |                     |
+| [no-test-prefixes][]         | Disallow using `f` & `x` prefixes to define focused/skipped tests |                  | ![fixable-green][]  |
+| [prefer-expect-assertions][] | Suggest using `expect.assertions()` OR `expect.hasAssertions()`   |                  |                     |
+| [prefer-to-be-null][]        | Suggest using `toBeNull()`                                        |                  | ![fixable-green][]  |
+| [prefer-to-be-undefined][]   | Suggest using `toBeUndefined()`                                   |                  | ![fixable-green][]  |
+| [prefer-to-have-length][]    | Suggest using `toHaveLength()`                                    | ![recommended][] | ![fixable-green][]  |
+| [valid-describe][]           | Enforce valid `describe()` callback                               |                  |                     |
+| [valid-expect-in-promise][]  | Enforce having return statement when testing with promises        |                  |                     |
+| [valid-expect][]             | Enforce valid `expect()` usage                                    | ![recommended][] |                     |
 
 ## Credit
 
 - [eslint-plugin-mocha](https://github.com/lo1tuma/eslint-plugin-mocha)
 - [eslint-plugin-jasmine](https://github.com/tlvince/eslint-plugin-jasmine)
+
+[consistent-test-it]: docs/rules/consistent-test-it.md
+[lowercase-name]: docs/rules/lowercase-name.md
+[no-disabled-tests]: docs/rules/no-disabled-tests.md
+[no-focused-tests]: docs/rules/no-focused-tests.md
+[no-hooks]: docs/rules/no-hooks.md
+[no-identical-title]: docs/rules/no-identical-title.md
+[no-jasmine-globals]: docs/rules/no-jasmine-globals.md
+[no-jest-import]: docs/rules/no-jest-import.md
+[no-large-snapshots]: docs/rules/no-large-snapshots.md
+[no-test-prefixes]: docs/rules/no-test-prefixes.md
+[prefer-expect-assertions]: docs/rules/prefer-expect-assertions.md
+[prefer-to-be-null]: docs/rules/prefer-to-be-null.md
+[prefer-to-be-undefined]: docs/rules/prefer-to-be-undefined.md
+[prefer-to-have-length]: docs/rules/prefer-to-have-length.md
+[valid-describe]: docs/rules/valid-describe.md
+[valid-expect-in-promise]: docs/rules/valid-expect-in-promise.md
+[valid-expect]: docs/rules/valid-expect.md
+[fixable-green]: https://img.shields.io/badge/-fixable-green.svg
+[fixable-yellow]: https://img.shields.io/badge/-fixable-yellow.svg
+[recommended]: https://img.shields.io/badge/-recommended-lightgrey.svg
