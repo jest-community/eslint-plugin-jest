@@ -24,7 +24,7 @@
     "node": ">= 4"
   },
   "peerDependencies": {
-    "eslint": ">=3.6"
+    "eslint": ">=5"
   },
   "scripts": {
     "lint": "eslint . --ignore-pattern '!.eslintrc.js'",
@@ -36,7 +36,7 @@
   "devDependencies": {
     "@commitlint/cli": "^6.0.1",
     "@commitlint/config-conventional": "^6.0.2",
-    "eslint": "^4.10.0",
+    "eslint": "^5.1.0",
     "eslint-config-prettier": "^2.7.0",
     "eslint-plugin-eslint-plugin": "^1.4.0",
     "eslint-plugin-node": "^6.0.0",
