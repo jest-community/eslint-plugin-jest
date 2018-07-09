@@ -1,7 +1,6 @@
 'use strict';
 
-const getDocsUrl = require('./util').getDocsUrl;
-const isFunction = require('./util').isFunction;
+const { getDocsUrl, isFunction } = require('./util');
 
 const reportMsg =
   'Promise should be returned to test its fulfillment or rejection';

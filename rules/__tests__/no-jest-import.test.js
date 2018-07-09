@@ -1,7 +1,7 @@
 'use strict';
 
 const rule = require('../no-jest-import.js');
-const RuleTester = require('eslint').RuleTester;
+const { RuleTester } = require('eslint');
 const ruleTester = new RuleTester();
 const message = `Jest is automatically in scope. Do not import "jest", as Jest doesn't export anything.`;
 

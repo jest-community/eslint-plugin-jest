@@ -5,7 +5,7 @@
  * MIT license, Tom Vincent.
  */
 
-const getDocsUrl = require('./util').getDocsUrl;
+const { getDocsUrl } = require('./util');
 
 const expectProperties = ['not', 'resolves', 'rejects'];
 

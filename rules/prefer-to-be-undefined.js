@@ -1,13 +1,15 @@
 'use strict';
-const argument = require('./util').argument;
-const argument2 = require('./util').argument2;
-const expectToBeCase = require('./util').expectToBeCase;
-const expectNotToBeCase = require('./util').expectNotToBeCase;
-const expectToEqualCase = require('./util').expectToEqualCase;
-const expectNotToEqualCase = require('./util').expectNotToEqualCase;
-const getDocsUrl = require('./util').getDocsUrl;
-const method = require('./util').method;
-const method2 = require('./util').method2;
+const {
+  argument,
+  argument2,
+  expectToBeCase,
+  expectNotToBeCase,
+  expectToEqualCase,
+  expectNotToEqualCase,
+  getDocsUrl,
+  method,
+  method2,
+} = require('./util');
 
 module.exports = {
   meta: {

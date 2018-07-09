@@ -1,8 +1,6 @@
 'use strict';
 
-const getDocsUrl = require('./util').getDocsUrl;
-const isDescribe = require('./util').isDescribe;
-const isFunction = require('./util').isFunction;
+const { getDocsUrl, isDescribe, isFunction } = require('./util');
 
 const isAsync = node => node.async;
 

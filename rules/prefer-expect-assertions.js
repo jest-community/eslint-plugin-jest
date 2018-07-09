@@ -1,6 +1,6 @@
 'use strict';
 
-const getDocsUrl = require('./util').getDocsUrl;
+const { getDocsUrl } = require('./util');
 
 const ruleMsg =
   'Every test should have either `expect.assertions(<number of assertions>)` or `expect.hasAssertions()` as its first expression';
