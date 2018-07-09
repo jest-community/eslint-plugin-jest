@@ -1,6 +1,6 @@
 'use strict';
 
-const getDocsUrl = require('./util').getDocsUrl;
+const { getDocsUrl } = require('./util');
 
 const reportOnViolation = (context, node) => {
   const lineLimit =

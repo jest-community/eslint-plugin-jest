@@ -1,8 +1,6 @@
 'use strict';
 
-const getDocsUrl = require('./util').getDocsUrl;
-const isDescribe = require('./util').isDescribe;
-const isTestCase = require('./util').isTestCase;
+const { getDocsUrl, isDescribe, isTestCase } = require('./util');
 
 const newDescribeContext = () => ({
   describeTitles: [],

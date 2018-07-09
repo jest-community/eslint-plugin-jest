@@ -1,11 +1,13 @@
 'use strict';
 
-const getDocsUrl = require('./util').getDocsUrl;
-const expectCase = require('./util').expectCase;
-const expectResolveCase = require('./util').expectResolveCase;
-const expectRejectCase = require('./util').expectRejectCase;
-const method = require('./util').method;
-const argument = require('./util').argument;
+const {
+  getDocsUrl,
+  expectCase,
+  expectResolveCase,
+  expectRejectCase,
+  method,
+  argument,
+} = require('./util');
 
 const isEqualityCheck = node =>
   method(node) &&
@@ -45,7 +47,7 @@ const getNegationFixes = (node, sourceCode, fixer) => {
       : 'toContain';
 
   //.includes function argument
-  const containArg = node.arguments[0].arguments[0];
+  const [containArg] = node.arguments[0].arguments;
   return [
     fixer.remove(negationPropertyDot),
     fixer.remove(method(node)),
@@ -55,7 +57,7 @@ const getNegationFixes = (node, sourceCode, fixer) => {
 };
 
 const getCommonFixes = (node, sourceCode, fixer) => {
-  const containArg = node.arguments[0].arguments[0];
+  const [containArg] = node.arguments[0].arguments;
   const includesCaller = node.arguments[0].callee;
 
   const propertyDot = sourceCode.getFirstTokenBetween(
@@ -106,7 +108,7 @@ module.exports = {
                 : 'not.toContain';
 
               //.includes function argument
-              const containArg = node.arguments[0].arguments[0];
+              const [containArg] = node.arguments[0].arguments;
 
               fixArr.push(fixer.replaceText(method(node), toContainFunc));
               fixArr.push(

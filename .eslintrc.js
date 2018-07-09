@@ -1,11 +1,12 @@
 'use strict';
 
-const globals = require('./index').environments.globals.globals;
+const { globals } = require('./index').environments.globals;
 
 module.exports = {
   extends: [
     'eslint:recommended',
     'plugin:eslint-plugin/recommended',
+    'plugin:node/recommended',
     'prettier',
   ],
   plugins: ['eslint-plugin', 'node', 'prettier'],
@@ -22,6 +23,15 @@ module.exports = {
     'prefer-template': 'warn',
     'object-shorthand': ['warn', 'always', { avoidExplicitReturnArrows: true }],
     'node/no-unsupported-features': 'error',
+    'prefer-destructuring': [
+      'error',
+      {
+        VariableDeclarator: {
+          array: true,
+          object: true,
+        },
+      },
+    ],
     'prettier/prettier': 'error',
   },
   overrides: [

@@ -1,6 +1,6 @@
 'use strict';
 
-const RuleTester = require('eslint').RuleTester;
+const { RuleTester } = require('eslint');
 const rule = require('../require-tothrow-message');
 
 const ruleTester = new RuleTester({

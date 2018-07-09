@@ -12,7 +12,7 @@ describe('snapshot-processor', () => {
 
   describe('preprocess function', () => {
     it('should pass on untouched source code to source array', () => {
-      const preprocess = snapshotProcessor.preprocess;
+      const { preprocess } = snapshotProcessor;
       const sourceCode = "const name = 'johnny bravo';";
       const result = preprocess(sourceCode);
 
@@ -22,7 +22,7 @@ describe('snapshot-processor', () => {
 
   describe('postprocess function', () => {
     it('should only return messages about snapshot specific rules', () => {
-      const postprocess = snapshotProcessor.postprocess;
+      const { postprocess } = snapshotProcessor;
       const result = postprocess([
         [
           { ruleId: 'no-console' },

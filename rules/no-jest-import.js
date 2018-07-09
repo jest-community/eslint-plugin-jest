@@ -1,6 +1,6 @@
 'use strict';
 
-const getDocsUrl = require('./util').getDocsUrl;
+const { getDocsUrl } = require('./util');
 
 const message = `Jest is automatically in scope. Do not import "jest", as Jest doesn't export anything.`;
 

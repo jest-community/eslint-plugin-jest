@@ -1,9 +1,6 @@
 'use strict';
 
-const argument = require('./util').argument;
-const expectCase = require('./util').expectCase;
-const getDocsUrl = require('./util').getDocsUrl;
-const method = require('./util').method;
+const { argument, expectCase, getDocsUrl, method } = require('./util');
 
 module.exports = {
   meta: {
@@ -22,7 +19,7 @@ module.exports = {
 
         // Look for `toThrow` calls with no arguments.
         if (
-          ['toThrow', 'toThrowError'].indexOf(propertyName) > -1 &&
+          ['toThrow', 'toThrowError'].includes(propertyName) &&
           !argument(node)
         ) {
           context.report({

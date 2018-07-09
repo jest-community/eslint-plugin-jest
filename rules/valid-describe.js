@@ -1,8 +1,6 @@
 'use strict';
 
-const getDocsUrl = require('./util').getDocsUrl;
-const isDescribe = require('./util').isDescribe;
-const isFunction = require('./util').isFunction;
+const { getDocsUrl, isDescribe, isFunction } = require('./util');
 
 const isAsync = node => node.async;
 
@@ -13,7 +11,7 @@ const isString = node =>
 const hasParams = node => node.params.length > 0;
 
 const paramsLocation = params => {
-  const first = params[0];
+  const [first] = params;
   const last = params[params.length - 1];
   return {
     start: {
@@ -44,8 +42,8 @@ module.exports = {
             });
           }
 
-          const name = node.arguments[0];
-          const callbackFunction = node.arguments[1];
+          const [name] = node.arguments;
+          const [, callbackFunction] = node.arguments;
           if (!isString(name)) {
             context.report({
               message: 'First argument must be name',
