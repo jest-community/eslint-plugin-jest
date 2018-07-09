@@ -1,7 +1,6 @@
 'use strict';
 
-const getDocsUrl = require('./util').getDocsUrl;
-const getNodeName = require('./util').getNodeName;
+const { getDocsUrl, getNodeName } = require('./util');
 
 const getJestFnCall = node => {
   if (
@@ -45,7 +44,7 @@ module.exports = {
           fix(fixer) {
             const leftPropQuote =
               node.left.property.type === 'Identifier' ? "'" : '';
-            const arg = jestFnCall.arguments[0];
+            const [arg] = jestFnCall.arguments;
             const argSource = arg && context.getSourceCode().getText(arg);
             const mockImplementation = argSource
               ? `.mockImplementation(${argSource})`

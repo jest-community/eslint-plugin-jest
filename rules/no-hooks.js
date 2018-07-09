@@ -1,6 +1,6 @@
 'use strict';
 
-const getDocsUrl = require('./util').getDocsUrl;
+const { getDocsUrl } = require('./util');
 
 module.exports = {
   meta: {

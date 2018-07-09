@@ -1,8 +1,6 @@
 'use strict';
 
-const getDocsUrl = require('./util').getDocsUrl;
-const isFunction = require('./util').isFunction;
-const isTestCase = require('./util').isTestCase;
+const { getDocsUrl, isFunction, isTestCase } = require('./util');
 
 const MESSAGE = 'Jest tests should not return a value.';
 const RETURN_STATEMENT = 'ReturnStatement';

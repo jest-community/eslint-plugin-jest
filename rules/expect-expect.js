@@ -5,8 +5,7 @@
  * MIT license, Remco Haszing.
  */
 
-const getDocsUrl = require('./util').getDocsUrl;
-const getNodeName = require('./util').getNodeName;
+const { getDocsUrl, getNodeName } = require('./util');
 
 module.exports = {
   meta: {

@@ -1,8 +1,6 @@
 'use strict';
 
-const expectCase = require('./util').expectCase;
-const getDocsUrl = require('./util').getDocsUrl;
-const method = require('./util').method;
+const { expectCase, getDocsUrl, method } = require('./util');
 
 module.exports = {
   meta: {

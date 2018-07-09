@@ -1,6 +1,6 @@
 'use strict';
 
-const getDocsUrl = require('./util').getDocsUrl;
+const { getDocsUrl } = require('./util');
 
 const testFunctions = Object.assign(Object.create(null), {
   describe: true,
@@ -27,7 +27,7 @@ module.exports = {
   },
   create: context => ({
     CallExpression(node) {
-      const callee = node.callee;
+      const { callee } = node;
 
       if (callee.type === 'MemberExpression') {
         if (

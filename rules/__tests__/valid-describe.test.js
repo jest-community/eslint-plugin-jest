@@ -1,6 +1,6 @@
 'use strict';
 
-const RuleTester = require('eslint').RuleTester;
+const { RuleTester } = require('eslint');
 const rule = require('../valid-describe');
 
 const ruleTester = new RuleTester({

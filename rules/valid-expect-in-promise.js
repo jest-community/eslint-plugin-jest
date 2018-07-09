@@ -1,7 +1,6 @@
 'use strict';
 
-const getDocsUrl = require('./util').getDocsUrl;
-const isFunction = require('./util').isFunction;
+const { getDocsUrl, isFunction } = require('./util');
 
 const reportMsg =
   'Promise should be returned to test its fulfillment or rejection';
@@ -76,7 +75,7 @@ const getFunctionBody = func => {
 };
 
 const getTestFunction = node => {
-  let parent = node.parent;
+  let { parent } = node;
   while (parent) {
     if (isFunction(parent) && isTestFunc(parent.parent)) {
       return parent;
@@ -144,9 +143,10 @@ module.exports = {
           const testFunction = getTestFunction(node);
           if (testFunction && !isHavingAsyncCallBackParam(testFunction)) {
             const testFunctionBody = getFunctionBody(testFunction);
-            const parent = node.parent;
-            const fulfillmentCallback = parent.arguments[0];
-            const rejectionCallback = parent.arguments[1];
+            const [
+              fulfillmentCallback,
+              rejectionCallback,
+            ] = node.parent.arguments;
 
             // then block can have two args, fulfillment & rejection
             // then block can have one args, fulfillment

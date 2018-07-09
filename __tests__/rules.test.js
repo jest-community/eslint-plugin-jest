@@ -2,7 +2,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const rules = require('../index').rules;
+const { rules } = require('../index');
 
 describe('rules', () => {
   it('should have a corresponding doc for each rule', () => {
