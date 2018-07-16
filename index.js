@@ -17,6 +17,7 @@ const validDescribe = require('./rules/valid-describe');
 const validExpect = require('./rules/valid-expect');
 const preferExpectAssertions = require('./rules/prefer-expect-assertions');
 const validExpectInPromise = require('./rules/valid-expect-in-promise');
+const preferInlineSnapshots = require('./rules/prefer-inline-snapshots');
 
 const snapshotProcessor = require('./processors/snapshot-processor');
 
@@ -81,5 +82,6 @@ module.exports = {
     'valid-expect': validExpect,
     'prefer-expect-assertions': preferExpectAssertions,
     'valid-expect-in-promise': validExpectInPromise,
+    'prefer-inline-snapshots': preferInlineSnapshots,
   },
 };
