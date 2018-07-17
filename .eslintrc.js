@@ -22,7 +22,6 @@ module.exports = {
     strict: 'error',
     'prefer-template': 'warn',
     'object-shorthand': ['warn', 'always', { avoidExplicitReturnArrows: true }],
-    'node/no-unsupported-features': 'error',
     'prefer-destructuring': [
       'error',
       {
