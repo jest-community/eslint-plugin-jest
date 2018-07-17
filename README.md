@@ -118,6 +118,7 @@ for more information about extending configuration files.
 [prefer-to-be-null]: docs/rules/prefer-to-be-null.md
 [prefer-to-be-undefined]: docs/rules/prefer-to-be-undefined.md
 [prefer-to-have-length]: docs/rules/prefer-to-have-length.md
+[prefer-inline-snapshots]: docs/rules/prefer-inline-snapshots.md
 [valid-describe]: docs/rules/valid-describe.md
 [valid-expect-in-promise]: docs/rules/valid-expect-in-promise.md
 [valid-expect]: docs/rules/valid-expect.md
