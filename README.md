@@ -94,6 +94,7 @@ for more information about extending configuration files.
 | [prefer-to-be-null][]        | Suggest using `toBeNull()`                                        |                  | ![fixable-green][]  |
 | [prefer-to-be-undefined][]   | Suggest using `toBeUndefined()`                                   |                  | ![fixable-green][]  |
 | [prefer-to-have-length][]    | Suggest using `toHaveLength()`                                    | ![recommended][] | ![fixable-green][]  |
+| [prefer-inline-snapshots][]  | Suggest using `toMatchInlineSnapshot()`                           |                  | ![fixable-green][]  |
 | [valid-describe][]           | Enforce valid `describe()` callback                               |                  |                     |
 | [valid-expect-in-promise][]  | Enforce having return statement when testing with promises        |                  |                     |
 | [valid-expect][]             | Enforce valid `expect()` usage                                    | ![recommended][] |                     |
@@ -117,6 +118,7 @@ for more information about extending configuration files.
 [prefer-to-be-null]: docs/rules/prefer-to-be-null.md
 [prefer-to-be-undefined]: docs/rules/prefer-to-be-undefined.md
 [prefer-to-have-length]: docs/rules/prefer-to-have-length.md
+[prefer-inline-snapshots]: docs/rules/prefer-inline-snapshots.md
 [valid-describe]: docs/rules/valid-describe.md
 [valid-expect-in-promise]: docs/rules/valid-expect-in-promise.md
 [valid-expect]: docs/rules/valid-expect.md
