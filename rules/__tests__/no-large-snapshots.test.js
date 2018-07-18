@@ -74,6 +74,29 @@ describe('no-large-snapshots', () => {
       expect(mockReport.mock.calls[0]).toMatchSnapshot();
     });
 
+    it('should report if maxSize is zero', () => {
+      const mockReport = jest.fn();
+      const mockContext = {
+        getFilename: () => 'mock-component.jsx.snap',
+        options: [{ maxSize: 0 }],
+        report: mockReport,
+      };
+      const mockNode = {
+        loc: {
+          start: {
+            line: 1,
+          },
+          end: {
+            line: 2,
+          },
+        },
+      };
+      noLargeSnapshots(mockContext).ExpressionStatement(mockNode);
+
+      expect(mockReport).toHaveBeenCalledTimes(1);
+      expect(mockReport.mock.calls[0]).toMatchSnapshot();
+    });
+
     it('should not report if node has fewer lines of code than limit', () => {
       const mockReport = jest.fn();
       const mockContext = {

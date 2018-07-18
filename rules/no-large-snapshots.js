@@ -11,7 +11,9 @@ module.exports = {
   create(context) {
     if (context.getFilename().endsWith('.snap')) {
       const lineLimit =
-        (context.options[0] && context.options[0].maxSize) || 50;
+        context.options[0] && Number.isFinite(context.options[0].maxSize)
+          ? context.options[0].maxSize
+          : 50;
 
       return {
         ExpressionStatement(node) {
@@ -22,7 +24,9 @@ module.exports = {
           if (lineCount > lineLimit) {
             context.report({
               message:
-                'Expected Jest snapshot to be smaller than {{ lineLimit }} lines but was {{ lineCount }} lines long',
+                lineLimit === 0
+                  ? 'Expected to not encounter a Jest snapshot but was found with {{ lineCount }} lines long'
+                  : 'Expected Jest snapshot to be smaller than {{ lineLimit }} lines but was {{ lineCount }} lines long',
               data: { lineLimit, lineCount },
               node,
             });
