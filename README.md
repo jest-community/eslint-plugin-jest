@@ -91,6 +91,7 @@ for more information about extending configuration files.
 | [no-large-snapshots][]       | Disallow large snapshots                                          |                  |                     |
 | [no-test-prefixes][]         | Disallow using `f` & `x` prefixes to define focused/skipped tests |                  | ![fixable-green][]  |
 | [prefer-expect-assertions][] | Suggest using `expect.assertions()` OR `expect.hasAssertions()`   |                  |                     |
+| [prefer-strict-equal][]      | Suggest using `toStrictEqual()`                                   |                  | ![fixable-green][]  |
 | [prefer-to-be-null][]        | Suggest using `toBeNull()`                                        |                  | ![fixable-green][]  |
 | [prefer-to-be-undefined][]   | Suggest using `toBeUndefined()`                                   |                  | ![fixable-green][]  |
 | [prefer-to-have-length][]    | Suggest using `toHaveLength()`                                    | ![recommended][] | ![fixable-green][]  |
@@ -115,6 +116,7 @@ for more information about extending configuration files.
 [no-large-snapshots]: docs/rules/no-large-snapshots.md
 [no-test-prefixes]: docs/rules/no-test-prefixes.md
 [prefer-expect-assertions]: docs/rules/prefer-expect-assertions.md
+[prefer-strict-equal]: docs/rules/prefer-strict-equal.md
 [prefer-to-be-null]: docs/rules/prefer-to-be-null.md
 [prefer-to-be-undefined]: docs/rules/prefer-to-be-undefined.md
 [prefer-to-have-length]: docs/rules/prefer-to-have-length.md
