@@ -81,6 +81,7 @@ for more information about extending configuration files.
 | Rule                         | Description                                                       | Recommended      | Fixable             |
 | ---------------------------- | ----------------------------------------------------------------- | ---------------- | ------------------- |
 | [consistent-test-it][]       | Enforce consistent test or it keyword                             |                  | ![fixable-green][]  |
+| [expect-expect][]            | Enforce assertion to be made in a test body                       |                  |                     |
 | [lowercase-name][]           | Disallow capitalized test names                                   |                  | ![fixable-green][]  |
 | [no-disabled-tests][]        | Disallow disabled tests                                           | ![recommended][] |                     |
 | [no-focused-tests][]         | Disallow focused tests                                            | ![recommended][] |                     |
@@ -106,6 +107,7 @@ for more information about extending configuration files.
 - [eslint-plugin-jasmine](https://github.com/tlvince/eslint-plugin-jasmine)
 
 [consistent-test-it]: docs/rules/consistent-test-it.md
+[expect-expect]: docs/rules/expect-expect.md
 [lowercase-name]: docs/rules/lowercase-name.md
 [no-disabled-tests]: docs/rules/no-disabled-tests.md
 [no-focused-tests]: docs/rules/no-focused-tests.md

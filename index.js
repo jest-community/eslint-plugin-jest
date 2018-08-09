@@ -1,6 +1,7 @@
 'use strict';
 
 const consistentTestIt = require('./rules/consistent-test-it');
+const expectExpect = require('./rules/expect-expect');
 const lowercaseName = require('./rules/lowercase-name');
 const noDisabledTests = require('./rules/no-disabled-tests');
 const noFocusedTests = require('./rules/no-focused-tests');
@@ -67,6 +68,7 @@ module.exports = {
   },
   rules: {
     'consistent-test-it': consistentTestIt,
+    'expect-expect': expectExpect,
     'lowercase-name': lowercaseName,
     'no-disabled-tests': noDisabledTests,
     'no-focused-tests': noFocusedTests,
