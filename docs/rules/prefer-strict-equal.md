@@ -1,4 +1,4 @@
-# Suggest using `toStrictEqual()` ` (prefer-strict-equal)
+# Suggest using `toStrictEqual()` (prefer-strict-equal)
 
 `toStrictEqual` not only checks that two objects contain the same data but also
 that they have the same shape. The believe is that imposing a stricter equality
