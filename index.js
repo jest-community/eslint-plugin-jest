@@ -10,6 +10,7 @@ const noJasmineGlobals = require('./rules/no-jasmine-globals');
 const noJestImport = require('./rules/no-jest-import');
 const noLargeSnapshots = require('./rules/no-large-snapshots');
 const noTestPrefixes = require('./rules/no-test-prefixes');
+const noTestReturnStatement = require('./rules/no-test-return-statement');
 const preferToBeNull = require('./rules/prefer-to-be-null');
 const preferToBeUndefined = require('./rules/prefer-to-be-undefined');
 const preferToHaveLength = require('./rules/prefer-to-have-length');
@@ -75,6 +76,7 @@ module.exports = {
     'no-jest-import': noJestImport,
     'no-large-snapshots': noLargeSnapshots,
     'no-test-prefixes': noTestPrefixes,
+    'no-test-return-statement': noTestReturnStatement,
     'prefer-to-be-null': preferToBeNull,
     'prefer-to-be-undefined': preferToBeUndefined,
     'prefer-to-have-length': preferToHaveLength,
