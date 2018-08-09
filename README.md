@@ -90,6 +90,7 @@ for more information about extending configuration files.
 | [no-jest-import][]           | Disallow importing `jest`                                         | ![recommended][] |                     |
 | [no-large-snapshots][]       | Disallow large snapshots                                          |                  |                     |
 | [no-test-prefixes][]         | Disallow using `f` & `x` prefixes to define focused/skipped tests |                  | ![fixable-green][]  |
+| [no-test-return-statement][] | Disallow explicitly returning from tests                          |                  |                     |
 | [prefer-expect-assertions][] | Suggest using `expect.assertions()` OR `expect.hasAssertions()`   |                  |                     |
 | [prefer-to-be-null][]        | Suggest using `toBeNull()`                                        |                  | ![fixable-green][]  |
 | [prefer-to-be-undefined][]   | Suggest using `toBeUndefined()`                                   |                  | ![fixable-green][]  |
@@ -114,6 +115,7 @@ for more information about extending configuration files.
 [no-jest-import]: docs/rules/no-jest-import.md
 [no-large-snapshots]: docs/rules/no-large-snapshots.md
 [no-test-prefixes]: docs/rules/no-test-prefixes.md
+[no-test-return-statement]: docs/rules/no-test-return-statement.md
 [prefer-expect-assertions]: docs/rules/prefer-expect-assertions.md
 [prefer-to-be-null]: docs/rules/prefer-to-be-null.md
 [prefer-to-be-undefined]: docs/rules/prefer-to-be-undefined.md
