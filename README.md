@@ -81,7 +81,7 @@ for more information about extending configuration files.
 | Rule                         | Description                                                       | Recommended      | Fixable             |
 | ---------------------------- | ----------------------------------------------------------------- | ---------------- | ------------------- |
 | [consistent-test-it][]       | Enforce consistent test or it keyword                             |                  | ![fixable-green][]  |
-| [expect-expect][]            | Enforce assertion to be made in a test body                       |                  | ![fixable-green][]  |
+| [expect-expect][]            | Enforce assertion to be made in a test body                       |                  |                     |
 | [lowercase-name][]           | Disallow capitalized test names                                   |                  | ![fixable-green][]  |
 | [no-disabled-tests][]        | Disallow disabled tests                                           | ![recommended][] |                     |
 | [no-focused-tests][]         | Disallow focused tests                                            | ![recommended][] |                     |
