@@ -1,14 +1,11 @@
 # Suggest using `toStrictEqual()` (prefer-strict-equal)
 
 `toStrictEqual` not only checks that two objects contain the same data but also
-that they have the same shape. The believe is that imposing a stricter equality
-results in safer tests.
+that they have the same structure. It is common to expect objects to not only have identical values but also to have identical keys. A stricter equality will catch cases where two objects do not have identical keys.
 
 ## Rule details
 
 This rule triggers a warning if `toEqual()` is used to assert equality.
-
-This rule is enabled by default.
 
 ### Default configuration
 
