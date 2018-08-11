@@ -1,7 +1,9 @@
 # Suggest using `toStrictEqual()` (prefer-strict-equal)
 
 `toStrictEqual` not only checks that two objects contain the same data but also
-that they have the same structure. It is common to expect objects to not only have identical values but also to have identical keys. A stricter equality will catch cases where two objects do not have identical keys.
+that they have the same structure. It is common to expect objects to not only
+have identical values but also to have identical keys. A stricter equality will
+catch cases where two objects do not have identical keys.
 
 ## Rule details
 
