@@ -7,9 +7,7 @@ Ensure that there is at least one `expect` call made in a test.
 This rule triggers when there is no call made to `expect` in a test, to prevent
 users from forgetting to add assertions.
 
-### Default configuration
-
-The following patterns are considered warnings:
+Examples of **incorrect** code for this rule:
 
 ```js
 it('should be a test', () => {
@@ -18,7 +16,7 @@ it('should be a test', () => {
 test('should assert something', () => {});
 ```
 
-The following patterns are not warnings:
+Examples of **correct** code for this rule:
 
 ```js
 it('should be a test', () => {
@@ -26,5 +24,54 @@ it('should be a test', () => {
 });
 it('should work with callbacks/async', () => {
   somePromise().then(res => expect(res).toBe('passed'));
+});
+```
+
+## Options
+
+```json
+{
+  "jest/expect-expect": [
+    "error",
+    {
+      "assertFunctionNames": ["expect"]
+    }
+  ]
+}
+```
+
+### `assertFunctionNames`
+
+This array option whitelists the assertion function names to look for.
+
+Examples of **incorrect** code for the `{ "assertFunctionNames": ["expect"] }`
+option:
+
+```js
+/* eslint jest/expect-expect: ["error", { "assertFunctionNames": ["expect"] }] */
+
+import { expectSaga } from 'redux-saga-test-plan';
+import { addSaga } from '../src/sagas';
+
+test('returns sum', () => {
+  expectSaga(addSaga, 1, 1)
+    .returns(2)
+    .run();
+});
+```
+
+Examples of **correct** code for the
+`{ "assertFunctionNames": ["expect", "expectSaga"] }` option:
+
+```js
+/* eslint jest/expect-expect: ["error", { "assertFunctionNames": ["expect", "expectSaga"] }] */
+
+import { expectSaga } from 'redux-saga-test-plan';
+import { addSaga } from '../src/sagas';
+
+test('returns sum', () => {
+  expectSaga(addSaga, 1, 1)
+    .returns(2)
+    .run();
 });
 ```

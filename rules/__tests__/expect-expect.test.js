@@ -14,6 +14,15 @@ ruleTester.run('expect-expect', rule, {
     'it("should pass", () => expect(true).toBeDefined())',
     'test("should pass", () => expect(true).toBeDefined())',
     'it("should pass", () => somePromise().then(() => expect(true).toBeDefined()))',
+    {
+      code:
+        'test("should pass", () => { expect(true).toBeDefined(); foo(true).toBe(true); })',
+      options: [{ assertFunctionNames: ['expect', 'foo'] }],
+    },
+    {
+      code: 'it("should return undefined",() => expectSaga(mySaga).returns());',
+      options: [{ assertFunctionNames: ['expectSaga'] }],
+    },
   ],
 
   invalid: [
@@ -37,6 +46,26 @@ ruleTester.run('expect-expect', rule, {
     },
     {
       code: 'it("should fail", () => { somePromise.then(() => {}); });',
+      errors: [
+        {
+          message: 'Test has no assertions',
+          type: 'CallExpression',
+        },
+      ],
+    },
+    {
+      code: 'test("should fail", () => { foo(true).toBe(true); })',
+      options: [{ assertFunctionNames: ['expect'] }],
+      errors: [
+        {
+          message: 'Test has no assertions',
+          type: 'CallExpression',
+        },
+      ],
+    },
+    {
+      code: 'it("should also fail",() => expectSaga(mySaga).returns());',
+      options: [{ assertFunctionNames: ['expect'] }],
       errors: [
         {
           message: 'Test has no assertions',
