@@ -48,7 +48,7 @@
     "prettier": "^1.10.2",
     "prettylint": "^1.0.0",
     "semantic-release": "^15.0.2",
-    "travis-deploy-once": "^4.3.1"
+    "travis-deploy-once": "^5.0.3"
   },
   "prettier": {
     "proseWrap": "always",
