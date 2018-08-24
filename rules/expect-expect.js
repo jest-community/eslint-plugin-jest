@@ -12,10 +12,26 @@ module.exports = {
     docs: {
       url: getDocsUrl(__filename),
     },
+    schema: [
+      {
+        type: 'object',
+        properties: {
+          assertFunctionNames: {
+            type: 'array',
+            items: [{ type: 'string' }],
+          },
+        },
+        additionalProperties: false,
+      },
+    ],
   },
   create(context) {
     // variables should be defined here
     const unchecked = [];
+    const assertFunctionNames =
+      context.options[0] && context.options[0].assertFunctionNames
+        ? context.options[0].assertFunctionNames
+        : ['expect'];
 
     //----------------------------------------------------------------------
     // Helpers
@@ -23,8 +39,8 @@ module.exports = {
     const isExpectCall = node =>
       // if we're not calling a function, ignore
       node.type === 'CallExpression' &&
-      // if we're not calling expect, ignore
-      node.callee.name === 'expect';
+      // if we're not calling allowed assertion
+      assertFunctionNames.some(name => name === node.callee.name);
     //----------------------------------------------------------------------
     // Public
     //----------------------------------------------------------------------
