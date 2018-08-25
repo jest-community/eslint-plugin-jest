@@ -53,11 +53,11 @@ option:
 import { expectSaga } from 'redux-saga-test-plan';
 import { addSaga } from '../src/sagas';
 
-test('returns sum', () => {
+test('returns sum', () =>
   expectSaga(addSaga, 1, 1)
     .returns(2)
     .run();
-});
+);
 ```
 
 Examples of **correct** code for the
@@ -69,9 +69,9 @@ Examples of **correct** code for the
 import { expectSaga } from 'redux-saga-test-plan';
 import { addSaga } from '../src/sagas';
 
-test('returns sum', () => {
+test('returns sum', () =>
   expectSaga(addSaga, 1, 1)
     .returns(2)
     .run();
-});
+);
 ```
