@@ -34,7 +34,7 @@
     "commitmsg": "commitlint -e $GIT_PARAMS"
   },
   "devDependencies": {
-    "@commitlint/cli": "^6.0.1",
+    "@commitlint/cli": "^7.1.0",
     "@commitlint/config-conventional": "^6.0.2",
     "eslint": "^4.10.0",
     "eslint-config-prettier": "^2.7.0",
