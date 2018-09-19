@@ -24,9 +24,9 @@ jobs:
     script:
     - npx -p danger@^3 danger ci
   - stage: release
-    node_js: 8
+    node_js: lts/*
     os: linux
-    after_success: yarn travis-deploy-once "yarn semantic-release"
+    after_success: npx semantic-release@15
 cache:
   yarn: true
 branches:
