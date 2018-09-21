@@ -19,6 +19,33 @@ function getName(node) {
   return null;
 }
 
+function collectReferences(scope) {
+  const locals = new Set();
+  const unresolved = new Set();
+
+  let currentScope = scope;
+
+  while (currentScope !== null) {
+    for (const ref of currentScope.variables) {
+      const isReferenceDefined = ref.defs.some(def => {
+        return def.type !== 'ImplicitGlobalVariable';
+      });
+
+      if (isReferenceDefined) {
+        locals.add(ref.name);
+      }
+    }
+
+    for (const ref of currentScope.through) {
+      unresolved.add(ref.identifier.name);
+    }
+
+    currentScope = currentScope.upper;
+  }
+
+  return { locals, unresolved };
+}
+
 module.exports = {
   meta: {
     docs: {
@@ -58,7 +85,19 @@ module.exports = {
             context.report({ message: 'Skipped test', node });
             break;
 
-          case 'pending':
+          case 'pending': {
+            const references = collectReferences(context.getScope());
+
+            if (
+              // `pending` was found as a local variable or function declaration.
+              references.locals.has('pending') ||
+              // `pending` was not found as an unresolved reference,
+              // meaning it is likely not an implicit global reference.
+              !references.unresolved.has('pending')
+            ) {
+              break;
+            }
+
             if (testDepth > 0) {
               context.report({
                 message: 'Call to pending() within test',
@@ -76,6 +115,7 @@ module.exports = {
               });
             }
             break;
+          }
 
           case 'xdescribe':
             context.report({ message: 'Disabled test suite', node });

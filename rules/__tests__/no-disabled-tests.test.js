@@ -3,7 +3,11 @@
 const RuleTester = require('eslint').RuleTester;
 const rule = require('../no-disabled-tests');
 
-const ruleTester = new RuleTester();
+const ruleTester = new RuleTester({
+  parserOptions: {
+    sourceType: 'module',
+  },
+});
 
 ruleTester.run('no-disabled-tests', rule, {
   valid: [
@@ -17,6 +21,35 @@ ruleTester.run('no-disabled-tests', rule, {
     'var calledSkip = it.skip; calledSkip.call(it)',
     '({ f: function () {} }).f()',
     '(a || b).f()',
+    [
+      'import { pending } from "actions"',
+      '',
+      'test("foo", () => {',
+      '  expect(pending()).toEqual({})',
+      '})',
+    ].join('\n'),
+    [
+      'const { pending } = require("actions")',
+      '',
+      'test("foo", () => {',
+      '  expect(pending()).toEqual({})',
+      '})',
+    ].join('\n'),
+    [
+      'test("foo", () => {',
+      '  const pending = getPending()',
+      '  expect(pending()).toEqual({})',
+      '})',
+    ].join('\n'),
+    [
+      'test("foo", () => {',
+      '  expect(pending()).toEqual({})',
+      '})',
+      '',
+      'function pending() {',
+      '  return {}',
+      '}',
+    ].join('\n'),
   ],
 
   invalid: [
