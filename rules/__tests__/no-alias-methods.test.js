@@ -31,6 +31,7 @@ ruleTester.run('no-alias-methods', rule, {
           line: 1,
         },
       ],
+      output: 'expect(a).toHaveBeenCalled()',
     },
     {
       code: 'expect(a).toBeCalledTimes()',
@@ -42,6 +43,7 @@ ruleTester.run('no-alias-methods', rule, {
           line: 1,
         },
       ],
+      output: 'expect(a).toHaveBeenCalledTimes()',
     },
     {
       code: 'expect(a).toBeCalledWith()',
@@ -53,6 +55,7 @@ ruleTester.run('no-alias-methods', rule, {
           line: 1,
         },
       ],
+      output: 'expect(a).toHaveBeenCalledWith()',
     },
     {
       code: 'expect(a).lastCalledWith()',
@@ -64,6 +67,7 @@ ruleTester.run('no-alias-methods', rule, {
           line: 1,
         },
       ],
+      output: 'expect(a).toHaveBeenLastCalledWith()',
     },
     {
       code: 'expect(a).nthCalledWith()',
@@ -75,6 +79,7 @@ ruleTester.run('no-alias-methods', rule, {
           line: 1,
         },
       ],
+      output: 'expect(a).toHaveBeenNthCalledWith()',
     },
     {
       code: 'expect(a).toReturn()',
@@ -86,6 +91,7 @@ ruleTester.run('no-alias-methods', rule, {
           line: 1,
         },
       ],
+      output: 'expect(a).toHaveReturned()',
     },
     {
       code: 'expect(a).toReturnTimes()',
@@ -97,6 +103,7 @@ ruleTester.run('no-alias-methods', rule, {
           line: 1,
         },
       ],
+      output: 'expect(a).toHaveReturnedTimes()',
     },
     {
       code: 'expect(a).toReturnWith()',
@@ -108,6 +115,7 @@ ruleTester.run('no-alias-methods', rule, {
           line: 1,
         },
       ],
+      output: 'expect(a).toHaveReturnedWith()',
     },
     {
       code: 'expect(a).lastReturnedWith()',
@@ -119,6 +127,7 @@ ruleTester.run('no-alias-methods', rule, {
           line: 1,
         },
       ],
+      output: 'expect(a).toHaveLastReturnedWith()',
     },
     {
       code: 'expect(a).nthReturnedWith()',
@@ -130,6 +139,7 @@ ruleTester.run('no-alias-methods', rule, {
           line: 1,
         },
       ],
+      output: 'expect(a).toHaveNthReturnedWith()',
     },
     {
       code: 'expect(a).toThrowError()',
@@ -141,6 +151,7 @@ ruleTester.run('no-alias-methods', rule, {
           line: 1,
         },
       ],
+      output: 'expect(a).toThrow()',
     },
   ],
 });

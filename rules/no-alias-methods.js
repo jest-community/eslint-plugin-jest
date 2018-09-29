@@ -9,6 +9,7 @@ module.exports = {
     docs: {
       url: getDocsUrl(__filename),
     },
+    fixable: 'code',
   },
   create(context) {
     // The Jest methods which have aliases. The canonical name is the first
@@ -45,6 +46,9 @@ module.exports = {
               canonical: methodItem[0],
             },
             node: method(node),
+            fix(fixer) {
+              return [fixer.replaceText(method(node), methodItem[0])];
+            },
           });
         }
       },
