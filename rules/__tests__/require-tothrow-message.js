@@ -7,23 +7,37 @@ const ruleTester = new RuleTester();
 
 ruleTester.run('require-tothrow-message', rule, {
   valid: [
-    "expect(function() { a() }).toThrow('a');",
-    "expect(function() { a() }).toThrowError('a');",
+    // String
+    "expect(function() { throw new Error('a'); }).toThrow('a');",
+    "expect(function() { throw new Error('a'); }).toThrowError('a');",
+
+    // Template literal
+    // {
+    //   code:
+    //     "var a = 'a'; expect(function() { throw new Error('a'); })" +
+    //     '.toThrow(`${a}`);',
+    //   parser: 'babel-eslint',
+    // },
+
+    // Regex
+    "expect(function() { throw new Error('a'); }).toThrow(/^a$/);",
   ],
 
   invalid: [
+    // Empty toThrow
     {
-      code: 'expect(function() { a() }).toThrow();',
+      code: "expect(function() { throw new Error('a'); }).toThrow();",
       errors: [
-        { message: 'Add an error message to toThrow()', column: 28, line: 1 },
+        { message: 'Add an error message to toThrow()', column: 46, line: 1 },
       ],
     },
+    // Empty toThrowError
     {
-      code: 'expect(function() { a() }).toThrowError();',
+      code: "expect(function() { throw new Error('a'); }).toThrowError();",
       errors: [
         {
           message: 'Add an error message to toThrowError()',
-          column: 28,
+          column: 46,
           line: 1,
         },
       ],
