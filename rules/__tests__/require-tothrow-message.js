@@ -14,7 +14,7 @@ ruleTester.run('require-tothrow-message', rule, {
     // Template literal
     // {
     //   code:
-    //     "var a = 'a'; expect(function() { throw new Error('a'); })" +
+    //     "const a = 'a'; expect(() => { throw new Error('a'); })" +
     //     '.toThrow(`${a}`);',
     //   parser: 'babel-eslint',
     // },
