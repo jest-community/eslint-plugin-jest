@@ -25,6 +25,9 @@ ruleTester.run('require-tothrow-message', rule, {
     // Function
     "expect(function() { throw new Error('a'); })" +
       ".toThrow((function() { return 'a'; })());",
+
+    // Allow no message for `not`.
+    "expect(function() { throw new Error('a'); }).not.toThrow();",
   ],
 
   invalid: [
