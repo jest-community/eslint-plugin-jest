@@ -15,7 +15,7 @@ module.exports = {
 
         // Look for `toThrow` calls with no arguments.
         if (
-          ['toThrow', 'toThrowError'].includes(propertyName) &&
+          ['toThrow', 'toThrowError'].indexOf(propertyName) > -1 &&
           !(node.arguments[0] && node.arguments[0].type === 'Literal')
         ) {
           context.report({
