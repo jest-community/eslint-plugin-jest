@@ -83,6 +83,7 @@ for more information about extending configuration files.
 | [consistent-test-it][]       | Enforce consistent test or it keyword                             |                  | ![fixable-green][]  |
 | [expect-expect][]            | Enforce assertion to be made in a test body                       |                  |                     |
 | [lowercase-name][]           | Disallow capitalized test names                                   |                  | ![fixable-green][]  |
+| [no-alias-methods][]         | Disallow alias methods                                            |                  |                     |
 | [no-disabled-tests][]        | Disallow disabled tests                                           | ![recommended][] |                     |
 | [no-focused-tests][]         | Disallow focused tests                                            | ![recommended][] |                     |
 | [no-hooks][]                 | Disallow setup and teardown hooks                                 |                  |                     |
@@ -111,6 +112,7 @@ for more information about extending configuration files.
 [consistent-test-it]: docs/rules/consistent-test-it.md
 [expect-expect]: docs/rules/expect-expect.md
 [lowercase-name]: docs/rules/lowercase-name.md
+[no-alias-methods]: docs/rules/no-alias-methods.md
 [no-disabled-tests]: docs/rules/no-disabled-tests.md
 [no-focused-tests]: docs/rules/no-focused-tests.md
 [no-hooks]: docs/rules/no-hooks.md
