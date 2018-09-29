@@ -16,7 +16,7 @@ module.exports = {
         // Look for `toThrow` calls with no arguments.
         if (
           ['toThrow', 'toThrowError'].indexOf(propertyName) > -1 &&
-          !(node.arguments[0] && node.arguments[0].type === 'Literal')
+          node.arguments.length === 0
         ) {
           context.report({
             message: `Add an error message to {{ propertyName }}()`,

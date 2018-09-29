@@ -21,6 +21,10 @@ ruleTester.run('require-tothrow-message', rule, {
 
     // Regex
     "expect(function() { throw new Error('a'); }).toThrow(/^a$/);",
+
+    // Function
+    "expect(function() { throw new Error('a'); })" +
+      ".toThrow((function() { return 'a'; })());",
   ],
 
   invalid: [
