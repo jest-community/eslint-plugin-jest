@@ -1,6 +1,8 @@
 'use strict';
 
+const expectCase = require('./util').expectCase;
 const getDocsUrl = require('./util').getDocsUrl;
+const method = require('./util').method;
 
 module.exports = {
   meta: {
@@ -12,14 +14,19 @@ module.exports = {
   create(context) {
     return {
       CallExpression(node) {
-        const propertyName = node.callee.property && node.callee.property.name;
+        if (!expectCase(node)) {
+          return;
+        }
+
+        const propertyName = method(node) && method(node).name;
+
         if (propertyName === 'toEqual') {
           context.report({
             fix(fixer) {
-              return [fixer.replaceText(node.callee.property, 'toStrictEqual')];
+              return [fixer.replaceText(method(node), 'toStrictEqual')];
             },
             message: 'Use toStrictEqual() instead',
-            node: node.callee.property,
+            node: method(node),
           });
         }
       },
