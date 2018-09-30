@@ -22,6 +22,7 @@ const validExpectInPromise = require('./rules/valid-expect-in-promise');
 const preferInlineSnapshots = require('./rules/prefer-inline-snapshots');
 const preferStrictEqual = require('./rules/prefer-strict-equal');
 const requireTothrowMessage = require('./rules/require-tothrow-message');
+const noAliasMethods = require('./rules/no-alias-methods');
 
 const snapshotProcessor = require('./processors/snapshot-processor');
 
@@ -91,5 +92,6 @@ module.exports = {
     'prefer-inline-snapshots': preferInlineSnapshots,
     'prefer-strict-equal': preferStrictEqual,
     'require-tothrow-message': requireTothrowMessage,
+    'no-alias-methods': noAliasMethods,
   },
 };
