@@ -1,6 +1,9 @@
 'use strict';
 
+const argument = require('./util').argument;
+const expectCase = require('./util').expectCase;
 const getDocsUrl = require('./util').getDocsUrl;
+const method = require('./util').method;
 
 module.exports = {
   meta: {
@@ -11,19 +14,23 @@ module.exports = {
   create(context) {
     return {
       CallExpression(node) {
-        const propertyName = node.callee.property && node.callee.property.name;
+        if (!expectCase(node)) {
+          return;
+        }
+
+        const propertyName = method(node) && method(node).name;
 
         // Look for `toThrow` calls with no arguments.
         if (
           ['toThrow', 'toThrowError'].indexOf(propertyName) > -1 &&
-          !(node.arguments[0] && node.arguments[0].type === 'Literal')
+          !argument(node)
         ) {
           context.report({
             message: `Add an error message to {{ propertyName }}()`,
             data: {
               propertyName,
             },
-            node: node.callee.property,
+            node: method(node),
           });
         }
       },
