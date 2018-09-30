@@ -6,7 +6,10 @@ const rule = require('../prefer-strict-equal');
 const ruleTester = new RuleTester();
 
 ruleTester.run('prefer-strict-equal', rule, {
-  valid: ['expect(something).toStrictEqual(somethingElse);'],
+  valid: [
+    'expect(something).toStrictEqual(somethingElse);',
+    "a().toEqual('b')",
+  ],
   invalid: [
     {
       code: 'expect(something).toEqual(somethingElse);',
