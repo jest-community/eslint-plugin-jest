@@ -3,7 +3,11 @@
 const RuleTester = require('eslint').RuleTester;
 const rule = require('../require-tothrow-message');
 
-const ruleTester = new RuleTester();
+const ruleTester = new RuleTester({
+  parserOptions: {
+    ecmaVersion: 6,
+  },
+});
 
 ruleTester.run('require-tothrow-message', rule, {
   valid: [
@@ -12,12 +16,7 @@ ruleTester.run('require-tothrow-message', rule, {
     "expect(function() { throw new Error('a'); }).toThrowError('a');",
 
     // Template literal
-    // {
-    //   code:
-    //     "const a = 'a'; expect(() => { throw new Error('a'); })" +
-    //     '.toThrow(`${a}`);',
-    //   parser: 'babel-eslint',
-    // },
+    "const a = 'a'; expect(() => { throw new Error('a'); }).toThrow(`${a}`);",
 
     // Regex
     "expect(function() { throw new Error('a'); }).toThrow(/^a$/);",
