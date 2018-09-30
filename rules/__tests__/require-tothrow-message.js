@@ -12,38 +12,38 @@ const ruleTester = new RuleTester({
 ruleTester.run('require-tothrow-message', rule, {
   valid: [
     // String
-    "expect(function() { throw new Error('a'); }).toThrow('a');",
-    "expect(function() { throw new Error('a'); }).toThrowError('a');",
+    "expect(() => { throw new Error('a'); }).toThrow('a');",
+    "expect(() => { throw new Error('a'); }).toThrowError('a');",
 
     // Template literal
     "const a = 'a'; expect(() => { throw new Error('a'); }).toThrow(`${a}`);",
 
     // Regex
-    "expect(function() { throw new Error('a'); }).toThrow(/^a$/);",
+    "expect(() => { throw new Error('a'); }).toThrow(/^a$/);",
 
     // Function
-    "expect(function() { throw new Error('a'); })" +
-      ".toThrow((function() { return 'a'; })());",
+    "expect(() => { throw new Error('a'); })" +
+      ".toThrow((() => { return 'a'; })());",
 
     // Allow no message for `not`.
-    "expect(function() { throw new Error('a'); }).not.toThrow();",
+    "expect(() => { throw new Error('a'); }).not.toThrow();",
   ],
 
   invalid: [
     // Empty toThrow
     {
-      code: "expect(function() { throw new Error('a'); }).toThrow();",
+      code: "expect(() => { throw new Error('a'); }).toThrow();",
       errors: [
-        { message: 'Add an error message to toThrow()', column: 46, line: 1 },
+        { message: 'Add an error message to toThrow()', column: 41, line: 1 },
       ],
     },
     // Empty toThrowError
     {
-      code: "expect(function() { throw new Error('a'); }).toThrowError();",
+      code: "expect(() => { throw new Error('a'); }).toThrowError();",
       errors: [
         {
           message: 'Add an error message to toThrowError()',
-          column: 46,
+          column: 41,
           line: 1,
         },
       ],
