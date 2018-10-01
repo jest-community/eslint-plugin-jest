@@ -17,13 +17,7 @@ module.exports = {
       },
       'CallExpression[callee.name="require"][arguments.0.value="jest"]'(node) {
         context.report({
-          loc: {
-            end: {
-              column: node.arguments[0].loc.end.column,
-              line: node.arguments[0].loc.end.line,
-            },
-            start: node.arguments[0].loc.start,
-          },
+          loc: node.arguments[0].loc,
           message,
         });
       },
