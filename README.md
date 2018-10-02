@@ -6,7 +6,7 @@
     <img width="150" height="150" src="https://eslint.org/img/logo.svg">
   </a>
   <a href="https://facebook.github.io/jest/">
-    <img width="150" height="150" vspace="" hspace="25" src="https://cdn.worldvectorlogo.com/logos/jest.svg">
+    <img width="150" height="150" vspace="" hspace="25" src="https://jestjs.io/img/jest.png">
   </a>
   <h1>eslint-plugin-jest</h1>
   <p>ESLint plugin for Jest</p>
