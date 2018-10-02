@@ -31,28 +31,12 @@ const isExpectAssertionsOrHasAssertionsCall = expression => {
   }
 };
 
-const isTestOrItFunction = node => {
-  return (
-    node.type === 'CallExpression' &&
-    node.callee &&
-    (node.callee.name === 'it' || node.callee.name === 'test')
-  );
-};
-
 const getFunctionFirstLine = functionBody => {
   return functionBody[0] && functionBody[0].expression;
 };
 
 const isFirstLineExprStmt = functionBody => {
   return functionBody[0] && functionBody[0].type === 'ExpressionStatement';
-};
-
-const getTestFunctionBody = node => {
-  try {
-    return node.arguments[1].body.body;
-  } catch (e) {
-    return undefined;
-  }
 };
 
 const reportMsg = (context, node) => {
@@ -70,18 +54,15 @@ module.exports = {
   },
   create(context) {
     return {
-      CallExpression(node) {
-        if (isTestOrItFunction(node)) {
-          const testFuncBody = getTestFunctionBody(node);
-          if (testFuncBody) {
-            if (!isFirstLineExprStmt(testFuncBody)) {
-              reportMsg(context, node);
-            } else {
-              const testFuncFirstLine = getFunctionFirstLine(testFuncBody);
-              if (!isExpectAssertionsOrHasAssertionsCall(testFuncFirstLine)) {
-                reportMsg(context, node);
-              }
-            }
+      'CallExpression[callee.name=/^it|test$/][arguments.1.body.body]'(node) {
+        const testFuncBody = node.arguments[1].body.body;
+
+        if (!isFirstLineExprStmt(testFuncBody)) {
+          reportMsg(context, node);
+        } else {
+          const testFuncFirstLine = getFunctionFirstLine(testFuncBody);
+          if (!isExpectAssertionsOrHasAssertionsCall(testFuncFirstLine)) {
+            reportMsg(context, node);
           }
         }
       },
