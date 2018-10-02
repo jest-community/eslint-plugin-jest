@@ -24,6 +24,10 @@ ruleTester.run('no-focused-tests', rule, {
       errors: [{ message: expectedErrorMessage, column: 10, line: 1 }],
     },
     {
+      code: 'describe.only.each()',
+      errors: [{ message: expectedErrorMessage, column: 10, line: 1 }],
+    },
+    {
       code: 'describe["only"]()',
       errors: [{ message: expectedErrorMessage, column: 10, line: 1 }],
     },
@@ -32,11 +36,19 @@ ruleTester.run('no-focused-tests', rule, {
       errors: [{ message: expectedErrorMessage, column: 4, line: 1 }],
     },
     {
+      code: 'it.only.each()',
+      errors: [{ message: expectedErrorMessage, column: 4, line: 1 }],
+    },
+    {
       code: 'it["only"]()',
       errors: [{ message: expectedErrorMessage, column: 4, line: 1 }],
     },
     {
       code: 'test.only()',
+      errors: [{ message: expectedErrorMessage, column: 6, line: 1 }],
+    },
+    {
+      code: 'test.only.each()',
       errors: [{ message: expectedErrorMessage, column: 6, line: 1 }],
     },
     {

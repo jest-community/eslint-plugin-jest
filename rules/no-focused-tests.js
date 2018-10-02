@@ -29,15 +29,25 @@ module.exports = {
     CallExpression(node) {
       const callee = node.callee;
 
-      if (
-        callee.type === 'MemberExpression' &&
-        isCallToTestOnlyFunction(callee)
-      ) {
-        context.report({
-          message: 'Unexpected focused test.',
-          node: callee.property,
-        });
-        return;
+      if (callee.type === 'MemberExpression') {
+        if (
+          callee.object.type === 'MemberExpression' &&
+          isCallToTestOnlyFunction(callee.object)
+        ) {
+          context.report({
+            message: 'Unexpected focused test.',
+            node: callee.object.property,
+          });
+          return;
+        }
+
+        if (isCallToTestOnlyFunction(callee)) {
+          context.report({
+            message: 'Unexpected focused test.',
+            node: callee.property,
+          });
+          return;
+        }
       }
 
       if (callee.type === 'Identifier' && isCallToFocusedTestFunction(callee)) {
