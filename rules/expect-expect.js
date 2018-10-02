@@ -26,45 +26,25 @@ module.exports = {
     ],
   },
   create(context) {
-    // variables should be defined here
     const unchecked = [];
     const assertFunctionNames =
       context.options[0] && context.options[0].assertFunctionNames
         ? context.options[0].assertFunctionNames
         : ['expect'];
 
-    //----------------------------------------------------------------------
-    // Helpers
-    //----------------------------------------------------------------------
-    const isExpectCall = node =>
-      // if we're not calling a function, ignore
-      node.type === 'CallExpression' &&
-      // if we're not calling allowed assertion
-      assertFunctionNames.some(name => name === node.callee.name);
-    //----------------------------------------------------------------------
-    // Public
-    //----------------------------------------------------------------------
     return {
-      // give me methods
-      CallExpression(node) {
-        // keep track of `it` calls
-        if (['it', 'test'].indexOf(node.callee.name) > -1) {
-          unchecked.push(node);
-          return;
-        }
-        if (!isExpectCall(node)) {
-          return;
-        }
-        // here, we do have a call to expect
-        // use `some` to return early (in case of nested `it`s
-        context.getAncestors().some(ancestor => {
+      'CallExpression[callee.name=/^it|test$/]'(node) {
+        unchecked.push(node);
+      },
+      [`CallExpression[callee.name=/^${assertFunctionNames.join('|')}$/]`]() {
+        // Return early in case of nested `it` statements.
+        for (const ancestor of context.getAncestors()) {
           const index = unchecked.indexOf(ancestor);
           if (index !== -1) {
             unchecked.splice(index, 1);
-            return true;
+            break;
           }
-          return false;
-        });
+        }
       },
       'Program:exit'() {
         unchecked.forEach(node =>
