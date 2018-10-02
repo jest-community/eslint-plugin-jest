@@ -57,90 +57,73 @@ module.exports = {
     let testDepth = 0;
 
     return {
+      'CallExpression[callee.name="describe"]'() {
+        suiteDepth++;
+      },
+      'CallExpression[callee.name=/^it|test$/]'() {
+        testDepth++;
+      },
+      'CallExpression[callee.name=/^it|test$/][arguments.length<2]'(node) {
+        context.report({
+          message: 'Test is missing function argument',
+          node,
+        });
+      },
       CallExpression(node) {
         const functionName = getName(node.callee);
 
         switch (functionName) {
-          case 'describe':
-            suiteDepth++;
-            break;
-
           case 'describe.skip':
             context.report({ message: 'Skipped test suite', node });
-            break;
-
-          case 'it':
-          case 'test':
-            testDepth++;
-            if (node.arguments.length < 2) {
-              context.report({
-                message: 'Test is missing function argument',
-                node,
-              });
-            }
             break;
 
           case 'it.skip':
           case 'test.skip':
             context.report({ message: 'Skipped test', node });
             break;
-
-          case 'pending': {
-            const references = collectReferences(context.getScope());
-
-            if (
-              // `pending` was found as a local variable or function declaration.
-              references.locals.has('pending') ||
-              // `pending` was not found as an unresolved reference,
-              // meaning it is likely not an implicit global reference.
-              !references.unresolved.has('pending')
-            ) {
-              break;
-            }
-
-            if (testDepth > 0) {
-              context.report({
-                message: 'Call to pending() within test',
-                node,
-              });
-            } else if (suiteDepth > 0) {
-              context.report({
-                message: 'Call to pending() within test suite',
-                node,
-              });
-            } else {
-              context.report({
-                message: 'Call to pending()',
-                node,
-              });
-            }
-            break;
-          }
-
-          case 'xdescribe':
-            context.report({ message: 'Disabled test suite', node });
-            break;
-
-          case 'xit':
-          case 'xtest':
-            context.report({ message: 'Disabled test', node });
-            break;
         }
       },
+      'CallExpression[callee.name="pending"]'(node) {
+        const references = collectReferences(context.getScope());
 
-      'CallExpression:exit'(node) {
-        const functionName = getName(node.callee);
-
-        switch (functionName) {
-          case 'describe':
-            suiteDepth--;
-            break;
-
-          case 'it':
-          case 'test':
-            testDepth--;
-            break;
+        if (
+          // `pending` was found as a local variable or function declaration.
+          references.locals.has('pending') ||
+          // `pending` was not found as an unresolved reference,
+          // meaning it is likely not an implicit global reference.
+          !references.unresolved.has('pending')
+        ) {
+          return;
         }
+
+        if (testDepth > 0) {
+          context.report({
+            message: 'Call to pending() within test',
+            node,
+          });
+        } else if (suiteDepth > 0) {
+          context.report({
+            message: 'Call to pending() within test suite',
+            node,
+          });
+        } else {
+          context.report({
+            message: 'Call to pending()',
+            node,
+          });
+        }
+      },
+      'CallExpression[callee.name="xdescribe"]'(node) {
+        context.report({ message: 'Disabled test suite', node });
+      },
+      'CallExpression[callee.name=/^xit|xtest$/]'(node) {
+        context.report({ message: 'Disabled test', node });
+      },
+      'CallExpression[callee.name="describe"]:exit'() {
+        suiteDepth--;
+      },
+      'CallExpression[callee.name=/^it|test$/]:exit'() {
+        testDepth--;
       },
     };
   },
