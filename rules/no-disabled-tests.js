@@ -1,23 +1,7 @@
 'use strict';
 
 const getDocsUrl = require('./util').getDocsUrl;
-
-function getName(node) {
-  function joinNames(a, b) {
-    return a && b ? `${a}.${b}` : null;
-  }
-
-  switch (node && node.type) {
-    case 'Identifier':
-      return node.name;
-    case 'Literal':
-      return node.value;
-    case 'MemberExpression':
-      return joinNames(getName(node.object), getName(node.property));
-  }
-
-  return null;
-}
+const getNodeName = require('./util').getNodeName;
 
 function collectReferences(scope) {
   const locals = new Set();
@@ -70,7 +54,7 @@ module.exports = {
         });
       },
       CallExpression(node) {
-        const functionName = getName(node.callee);
+        const functionName = getNodeName(node.callee);
 
         switch (functionName) {
           case 'describe.skip':

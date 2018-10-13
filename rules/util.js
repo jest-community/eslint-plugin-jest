@@ -98,10 +98,20 @@ const testCaseNames = Object.assign(Object.create(null), {
 });
 
 const getNodeName = node => {
-  if (node.type === 'MemberExpression') {
-    return `${node.object.name}.${node.property.name}`;
+  function joinNames(a, b) {
+    return a && b ? `${a}.${b}` : null;
   }
-  return node.name;
+
+  switch (node && node.type) {
+    case 'Identifier':
+      return node.name;
+    case 'Literal':
+      return node.value;
+    case 'MemberExpression':
+      return joinNames(getNodeName(node.object), getNodeName(node.property));
+  }
+
+  return null;
 };
 
 const isTestCase = node =>
