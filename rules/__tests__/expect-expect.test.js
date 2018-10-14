@@ -23,6 +23,14 @@ ruleTester.run('expect-expect', rule, {
       code: 'it("should return undefined",() => expectSaga(mySaga).returns());',
       options: [{ assertFunctionNames: ['expectSaga'] }],
     },
+    {
+      code: [
+        'test("verifies the function call", () => {',
+        '  td.verify(someFunctionCall())',
+        '})',
+      ].join('\n'),
+      options: [{ assertFunctionNames: ['td.verify'] }],
+    },
   ],
 
   invalid: [
