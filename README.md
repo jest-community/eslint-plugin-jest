@@ -97,6 +97,7 @@ for more information about extending configuration files.
 | [prefer-strict-equal][]      | Suggest using `toStrictEqual()`                                   |                  | ![fixable-green][]  |
 | [prefer-to-be-null][]        | Suggest using `toBeNull()`                                        |                  | ![fixable-green][]  |
 | [prefer-to-be-undefined][]   | Suggest using `toBeUndefined()`                                   |                  | ![fixable-green][]  |
+| [prefer-to-contain][]        | Suggest using `toContain()`                                       |                  | ![fixable-green][]  |
 | [prefer-to-have-length][]    | Suggest using `toHaveLength()`                                    | ![recommended][] | ![fixable-green][]  |
 | [prefer-inline-snapshots][]  | Suggest using `toMatchInlineSnapshot()`                           |                  | ![fixable-green][]  |
 | [require-tothrow-message][]  | Require that `toThrow()` and `toThrowError` includes a message    |                  |                     |
@@ -126,6 +127,7 @@ for more information about extending configuration files.
 [prefer-strict-equal]: docs/rules/prefer-strict-equal.md
 [prefer-to-be-null]: docs/rules/prefer-to-be-null.md
 [prefer-to-be-undefined]: docs/rules/prefer-to-be-undefined.md
+[prefer-to-contain]: docs/rules/prefer-to-contain.md
 [prefer-to-have-length]: docs/rules/prefer-to-have-length.md
 [prefer-inline-snapshots]: docs/rules/prefer-inline-snapshots.md
 [require-tothrow-message]: docs/rules/require-tothrow-message.md
