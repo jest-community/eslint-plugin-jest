@@ -44,10 +44,10 @@ module.exports = {
       'CallExpression[callee.name="describe"]'() {
         suiteDepth++;
       },
-      'CallExpression[callee.name=/^it|test$/]'() {
+      'CallExpression[callee.name=/^(it|test)$/]'() {
         testDepth++;
       },
-      'CallExpression[callee.name=/^it|test$/][arguments.length<2]'(node) {
+      'CallExpression[callee.name=/^(it|test)$/][arguments.length<2]'(node) {
         context.report({
           message: 'Test is missing function argument',
           node,

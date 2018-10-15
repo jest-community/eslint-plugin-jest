@@ -21,6 +21,8 @@ ruleTester.run('no-disabled-tests', rule, {
     'var calledSkip = it.skip; calledSkip.call(it)',
     '({ f: function () {} }).f()',
     '(a || b).f()',
+    'itHappensToStartWithIt()',
+    'testSomething()',
     [
       'import { pending } from "actions"',
       '',
