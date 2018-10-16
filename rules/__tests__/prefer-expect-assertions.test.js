@@ -87,5 +87,7 @@ ruleTester.run('prefer-expect-assertions', rule, {
       '\n\t\t\texpect(someValue).toBe(true)\n' +
       '\t\t\t})',
     'test("it1")',
+    'itHappensToStartWithIt("foo", function() {})',
+    'testSomething("bar", function() {})',
   ],
 });
