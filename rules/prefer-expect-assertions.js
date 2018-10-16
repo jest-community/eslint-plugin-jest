@@ -54,7 +54,7 @@ module.exports = {
   },
   create(context) {
     return {
-      'CallExpression[callee.name=/^it|test$/][arguments.1.body.body]'(node) {
+      'CallExpression[callee.name=/^(it|test)$/][arguments.1.body.body]'(node) {
         const testFuncBody = node.arguments[1].body.body;
 
         if (!isFirstLineExprStmt(testFuncBody)) {
