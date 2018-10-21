@@ -48,12 +48,16 @@ module.exports = {
               }
 
               if (body.type === 'BlockStatement') {
+                let beforeReplacement = `new Promise(${newCallback} => {`;
+                if (callback.async) {
+                  beforeReplacement = `await ${beforeReplacement}`;
+                } else {
+                  beforeReplacement = `return ${beforeReplacement}`;
+                }
+
                 return [
                   argumentFix,
-                  fixer.insertTextAfter(
-                    firstBodyToken,
-                    `return new Promise(${newCallback} => {`
-                  ),
+                  fixer.insertTextAfter(firstBodyToken, beforeReplacement),
                   fixer.insertTextAfter(lastBodyToken, ')}'),
                 ];
               } else {
