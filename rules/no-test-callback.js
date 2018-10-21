@@ -19,7 +19,10 @@ module.exports = {
 
         const callback = node.arguments[1];
 
-        if (callback.params.length !== 1) {
+        if (
+          !/^(Arrow)?FunctionExpression$/.test(callback.type) ||
+          callback.params.length !== 1
+        ) {
           return;
         }
 

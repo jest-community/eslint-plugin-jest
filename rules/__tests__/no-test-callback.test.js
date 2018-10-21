@@ -16,6 +16,7 @@ ruleTester.run('no-test-callback', rule, {
     'test("something", function() {})',
     'test("something", function () {})',
     'test("something", async function () {})',
+    'test("something", someArg)',
   ],
   invalid: [
     {
