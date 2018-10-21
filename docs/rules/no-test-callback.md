@@ -46,7 +46,7 @@ will report the assertion error correctly.
 
 ## Rule details
 
-This rule triggers a warning if you have a `done` callback in your test
+This rule triggers a warning if you have a `done` callback in your test.
 
 The following patterns are considered warnings:
 
