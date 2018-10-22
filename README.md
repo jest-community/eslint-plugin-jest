@@ -91,6 +91,7 @@ for more information about extending configuration files.
 | [no-jasmine-globals][]       | Disallow Jasmine globals                                          |                  | ![fixable-yellow][] |
 | [no-jest-import][]           | Disallow importing `jest`                                         | ![recommended][] |                     |
 | [no-large-snapshots][]       | Disallow large snapshots                                          |                  |                     |
+| [no-test-callback][]         | Using a callback in asynchronous tests                            |                  | ![fixable-green][]  |
 | [no-test-prefixes][]         | Disallow using `f` & `x` prefixes to define focused/skipped tests |                  | ![fixable-green][]  |
 | [no-test-return-statement][] | Disallow explicitly returning from tests                          |                  |                     |
 | [prefer-expect-assertions][] | Suggest using `expect.assertions()` OR `expect.hasAssertions()`   |                  |                     |
@@ -121,6 +122,7 @@ for more information about extending configuration files.
 [no-jasmine-globals]: docs/rules/no-jasmine-globals.md
 [no-jest-import]: docs/rules/no-jest-import.md
 [no-large-snapshots]: docs/rules/no-large-snapshots.md
+[no-test-callback]: docs/rules/no-test-callback.md
 [no-test-prefixes]: docs/rules/no-test-prefixes.md
 [no-test-return-statement]: docs/rules/no-test-return-statement.md
 [prefer-expect-assertions]: docs/rules/prefer-expect-assertions.md
