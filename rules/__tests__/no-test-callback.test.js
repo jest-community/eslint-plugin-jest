@@ -14,7 +14,6 @@ ruleTester.run('no-test-callback', rule, {
     'test("something", () => {})',
     'test("something", async () => {})',
     'test("something", function() {})',
-    'test("something", function () {})',
     'test("something", async function () {})',
     'test("something", someArg)',
   ],
