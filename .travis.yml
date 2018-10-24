@@ -12,8 +12,8 @@ before_install:
 install: yarn --ignore-engines
 before_script: greenkeeper-lockfile-update
 script:
-- yarn commitlint --from="$TRAVIS_BRANCH" --to="$TRAVIS_COMMIT"
-- yarn commitlint --from=$TRAVIS_COMMIT
+- if [[ ! $(node --version) =~ v4.* ]]; then yarn commitlint --from="$TRAVIS_BRANCH" --to="$TRAVIS_COMMIT"; fi
+- if [[ ! $(node --version) =~ v4.* ]]; then yarn commitlint --from=$TRAVIS_COMMIT; fi
 - yarn prettylint
 - yarn test --coverage --maxWorkers 2
 after_script: greenkeeper-lockfile-upload
