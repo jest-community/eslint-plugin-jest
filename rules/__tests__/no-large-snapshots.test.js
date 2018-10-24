@@ -1,6 +1,57 @@
 'use strict';
 
-const noLargeSnapshots = require('../no-large-snapshots').create;
+const RuleTester = require('eslint').RuleTester;
+const rule = require('../no-large-snapshots');
+const noLargeSnapshots = rule.create;
+
+const ruleTester = new RuleTester({
+  parserOptions: {
+    ecmaVersion: 2015,
+  },
+});
+
+ruleTester.run('no-large-snapshots', rule, {
+  valid: [
+    {
+      filename: 'mock.js',
+      code: `expect(something).toMatchInlineSnapshot(\`\n${'line\n'.repeat(
+        2
+      )}\`);`,
+    },
+    {
+      filename: 'mock.js',
+      code: `expect(something).toThrowErrorMatchingInlineSnapshot(\`\n${'line\n'.repeat(
+        2
+      )}\`);`,
+    },
+  ],
+  invalid: [
+    {
+      filename: 'mock.js',
+      code: `expect(something).toMatchInlineSnapshot(\`\n${'line\n'.repeat(
+        50
+      )}\`);`,
+      errors: [
+        {
+          message:
+            'Expected Jest snapshot to be smaller than 50 lines but was 51 lines long',
+        },
+      ],
+    },
+    {
+      filename: 'mock.js',
+      code: `expect(something).toThrowErrorMatchingInlineSnapshot(\`\n${'line\n'.repeat(
+        50
+      )}\`);`,
+      errors: [
+        {
+          message:
+            'Expected Jest snapshot to be smaller than 50 lines but was 51 lines long',
+        },
+      ],
+    },
+  ],
+});
 
 // was not able to use https://eslint.org/docs/developer-guide/nodejs-api#ruletester for these because there is no way to configure RuleTester to run non .js files
 describe('no-large-snapshots', () => {

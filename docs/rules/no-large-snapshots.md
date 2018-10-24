@@ -22,9 +22,10 @@ parserOptions: {
 
 ## Rule Details
 
-This rule looks at all Jest snapshot files (files with `.snap` extension) and
-validates that each stored snapshot within those files does not exceed 50 lines
-(by default, this is configurable as explained in `Options` section below).
+This rule looks at all Jest inline and external snapshots (files with `.snap`
+extension) and validates that each stored snapshot within those files does not
+exceed 50 lines (by default, this is configurable as explained in `Options`
+section below).
 
 Example of **incorrect** code for this rule:
 
