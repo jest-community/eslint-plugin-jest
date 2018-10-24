@@ -3,6 +3,7 @@ node_js:
 - 10
 - 8
 - 6
+- node
 before_install:
 - curl -o- -L https://yarnpkg.com/install.sh
 - export PATH="$HOME/.yarn/bin:$PATH"
