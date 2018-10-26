@@ -63,5 +63,9 @@ ruleTester.run('no-focused-tests', rule, {
       code: 'fit()',
       errors: [{ message: expectedErrorMessage, column: 1, line: 1 }],
     },
+    {
+      code: 'fit.each()',
+      errors: [{ message: expectedErrorMessage, column: 1, line: 1 }],
+    },
   ],
 });
