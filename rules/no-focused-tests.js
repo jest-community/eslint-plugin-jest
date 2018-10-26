@@ -31,6 +31,17 @@ module.exports = {
 
       if (callee.type === 'MemberExpression') {
         if (
+          callee.object.type === 'Identifier' &&
+          isCallToFocusedTestFunction(callee.object)
+        ) {
+          context.report({
+            message: 'Unexpected focused test.',
+            node: callee.object,
+          });
+          return;
+        }
+
+        if (
           callee.object.type === 'MemberExpression' &&
           isCallToTestOnlyFunction(callee.object)
         ) {
