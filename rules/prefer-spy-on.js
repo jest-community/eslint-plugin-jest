@@ -36,18 +36,18 @@ module.exports = {
 
         if (!jestFnCall) return;
 
-        const leftPropQuote =
-          node.left.property.type === 'Identifier' ? "'" : '';
-        const arg = jestFnCall.arguments[0];
-        const argSource = arg && context.getSourceCode().getText(arg);
-        const mockImplementation = argSource
-          ? `.mockImplementation(${argSource})`
-          : '';
-
         context.report({
           node,
           message: 'Use jest.spyOn() instead.',
           fix(fixer) {
+            const leftPropQuote =
+              node.left.property.type === 'Identifier' ? "'" : '';
+            const arg = jestFnCall.arguments[0];
+            const argSource = arg && context.getSourceCode().getText(arg);
+            const mockImplementation = argSource
+              ? `.mockImplementation(${argSource})`
+              : '';
+
             return [
               fixer.insertTextBefore(node.left, `jest.spyOn(`),
               fixer.replaceTextRange(

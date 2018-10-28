@@ -9,7 +9,7 @@ const ruleTester = new RuleTester({
   },
 });
 
-ruleTester.run('prefer-to-be-null', rule, {
+ruleTester.run('prefer-spy-on', rule, {
   valid: [
     'Date.now = () => 10',
     'window.fetch = jest.fn',
