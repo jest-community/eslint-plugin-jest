@@ -83,16 +83,16 @@ for more information about extending configuration files.
 | [consistent-test-it][]       | Enforce consistent test or it keyword                             |                  | ![fixable-green][]  |
 | [expect-expect][]            | Enforce assertion to be made in a test body                       |                  |                     |
 | [lowercase-name][]           | Disallow capitalized test names                                   |                  | ![fixable-green][]  |
-| [no-alias-methods][]         | Disallow alias methods                                            |                  | ![fixable-green][]  |
+| [no-alias-methods][]         | Disallow alias methods                                            | ![recommended][] | ![fixable-green][]  |
 | [no-disabled-tests][]        | Disallow disabled tests                                           | ![recommended][] |                     |
 | [no-focused-tests][]         | Disallow focused tests                                            | ![recommended][] |                     |
 | [no-hooks][]                 | Disallow setup and teardown hooks                                 |                  |                     |
 | [no-identical-title][]       | Disallow identical titles                                         | ![recommended][] |                     |
-| [no-jasmine-globals][]       | Disallow Jasmine globals                                          |                  | ![fixable-yellow][] |
+| [no-jasmine-globals][]       | Disallow Jasmine globals                                          | ![recommended][] | ![fixable-yellow][] |
 | [no-jest-import][]           | Disallow importing `jest`                                         | ![recommended][] |                     |
 | [no-large-snapshots][]       | Disallow large snapshots                                          |                  |                     |
 | [no-test-callback][]         | Using a callback in asynchronous tests                            |                  | ![fixable-green][]  |
-| [no-test-prefixes][]         | Disallow using `f` & `x` prefixes to define focused/skipped tests |                  | ![fixable-green][]  |
+| [no-test-prefixes][]         | Disallow using `f` & `x` prefixes to define focused/skipped tests | ![recommended][] | ![fixable-green][]  |
 | [no-test-return-statement][] | Disallow explicitly returning from tests                          |                  |                     |
 | [prefer-expect-assertions][] | Suggest using `expect.assertions()` OR `expect.hasAssertions()`   |                  |                     |
 | [prefer-spy-on][]            | Suggest using `jest.spyOn()`                                      |                  | ![fixable-green][]  |
@@ -100,11 +100,11 @@ for more information about extending configuration files.
 | [prefer-to-be-null][]        | Suggest using `toBeNull()`                                        |                  | ![fixable-green][]  |
 | [prefer-to-be-undefined][]   | Suggest using `toBeUndefined()`                                   |                  | ![fixable-green][]  |
 | [prefer-to-contain][]        | Suggest using `toContain()`                                       |                  | ![fixable-green][]  |
-| [prefer-to-have-length][]    | Suggest using `toHaveLength()`                                    | ![recommended][] | ![fixable-green][]  |
+| [prefer-to-have-length][]    | Suggest using `toHaveLength()`                                    |                  | ![fixable-green][]  |
 | [prefer-inline-snapshots][]  | Suggest using `toMatchInlineSnapshot()`                           |                  | ![fixable-green][]  |
 | [require-tothrow-message][]  | Require that `toThrow()` and `toThrowError` includes a message    |                  |                     |
-| [valid-describe][]           | Enforce valid `describe()` callback                               |                  |                     |
-| [valid-expect-in-promise][]  | Enforce having return statement when testing with promises        |                  |                     |
+| [valid-describe][]           | Enforce valid `describe()` callback                               | ![recommended][] |                     |
+| [valid-expect-in-promise][]  | Enforce having return statement when testing with promises        | ![recommended][] |                     |
 | [valid-expect][]             | Enforce valid `expect()` usage                                    | ![recommended][] |                     |
 
 ## Credit
