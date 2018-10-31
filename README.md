@@ -83,7 +83,7 @@ for more information about extending configuration files.
 | [consistent-test-it][]       | Enforce consistent test or it keyword                             |                  | ![fixable-green][]  |
 | [expect-expect][]            | Enforce assertion to be made in a test body                       |                  |                     |
 | [lowercase-name][]           | Disallow capitalized test names                                   |                  | ![fixable-green][]  |
-| [no-alias-methods][]         | Disallow alias methods                                            |                  |                     |
+| [no-alias-methods][]         | Disallow alias methods                                            |                  | ![fixable-green][]  |
 | [no-disabled-tests][]        | Disallow disabled tests                                           | ![recommended][] |                     |
 | [no-focused-tests][]         | Disallow focused tests                                            | ![recommended][] |                     |
 | [no-hooks][]                 | Disallow setup and teardown hooks                                 |                  |                     |
