@@ -41,6 +41,16 @@ ruleTester.run('prefer-spy-on', rule, {
       output: "jest.spyOn(Date, 'now')",
     },
     {
+      code: 'window[`${name}`] = jest.fn()',
+      errors: [
+        {
+          message: 'Use jest.spyOn() instead.',
+          type: 'AssignmentExpression',
+        },
+      ],
+      output: 'jest.spyOn(window, `${name}`)',
+    },
+    {
       code: "obj['prop' + 1] = jest['fn']()",
       errors: [
         {
