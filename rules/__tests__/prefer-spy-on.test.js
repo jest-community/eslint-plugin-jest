@@ -13,6 +13,7 @@ ruleTester.run('prefer-spy-on', rule, {
   valid: [
     'Date.now = () => 10',
     'window.fetch = jest.fn',
+    'Date.now = fn()',
     'obj.mock = jest.something()',
     'const mock = jest.fn()',
     'mock = jest.fn()',
