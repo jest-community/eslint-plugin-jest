@@ -183,6 +183,15 @@ ruleTester.run('valid-expect-in-promise', rule, {
 
   valid: [
     `
+      it('it1', () => new Promise((done) => {
+        test()
+          .then(() => {
+            expect(someThing).toEqual(true);
+            done();
+          });
+      }));
+    `,
+    `
       it('it1', () => {
         return somePromise.then(() => {
           expect(someThing).toEqual(true);

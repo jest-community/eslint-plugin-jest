@@ -88,6 +88,7 @@ const getTestFunction = node => {
 const isParentThenOrPromiseReturned = (node, testFunctionBody) => {
   return (
     testFunctionBody.type === 'CallExpression' ||
+    testFunctionBody.type === 'NewExpression' ||
     node.parent.parent.type === 'ReturnStatement' ||
     isPromiseReturnedLater(node, testFunctionBody) ||
     isThenOrCatch(node.parent.parent)
