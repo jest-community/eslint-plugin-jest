@@ -4,7 +4,10 @@ const getDocsUrl = require('./util').getDocsUrl;
 const getNodeName = require('./util').getNodeName;
 
 const getJestFnCall = node => {
-  if (node.type !== 'CallExpression' && node.type !== 'MemberExpression') {
+  if (
+    (node.type !== 'CallExpression' && node.type !== 'MemberExpression') ||
+    (node.callee && node.callee.type !== 'MemberExpression')
+  ) {
     return null;
   }
 
