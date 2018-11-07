@@ -72,6 +72,17 @@ config file:
 }
 ```
 
+### Style
+
+This plugin also exports a configuration named `style`, which adds some
+stylistic rules, such as `prefer-to-be-null`, which enforces usage of `toBeNull`
+over `toBe(null)`. All rules included are:
+
+- `prefer-to-be-null`
+- `prefer-to-be-undefined`
+- `prefer-to-contain`
+- `prefer-to-have-length`
+
 See
 [ESLint documentation](http://eslint.org/docs/user-guide/configuring#extending-configuration-files)
 for more information about extending configuration files.
