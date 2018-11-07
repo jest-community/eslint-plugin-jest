@@ -49,6 +49,15 @@ module.exports = {
         'jest/valid-expect-in-promise': 'error',
       },
     },
+    style: {
+      plugins: ['jest'],
+      rules: {
+        'jest/prefer-to-be-null': 'error',
+        'jest/prefer-to-be-undefined': 'error',
+        'jest/prefer-to-contain': 'error',
+        'jest/prefer-to-have-length': 'error',
+      },
+    },
   },
   environments: {
     globals: {
