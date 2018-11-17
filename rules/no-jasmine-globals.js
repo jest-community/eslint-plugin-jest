@@ -2,6 +2,15 @@
 
 const { getDocsUrl, getNodeName } = require('./util');
 
+const globalAlternatives = {
+  spyOn: 'Illegal usage of global `spyOn`, prefer `jest.spyOn`',
+  spyOnProperty: 'Illegal usage of global `spyOnProperty`, prefer `jest.spyOn`',
+  fail:
+    'Illegal usage of `fail`, prefer throwing an error, or the `done.fail` callback',
+  pending:
+    'Illegal usage of `pending`, prefer explicitly skipping a test using `test.skip`',
+};
+
 module.exports = {
   meta: {
     docs: {
@@ -17,29 +26,15 @@ module.exports = {
         if (!calleeName) {
           return;
         }
-
-        if (calleeName === 'spyOn' || calleeName === 'spyOnProperty') {
+        if (
+          calleeName === 'spyOn' ||
+          calleeName === 'spyOnProperty' ||
+          calleeName === 'fail' ||
+          calleeName === 'pending'
+        ) {
           context.report({
             node,
-            message: `Illegal usage of global \`${calleeName}\`, prefer \`jest.spyOn\``,
-          });
-          return;
-        }
-
-        if (calleeName === 'fail') {
-          context.report({
-            node,
-            message:
-              'Illegal usage of `fail`, prefer throwing an error, or the `done.fail` callback',
-          });
-          return;
-        }
-
-        if (calleeName === 'pending') {
-          context.report({
-            node,
-            message:
-              'Illegal usage of `pending`, prefer explicitly skipping a test using `test.skip`',
+            message: globalAlternatives[calleeName],
           });
           return;
         }
