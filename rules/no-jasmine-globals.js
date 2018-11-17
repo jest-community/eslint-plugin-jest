@@ -1,6 +1,6 @@
 'use strict';
 
-const { getDocsUrl, getNodeName } = require('./util');
+const { getDocsUrl, getNodeName, scopeHasLocalReference } = require('./util');
 
 const globalAlternatives = {
   spyOn: 'Illegal usage of global `spyOn`, prefer `jest.spyOn`',
@@ -32,6 +32,11 @@ module.exports = {
           calleeName === 'fail' ||
           calleeName === 'pending'
         ) {
+          if (scopeHasLocalReference(context.getScope(), calleeName)) {
+            // It's a local variable, not a jasmine global.
+            return;
+          }
+
           context.report({
             node,
             message: globalAlternatives[calleeName],
