@@ -2,21 +2,23 @@
 
 const { getDocsUrl, getNodeName, scopeHasLocalReference } = require('./util');
 
-const globalAlternatives = {
-  spyOn: 'Illegal usage of global `spyOn`, prefer `jest.spyOn`',
-  spyOnProperty: 'Illegal usage of global `spyOnProperty`, prefer `jest.spyOn`',
-  fail:
-    'Illegal usage of `fail`, prefer throwing an error, or the `done.fail` callback',
-  pending:
-    'Illegal usage of `pending`, prefer explicitly skipping a test using `test.skip`',
-};
-
 module.exports = {
   meta: {
     docs: {
       url: getDocsUrl(__filename),
     },
     fixable: 'code',
+    messages: {
+      illegalGlobal:
+        'Illegal usage of global `{{ global }}`, prefer `{{ replacement }}`',
+      illegalMethod:
+        'Illegal usage of `{{ method }}`, prefer `{{ replacement }}`',
+      illegalFail:
+        'Illegal usage of `fail`, prefer throwing an error, or the `done.fail` callback',
+      illegalPending:
+        'Illegal usage of `pending`, prefer explicitly skipping a test using `test.skip`',
+      illegalJasmine: 'Illegal usage of jasmine global',
+    },
   },
   create(context) {
     return {
@@ -37,10 +39,28 @@ module.exports = {
             return;
           }
 
-          context.report({
-            node,
-            message: globalAlternatives[calleeName],
-          });
+          switch (calleeName) {
+            case 'spyOn':
+            case 'spyOnProperty':
+              context.report({
+                node,
+                messageId: 'illegalGlobal',
+                data: { global: calleeName, replacement: 'jest.spyOn' },
+              });
+              break;
+            case 'fail':
+              context.report({
+                node,
+                messageId: 'illegalFail',
+              });
+              break;
+            case 'pending':
+              context.report({
+                node,
+                messageId: 'illegalPending',
+              });
+              break;
+          }
           return;
         }
 
@@ -59,7 +79,11 @@ module.exports = {
                 return [fixer.replaceText(node.callee.object, 'expect')];
               },
               node,
-              message: `Illegal usage of \`${calleeName}\`, prefer \`expect.${functionName}\``,
+              messageId: 'illegalMethod',
+              data: {
+                method: calleeName,
+                replacement: `expect.${functionName}`,
+              },
             });
             return;
           }
@@ -67,7 +91,11 @@ module.exports = {
           if (functionName === 'addMatchers') {
             context.report({
               node,
-              message: `Illegal usage of \`${calleeName}\`, prefer \`expect.extend\``,
+              messageId: 'illegalMethod',
+              data: {
+                method: calleeName,
+                replacement: `expect.extend`,
+              },
             });
             return;
           }
@@ -75,14 +103,18 @@ module.exports = {
           if (functionName === 'createSpy') {
             context.report({
               node,
-              message: `Illegal usage of \`${calleeName}\`, prefer \`jest.fn\``,
+              messageId: 'illegalMethod',
+              data: {
+                method: calleeName,
+                replacement: 'jest.fn',
+              },
             });
             return;
           }
 
           context.report({
             node,
-            message: 'Illegal usage of jasmine global',
+            messageId: 'illegalJasmine',
           });
         }
       },
