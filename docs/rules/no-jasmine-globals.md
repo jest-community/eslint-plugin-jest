@@ -3,7 +3,7 @@
 `jest` uses `jasmine` as a test runner. A side effect of this is that both a
 `jasmine` object, and some jasmine-specific globals, are exposed to the test
 environment. Most functionality offered by Jasmine has been ported to Jest, and
-the Jasmine globals will stop working in the future. Developers should therefor
+the Jasmine globals will stop working in the future. Developers should therefore
 migrate to Jest's documented API instead of relying on the undocumented Jasmine
 API.
 
