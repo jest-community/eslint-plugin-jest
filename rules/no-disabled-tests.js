@@ -1,33 +1,6 @@
 'use strict';
 
-const { getDocsUrl, getNodeName } = require('./util');
-
-function collectReferences(scope) {
-  const locals = new Set();
-  const unresolved = new Set();
-
-  let currentScope = scope;
-
-  while (currentScope !== null) {
-    for (const ref of currentScope.variables) {
-      const isReferenceDefined = ref.defs.some(def => {
-        return def.type !== 'ImplicitGlobalVariable';
-      });
-
-      if (isReferenceDefined) {
-        locals.add(ref.name);
-      }
-    }
-
-    for (const ref of currentScope.through) {
-      unresolved.add(ref.identifier.name);
-    }
-
-    currentScope = currentScope.upper;
-  }
-
-  return { locals, unresolved };
-}
+const { getDocsUrl, getNodeName, scopeHasLocalReference } = require('./util');
 
 module.exports = {
   meta: {
@@ -67,15 +40,7 @@ module.exports = {
         }
       },
       'CallExpression[callee.name="pending"]'(node) {
-        const references = collectReferences(context.getScope());
-
-        if (
-          // `pending` was found as a local variable or function declaration.
-          references.locals.has('pending') ||
-          // `pending` was not found as an unresolved reference,
-          // meaning it is likely not an implicit global reference.
-          !references.unresolved.has('pending')
-        ) {
+        if (scopeHasLocalReference(context.getScope(), 'pending')) {
           return;
         }
 

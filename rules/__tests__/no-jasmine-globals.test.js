@@ -15,6 +15,9 @@ ruleTester.run('no-jasmine-globals', rule, {
     'test("foo", function () {})',
     'foo()',
     `require('foo')('bar')`,
+    'function callback(fail) { fail() }',
+    'var spyOn = require("actions"); spyOn("foo")',
+    'function callback(pending) { pending() }',
   ],
   invalid: [
     {

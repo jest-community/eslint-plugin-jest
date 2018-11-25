@@ -142,6 +142,44 @@ const getDocsUrl = filename => {
   return `${REPO_URL}/blob/v${version}/docs/rules/${ruleName}.md`;
 };
 
+const collectReferences = scope => {
+  const locals = new Set();
+  const unresolved = new Set();
+
+  let currentScope = scope;
+
+  while (currentScope !== null) {
+    for (const ref of currentScope.variables) {
+      const isReferenceDefined = ref.defs.some(def => {
+        return def.type !== 'ImplicitGlobalVariable';
+      });
+
+      if (isReferenceDefined) {
+        locals.add(ref.name);
+      }
+    }
+
+    for (const ref of currentScope.through) {
+      unresolved.add(ref.identifier.name);
+    }
+
+    currentScope = currentScope.upper;
+  }
+
+  return { locals, unresolved };
+};
+
+const scopeHasLocalReference = (scope, referenceName) => {
+  const references = collectReferences(scope);
+  return (
+    // referenceName was found as a local variable or function declaration.
+    references.locals.has(referenceName) ||
+    // referenceName was not found as an unresolved reference,
+    // meaning it is likely not an implicit global reference.
+    !references.unresolved.has(referenceName)
+  );
+};
+
 module.exports = {
   method,
   method2,
@@ -160,4 +198,5 @@ module.exports = {
   isFunction,
   isTestCase,
   getDocsUrl,
+  scopeHasLocalReference,
 };
