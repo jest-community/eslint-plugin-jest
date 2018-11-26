@@ -25,7 +25,27 @@ ruleTester.run('no-truthy-falsy', rule, {
       ],
     },
     {
+      code: 'expect(false).not.toBeTruthy();',
+      errors: [
+        {
+          message: 'Avoid toBeTruthy',
+          column: 14,
+          line: 1,
+        },
+      ],
+    },
+    {
       code: 'expect(false).toBeFalsy();',
+      errors: [
+        {
+          message: 'Avoid toBeFalsy',
+          column: 15,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: 'expect(true).not.toBeFalsy();',
       errors: [
         {
           message: 'Avoid toBeFalsy',
