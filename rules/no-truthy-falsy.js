@@ -3,7 +3,6 @@
 const {
   getDocsUrl,
   expectCase,
-  expectNotCase,
   expectResolveCase,
   expectRejectCase,
   method,
@@ -14,27 +13,23 @@ module.exports = {
     docs: {
       url: getDocsUrl(__filename),
     },
-    fixable: 'code',
   },
   create(context) {
     return {
       CallExpression(node) {
         if (
-          !(
-            expectNotCase(node) ||
-            expectResolveCase(node) ||
-            expectRejectCase(node)
-          ) &&
+          !(expectResolveCase(node) || expectRejectCase(node)) &&
           expectCase(node)
         ) {
-          if (method(node).name === 'toBeTruthy') {
+          const methodName = method(node).name;
+          if (methodName === 'toBeTruthy') {
             context.report({
-              message: 'Use toBe(true) instead',
+              message: 'Avoid toBeTruthy',
               node: method(node),
             });
-          } else if (method(node).name === 'toBeFalsy') {
+          } else if (methodName === 'toBeFalsy') {
             context.report({
-              message: 'Use toBe(false) instead',
+              message: 'Avoid toBeFalsy',
               node: method(node),
             });
           }
