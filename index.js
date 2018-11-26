@@ -26,6 +26,7 @@ const preferStrictEqual = require('./rules/prefer-strict-equal');
 const requireTothrowMessage = require('./rules/require-tothrow-message');
 const noAliasMethods = require('./rules/no-alias-methods');
 const noTestCallback = require('./rules/no-test-callback');
+const noTruthyFalsy = require('./rules/no-truthy-falsy');
 
 const snapshotProcessor = require('./processors/snapshot-processor');
 
@@ -112,5 +113,6 @@ module.exports = {
     'require-tothrow-message': requireTothrowMessage,
     'no-alias-methods': noAliasMethods,
     'no-test-callback': noTestCallback,
+    'no-truthy-falsy': noTruthyFalsy,
   },
 };
