@@ -18,7 +18,7 @@ ruleTester.run('no-truthy-falsy', rule, {
       code: 'expect(true).toBeTruthy();',
       errors: [
         {
-          message: 'Use toBe(true) instead',
+          message: 'Avoid toBeTruthy',
           column: 14,
           line: 1,
         },
@@ -28,7 +28,7 @@ ruleTester.run('no-truthy-falsy', rule, {
       code: 'expect(false).toBeFalsy();',
       errors: [
         {
-          message: 'Use toBe(false) instead',
+          message: 'Avoid toBeFalsy',
           column: 15,
           line: 1,
         },
