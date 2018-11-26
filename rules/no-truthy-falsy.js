@@ -24,16 +24,18 @@ module.exports = {
           expectResolveCase(node) ||
           expectRejectCase(node)
         ) {
-          const methodName = method(node).name;
+          const targetNode = expectNotCase(node) ? node.parent : node;
+          const methodName = method(targetNode).name;
+
           if (methodName === 'toBeTruthy') {
             context.report({
               message: 'Avoid toBeTruthy',
-              node: method(node),
+              node: method(targetNode),
             });
           } else if (methodName === 'toBeFalsy') {
             context.report({
               message: 'Avoid toBeFalsy',
-              node: method(node),
+              node: method(targetNode),
             });
           }
         }
