@@ -29,7 +29,7 @@ ruleTester.run('no-truthy-falsy', rule, {
       errors: [
         {
           message: 'Avoid toBeTruthy',
-          column: 14,
+          column: 18,
           line: 1,
         },
       ],
@@ -49,7 +49,7 @@ ruleTester.run('no-truthy-falsy', rule, {
       errors: [
         {
           message: 'Avoid toBeFalsy',
-          column: 15,
+          column: 17,
           line: 1,
         },
       ],

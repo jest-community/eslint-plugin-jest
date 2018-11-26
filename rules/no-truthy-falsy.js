@@ -3,6 +3,7 @@
 const {
   getDocsUrl,
   expectCase,
+  expectNotCase,
   expectResolveCase,
   expectRejectCase,
   method,
@@ -18,8 +19,10 @@ module.exports = {
     return {
       CallExpression(node) {
         if (
-          !(expectResolveCase(node) || expectRejectCase(node)) &&
-          expectCase(node)
+          expectCase(node) ||
+          expectNotCase(node) ||
+          expectResolveCase(node) ||
+          expectRejectCase(node)
         ) {
           const methodName = method(node).name;
           if (methodName === 'toBeTruthy') {
