@@ -9,7 +9,7 @@ if (danger.github.pr.body.length === 0) {
 }
 
 if (
-  danger.git.created_files.filter(filename => filename.startsWith('rules/')) &&
+  danger.git.created_files.find(filename => filename.startsWith('rules/')) &&
   !danger.git.modified_files.includes('README.md')
 ) {
   fail('Please update the README when new rules are added');
