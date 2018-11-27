@@ -105,6 +105,7 @@ for more information about extending configuration files.
 | [no-test-callback][]         | Using a callback in asynchronous tests                            |                  | ![fixable-green][]  |
 | [no-test-prefixes][]         | Disallow using `f` & `x` prefixes to define focused/skipped tests | ![recommended][] | ![fixable-green][]  |
 | [no-test-return-statement][] | Disallow explicitly returning from tests                          |                  |                     |
+| [no-truthy-falsy][]          | Disallow using `toBeTruthy()` & `toBeFalsy()`                     |                  |                     |
 | [prefer-expect-assertions][] | Suggest using `expect.assertions()` OR `expect.hasAssertions()`   |                  |                     |
 | [prefer-spy-on][]            | Suggest using `jest.spyOn()`                                      |                  | ![fixable-green][]  |
 | [prefer-strict-equal][]      | Suggest using `toStrictEqual()`                                   |                  | ![fixable-green][]  |
@@ -137,6 +138,7 @@ for more information about extending configuration files.
 [no-test-callback]: docs/rules/no-test-callback.md
 [no-test-prefixes]: docs/rules/no-test-prefixes.md
 [no-test-return-statement]: docs/rules/no-test-return-statement.md
+[no-truthy-falsy]: docs/rules/no-truthy-falsy.md
 [prefer-expect-assertions]: docs/rules/prefer-expect-assertions.md
 [prefer-spy-on]: docs/rules/prefer-spy-on.md
 [prefer-strict-equal]: docs/rules/prefer-strict-equal.md
