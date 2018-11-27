@@ -10,7 +10,11 @@ ruleTester.run('no-truthy-falsy', rule, {
     'expect(true).toBe(true);',
     'expect(false).toBe(false);',
     'expect("anything").toBe(true);',
-    'expect("anything").toBe(false);',
+    'expect("anything").toEqual(false);',
+    'expect("anything").not.toBe(true);',
+    'expect("anything").not.toEqual(true);',
+    'expect(Promise.resolve({})).resolves.toBe(true);',
+    'expect(Promise.reject({})).rejects.toBe(true);',
   ],
 
   invalid: [
@@ -35,6 +39,26 @@ ruleTester.run('no-truthy-falsy', rule, {
       ],
     },
     {
+      code: 'expect(Promise.resolve({})).resolves.toBeTruthy()',
+      errors: [
+        {
+          message: 'Avoid toBeTruthy',
+          column: 38,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: 'expect(Promise.resolve({})).rejects.toBeTruthy()',
+      errors: [
+        {
+          message: 'Avoid toBeTruthy',
+          column: 37,
+          line: 1,
+        },
+      ],
+    },
+    {
       code: 'expect(false).toBeFalsy();',
       errors: [
         {
@@ -50,6 +74,26 @@ ruleTester.run('no-truthy-falsy', rule, {
         {
           message: 'Avoid toBeFalsy',
           column: 18,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: 'expect(Promise.resolve({})).resolves.toBeFalsy()',
+      errors: [
+        {
+          message: 'Avoid toBeFalsy',
+          column: 38,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: 'expect(Promise.resolve({})).rejects.toBeFalsy()',
+      errors: [
+        {
+          message: 'Avoid toBeFalsy',
+          column: 37,
           line: 1,
         },
       ],

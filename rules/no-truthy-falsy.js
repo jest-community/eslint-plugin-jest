@@ -24,7 +24,8 @@ module.exports = {
           expectResolveCase(node) ||
           expectRejectCase(node)
         ) {
-          const targetNode = expectNotCase(node) ? node.parent : node;
+          const targetNode =
+            node.parent.parent.type === 'MemberExpression' ? node.parent : node;
           const methodName = method(targetNode).name;
 
           if (methodName === 'toBeTruthy') {
