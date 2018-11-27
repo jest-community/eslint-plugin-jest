@@ -26,13 +26,15 @@ module.exports = {
         ) {
           const targetNode =
             node.parent.parent.type === 'MemberExpression' ? node.parent : node;
-          const methodName = method(targetNode).name;
+
+          const methodNode = method(targetNode);
+          const { name: methodName } = methodNode;
 
           if (methodName === 'toBeTruthy' || methodName === 'toBeFalsy') {
             context.report({
-              data: { function: methodName },
-              message: 'Avoid {{function}}',
-              node: method(targetNode),
+              data: { methodName },
+              message: 'Avoid {{methodName}}',
+              node: methodNode,
             });
           }
         }
