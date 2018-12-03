@@ -73,9 +73,11 @@ const methodName = node => method(node).name;
 
 const methodName2 = node => method2(node).name;
 
-const argument = node => node.parent.parent.arguments[0];
+const argument = node =>
+  node.parent.parent.arguments && node.parent.parent.arguments[0];
 
-const argument2 = node => node.parent.parent.parent.arguments[0];
+const argument2 = node =>
+  node.parent.parent.parent.arguments && node.parent.parent.parent.arguments[0];
 
 const describeAliases = Object.assign(Object.create(null), {
   describe: true,
