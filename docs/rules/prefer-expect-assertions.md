@@ -7,7 +7,7 @@ Ensure every test to have either `expect.assertions(<number of assertions>)` OR
 
 This rule triggers a warning if,
 
-* `expect.assertions(<number of assertions>)` OR `expect.hasAssertions()` is not
+- `expect.assertions(<number of assertions>)` OR `expect.hasAssertions()` is not
   present as first statement in a test, e.g.:
 
 ```js
@@ -16,7 +16,7 @@ test('my test', () => {
 });
 ```
 
-* `expect.assertions(<number of assertions>)` is the first statement in a test
+- `expect.assertions(<number of assertions>)` is the first statement in a test
   where argument passed to `expect.assertions(<number of assertions>)` is not a
   valid number, e.g.:
 

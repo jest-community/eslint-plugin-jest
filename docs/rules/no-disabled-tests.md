@@ -11,10 +11,10 @@ This rule raises a warning about disabled tests.
 
 There are a number of ways to disable tests in Jest:
 
-* by appending `.skip` to the test-suite or test-case
-* by prepending the test function name with `x`
-* by declaring a test with a name but no function body
-* by making a call to `pending()` anywhere within the test
+- by appending `.skip` to the test-suite or test-case
+- by prepending the test function name with `x`
+- by declaring a test with a name but no function body
+- by making a call to `pending()` anywhere within the test
 
 The following patterns are considered warnings:
 
