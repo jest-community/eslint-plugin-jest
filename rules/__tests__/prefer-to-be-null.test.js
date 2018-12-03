@@ -18,6 +18,7 @@ ruleTester.run('prefer-to-be-null', rule, {
     'expect("a string").toMatchSnapshot(null);',
     'expect("a string").not.toMatchSnapshot();',
     "expect(something).toEqual('a string');",
+    'expect(null).toBe',
   ],
 
   invalid: [
