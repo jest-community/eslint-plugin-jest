@@ -32,9 +32,19 @@ module.exports = {
           return;
         }
 
-        // Check if the method used matches any of ours.
-        const propertyName = method(node) && method(node).name;
-        const methodItem = methodNames.find(item => item[1] === propertyName);
+        let targetNode = method(node);
+        if (
+          targetNode.name === 'resolves' ||
+          targetNode.name === 'rejects' ||
+          targetNode.name === 'not'
+        ) {
+          targetNode = method(node.parent);
+        }
+
+        // Check if the method used matches any of ours
+        const methodItem = methodNames.find(
+          item => item[1] === targetNode.name
+        );
 
         if (methodItem) {
           context.report({
@@ -43,9 +53,9 @@ module.exports = {
               replace: methodItem[1],
               canonical: methodItem[0],
             },
-            node: method(node),
+            node: targetNode,
             fix(fixer) {
-              return [fixer.replaceText(method(node), methodItem[0])];
+              return [fixer.replaceText(targetNode, methodItem[0])];
             },
           });
         }

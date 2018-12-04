@@ -153,5 +153,41 @@ ruleTester.run('no-alias-methods', rule, {
       ],
       output: 'expect(a).toThrow()',
     },
+    {
+      code: 'expect(a).resolves.toThrowError()',
+      errors: [
+        {
+          message:
+            'Replace toThrowError() with its canonical name of toThrow()',
+          column: 20,
+          line: 1,
+        },
+      ],
+      output: 'expect(a).resolves.toThrow()',
+    },
+    {
+      code: 'expect(a).rejects.toThrowError()',
+      errors: [
+        {
+          message:
+            'Replace toThrowError() with its canonical name of toThrow()',
+          column: 19,
+          line: 1,
+        },
+      ],
+      output: 'expect(a).rejects.toThrow()',
+    },
+    {
+      code: 'expect(a).not.toThrowError()',
+      errors: [
+        {
+          message:
+            'Replace toThrowError() with its canonical name of toThrow()',
+          column: 15,
+          line: 1,
+        },
+      ],
+      output: 'expect(a).not.toThrow()',
+    },
   ],
 });
