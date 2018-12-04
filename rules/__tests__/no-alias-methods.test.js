@@ -177,5 +177,17 @@ ruleTester.run('no-alias-methods', rule, {
       ],
       output: 'expect(a).rejects.toThrow()',
     },
+    {
+      code: 'expect(a).not.toThrowError()',
+      errors: [
+        {
+          message:
+            'Replace toThrowError() with its canonical name of toThrow()',
+          column: 15,
+          line: 1,
+        },
+      ],
+      output: 'expect(a).not.toThrow()',
+    },
   ],
 });

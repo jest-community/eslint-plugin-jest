@@ -33,7 +33,11 @@ module.exports = {
         }
 
         let targetNode = method(node);
-        if (targetNode.name === 'resolves' || targetNode.name === 'rejects') {
+        if (
+          targetNode.name === 'resolves' ||
+          targetNode.name === 'rejects' ||
+          targetNode.name === 'not'
+        ) {
           targetNode = method(node.parent);
         }
 
