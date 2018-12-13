@@ -1284,10 +1284,10 @@ eslint-plugin-es@^1.3.1:
     eslint-utils "^1.3.0"
     regexpp "^2.0.1"
 
-eslint-plugin-eslint-plugin@^1.4.0:
-  version "1.4.1"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-eslint-plugin/-/eslint-plugin-eslint-plugin-1.4.1.tgz#4a42a0637eba09ff20b68055022422e8bdf97ab9"
-  integrity sha512-xGMO0JrPq9an2dv3xiC+9PHDXUPRCf/ZRTzW5LMPPbJrRqgT6kbN7HuZGNzk10cB5HRgN5eQ7XS/FbOTnx6/jQ==
+eslint-plugin-eslint-plugin@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-eslint-plugin/-/eslint-plugin-eslint-plugin-2.0.0.tgz#9825af354c8fcefda7c99c951243d70687dd9a1d"
+  integrity sha512-NLJ+Rw23xykBV12hQ/e4Kz8jbmtWSx++Q5dizfM8SjNQyUu/+AU4NUP4hih6iFMByKllTLR/hmVV8xwLpRBCPA==
 
 eslint-plugin-node@^8.0.0:
   version "8.0.0"
