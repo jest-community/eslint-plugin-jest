@@ -118,6 +118,7 @@ for more information about extending configuration files.
 | [valid-describe][]           | Enforce valid `describe()` callback                               | ![recommended][] |                     |
 | [valid-expect-in-promise][]  | Enforce having return statement when testing with promises        | ![recommended][] |                     |
 | [valid-expect][]             | Enforce valid `expect()` usage                                    | ![recommended][] |                     |
+| [prefer-todo][]              | Suggest using `test.todo()`                                       |                  | ![fixable-green][]  |
 
 ## Credit
 
@@ -151,6 +152,7 @@ for more information about extending configuration files.
 [valid-describe]: docs/rules/valid-describe.md
 [valid-expect-in-promise]: docs/rules/valid-expect-in-promise.md
 [valid-expect]: docs/rules/valid-expect.md
+[prefer-todo]: docs/rules/prefer-todo.md
 [fixable-green]: https://img.shields.io/badge/-fixable-green.svg
 [fixable-yellow]: https://img.shields.io/badge/-fixable-yellow.svg
 [recommended]: https://img.shields.io/badge/-recommended-lightgrey.svg

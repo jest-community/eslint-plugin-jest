@@ -182,6 +182,14 @@ const scopeHasLocalReference = (scope, referenceName) => {
   );
 };
 
+function composeFixers(node) {
+  return (...fixers) => {
+    return fixerApi => {
+      return fixers.reduce((all, fixer) => [...all, fixer(node, fixerApi)], []);
+    };
+  };
+}
+
 module.exports = {
   method,
   method2,
@@ -201,4 +209,5 @@ module.exports = {
   isTestCase,
   getDocsUrl,
   scopeHasLocalReference,
+  composeFixers,
 };
