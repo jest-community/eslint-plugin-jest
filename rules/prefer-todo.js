@@ -6,6 +6,7 @@ const {
   isFunction,
   composeFixers,
   getNodeName,
+  isString,
 } = require('./util');
 
 function isOnlyTestTitle(node) {
@@ -34,19 +35,15 @@ function removeSecondArg({ arguments: [first, second] }, fixer) {
   return fixer.removeRange([first.range[1], second.range[1]]);
 }
 
-function isFirstArgSpread({ arguments: [firstArg] }) {
-  return firstArg && firstArg.type === 'SpreadElement';
+function isFirstArgString({ arguments: [firstArg] }) {
+  return firstArg && isString(firstArg);
 }
 
 function create(context) {
   return {
     CallExpression(node) {
-      if (isTestCase(node)) {
+      if (isTestCase(node) && isFirstArgString(node)) {
         const combineFixers = composeFixers(node);
-
-        if (isFirstArgSpread(node)) {
-          return;
-        }
 
         if (isTestBodyEmpty(node)) {
           context.report({

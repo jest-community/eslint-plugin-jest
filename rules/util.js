@@ -130,6 +130,9 @@ const isDescribe = node =>
 const isFunction = node =>
   node.type === 'FunctionExpression' || node.type === 'ArrowFunctionExpression';
 
+const isString = node =>
+  node.type === 'Literal' || node.type === 'TemplateLiteral';
+
 /**
  * Generates the URL to documentation for the given rule name. It uses the
  * package version to build the link to a tagged version of the
@@ -207,6 +210,7 @@ module.exports = {
   isDescribe,
   isFunction,
   isTestCase,
+  isString,
   getDocsUrl,
   scopeHasLocalReference,
   composeFixers,

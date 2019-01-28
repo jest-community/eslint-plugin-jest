@@ -10,6 +10,7 @@ const ruleTester = new RuleTester({
 ruleTester.run('prefer-todo', rule, {
   valid: [
     'test.todo("i need to write this test");',
+    'test(obj)',
     'test("stub", () => expect(1).toBe(1));',
     `
       supportsDone && params.length < test.length
@@ -24,6 +25,13 @@ ruleTester.run('prefer-todo', rule, {
         { message: 'Prefer todo test case over unimplemented test case' },
       ],
       output: 'test.todo("i need to write this test");',
+    },
+    {
+      code: 'test(`i need to write this test`);',
+      errors: [
+        { message: 'Prefer todo test case over unimplemented test case' },
+      ],
+      output: 'test.todo(`i need to write this test`);',
     },
     {
       code: 'it("foo", function () {})',
