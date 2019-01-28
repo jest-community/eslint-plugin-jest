@@ -8,7 +8,15 @@ const ruleTester = new RuleTester({
 });
 
 ruleTester.run('prefer-todo', rule, {
-  valid: ['test.todo("i need to write this test");'],
+  valid: [
+    'test.todo("i need to write this test");',
+    'test("stub", () => expect(1).toBe(1));',
+    `
+      supportsDone && params.length < test.length
+        ? done => test(...params, done)
+        : () => test(...params);
+    `,
+  ],
   invalid: [
     {
       code: `test("i need to write this test");`,
