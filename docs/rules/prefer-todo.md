@@ -18,7 +18,9 @@ This rule is enabled by default.
 The following pattern is considered warning:
 
 ```js
-test('i need to write this test');
+test('i need to write this test'); // Unimplemented test case
+test('i need to write this test', () => {}); // Empty test case body
+test.skip('i need to write this test', () => {}); // Empty test case body
 ```
 
 The following pattern is not warning:
