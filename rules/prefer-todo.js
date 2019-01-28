@@ -13,7 +13,7 @@ function isOnlyTestTitle(node) {
 }
 
 function isFunctionBodyEmpty(node) {
-  return node.body && !node.body.body.length;
+  return node.body.body && !node.body.body.length;
 }
 
 function isTestBodyEmpty(node) {
@@ -34,11 +34,19 @@ function removeSecondArg({ arguments: [first, second] }, fixer) {
   return fixer.removeRange([first.range[1], second.range[1]]);
 }
 
+function isFirstArgSpread({ arguments: [firstArg] }) {
+  return firstArg && firstArg.type === 'SpreadElement';
+}
+
 function create(context) {
   return {
     CallExpression(node) {
       if (isTestCase(node)) {
         const combineFixers = composeFixers(node);
+
+        if (isFirstArgSpread(node)) {
+          return;
+        }
 
         if (isTestBodyEmpty(node)) {
           context.report({
