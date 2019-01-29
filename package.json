@@ -1,6 +1,6 @@
 {
   "name": "eslint-plugin-jest",
-  "version": "22.2.0",
+  "version": "0.0.0-development",
   "description": "Eslint rules for Jest",
   "repository": "jest-community/eslint-plugin-jest",
   "license": "MIT",
@@ -94,23 +94,5 @@
       "commit-msg": "commitlint -e $HUSKY_GIT_PARAMS",
       "pre-commit": "lint-staged"
     }
-  },
-  "release": {
-    "plugins": [
-      "@semantic-release/commit-analyzer",
-      "@semantic-release/release-notes-generator",
-      "@semantic-release/changelog",
-      "@semantic-release/npm",
-      "@semantic-release/git",
-      "@semantic-release/github"
-    ]
-  },
-  "dependencies": {
-    "@semantic-release/changelog": "^3",
-    "@semantic-release/commit-analyzer": "^6",
-    "@semantic-release/git": "^7",
-    "@semantic-release/npm": "^5",
-    "@semantic-release/release-notes-generator": "^7",
-    "semantic-release": "15"
   }
 }

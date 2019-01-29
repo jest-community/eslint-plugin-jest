@@ -26,9 +26,7 @@ jobs:
   - stage: release
     node_js: lts/*
     os: linux
-    after_success:
-      - yarn add semantic-release@15 @semantic-release/commit-analyzer@^6 @semantic-release/release-notes-generator@^7 @semantic-release/changelog@^3 @semantic-release/npm@^5 @semantic-release/git@^7 @semantic-release/github@^5
-      - yarn semantic-release
+    after_success: npx semantic-release@15
 cache:
   yarn: true
 branches:
