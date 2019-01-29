@@ -11,6 +11,8 @@ ruleTester.run('prefer-todo', rule, {
   valid: [
     'test.todo("i need to write this test");',
     'test(obj)',
+    'fit("foo")',
+    'xit("foo")',
     'test("stub", () => expect(1).toBe(1));',
     `
       supportsDone && params.length < test.length

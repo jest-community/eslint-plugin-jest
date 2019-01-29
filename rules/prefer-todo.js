@@ -2,7 +2,6 @@
 
 const {
   getDocsUrl,
-  isTestCase,
   isFunction,
   composeFixers,
   getNodeName,
@@ -36,6 +35,11 @@ function removeSecondArg({ arguments: [first, second] }, fixer) {
 function isFirstArgString({ arguments: [firstArg] }) {
   return firstArg && isString(firstArg);
 }
+
+const isTestCase = node =>
+  node &&
+  node.type === 'CallExpression' &&
+  ['it', 'test', 'it.skip', 'test.skip'].includes(getNodeName(node.callee));
 
 function create(context) {
   return {
