@@ -18,9 +18,7 @@ function isFunctionBodyEmpty(node) {
 }
 
 function isTestBodyEmpty(node) {
-  const {
-    arguments: [, fn],
-  } = node;
+  const fn = node.arguments[1]; // eslint-disable-line prefer-destructuring
   return fn && isFunction(fn) && isFunctionBodyEmpty(fn);
 }
 

@@ -131,7 +131,8 @@ const isFunction = node =>
   node.type === 'FunctionExpression' || node.type === 'ArrowFunctionExpression';
 
 const isString = node =>
-  node.type === 'Literal' || node.type === 'TemplateLiteral';
+  (node.type === 'Literal' && typeof node.value === 'string') ||
+  node.type === 'TemplateLiteral';
 
 /**
  * Generates the URL to documentation for the given rule name. It uses the

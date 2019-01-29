@@ -11,8 +11,6 @@ This rule triggers a warning if empty test case is used without 'test.todo'.
 test('i need to write this test');
 ```
 
-This rule is enabled by default.
-
 ### Default configuration
 
 The following pattern is considered warning:
