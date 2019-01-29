@@ -1,6 +1,6 @@
 {
   "name": "eslint-plugin-jest",
-  "version": "0.0.0-development",
+  "version": "22.2.0",
   "description": "Eslint rules for Jest",
   "repository": "jest-community/eslint-plugin-jest",
   "license": "MIT",
@@ -103,5 +103,13 @@
       "@semantic-release/npm",
       "@semantic-release/git"
     ]
+  },
+  "dependencies": {
+    "@semantic-release/changelog": "^3",
+    "@semantic-release/commit-analyzer": "^6",
+    "@semantic-release/git": "^7",
+    "@semantic-release/npm": "^5",
+    "@semantic-release/release-notes-generator": "^7",
+    "semantic-release": "15"
   }
 }
