@@ -130,6 +130,10 @@ const isDescribe = node =>
 const isFunction = node =>
   node.type === 'FunctionExpression' || node.type === 'ArrowFunctionExpression';
 
+const isString = node =>
+  (node.type === 'Literal' && typeof node.value === 'string') ||
+  node.type === 'TemplateLiteral';
+
 /**
  * Generates the URL to documentation for the given rule name. It uses the
  * package version to build the link to a tagged version of the
@@ -182,6 +186,14 @@ const scopeHasLocalReference = (scope, referenceName) => {
   );
 };
 
+function composeFixers(node) {
+  return (...fixers) => {
+    return fixerApi => {
+      return fixers.reduce((all, fixer) => [...all, fixer(node, fixerApi)], []);
+    };
+  };
+}
+
 module.exports = {
   method,
   method2,
@@ -199,6 +211,8 @@ module.exports = {
   isDescribe,
   isFunction,
   isTestCase,
+  isString,
   getDocsUrl,
   scopeHasLocalReference,
+  composeFixers,
 };
