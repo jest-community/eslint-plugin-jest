@@ -78,8 +78,8 @@ module.exports = {
               const description = testDescription(node);
 
               const rangeIgnoringQuotes = [
-                firstArg.start + 1,
-                firstArg.end - 1,
+                firstArg.range[0] + 1,
+                firstArg.range[1] - 1,
               ];
               const newDescription =
                 description.substring(0, 1).toLowerCase() +

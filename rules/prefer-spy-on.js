@@ -53,11 +53,11 @@ module.exports = {
             return [
               fixer.insertTextBefore(node.left, `jest.spyOn(`),
               fixer.replaceTextRange(
-                [node.left.object.end, node.left.property.start],
+                [node.left.object.range[1], node.left.property.range[0]],
                 `, ${leftPropQuote}`
               ),
               fixer.replaceTextRange(
-                [node.left.property.end, jestFnCall.end],
+                [node.left.property.range[1], jestFnCall.range[1]],
                 `${leftPropQuote})${mockImplementation}`
               ),
             ];
