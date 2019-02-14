@@ -28,6 +28,7 @@ const noAliasMethods = require('./rules/no-alias-methods');
 const noTestCallback = require('./rules/no-test-callback');
 const noTruthyFalsy = require('./rules/no-truthy-falsy');
 const preferTodo = require('./rules/prefer-todo');
+const preferCalledWith = require('./rules/prefer-called-with');
 
 const snapshotProcessor = require('./processors/snapshot-processor');
 
@@ -116,5 +117,6 @@ module.exports = {
     'no-test-callback': noTestCallback,
     'no-truthy-falsy': noTruthyFalsy,
     'prefer-todo': preferTodo,
+    'prefer-called-with': preferCalledWith,
   },
 };
