@@ -119,6 +119,7 @@ for more information about extending configuration files.
 | [valid-expect-in-promise][]  | Enforce having return statement when testing with promises        | ![recommended][] |                     |
 | [valid-expect][]             | Enforce valid `expect()` usage                                    | ![recommended][] |                     |
 | [prefer-todo][]              | Suggest using `test.todo()`                                       |                  | ![fixable-green][]  |
+| [prefer-called-with][]       | Suggest using `toBeCalledWith()` OR `toHaveBeenCalledWith()`      |                  |                     |
 
 ## Credit
 
@@ -140,6 +141,7 @@ for more information about extending configuration files.
 [no-test-prefixes]: docs/rules/no-test-prefixes.md
 [no-test-return-statement]: docs/rules/no-test-return-statement.md
 [no-truthy-falsy]: docs/rules/no-truthy-falsy.md
+[prefer-called-with]: docs/rules/prefer-called-with.md
 [prefer-expect-assertions]: docs/rules/prefer-expect-assertions.md
 [prefer-spy-on]: docs/rules/prefer-spy-on.md
 [prefer-strict-equal]: docs/rules/prefer-strict-equal.md
