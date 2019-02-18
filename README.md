@@ -89,38 +89,39 @@ for more information about extending configuration files.
 
 ## Rules
 
-| Rule                         | Description                                                       | Recommended      | Fixable             |
-| ---------------------------- | ----------------------------------------------------------------- | ---------------- | ------------------- |
-| [consistent-test-it][]       | Enforce consistent test or it keyword                             |                  | ![fixable-green][]  |
-| [expect-expect][]            | Enforce assertion to be made in a test body                       |                  |                     |
-| [lowercase-name][]           | Disallow capitalized test names                                   |                  | ![fixable-green][]  |
-| [no-alias-methods][]         | Disallow alias methods                                            | ![recommended][] | ![fixable-green][]  |
-| [no-disabled-tests][]        | Disallow disabled tests                                           | ![recommended][] |                     |
-| [no-focused-tests][]         | Disallow focused tests                                            | ![recommended][] |                     |
-| [no-hooks][]                 | Disallow setup and teardown hooks                                 |                  |                     |
-| [no-identical-title][]       | Disallow identical titles                                         | ![recommended][] |                     |
-| [no-jasmine-globals][]       | Disallow Jasmine globals                                          | ![recommended][] | ![fixable-yellow][] |
-| [no-jest-import][]           | Disallow importing `jest`                                         | ![recommended][] |                     |
-| [no-large-snapshots][]       | Disallow large snapshots                                          |                  |                     |
-| [no-test-callback][]         | Using a callback in asynchronous tests                            |                  | ![fixable-green][]  |
-| [no-test-prefixes][]         | Disallow using `f` & `x` prefixes to define focused/skipped tests | ![recommended][] | ![fixable-green][]  |
-| [no-test-return-statement][] | Disallow explicitly returning from tests                          |                  |                     |
-| [no-truthy-falsy][]          | Disallow using `toBeTruthy()` & `toBeFalsy()`                     |                  |                     |
-| [no-test-todo][]             | Disallow using the .todo modifiers on tests                       |                  |                     |
-| [prefer-expect-assertions][] | Suggest using `expect.assertions()` OR `expect.hasAssertions()`   |                  |                     |
-| [prefer-spy-on][]            | Suggest using `jest.spyOn()`                                      |                  | ![fixable-green][]  |
-| [prefer-strict-equal][]      | Suggest using `toStrictEqual()`                                   |                  | ![fixable-green][]  |
-| [prefer-to-be-null][]        | Suggest using `toBeNull()`                                        |                  | ![fixable-green][]  |
-| [prefer-to-be-undefined][]   | Suggest using `toBeUndefined()`                                   |                  | ![fixable-green][]  |
-| [prefer-to-contain][]        | Suggest using `toContain()`                                       |                  | ![fixable-green][]  |
-| [prefer-to-have-length][]    | Suggest using `toHaveLength()`                                    |                  | ![fixable-green][]  |
-| [prefer-inline-snapshots][]  | Suggest using `toMatchInlineSnapshot()`                           |                  | ![fixable-green][]  |
-| [require-tothrow-message][]  | Require that `toThrow()` and `toThrowError` includes a message    |                  |                     |
-| [valid-describe][]           | Enforce valid `describe()` callback                               | ![recommended][] |                     |
-| [valid-expect-in-promise][]  | Enforce having return statement when testing with promises        | ![recommended][] |                     |
-| [valid-expect][]             | Enforce valid `expect()` usage                                    | ![recommended][] |                     |
-| [prefer-todo][]              | Suggest using `test.todo()`                                       |                  | ![fixable-green][]  |
-| [prefer-called-with][]       | Suggest using `toBeCalledWith()` OR `toHaveBeenCalledWith()`      |                  |                     |
+| Rule                            | Description                                                       | Recommended      | Fixable             |
+| ------------------------------- | ----------------------------------------------------------------- | ---------------- | ------------------- |
+| [consistent-test-it][]          | Enforce consistent test or it keyword                             |                  | ![fixable-green][]  |
+| [expect-expect][]               | Enforce assertion to be made in a test body                       |                  |                     |
+| [lowercase-name][]              | Disallow capitalized test names                                   |                  | ![fixable-green][]  |
+| [no-alias-methods][]            | Disallow alias methods                                            | ![recommended][] | ![fixable-green][]  |
+| [no-disabled-tests][]           | Disallow disabled tests                                           | ![recommended][] |                     |
+| [no-focused-tests][]            | Disallow focused tests                                            | ![recommended][] |                     |
+| [no-hooks][]                    | Disallow setup and teardown hooks                                 |                  |                     |
+| [no-identical-title][]          | Disallow identical titles                                         | ![recommended][] |                     |
+| [no-jasmine-globals][]          | Disallow Jasmine globals                                          | ![recommended][] | ![fixable-yellow][] |
+| [no-jest-import][]              | Disallow importing `jest`                                         | ![recommended][] |                     |
+| [no-large-snapshots][]          | Disallow large snapshots                                          |                  |                     |
+| [no-test-callback][]            | Using a callback in asynchronous tests                            |                  | ![fixable-green][]  |
+| [no-test-prefixes][]            | Disallow using `f` & `x` prefixes to define focused/skipped tests | ![recommended][] | ![fixable-green][]  |
+| [no-test-return-statement][]    | Disallow explicitly returning from tests                          |                  |                     |
+| [no-truthy-falsy][]             | Disallow using `toBeTruthy()` & `toBeFalsy()`                     |                  |                     |
+| [no-test-todo][]                | Disallow using the .todo modifiers on tests                       |                  |                     |
+| [no-test-todo-implementation][] | Disallow tests with .todo modifier to have an implementation      |                  |                     |  |
+| [prefer-expect-assertions][]    | Suggest using `expect.assertions()` OR `expect.hasAssertions()`   |                  |                     |
+| [prefer-spy-on][]               | Suggest using `jest.spyOn()`                                      |                  | ![fixable-green][]  |
+| [prefer-strict-equal][]         | Suggest using `toStrictEqual()`                                   |                  | ![fixable-green][]  |
+| [prefer-to-be-null][]           | Suggest using `toBeNull()`                                        |                  | ![fixable-green][]  |
+| [prefer-to-be-undefined][]      | Suggest using `toBeUndefined()`                                   |                  | ![fixable-green][]  |
+| [prefer-to-contain][]           | Suggest using `toContain()`                                       |                  | ![fixable-green][]  |
+| [prefer-to-have-length][]       | Suggest using `toHaveLength()`                                    |                  | ![fixable-green][]  |
+| [prefer-inline-snapshots][]     | Suggest using `toMatchInlineSnapshot()`                           |                  | ![fixable-green][]  |
+| [require-tothrow-message][]     | Require that `toThrow()` and `toThrowError` includes a message    |                  |                     |
+| [valid-describe][]              | Enforce valid `describe()` callback                               | ![recommended][] |                     |
+| [valid-expect-in-promise][]     | Enforce having return statement when testing with promises        | ![recommended][] |                     |
+| [valid-expect][]                | Enforce valid `expect()` usage                                    | ![recommended][] |                     |
+| [prefer-todo][]                 | Suggest using `test.todo()`                                       |                  | ![fixable-green][]  |
+| [prefer-called-with][]          | Suggest using `toBeCalledWith()` OR `toHaveBeenCalledWith()`      |                  |                     |
 
 ## Credit
 
@@ -143,20 +144,21 @@ for more information about extending configuration files.
 [no-test-return-statement]: docs/rules/no-test-return-statement.md
 [no-truthy-falsy]: docs/rules/no-truthy-falsy.md
 [no-test-todo]: docs/rules/no-test-todo.md
+
+[no-test-todo-implementation] docs/rules/no-test-todo-implementation.md
 [prefer-called-with]: docs/rules/prefer-called-with.md
 [prefer-expect-assertions]: docs/rules/prefer-expect-assertions.md
-[prefer-spy-on]: docs/rules/prefer-spy-on.md
-[prefer-strict-equal]: docs/rules/prefer-strict-equal.md
-[prefer-to-be-null]: docs/rules/prefer-to-be-null.md
-[prefer-to-be-undefined]: docs/rules/prefer-to-be-undefined.md
-[prefer-to-contain]: docs/rules/prefer-to-contain.md
-[prefer-to-have-length]: docs/rules/prefer-to-have-length.md
-[prefer-inline-snapshots]: docs/rules/prefer-inline-snapshots.md
-[require-tothrow-message]: docs/rules/require-tothrow-message.md
-[valid-describe]: docs/rules/valid-describe.md
-[valid-expect-in-promise]: docs/rules/valid-expect-in-promise.md
-[valid-expect]: docs/rules/valid-expect.md
-[prefer-todo]: docs/rules/prefer-todo.md
-[fixable-green]: https://img.shields.io/badge/-fixable-green.svg
-[fixable-yellow]: https://img.shields.io/badge/-fixable-yellow.svg
-[recommended]: https://img.shields.io/badge/-recommended-lightgrey.svg
+[prefer-spy-on]: docs/rules/prefer-spy-on.md [prefer-strict-equal]:
+docs/rules/prefer-strict-equal.md [prefer-to-be-null]:
+docs/rules/prefer-to-be-null.md [prefer-to-be-undefined]:
+docs/rules/prefer-to-be-undefined.md [prefer-to-contain]:
+docs/rules/prefer-to-contain.md [prefer-to-have-length]:
+docs/rules/prefer-to-have-length.md [prefer-inline-snapshots]:
+docs/rules/prefer-inline-snapshots.md [require-tothrow-message]:
+docs/rules/require-tothrow-message.md [valid-describe]:
+docs/rules/valid-describe.md [valid-expect-in-promise]:
+docs/rules/valid-expect-in-promise.md [valid-expect]: docs/rules/valid-expect.md
+[prefer-todo]: docs/rules/prefer-todo.md [fixable-green]:
+https://img.shields.io/badge/-fixable-green.svg [fixable-yellow]:
+https://img.shields.io/badge/-fixable-yellow.svg [recommended]:
+https://img.shields.io/badge/-recommended-lightgrey.svg

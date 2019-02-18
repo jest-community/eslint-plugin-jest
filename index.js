@@ -13,6 +13,7 @@ const noLargeSnapshots = require('./rules/no-large-snapshots');
 const noTestPrefixes = require('./rules/no-test-prefixes');
 const noTestReturnStatement = require('./rules/no-test-return-statement');
 const noTestTodo = require('./rules/no-test-todo');
+const noTestTodoImplementation = require('./rules/no-test-todo-implementation');
 const preferSpyOn = require('./rules/prefer-spy-on');
 const preferToBeNull = require('./rules/prefer-to-be-null');
 const preferToBeUndefined = require('./rules/prefer-to-be-undefined');
@@ -103,6 +104,7 @@ module.exports = {
     'no-test-prefixes': noTestPrefixes,
     'no-test-return-statement': noTestReturnStatement,
     'no-test-todo': noTestTodo,
+    'no-test-todo-implementation': noTestTodoImplementation,
     'prefer-spy-on': preferSpyOn,
     'prefer-to-be-null': preferToBeNull,
     'prefer-to-be-undefined': preferToBeUndefined,
