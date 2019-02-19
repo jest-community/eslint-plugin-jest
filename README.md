@@ -107,7 +107,7 @@ for more information about extending configuration files.
 | [no-test-return-statement][]    | Disallow explicitly returning from tests                          |                  |                     |
 | [no-truthy-falsy][]             | Disallow using `toBeTruthy()` & `toBeFalsy()`                     |                  |                     |
 | [no-test-todo][]                | Disallow using the .todo modifiers on tests                       |                  |                     |
-| [no-test-todo-implementation][] | Disallow tests with .todo modifier to have an implementation      |                  |                     |  |
+| [no-test-todo-implementation][] | Disallow tests with .todo modifier to have an implementation      |                  |                     |
 | [prefer-expect-assertions][]    | Suggest using `expect.assertions()` OR `expect.hasAssertions()`   |                  |                     |
 | [prefer-spy-on][]               | Suggest using `jest.spyOn()`                                      |                  | ![fixable-green][]  |
 | [prefer-strict-equal][]         | Suggest using `toStrictEqual()`                                   |                  | ![fixable-green][]  |
@@ -144,21 +144,21 @@ for more information about extending configuration files.
 [no-test-return-statement]: docs/rules/no-test-return-statement.md
 [no-truthy-falsy]: docs/rules/no-truthy-falsy.md
 [no-test-todo]: docs/rules/no-test-todo.md
-
-[no-test-todo-implementation] docs/rules/no-test-todo-implementation.md
+[no-test-todo-implementation]: docs/rules/no-test-todo-implementation.md
 [prefer-called-with]: docs/rules/prefer-called-with.md
 [prefer-expect-assertions]: docs/rules/prefer-expect-assertions.md
-[prefer-spy-on]: docs/rules/prefer-spy-on.md [prefer-strict-equal]:
-docs/rules/prefer-strict-equal.md [prefer-to-be-null]:
-docs/rules/prefer-to-be-null.md [prefer-to-be-undefined]:
-docs/rules/prefer-to-be-undefined.md [prefer-to-contain]:
-docs/rules/prefer-to-contain.md [prefer-to-have-length]:
-docs/rules/prefer-to-have-length.md [prefer-inline-snapshots]:
-docs/rules/prefer-inline-snapshots.md [require-tothrow-message]:
-docs/rules/require-tothrow-message.md [valid-describe]:
-docs/rules/valid-describe.md [valid-expect-in-promise]:
-docs/rules/valid-expect-in-promise.md [valid-expect]: docs/rules/valid-expect.md
-[prefer-todo]: docs/rules/prefer-todo.md [fixable-green]:
-https://img.shields.io/badge/-fixable-green.svg [fixable-yellow]:
-https://img.shields.io/badge/-fixable-yellow.svg [recommended]:
-https://img.shields.io/badge/-recommended-lightgrey.svg
+[prefer-spy-on]: docs/rules/prefer-spy-on.md
+[prefer-strict-equal]: docs/rules/prefer-strict-equal.md
+[prefer-to-be-null]: docs/rules/prefer-to-be-null.md
+[prefer-to-be-undefined]: docs/rules/prefer-to-be-undefined.md
+[prefer-to-contain]: docs/rules/prefer-to-contain.md
+[prefer-to-have-length]: docs/rules/prefer-to-have-length.md
+[prefer-inline-snapshots]: docs/rules/prefer-inline-snapshots.md
+[require-tothrow-message]: docs/rules/require-tothrow-message.md
+[valid-describe]: docs/rules/valid-describe.md
+[valid-expect-in-promise]: docs/rules/valid-expect-in-promise.md
+[valid-expect]: docs/rules/valid-expect.md
+[prefer-todo]: docs/rules/prefer-todo.md
+[fixable-green]: https://img.shields.io/badge/-fixable-green.svg
+[fixable-yellow]: https://img.shields.io/badge/-fixable-yellow.svg
+[recommended]: https://img.shields.io/badge/-recommended-lightgrey.svg
