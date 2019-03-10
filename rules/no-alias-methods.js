@@ -8,6 +8,11 @@ module.exports = {
       url: getDocsUrl(__filename),
     },
     fixable: 'code',
+    schema: [
+      {
+        enum: ['canonical', 'short'],
+      },
+    ],
   },
   create(context) {
     // The Jest methods which have aliases. The canonical name is the first
@@ -23,8 +28,25 @@ module.exports = {
       ['toHaveReturnedWith', 'toReturnWith'],
       ['toHaveLastReturnedWith', 'lastReturnedWith'],
       ['toHaveNthReturnedWith', 'nthReturnedWith'],
-      ['toThrow', 'toThrowError'],
     ];
+
+    // Default to "canonical" (!short) if no option
+    const canonical = context.options[0] !== 'short';
+
+    const desirableColumn = canonical ? 0 : 1;
+    const undesirableColumn = canonical ? 1 : 0;
+
+    const report = (targetNode, undesirable, desirable) =>
+      context.report({
+        message: `Replace {{ undesirable }}() with its {{ description }} name of {{ desirable }}()`,
+        data: {
+          undesirable,
+          description: canonical ? 'canonical' : 'short',
+          desirable,
+        },
+        node: targetNode,
+        fix: fixer => [fixer.replaceText(targetNode, desirable)],
+      });
 
     return {
       CallExpression(node) {
@@ -45,24 +67,20 @@ module.exports = {
           return;
         }
 
+        // Special case, the alias is longer
+        if (targetNode.name === 'toThrowError')
+          return report(targetNode, 'toThrowError', 'toThrow');
+
         // Check if the method used matches any of ours
         const methodItem = methodNames.find(
-          item => item[1] === targetNode.name
+          item => item[undesirableColumn] === targetNode.name
         );
-
-        if (methodItem) {
-          context.report({
-            message: `Replace {{ replace }}() with its canonical name of {{ canonical }}()`,
-            data: {
-              replace: methodItem[1],
-              canonical: methodItem[0],
-            },
-            node: targetNode,
-            fix(fixer) {
-              return [fixer.replaceText(targetNode, methodItem[0])];
-            },
-          });
-        }
+        if (methodItem)
+          report(
+            targetNode,
+            methodItem[undesirableColumn],
+            methodItem[desirableColumn]
+          );
       },
     };
   },

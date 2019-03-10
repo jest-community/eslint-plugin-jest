@@ -1,15 +1,28 @@
-# Don't use alias methods (no-alias-methods)
+# Don't mix alias methods (no-alias-methods)
 
 Several Jest methods have alias names, such as `toThrow` having the alias of
 `toThrowError`. This rule ensures that only the canonical name as used in the
-Jest documentation is used in the code. This makes it easier to search for all
-occurrences of the method within code, and it ensures consistency among the
+Jest documentation is used in the code. Alternatively, it ensures that only the
+shorter aliases are used in the code. Both make it easier to search for all
+occurrences of the method within code, and it ensure consistency among the
 method names used.
 
 ## Rule details
 
-This rule triggers a warning if the alias name, rather than the canonical name,
-of a method is used.
+This rule can be configured as follows
+
+```js
+{
+  enum: ['canonical', 'short'],
+}
+```
+
+In the **default**/`'canonical'` case, this rule triggers a warning if the alias
+name, rather than the canonical name, of a method is used. In the `'short'`
+configuration, this rule triggers a warning if any name other than the shortest
+alias is used.
+
+A fix is available.
 
 ### Default configuration
 
