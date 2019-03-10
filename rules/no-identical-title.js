@@ -1,6 +1,12 @@
 'use strict';
 
-const { getDocsUrl, isDescribe, isTestCase } = require('./util');
+const {
+  getDocsUrl,
+  isDescribe,
+  isTestCase,
+  isString,
+  hasExpressions,
+} = require('./util');
 
 const newDescribeContext = () => ({
   describeTitles: [],
@@ -34,11 +40,15 @@ const handleDescribeBlockTitles = (context, titles, node, title) => {
   titles.push(title);
 };
 
-const isFirstArgLiteral = node =>
-  node.arguments &&
-  node.arguments[0] &&
-  (node.arguments[0].type === 'Literal' ||
-    node.arguments[0].type === 'TemplateLiteral');
+const isFirstArgValid = arg => {
+  if (!isString(arg)) {
+    return false;
+  }
+  if (arg.type === 'TemplateLiteral' && hasExpressions(arg)) {
+    return false;
+  }
+  return true;
+};
 
 module.exports = {
   meta: {
@@ -55,16 +65,9 @@ module.exports = {
           contexts.push(newDescribeContext());
         }
         const [firstArgument] = node.arguments;
-        if (!isFirstArgLiteral(node)) {
+        if (!isFirstArgValid(firstArgument)) {
           return;
         }
-        if (
-          firstArgument.type === 'TemplateLiteral' &&
-          !!firstArgument.expressions.length
-        ) {
-          return;
-        }
-
         const title = node.arguments[0].value;
         handleTestCaseTitles(context, currentLayer.testTitles, node, title);
         handleDescribeBlockTitles(
