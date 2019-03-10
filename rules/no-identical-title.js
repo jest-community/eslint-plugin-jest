@@ -35,7 +35,10 @@ const handleDescribeBlockTitles = (context, titles, node, title) => {
 };
 
 const isFirstArgLiteral = node =>
-  node.arguments && node.arguments[0] && node.arguments[0].type === 'Literal';
+  node.arguments &&
+  node.arguments[0] &&
+  (node.arguments[0].type === 'Literal' ||
+    node.arguments[0].type === 'TemplateLiteral');
 
 module.exports = {
   meta: {
@@ -51,7 +54,14 @@ module.exports = {
         if (isDescribe(node)) {
           contexts.push(newDescribeContext());
         }
+        const [firstArgument] = node.arguments;
         if (!isFirstArgLiteral(node)) {
+          return;
+        }
+        if (
+          firstArgument.type === 'TemplateLiteral' &&
+          !!firstArgument.expressions.length
+        ) {
           return;
         }
 
