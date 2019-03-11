@@ -134,7 +134,7 @@ const isString = node =>
   (node.type === 'Literal' && typeof node.value === 'string') ||
   node.type === 'TemplateLiteral';
 
-const hasExpressions = node => !!(node.expressions && node.expressions.length);
+const hasExpressions = node => node.expressions && node.expressions.length > 0;
 
 /**
  * Generates the URL to documentation for the given rule name. It uses the
