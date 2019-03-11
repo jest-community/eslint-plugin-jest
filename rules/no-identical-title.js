@@ -41,7 +41,7 @@ const handleDescribeBlockTitles = (context, titles, node, title) => {
 };
 
 const isFirstArgValid = arg => {
-  if (!isString(arg)) {
+  if (!arg || !isString(arg)) {
     return false;
   }
   if (arg.type === 'TemplateLiteral' && hasExpressions(arg)) {

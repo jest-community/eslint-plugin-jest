@@ -12,6 +12,8 @@ ruleTester.run('no-identical-title', rule, {
       '   it("it", function() {});',
       '});',
     ].join('\n'),
+    ['describe();describe();'].join('\n'),
+    ['it();it();'].join('\n'),
     [
       'describe("describe1", function() {',
       '   it("it1", function() {});',
