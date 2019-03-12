@@ -94,6 +94,21 @@ ruleTester.run('no-identical-title', rule, {
         es6: true,
       },
     },
+    {
+      code: ['it(`it1`, () => {});', 'it(`it2`, () => {});'].join('\n'),
+      env: {
+        es6: true,
+      },
+    },
+    {
+      code: [
+        'describe(`describe1`, () => {});',
+        'describe(`describe2`, () => {});',
+      ].join('\n'),
+      env: {
+        es6: true,
+      },
+    },
   ],
 
   invalid: [
