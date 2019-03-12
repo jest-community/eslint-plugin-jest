@@ -134,6 +134,8 @@ const isString = node =>
   (node.type === 'Literal' && typeof node.value === 'string') ||
   node.type === 'TemplateLiteral';
 
+const hasExpressions = node => node.expressions && node.expressions.length > 0;
+
 /**
  * Generates the URL to documentation for the given rule name. It uses the
  * package version to build the link to a tagged version of the
@@ -212,6 +214,7 @@ module.exports = {
   isFunction,
   isTestCase,
   isString,
+  hasExpressions,
   getDocsUrl,
   scopeHasLocalReference,
   composeFixers,

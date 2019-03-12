@@ -12,6 +12,8 @@ ruleTester.run('no-identical-title', rule, {
       '   it("it", function() {});',
       '});',
     ].join('\n'),
+    ['describe();describe();'].join('\n'),
+    ['it();it();'].join('\n'),
     [
       'describe("describe1", function() {',
       '   it("it1", function() {});',
@@ -81,6 +83,17 @@ ruleTester.run('no-identical-title', rule, {
       '    });',
       '});',
     ].join('\n'),
+    {
+      code: [
+        'describe("describe", () => {',
+        '    it(`testing ${someVar} with the same title`, () => {});',
+        '    it(`testing ${someVar} with the same title`, () => {});',
+        '});',
+      ].join('\n'),
+      env: {
+        es6: true,
+      },
+    },
   ],
 
   invalid: [
@@ -209,6 +222,25 @@ ruleTester.run('no-identical-title', rule, {
             'Describe block title is used multiple times in the same describe block.',
           column: 1,
           line: 4,
+        },
+      ],
+    },
+    {
+      code: [
+        'describe("describe", () => {',
+        '    it(`testing backticks with the same title`, () => {});',
+        '    it(`testing backticks with the same title`, () => {});',
+        '});',
+      ].join('\n'),
+      env: {
+        es6: true,
+      },
+      errors: [
+        {
+          message:
+            'Test title is used multiple times in the same describe block.',
+          column: 5,
+          line: 3,
         },
       ],
     },
