@@ -50,6 +50,14 @@ const isFirstArgValid = arg => {
   return true;
 };
 
+const getArgValue = arg => {
+  if (arg.type === 'TemplateLiteral') {
+    return arg.quasis[0].value.raw;
+  }
+
+  return arg.value;
+};
+
 module.exports = {
   meta: {
     docs: {
@@ -68,7 +76,7 @@ module.exports = {
         if (!isFirstArgValid(firstArgument)) {
           return;
         }
-        const title = node.arguments[0].value;
+        const title = getArgValue(firstArgument);
         handleTestCaseTitles(context, currentLayer.testTitles, node, title);
         handleDescribeBlockTitles(
           context,
