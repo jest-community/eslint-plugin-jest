@@ -16,6 +16,7 @@ ruleTester.run('no-empty-title', rule, {
     'describe("foo", function () {})',
     'describe("foo", function () { it("bar", function () {}) })',
     'test("foo", function () {})',
+    'test(`foo`, function () {})',
     "it('foo', function () {})",
     "xdescribe('foo', function () {})",
     "xit('foo', function () {})",
@@ -54,6 +55,16 @@ ruleTester.run('no-empty-title', rule, {
     },
     {
       code: 'test("", function () {})',
+      errors: [
+        {
+          message: rule.errorMessages.test,
+          column: 1,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: 'test(``, function () {})',
       errors: [
         {
           message: rule.errorMessages.test,
