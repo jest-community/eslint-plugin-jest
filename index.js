@@ -42,7 +42,6 @@ module.exports = {
       rules: {
         'jest/no-alias-methods': 'warn',
         'jest/no-disabled-tests': 'warn',
-        'jest/no-empty-title': 'error',
         'jest/no-focused-tests': 'error',
         'jest/no-identical-title': 'error',
         'jest/no-jest-import': 'error',
