@@ -4,9 +4,12 @@ const fs = require('fs');
 const path = require('path');
 const { rules } = require('../index');
 
+const ruleNames = Object.keys(rules);
+const numberOfRules = 30;
+
 describe('rules', () => {
   it('should have a corresponding doc for each rule', () => {
-    Object.keys(rules).forEach(rule => {
+    ruleNames.forEach(rule => {
       const docPath = path.resolve(__dirname, '../docs/rules', `${rule}.md`);
 
       if (!fs.existsSync(docPath)) {
@@ -15,5 +18,14 @@ describe('rules', () => {
         );
       }
     });
+  });
+
+  it('should have the correct amount of rules', () => {
+    const { length } = ruleNames;
+    if (length !== numberOfRules) {
+      throw new Error(
+        `There should be exactly ${numberOfRules} rules, but there are ${length}. If you've added a new rule, please update this number.`
+      );
+    }
   });
 });

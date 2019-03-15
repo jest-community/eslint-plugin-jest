@@ -1,34 +1,16 @@
 'use strict';
 
-const consistentTestIt = require('./rules/consistent-test-it');
-const expectExpect = require('./rules/expect-expect');
-const lowercaseName = require('./rules/lowercase-name');
-const noDisabledTests = require('./rules/no-disabled-tests');
-const noFocusedTests = require('./rules/no-focused-tests');
-const noHooks = require('./rules/no-hooks');
-const noIdenticalTitle = require('./rules/no-identical-title');
-const noJasmineGlobals = require('./rules/no-jasmine-globals');
-const noJestImport = require('./rules/no-jest-import');
-const noLargeSnapshots = require('./rules/no-large-snapshots');
-const noTestPrefixes = require('./rules/no-test-prefixes');
-const noTestReturnStatement = require('./rules/no-test-return-statement');
-const preferSpyOn = require('./rules/prefer-spy-on');
-const preferToBeNull = require('./rules/prefer-to-be-null');
-const preferToBeUndefined = require('./rules/prefer-to-be-undefined');
-const preferToContain = require('./rules/prefer-to-contain');
-const preferToHaveLength = require('./rules/prefer-to-have-length');
-const validDescribe = require('./rules/valid-describe');
-const validExpect = require('./rules/valid-expect');
-const preferExpectAssertions = require('./rules/prefer-expect-assertions');
-const validExpectInPromise = require('./rules/valid-expect-in-promise');
-const preferInlineSnapshots = require('./rules/prefer-inline-snapshots');
-const preferStrictEqual = require('./rules/prefer-strict-equal');
-const requireTothrowMessage = require('./rules/require-tothrow-message');
-const noAliasMethods = require('./rules/no-alias-methods');
-const noTestCallback = require('./rules/no-test-callback');
-const noTruthyFalsy = require('./rules/no-truthy-falsy');
-const preferTodo = require('./rules/prefer-todo');
-const preferCalledWith = require('./rules/prefer-called-with');
+const fs = require('fs');
+const path = require('path');
+
+const rules = fs
+  .readdirSync(path.join(__dirname, 'rules'))
+  .filter(rule => rule !== '__tests__' && rule !== 'util.js')
+  .map(rule => path.basename(rule, '.js'))
+  .reduce(
+    (acc, curr) => Object.assign(acc, { [curr]: require(`./rules/${curr}`) }),
+    {}
+  );
 
 const snapshotProcessor = require('./processors/snapshot-processor');
 
@@ -88,35 +70,5 @@ module.exports = {
   processors: {
     '.snap': snapshotProcessor,
   },
-  rules: {
-    'consistent-test-it': consistentTestIt,
-    'expect-expect': expectExpect,
-    'lowercase-name': lowercaseName,
-    'no-disabled-tests': noDisabledTests,
-    'no-focused-tests': noFocusedTests,
-    'no-hooks': noHooks,
-    'no-identical-title': noIdenticalTitle,
-    'no-jasmine-globals': noJasmineGlobals,
-    'no-jest-import': noJestImport,
-    'no-large-snapshots': noLargeSnapshots,
-    'no-test-prefixes': noTestPrefixes,
-    'no-test-return-statement': noTestReturnStatement,
-    'prefer-spy-on': preferSpyOn,
-    'prefer-to-be-null': preferToBeNull,
-    'prefer-to-be-undefined': preferToBeUndefined,
-    'prefer-to-contain': preferToContain,
-    'prefer-to-have-length': preferToHaveLength,
-    'valid-describe': validDescribe,
-    'valid-expect': validExpect,
-    'prefer-expect-assertions': preferExpectAssertions,
-    'valid-expect-in-promise': validExpectInPromise,
-    'prefer-inline-snapshots': preferInlineSnapshots,
-    'prefer-strict-equal': preferStrictEqual,
-    'require-tothrow-message': requireTothrowMessage,
-    'no-alias-methods': noAliasMethods,
-    'no-test-callback': noTestCallback,
-    'no-truthy-falsy': noTruthyFalsy,
-    'prefer-todo': preferTodo,
-    'prefer-called-with': preferCalledWith,
-  },
+  rules,
 };
