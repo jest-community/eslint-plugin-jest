@@ -69,6 +69,12 @@ ruleTester.run('no-identical-title', rule, {
         es6: true,
       },
     },
+    {
+      code: 'it(`${n}`, function() {});',
+      env: {
+        es6: true,
+      },
+    },
     [
       'describe("title " + foo, function() {',
       '    describe("describe1", function() {});',

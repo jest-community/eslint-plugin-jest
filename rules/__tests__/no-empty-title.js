@@ -17,6 +17,7 @@ ruleTester.run('no-empty-title', rule, {
     'describe("foo", function () { it("bar", function () {}) })',
     'test("foo", function () {})',
     'test(`foo`, function () {})',
+    'test(`${foo}`, function () {})',
     "it('foo', function () {})",
     "xdescribe('foo', function () {})",
     "xit('foo', function () {})",

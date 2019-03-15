@@ -1,6 +1,14 @@
 'use strict';
 
-const { getDocsUrl, isDescribe, isTestCase, isString } = require('./util');
+const {
+  getDocsUrl,
+  hasExpressions,
+  isDescribe,
+  isTestCase,
+  isTemplateLiteral,
+  isString,
+  getStringValue,
+} = require('./util');
 
 const errorMessages = {
   describe: 'describe should not have an empty title',
@@ -27,7 +35,10 @@ module.exports = {
         if (!isString(firstArgument)) {
           return;
         }
-        if (firstArgument.value === '') {
+        if (isTemplateLiteral(firstArgument) && hasExpressions(firstArgument)) {
+          return;
+        }
+        if (getStringValue(firstArgument) === '') {
           const message = is.describe
             ? errorMessages.describe
             : errorMessages.test;
