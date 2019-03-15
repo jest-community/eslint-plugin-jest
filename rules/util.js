@@ -218,6 +218,7 @@ module.exports = {
   getStringValue,
   isDescribe,
   isFunction,
+  isTemplateLiteral,
   isTestCase,
   isString,
   hasExpressions,
