@@ -132,9 +132,14 @@ const isFunction = node =>
 
 const isString = node =>
   (node.type === 'Literal' && typeof node.value === 'string') ||
-  node.type === 'TemplateLiteral';
+  isTemplateLiteral(node);
+
+const isTemplateLiteral = node => node.type === 'TemplateLiteral';
 
 const hasExpressions = node => node.expressions && node.expressions.length > 0;
+
+const getStringValue = arg =>
+  isTemplateLiteral(arg) ? arg.quasis[0].value.raw : arg.value;
 
 /**
  * Generates the URL to documentation for the given rule name. It uses the
@@ -210,8 +215,10 @@ module.exports = {
   expectToEqualCase,
   expectNotToEqualCase,
   getNodeName,
+  getStringValue,
   isDescribe,
   isFunction,
+  isTemplateLiteral,
   isTestCase,
   isString,
   hasExpressions,

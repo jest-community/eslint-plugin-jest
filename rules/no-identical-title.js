@@ -6,6 +6,7 @@ const {
   isTestCase,
   isString,
   hasExpressions,
+  getStringValue,
 } = require('./util');
 
 const newDescribeContext = () => ({
@@ -50,14 +51,6 @@ const isFirstArgValid = arg => {
   return true;
 };
 
-const getArgValue = arg => {
-  if (arg.type === 'TemplateLiteral') {
-    return arg.quasis[0].value.raw;
-  }
-
-  return arg.value;
-};
-
 module.exports = {
   meta: {
     docs: {
@@ -76,7 +69,7 @@ module.exports = {
         if (!isFirstArgValid(firstArgument)) {
           return;
         }
-        const title = getArgValue(firstArgument);
+        const title = getStringValue(firstArgument);
         handleTestCaseTitles(context, currentLayer.testTitles, node, title);
         handleDescribeBlockTitles(
           context,
