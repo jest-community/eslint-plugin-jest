@@ -6,6 +6,7 @@ const path = require('path');
 const rules = fs
   .readdirSync(path.join(__dirname, 'rules'))
   .filter(rule => rule !== '__tests__' && rule !== 'util.js')
+  .map(rule => path.basename(rule, '.js'))
   .reduce(
     (acc, curr) => Object.assign(acc, { [curr]: require(`./rules/${curr}`) }),
     {}
