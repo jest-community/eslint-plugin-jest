@@ -102,6 +102,7 @@ for more information about extending configuration files.
 | [no-identical-title][]       | Disallow identical titles                                         | ![recommended][] |                     |
 | [no-jasmine-globals][]       | Disallow Jasmine globals                                          | ![recommended][] | ![fixable-yellow][] |
 | [no-jest-import][]           | Disallow importing `jest`                                         | ![recommended][] |                     |
+| [no-mocks-import][]          | Disallow manually importing from `__mocks__`                      |                  |                     |
 | [no-large-snapshots][]       | Disallow large snapshots                                          |                  |                     |
 | [no-test-callback][]         | Using a callback in asynchronous tests                            |                  | ![fixable-green][]  |
 | [no-test-prefixes][]         | Disallow using `f` & `x` prefixes to define focused/skipped tests | ![recommended][] | ![fixable-green][]  |
@@ -138,6 +139,7 @@ for more information about extending configuration files.
 [no-identical-title]: docs/rules/no-identical-title.md
 [no-jasmine-globals]: docs/rules/no-jasmine-globals.md
 [no-jest-import]: docs/rules/no-jest-import.md
+[no-mocks-import]: docs/rules/no-mocks-import.md
 [no-large-snapshots]: docs/rules/no-large-snapshots.md
 [no-test-callback]: docs/rules/no-test-callback.md
 [no-test-prefixes]: docs/rules/no-test-prefixes.md
