@@ -39,7 +39,7 @@
     "eslint-plugin-eslint-plugin": "^2.0.0",
     "eslint-plugin-node": "^8.0.0",
     "eslint-plugin-prettier": "^3.0.0",
-    "husky": "^1.0.1",
+    "husky": "^2.0.0",
     "jest": "^24.0.0",
     "jest-runner-eslint": "^0.7.1",
     "lint-staged": "^8.0.4",
