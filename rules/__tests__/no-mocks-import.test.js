@@ -18,6 +18,7 @@ ruleTester.run('no-mocks-import', rule, {
     'require("./x__mocks__")',
     'require("./x__mocks__/x")',
     'require()',
+    'var path = "./__mocks__.js"; require(path)',
     'entirelyDifferent(fn)',
   ],
   invalid: [
