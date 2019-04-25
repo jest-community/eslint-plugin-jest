@@ -22,7 +22,11 @@ module.exports = {
         }
       },
       'CallExpression[callee.name="require"]'(node) {
-        if (node.arguments.length && isMockPath(node.arguments[0].value)) {
+        if (
+          node.arguments.length &&
+          node.arguments[0].value &&
+          isMockPath(node.arguments[0].value)
+        ) {
           context.report({
             loc: node.arguments[0].loc,
             message,
