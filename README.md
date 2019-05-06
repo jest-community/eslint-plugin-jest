@@ -131,10 +131,11 @@ for more information about extending configuration files.
 ## Related Projects
 
 ### eslint-plugin-jest-formatting
-This project aims to provide formatting rules (auto-fixable where possible) to ensure consistency and readability in jest test suites.
+
+This project aims to provide formatting rules (auto-fixable where possible) to
+ensure consistency and readability in jest test suites.
 
 https://github.com/dangreenisrael/eslint-plugin-jest-formatting
-
 
 [consistent-test-it]: docs/rules/consistent-test-it.md
 [expect-expect]: docs/rules/expect-expect.md
