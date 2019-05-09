@@ -5,9 +5,34 @@
  * MIT license, Tom Vincent.
  */
 
-const { getDocsUrl } = require('./util');
+const {
+  getDocsUrl,
+  expectCase,
+  expectRejectsCase,
+  expectResolvesCase,
+  expectNotRejectsCase,
+  expectNotResolvesCase,
+} = require('./util');
 
 const expectProperties = ['not', 'resolves', 'rejects'];
+
+const getParentCallExpressionNode = node => {
+  if (node.parent.type === 'CallExpression') {
+    return node.parent;
+  }
+  return getParentCallExpressionNode(node.parent);
+};
+
+const checkIfValidReturn = (context, parentCallExpressionNode) => {
+  const validParentNodeTypes = ['ArrowFunctionExpression', 'AwaitExpression'];
+  const { options } = context;
+  if (options[0] && options[0].alwaysAwait === false) {
+    validParentNodeTypes.push('ReturnStatement');
+  }
+  return (
+    validParentNodeTypes.indexOf(parentCallExpressionNode.parent.type) > -1
+  );
+};
 
 module.exports = {
   meta: {
@@ -23,15 +48,25 @@ module.exports = {
       propertyWithoutMatcher: '"{{ propertyName }}" needs to call a matcher.',
       matcherOnPropertyNotCalled: '"{{ propertyName }}" was not called.',
     },
-    schema: [],
+    schema: [
+      {
+        type: 'object',
+        properties: {
+          alwaysAwait: {
+            type: 'boolean',
+          },
+        },
+        additionalProperties: false,
+      },
+    ],
   },
   create(context) {
     return {
       CallExpression(node) {
         const calleeName = node.callee.name;
 
-        if (calleeName === 'expect') {
-          // checking "expect()" arguments
+        // checking "expect()" arguments
+        if (expectCase(node)) {
           if (node.arguments.length > 1) {
             const secondArgumentLocStart = node.arguments[1].loc.start;
             const lastArgumentLocEnd =
@@ -114,6 +149,24 @@ module.exports = {
                 node: parentProperty,
               });
             }
+          }
+        }
+
+        if (
+          expectResolvesCase(node) ||
+          expectRejectsCase(node) ||
+          expectNotResolvesCase(node) ||
+          expectNotRejectsCase(node)
+        ) {
+          const parentCallExpressionNode = getParentCallExpressionNode(node);
+          if (!checkIfValidReturn(context, parentCallExpressionNode)) {
+            context.report({
+              // For some reason `endColumn` isn't set in tests if `loc` is not
+              // added
+              loc: parentCallExpressionNode.loc,
+              message: 'Async assertions must be awaited or returned.',
+              node,
+            });
           }
         }
       },
