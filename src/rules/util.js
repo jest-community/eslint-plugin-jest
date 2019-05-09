@@ -5,30 +5,39 @@ const { version } = require('../../package.json');
 
 const REPO_URL = 'https://github.com/jest-community/eslint-plugin-jest';
 
-const expectCase = node =>
-  node.callee.name === 'expect' &&
-  node.arguments.length === 1 &&
-  node.parent &&
-  node.parent.type === 'MemberExpression' &&
-  node.parent.parent;
+const expectCase = node => node.callee.name === 'expect';
 
 const expectNotCase = node =>
   expectCase(node) &&
   node.parent.parent.type === 'MemberExpression' &&
   methodName(node) === 'not';
 
-const expectResolveCase = node =>
+const expectResolvesCase = node =>
   expectCase(node) &&
   node.parent.parent.type === 'MemberExpression' &&
-  methodName(node) === 'resolve';
+  methodName(node) === 'resolves';
 
-const expectRejectCase = node =>
+const expectNotResolvesCase = node =>
+  expectNotCase(node) &&
+  node.parent.parent.type === 'MemberExpression' &&
+  methodName(node.parent) === 'resolves';
+
+const expectRejectsCase = node =>
   expectCase(node) &&
   node.parent.parent.type === 'MemberExpression' &&
-  methodName(node) === 'reject';
+  methodName(node) === 'rejects';
+
+const expectNotRejectsCase = node =>
+  expectNotCase(node) &&
+  node.parent.parent.type === 'MemberExpression' &&
+  methodName(node.parent) === 'rejects';
 
 const expectToBeCase = (node, arg) =>
-  !(expectNotCase(node) || expectResolveCase(node) || expectRejectCase(node)) &&
+  !(
+    expectNotCase(node) ||
+    expectResolvesCase(node) ||
+    expectRejectsCase(node)
+  ) &&
   expectCase(node) &&
   methodName(node) === 'toBe' &&
   argument(node) &&
@@ -47,7 +56,11 @@ const expectNotToBeCase = (node, arg) =>
     (argument2(node).name === 'undefined' && arg === undefined));
 
 const expectToEqualCase = (node, arg) =>
-  !(expectNotCase(node) || expectResolveCase(node) || expectRejectCase(node)) &&
+  !(
+    expectNotCase(node) ||
+    expectResolvesCase(node) ||
+    expectRejectsCase(node)
+  ) &&
   expectCase(node) &&
   methodName(node) === 'toEqual' &&
   argument(node) &&
@@ -226,8 +239,10 @@ module.exports = {
   argument2,
   expectCase,
   expectNotCase,
-  expectResolveCase,
-  expectRejectCase,
+  expectResolvesCase,
+  expectNotResolvesCase,
+  expectRejectsCase,
+  expectNotRejectsCase,
   expectToBeCase,
   expectNotToBeCase,
   expectToEqualCase,
