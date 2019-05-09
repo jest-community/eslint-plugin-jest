@@ -3,8 +3,8 @@
 const {
   getDocsUrl,
   expectCase,
-  expectResolveCase,
-  expectRejectCase,
+  expectResolvesCase,
+  expectRejectsCase,
   method,
   argument,
 } = require('./util');
@@ -93,7 +93,7 @@ module.exports = {
     return {
       CallExpression(node) {
         if (
-          !(expectResolveCase(node) || expectRejectCase(node)) &&
+          !(expectResolvesCase(node) || expectRejectsCase(node)) &&
           expectCase(node) &&
           (isEqualityNegation(node) || isValidEqualityCheck(node)) &&
           isValidIncludesMethod(node)

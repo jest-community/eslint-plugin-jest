@@ -4,8 +4,8 @@ const {
   getDocsUrl,
   expectCase,
   expectNotCase,
-  expectResolveCase,
-  expectRejectCase,
+  expectResolvesCase,
+  expectRejectsCase,
   method,
 } = require('./util');
 
@@ -25,8 +25,8 @@ module.exports = {
         if (
           expectCase(node) ||
           expectNotCase(node) ||
-          expectResolveCase(node) ||
-          expectRejectCase(node)
+          expectResolvesCase(node) ||
+          expectRejectsCase(node)
         ) {
           const targetNode =
             node.parent.parent.type === 'MemberExpression' ? node.parent : node;

@@ -4,8 +4,8 @@ const {
   getDocsUrl,
   expectCase,
   expectNotCase,
-  expectResolveCase,
-  expectRejectCase,
+  expectResolvesCase,
+  expectRejectsCase,
   method,
 } = require('./util');
 
@@ -26,8 +26,8 @@ module.exports = {
         if (
           !(
             expectNotCase(node) ||
-            expectResolveCase(node) ||
-            expectRejectCase(node)
+            expectResolvesCase(node) ||
+            expectRejectsCase(node)
           ) &&
           expectCase(node) &&
           (method(node).name === 'toBe' || method(node).name === 'toEqual') &&
