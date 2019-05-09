@@ -23,15 +23,12 @@ const getParentCallExpressionNode = node => {
   return getParentCallExpressionNode(node.parent);
 };
 
-const checkIfValidReturn = (context, parentCallExpressionNode) => {
+const checkIfValidReturn = (parentCallExpressionNode, allowReturn = true) => {
   const validParentNodeTypes = ['ArrowFunctionExpression', 'AwaitExpression'];
-  const { options } = context;
-  if (!options[0] || !options[0].alwaysAwait) {
+  if (allowReturn) {
     validParentNodeTypes.push('ReturnStatement');
   }
-  return (
-    validParentNodeTypes.indexOf(parentCallExpressionNode.parent.type) > -1
-  );
+  return validParentNodeTypes.includes(parentCallExpressionNode.parent.type);
 };
 
 module.exports = {
@@ -157,10 +154,10 @@ module.exports = {
           expectNotRejectsCase(node)
         ) {
           const parentCallExpressionNode = getParentCallExpressionNode(node);
-          if (!checkIfValidReturn(context, parentCallExpressionNode)) {
-            const { options } = context;
-            const messageReturn =
-              !options[0] || !options[0].alwaysAwait ? ' or returned' : '';
+          const { options } = context;
+          const allowReturn = !options[0] || !options[0].alwaysAwait;
+          if (!checkIfValidReturn(parentCallExpressionNode, allowReturn)) {
+            const messageReturn = allowReturn ? ' or returned' : '';
 
             context.report({
               loc: parentCallExpressionNode.loc,
