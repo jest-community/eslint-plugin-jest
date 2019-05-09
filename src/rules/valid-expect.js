@@ -163,8 +163,6 @@ module.exports = {
               !options[0] || !options[0].alwaysAwait ? ' or returned' : '';
 
             context.report({
-              // For some reason `endColumn` isn't set in tests if `loc` is not
-              // added
               loc: parentCallExpressionNode.loc,
               message: `Async assertions must be awaited${messageReturn}.`,
               node,
