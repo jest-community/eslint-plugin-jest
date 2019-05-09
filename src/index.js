@@ -42,7 +42,7 @@ module.exports = {
         'jest/no-jasmine-globals': 'warn',
         'jest/no-test-prefixes': 'error',
         'jest/valid-describe': 'error',
-        'jest/valid-expect': ['error', { alwaysAwait: true }],
+        'jest/valid-expect': ['error', { alwaysAwait: false }],
         'jest/valid-expect-in-promise': 'error',
       },
     },

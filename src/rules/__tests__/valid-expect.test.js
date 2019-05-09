@@ -262,18 +262,19 @@ ruleTester.run('valid-expect', rule, {
           expect(Promise.resolve(2)).not.resolves.toBeDefined(); 
           return expect(Promise.resolve(1)).rejects.toBeDefined(); 
         });`,
+      options: [{ alwaysAwait: true }],
       errors: [
         {
           line: 2,
           column: 11,
           endColumn: 64,
-          message: 'Async assertions must be awaited or returned.',
+          message: 'Async assertions must be awaited.',
         },
         {
           line: 3,
           column: 18,
           endColumn: 66,
-          message: 'Async assertions must be awaited or returned.',
+          message: 'Async assertions must be awaited.',
         },
       ],
     },
@@ -297,12 +298,13 @@ ruleTester.run('valid-expect', rule, {
           await expect(Promise.resolve(2)).not.resolves.toBeDefined(); 
           return expect(Promise.resolve(1)).rejects.toBeDefined(); 
         });`,
+      options: [{ alwaysAwait: true }],
       errors: [
         {
           line: 3,
           column: 18,
           endColumn: 66,
-          message: 'Async assertions must be awaited or returned.',
+          message: 'Async assertions must be awaited.',
         },
       ],
     },

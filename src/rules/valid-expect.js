@@ -26,7 +26,7 @@ const getParentCallExpressionNode = node => {
 const checkIfValidReturn = (context, parentCallExpressionNode) => {
   const validParentNodeTypes = ['ArrowFunctionExpression', 'AwaitExpression'];
   const { options } = context;
-  if (options[0] && options[0].alwaysAwait === false) {
+  if (!options[0] || !options[0].alwaysAwait) {
     validParentNodeTypes.push('ReturnStatement');
   }
   return (
@@ -63,8 +63,6 @@ module.exports = {
   create(context) {
     return {
       CallExpression(node) {
-        const calleeName = node.callee.name;
-
         // checking "expect()" arguments
         if (expectCase(node)) {
           if (node.arguments.length > 1) {
@@ -84,7 +82,7 @@ module.exports = {
               node,
             });
           } else if (node.arguments.length === 0) {
-            const expectLength = calleeName.length;
+            const expectLength = node.callee.name.length;
             context.report({
               loc: {
                 end: {
@@ -160,11 +158,15 @@ module.exports = {
         ) {
           const parentCallExpressionNode = getParentCallExpressionNode(node);
           if (!checkIfValidReturn(context, parentCallExpressionNode)) {
+            const { options } = context;
+            const messageReturn =
+              !options[0] || !options[0].alwaysAwait ? ' or returned' : '';
+
             context.report({
               // For some reason `endColumn` isn't set in tests if `loc` is not
               // added
               loc: parentCallExpressionNode.loc,
-              message: 'Async assertions must be awaited or returned.',
+              message: `Async assertions must be awaited${messageReturn}.`,
               node,
             });
           }
