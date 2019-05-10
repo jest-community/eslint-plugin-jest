@@ -1,9 +1,11 @@
-'use strict';
+import { RuleTester as ESLintRuleTester } from 'eslint';
+import { TSESLint } from '@typescript-eslint/experimental-utils';
+import rule from '../lowercase-name';
 
-const { RuleTester } = require('eslint');
-const rule = require('../lowercase-name');
+const RuleTester: TSESLint.RuleTester = ESLintRuleTester as any;
 
 const ruleTester = new RuleTester({
+  parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaVersion: 6,
   },
@@ -47,7 +49,8 @@ ruleTester.run('lowercase-name', rule, {
       output: "it('foo', function () {})",
       errors: [
         {
-          message: '`it`s should begin with lowercase',
+          messageId: 'unexpectedLowercase',
+          data: { method: 'it' },
           column: 1,
           line: 1,
         },
@@ -58,7 +61,8 @@ ruleTester.run('lowercase-name', rule, {
       output: 'it("foo", function () {})',
       errors: [
         {
-          message: '`it`s should begin with lowercase',
+          messageId: 'unexpectedLowercase',
+          data: { method: 'it' },
           column: 1,
           line: 1,
         },
@@ -69,7 +73,8 @@ ruleTester.run('lowercase-name', rule, {
       output: 'it(`foo`, function () {})',
       errors: [
         {
-          message: '`it`s should begin with lowercase',
+          messageId: 'unexpectedLowercase',
+          data: { method: 'it' },
           column: 1,
           line: 1,
         },
@@ -80,7 +85,8 @@ ruleTester.run('lowercase-name', rule, {
       output: "test('foo', function () {})",
       errors: [
         {
-          message: '`test`s should begin with lowercase',
+          messageId: 'unexpectedLowercase',
+          data: { method: 'test' },
           column: 1,
           line: 1,
         },
@@ -91,7 +97,8 @@ ruleTester.run('lowercase-name', rule, {
       output: 'test("foo", function () {})',
       errors: [
         {
-          message: '`test`s should begin with lowercase',
+          messageId: 'unexpectedLowercase',
+          data: { method: 'test' },
           column: 1,
           line: 1,
         },
@@ -102,7 +109,8 @@ ruleTester.run('lowercase-name', rule, {
       output: 'test(`foo`, function () {})',
       errors: [
         {
-          message: '`test`s should begin with lowercase',
+          messageId: 'unexpectedLowercase',
+          data: { method: 'test' },
           column: 1,
           line: 1,
         },
@@ -113,7 +121,8 @@ ruleTester.run('lowercase-name', rule, {
       output: "describe('foo', function () {})",
       errors: [
         {
-          message: '`describe`s should begin with lowercase',
+          messageId: 'unexpectedLowercase',
+          data: { method: 'describe' },
           column: 1,
           line: 1,
         },
@@ -124,7 +133,8 @@ ruleTester.run('lowercase-name', rule, {
       output: 'describe("foo", function () {})',
       errors: [
         {
-          message: '`describe`s should begin with lowercase',
+          messageId: 'unexpectedLowercase',
+          data: { method: 'describe' },
           column: 1,
           line: 1,
         },
@@ -135,7 +145,8 @@ ruleTester.run('lowercase-name', rule, {
       output: 'describe(`foo`, function () {})',
       errors: [
         {
-          message: '`describe`s should begin with lowercase',
+          messageId: 'unexpectedLowercase',
+          data: { method: 'describe' },
           column: 1,
           line: 1,
         },
@@ -146,7 +157,8 @@ ruleTester.run('lowercase-name', rule, {
       output: 'describe(`some longer description`, function () {})',
       errors: [
         {
-          message: '`describe`s should begin with lowercase',
+          messageId: 'unexpectedLowercase',
+          data: { method: 'describe' },
           column: 1,
           line: 1,
         },
