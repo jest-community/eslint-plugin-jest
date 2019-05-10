@@ -16,10 +16,10 @@
   },
   "files": [
     "docs/",
-    "rules/",
-    "processors/",
-    "index.js"
+    "src/",
+    "lib/"
   ],
+  "main": "lib/",
   "engines": {
     "node": ">=6"
   },
@@ -27,13 +27,20 @@
     "eslint": ">=5"
   },
   "scripts": {
+    "postinstall": "yarn build",
     "lint": "eslint . --ignore-pattern '!.eslintrc.js'",
     "prettylint": "prettylint docs/**/*.md README.md package.json",
-    "test": "jest"
+    "prepublishOnly": "yarn build",
+    "test": "jest",
+    "build": "babel src --out-dir lib"
   },
   "devDependencies": {
+    "@babel/cli": "^7.4.4",
+    "@babel/core": "^7.4.4",
+    "@babel/preset-env": "^7.4.4",
     "@commitlint/cli": "^7.0.0",
     "@commitlint/config-conventional": "^7.0.1",
+    "babel-jest": "^24.8.0",
     "eslint": "^5.1.0",
     "eslint-config-prettier": "^4.1.0",
     "eslint-plugin-eslint-plugin": "^2.0.0",
@@ -49,7 +56,7 @@
   "prettier": {
     "proseWrap": "always",
     "singleQuote": true,
-    "trailingComma": "es5"
+    "trailingComma": "all"
   },
   "lint-staged": {
     "*.js": [
@@ -73,13 +80,19 @@
     "projects": [
       {
         "displayName": "test",
-        "testEnvironment": "node"
+        "testEnvironment": "node",
+        "testPathIgnorePatterns": [
+          "<rootDir>/lib/.*"
+        ]
       },
       {
         "displayName": "lint",
         "runner": "jest-runner-eslint",
         "testMatch": [
           "<rootDir>/**/*.js"
+        ],
+        "testPathIgnorePatterns": [
+          "<rootDir>/lib/.*"
         ]
       }
     ]

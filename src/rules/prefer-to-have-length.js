@@ -35,7 +35,7 @@ module.exports = {
             .getFirstTokenBetween(
               node.arguments[0].object,
               node.arguments[0].property,
-              token => token.value === '.'
+              token => token.value === '.',
             );
           context.report({
             fix(fixer) {

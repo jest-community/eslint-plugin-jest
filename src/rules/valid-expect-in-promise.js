@@ -98,7 +98,7 @@ const verifyExpectWithReturn = (
   promiseCallbacks,
   node,
   context,
-  testFunctionBody
+  testFunctionBody,
 ) => {
   promiseCallbacks.some(promiseCallback => {
     if (promiseCallback && isFunction(promiseCallback)) {
@@ -156,7 +156,7 @@ module.exports = {
               [fulfillmentCallback, rejectionCallback],
               node,
               context,
-              testFunctionBody
+              testFunctionBody,
             );
           }
         }

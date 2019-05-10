@@ -30,7 +30,7 @@ module.exports = {
     const assertFunctionNames = new Set(
       context.options[0] && context.options[0].assertFunctionNames
         ? context.options[0].assertFunctionNames
-        : ['expect']
+        : ['expect'],
     );
 
     return {
@@ -54,7 +54,7 @@ module.exports = {
           context.report({
             message: 'Test has no assertions',
             node,
-          })
+          }),
         );
       },
     };

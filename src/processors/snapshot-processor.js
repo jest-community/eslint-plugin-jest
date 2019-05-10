@@ -6,7 +6,7 @@ const preprocess = source => [source];
 const postprocess = messages =>
   messages[0].filter(
     // snapshot files should only be linted with snapshot specific rules
-    message => message.ruleId === 'jest/no-large-snapshots'
+    message => message.ruleId === 'jest/no-large-snapshots',
   );
 
 module.exports = {

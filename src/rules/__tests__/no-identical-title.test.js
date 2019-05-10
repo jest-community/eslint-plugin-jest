@@ -23,10 +23,10 @@ ruleTester.run('no-identical-title', rule, {
     ['it("it1", function() {});', 'it("it2", function() {});'].join('\n'),
     ['it.only("it1", function() {});', 'it("it2", function() {});'].join('\n'),
     ['it.only("it1", function() {});', 'it.only("it2", function() {});'].join(
-      '\n'
+      '\n',
     ),
     ['describe("title", function() {});', 'it("title", function() {});'].join(
-      '\n'
+      '\n',
     ),
     [
       'describe("describe1", function() {',
@@ -136,7 +136,7 @@ ruleTester.run('no-identical-title', rule, {
     },
     {
       code: ['it("it1", function() {});', 'it("it1", function() {});'].join(
-        '\n'
+        '\n',
       ),
       errors: [
         {
@@ -163,7 +163,7 @@ ruleTester.run('no-identical-title', rule, {
     },
     {
       code: ['fit("it1", function() {});', 'it("it1", function() {});'].join(
-        '\n'
+        '\n',
       ),
       errors: [
         {

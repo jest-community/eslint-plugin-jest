@@ -75,7 +75,7 @@ module.exports = {
           context,
           currentLayer.describeTitles,
           node,
-          title
+          title,
         );
       },
       'CallExpression:exit'(node) {

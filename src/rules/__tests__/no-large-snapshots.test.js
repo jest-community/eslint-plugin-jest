@@ -15,13 +15,13 @@ ruleTester.run('no-large-snapshots', rule, {
     {
       filename: 'mock.js',
       code: `expect(something).toMatchInlineSnapshot(\`\n${'line\n'.repeat(
-        2
+        2,
       )}\`);`,
     },
     {
       filename: 'mock.js',
       code: `expect(something).toThrowErrorMatchingInlineSnapshot(\`\n${'line\n'.repeat(
-        2
+        2,
       )}\`);`,
     },
   ],
@@ -29,7 +29,7 @@ ruleTester.run('no-large-snapshots', rule, {
     {
       filename: 'mock.js',
       code: `expect(something).toMatchInlineSnapshot(\`\n${'line\n'.repeat(
-        50
+        50,
       )}\`);`,
       errors: [
         {
@@ -41,7 +41,7 @@ ruleTester.run('no-large-snapshots', rule, {
     {
       filename: 'mock.js',
       code: `expect(something).toThrowErrorMatchingInlineSnapshot(\`\n${'line\n'.repeat(
-        50
+        50,
       )}\`);`,
       errors: [
         {
