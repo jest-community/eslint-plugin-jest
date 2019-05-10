@@ -5,8 +5,25 @@ errors.
 
 ## Rule Details
 
-This rule validates that the second parameter of a `describe()` function is a
-callback function. This callback function:
+This rule validates the signature of `describe()` functions. It validates two
+things:
+
+#### 1. The first argument is a string literal
+
+NOTE: if you are using a dynamic value, disable the rule inline like so:
+
+```js
+// eslint-disable-next-line jest/valid-describe
+describe(myTestName, () => {
+```
+
+See
+[this comment](https://github.com/jest-community/eslint-plugin-jest/pull/253#issuecomment-491371038)
+for reasoning behind not supporting dynamic values.
+
+#### 2. The second argument is a callback function
+
+This callback function:
 
 - should not be
   [async](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function)

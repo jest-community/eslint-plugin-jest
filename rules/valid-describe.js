@@ -46,7 +46,8 @@ module.exports = {
           const [, callbackFunction] = node.arguments;
           if (!isString(name)) {
             context.report({
-              message: 'First argument must be name',
+              message:
+                'Name must be a string literal (if writing dynamic tests, disable this rule)',
               loc: paramsLocation(node.arguments),
             });
           }
