@@ -45,7 +45,8 @@ ruleTester.run('valid-describe', rule, {
       code: 'describe(() => {})',
       errors: [
         {
-          message: 'First argument must be name',
+          message:
+            'Name must be a string literal (disable this rule inline for dynamic tests)',
           line: 1,
           column: 10,
         },
