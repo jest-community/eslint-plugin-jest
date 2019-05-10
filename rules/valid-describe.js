@@ -47,7 +47,7 @@ module.exports = {
           if (!isString(name)) {
             context.report({
               message:
-                'Name must be a string literal (if writing dynamic tests, disable this rule)',
+                'Name must be a string literal (disable this rule inline for dynamic tests)',
               loc: paramsLocation(node.arguments),
             });
           }
