@@ -13,6 +13,7 @@ const ruleTester = new RuleTester({
 
 ruleTester.run('lowercase-name', rule, {
   valid: [
+    'randomFunction()',
     'it()',
     "it(' ', function () {})",
     'it(" ", function () {})',
@@ -24,6 +25,8 @@ ruleTester.run('lowercase-name', rule, {
     'it("123 foo", function () {})',
     'it(42, function () {})',
     'it(``)',
+    'it("")',
+    'it(42)',
     'test()',
     "test('foo', function () {})",
     'test("foo", function () {})',
@@ -32,6 +35,8 @@ ruleTester.run('lowercase-name', rule, {
     'test("123 foo", function () {})',
     'test("42", function () {})',
     'test(``)',
+    'test("")',
+    'test(42)',
     'describe()',
     "describe('foo', function () {})",
     'describe("foo", function () {})',
@@ -41,6 +46,8 @@ ruleTester.run('lowercase-name', rule, {
     'describe("42", function () {})',
     'describe(function () {})',
     'describe(``)',
+    'describe("")',
+    'describe(42)',
   ],
 
   invalid: [

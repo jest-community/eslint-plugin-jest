@@ -1,60 +1,85 @@
 import { createRule } from './tsUtils';
 import {
-  TSESTree,
   AST_NODE_TYPES,
+  TSESTree,
 } from '@typescript-eslint/experimental-utils';
 
-const isIdentifier = (
-  callee: TSESTree.LeftHandSideExpression,
-): callee is TSESTree.Identifier => !!callee;
+interface JestFunctionIdentifier extends TSESTree.Identifier {
+  name: 'it' | 'test' | 'describe';
+}
+
+interface TestFunctionCallExpression extends TSESTree.CallExpression {
+  callee: JestFunctionIdentifier;
+}
+
+type ArgumentLiteral = TSESTree.Literal | TSESTree.TemplateLiteral;
+
+interface FirstArgumentStringCallExpression extends TSESTree.CallExpression {
+  arguments: [ArgumentLiteral];
+}
+
+type CallExpressionWithCorrectCalleeAndArguments = TestFunctionCallExpression &
+  FirstArgumentStringCallExpression;
 
 const isItTestOrDescribeFunction = (
-  callee: TSESTree.LeftHandSideExpression,
-): callee is TSESTree.Identifier => {
-  if (!isIdentifier(callee)) {
+  node: TSESTree.CallExpression,
+): node is TestFunctionCallExpression => {
+  const { callee } = node;
+
+  if (callee.type !== AST_NODE_TYPES.Identifier) {
     return false;
   }
 
-  return (
-    callee.name === 'it' || callee.name === 'test' || callee.name === 'describe'
-  );
+  const { name } = callee;
+
+  return name === 'it' || name === 'test' || name === 'describe';
 };
 
-const isItDescription = (
-  expression?: TSESTree.Expression,
-): expression is TSESTree.Literal | TSESTree.TemplateLiteral =>
-  !!expression &&
-  (expression.type === AST_NODE_TYPES.Literal ||
-    expression.type === AST_NODE_TYPES.TemplateLiteral);
-
-const testDescription = (
-  firstArgument: TSESTree.Literal | TSESTree.TemplateLiteral,
-) => {
-  if (firstArgument.type === AST_NODE_TYPES.Literal) {
-    return firstArgument.value as string;
-  }
-
-  return firstArgument.quasis[0].value.raw;
-};
-
-const descriptionBeginsWithLowerCase = (
+const hasStringAsFirstArgument = (
   node: TSESTree.CallExpression,
-): string | false => {
-  const {
-    arguments: [firstArgument],
-    callee,
-  } = node;
-  if (isItTestOrDescribeFunction(callee) && isItDescription(firstArgument)) {
-    const description = testDescription(firstArgument);
-    if (!description[0]) {
-      return false;
-    }
+): node is FirstArgumentStringCallExpression =>
+  node.arguments &&
+  node.arguments[0] &&
+  (node.arguments[0].type === AST_NODE_TYPES.Literal ||
+    node.arguments[0].type === AST_NODE_TYPES.TemplateLiteral);
 
-    if (description[0] !== description[0].toLowerCase()) {
-      return callee.name;
+const isJestFunctionWithLiteralArg = (
+  node: TSESTree.CallExpression,
+): node is CallExpressionWithCorrectCalleeAndArguments =>
+  isItTestOrDescribeFunction(node) && hasStringAsFirstArgument(node);
+
+const testDescription = (argument: ArgumentLiteral): string | null => {
+  if (argument.type === AST_NODE_TYPES.Literal) {
+    const { value } = argument;
+
+    if (typeof value === 'string') {
+      return value;
     }
+    return null;
   }
-  return false;
+
+  return argument.quasis[0].value.raw;
+};
+
+const jestFunctionName = (
+  node: CallExpressionWithCorrectCalleeAndArguments,
+) => {
+  const description = testDescription(node.arguments[0]);
+  if (description === null) {
+    return null;
+  }
+
+  const firstCharacter = description.charAt(0);
+
+  if (!firstCharacter) {
+    return null;
+  }
+
+  if (firstCharacter !== firstCharacter.toLowerCase()) {
+    return node.callee.name;
+  }
+
+  return null;
 };
 
 export default createRule({
@@ -81,7 +106,9 @@ export default createRule({
       },
     ],
   } as const,
-  defaultOptions: [{ ignore: [] } as { ignore: readonly string[] }],
+  defaultOptions: [
+    { ignore: [] } as { ignore: readonly (JestFunctionIdentifier['name'])[] },
+  ],
   create(context, [{ ignore }]) {
     const ignoredFunctionNames = ignore.reduce<
       Record<string, true | undefined>
@@ -90,12 +117,16 @@ export default createRule({
       return accumulator;
     }, Object.create(null));
 
-    const isIgnoredFunctionName = (node: TSESTree.CallExpression) =>
-      ignoredFunctionNames[(node.callee as TSESTree.Identifier).name];
+    const isIgnoredFunctionName = (
+      node: CallExpressionWithCorrectCalleeAndArguments,
+    ) => ignoredFunctionNames[node.callee.name];
 
     return {
       CallExpression(node) {
-        const erroneousMethod = descriptionBeginsWithLowerCase(node);
+        if (!isJestFunctionWithLiteralArg(node)) {
+          return;
+        }
+        const erroneousMethod = jestFunctionName(node);
 
         if (erroneousMethod && !isIgnoredFunctionName(node)) {
           context.report({
@@ -104,10 +135,8 @@ export default createRule({
             node,
             fix(fixer) {
               const [firstArg] = node.arguments;
-              // guaranteed by descriptionBeginsWithLowerCase
-              const description = testDescription(firstArg as
-                | TSESTree.Literal
-                | TSESTree.TemplateLiteral);
+              // guaranteed by jestFunctionName
+              const description = testDescription(firstArg)!;
 
               const rangeIgnoringQuotes: [number, number] = [
                 firstArg.range[0] + 1,
