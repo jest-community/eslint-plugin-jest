@@ -32,7 +32,7 @@
     "prettylint": "prettylint docs/**/*.md README.md package.json",
     "prepublishOnly": "yarn build",
     "test": "jest",
-    "build": "babel src --out-dir lib",
+    "build": "babel --extensions .js,.ts src --out-dir lib",
     "typecheck": "tsc -p ."
   },
   "devDependencies": {
