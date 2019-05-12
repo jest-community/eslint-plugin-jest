@@ -14,6 +14,7 @@ const ruleTester = new RuleTester({
 ruleTester.run('lowercase-name', rule, {
   valid: [
     'randomFunction()',
+    'foo.bar()',
     'it()',
     "it(' ', function () {})",
     'it(" ", function () {})',
