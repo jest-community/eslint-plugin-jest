@@ -285,7 +285,7 @@ ruleTester.run(
         output: 'test("foo")',
       },
     ],
-  }
+  },
 );
 
 ruleTester.run('consistent-test-it with fn=it and withinDescribe=it ', rule, {

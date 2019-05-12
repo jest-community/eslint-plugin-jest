@@ -47,7 +47,7 @@ module.exports = {
 
         // Check if the method used matches any of ours
         const methodItem = methodNames.find(
-          item => item[1] === targetNode.name
+          item => item[1] === targetNode.name,
         );
 
         if (methodItem) {

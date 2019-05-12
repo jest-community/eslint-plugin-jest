@@ -1,6 +1,6 @@
 'use strict';
 
-const { globals } = require('./index').environments.globals;
+const { globals } = require('./').environments.globals;
 
 module.exports = {
   extends: [
@@ -32,6 +32,8 @@ module.exports = {
       },
     ],
     'prettier/prettier': 'error',
+    'node/no-unsupported-features/es-syntax': 'off',
+    'node/no-unsupported-features/es-builtins': 'error',
   },
   overrides: [
     {

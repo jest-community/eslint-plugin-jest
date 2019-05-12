@@ -19,7 +19,7 @@ module.exports = {
               return [
                 fixer.replaceText(
                   node.callee.property,
-                  'toMatchInlineSnapshot'
+                  'toMatchInlineSnapshot',
                 ),
               ];
             },
@@ -32,7 +32,7 @@ module.exports = {
               return [
                 fixer.replaceText(
                   node.callee.property,
-                  'toThrowErrorMatchingInlineSnapshot'
+                  'toThrowErrorMatchingInlineSnapshot',
                 ),
               ];
             },

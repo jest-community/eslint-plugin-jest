@@ -69,7 +69,7 @@ module.exports = {
           nodeName.indexOf(testKeywordWithinDescribe) === -1
         ) {
           const oppositeTestKeyword = getOppositeTestKeyword(
-            testKeywordWithinDescribe
+            testKeywordWithinDescribe,
           );
 
           context.report({
@@ -85,7 +85,7 @@ module.exports = {
 
               const fixedNodeName = getPreferredNodeName(
                 nodeName,
-                testKeywordWithinDescribe
+                testKeywordWithinDescribe,
               );
               return [fixer.replaceText(nodeToReplace, fixedNodeName)];
             },

@@ -2,7 +2,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { rules } = require('../index');
+const { rules } = require('../');
 
 const ruleNames = Object.keys(rules);
 const numberOfRules = 31;
@@ -10,11 +10,11 @@ const numberOfRules = 31;
 describe('rules', () => {
   it('should have a corresponding doc for each rule', () => {
     ruleNames.forEach(rule => {
-      const docPath = path.resolve(__dirname, '../docs/rules', `${rule}.md`);
+      const docPath = path.resolve(__dirname, '../../docs/rules', `${rule}.md`);
 
       if (!fs.existsSync(docPath)) {
         throw new Error(
-          `Could not find documentation file for rule "${rule}" in path "${docPath}"`
+          `Could not find documentation file for rule "${rule}" in path "${docPath}"`,
         );
       }
     });
@@ -24,7 +24,7 @@ describe('rules', () => {
     const { length } = ruleNames;
     if (length !== numberOfRules) {
       throw new Error(
-        `There should be exactly ${numberOfRules} rules, but there are ${length}. If you've added a new rule, please update this number.`
+        `There should be exactly ${numberOfRules} rules, but there are ${length}. If you've added a new rule, please update this number.`,
       );
     }
   });

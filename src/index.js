@@ -9,7 +9,7 @@ const rules = fs
   .map(rule => path.basename(rule, '.js'))
   .reduce(
     (acc, curr) => Object.assign(acc, { [curr]: require(`./rules/${curr}`) }),
-    {}
+    {},
   );
 
 const snapshotProcessor = require('./processors/snapshot-processor');

@@ -127,7 +127,7 @@ module.exports = {
                   return [
                     fixer.replaceText(
                       node.parent,
-                      `jest.setTimeout(${node.parent.right.value})`
+                      `jest.setTimeout(${node.parent.right.value})`,
                     ),
                   ];
                 },

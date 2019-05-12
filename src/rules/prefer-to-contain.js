@@ -39,7 +39,7 @@ const getNegationFixes = (node, sourceCode, fixer) => {
   const negationPropertyDot = sourceCode.getFirstTokenBetween(
     node.parent.object,
     node.parent.property,
-    token => token.value === '.'
+    token => token.value === '.',
   );
   const toContainFunc =
     isEqualityNegation(node) && argument(node.parent).value
@@ -63,7 +63,7 @@ const getCommonFixes = (node, sourceCode, fixer) => {
   const propertyDot = sourceCode.getFirstTokenBetween(
     includesCaller.object,
     includesCaller.property,
-    token => token.value === '.'
+    token => token.value === '.',
   );
 
   const closingParenthesis = sourceCode.getTokenAfter(containArg);
@@ -114,8 +114,8 @@ module.exports = {
               fixArr.push(
                 fixer.replaceText(
                   argument(node),
-                  sourceCode.getText(containArg)
-                )
+                  sourceCode.getText(containArg),
+                ),
               );
               return fixArr;
             },
