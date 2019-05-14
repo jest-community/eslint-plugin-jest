@@ -11,13 +11,11 @@ const ruleTester = new RuleTester({
   },
 });
 
-const moduleSourceType = { sourceType: 'module' } as const;
-
 ruleTester.run('no-jest-import', rule, {
   valid: [
     {
       code: 'import something from "something"',
-      parserOptions: moduleSourceType,
+      parserOptions: { sourceType: 'module' },
     },
     'require("somethingElse")',
     'require()',
@@ -28,58 +26,53 @@ ruleTester.run('no-jest-import', rule, {
       code: 'require("jest")',
       errors: [
         {
-          // @ts-ignore: https://github.com/typescript-eslint/typescript-eslint/pull/517
           endColumn: 15,
           column: 9,
           messageId: 'unexpectedImport',
-        } as const,
+        },
       ],
     },
     {
       code: 'import jest from "jest"',
-      parserOptions: moduleSourceType,
+      parserOptions: { sourceType: 'module' },
       errors: [
         {
-          // @ts-ignore: https://github.com/typescript-eslint/typescript-eslint/pull/517
           endColumn: 24,
           column: 18,
           messageId: 'unexpectedImport',
-        } as const,
+        },
       ],
     },
     {
       code: 'var jest = require("jest")',
       errors: [
         {
-          // @ts-ignore: https://github.com/typescript-eslint/typescript-eslint/pull/517
           endColumn: 26,
           column: 20,
           messageId: 'unexpectedImport',
-        } as const,
+        },
       ],
     },
     {
       code: 'import {jest as test} from "jest"',
-      parserOptions: moduleSourceType,
+      parserOptions: { sourceType: 'module' },
       errors: [
         {
-          // @ts-ignore: https://github.com/typescript-eslint/typescript-eslint/pull/517
           endColumn: 34,
           column: 28,
           messageId: 'unexpectedImport',
-        } as const,
+        },
       ],
     },
     {
       code: 'const jest = require("jest")',
-      parserOptions: moduleSourceType,
+      parserOptions: { sourceType: 'module' },
       errors: [
         {
-          // @ts-ignore: https://github.com/typescript-eslint/typescript-eslint/pull/517
           endColumn: 28,
           column: 22,
           messageId: 'unexpectedImport',
-        } as const,
+        },
       ],
     },
   ],
