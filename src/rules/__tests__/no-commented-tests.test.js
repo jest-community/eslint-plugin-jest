@@ -81,6 +81,12 @@ ruleTester.run('no-commented-tests', rule, {
       ],
     },
     {
+      code: '// it.only("foo", function () {})',
+      errors: [
+        { message: 'Some tests seem to be commented', column: 1, line: 1 },
+      ],
+    },
+    {
       code: '// it["skip"]("foo", function () {})',
       errors: [
         { message: 'Some tests seem to be commented', column: 1, line: 1 },
