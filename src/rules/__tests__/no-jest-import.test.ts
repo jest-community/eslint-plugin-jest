@@ -1,9 +1,15 @@
-'use strict';
+import { RuleTester as ESLintRuleTester } from 'eslint';
+import { TSESLint } from '@typescript-eslint/experimental-utils';
+import rule from '../no-jest-import';
 
-const rule = require('../no-jest-import.js');
-const { RuleTester } = require('eslint');
-const ruleTester = new RuleTester();
-const message = `Jest is automatically in scope. Do not import "jest", as Jest doesn't export anything.`;
+const RuleTester: TSESLint.RuleTester = ESLintRuleTester as any;
+
+const ruleTester = new RuleTester({
+  parser: '@typescript-eslint/parser',
+  parserOptions: {
+    ecmaVersion: 6,
+  },
+});
 
 ruleTester.run('no-jest-import', rule, {
   valid: [
@@ -22,7 +28,7 @@ ruleTester.run('no-jest-import', rule, {
         {
           endColumn: 15,
           column: 9,
-          message,
+          messageId: 'unexpectedImport',
         },
       ],
     },
@@ -32,8 +38,8 @@ ruleTester.run('no-jest-import', rule, {
       errors: [
         {
           endColumn: 24,
-          column: 1,
-          message,
+          column: 18,
+          messageId: 'unexpectedImport',
         },
       ],
     },
@@ -43,7 +49,7 @@ ruleTester.run('no-jest-import', rule, {
         {
           endColumn: 26,
           column: 20,
-          message,
+          messageId: 'unexpectedImport',
         },
       ],
     },
@@ -53,8 +59,8 @@ ruleTester.run('no-jest-import', rule, {
       errors: [
         {
           endColumn: 34,
-          column: 1,
-          message,
+          column: 28,
+          messageId: 'unexpectedImport',
         },
       ],
     },
@@ -65,7 +71,7 @@ ruleTester.run('no-jest-import', rule, {
         {
           endColumn: 28,
           column: 22,
-          message,
+          messageId: 'unexpectedImport',
         },
       ],
     },
