@@ -4,8 +4,8 @@ const { getDocsUrl } = require('./util');
 
 const message = 'Some tests seem to be commented';
 
-function hasAssertions(node) {
-  return /x?(test|it|describe)((\.only|\.skip|\[['"]skip['"]\]))?\(/.test(
+function hasTests(node) {
+  return /x?(test|it|describe)((\.only|\.skip|\[['"]skip['"]\]))?\(.*?\)/.test(
     node.value,
   );
 }
@@ -20,7 +20,7 @@ module.exports = {
     const sourceCode = context.getSourceCode();
 
     function checkNode(node) {
-      if (!hasAssertions(node)) return;
+      if (!hasTests(node)) return;
 
       context.report({
         message,
