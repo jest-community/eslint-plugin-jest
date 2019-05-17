@@ -143,6 +143,26 @@ ruleTester.run('no-commented-out-tests', rule, {
       ],
     },
     {
+      code: '// test.someNewMethodThatMightBeAddedInTheFuture()',
+      errors: [
+        {
+          message: 'Some tests seem to be commented',
+          column: 1,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: '// test["someNewMethodThatMightBeAddedInTheFuture"]()',
+      errors: [
+        {
+          message: 'Some tests seem to be commented',
+          column: 1,
+          line: 1,
+        },
+      ],
+    },
+    {
       code: '// test("has title but no callback")',
       errors: [
         {
