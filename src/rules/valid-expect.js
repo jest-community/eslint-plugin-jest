@@ -15,12 +15,54 @@ const {
 } = require('./util');
 
 const expectProperties = ['not', 'resolves', 'rejects'];
+const promiseArgumentTypes = ['CallExpression', 'ArrayExpression'];
 
-const getParentCallExpressionNode = node => {
+/**
+ * expect statement can have chained matchers.
+ * We are looking for the closest CallExpression
+ * to find `expect().x.y.z.t()` usage.
+ *
+ * @Returns CallExpressionNode
+ */
+const getClosestParentCallExpressionNode = node => {
+  if (!node || !node.parent || !node.parent.parent) {
+    return null;
+  }
+
   if (node.parent.type === 'CallExpression') {
     return node.parent;
   }
-  return getParentCallExpressionNode(node.parent);
+  return getClosestParentCallExpressionNode(node.parent);
+};
+
+/**
+ * Async assertions might be called in Promise
+ * methods like `Promise.x(expect1)` or `Promise.x([expect1, expect2])`.
+ * If that's the case, Promise node have to be awaited or returned.
+ *
+ * @Returns CallExpressionNode
+ */
+const getPromiseCallExpressionNode = node => {
+  if (
+    node &&
+    node.type === 'ArrayExpression' &&
+    node.parent &&
+    node.parent.type === 'CallExpression'
+  ) {
+    node = node.parent;
+  }
+
+  if (
+    node.type === 'CallExpression' &&
+    node.callee &&
+    node.callee.type === 'MemberExpression' &&
+    node.callee.object.name === 'Promise' &&
+    node.parent
+  ) {
+    return node;
+  }
+
+  return null;
 };
 
 const checkIfValidReturn = (parentCallExpressionNode, allowReturn = true) => {
@@ -28,8 +70,12 @@ const checkIfValidReturn = (parentCallExpressionNode, allowReturn = true) => {
   if (allowReturn) {
     validParentNodeTypes.push('ReturnStatement');
   }
-  return validParentNodeTypes.includes(parentCallExpressionNode.parent.type);
+
+  return validParentNodeTypes.includes(parentCallExpressionNode.type);
 };
+
+const promiseArrayExceptionKey = ({ start, end }) =>
+  `${start.line}:${start.column}-${end.line}:${end.column}`;
 
 module.exports = {
   meta: {
@@ -52,12 +98,28 @@ module.exports = {
           alwaysAwait: {
             type: 'boolean',
           },
+          ignoreInPromise: {
+            type: 'boolean',
+          },
         },
         additionalProperties: false,
       },
     ],
   },
   create(context) {
+    // Context state
+    const arrayExceptions = {};
+
+    const pushPromiseArrayException = loc => {
+      const key = promiseArrayExceptionKey(loc);
+      arrayExceptions[key] = true;
+    };
+
+    const promiseArrayExceptionExists = loc => {
+      const key = promiseArrayExceptionKey(loc);
+      return !!arrayExceptions[key];
+    };
+
     return {
       CallExpression(node) {
         // checking "expect()" arguments
@@ -153,17 +215,42 @@ module.exports = {
           expectNotResolvesCase(node) ||
           expectNotRejectsCase(node)
         ) {
-          const parentCallExpressionNode = getParentCallExpressionNode(node);
-          const { options } = context;
-          const allowReturn = !options[0] || !options[0].alwaysAwait;
-          if (!checkIfValidReturn(parentCallExpressionNode, allowReturn)) {
+          let parentNode = getClosestParentCallExpressionNode(node);
+          if (parentNode) {
+            const { options } = context;
+            const allowReturn = !options[0] || !options[0].alwaysAwait;
+            const ignoreInPromise = options[0] && options[0].ignoreInPromise;
             const messageReturn = allowReturn ? ' or returned' : '';
+            let message = `Async assertions must be awaited${messageReturn}.`;
+            let isParentArrayExpression =
+              parentNode.parent.type === 'ArrayExpression';
+            let promiseNode = null;
 
-            context.report({
-              loc: parentCallExpressionNode.loc,
-              message: `Async assertions must be awaited${messageReturn}.`,
-              node,
-            });
+            // Promise.x([expect()]) || Promise.x(expect())
+            if (promiseArgumentTypes.includes(parentNode.parent.type)) {
+              promiseNode = getPromiseCallExpressionNode(parentNode.parent);
+
+              if (promiseNode && !ignoreInPromise) {
+                parentNode = promiseNode;
+                message = `Promises which return async assertions must be awaited${messageReturn}.`;
+              }
+            }
+
+            if (
+              !checkIfValidReturn(parentNode.parent, allowReturn) &&
+              (!ignoreInPromise || !promiseNode) &&
+              !promiseArrayExceptionExists(parentNode.loc)
+            ) {
+              context.report({
+                loc: parentNode.loc,
+                message,
+                node,
+              });
+
+              if (isParentArrayExpression) {
+                pushPromiseArrayException(parentNode.loc);
+              }
+            }
           }
         }
       },
