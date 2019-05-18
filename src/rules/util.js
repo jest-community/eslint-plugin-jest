@@ -5,7 +5,7 @@ const { version } = require('../../package.json');
 
 const REPO_URL = 'https://github.com/jest-community/eslint-plugin-jest';
 
-const expectCase = node => node.callee.name === 'expect';
+const expectCase = node => node && node.callee && node.callee.name === 'expect';
 
 const expectNotCase = node =>
   expectCase(node) &&
