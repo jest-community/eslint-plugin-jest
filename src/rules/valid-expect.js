@@ -97,9 +97,11 @@ module.exports = {
         properties: {
           alwaysAwait: {
             type: 'boolean',
+            default: false,
           },
           ignoreInPromise: {
             type: 'boolean',
+            default: true,
           },
         },
         additionalProperties: false,
