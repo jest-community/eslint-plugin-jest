@@ -65,7 +65,7 @@ const getPromiseCallExpressionNode = node => {
   return null;
 };
 
-const checkIfValidReturn = (parentCallExpressionNode, allowReturn = true) => {
+const checkIfValidReturn = (parentCallExpressionNode, allowReturn) => {
   const validParentNodeTypes = ['ArrowFunctionExpression', 'AwaitExpression'];
   if (allowReturn) {
     validParentNodeTypes.push('ReturnStatement');

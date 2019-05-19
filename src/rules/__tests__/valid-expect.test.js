@@ -479,5 +479,41 @@ ruleTester.run('valid-expect', rule, {
         },
       ],
     },
+    //
+    {
+      code: `test("valid-expect", () => { 
+          const assertions = [
+            expect(Promise.resolve(2)).not.resolves.toBeDefined(),
+            expect(Promise.resolve(3)).not.resolves.toBeDefined(),
+          ]
+        });`,
+      errors: [
+        {
+          line: 3,
+          column: 13,
+          endLine: 3,
+          endColumn: 66,
+          message: 'Async assertions must be awaited or returned.',
+        },
+        {
+          line: 4,
+          column: 13,
+          endLine: 4,
+          endColumn: 66,
+          message: 'Async assertions must be awaited or returned.',
+        },
+      ],
+    },
+    // Code coverage for line 29
+    {
+      code: 'expect(Promise.resolve(2)).resolves.toBe;',
+      errors: [
+        {
+          column: 37,
+          endColumn: 41,
+          message: '"toBe" was not called.',
+        },
+      ],
+    },
   ],
 });
