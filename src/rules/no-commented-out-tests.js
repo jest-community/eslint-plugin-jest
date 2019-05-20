@@ -5,7 +5,9 @@ const { getDocsUrl } = require('./util');
 const message = 'Some tests seem to be commented';
 
 function hasTests(node) {
-  return /x?(test|it|describe)(\.\w+|\[['"]\w+['"]\])?\(.*?\)/.test(node.value);
+  return /(x|f)?(test|it|describe)(\.\w+|\[['"]\w+['"]\])?\s*\(/m.test(
+    node.value,
+  );
 }
 
 module.exports = {

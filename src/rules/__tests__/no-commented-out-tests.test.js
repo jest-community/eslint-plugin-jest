@@ -117,7 +117,21 @@ ruleTester.run('no-commented-out-tests', rule, {
       ],
     },
     {
+      code: '// fit("foo", function () {})',
+      errors: [
+        { message: 'Some tests seem to be commented', column: 1, line: 1 },
+      ],
+    },
+    {
       code: '// xtest("foo", function () {})',
+      errors: [
+        { message: 'Some tests seem to be commented', column: 1, line: 1 },
+      ],
+    },
+    {
+      code: `// test(
+             //   "foo", function () {}
+             // )`,
       errors: [
         { message: 'Some tests seem to be commented', column: 1, line: 1 },
       ],
