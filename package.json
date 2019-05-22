@@ -27,7 +27,7 @@
     "eslint": ">=5"
   },
   "scripts": {
-    "postinstall": "yarn build",
+    "pretest": "yarn build",
     "lint": "eslint . --ignore-pattern '!.eslintrc.js' --ext js,ts",
     "prettylint": "prettylint docs/**/*.md README.md package.json",
     "prepublishOnly": "yarn build",
