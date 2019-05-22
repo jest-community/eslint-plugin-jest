@@ -27,28 +27,19 @@
     "eslint": ">=5"
   },
   "scripts": {
-    "pretest": "yarn build",
-    "lint": "eslint . --ignore-pattern '!.eslintrc.js' --ext js,ts",
+    "prepare": "yarn build",
+    "lint": "eslint . --ignore-pattern '!.eslintrc.js'",
     "prettylint": "prettylint docs/**/*.md README.md package.json",
     "prepublishOnly": "yarn build",
     "test": "jest",
-    "build": "babel --extensions .js,.ts src --out-dir lib",
-    "typecheck": "tsc -p ."
-  },
-  "dependencies": {
-    "@typescript-eslint/experimental-utils": "^1.9.1-alpha.3"
+    "build": "babel src --out-dir lib"
   },
   "devDependencies": {
     "@babel/cli": "^7.4.4",
     "@babel/core": "^7.4.4",
     "@babel/preset-env": "^7.4.4",
-    "@babel/preset-typescript": "^7.3.3",
     "@commitlint/cli": "^7.0.0",
     "@commitlint/config-conventional": "^7.0.1",
-    "@types/eslint": "^4.16.6",
-    "@types/jest": "^24.0.12",
-    "@types/node": "^12.0.0",
-    "@typescript-eslint/eslint-plugin": "^1.9.1-alpha.3",
     "babel-jest": "^24.8.0",
     "eslint": "^5.1.0",
     "eslint-config-prettier": "^4.1.0",
@@ -60,8 +51,7 @@
     "jest-runner-eslint": "^0.7.1",
     "lint-staged": "^8.0.4",
     "prettier": "^1.10.2",
-    "prettylint": "^1.0.0",
-    "typescript": "^3.4.5"
+    "prettylint": "^1.0.0"
   },
   "prettier": {
     "proseWrap": "always",
@@ -69,7 +59,7 @@
     "trailingComma": "all"
   },
   "lint-staged": {
-    "*.{js,ts}": [
+    "*.js": [
       "eslint --fix",
       "git add"
     ],

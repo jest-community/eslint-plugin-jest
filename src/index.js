@@ -3,26 +3,12 @@
 const fs = require('fs');
 const path = require('path');
 
-// copied from https://github.com/babel/babel/blob/56044c7851d583d498f919e9546caddf8f80a72f/packages/babel-helpers/src/helpers.js#L558-L562
-function interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : { default: obj };
-}
-
 const rules = fs
   .readdirSync(path.join(__dirname, 'rules'))
-  .filter(
-    rule => rule !== '__tests__' && rule !== 'util.js' && rule !== 'tsUtils.ts',
-  )
-  .map(rule =>
-    rule.endsWith('js')
-      ? path.basename(rule, '.js')
-      : path.basename(rule, '.ts'),
-  )
+  .filter(rule => rule !== '__tests__' && rule !== 'util.js')
+  .map(rule => path.basename(rule, '.js'))
   .reduce(
-    (acc, curr) => ({
-      ...acc,
-      [curr]: interopRequireDefault(require(`./rules/${curr}`)).default,
-    }),
+    (acc, curr) => Object.assign(acc, { [curr]: require(`./rules/${curr}`) }),
     {},
   );
 
