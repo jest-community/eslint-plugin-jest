@@ -24,6 +24,8 @@ ruleTester.run('no-commented-out-tests', rule, {
     '(a || b).f()',
     'itHappensToStartWithIt()',
     'testSomething()',
+    '// latest(dates)',
+    '// TODO: unify with Git implementation from Shipit (?)',
     [
       'import { pending } from "actions"',
       '',
