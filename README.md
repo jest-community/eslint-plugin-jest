@@ -96,6 +96,7 @@ for more information about extending configuration files.
 | [lowercase-name][]           | Disallow capitalized test names                                   |                  | ![fixable-green][]  |
 | [no-alias-methods][]         | Disallow alias methods                                            | ![recommended][] | ![fixable-green][]  |
 | [no-disabled-tests][]        | Disallow disabled tests                                           | ![recommended][] |                     |
+| [no-commented-out-tests][]   | Disallow commented out tests                                      |                  |                     |
 | [no-empty-title][]           | Disallow empty titles                                             |                  |                     |
 | [no-focused-tests][]         | Disallow focused tests                                            | ![recommended][] |                     |
 | [no-hooks][]                 | Disallow setup and teardown hooks                                 |                  |                     |
@@ -142,6 +143,7 @@ https://github.com/dangreenisrael/eslint-plugin-jest-formatting
 [lowercase-name]: docs/rules/lowercase-name.md
 [no-alias-methods]: docs/rules/no-alias-methods.md
 [no-disabled-tests]: docs/rules/no-disabled-tests.md
+[no-commented-out-tests]: docs/rules/no-commented-out-tests.md
 [no-empty-title]: docs/rules/no-empty-title.md
 [no-focused-tests]: docs/rules/no-focused-tests.md
 [no-hooks]: docs/rules/no-hooks.md
