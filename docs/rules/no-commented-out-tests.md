@@ -9,7 +9,7 @@ The rule uses fuzzy matching to do its best to determine what constitutes a
 commented out test, checking for a presence of `it(`, `describe(`, `it.skip(`,
 etc. in code comments.
 
-<!-- The following patterns are considered warnings:
+The following patterns are considered warnings:
 
 ```js
 // describe('foo', () => {});
@@ -58,4 +58,4 @@ catch more complex examples of commented out tests, such as:
 
 // const myTest = test;
 // myTest('does not have function body');
-``` -->
+```
