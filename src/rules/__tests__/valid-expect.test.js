@@ -79,12 +79,12 @@ ruleTester.run('valid-expect', rule, {
     {
       code:
         'test("valid-expect", () => { Promise.all([expect(Promise.reject(2)).not.rejects.toBeDefined(), expect(Promise.reject(2)).not.rejects.toBeDefined()]); });',
-      options: [{ ignoreInPromise: true }],
+      options: [{ allowPromiseMethods: true }],
     },
     {
       code:
         'test("valid-expect", () => { Promise.resolve(expect(Promise.reject(2)).not.rejects.toBeDefined()); });',
-      options: [{ ignoreInPromise: true }],
+      options: [{ allowPromiseMethods: true }],
     },
   ],
 
@@ -387,7 +387,7 @@ ruleTester.run('valid-expect', rule, {
       code: `test("valid-expect", () => { 
           Promise.resolve(expect(Promise.resolve(2)).not.resolves.toBeDefined()); 
         });`,
-      options: [{ ignoreInPromise: false }],
+      options: [{ allowPromiseMethods: false }],
       errors: [
         {
           line: 2,
@@ -431,7 +431,7 @@ ruleTester.run('valid-expect', rule, {
       code: `test("valid-expect", () => { 
           Promise.resolve(expect(Promise.resolve(2)).not.resolves.toBeDefined()); 
         });`,
-      options: [{ alwaysAwait: true, ignoreInPromise: false }],
+      options: [{ alwaysAwait: true, allowPromiseMethods: false }],
       errors: [
         {
           line: 2,

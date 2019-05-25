@@ -99,9 +99,9 @@ module.exports = {
             type: 'boolean',
             default: false,
           },
-          ignoreInPromise: {
+          allowPromiseMethods: {
             type: 'boolean',
-            default: true,
+            default: false,
           },
         },
         additionalProperties: false,
@@ -221,7 +221,8 @@ module.exports = {
           if (parentNode) {
             const { options } = context;
             const allowReturn = !options[0] || !options[0].alwaysAwait;
-            const ignoreInPromise = options[0] && options[0].ignoreInPromise;
+            const allowPromiseMethods =
+              options[0] && options[0].allowPromiseMethods;
             const messageReturn = allowReturn ? ' or returned' : '';
             let message = `Async assertions must be awaited${messageReturn}.`;
             let isParentArrayExpression =
@@ -232,7 +233,7 @@ module.exports = {
             if (promiseArgumentTypes.includes(parentNode.parent.type)) {
               promiseNode = getPromiseCallExpressionNode(parentNode.parent);
 
-              if (promiseNode && !ignoreInPromise) {
+              if (promiseNode && !allowPromiseMethods) {
                 parentNode = promiseNode;
                 message = `Promises which return async assertions must be awaited${messageReturn}.`;
               }
@@ -240,7 +241,7 @@ module.exports = {
 
             if (
               !checkIfValidReturn(parentNode.parent, allowReturn) &&
-              (!ignoreInPromise || !promiseNode) &&
+              (!allowPromiseMethods || !promiseNode) &&
               !promiseArrayExceptionExists(parentNode.loc)
             ) {
               context.report({
