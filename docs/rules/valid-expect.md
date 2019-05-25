@@ -20,7 +20,96 @@ or when a matcher function was not called, e.g.:
 expect(true).toBeDefined;
 ```
 
+or when an async assertion was not awaited or returned, e.g.:
+
+```js
+expect(Promise.resolve('Hi!')).resolves.toBe('Hi!');
+```
+
 This rule is enabled by default.
+
+## Options
+
+```js
+{
+  type: 'object',
+  properties: {
+    alwaysAwait: {
+      type: 'boolean',
+      default: false,
+    },
+    allowPromiseMethods: {
+      type: 'boolean',
+      default: false,
+    },
+  },
+  additionalProperties: false,
+}
+```
+
+### `alwaysAwait`
+
+Enforces to use `await` inside block statements. Using `return` will trigger a
+warning. Returning one line statements with arrow functions is _always allowed_.
+
+Examples of **incorrect** code for the { "alwaysAwait": **true** } option:
+
+```js
+// alwaysAwait: true
+test('test1', async () => {
+  await expect(Promise.resolve(2)).resolves.toBeDefined();
+  return expect(Promise.resolve(1)).resolves.toBe(1); // `return` statement will trigger a warning
+});
+```
+
+Examples of **correct** code for the { "alwaysAwait": **true** } option:
+
+```js
+// alwaysAwait: true
+test('test1', async () => {
+  await expect(Promise.resolve(2)).resolves.toBeDefined();
+  await expect(Promise.resolve(1)).resolves.toBe(1);
+});
+
+test('test2', () => expect(Promise.resolve(2)).resolves.toBe(2));
+```
+
+### `allowPromiseMethods`
+
+When set to true, disables triggers on async assertions that were used inside a
+Promise method.
+
+Examples of **correct** code for the { "allowPromiseMethods": **true** } option:
+
+```js
+// allowPromiseMethods: true
+test('test1', () => {
+  Promise.all([
+    expect(Promise.resolve(1)).resolves.toBeDefined(),
+    expect(Promise.resolve(2)).resolves.toBeDefined(),
+  ]);
+});
+```
+
+Examples of **correct** code for the { "allowPromiseMethods": **false** }
+option:
+
+```js
+// allowPromiseMethods: false
+test('test1', async () => {
+  await Promise.all([
+    expect(Promise.resolve(1)).resolves.toBeDefined(),
+    expect(Promise.resolve(2)).resolves.toBeDefined(),
+  ]);
+});
+
+test('test2', () => {
+  return Promise.all([
+    expect(Promise.resolve(1)).resolves.toBeDefined(),
+    expect(Promise.resolve(2)).resolves.toBeDefined(),
+  ]);
+});
+```
 
 ### Default configuration
 
@@ -33,6 +122,8 @@ expect('something', 'else');
 expect('something');
 expect(true).toBeDefined;
 expect(Promise.resolve('hello')).resolves;
+expect(Promise.resolve('hello')).resolves.toEqual('hello');
+Promise.resolve(expect(Promise.resolve('hello')).resolves.toEqual('hello'));
 ```
 
 The following patterns are not warnings:
@@ -41,5 +132,8 @@ The following patterns are not warnings:
 expect('something').toEqual('something');
 expect([1, 2, 3]).toEqual([1, 2, 3]);
 expect(true).toBeDefined();
-expect(Promise.resolve('hello')).resolves.toEqual('hello');
+await expect(Promise.resolve('hello')).resolves.toEqual('hello');
+await Promise.resolve(
+  expect(Promise.resolve('hello')).resolves.toEqual('hello'),
+);
 ```
