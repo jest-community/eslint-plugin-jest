@@ -217,15 +217,16 @@ module.exports = {
           if (parentNode) {
             const { options } = context;
             const allowReturn = !options[0] || !options[0].alwaysAwait;
+            const isParentArrayExpression =
+              parentNode.parent.type === 'ArrayExpression';
             const messageReturn = allowReturn ? ' or returned' : '';
             let message = `Async assertions must be awaited${messageReturn}.`;
-            let isParentArrayExpression =
-              parentNode.parent.type === 'ArrayExpression';
-            let promiseNode = null;
 
             // Promise.x([expect()]) || Promise.x(expect())
             if (promiseArgumentTypes.includes(parentNode.parent.type)) {
-              promiseNode = getPromiseCallExpressionNode(parentNode.parent);
+              const promiseNode = getPromiseCallExpressionNode(
+                parentNode.parent,
+              );
 
               if (promiseNode) {
                 parentNode = promiseNode;
