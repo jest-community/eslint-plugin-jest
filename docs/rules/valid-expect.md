@@ -20,7 +20,7 @@ or when a matcher function was not called, e.g.:
 expect(true).toBeDefined;
 ```
 
-or when an async assertion was not awaited or returned, e.g.:
+or when an async assertion was not `await`ed or returned, e.g.:
 
 ```js
 expect(Promise.resolve('Hi!')).resolves.toBe('Hi!');
@@ -76,8 +76,8 @@ test('test2', () => expect(Promise.resolve(2)).resolves.toBe(2));
 
 ### `allowPromiseMethods`
 
-When set to true, disables triggers on async assertions that were used inside a
-Promise method.
+When set to true, disables triggering warnings on async assertions that were
+used inside a Promise method, even if not immediately `await`ed or returned.
 
 Examples of **correct** code for the { "allowPromiseMethods": **true** } option:
 
