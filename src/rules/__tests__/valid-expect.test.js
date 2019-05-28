@@ -76,16 +76,6 @@ ruleTester.run('valid-expect', rule, {
     'test("valid-expect", async () => { await Promise.race([expect(Promise.reject(2)).not.rejects.toBeDefined(), expect(Promise.reject(2)).rejects.not.toBeDefined()]); });',
     'test("valid-expect", async () => { await Promise.allSettled([expect(Promise.reject(2)).not.rejects.toBeDefined(), expect(Promise.reject(2)).rejects.not.toBeDefined()]); });',
     'test("valid-expect", async () => { await Promise.any([expect(Promise.reject(2)).not.rejects.toBeDefined(), expect(Promise.reject(2)).rejects.not.toBeDefined()]); });',
-    {
-      code:
-        'test("valid-expect", () => { Promise.all([expect(Promise.reject(2)).not.rejects.toBeDefined(), expect(Promise.reject(2)).not.rejects.toBeDefined()]); });',
-      options: [{ allowPromiseMethods: true }],
-    },
-    {
-      code:
-        'test("valid-expect", () => { Promise.resolve(expect(Promise.reject(2)).not.rejects.toBeDefined()); });',
-      options: [{ allowPromiseMethods: true }],
-    },
   ],
 
   invalid: [
@@ -387,7 +377,6 @@ ruleTester.run('valid-expect', rule, {
       code: `test("valid-expect", () => { 
           Promise.resolve(expect(Promise.resolve(2)).not.resolves.toBeDefined()); 
         });`,
-      options: [{ allowPromiseMethods: false }],
       errors: [
         {
           line: 2,
@@ -431,7 +420,7 @@ ruleTester.run('valid-expect', rule, {
       code: `test("valid-expect", () => { 
           Promise.resolve(expect(Promise.resolve(2)).not.resolves.toBeDefined()); 
         });`,
-      options: [{ alwaysAwait: true, allowPromiseMethods: false }],
+      options: [{ alwaysAwait: true }],
       errors: [
         {
           line: 2,

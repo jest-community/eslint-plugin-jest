@@ -38,10 +38,6 @@ This rule is enabled by default.
       type: 'boolean',
       default: false,
     },
-    allowPromiseMethods: {
-      type: 'boolean',
-      default: false,
-    },
   },
   additionalProperties: false,
 }
@@ -74,43 +70,6 @@ test('test1', async () => {
 test('test2', () => expect(Promise.resolve(2)).resolves.toBe(2));
 ```
 
-### `allowPromiseMethods`
-
-When set to true, disables triggering warnings on async assertions that were
-used inside a Promise method, even if not immediately `await`ed or returned.
-
-Examples of **correct** code for the { "allowPromiseMethods": **true** } option:
-
-```js
-// allowPromiseMethods: true
-test('test1', () => {
-  Promise.all([
-    expect(Promise.resolve(1)).resolves.toBeDefined(),
-    expect(Promise.resolve(2)).resolves.toBeDefined(),
-  ]);
-});
-```
-
-Examples of **correct** code for the { "allowPromiseMethods": **false** }
-option:
-
-```js
-// allowPromiseMethods: false
-test('test1', async () => {
-  await Promise.all([
-    expect(Promise.resolve(1)).resolves.toBeDefined(),
-    expect(Promise.resolve(2)).resolves.toBeDefined(),
-  ]);
-});
-
-test('test2', () => {
-  return Promise.all([
-    expect(Promise.resolve(1)).resolves.toBeDefined(),
-    expect(Promise.resolve(2)).resolves.toBeDefined(),
-  ]);
-});
-```
-
 ### Default configuration
 
 The following patterns are considered warnings:
@@ -124,6 +83,10 @@ expect(true).toBeDefined;
 expect(Promise.resolve('hello')).resolves;
 expect(Promise.resolve('hello')).resolves.toEqual('hello');
 Promise.resolve(expect(Promise.resolve('hello')).resolves.toEqual('hello'));
+Promise.all([
+  expect(Promise.resolve('hello')).resolves.toEqual('hello'),
+  expect(Promise.resolve('hi')).resolves.toEqual('hi'),
+]);
 ```
 
 The following patterns are not warnings:
@@ -135,5 +98,9 @@ expect(true).toBeDefined();
 await expect(Promise.resolve('hello')).resolves.toEqual('hello');
 await Promise.resolve(
   expect(Promise.resolve('hello')).resolves.toEqual('hello'),
+);
+await Promise.all(
+  expect(Promise.resolve('hello')).resolves.toEqual('hello'),
+  expect(Promise.resolve('hi')).resolves.toEqual('hi'),
 );
 ```
