@@ -39,7 +39,7 @@
     "@babel/core": "^7.4.4",
     "@babel/preset-env": "^7.4.4",
     "@commitlint/cli": "^7.0.0",
-    "@commitlint/config-conventional": "^7.0.1",
+    "@commitlint/config-conventional": "^8.0.0",
     "babel-jest": "^24.8.0",
     "eslint": "^5.1.0",
     "eslint-config-prettier": "^4.1.0",
