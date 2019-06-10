@@ -36,38 +36,69 @@ ruleTester.run('consistent-test-it with fn=test', rule, {
     {
       code: 'it("foo")',
       options: [{ fn: 'test' }],
-      errors: [{ message: "Prefer using 'test' instead of 'it'" }],
+      errors: [
+        {
+          messageId: 'consistentMethod',
+          data: { testKeyword: 'test', oppositeTestKeyword: 'it' },
+        },
+      ],
       output: 'test("foo")',
     },
     {
       code: 'xit("foo")',
       options: [{ fn: 'test' }],
-      errors: [{ message: "Prefer using 'test' instead of 'it'" }],
+      errors: [
+        {
+          messageId: 'consistentMethod',
+          data: { testKeyword: 'test', oppositeTestKeyword: 'it' },
+        },
+      ],
       output: 'xtest("foo")',
     },
     {
       code: 'fit("foo")',
       options: [{ fn: 'test' }],
-      errors: [{ message: "Prefer using 'test' instead of 'it'" }],
+      errors: [
+        {
+          messageId: 'consistentMethod',
+          data: { testKeyword: 'test', oppositeTestKeyword: 'it' },
+        },
+      ],
       output: 'test.only("foo")',
     },
     {
       code: 'it.skip("foo")',
       options: [{ fn: 'test' }],
-      errors: [{ message: "Prefer using 'test' instead of 'it'" }],
+      errors: [
+        {
+          messageId: 'consistentMethod',
+          data: { testKeyword: 'test', oppositeTestKeyword: 'it' },
+        },
+      ],
       output: 'test.skip("foo")',
     },
     {
       code: 'it.only("foo")',
       options: [{ fn: 'test' }],
-      errors: [{ message: "Prefer using 'test' instead of 'it'" }],
+      errors: [
+        {
+          messageId: 'consistentMethod',
+          data: { testKeyword: 'test', oppositeTestKeyword: 'it' },
+        },
+      ],
       output: 'test.only("foo")',
     },
     {
       code: 'describe("suite", () => { it("foo") })',
       options: [{ fn: 'test' }],
       errors: [
-        { message: "Prefer using 'test' instead of 'it' within describe" },
+        {
+          messageId: 'consistentMethodWithingDescribe',
+          data: {
+            testKeywordWithinDescribe: 'test',
+            oppositeTestKeyword: 'it',
+          },
+        },
       ],
       output: 'describe("suite", () => { test("foo") })',
     },
@@ -105,32 +136,58 @@ ruleTester.run('consistent-test-it with fn=it', rule, {
     {
       code: 'test("foo")',
       options: [{ fn: 'it' }],
-      errors: [{ message: "Prefer using 'it' instead of 'test'" }],
+      errors: [
+        {
+          messageId: 'consistentMethod',
+          data: { testKeyword: 'it', oppositeTestKeyword: 'test' },
+        },
+      ],
       output: 'it("foo")',
     },
     {
       code: 'xtest("foo")',
       options: [{ fn: 'it' }],
-      errors: [{ message: "Prefer using 'it' instead of 'test'" }],
+      errors: [
+        {
+          messageId: 'consistentMethod',
+          data: { testKeyword: 'it', oppositeTestKeyword: 'test' },
+        },
+      ],
       output: 'xit("foo")',
     },
     {
       code: 'test.skip("foo")',
       options: [{ fn: 'it' }],
-      errors: [{ message: "Prefer using 'it' instead of 'test'" }],
+      errors: [
+        {
+          messageId: 'consistentMethod',
+          data: { testKeyword: 'it', oppositeTestKeyword: 'test' },
+        },
+      ],
       output: 'it.skip("foo")',
     },
     {
       code: 'test.only("foo")',
       options: [{ fn: 'it' }],
-      errors: [{ message: "Prefer using 'it' instead of 'test'" }],
+      errors: [
+        {
+          messageId: 'consistentMethod',
+          data: { testKeyword: 'it', oppositeTestKeyword: 'test' },
+        },
+      ],
       output: 'it.only("foo")',
     },
     {
       code: 'describe("suite", () => { test("foo") })',
       options: [{ fn: 'it' }],
       errors: [
-        { message: "Prefer using 'it' instead of 'test' within describe" },
+        {
+          messageId: 'consistentMethodWithingDescribe',
+          data: {
+            testKeywordWithinDescribe: 'it',
+            oppositeTestKeyword: 'test',
+          },
+        },
       ],
       output: 'describe("suite", () => { it("foo") })',
     },
@@ -165,7 +222,13 @@ ruleTester.run('consistent-test-it with fn=test and withinDescribe=it ', rule, {
       code: 'describe("suite", () => { test("foo") })',
       options: [{ fn: 'test', withinDescribe: 'it' }],
       errors: [
-        { message: "Prefer using 'it' instead of 'test' within describe" },
+        {
+          messageId: 'consistentMethodWithingDescribe',
+          data: {
+            testKeywordWithinDescribe: 'it',
+            oppositeTestKeyword: 'test',
+          },
+        },
       ],
       output: 'describe("suite", () => { it("foo") })',
     },
@@ -173,7 +236,13 @@ ruleTester.run('consistent-test-it with fn=test and withinDescribe=it ', rule, {
       code: 'describe("suite", () => { test.only("foo") })',
       options: [{ fn: 'test', withinDescribe: 'it' }],
       errors: [
-        { message: "Prefer using 'it' instead of 'test' within describe" },
+        {
+          messageId: 'consistentMethodWithingDescribe',
+          data: {
+            testKeywordWithinDescribe: 'it',
+            oppositeTestKeyword: 'test',
+          },
+        },
       ],
       output: 'describe("suite", () => { it.only("foo") })',
     },
@@ -181,7 +250,13 @@ ruleTester.run('consistent-test-it with fn=test and withinDescribe=it ', rule, {
       code: 'describe("suite", () => { xtest("foo") })',
       options: [{ fn: 'test', withinDescribe: 'it' }],
       errors: [
-        { message: "Prefer using 'it' instead of 'test' within describe" },
+        {
+          messageId: 'consistentMethodWithingDescribe',
+          data: {
+            testKeywordWithinDescribe: 'it',
+            oppositeTestKeyword: 'test',
+          },
+        },
       ],
       output: 'describe("suite", () => { xit("foo") })',
     },
@@ -189,7 +264,13 @@ ruleTester.run('consistent-test-it with fn=test and withinDescribe=it ', rule, {
       code: 'describe("suite", () => { test.skip("foo") })',
       options: [{ fn: 'test', withinDescribe: 'it' }],
       errors: [
-        { message: "Prefer using 'it' instead of 'test' within describe" },
+        {
+          messageId: 'consistentMethodWithingDescribe',
+          data: {
+            testKeywordWithinDescribe: 'it',
+            oppositeTestKeyword: 'test',
+          },
+        },
       ],
       output: 'describe("suite", () => { it.skip("foo") })',
     },
@@ -224,7 +305,13 @@ ruleTester.run('consistent-test-it with fn=it and withinDescribe=test ', rule, {
       code: 'describe("suite", () => { it("foo") })',
       options: [{ fn: 'it', withinDescribe: 'test' }],
       errors: [
-        { message: "Prefer using 'test' instead of 'it' within describe" },
+        {
+          messageId: 'consistentMethodWithingDescribe',
+          data: {
+            testKeywordWithinDescribe: 'test',
+            oppositeTestKeyword: 'it',
+          },
+        },
       ],
       output: 'describe("suite", () => { test("foo") })',
     },
@@ -232,7 +319,13 @@ ruleTester.run('consistent-test-it with fn=it and withinDescribe=test ', rule, {
       code: 'describe("suite", () => { it.only("foo") })',
       options: [{ fn: 'it', withinDescribe: 'test' }],
       errors: [
-        { message: "Prefer using 'test' instead of 'it' within describe" },
+        {
+          messageId: 'consistentMethodWithingDescribe',
+          data: {
+            testKeywordWithinDescribe: 'test',
+            oppositeTestKeyword: 'it',
+          },
+        },
       ],
       output: 'describe("suite", () => { test.only("foo") })',
     },
@@ -240,7 +333,13 @@ ruleTester.run('consistent-test-it with fn=it and withinDescribe=test ', rule, {
       code: 'describe("suite", () => { xit("foo") })',
       options: [{ fn: 'it', withinDescribe: 'test' }],
       errors: [
-        { message: "Prefer using 'test' instead of 'it' within describe" },
+        {
+          messageId: 'consistentMethodWithingDescribe',
+          data: {
+            testKeywordWithinDescribe: 'test',
+            oppositeTestKeyword: 'it',
+          },
+        },
       ],
       output: 'describe("suite", () => { xtest("foo") })',
     },
@@ -248,7 +347,13 @@ ruleTester.run('consistent-test-it with fn=it and withinDescribe=test ', rule, {
       code: 'describe("suite", () => { it.skip("foo") })',
       options: [{ fn: 'it', withinDescribe: 'test' }],
       errors: [
-        { message: "Prefer using 'test' instead of 'it' within describe" },
+        {
+          messageId: 'consistentMethodWithingDescribe',
+          data: {
+            testKeywordWithinDescribe: 'test',
+            oppositeTestKeyword: 'it',
+          },
+        },
       ],
       output: 'describe("suite", () => { test.skip("foo") })',
     },
@@ -274,14 +379,25 @@ ruleTester.run(
         code: 'describe("suite", () => { it("foo") })',
         options: [{ fn: 'test', withinDescribe: 'test' }],
         errors: [
-          { message: "Prefer using 'test' instead of 'it' within describe" },
+          {
+            messageId: 'consistentMethodWithingDescribe',
+            data: {
+              testKeywordWithinDescribe: 'test',
+              oppositeTestKeyword: 'it',
+            },
+          },
         ],
         output: 'describe("suite", () => { test("foo") })',
       },
       {
         code: 'it("foo")',
         options: [{ fn: 'test', withinDescribe: 'test' }],
-        errors: [{ message: "Prefer using 'test' instead of 'it'" }],
+        errors: [
+          {
+            messageId: 'consistentMethod',
+            data: { testKeyword: 'test', oppositeTestKeyword: 'it' },
+          },
+        ],
         output: 'test("foo")',
       },
     ],
@@ -304,14 +420,25 @@ ruleTester.run('consistent-test-it with fn=it and withinDescribe=it ', rule, {
       code: 'describe("suite", () => { test("foo") })',
       options: [{ fn: 'it', withinDescribe: 'it' }],
       errors: [
-        { message: "Prefer using 'it' instead of 'test' within describe" },
+        {
+          messageId: 'consistentMethodWithingDescribe',
+          data: {
+            testKeywordWithinDescribe: 'it',
+            oppositeTestKeyword: 'test',
+          },
+        },
       ],
       output: 'describe("suite", () => { it("foo") })',
     },
     {
       code: 'test("foo")',
       options: [{ fn: 'it', withinDescribe: 'it' }],
-      errors: [{ message: "Prefer using 'it' instead of 'test'" }],
+      errors: [
+        {
+          messageId: 'consistentMethod',
+          data: { testKeyword: 'it', oppositeTestKeyword: 'test' },
+        },
+      ],
       output: 'it("foo")',
     },
   ],
@@ -327,7 +454,13 @@ ruleTester.run('consistent-test-it defaults without config object', rule, {
     {
       code: 'describe("suite", () => { test("foo") })',
       errors: [
-        { message: "Prefer using 'it' instead of 'test' within describe" },
+        {
+          messageId: 'consistentMethodWithingDescribe',
+          data: {
+            testKeywordWithinDescribe: 'it',
+            oppositeTestKeyword: 'test',
+          },
+        },
       ],
       output: 'describe("suite", () => { it("foo") })',
     },
@@ -349,14 +482,25 @@ ruleTester.run('consistent-test-it with withinDescribe=it', rule, {
     {
       code: 'it("foo")',
       options: [{ withinDescribe: 'it' }],
-      errors: [{ message: "Prefer using 'test' instead of 'it'" }],
+      errors: [
+        {
+          messageId: 'consistentMethod',
+          data: { testKeyword: 'test', oppositeTestKeyword: 'it' },
+        },
+      ],
       output: 'test("foo")',
     },
     {
       code: 'describe("suite", () => { test("foo") })',
       options: [{ withinDescribe: 'it' }],
       errors: [
-        { message: "Prefer using 'it' instead of 'test' within describe" },
+        {
+          messageId: 'consistentMethodWithingDescribe',
+          data: {
+            testKeywordWithinDescribe: 'it',
+            oppositeTestKeyword: 'test',
+          },
+        },
       ],
       output: 'describe("suite", () => { it("foo") })',
     },
@@ -378,14 +522,25 @@ ruleTester.run('consistent-test-it with withinDescribe=test', rule, {
     {
       code: 'it("foo")',
       options: [{ withinDescribe: 'test' }],
-      errors: [{ message: "Prefer using 'test' instead of 'it'" }],
+      errors: [
+        {
+          messageId: 'consistentMethod',
+          data: { testKeyword: 'test', oppositeTestKeyword: 'it' },
+        },
+      ],
       output: 'test("foo")',
     },
     {
       code: 'describe("suite", () => { it("foo") })',
       options: [{ withinDescribe: 'test' }],
       errors: [
-        { message: "Prefer using 'test' instead of 'it' within describe" },
+        {
+          messageId: 'consistentMethodWithingDescribe',
+          data: {
+            testKeywordWithinDescribe: 'test',
+            oppositeTestKeyword: 'it',
+          },
+        },
       ],
       output: 'describe("suite", () => { test("foo") })',
     },

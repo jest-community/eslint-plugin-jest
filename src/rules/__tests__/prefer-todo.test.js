@@ -23,36 +23,32 @@ ruleTester.run('prefer-todo', rule, {
   invalid: [
     {
       code: `test("i need to write this test");`,
-      errors: [
-        { message: 'Prefer todo test case over unimplemented test case' },
-      ],
+      errors: [{ messageId: 'todoOverUnimplemented' }],
       output: 'test.todo("i need to write this test");',
     },
     {
       code: 'test(`i need to write this test`);',
-      errors: [
-        { message: 'Prefer todo test case over unimplemented test case' },
-      ],
+      errors: [{ messageId: 'todoOverUnimplemented' }],
       output: 'test.todo(`i need to write this test`);',
     },
     {
       code: 'it("foo", function () {})',
-      errors: ['Prefer todo test case over empty test case'],
+      errors: [{ messageId: 'todoOverEmpty' }],
       output: 'it.todo("foo")',
     },
     {
       code: 'it("foo", () => {})',
-      errors: ['Prefer todo test case over empty test case'],
+      errors: [{ messageId: 'todoOverEmpty' }],
       output: 'it.todo("foo")',
     },
     {
       code: `test.skip("i need to write this test", () => {});`,
-      errors: ['Prefer todo test case over empty test case'],
+      errors: [{ messageId: 'todoOverEmpty' }],
       output: 'test.todo("i need to write this test");',
     },
     {
       code: `test.skip("i need to write this test", function() {});`,
-      errors: ['Prefer todo test case over empty test case'],
+      errors: [{ messageId: 'todoOverEmpty' }],
       output: 'test.todo("i need to write this test");',
     },
   ],

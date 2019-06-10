@@ -26,83 +26,35 @@ ruleTester.run('no-empty-title', rule, {
   invalid: [
     {
       code: 'describe("", function () {})',
-      errors: [
-        {
-          message: rule.errorMessages.describe,
-          column: 1,
-          line: 1,
-        },
-      ],
+      errors: [{ messageId: 'describe', column: 1, line: 1 }],
     },
     {
       code: ["describe('foo', () => {", "it('', () => {})", '})'].join('\n'),
-      errors: [
-        {
-          message: rule.errorMessages.test,
-          column: 1,
-          line: 2,
-        },
-      ],
+      errors: [{ messageId: 'test', column: 1, line: 2 }],
     },
     {
       code: 'it("", function () {})',
-      errors: [
-        {
-          message: rule.errorMessages.test,
-          column: 1,
-          line: 1,
-        },
-      ],
+      errors: [{ messageId: 'test', column: 1, line: 1 }],
     },
     {
       code: 'test("", function () {})',
-      errors: [
-        {
-          message: rule.errorMessages.test,
-          column: 1,
-          line: 1,
-        },
-      ],
+      errors: [{ messageId: 'test', column: 1, line: 1 }],
     },
     {
       code: 'test(``, function () {})',
-      errors: [
-        {
-          message: rule.errorMessages.test,
-          column: 1,
-          line: 1,
-        },
-      ],
+      errors: [{ messageId: 'test', column: 1, line: 1 }],
     },
     {
       code: "xdescribe('', () => {})",
-      errors: [
-        {
-          message: rule.errorMessages.describe,
-          column: 1,
-          line: 1,
-        },
-      ],
+      errors: [{ messageId: 'describe', column: 1, line: 1 }],
     },
     {
       code: "xit('', () => {})",
-      errors: [
-        {
-          message: rule.errorMessages.test,
-          column: 1,
-          line: 1,
-        },
-      ],
+      errors: [{ messageId: 'test', column: 1, line: 1 }],
     },
     {
       code: "xtest('', () => {})",
-      errors: [
-        {
-          message: rule.errorMessages.test,
-          column: 1,
-          line: 1,
-        },
-      ],
+      errors: [{ messageId: 'test', column: 1, line: 1 }],
     },
   ],
 });

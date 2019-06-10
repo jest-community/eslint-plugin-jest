@@ -24,6 +24,9 @@ module.exports = {
     docs: {
       url: getDocsUrl(__filename),
     },
+    messages: {
+      focusedTest: 'Unexpected focused test.',
+    },
   },
   create: context => ({
     CallExpression(node) {
@@ -34,10 +37,7 @@ module.exports = {
           callee.object.type === 'Identifier' &&
           isCallToFocusedTestFunction(callee.object)
         ) {
-          context.report({
-            message: 'Unexpected focused test.',
-            node: callee.object,
-          });
+          context.report({ messageId: 'focusedTest', node: callee.object });
           return;
         }
 
@@ -46,27 +46,20 @@ module.exports = {
           isCallToTestOnlyFunction(callee.object)
         ) {
           context.report({
-            message: 'Unexpected focused test.',
+            messageId: 'focusedTest',
             node: callee.object.property,
           });
           return;
         }
 
         if (isCallToTestOnlyFunction(callee)) {
-          context.report({
-            message: 'Unexpected focused test.',
-            node: callee.property,
-          });
+          context.report({ messageId: 'focusedTest', node: callee.property });
           return;
         }
       }
 
       if (callee.type === 'Identifier' && isCallToFocusedTestFunction(callee)) {
-        context.report({
-          message: 'Unexpected focused test.',
-          node: callee,
-        });
-        return;
+        context.report({ messageId: 'focusedTest', node: callee });
       }
     },
   }),

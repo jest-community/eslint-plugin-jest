@@ -2,9 +2,6 @@
 
 const { getDocsUrl, isFunction } = require('./util');
 
-const reportMsg =
-  'Promise should be returned to test its fulfillment or rejection';
-
 const isThenOrCatch = node => {
   return (
     node.property &&
@@ -43,7 +40,7 @@ const reportReturnRequired = (context, node) => {
       },
       start: node.parent.parent.loc.start,
     },
-    message: reportMsg,
+    messageId: 'returnPromise',
     node,
   });
 };
@@ -129,6 +126,10 @@ module.exports = {
   meta: {
     docs: {
       url: getDocsUrl(__filename),
+    },
+    messages: {
+      returnPromise:
+        'Promise should be returned to test its fulfillment or rejection',
     },
   },
   create(context) {

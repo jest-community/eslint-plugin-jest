@@ -9,9 +9,6 @@ const ruleTester = new RuleTester({
   },
 });
 
-const expectedMsg =
-  'Promise should be returned to test its fulfillment or rejection';
-
 ruleTester.run('valid-expect-in-promise', rule, {
   invalid: [
     {
@@ -22,13 +19,7 @@ ruleTester.run('valid-expect-in-promise', rule, {
            });
          });
       `,
-      errors: [
-        {
-          column: 12,
-          endColumn: 15,
-          message: expectedMsg,
-        },
-      ],
+      errors: [{ column: 12, endColumn: 15, messageId: 'returnPromise' }],
     },
     {
       code: `
@@ -38,13 +29,7 @@ ruleTester.run('valid-expect-in-promise', rule, {
             });
         });
       `,
-      errors: [
-        {
-          column: 13,
-          endColumn: 16,
-          message: expectedMsg,
-        },
-      ],
+      errors: [{ column: 13, endColumn: 16, messageId: 'returnPromise' }],
     },
     {
       code: `
@@ -54,13 +39,7 @@ ruleTester.run('valid-expect-in-promise', rule, {
             });
           });
       `,
-      errors: [
-        {
-          column: 13,
-          endColumn: 16,
-          message: expectedMsg,
-        },
-      ],
+      errors: [{ column: 13, endColumn: 16, messageId: 'returnPromise' }],
     },
     {
       code: `
@@ -71,13 +50,7 @@ ruleTester.run('valid-expect-in-promise', rule, {
           }
         )
       `,
-      errors: [
-        {
-          column: 13,
-          endColumn: 15,
-          message: expectedMsg,
-        },
-      ],
+      errors: [{ column: 13, endColumn: 15, messageId: 'returnPromise' }],
     },
     {
       code: `
@@ -88,13 +61,7 @@ ruleTester.run('valid-expect-in-promise', rule, {
           }
         )
       `,
-      errors: [
-        {
-          column: 13,
-          endColumn: 15,
-          message: expectedMsg,
-        },
-      ],
+      errors: [{ column: 13, endColumn: 15, messageId: 'returnPromise' }],
     },
     {
       code: `
@@ -106,13 +73,7 @@ ruleTester.run('valid-expect-in-promise', rule, {
           })
         })
       `,
-      errors: [
-        {
-          column: 11,
-          endColumn: 13,
-          message: expectedMsg,
-        },
-      ],
+      errors: [{ column: 11, endColumn: 13, messageId: 'returnPromise' }],
     },
     {
       code: `
@@ -123,13 +84,7 @@ ruleTester.run('valid-expect-in-promise', rule, {
           })
         });
       `,
-      errors: [
-        {
-          column: 11,
-          endColumn: 13,
-          message: expectedMsg,
-        },
-      ],
+      errors: [{ column: 11, endColumn: 13, messageId: 'returnPromise' }],
     },
     {
       code: `
@@ -137,13 +92,7 @@ ruleTester.run('valid-expect-in-promise', rule, {
           Builder.getPromiseBuilder().get().build().then((data) => expect(data).toEqual('Hi'));
         });
       `,
-      errors: [
-        {
-          column: 11,
-          endColumn: 96,
-          message: expectedMsg,
-        },
-      ],
+      errors: [{ column: 11, endColumn: 96, messageId: 'returnPromise' }],
     },
     {
       code: `
@@ -154,13 +103,7 @@ ruleTester.run('valid-expect-in-promise', rule, {
             })
           });
       `,
-      errors: [
-        {
-          column: 13,
-          endColumn: 15,
-          message: expectedMsg,
-        },
-      ],
+      errors: [{ column: 13, endColumn: 15, messageId: 'returnPromise' }],
     },
     {
       code: `
@@ -171,13 +114,7 @@ ruleTester.run('valid-expect-in-promise', rule, {
            });
          });
       `,
-      errors: [
-        {
-          column: 18,
-          endColumn: 14,
-          message: expectedMsg,
-        },
-      ],
+      errors: [{ column: 18, endColumn: 14, messageId: 'returnPromise' }],
     },
   ],
 

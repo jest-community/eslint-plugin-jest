@@ -83,6 +83,9 @@ module.exports = {
     docs: {
       url: getDocsUrl(__filename),
     },
+    messages: {
+      useToContain: 'Use toContain() instead',
+    },
     fixable: 'code',
   },
   create(context) {
@@ -119,7 +122,7 @@ module.exports = {
               );
               return fixArr;
             },
-            message: 'Use toContain() instead',
+            messageId: 'useToContain',
             node: method(node),
           });
         }

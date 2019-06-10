@@ -13,10 +13,7 @@ const reportOnViolation = (context, node) => {
 
   if (lineCount > lineLimit) {
     context.report({
-      message:
-        lineLimit === 0
-          ? 'Expected to not encounter a Jest snapshot but was found with {{ lineCount }} lines long'
-          : 'Expected Jest snapshot to be smaller than {{ lineLimit }} lines but was {{ lineCount }} lines long',
+      messageId: lineLimit === 0 ? 'noSnapshot' : 'tooLongSnapshots',
       data: { lineLimit, lineCount },
       node,
     });
@@ -27,6 +24,11 @@ module.exports = {
   meta: {
     docs: {
       url: getDocsUrl(__filename),
+    },
+    messages: {
+      noSnapshot: '`{{ lineCount }}`s should begin with lowercase',
+      tooLongSnapshots:
+        'Expected Jest snapshot to be smaller than {{ lineLimit }} lines but was {{ lineCount }} lines long',
     },
   },
   create(context) {

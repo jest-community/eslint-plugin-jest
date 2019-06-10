@@ -26,8 +26,8 @@ ruleTester.run('no-alias-methods', rule, {
       code: 'expect(a).toBeCalled()',
       errors: [
         {
-          message:
-            'Replace toBeCalled() with its canonical name of toHaveBeenCalled()',
+          messageId: 'replaceAlias',
+          data: { replace: 'toBeCalled', canonical: 'toHaveBeenCalled' },
           column: 11,
           line: 1,
         },
@@ -38,8 +38,11 @@ ruleTester.run('no-alias-methods', rule, {
       code: 'expect(a).toBeCalledTimes()',
       errors: [
         {
-          message:
-            'Replace toBeCalledTimes() with its canonical name of toHaveBeenCalledTimes()',
+          messageId: 'replaceAlias',
+          data: {
+            replace: 'toBeCalledTimes',
+            canonical: 'toHaveBeenCalledTimes',
+          },
           column: 11,
           line: 1,
         },
@@ -50,8 +53,11 @@ ruleTester.run('no-alias-methods', rule, {
       code: 'expect(a).toBeCalledWith()',
       errors: [
         {
-          message:
-            'Replace toBeCalledWith() with its canonical name of toHaveBeenCalledWith()',
+          messageId: 'replaceAlias',
+          data: {
+            replace: 'toBeCalledWith',
+            canonical: 'toHaveBeenCalledWith',
+          },
           column: 11,
           line: 1,
         },
@@ -62,8 +68,11 @@ ruleTester.run('no-alias-methods', rule, {
       code: 'expect(a).lastCalledWith()',
       errors: [
         {
-          message:
-            'Replace lastCalledWith() with its canonical name of toHaveBeenLastCalledWith()',
+          messageId: 'replaceAlias',
+          data: {
+            replace: 'lastCalledWith',
+            canonical: 'toHaveBeenLastCalledWith',
+          },
           column: 11,
           line: 1,
         },
@@ -74,8 +83,11 @@ ruleTester.run('no-alias-methods', rule, {
       code: 'expect(a).nthCalledWith()',
       errors: [
         {
-          message:
-            'Replace nthCalledWith() with its canonical name of toHaveBeenNthCalledWith()',
+          messageId: 'replaceAlias',
+          data: {
+            replace: 'nthCalledWith',
+            canonical: 'toHaveBeenNthCalledWith',
+          },
           column: 11,
           line: 1,
         },
@@ -86,8 +98,8 @@ ruleTester.run('no-alias-methods', rule, {
       code: 'expect(a).toReturn()',
       errors: [
         {
-          message:
-            'Replace toReturn() with its canonical name of toHaveReturned()',
+          messageId: 'replaceAlias',
+          data: { replace: 'toReturn', canonical: 'toHaveReturned' },
           column: 11,
           line: 1,
         },
@@ -98,8 +110,8 @@ ruleTester.run('no-alias-methods', rule, {
       code: 'expect(a).toReturnTimes()',
       errors: [
         {
-          message:
-            'Replace toReturnTimes() with its canonical name of toHaveReturnedTimes()',
+          messageId: 'replaceAlias',
+          data: { replace: 'toReturnTimes', canonical: 'toHaveReturnedTimes' },
           column: 11,
           line: 1,
         },
@@ -110,8 +122,8 @@ ruleTester.run('no-alias-methods', rule, {
       code: 'expect(a).toReturnWith()',
       errors: [
         {
-          message:
-            'Replace toReturnWith() with its canonical name of toHaveReturnedWith()',
+          messageId: 'replaceAlias',
+          data: { replace: 'toReturnWith', canonical: 'toHaveReturnedWith' },
           column: 11,
           line: 1,
         },
@@ -122,8 +134,11 @@ ruleTester.run('no-alias-methods', rule, {
       code: 'expect(a).lastReturnedWith()',
       errors: [
         {
-          message:
-            'Replace lastReturnedWith() with its canonical name of toHaveLastReturnedWith()',
+          messageId: 'replaceAlias',
+          data: {
+            replace: 'lastReturnedWith',
+            canonical: 'toHaveLastReturnedWith',
+          },
           column: 11,
           line: 1,
         },
@@ -134,8 +149,11 @@ ruleTester.run('no-alias-methods', rule, {
       code: 'expect(a).nthReturnedWith()',
       errors: [
         {
-          message:
-            'Replace nthReturnedWith() with its canonical name of toHaveNthReturnedWith()',
+          messageId: 'replaceAlias',
+          data: {
+            replace: 'nthReturnedWith',
+            canonical: 'toHaveNthReturnedWith',
+          },
           column: 11,
           line: 1,
         },
@@ -146,8 +164,8 @@ ruleTester.run('no-alias-methods', rule, {
       code: 'expect(a).toThrowError()',
       errors: [
         {
-          message:
-            'Replace toThrowError() with its canonical name of toThrow()',
+          messageId: 'replaceAlias',
+          data: { replace: 'toThrowError', canonical: 'toThrow' },
           column: 11,
           line: 1,
         },
@@ -158,8 +176,8 @@ ruleTester.run('no-alias-methods', rule, {
       code: 'expect(a).resolves.toThrowError()',
       errors: [
         {
-          message:
-            'Replace toThrowError() with its canonical name of toThrow()',
+          messageId: 'replaceAlias',
+          data: { replace: 'toThrowError', canonical: 'toThrow' },
           column: 20,
           line: 1,
         },
@@ -170,8 +188,8 @@ ruleTester.run('no-alias-methods', rule, {
       code: 'expect(a).rejects.toThrowError()',
       errors: [
         {
-          message:
-            'Replace toThrowError() with its canonical name of toThrow()',
+          messageId: 'replaceAlias',
+          data: { replace: 'toThrowError', canonical: 'toThrow' },
           column: 19,
           line: 1,
         },
@@ -182,8 +200,8 @@ ruleTester.run('no-alias-methods', rule, {
       code: 'expect(a).not.toThrowError()',
       errors: [
         {
-          message:
-            'Replace toThrowError() with its canonical name of toThrow()',
+          messageId: 'replaceAlias',
+          data: { replace: 'toThrowError', canonical: 'toThrow' },
           column: 15,
           line: 1,
         },

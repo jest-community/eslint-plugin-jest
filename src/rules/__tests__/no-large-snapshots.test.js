@@ -33,8 +33,8 @@ ruleTester.run('no-large-snapshots', rule, {
       )}\`);`,
       errors: [
         {
-          message:
-            'Expected Jest snapshot to be smaller than 50 lines but was 51 lines long',
+          messageId: 'tooLongSnapshots',
+          data: { lineLimit: 50, lineCount: 51 },
         },
       ],
     },
@@ -45,8 +45,8 @@ ruleTester.run('no-large-snapshots', rule, {
       )}\`);`,
       errors: [
         {
-          message:
-            'Expected Jest snapshot to be smaller than 50 lines but was 51 lines long',
+          messageId: 'tooLongSnapshots',
+          data: { lineLimit: 50, lineCount: 51 },
         },
       ],
     },

@@ -24,7 +24,8 @@ ruleTester.run('prefer-called-with', rule, {
       code: 'expect(fn).toBeCalled();',
       errors: [
         {
-          message: 'Prefer toBeCalledWith(/* expected args */)',
+          messageId: 'preferCalledWith',
+          data: { name: 'toBeCalled' },
           column: 12,
           line: 1,
         },
@@ -34,7 +35,8 @@ ruleTester.run('prefer-called-with', rule, {
       code: 'expect(fn).toHaveBeenCalled();',
       errors: [
         {
-          message: 'Prefer toHaveBeenCalledWith(/* expected args */)',
+          messageId: 'preferCalledWith',
+          data: { name: 'toHaveBeenCalled' },
           column: 12,
           line: 1,
         },

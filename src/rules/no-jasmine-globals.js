@@ -49,16 +49,10 @@ module.exports = {
               });
               break;
             case 'fail':
-              context.report({
-                node,
-                messageId: 'illegalFail',
-              });
+              context.report({ node, messageId: 'illegalFail' });
               break;
             case 'pending':
-              context.report({
-                node,
-                messageId: 'illegalPending',
-              });
+              context.report({ node, messageId: 'illegalPending' });
               break;
           }
           return;
@@ -112,10 +106,7 @@ module.exports = {
             return;
           }
 
-          context.report({
-            node,
-            messageId: 'illegalJasmine',
-          });
+          context.report({ node, messageId: 'illegalJasmine' });
         }
       },
       MemberExpression(node) {
@@ -132,15 +123,12 @@ module.exports = {
                   ];
                 },
                 node,
-                message: 'Illegal usage of jasmine global',
+                messageId: 'illegalJasmine',
               });
               return;
             }
 
-            context.report({
-              node,
-              message: 'Illegal usage of jasmine global',
-            });
+            context.report({ node, messageId: 'illegalJasmine' });
           }
         }
       },

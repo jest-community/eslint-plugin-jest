@@ -2,8 +2,6 @@
 
 const { getDocsUrl } = require('./util');
 
-const message = 'Some tests seem to be commented';
-
 function hasTests(node) {
   return /^\s*(x|f)?(test|it|describe)(\.\w+|\[['"]\w+['"]\])?\s*\(/m.test(
     node.value,
@@ -15,17 +13,19 @@ module.exports = {
     docs: {
       url: getDocsUrl(__filename),
     },
+    messages: {
+      commentedTests: 'Some tests seem to be commented',
+    },
   },
   create(context) {
     const sourceCode = context.getSourceCode();
 
     function checkNode(node) {
-      if (!hasTests(node)) return;
+      if (!hasTests(node)) {
+        return;
+      }
 
-      context.report({
-        message,
-        node,
-      });
+      context.report({ messageId: 'commentedTests', node });
     }
 
     return {

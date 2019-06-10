@@ -22,24 +22,32 @@ ruleTester.run('no-hooks', rule, {
   invalid: [
     {
       code: 'beforeAll(() => {})',
-      errors: [{ message: "Unexpected 'beforeAll' hook" }],
+      errors: [
+        { messageId: 'unexpectedHook', data: { hookName: 'beforeAll' } },
+      ],
     },
     {
       code: 'beforeEach(() => {})',
-      errors: [{ message: "Unexpected 'beforeEach' hook" }],
+      errors: [
+        { messageId: 'unexpectedHook', data: { hookName: 'beforeEach' } },
+      ],
     },
     {
       code: 'afterAll(() => {})',
-      errors: [{ message: "Unexpected 'afterAll' hook" }],
+      errors: [{ messageId: 'unexpectedHook', data: { hookName: 'afterAll' } }],
     },
     {
       code: 'afterEach(() => {})',
-      errors: [{ message: "Unexpected 'afterEach' hook" }],
+      errors: [
+        { messageId: 'unexpectedHook', data: { hookName: 'afterEach' } },
+      ],
     },
     {
       code: 'beforeEach(() => {}); afterEach(() => { jest.resetModules() });',
       options: [{ allow: ['afterEach'] }],
-      errors: [{ message: "Unexpected 'beforeEach' hook" }],
+      errors: [
+        { messageId: 'unexpectedHook', data: { hookName: 'beforeEach' } },
+      ],
     },
   ],
 });

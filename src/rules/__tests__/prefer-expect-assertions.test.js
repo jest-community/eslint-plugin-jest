@@ -9,26 +9,15 @@ const ruleTester = new RuleTester({
   },
 });
 
-const expectedMsg =
-  'Every test should have either `expect.assertions(<number of assertions>)` or `expect.hasAssertions()` as its first expression';
-
 ruleTester.run('prefer-expect-assertions', rule, {
   invalid: [
     {
       code: 'it("it1", () => {})',
-      errors: [
-        {
-          message: expectedMsg,
-        },
-      ],
+      errors: [{ messageId: 'haveExpectAssertions' }],
     },
     {
       code: 'it("it1", () => { foo()})',
-      errors: [
-        {
-          message: expectedMsg,
-        },
-      ],
+      errors: [{ messageId: 'haveExpectAssertions' }],
     },
     {
       code:
@@ -36,43 +25,23 @@ ruleTester.run('prefer-expect-assertions', rule, {
         '\n\t\t\tsomeFunctionToDo();' +
         '\n\t\t\tsomeFunctionToDo2();\n' +
         '\t\t\t})',
-      errors: [
-        {
-          message: expectedMsg,
-        },
-      ],
+      errors: [{ messageId: 'haveExpectAssertions' }],
     },
     {
       code: 'it("it1", function() {var a = 2;})',
-      errors: [
-        {
-          message: expectedMsg,
-        },
-      ],
+      errors: [{ messageId: 'haveExpectAssertions' }],
     },
     {
       code: 'it("it1", function() {expect.assertions();})',
-      errors: [
-        {
-          message: expectedMsg,
-        },
-      ],
+      errors: [{ messageId: 'haveExpectAssertions' }],
     },
     {
       code: 'it("it1", function() {expect.assertions(1,2);})',
-      errors: [
-        {
-          message: expectedMsg,
-        },
-      ],
+      errors: [{ messageId: 'haveExpectAssertions' }],
     },
     {
       code: 'it("it1", function() {expect.assertions("1");})',
-      errors: [
-        {
-          message: expectedMsg,
-        },
-      ],
+      errors: [{ messageId: 'haveExpectAssertions' }],
     },
   ],
 

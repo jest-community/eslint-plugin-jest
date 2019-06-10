@@ -7,6 +7,9 @@ module.exports = {
     docs: {
       url: getDocsUrl(__filename),
     },
+    messages: {
+      requireRethrow: 'Add an error message to {{ propertyName }}()',
+    },
   },
   create(context) {
     return {
@@ -23,10 +26,8 @@ module.exports = {
           !argument(node)
         ) {
           context.report({
-            message: `Add an error message to {{ propertyName }}()`,
-            data: {
-              propertyName,
-            },
+            messageId: 'requireRethrow',
+            data: { propertyName },
             node: method(node),
           });
         }

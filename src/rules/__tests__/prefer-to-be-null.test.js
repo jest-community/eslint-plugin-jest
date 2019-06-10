@@ -24,46 +24,22 @@ ruleTester.run('prefer-to-be-null', rule, {
   invalid: [
     {
       code: 'expect(null).toBe(null);',
-      errors: [
-        {
-          message: 'Use toBeNull() instead',
-          column: 14,
-          line: 1,
-        },
-      ],
+      errors: [{ messageId: 'useToBeNull', column: 14, line: 1 }],
       output: 'expect(null).toBeNull();',
     },
     {
       code: 'expect(null).toEqual(null);',
-      errors: [
-        {
-          message: 'Use toBeNull() instead',
-          column: 14,
-          line: 1,
-        },
-      ],
+      errors: [{ messageId: 'useToBeNull', column: 14, line: 1 }],
       output: 'expect(null).toBeNull();',
     },
     {
       code: 'expect("a string").not.toBe(null);',
-      errors: [
-        {
-          message: 'Use toBeNull() instead',
-          column: 24,
-          line: 1,
-        },
-      ],
+      errors: [{ messageId: 'useToBeNull', column: 24, line: 1 }],
       output: 'expect("a string").not.toBeNull();',
     },
     {
       code: 'expect("a string").not.toEqual(null);',
-      errors: [
-        {
-          message: 'Use toBeNull() instead',
-          column: 24,
-          line: 1,
-        },
-      ],
+      errors: [{ messageId: 'useToBeNull', column: 24, line: 1 }],
       output: 'expect("a string").not.toBeNull();',
     },
   ],

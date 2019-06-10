@@ -14,6 +14,15 @@ module.exports = {
     docs: {
       url: getDocsUrl(__filename),
     },
+    messages: {
+      multipleArgs: 'More than one argument was passed to expect().',
+      noArgs: 'No arguments were passed to expect().',
+      noAssertions: 'No assertion was called on expect().',
+      invalidProperty:
+        '"{{ propertyName }}" is not a valid property of expect.',
+      propertyWithoutMatcher: '"{{ propertyName }}" needs to call a matcher.',
+      matcherOnPropertyNotCalled: '"{{ propertyName }}" was not called.',
+    },
   },
   create(context) {
     return {
@@ -35,7 +44,7 @@ module.exports = {
                 },
                 start: secondArgumentLocStart,
               },
-              message: 'More than one argument was passed to expect().',
+              messageId: 'multipleArgs',
               node,
             });
           } else if (node.arguments.length === 0) {
@@ -51,7 +60,7 @@ module.exports = {
                   line: node.loc.start.line,
                 },
               },
-              message: 'No arguments were passed to expect().',
+              messageId: 'noArgs',
               node,
             });
           }
@@ -78,7 +87,8 @@ module.exports = {
                   // For some reason `endColumn` isn't set in tests if `loc` is
                   // not added
                   loc: parentProperty.loc,
-                  message: `"${propertyName}" is not a valid property of expect.`,
+                  messageId: 'invalidProperty',
+                  data: { propertyName },
                   node: parentProperty,
                 });
               }
@@ -91,18 +101,15 @@ module.exports = {
 
             // matcher was not called
             if (grandParent.type === 'ExpressionStatement') {
-              let message;
-              if (expectProperties.indexOf(propertyName) > -1) {
-                message = `"${propertyName}" needs to call a matcher.`;
-              } else {
-                message = `"${propertyName}" was not called.`;
-              }
-
               context.report({
                 // For some reason `endColumn` isn't set in tests if `loc` is not
                 // added
                 loc: parentProperty.loc,
-                message,
+                data: { propertyName },
+                messageId:
+                  expectProperties.indexOf(propertyName) > -1
+                    ? 'propertyWithoutMatcher'
+                    : 'matcherOnPropertyNotCalled',
                 node: parentProperty,
               });
             }
@@ -120,7 +127,7 @@ module.exports = {
             // For some reason `endColumn` isn't set in tests if `loc` is not
             // added
             loc: node.loc,
-            message: 'No assertion was called on expect().',
+            messageId: 'noAssertions',
             node,
           });
         }

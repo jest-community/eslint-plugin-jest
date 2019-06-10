@@ -24,7 +24,8 @@ ruleTester.run('no-jasmine-globals', rule, {
       code: 'spyOn(some, "object")',
       errors: [
         {
-          message: 'Illegal usage of global `spyOn`, prefer `jest.spyOn`',
+          messageId: 'illegalGlobal',
+          data: { global: 'spyOn', replacement: 'jest.spyOn' },
           column: 1,
           line: 1,
         },
@@ -34,8 +35,8 @@ ruleTester.run('no-jasmine-globals', rule, {
       code: 'spyOnProperty(some, "object")',
       errors: [
         {
-          message:
-            'Illegal usage of global `spyOnProperty`, prefer `jest.spyOn`',
+          messageId: 'illegalGlobal',
+          data: { global: 'spyOnProperty', replacement: 'jest.spyOn' },
           column: 1,
           line: 1,
         },
@@ -43,43 +44,23 @@ ruleTester.run('no-jasmine-globals', rule, {
     },
     {
       code: 'fail()',
-      errors: [
-        {
-          message:
-            'Illegal usage of `fail`, prefer throwing an error, or the `done.fail` callback',
-          column: 1,
-          line: 1,
-        },
-      ],
+      errors: [{ messageId: 'illegalFail', column: 1, line: 1 }],
     },
     {
       code: 'pending()',
-      errors: [
-        {
-          message:
-            'Illegal usage of `pending`, prefer explicitly skipping a test using `test.skip`',
-          column: 1,
-          line: 1,
-        },
-      ],
+      errors: [{ messageId: 'illegalPending', column: 1, line: 1 }],
     },
     {
       code: 'jasmine.DEFAULT_TIMEOUT_INTERVAL = 5000;',
-      errors: [
-        {
-          message: 'Illegal usage of jasmine global',
-          column: 1,
-          line: 1,
-        },
-      ],
+      errors: [{ messageId: 'illegalJasmine', column: 1, line: 1 }],
       output: 'jest.setTimeout(5000);',
     },
     {
       code: 'jasmine.addMatchers(matchers)',
       errors: [
         {
-          message:
-            'Illegal usage of `jasmine.addMatchers`, prefer `expect.extend`',
+          messageId: 'illegalMethod',
+          data: { method: 'jasmine.addMatchers', replacement: 'expect.extend' },
           column: 1,
           line: 1,
         },
@@ -89,7 +70,8 @@ ruleTester.run('no-jasmine-globals', rule, {
       code: 'jasmine.createSpy()',
       errors: [
         {
-          message: 'Illegal usage of `jasmine.createSpy`, prefer `jest.fn`',
+          messageId: 'illegalMethod',
+          data: { method: 'jasmine.createSpy', replacement: 'jest.fn' },
           column: 1,
           line: 1,
         },
@@ -99,7 +81,8 @@ ruleTester.run('no-jasmine-globals', rule, {
       code: 'jasmine.any()',
       errors: [
         {
-          message: 'Illegal usage of `jasmine.any`, prefer `expect.any`',
+          messageId: 'illegalMethod',
+          data: { method: 'jasmine.any', replacement: 'expect.any' },
           column: 1,
           line: 1,
         },
@@ -110,8 +93,8 @@ ruleTester.run('no-jasmine-globals', rule, {
       code: 'jasmine.anything()',
       errors: [
         {
-          message:
-            'Illegal usage of `jasmine.anything`, prefer `expect.anything`',
+          messageId: 'illegalMethod',
+          data: { method: 'jasmine.anything', replacement: 'expect.anything' },
           column: 1,
           line: 1,
         },
@@ -122,8 +105,11 @@ ruleTester.run('no-jasmine-globals', rule, {
       code: 'jasmine.arrayContaining()',
       errors: [
         {
-          message:
-            'Illegal usage of `jasmine.arrayContaining`, prefer `expect.arrayContaining`',
+          messageId: 'illegalMethod',
+          data: {
+            method: 'jasmine.arrayContaining',
+            replacement: 'expect.arrayContaining',
+          },
           column: 1,
           line: 1,
         },
@@ -134,8 +120,11 @@ ruleTester.run('no-jasmine-globals', rule, {
       code: 'jasmine.objectContaining()',
       errors: [
         {
-          message:
-            'Illegal usage of `jasmine.objectContaining`, prefer `expect.objectContaining`',
+          messageId: 'illegalMethod',
+          data: {
+            method: 'jasmine.objectContaining',
+            replacement: 'expect.objectContaining',
+          },
           column: 1,
           line: 1,
         },
@@ -146,8 +135,11 @@ ruleTester.run('no-jasmine-globals', rule, {
       code: 'jasmine.stringMatching()',
       errors: [
         {
-          message:
-            'Illegal usage of `jasmine.stringMatching`, prefer `expect.stringMatching`',
+          messageId: 'illegalMethod',
+          data: {
+            method: 'jasmine.stringMatching',
+            replacement: 'expect.stringMatching',
+          },
           column: 1,
           line: 1,
         },
@@ -156,73 +148,31 @@ ruleTester.run('no-jasmine-globals', rule, {
     },
     {
       code: 'jasmine.getEnv()',
-      errors: [
-        {
-          message: 'Illegal usage of jasmine global',
-          column: 1,
-          line: 1,
-        },
-      ],
+      errors: [{ messageId: 'illegalJasmine', column: 1, line: 1 }],
     },
     {
       code: 'jasmine.empty()',
-      errors: [
-        {
-          message: 'Illegal usage of jasmine global',
-          column: 1,
-          line: 1,
-        },
-      ],
+      errors: [{ messageId: 'illegalJasmine', column: 1, line: 1 }],
     },
     {
       code: 'jasmine.falsy()',
-      errors: [
-        {
-          message: 'Illegal usage of jasmine global',
-          column: 1,
-          line: 1,
-        },
-      ],
+      errors: [{ messageId: 'illegalJasmine', column: 1, line: 1 }],
     },
     {
       code: 'jasmine.truthy()',
-      errors: [
-        {
-          message: 'Illegal usage of jasmine global',
-          column: 1,
-          line: 1,
-        },
-      ],
+      errors: [{ messageId: 'illegalJasmine', column: 1, line: 1 }],
     },
     {
       code: 'jasmine.arrayWithExactContents()',
-      errors: [
-        {
-          message: 'Illegal usage of jasmine global',
-          column: 1,
-          line: 1,
-        },
-      ],
+      errors: [{ messageId: 'illegalJasmine', column: 1, line: 1 }],
     },
     {
       code: 'jasmine.clock()',
-      errors: [
-        {
-          message: 'Illegal usage of jasmine global',
-          column: 1,
-          line: 1,
-        },
-      ],
+      errors: [{ messageId: 'illegalJasmine', column: 1, line: 1 }],
     },
     {
       code: 'jasmine.MAX_PRETTY_PRINT_ARRAY_LENGTH = 42',
-      errors: [
-        {
-          message: 'Illegal usage of jasmine global',
-          column: 1,
-          line: 1,
-        },
-      ],
+      errors: [{ messageId: 'illegalJasmine', column: 1, line: 1 }],
     },
   ],
 });

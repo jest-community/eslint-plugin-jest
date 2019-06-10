@@ -44,71 +44,47 @@ ruleTester.run('valid-describe', rule, {
     {
       code: 'describe(() => {})',
       errors: [
-        {
-          message: 'First argument must be name',
-          line: 1,
-          column: 10,
-        },
-        {
-          message: 'Describe requires name and callback arguments',
-          line: 1,
-          column: 10,
-        },
+        { messageId: 'firstArgumentMustBeName', line: 1, column: 10 },
+        { messageId: 'nameAndCallback', line: 1, column: 10 },
       ],
     },
     {
       code: 'describe("foo")',
-      errors: [
-        {
-          message: 'Describe requires name and callback arguments',
-          line: 1,
-          column: 10,
-        },
-      ],
+      errors: [{ messageId: 'nameAndCallback', line: 1, column: 10 }],
     },
     {
       code: 'describe("foo", "foo2")',
       errors: [
-        {
-          message: 'Second argument must be function',
-          line: 1,
-          column: 10,
-        },
+        { messageId: 'secondArgumentMustBeFunction', line: 1, column: 10 },
       ],
     },
     {
       code: 'describe()',
-      errors: [
-        {
-          message: 'Describe requires name and callback arguments',
-          line: 1,
-          column: 1,
-        },
-      ],
+      errors: [{ messageId: 'nameAndCallback', line: 1, column: 1 }],
     },
     {
       code: 'describe("foo", async () => {})',
-      errors: [{ message: 'No async describe callback', line: 1, column: 17 }],
+      errors: [{ messageId: 'noAsyncDescribeCallback', line: 1, column: 17 }],
     },
     {
       code: 'describe("foo", async function () {})',
-      errors: [{ message: 'No async describe callback', line: 1, column: 17 }],
+      errors: [{ messageId: 'noAsyncDescribeCallback', line: 1, column: 17 }],
     },
     {
       code: 'xdescribe("foo", async function () {})',
-      errors: [{ message: 'No async describe callback', line: 1, column: 18 }],
+      errors: [{ messageId: 'noAsyncDescribeCallback', line: 1, column: 18 }],
     },
     {
       code: 'fdescribe("foo", async function () {})',
-      errors: [{ message: 'No async describe callback', line: 1, column: 18 }],
+      errors: [{ messageId: 'noAsyncDescribeCallback', line: 1, column: 18 }],
     },
     {
       code: 'describe.only("foo", async function () {})',
-      errors: [{ message: 'No async describe callback', line: 1, column: 22 }],
+      errors: [{ messageId: 'noAsyncDescribeCallback', line: 1, column: 22 }],
     },
     {
       code: 'describe.skip("foo", async function () {})',
-      errors: [{ message: 'No async describe callback', line: 1, column: 22 }],
+      errors: [{ messageId: 'noAsyncDescribeCallback', line: 1, column: 22 }],
     },
     {
       code: `
@@ -123,7 +99,7 @@ ruleTester.run('valid-describe', rule, {
           });
         });
       });`,
-      errors: [{ message: 'No async describe callback', line: 6, column: 27 }],
+      errors: [{ messageId: 'noAsyncDescribeCallback', line: 6, column: 27 }],
     },
     {
       code: `
@@ -135,13 +111,7 @@ ruleTester.run('valid-describe', rule, {
         })
       })
       `,
-      errors: [
-        {
-          message: 'Unexpected return statement in describe callback',
-          line: 3,
-          column: 9,
-        },
-      ],
+      errors: [{ messageId: 'unexpectedReturnInDescribe', line: 3, column: 9 }],
     },
     {
       code: `
@@ -161,16 +131,8 @@ ruleTester.run('valid-describe', rule, {
       })
       `,
       errors: [
-        {
-          message: 'Unexpected return statement in describe callback',
-          line: 3,
-          column: 9,
-        },
-        {
-          message: 'Unexpected return statement in describe callback',
-          line: 9,
-          column: 11,
-        },
+        { messageId: 'unexpectedReturnInDescribe', line: 3, column: 9 },
+        { messageId: 'unexpectedReturnInDescribe', line: 9, column: 11 },
       ],
     },
     {
@@ -188,57 +150,33 @@ ruleTester.run('valid-describe', rule, {
       })
       `,
       errors: [
-        {
-          message: 'No async describe callback',
-          line: 2,
-          column: 23,
-        },
-        {
-          message: 'Unexpected return statement in describe callback',
-          line: 6,
-          column: 11,
-        },
+        { messageId: 'noAsyncDescribeCallback', line: 2, column: 23 },
+        { messageId: 'unexpectedReturnInDescribe', line: 6, column: 11 },
       ],
     },
     {
       code: 'describe("foo", done => {})',
       errors: [
-        {
-          message: 'Unexpected argument(s) in describe callback',
-          line: 1,
-          column: 17,
-        },
+        { messageId: 'unexpectedDescribeArgument', line: 1, column: 17 },
       ],
     },
     {
       code: 'describe("foo", function (done) {})',
       errors: [
-        {
-          message: 'Unexpected argument(s) in describe callback',
-          line: 1,
-          column: 27,
-        },
+        { messageId: 'unexpectedDescribeArgument', line: 1, column: 27 },
       ],
     },
     {
       code: 'describe("foo", function (one, two, three) {})',
       errors: [
-        {
-          message: 'Unexpected argument(s) in describe callback',
-          line: 1,
-          column: 27,
-        },
+        { messageId: 'unexpectedDescribeArgument', line: 1, column: 27 },
       ],
     },
     {
       code: 'describe("foo", async function (done) {})',
       errors: [
-        { message: 'No async describe callback', line: 1, column: 17 },
-        {
-          message: 'Unexpected argument(s) in describe callback',
-          line: 1,
-          column: 33,
-        },
+        { messageId: 'noAsyncDescribeCallback', line: 1, column: 17 },
+        { messageId: 'unexpectedDescribeArgument', line: 1, column: 33 },
       ],
     },
   ],

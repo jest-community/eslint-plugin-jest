@@ -17,6 +17,9 @@ module.exports = {
     docs: {
       url: getDocsUrl(__filename),
     },
+    messages: {
+      useToBeNull: 'Use toBeNull() instead',
+    },
     fixable: 'code',
   },
   create(context) {
@@ -40,7 +43,7 @@ module.exports = {
                 fixer.remove(argument2(node)),
               ];
             },
-            message: 'Use toBeNull() instead',
+            messageId: 'useToBeNull',
             node: is ? method(node) : method2(node),
           });
         }
