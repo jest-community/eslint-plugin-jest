@@ -52,6 +52,9 @@ module.exports = {
     docs: {
       url: getDocsUrl(__filename),
     },
+    messages: {
+      unexpectedLowercase: '`{{ method }}`s should begin with lowercase',
+    },
     fixable: 'code',
   },
   create(context) {
@@ -70,7 +73,7 @@ module.exports = {
 
         if (erroneousMethod && !isIgnoredFunctionName(node)) {
           context.report({
-            message: '`{{ method }}`s should begin with lowercase',
+            messageId: 'unexpectedLowercase',
             data: { method: erroneousMethod },
             node,
             fix(fixer) {

@@ -12,6 +12,9 @@ module.exports = {
     docs: {
       url: getDocsUrl(__filename),
     },
+    messages: {
+      noAssertions: 'Test has no assertions',
+    },
     schema: [
       {
         type: 'object',
@@ -51,10 +54,7 @@ module.exports = {
       },
       'Program:exit'() {
         unchecked.forEach(node =>
-          context.report({
-            message: 'Test has no assertions',
-            node,
-          }),
+          context.report({ messageId: 'noAssertions', node }),
         );
       },
     };

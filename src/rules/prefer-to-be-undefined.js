@@ -17,6 +17,9 @@ module.exports = {
     docs: {
       url: getDocsUrl(__filename),
     },
+    messages: {
+      useToBeUndefined: 'Use toBeUndefined() instead',
+    },
     fixable: 'code',
   },
   create(context) {
@@ -42,7 +45,7 @@ module.exports = {
                 fixer.remove(argument2(node)),
               ];
             },
-            message: 'Use toBeUndefined() instead',
+            messageId: 'useToBeUndefined',
             node: is ? method(node) : method2(node),
           });
         }

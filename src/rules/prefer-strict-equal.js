@@ -7,6 +7,9 @@ module.exports = {
     docs: {
       url: getDocsUrl(__filename),
     },
+    messages: {
+      useToStrictEqual: 'Use toStrictEqual() instead',
+    },
     fixable: 'code',
   },
   create(context) {
@@ -23,7 +26,7 @@ module.exports = {
             fix(fixer) {
               return [fixer.replaceText(method(node), 'toStrictEqual')];
             },
-            message: 'Use toStrictEqual() instead',
+            messageId: 'useToStrictEqual',
             node: method(node),
           });
         }

@@ -7,6 +7,9 @@ module.exports = {
     docs: {
       url: getDocsUrl(__filename),
     },
+    messages: {
+      illegalTestCallback: 'Illegal usage of test callback',
+    },
     fixable: 'code',
   },
   create(context) {
@@ -28,7 +31,7 @@ module.exports = {
         const [argument] = callback.params;
         context.report({
           node: argument,
-          message: 'Illegal usage of test callback',
+          messageId: 'illegalTestCallback',
           fix(fixer) {
             const sourceCode = context.getSourceCode();
             const { body } = callback;

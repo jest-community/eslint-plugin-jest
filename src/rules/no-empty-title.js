@@ -10,15 +10,14 @@ const {
   getStringValue,
 } = require('./util');
 
-const errorMessages = {
-  describe: 'describe should not have an empty title',
-  test: 'test should not have an empty title',
-};
-
 module.exports = {
   meta: {
     docs: {
       url: getDocsUrl(__filename),
+    },
+    messages: {
+      describe: 'describe should not have an empty title',
+      test: 'test should not have an empty title',
     },
   },
   create(context) {
@@ -39,16 +38,12 @@ module.exports = {
           return;
         }
         if (getStringValue(firstArgument) === '') {
-          const message = is.describe
-            ? errorMessages.describe
-            : errorMessages.test;
           context.report({
-            message,
+            messageId: is.describe ? 'describe' : 'test',
             node,
           });
         }
       },
     };
   },
-  errorMessages,
 };

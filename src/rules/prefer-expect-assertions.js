@@ -2,9 +2,6 @@
 
 const { getDocsUrl } = require('./util');
 
-const ruleMsg =
-  'Every test should have either `expect.assertions(<number of assertions>)` or `expect.hasAssertions()` as its first expression';
-
 const validateArguments = expression => {
   return (
     expression.arguments &&
@@ -40,16 +37,17 @@ const isFirstLineExprStmt = functionBody => {
 };
 
 const reportMsg = (context, node) => {
-  context.report({
-    message: ruleMsg,
-    node,
-  });
+  context.report({ messageId: 'haveExpectAssertions', node });
 };
 
 module.exports = {
   meta: {
     docs: {
       url: getDocsUrl(__filename),
+    },
+    messages: {
+      haveExpectAssertions:
+        'Every test should have either `expect.assertions(<number of assertions>)` or `expect.hasAssertions()` as its first expression',
     },
   },
   create(context) {

@@ -41,38 +41,41 @@ const isTestCase = node =>
   node.type === 'CallExpression' &&
   ['it', 'test', 'it.skip', 'test.skip'].includes(getNodeName(node.callee));
 
-function create(context) {
-  return {
-    CallExpression(node) {
-      if (isTestCase(node) && isFirstArgString(node)) {
-        const combineFixers = composeFixers(node);
-
-        if (isTestBodyEmpty(node)) {
-          context.report({
-            message: 'Prefer todo test case over empty test case',
-            node,
-            fix: combineFixers(removeSecondArg, addTodo),
-          });
-        }
-
-        if (isOnlyTestTitle(node)) {
-          context.report({
-            message: 'Prefer todo test case over unimplemented test case',
-            node,
-            fix: combineFixers(addTodo),
-          });
-        }
-      }
-    },
-  };
-}
-
 module.exports = {
-  create,
   meta: {
     docs: {
       url: getDocsUrl(__filename),
     },
+    messages: {
+      todoOverEmpty: 'Prefer todo test case over empty test case',
+      todoOverUnimplemented:
+        'Prefer todo test case over unimplemented test case',
+    },
     fixable: 'code',
+  },
+  create(context) {
+    return {
+      CallExpression(node) {
+        if (isTestCase(node) && isFirstArgString(node)) {
+          const combineFixers = composeFixers(node);
+
+          if (isTestBodyEmpty(node)) {
+            context.report({
+              messageId: 'todoOverEmpty',
+              node,
+              fix: combineFixers(removeSecondArg, addTodo),
+            });
+          }
+
+          if (isOnlyTestTitle(node)) {
+            context.report({
+              messageId: 'todoOverUnimplemented',
+              node,
+              fix: combineFixers(addTodo),
+            });
+          }
+        }
+      },
+    };
   },
 };

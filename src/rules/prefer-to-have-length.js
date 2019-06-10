@@ -14,6 +14,9 @@ module.exports = {
     docs: {
       url: getDocsUrl(__filename),
     },
+    messages: {
+      useToHaveLength: 'Use toHaveLength() instead',
+    },
     fixable: 'code',
   },
   create(context) {
@@ -45,7 +48,7 @@ module.exports = {
                 fixer.replaceText(method(node), 'toHaveLength'),
               ];
             },
-            message: 'Use toHaveLength() instead',
+            messageId: 'useToHaveLength',
             node: method(node),
           });
         }

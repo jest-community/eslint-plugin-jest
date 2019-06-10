@@ -29,178 +29,82 @@ ruleTester.run('prefer-to-contain', rule, {
   invalid: [
     {
       code: 'expect(a.includes(b)).toEqual(true);',
-      errors: [
-        {
-          message: 'Use toContain() instead',
-          column: 23,
-          line: 1,
-        },
-      ],
+      errors: [{ messageId: 'useToContain', column: 23, line: 1 }],
       output: 'expect(a).toContain(b);',
     },
     {
       code: 'expect(a.includes(b)).toEqual(false);',
-      errors: [
-        {
-          message: 'Use toContain() instead',
-          column: 23,
-          line: 1,
-        },
-      ],
+      errors: [{ messageId: 'useToContain', column: 23, line: 1 }],
       output: 'expect(a).not.toContain(b);',
     },
     {
       code: 'expect(a.includes(b)).not.toEqual(false);',
-      errors: [
-        {
-          message: 'Use toContain() instead',
-          column: 23,
-          line: 1,
-        },
-      ],
+      errors: [{ messageId: 'useToContain', column: 23, line: 1 }],
       output: 'expect(a).toContain(b);',
     },
     {
       code: 'expect(a.includes(b)).not.toEqual(true);',
-      errors: [
-        {
-          message: 'Use toContain() instead',
-          column: 23,
-          line: 1,
-        },
-      ],
+      errors: [{ messageId: 'useToContain', column: 23, line: 1 }],
       output: 'expect(a).not.toContain(b);',
     },
     {
       code: 'expect(a.includes(b)).toBe(true);',
-      errors: [
-        {
-          message: 'Use toContain() instead',
-          column: 23,
-          line: 1,
-        },
-      ],
+      errors: [{ messageId: 'useToContain', column: 23, line: 1 }],
       output: 'expect(a).toContain(b);',
     },
     {
       code: 'expect(a.includes(b)).toBe(false);',
-      errors: [
-        {
-          message: 'Use toContain() instead',
-          column: 23,
-          line: 1,
-        },
-      ],
+      errors: [{ messageId: 'useToContain', column: 23, line: 1 }],
       output: 'expect(a).not.toContain(b);',
     },
     {
       code: 'expect(a.includes(b)).not.toBe(false);',
-      errors: [
-        {
-          message: 'Use toContain() instead',
-          column: 23,
-          line: 1,
-        },
-      ],
+      errors: [{ messageId: 'useToContain', column: 23, line: 1 }],
       output: 'expect(a).toContain(b);',
     },
     {
       code: 'expect(a.includes(b)).not.toBe(true);',
-      errors: [
-        {
-          message: 'Use toContain() instead',
-          column: 23,
-          line: 1,
-        },
-      ],
+      errors: [{ messageId: 'useToContain', column: 23, line: 1 }],
       output: 'expect(a).not.toContain(b);',
     },
     {
       code: 'expect(a.test(t).includes(b.test(p))).toEqual(true);',
-      errors: [
-        {
-          message: 'Use toContain() instead',
-          column: 39,
-          line: 1,
-        },
-      ],
+      errors: [{ messageId: 'useToContain', column: 39, line: 1 }],
       output: 'expect(a.test(t)).toContain(b.test(p));',
     },
     {
       code: 'expect(a.test(t).includes(b.test(p))).toEqual(false);',
-      errors: [
-        {
-          message: 'Use toContain() instead',
-          column: 39,
-          line: 1,
-        },
-      ],
+      errors: [{ messageId: 'useToContain', column: 39, line: 1 }],
       output: 'expect(a.test(t)).not.toContain(b.test(p));',
     },
     {
       code: 'expect(a.test(t).includes(b.test(p))).not.toEqual(true);',
-      errors: [
-        {
-          message: 'Use toContain() instead',
-          column: 39,
-          line: 1,
-        },
-      ],
+      errors: [{ messageId: 'useToContain', column: 39, line: 1 }],
       output: 'expect(a.test(t)).not.toContain(b.test(p));',
     },
     {
       code: 'expect(a.test(t).includes(b.test(p))).not.toEqual(false);',
-      errors: [
-        {
-          message: 'Use toContain() instead',
-          column: 39,
-          line: 1,
-        },
-      ],
+      errors: [{ messageId: 'useToContain', column: 39, line: 1 }],
       output: 'expect(a.test(t)).toContain(b.test(p));',
     },
     {
       code: 'expect([{a:1}].includes({a:1})).toBe(true);',
-      errors: [
-        {
-          message: 'Use toContain() instead',
-          column: 33,
-          line: 1,
-        },
-      ],
+      errors: [{ messageId: 'useToContain', column: 33, line: 1 }],
       output: 'expect([{a:1}]).toContain({a:1});',
     },
     {
       code: 'expect([{a:1}].includes({a:1})).toBe(false);',
-      errors: [
-        {
-          message: 'Use toContain() instead',
-          column: 33,
-          line: 1,
-        },
-      ],
+      errors: [{ messageId: 'useToContain', column: 33, line: 1 }],
       output: 'expect([{a:1}]).not.toContain({a:1});',
     },
     {
       code: 'expect([{a:1}].includes({a:1})).not.toBe(true);',
-      errors: [
-        {
-          message: 'Use toContain() instead',
-          column: 33,
-          line: 1,
-        },
-      ],
+      errors: [{ messageId: 'useToContain', column: 33, line: 1 }],
       output: 'expect([{a:1}]).not.toContain({a:1});',
     },
     {
       code: 'expect([{a:1}].includes({a:1})).not.toBe(false);',
-      errors: [
-        {
-          message: 'Use toContain() instead',
-          column: 33,
-          line: 1,
-        },
-      ],
+      errors: [{ messageId: 'useToContain', column: 33, line: 1 }],
       output: 'expect([{a:1}]).toContain({a:1});',
     },
   ],

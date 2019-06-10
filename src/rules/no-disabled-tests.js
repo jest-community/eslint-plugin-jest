@@ -7,6 +7,16 @@ module.exports = {
     docs: {
       url: getDocsUrl(__filename),
     },
+    messages: {
+      missingFunction: 'Test is missing function argument',
+      skippedTestSuite: 'Skipped test suite',
+      skippedTest: 'Skipped test',
+      pending: 'Call to pending()',
+      pendingSuite: 'Call to pending() within test suite',
+      pendingTest: 'Call to pending() within test',
+      disabledSuite: 'Disabled test suite',
+      disabledTest: 'Disabled test',
+    },
   },
   create(context) {
     let suiteDepth = 0;
@@ -20,22 +30,19 @@ module.exports = {
         testDepth++;
       },
       'CallExpression[callee.name=/^(it|test)$/][arguments.length<2]'(node) {
-        context.report({
-          message: 'Test is missing function argument',
-          node,
-        });
+        context.report({ messageId: 'missingFunction', node });
       },
       CallExpression(node) {
         const functionName = getNodeName(node.callee);
 
         switch (functionName) {
           case 'describe.skip':
-            context.report({ message: 'Skipped test suite', node });
+            context.report({ messageId: 'skippedTestSuite', node });
             break;
 
           case 'it.skip':
           case 'test.skip':
-            context.report({ message: 'Skipped test', node });
+            context.report({ messageId: 'skippedTest', node });
             break;
         }
       },
@@ -45,27 +52,18 @@ module.exports = {
         }
 
         if (testDepth > 0) {
-          context.report({
-            message: 'Call to pending() within test',
-            node,
-          });
+          context.report({ messageId: 'pendingTest', node });
         } else if (suiteDepth > 0) {
-          context.report({
-            message: 'Call to pending() within test suite',
-            node,
-          });
+          context.report({ messageId: 'pendingSuite', node });
         } else {
-          context.report({
-            message: 'Call to pending()',
-            node,
-          });
+          context.report({ messageId: 'pending', node });
         }
       },
       'CallExpression[callee.name="xdescribe"]'(node) {
-        context.report({ message: 'Disabled test suite', node });
+        context.report({ messageId: 'disabledSuite', node });
       },
       'CallExpression[callee.name=/^xit|xtest$/]'(node) {
-        context.report({ message: 'Disabled test', node });
+        context.report({ messageId: 'disabledTest', node });
       },
       'CallExpression[callee.name="describe"]:exit'() {
         suiteDepth--;

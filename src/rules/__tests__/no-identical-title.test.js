@@ -125,110 +125,54 @@ ruleTester.run('no-identical-title', rule, {
         '   it("it1", function() {});',
         '});',
       ].join('\n'),
-      errors: [
-        {
-          message:
-            'Test title is used multiple times in the same describe block.',
-          column: 4,
-          line: 3,
-        },
-      ],
+      errors: [{ messageId: 'multipleTestTitle', column: 4, line: 3 }],
     },
     {
       code: ['it("it1", function() {});', 'it("it1", function() {});'].join(
         '\n',
       ),
-      errors: [
-        {
-          message:
-            'Test title is used multiple times in the same describe block.',
-          column: 1,
-          line: 2,
-        },
-      ],
+      errors: [{ messageId: 'multipleTestTitle', column: 1, line: 2 }],
     },
     {
       code: [
         'it.only("it1", function() {});',
         'it("it1", function() {});',
       ].join('\n'),
-      errors: [
-        {
-          message:
-            'Test title is used multiple times in the same describe block.',
-          column: 1,
-          line: 2,
-        },
-      ],
+      errors: [{ messageId: 'multipleTestTitle', column: 1, line: 2 }],
     },
     {
       code: ['fit("it1", function() {});', 'it("it1", function() {});'].join(
         '\n',
       ),
-      errors: [
-        {
-          message:
-            'Test title is used multiple times in the same describe block.',
-          column: 1,
-          line: 2,
-        },
-      ],
+      errors: [{ messageId: 'multipleTestTitle', column: 1, line: 2 }],
     },
     {
       code: [
         'it.only("it1", function() {});',
         'it.only("it1", function() {});',
       ].join('\n'),
-      errors: [
-        {
-          message:
-            'Test title is used multiple times in the same describe block.',
-          column: 1,
-          line: 2,
-        },
-      ],
+      errors: [{ messageId: 'multipleTestTitle', column: 1, line: 2 }],
     },
     {
       code: [
         'describe("describe1", function() {});',
         'describe("describe1", function() {});',
       ].join('\n'),
-      errors: [
-        {
-          message:
-            'Describe block title is used multiple times in the same describe block.',
-          column: 1,
-          line: 2,
-        },
-      ],
+      errors: [{ messageId: 'multipleDescribeTitle', column: 1, line: 2 }],
     },
     {
       code: [
         'describe("describe1", function() {});',
         'xdescribe("describe1", function() {});',
       ].join('\n'),
-      errors: [
-        {
-          message:
-            'Describe block title is used multiple times in the same describe block.',
-          column: 1,
-          line: 2,
-        },
-      ],
+      errors: [{ messageId: 'multipleDescribeTitle', column: 1, line: 2 }],
     },
     {
       code: [
         'fdescribe("describe1", function() {});',
         'describe("describe1", function() {});',
       ].join('\n'),
-      errors: [
-        {
-          message:
-            'Describe block title is used multiple times in the same describe block.',
-          column: 1,
-          line: 2,
-        },
-      ],
+      errors: [{ messageId: 'multipleDescribeTitle', column: 1, line: 2 }],
     },
     {
       code: [
@@ -237,14 +181,7 @@ ruleTester.run('no-identical-title', rule, {
         '});',
         'describe("describe1", function() {});',
       ].join('\n'),
-      errors: [
-        {
-          message:
-            'Describe block title is used multiple times in the same describe block.',
-          column: 1,
-          line: 4,
-        },
-      ],
+      errors: [{ messageId: 'multipleDescribeTitle', column: 1, line: 4 }],
     },
     {
       code: [
@@ -256,14 +193,7 @@ ruleTester.run('no-identical-title', rule, {
       env: {
         es6: true,
       },
-      errors: [
-        {
-          message:
-            'Test title is used multiple times in the same describe block.',
-          column: 5,
-          line: 3,
-        },
-      ],
+      errors: [{ messageId: 'multipleTestTitle', column: 5, line: 3 }],
     },
   ],
 });

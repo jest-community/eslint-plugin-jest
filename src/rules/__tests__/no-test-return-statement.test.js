@@ -29,13 +29,7 @@ ruleTester.run('no-test-prefixes', rule, {
         return expect(1).toBe(1);
       });
       `,
-      errors: [
-        {
-          message: 'Jest tests should not return a value.',
-          column: 9,
-          line: 3,
-        },
-      ],
+      errors: [{ messageId: 'noReturnValue', column: 9, line: 3 }],
     },
     {
       code: `
@@ -43,13 +37,7 @@ ruleTester.run('no-test-prefixes', rule, {
         return expect(1).toBe(1);
       });
       `,
-      errors: [
-        {
-          message: 'Jest tests should not return a value.',
-          column: 9,
-          line: 3,
-        },
-      ],
+      errors: [{ messageId: 'noReturnValue', column: 9, line: 3 }],
     },
   ],
 });

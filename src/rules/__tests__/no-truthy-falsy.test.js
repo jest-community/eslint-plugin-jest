@@ -22,7 +22,8 @@ ruleTester.run('no-truthy-falsy', rule, {
       code: 'expect(true).toBeTruthy();',
       errors: [
         {
-          message: 'Avoid toBeTruthy',
+          messageId: 'avoidMessage',
+          data: { methodName: 'toBeTruthy' },
           column: 14,
           line: 1,
         },
@@ -32,7 +33,8 @@ ruleTester.run('no-truthy-falsy', rule, {
       code: 'expect(false).not.toBeTruthy();',
       errors: [
         {
-          message: 'Avoid toBeTruthy',
+          messageId: 'avoidMessage',
+          data: { methodName: 'toBeTruthy' },
           column: 19,
           line: 1,
         },
@@ -42,7 +44,8 @@ ruleTester.run('no-truthy-falsy', rule, {
       code: 'expect(Promise.resolve({})).resolves.toBeTruthy()',
       errors: [
         {
-          message: 'Avoid toBeTruthy',
+          messageId: 'avoidMessage',
+          data: { methodName: 'toBeTruthy' },
           column: 38,
           line: 1,
         },
@@ -52,7 +55,8 @@ ruleTester.run('no-truthy-falsy', rule, {
       code: 'expect(Promise.resolve({})).rejects.toBeTruthy()',
       errors: [
         {
-          message: 'Avoid toBeTruthy',
+          messageId: 'avoidMessage',
+          data: { methodName: 'toBeTruthy' },
           column: 37,
           line: 1,
         },
@@ -62,7 +66,8 @@ ruleTester.run('no-truthy-falsy', rule, {
       code: 'expect(false).toBeFalsy();',
       errors: [
         {
-          message: 'Avoid toBeFalsy',
+          messageId: 'avoidMessage',
+          data: { methodName: 'toBeFalsy' },
           column: 15,
           line: 1,
         },
@@ -72,7 +77,8 @@ ruleTester.run('no-truthy-falsy', rule, {
       code: 'expect(true).not.toBeFalsy();',
       errors: [
         {
-          message: 'Avoid toBeFalsy',
+          messageId: 'avoidMessage',
+          data: { methodName: 'toBeFalsy' },
           column: 18,
           line: 1,
         },
@@ -82,7 +88,8 @@ ruleTester.run('no-truthy-falsy', rule, {
       code: 'expect(Promise.resolve({})).resolves.toBeFalsy()',
       errors: [
         {
-          message: 'Avoid toBeFalsy',
+          messageId: 'avoidMessage',
+          data: { methodName: 'toBeFalsy' },
           column: 38,
           line: 1,
         },
@@ -92,7 +99,8 @@ ruleTester.run('no-truthy-falsy', rule, {
       code: 'expect(Promise.resolve({})).rejects.toBeFalsy()',
       errors: [
         {
-          message: 'Avoid toBeFalsy',
+          messageId: 'avoidMessage',
+          data: { methodName: 'toBeFalsy' },
           column: 37,
           line: 1,
         },

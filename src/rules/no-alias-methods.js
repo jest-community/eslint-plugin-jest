@@ -7,6 +7,9 @@ module.exports = {
     docs: {
       url: getDocsUrl(__filename),
     },
+    messages: {
+      replaceAlias: `Replace {{ replace }}() with its canonical name of {{ canonical }}()`,
+    },
     fixable: 'code',
   },
   create(context) {
@@ -52,15 +55,13 @@ module.exports = {
 
         if (methodItem) {
           context.report({
-            message: `Replace {{ replace }}() with its canonical name of {{ canonical }}()`,
+            messageId: 'replaceAlias',
             data: {
               replace: methodItem[1],
               canonical: methodItem[0],
             },
             node: targetNode,
-            fix(fixer) {
-              return [fixer.replaceText(targetNode, methodItem[0])];
-            },
+            fix: fixer => [fixer.replaceText(targetNode, methodItem[0])],
           });
         }
       },

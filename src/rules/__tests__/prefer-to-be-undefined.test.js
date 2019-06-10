@@ -21,46 +21,22 @@ ruleTester.run('prefer-to-be-undefined', rule, {
   invalid: [
     {
       code: 'expect(undefined).toBe(undefined);',
-      errors: [
-        {
-          message: 'Use toBeUndefined() instead',
-          column: 19,
-          line: 1,
-        },
-      ],
+      errors: [{ messageId: 'useToBeUndefined', column: 19, line: 1 }],
       output: 'expect(undefined).toBeUndefined();',
     },
     {
       code: 'expect(undefined).toEqual(undefined);',
-      errors: [
-        {
-          message: 'Use toBeUndefined() instead',
-          column: 19,
-          line: 1,
-        },
-      ],
+      errors: [{ messageId: 'useToBeUndefined', column: 19, line: 1 }],
       output: 'expect(undefined).toBeUndefined();',
     },
     {
       code: 'expect("a string").not.toBe(undefined);',
-      errors: [
-        {
-          message: 'Use toBeUndefined() instead',
-          column: 24,
-          line: 1,
-        },
-      ],
+      errors: [{ messageId: 'useToBeUndefined', column: 24, line: 1 }],
       output: 'expect("a string").not.toBeUndefined();',
     },
     {
       code: 'expect("a string").not.toEqual(undefined);',
-      errors: [
-        {
-          message: 'Use toBeUndefined() instead',
-          column: 24,
-          line: 1,
-        },
-      ],
+      errors: [{ messageId: 'useToBeUndefined', column: 24, line: 1 }],
       output: 'expect("a string").not.toBeUndefined();',
     },
   ],

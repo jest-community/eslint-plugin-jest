@@ -21,27 +21,62 @@ ruleTester.run('no-test-prefixes', rule, {
   invalid: [
     {
       code: 'fdescribe("foo", function () {})',
-      errors: [{ message: 'Use "describe.only" instead', column: 1, line: 1 }],
+      errors: [
+        {
+          messageId: 'usePreferredName',
+          data: { preferredNodeName: 'describe.only' },
+          column: 1,
+          line: 1,
+        },
+      ],
       output: 'describe.only("foo", function () {})',
     },
     {
       code: 'fit("foo", function () {})',
-      errors: [{ message: 'Use "it.only" instead', column: 1, line: 1 }],
+      errors: [
+        {
+          messageId: 'usePreferredName',
+          data: { preferredNodeName: 'it.only' },
+          column: 1,
+          line: 1,
+        },
+      ],
       output: 'it.only("foo", function () {})',
     },
     {
       code: 'xdescribe("foo", function () {})',
-      errors: [{ message: 'Use "describe.skip" instead', column: 1, line: 1 }],
+      errors: [
+        {
+          messageId: 'usePreferredName',
+          data: { preferredNodeName: 'describe.skip' },
+          column: 1,
+          line: 1,
+        },
+      ],
       output: 'describe.skip("foo", function () {})',
     },
     {
       code: 'xit("foo", function () {})',
-      errors: [{ message: 'Use "it.skip" instead', column: 1, line: 1 }],
+      errors: [
+        {
+          messageId: 'usePreferredName',
+          data: { preferredNodeName: 'it.skip' },
+          column: 1,
+          line: 1,
+        },
+      ],
       output: 'it.skip("foo", function () {})',
     },
     {
       code: 'xtest("foo", function () {})',
-      errors: [{ message: 'Use "test.skip" instead', column: 1, line: 1 }],
+      errors: [
+        {
+          messageId: 'usePreferredName',
+          data: { preferredNodeName: 'test.skip' },
+          column: 1,
+          line: 1,
+        },
+      ],
       output: 'test.skip("foo", function () {})',
     },
   ],

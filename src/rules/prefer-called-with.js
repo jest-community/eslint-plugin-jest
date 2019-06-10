@@ -7,6 +7,9 @@ module.exports = {
     docs: {
       url: getDocsUrl(__filename),
     },
+    messages: {
+      preferCalledWith: 'Prefer {{name}}With(/* expected args */)',
+    },
   },
   create(context) {
     return {
@@ -18,7 +21,7 @@ module.exports = {
           if (name === 'toBeCalled' || name === 'toHaveBeenCalled') {
             context.report({
               data: { name },
-              message: 'Prefer {{name}}With(/* expected args */)',
+              messageId: 'preferCalledWith',
               node: methodNode,
             });
           }

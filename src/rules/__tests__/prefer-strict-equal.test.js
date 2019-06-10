@@ -13,13 +13,7 @@ ruleTester.run('prefer-strict-equal', rule, {
   invalid: [
     {
       code: 'expect(something).toEqual(somethingElse);',
-      errors: [
-        {
-          message: 'Use toStrictEqual() instead',
-          column: 19,
-          line: 1,
-        },
-      ],
+      errors: [{ messageId: 'useToStrictEqual', column: 19, line: 1 }],
       output: 'expect(something).toStrictEqual(somethingElse);',
     },
   ],

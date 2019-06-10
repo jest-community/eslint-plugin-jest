@@ -60,83 +60,57 @@ ruleTester.run('no-commented-out-tests', rule, {
   invalid: [
     {
       code: '// describe("foo", function () {})',
-      errors: [
-        { message: 'Some tests seem to be commented', column: 1, line: 1 },
-      ],
+      errors: [{ messageId: 'commentedTests', column: 1, line: 1 }],
     },
     {
       code: '// describe["skip"]("foo", function () {})',
-      errors: [
-        { message: 'Some tests seem to be commented', column: 1, line: 1 },
-      ],
+      errors: [{ messageId: 'commentedTests', column: 1, line: 1 }],
     },
     {
       code: '// describe[\'skip\']("foo", function () {})',
-      errors: [
-        { message: 'Some tests seem to be commented', column: 1, line: 1 },
-      ],
+      errors: [{ messageId: 'commentedTests', column: 1, line: 1 }],
     },
     {
       code: '// it.skip("foo", function () {})',
-      errors: [
-        { message: 'Some tests seem to be commented', column: 1, line: 1 },
-      ],
+      errors: [{ messageId: 'commentedTests', column: 1, line: 1 }],
     },
     {
       code: '// it.only("foo", function () {})',
-      errors: [
-        { message: 'Some tests seem to be commented', column: 1, line: 1 },
-      ],
+      errors: [{ messageId: 'commentedTests', column: 1, line: 1 }],
     },
     {
       code: '// it["skip"]("foo", function () {})',
-      errors: [
-        { message: 'Some tests seem to be commented', column: 1, line: 1 },
-      ],
+      errors: [{ messageId: 'commentedTests', column: 1, line: 1 }],
     },
     {
       code: '// test.skip("foo", function () {})',
-      errors: [
-        { message: 'Some tests seem to be commented', column: 1, line: 1 },
-      ],
+      errors: [{ messageId: 'commentedTests', column: 1, line: 1 }],
     },
     {
       code: '// test["skip"]("foo", function () {})',
-      errors: [
-        { message: 'Some tests seem to be commented', column: 1, line: 1 },
-      ],
+      errors: [{ messageId: 'commentedTests', column: 1, line: 1 }],
     },
     {
       code: '// xdescribe("foo", function () {})',
-      errors: [
-        { message: 'Some tests seem to be commented', column: 1, line: 1 },
-      ],
+      errors: [{ messageId: 'commentedTests', column: 1, line: 1 }],
     },
     {
       code: '// xit("foo", function () {})',
-      errors: [
-        { message: 'Some tests seem to be commented', column: 1, line: 1 },
-      ],
+      errors: [{ messageId: 'commentedTests', column: 1, line: 1 }],
     },
     {
       code: '// fit("foo", function () {})',
-      errors: [
-        { message: 'Some tests seem to be commented', column: 1, line: 1 },
-      ],
+      errors: [{ messageId: 'commentedTests', column: 1, line: 1 }],
     },
     {
       code: '// xtest("foo", function () {})',
-      errors: [
-        { message: 'Some tests seem to be commented', column: 1, line: 1 },
-      ],
+      errors: [{ messageId: 'commentedTests', column: 1, line: 1 }],
     },
     {
       code: `// test(
              //   "foo", function () {}
              // )`,
-      errors: [
-        { message: 'Some tests seem to be commented', column: 1, line: 1 },
-      ],
+      errors: [{ messageId: 'commentedTests', column: 1, line: 1 }],
     },
     {
       code: `/* test
@@ -144,59 +118,27 @@ ruleTester.run('no-commented-out-tests', rule, {
                 "foo", function () {}
               )
               */`,
-      errors: [
-        { message: 'Some tests seem to be commented', column: 1, line: 1 },
-      ],
+      errors: [{ messageId: 'commentedTests', column: 1, line: 1 }],
     },
     {
       code: '// it("has title but no callback")',
-      errors: [
-        {
-          message: 'Some tests seem to be commented',
-          column: 1,
-          line: 1,
-        },
-      ],
+      errors: [{ messageId: 'commentedTests', column: 1, line: 1 }],
     },
     {
       code: '// it()',
-      errors: [
-        {
-          message: 'Some tests seem to be commented',
-          column: 1,
-          line: 1,
-        },
-      ],
+      errors: [{ messageId: 'commentedTests', column: 1, line: 1 }],
     },
     {
       code: '// test.someNewMethodThatMightBeAddedInTheFuture()',
-      errors: [
-        {
-          message: 'Some tests seem to be commented',
-          column: 1,
-          line: 1,
-        },
-      ],
+      errors: [{ messageId: 'commentedTests', column: 1, line: 1 }],
     },
     {
       code: '// test["someNewMethodThatMightBeAddedInTheFuture"]()',
-      errors: [
-        {
-          message: 'Some tests seem to be commented',
-          column: 1,
-          line: 1,
-        },
-      ],
+      errors: [{ messageId: 'commentedTests', column: 1, line: 1 }],
     },
     {
       code: '// test("has title but no callback")',
-      errors: [
-        {
-          message: 'Some tests seem to be commented',
-          column: 1,
-          line: 1,
-        },
-      ],
+      errors: [{ messageId: 'commentedTests', column: 1, line: 1 }],
     },
     {
       code: `
@@ -205,13 +147,7 @@ ruleTester.run('no-commented-out-tests', rule, {
       describe("has title but no callback", () => {}) 
       */
       bar()`,
-      errors: [
-        {
-          message: 'Some tests seem to be commented',
-          column: 7,
-          line: 3,
-        },
-      ],
+      errors: [{ messageId: 'commentedTests', column: 7, line: 3 }],
     },
   ],
 });

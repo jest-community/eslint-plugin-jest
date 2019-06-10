@@ -7,6 +7,10 @@ module.exports = {
     docs: {
       url: getDocsUrl(__filename),
     },
+    messages: {
+      toMatch: 'Use toMatchInlineSnapshot() instead',
+      toMatchError: 'Use toThrowErrorMatchingInlineSnapshot() instead',
+    },
     fixable: 'code',
   },
   create(context) {
@@ -23,7 +27,7 @@ module.exports = {
                 ),
               ];
             },
-            message: 'Use toMatchInlineSnapshot() instead',
+            messageId: 'toMatch',
             node: node.callee.property,
           });
         } else if (propertyName === 'toThrowErrorMatchingSnapshot') {
@@ -36,7 +40,7 @@ module.exports = {
                 ),
               ];
             },
-            message: 'Use toThrowErrorMatchingInlineSnapshot() instead',
+            messageId: 'toMatchError',
             node: node.callee.property,
           });
         }

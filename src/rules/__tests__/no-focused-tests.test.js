@@ -4,7 +4,6 @@ const { RuleTester } = require('eslint');
 const rule = require('../no-focused-tests');
 
 const ruleTester = new RuleTester();
-const expectedErrorMessage = 'Unexpected focused test.';
 
 ruleTester.run('no-focused-tests', rule, {
   valid: [
@@ -21,51 +20,51 @@ ruleTester.run('no-focused-tests', rule, {
   invalid: [
     {
       code: 'describe.only()',
-      errors: [{ message: expectedErrorMessage, column: 10, line: 1 }],
+      errors: [{ messageId: 'focusedTest', column: 10, line: 1 }],
     },
     {
       code: 'describe.only.each()',
-      errors: [{ message: expectedErrorMessage, column: 10, line: 1 }],
+      errors: [{ messageId: 'focusedTest', column: 10, line: 1 }],
     },
     {
       code: 'describe["only"]()',
-      errors: [{ message: expectedErrorMessage, column: 10, line: 1 }],
+      errors: [{ messageId: 'focusedTest', column: 10, line: 1 }],
     },
     {
       code: 'it.only()',
-      errors: [{ message: expectedErrorMessage, column: 4, line: 1 }],
+      errors: [{ messageId: 'focusedTest', column: 4, line: 1 }],
     },
     {
       code: 'it.only.each()',
-      errors: [{ message: expectedErrorMessage, column: 4, line: 1 }],
+      errors: [{ messageId: 'focusedTest', column: 4, line: 1 }],
     },
     {
       code: 'it["only"]()',
-      errors: [{ message: expectedErrorMessage, column: 4, line: 1 }],
+      errors: [{ messageId: 'focusedTest', column: 4, line: 1 }],
     },
     {
       code: 'test.only()',
-      errors: [{ message: expectedErrorMessage, column: 6, line: 1 }],
+      errors: [{ messageId: 'focusedTest', column: 6, line: 1 }],
     },
     {
       code: 'test.only.each()',
-      errors: [{ message: expectedErrorMessage, column: 6, line: 1 }],
+      errors: [{ messageId: 'focusedTest', column: 6, line: 1 }],
     },
     {
       code: 'test["only"]()',
-      errors: [{ message: expectedErrorMessage, column: 6, line: 1 }],
+      errors: [{ messageId: 'focusedTest', column: 6, line: 1 }],
     },
     {
       code: 'fdescribe()',
-      errors: [{ message: expectedErrorMessage, column: 1, line: 1 }],
+      errors: [{ messageId: 'focusedTest', column: 1, line: 1 }],
     },
     {
       code: 'fit()',
-      errors: [{ message: expectedErrorMessage, column: 1, line: 1 }],
+      errors: [{ messageId: 'focusedTest', column: 1, line: 1 }],
     },
     {
       code: 'fit.each()',
-      errors: [{ message: expectedErrorMessage, column: 1, line: 1 }],
+      errors: [{ messageId: 'focusedTest', column: 1, line: 1 }],
     },
   ],
 });
