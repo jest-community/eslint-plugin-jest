@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`no-large-snapshots ExpressionStatement function should report if maxSize is zero 1`] = `
+exports[`no-large-snapshots toMatchSnapshot expression statement and call expressions should report if maxSize is zero 1`] = `
 Array [
   Object {
     "data": Object {
@@ -9,42 +9,68 @@ Array [
     },
     "messageId": "noSnapshot",
     "node": Object {
-      "loc": Object {
-        "end": Object {
-          "line": 2,
+      "callee": Object {
+        "object": Object {
+          "arguments": Array [
+            Object {
+              "name": "something",
+              "type": "Identifier",
+            },
+          ],
+          "callee": Object {
+            "name": "expect",
+            "type": "Identifier",
+          },
+          "type": "CallExpression",
         },
-        "start": Object {
-          "line": 1,
+        "property": Object {
+          "name": "toMatchSnapshot",
+          "type": "Identifier",
         },
+        "type": "MemberExpression",
       },
+      "type": "CallExpression",
     },
   },
 ]
 `;
 
-exports[`no-large-snapshots ExpressionStatement function should report if node has more lines of code than number given in sizeThreshold option 1`] = `
+exports[`no-large-snapshots toMatchSnapshot expression statement and call expressions should report if node has more lines of code than number given in sizeThreshold option 1`] = `
 Array [
   Object {
     "data": Object {
-      "lineCount": 83,
+      "lineCount": 108,
       "lineLimit": 70,
     },
     "messageId": "tooLongSnapshots",
     "node": Object {
-      "loc": Object {
-        "end": Object {
-          "line": 103,
+      "callee": Object {
+        "object": Object {
+          "arguments": Array [
+            Object {
+              "name": "something",
+              "type": "Identifier",
+            },
+          ],
+          "callee": Object {
+            "name": "expect",
+            "type": "Identifier",
+          },
+          "type": "CallExpression",
         },
-        "start": Object {
-          "line": 20,
+        "property": Object {
+          "name": "toMatchSnapshot",
+          "type": "Identifier",
         },
+        "type": "MemberExpression",
       },
+      "type": "CallExpression",
     },
   },
 ]
 `;
 
-exports[`no-large-snapshots ExpressionStatement function should report if node has more than 50 lines of code and no sizeThreshold option is passed 1`] = `
+exports[`no-large-snapshots toMatchSnapshot expression statement and call expressions should report if node has more than 50 lines of code and no sizeThreshold option is passed 1`] = `
 Array [
   Object {
     "data": Object {
@@ -53,14 +79,27 @@ Array [
     },
     "messageId": "tooLongSnapshots",
     "node": Object {
-      "loc": Object {
-        "end": Object {
-          "line": 53,
+      "callee": Object {
+        "object": Object {
+          "arguments": Array [
+            Object {
+              "name": "something",
+              "type": "Identifier",
+            },
+          ],
+          "callee": Object {
+            "name": "expect",
+            "type": "Identifier",
+          },
+          "type": "CallExpression",
         },
-        "start": Object {
-          "line": 1,
+        "property": Object {
+          "name": "toMatchSnapshot",
+          "type": "Identifier",
         },
+        "type": "MemberExpression",
       },
+      "type": "CallExpression",
     },
   },
 ]

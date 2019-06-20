@@ -2,6 +2,7 @@
 
 const { RuleTester } = require('eslint');
 const rule = require('../no-large-snapshots');
+
 const noLargeSnapshots = rule.create;
 
 const ruleTester = new RuleTester({
@@ -78,7 +79,51 @@ describe('no-large-snapshots', () => {
     });
   });
 
-  describe('ExpressionStatement function', () => {
+  describe('toMatchSnapshot expression statement and call expressions', () => {
+    const testNode = {
+      type: 'CallExpression',
+      callee: {
+        type: 'Identifier',
+        name: 'it',
+      },
+      arguments: [
+        {
+          type: 'Literal',
+          value: 'a big component',
+          raw: "'a big component'",
+        },
+      ],
+    };
+    const expectNode = {
+      type: 'CallExpression',
+      callee: {
+        type: 'MemberExpression',
+        object: {
+          type: 'CallExpression',
+          callee: {
+            type: 'Identifier',
+            name: 'expect',
+          },
+          arguments: [
+            {
+              type: 'Identifier',
+              name: 'something',
+            },
+          ],
+        },
+        property: {
+          type: 'Identifier',
+          name: 'toMatchSnapshot',
+        },
+      },
+    };
+
+    afterEach(() => {
+      const mockContext = {
+        getFilename: () => 'mock-component.test.js',
+      };
+      noLargeSnapshots(mockContext)['CallExpression:exit'](testNode);
+    });
     it('should report if node has more than 50 lines of code and no sizeThreshold option is passed', () => {
       const mockReport = jest.fn();
       const mockContext = {
@@ -86,7 +131,25 @@ describe('no-large-snapshots', () => {
         options: [],
         report: mockReport,
       };
-      const mockNode = {
+
+      const snapshotNode = {
+        type: 'ExpressionStatement',
+        expression: {
+          left: {
+            property: {
+              type: 'TemplateLiteral',
+              quasis: [
+                {
+                  type: 'TemplateElement',
+                  value: {
+                    raw: 'a big component 1',
+                    cooked: 'a big component 1',
+                  },
+                },
+              ],
+            },
+          },
+        },
         loc: {
           start: {
             line: 1,
@@ -96,8 +159,12 @@ describe('no-large-snapshots', () => {
           },
         },
       };
-      noLargeSnapshots(mockContext).ExpressionStatement(mockNode);
 
+      noLargeSnapshots(mockContext).ExpressionStatement(snapshotNode);
+
+      mockContext.getFilename = () => 'mock.test.js';
+      noLargeSnapshots(mockContext).CallExpression(testNode);
+      noLargeSnapshots(mockContext).CallExpression(expectNode);
       expect(mockReport).toHaveBeenCalledTimes(1);
       expect(mockReport.mock.calls[0]).toMatchSnapshot();
     });
@@ -109,17 +176,38 @@ describe('no-large-snapshots', () => {
         options: [{ maxSize: 70 }],
         report: mockReport,
       };
-      const mockNode = {
+
+      const snapshotNode = {
+        type: 'ExpressionStatement',
+        expression: {
+          left: {
+            property: {
+              type: 'TemplateLiteral',
+              quasis: [
+                {
+                  type: 'TemplateElement',
+                  value: {
+                    raw: 'a big component 1',
+                    cooked: 'a big component 1',
+                  },
+                },
+              ],
+            },
+          },
+        },
         loc: {
           start: {
-            line: 20,
+            line: 1,
           },
           end: {
-            line: 103,
+            line: 109,
           },
         },
       };
-      noLargeSnapshots(mockContext).ExpressionStatement(mockNode);
+      noLargeSnapshots(mockContext).ExpressionStatement(snapshotNode);
+      mockContext.getFilename = () => 'mock.test.js';
+      noLargeSnapshots(mockContext).CallExpression(testNode);
+      noLargeSnapshots(mockContext).CallExpression(expectNode);
 
       expect(mockReport).toHaveBeenCalledTimes(1);
       expect(mockReport.mock.calls[0]).toMatchSnapshot();
@@ -132,7 +220,24 @@ describe('no-large-snapshots', () => {
         options: [{ maxSize: 0 }],
         report: mockReport,
       };
-      const mockNode = {
+      const snapshotNode = {
+        type: 'ExpressionStatement',
+        expression: {
+          left: {
+            property: {
+              type: 'TemplateLiteral',
+              quasis: [
+                {
+                  type: 'TemplateElement',
+                  value: {
+                    raw: 'a big component 1',
+                    cooked: 'a big component 1',
+                  },
+                },
+              ],
+            },
+          },
+        },
         loc: {
           start: {
             line: 1,
@@ -142,7 +247,11 @@ describe('no-large-snapshots', () => {
           },
         },
       };
-      noLargeSnapshots(mockContext).ExpressionStatement(mockNode);
+      noLargeSnapshots(mockContext).ExpressionStatement(snapshotNode);
+
+      mockContext.getFilename = () => 'mock.test.js';
+      noLargeSnapshots(mockContext).CallExpression(testNode);
+      noLargeSnapshots(mockContext).CallExpression(expectNode);
 
       expect(mockReport).toHaveBeenCalledTimes(1);
       expect(mockReport.mock.calls[0]).toMatchSnapshot();
@@ -166,6 +275,10 @@ describe('no-large-snapshots', () => {
         },
       };
       noLargeSnapshots(mockContext).ExpressionStatement(mockNode);
+
+      mockContext.getFilename = () => 'mock.test.js';
+      noLargeSnapshots(mockContext).CallExpression(testNode);
+      noLargeSnapshots(mockContext).CallExpression(expectNode);
 
       expect(mockReport).not.toHaveBeenCalled();
     });
