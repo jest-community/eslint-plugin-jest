@@ -104,3 +104,107 @@ Array [
   },
 ]
 `;
+
+exports[`no-large-snapshots toMatchSnapshot expression statement and call expressions should report on 2 snapshots in the same test 1`] = `
+Array [
+  Array [
+    Object {
+      "data": Object {
+        "lineCount": 58,
+        "lineLimit": 50,
+      },
+      "messageId": "tooLongSnapshots",
+      "node": Object {
+        "callee": Object {
+          "object": Object {
+            "arguments": Array [
+              Object {
+                "name": "something",
+                "type": "Identifier",
+              },
+            ],
+            "callee": Object {
+              "name": "expect",
+              "type": "Identifier",
+            },
+            "type": "CallExpression",
+          },
+          "property": Object {
+            "name": "toMatchSnapshot",
+            "type": "Identifier",
+          },
+          "type": "MemberExpression",
+        },
+        "type": "CallExpression",
+      },
+    },
+  ],
+  Array [
+    Object {
+      "data": Object {
+        "lineCount": 58,
+        "lineLimit": 50,
+      },
+      "messageId": "tooLongSnapshots",
+      "node": Object {
+        "callee": Object {
+          "object": Object {
+            "arguments": Array [
+              Object {
+                "name": "something",
+                "type": "Identifier",
+              },
+            ],
+            "callee": Object {
+              "name": "expect",
+              "type": "Identifier",
+            },
+            "type": "CallExpression",
+          },
+          "property": Object {
+            "name": "toMatchSnapshot",
+            "type": "Identifier",
+          },
+          "type": "MemberExpression",
+        },
+        "type": "CallExpression",
+      },
+    },
+  ],
+]
+`;
+
+exports[`no-large-snapshots toMatchSnapshot expression statement and call expressions should report on 2nd snapshot in a test, but not 1st 1`] = `
+Array [
+  Object {
+    "data": Object {
+      "lineCount": 58,
+      "lineLimit": 50,
+    },
+    "messageId": "tooLongSnapshots",
+    "node": Object {
+      "callee": Object {
+        "object": Object {
+          "arguments": Array [
+            Object {
+              "name": "something",
+              "type": "Identifier",
+            },
+          ],
+          "callee": Object {
+            "name": "expect",
+            "type": "Identifier",
+          },
+          "type": "CallExpression",
+        },
+        "property": Object {
+          "name": "toMatchSnapshot",
+          "type": "Identifier",
+        },
+        "type": "MemberExpression",
+      },
+      "type": "CallExpression",
+    },
+  },
+]
+`;

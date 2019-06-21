@@ -282,5 +282,161 @@ describe('no-large-snapshots', () => {
 
       expect(mockReport).not.toHaveBeenCalled();
     });
+
+    it('should report on 2nd snapshot in a test, but not 1st', () => {
+      const snapshotNode1 = {
+        type: 'ExpressionStatement',
+        expression: {
+          left: {
+            property: {
+              type: 'TemplateLiteral',
+              quasis: [
+                {
+                  type: 'TemplateElement',
+                  value: {
+                    raw: 'a big component 1',
+                    cooked: 'a big component 1',
+                  },
+                },
+              ],
+            },
+          },
+        },
+        loc: {
+          start: {
+            line: 1,
+          },
+          end: {
+            line: 5,
+          },
+        },
+      };
+      const snapshotNode2 = {
+        type: 'ExpressionStatement',
+        expression: {
+          left: {
+            property: {
+              type: 'TemplateLiteral',
+              quasis: [
+                {
+                  type: 'TemplateElement',
+                  value: {
+                    raw: 'a big component 2',
+                    cooked: 'a big component 2',
+                  },
+                },
+              ],
+            },
+          },
+        },
+        loc: {
+          start: {
+            line: 1,
+          },
+          end: {
+            line: 59,
+          },
+        },
+      };
+
+      const mockReport = jest.fn();
+      const mockContext = {
+        getFilename: () => 'mock-component.jsx.snap',
+        options: [],
+        report: mockReport,
+      };
+
+      //2 snapshots
+      noLargeSnapshots(mockContext).ExpressionStatement(snapshotNode1);
+      noLargeSnapshots(mockContext).ExpressionStatement(snapshotNode2);
+
+      mockContext.getFilename = () => 'mock.test.js';
+      noLargeSnapshots(mockContext).CallExpression(testNode);
+
+      //2 expects
+      noLargeSnapshots(mockContext).CallExpression(expectNode);
+      noLargeSnapshots(mockContext).CallExpression(expectNode);
+
+      expect(mockReport).toHaveBeenCalledTimes(1);
+      expect(mockReport.mock.calls[0]).toMatchSnapshot();
+    });
+
+    it('should report on 2 snapshots in the same test', () => {
+      const snapshotNode1 = {
+        type: 'ExpressionStatement',
+        expression: {
+          left: {
+            property: {
+              type: 'TemplateLiteral',
+              quasis: [
+                {
+                  type: 'TemplateElement',
+                  value: {
+                    raw: 'a big component 1',
+                    cooked: 'a big component 1',
+                  },
+                },
+              ],
+            },
+          },
+        },
+        loc: {
+          start: {
+            line: 1,
+          },
+          end: {
+            line: 59,
+          },
+        },
+      };
+      const snapshotNode2 = {
+        type: 'ExpressionStatement',
+        expression: {
+          left: {
+            property: {
+              type: 'TemplateLiteral',
+              quasis: [
+                {
+                  type: 'TemplateElement',
+                  value: {
+                    raw: 'a big component 2',
+                    cooked: 'a big component 2',
+                  },
+                },
+              ],
+            },
+          },
+        },
+        loc: {
+          start: {
+            line: 1,
+          },
+          end: {
+            line: 59,
+          },
+        },
+      };
+
+      const mockReport = jest.fn();
+      const mockContext = {
+        getFilename: () => 'mock-component.jsx.snap',
+        options: [],
+        report: mockReport,
+      };
+
+      //2 snapshots
+      noLargeSnapshots(mockContext).ExpressionStatement(snapshotNode1);
+      noLargeSnapshots(mockContext).ExpressionStatement(snapshotNode2);
+
+      mockContext.getFilename = () => 'mock.test.js';
+      noLargeSnapshots(mockContext).CallExpression(testNode);
+
+      //2 expects
+      noLargeSnapshots(mockContext).CallExpression(expectNode);
+      noLargeSnapshots(mockContext).CallExpression(expectNode);
+
+      expect(mockReport).toHaveBeenCalledTimes(2);
+      expect(mockReport.mock.calls).toMatchSnapshot();
+    });
   });
 });
