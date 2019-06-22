@@ -8,6 +8,12 @@ module.exports = {
       url: getDocsUrl(__filename),
     },
     fixable: 'code',
+    messages: {
+      consistentMethod:
+        "Prefer using '{{ testKeyword }}' instead of '{{ oppositeTestKeyword }}'",
+      consistentMethodWithingDescribe:
+        "Prefer using '{{ testKeywordWithinDescribe }}' instead of '{{ oppositeTestKeyword }}' within describe",
+    },
     schema: [
       {
         type: 'object',
@@ -47,8 +53,7 @@ module.exports = {
           const oppositeTestKeyword = getOppositeTestKeyword(testKeyword);
 
           context.report({
-            message:
-              "Prefer using '{{ testKeyword }}' instead of '{{ oppositeTestKeyword }}'",
+            messageId: 'consistentMethod',
             node: node.callee,
             data: { testKeyword, oppositeTestKeyword },
             fix(fixer) {
@@ -73,8 +78,7 @@ module.exports = {
           );
 
           context.report({
-            message:
-              "Prefer using '{{ testKeywordWithinDescribe }}' instead of '{{ oppositeTestKeyword }}' within describe",
+            messageId: 'consistentMethodWithingDescribe',
             node: node.callee,
             data: { testKeywordWithinDescribe, oppositeTestKeyword },
             fix(fixer) {

@@ -13,24 +13,12 @@ ruleTester.run('prefer-inline-snapshots', rule, {
   invalid: [
     {
       code: 'expect(something).toMatchSnapshot();',
-      errors: [
-        {
-          message: 'Use toMatchInlineSnapshot() instead',
-          column: 19,
-          line: 1,
-        },
-      ],
+      errors: [{ messageId: 'toMatch', column: 19, line: 1 }],
       output: 'expect(something).toMatchInlineSnapshot();',
     },
     {
       code: 'expect(something).toThrowErrorMatchingSnapshot();',
-      errors: [
-        {
-          message: 'Use toThrowErrorMatchingInlineSnapshot() instead',
-          column: 19,
-          line: 1,
-        },
-      ],
+      errors: [{ messageId: 'toMatchError', column: 19, line: 1 }],
       output: 'expect(something).toThrowErrorMatchingInlineSnapshot();',
     },
   ],

@@ -30,6 +30,15 @@ module.exports = {
     docs: {
       url: getDocsUrl(__filename),
     },
+    messages: {
+      nameAndCallback: 'Describe requires name and callback arguments',
+      firstArgumentMustBeName: 'First argument must be name',
+      secondArgumentMustBeFunction: 'Second argument must be function',
+      noAsyncDescribeCallback: 'No async describe callback',
+      unexpectedDescribeArgument: 'Unexpected argument(s) in describe callback',
+      unexpectedReturnInDescribe:
+        'Unexpected return statement in describe callback',
+    },
   },
   create(context) {
     return {
@@ -37,7 +46,7 @@ module.exports = {
         if (isDescribe(node)) {
           if (node.arguments.length === 0) {
             return context.report({
-              message: 'Describe requires name and callback arguments',
+              messageId: 'nameAndCallback',
               loc: node.loc,
             });
           }
@@ -46,31 +55,35 @@ module.exports = {
           const [, callbackFunction] = node.arguments;
           if (!isString(name)) {
             context.report({
-              message: 'First argument must be name',
+              messageId: 'firstArgumentMustBeName',
               loc: paramsLocation(node.arguments),
             });
           }
           if (callbackFunction === undefined) {
-            return context.report({
-              message: 'Describe requires name and callback arguments',
+            context.report({
+              messageId: 'nameAndCallback',
               loc: paramsLocation(node.arguments),
             });
+
+            return;
           }
           if (!isFunction(callbackFunction)) {
-            return context.report({
-              message: 'Second argument must be function',
+            context.report({
+              messageId: 'secondArgumentMustBeFunction',
               loc: paramsLocation(node.arguments),
             });
+
+            return;
           }
           if (isAsync(callbackFunction)) {
             context.report({
-              message: 'No async describe callback',
+              messageId: 'noAsyncDescribeCallback',
               node: callbackFunction,
             });
           }
           if (hasParams(callbackFunction)) {
             context.report({
-              message: 'Unexpected argument(s) in describe callback',
+              messageId: 'unexpectedDescribeArgument',
               loc: paramsLocation(callbackFunction.params),
             });
           }
@@ -78,7 +91,7 @@ module.exports = {
             callbackFunction.body.body.forEach(node => {
               if (node.type === 'ReturnStatement') {
                 context.report({
-                  message: 'Unexpected return statement in describe callback',
+                  messageId: 'unexpectedReturnInDescribe',
                   node,
                 });
               }

@@ -34,7 +34,12 @@ ruleTester.run('require-tothrow-message', rule, {
     {
       code: "expect(() => { throw new Error('a'); }).toThrow();",
       errors: [
-        { message: 'Add an error message to toThrow()', column: 41, line: 1 },
+        {
+          messageId: 'requireRethrow',
+          data: { propertyName: 'toThrow' },
+          column: 41,
+          line: 1,
+        },
       ],
     },
     // Empty toThrowError
@@ -42,7 +47,8 @@ ruleTester.run('require-tothrow-message', rule, {
       code: "expect(() => { throw new Error('a'); }).toThrowError();",
       errors: [
         {
-          message: 'Add an error message to toThrowError()',
+          messageId: 'requireRethrow',
+          data: { propertyName: 'toThrowError' },
           column: 41,
           line: 1,
         },

@@ -18,57 +18,25 @@ ruleTester.run('valid-expect', rule, {
   invalid: [
     {
       code: 'expect().toBe(true);',
-      errors: [
-        {
-          endColumn: 8,
-          column: 7,
-          message: 'No arguments were passed to expect().',
-        },
-      ],
+      errors: [{ endColumn: 8, column: 7, messageId: 'noArgs' }],
     },
     {
       code: 'expect().toEqual("something");',
-      errors: [
-        {
-          endColumn: 8,
-          column: 7,
-          message: 'No arguments were passed to expect().',
-        },
-      ],
+      errors: [{ endColumn: 8, column: 7, messageId: 'noArgs' }],
     },
     {
       code: 'expect("something", "else").toEqual("something");',
-      errors: [
-        {
-          endColumn: 26,
-          column: 21,
-          message: 'More than one argument was passed to expect().',
-        },
-      ],
+      errors: [{ endColumn: 26, column: 21, messageId: 'multipleArgs' }],
     },
     {
       code: 'expect("something");',
-      errors: [
-        {
-          endColumn: 20,
-          column: 1,
-          message: 'No assertion was called on expect().',
-        },
-      ],
+      errors: [{ endColumn: 20, column: 1, messageId: 'noAssertions' }],
     },
     {
       code: 'expect();',
       errors: [
-        {
-          endColumn: 9,
-          column: 1,
-          message: 'No assertion was called on expect().',
-        },
-        {
-          endColumn: 8,
-          column: 7,
-          message: 'No arguments were passed to expect().',
-        },
+        { endColumn: 9, column: 1, messageId: 'noAssertions' },
+        { endColumn: 8, column: 7, messageId: 'noArgs' },
       ],
     },
     {
@@ -77,7 +45,8 @@ ruleTester.run('valid-expect', rule, {
         {
           endColumn: 25,
           column: 14,
-          message: '"toBeDefined" was not called.',
+          messageId: 'matcherOnPropertyNotCalled',
+          data: { propertyName: 'toBeDefined' },
         },
       ],
     },
@@ -87,7 +56,8 @@ ruleTester.run('valid-expect', rule, {
         {
           endColumn: 29,
           column: 18,
-          message: '"toBeDefined" was not called.',
+          messageId: 'matcherOnPropertyNotCalled',
+          data: { propertyName: 'toBeDefined' },
         },
       ],
     },
@@ -97,7 +67,8 @@ ruleTester.run('valid-expect', rule, {
         {
           endColumn: 18,
           column: 14,
-          message: '"nope" is not a valid property of expect.',
+          messageId: 'invalidProperty',
+          data: { propertyName: 'nope' },
         },
       ],
     },
@@ -107,7 +78,8 @@ ruleTester.run('valid-expect', rule, {
         {
           endColumn: 22,
           column: 14,
-          message: '"resolves" needs to call a matcher.',
+          messageId: 'propertyWithoutMatcher',
+          data: { propertyName: 'resolves' },
         },
       ],
     },
@@ -117,7 +89,8 @@ ruleTester.run('valid-expect', rule, {
         {
           endColumn: 21,
           column: 14,
-          message: '"rejects" needs to call a matcher.',
+          messageId: 'propertyWithoutMatcher',
+          data: { propertyName: 'rejects' },
         },
       ],
     },
@@ -127,7 +100,8 @@ ruleTester.run('valid-expect', rule, {
         {
           endColumn: 17,
           column: 14,
-          message: '"not" needs to call a matcher.',
+          messageId: 'propertyWithoutMatcher',
+          data: { propertyName: 'not' },
         },
       ],
     },

@@ -24,84 +24,44 @@ ruleTester.run('prefer-spy-on', rule, {
   invalid: [
     {
       code: 'obj.a = jest.fn(); const test = 10;',
-      errors: [
-        {
-          message: 'Use jest.spyOn() instead.',
-          type: 'AssignmentExpression',
-        },
-      ],
+      errors: [{ messageId: 'useJestSpyOn', type: 'AssignmentExpression' }],
       output: "jest.spyOn(obj, 'a'); const test = 10;",
     },
     {
       code: "Date['now'] = jest['fn']()",
-      errors: [
-        {
-          message: 'Use jest.spyOn() instead.',
-          type: 'AssignmentExpression',
-        },
-      ],
+      errors: [{ messageId: 'useJestSpyOn', type: 'AssignmentExpression' }],
       output: "jest.spyOn(Date, 'now')",
     },
     {
       code: 'window[`${name}`] = jest[`fn`]()',
-      errors: [
-        {
-          message: 'Use jest.spyOn() instead.',
-          type: 'AssignmentExpression',
-        },
-      ],
+      errors: [{ messageId: 'useJestSpyOn', type: 'AssignmentExpression' }],
       output: 'jest.spyOn(window, `${name}`)',
     },
     {
       code: "obj['prop' + 1] = jest['fn']()",
-      errors: [
-        {
-          message: 'Use jest.spyOn() instead.',
-          type: 'AssignmentExpression',
-        },
-      ],
+      errors: [{ messageId: 'useJestSpyOn', type: 'AssignmentExpression' }],
       output: "jest.spyOn(obj, 'prop' + 1)",
     },
     {
       code: 'obj.one.two = jest.fn(); const test = 10;',
-      errors: [
-        {
-          message: 'Use jest.spyOn() instead.',
-          type: 'AssignmentExpression',
-        },
-      ],
+      errors: [{ messageId: 'useJestSpyOn', type: 'AssignmentExpression' }],
       output: "jest.spyOn(obj.one, 'two'); const test = 10;",
     },
     {
       code: 'obj.a = jest.fn(() => 10)',
-      errors: [
-        {
-          message: 'Use jest.spyOn() instead.',
-          type: 'AssignmentExpression',
-        },
-      ],
+      errors: [{ messageId: 'useJestSpyOn', type: 'AssignmentExpression' }],
       output: "jest.spyOn(obj, 'a').mockImplementation(() => 10)",
     },
     {
       code:
         "obj.a.b = jest.fn(() => ({})).mockReturnValue('default').mockReturnValueOnce('first call'); test();",
-      errors: [
-        {
-          message: 'Use jest.spyOn() instead.',
-          type: 'AssignmentExpression',
-        },
-      ],
+      errors: [{ messageId: 'useJestSpyOn', type: 'AssignmentExpression' }],
       output:
         "jest.spyOn(obj.a, 'b').mockImplementation(() => ({})).mockReturnValue('default').mockReturnValueOnce('first call'); test();",
     },
     {
       code: 'window.fetch = jest.fn(() => ({})).one.two().three().four',
-      errors: [
-        {
-          message: 'Use jest.spyOn() instead.',
-          type: 'AssignmentExpression',
-        },
-      ],
+      errors: [{ messageId: 'useJestSpyOn', type: 'AssignmentExpression' }],
       output:
         "jest.spyOn(window, 'fetch').mockImplementation(() => ({})).one.two().three().four",
     },

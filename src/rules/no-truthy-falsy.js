@@ -14,6 +14,9 @@ module.exports = {
     docs: {
       url: getDocsUrl(__filename),
     },
+    messages: {
+      avoidMessage: 'Avoid {{methodName}}',
+    },
   },
   create(context) {
     return {
@@ -33,7 +36,7 @@ module.exports = {
           if (methodName === 'toBeTruthy' || methodName === 'toBeFalsy') {
             context.report({
               data: { methodName },
-              message: 'Avoid {{methodName}}',
+              messageId: 'avoidMessage',
               node: methodNode,
             });
           }

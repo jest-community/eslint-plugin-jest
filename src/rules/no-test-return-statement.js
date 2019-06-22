@@ -2,7 +2,6 @@
 
 const { getDocsUrl, isFunction, isTestCase } = require('./util');
 
-const MESSAGE = 'Jest tests should not return a value.';
 const RETURN_STATEMENT = 'ReturnStatement';
 const BLOCK_STATEMENT = 'BlockStatement';
 
@@ -22,6 +21,9 @@ module.exports = {
     docs: {
       url: getDocsUrl(__filename),
     },
+    messages: {
+      noReturnValue: 'Jest tests should not return a value.',
+    },
   },
   create(context) {
     return {
@@ -31,10 +33,7 @@ module.exports = {
         const returnStmt = body.find(t => t.type === RETURN_STATEMENT);
         if (!returnStmt) return;
 
-        context.report({
-          message: MESSAGE,
-          node: returnStmt,
-        });
+        context.report({ messageId: 'noReturnValue', node: returnStmt });
       },
     };
   },

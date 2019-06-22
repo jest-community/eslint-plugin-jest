@@ -57,79 +57,59 @@ ruleTester.run('no-disabled-tests', rule, {
   invalid: [
     {
       code: 'describe.skip("foo", function () {})',
-      errors: [{ message: 'Skipped test suite', column: 1, line: 1 }],
+      errors: [{ messageId: 'skippedTestSuite', column: 1, line: 1 }],
     },
     {
       code: 'describe["skip"]("foo", function () {})',
-      errors: [{ message: 'Skipped test suite', column: 1, line: 1 }],
+      errors: [{ messageId: 'skippedTestSuite', column: 1, line: 1 }],
     },
     {
       code: 'it.skip("foo", function () {})',
-      errors: [{ message: 'Skipped test', column: 1, line: 1 }],
+      errors: [{ messageId: 'skippedTest', column: 1, line: 1 }],
     },
     {
       code: 'it["skip"]("foo", function () {})',
-      errors: [{ message: 'Skipped test', column: 1, line: 1 }],
+      errors: [{ messageId: 'skippedTest', column: 1, line: 1 }],
     },
     {
       code: 'test.skip("foo", function () {})',
-      errors: [{ message: 'Skipped test', column: 1, line: 1 }],
+      errors: [{ messageId: 'skippedTest', column: 1, line: 1 }],
     },
     {
       code: 'test["skip"]("foo", function () {})',
-      errors: [{ message: 'Skipped test', column: 1, line: 1 }],
+      errors: [{ messageId: 'skippedTest', column: 1, line: 1 }],
     },
     {
       code: 'xdescribe("foo", function () {})',
-      errors: [{ message: 'Disabled test suite', column: 1, line: 1 }],
+      errors: [{ messageId: 'disabledSuite', column: 1, line: 1 }],
     },
     {
       code: 'xit("foo", function () {})',
-      errors: [{ message: 'Disabled test', column: 1, line: 1 }],
+      errors: [{ messageId: 'disabledTest', column: 1, line: 1 }],
     },
     {
       code: 'xtest("foo", function () {})',
-      errors: [{ message: 'Disabled test', column: 1, line: 1 }],
+      errors: [{ messageId: 'disabledTest', column: 1, line: 1 }],
     },
     {
       code: 'it("has title but no callback")',
-      errors: [
-        {
-          message: 'Test is missing function argument',
-          column: 1,
-          line: 1,
-        },
-      ],
+      errors: [{ messageId: 'missingFunction', column: 1, line: 1 }],
     },
     {
       code: 'test("has title but no callback")',
-      errors: [
-        {
-          message: 'Test is missing function argument',
-          column: 1,
-          line: 1,
-        },
-      ],
+      errors: [{ messageId: 'missingFunction', column: 1, line: 1 }],
     },
     {
       code: 'it("contains a call to pending", function () { pending() })',
-      errors: [
-        { message: 'Call to pending() within test', column: 48, line: 1 },
-      ],
+      errors: [{ messageId: 'pendingTest', column: 48, line: 1 }],
     },
     {
       code: 'pending();',
-      errors: [{ message: 'Call to pending()', column: 1, line: 1 }],
+      errors: [{ messageId: 'pending', column: 1, line: 1 }],
     },
     {
       code: 'describe("contains a call to pending", function () { pending() })',
-      errors: [
-        {
-          message: 'Call to pending() within test suite',
-          column: 54,
-          line: 1,
-        },
-      ],
+      errors: [{ messageId: 'pendingSuite', column: 54, line: 1 }],
     },
   ],
 });

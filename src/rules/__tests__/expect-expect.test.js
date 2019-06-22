@@ -38,7 +38,7 @@ ruleTester.run('expect-expect', rule, {
       code: 'it("should fail", () => {});',
       errors: [
         {
-          message: 'Test has no assertions',
+          messageId: 'noAssertions',
           type: 'CallExpression',
         },
       ],
@@ -47,7 +47,7 @@ ruleTester.run('expect-expect', rule, {
       code: 'test("should fail", () => {});',
       errors: [
         {
-          message: 'Test has no assertions',
+          messageId: 'noAssertions',
           type: 'CallExpression',
         },
       ],
@@ -56,7 +56,7 @@ ruleTester.run('expect-expect', rule, {
       code: 'it("should fail", () => { somePromise.then(() => {}); });',
       errors: [
         {
-          message: 'Test has no assertions',
+          messageId: 'noAssertions',
           type: 'CallExpression',
         },
       ],
@@ -66,7 +66,7 @@ ruleTester.run('expect-expect', rule, {
       options: [{ assertFunctionNames: ['expect'] }],
       errors: [
         {
-          message: 'Test has no assertions',
+          messageId: 'noAssertions',
           type: 'CallExpression',
         },
       ],
@@ -76,7 +76,7 @@ ruleTester.run('expect-expect', rule, {
       options: [{ assertFunctionNames: ['expect'] }],
       errors: [
         {
-          message: 'Test has no assertions',
+          messageId: 'noAssertions',
           type: 'CallExpression',
         },
       ],

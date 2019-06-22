@@ -7,6 +7,9 @@ module.exports = {
     docs: {
       url: getDocsUrl(__filename),
     },
+    messages: {
+      unexpectedHook: "Unexpected '{{ hookName }}' hook",
+    },
   },
   schema: [
     {
@@ -43,7 +46,7 @@ module.exports = {
         if (isHook(node) && !isWhitelisted(node)) {
           context.report({
             node,
-            message: "Unexpected '{{ hookName }}' hook",
+            messageId: 'unexpectedHook',
             data: { hookName: node.callee.name },
           });
         }

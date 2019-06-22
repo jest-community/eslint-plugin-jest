@@ -17,11 +17,7 @@ const newDescribeContext = () => ({
 const handleTestCaseTitles = (context, titles, node, title) => {
   if (isTestCase(node)) {
     if (titles.indexOf(title) !== -1) {
-      context.report({
-        message:
-          'Test title is used multiple times in the same describe block.',
-        node,
-      });
+      context.report({ messageId: 'multipleTestTitle', node });
     }
     titles.push(title);
   }
@@ -32,11 +28,7 @@ const handleDescribeBlockTitles = (context, titles, node, title) => {
     return;
   }
   if (titles.indexOf(title) !== -1) {
-    context.report({
-      message:
-        'Describe block title is used multiple times in the same describe block.',
-      node,
-    });
+    context.report({ messageId: 'multipleDescribeTitle', node });
   }
   titles.push(title);
 };
@@ -55,6 +47,12 @@ module.exports = {
   meta: {
     docs: {
       url: getDocsUrl(__filename),
+    },
+    messages: {
+      multipleTestTitle:
+        'Test title is used multiple times in the same describe block.',
+      multipleDescribeTitle:
+        'Describe block title is used multiple times in the same describe block.',
     },
   },
   create(context) {

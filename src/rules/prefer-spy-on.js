@@ -27,6 +27,9 @@ module.exports = {
     docs: {
       url: getDocsUrl(__filename),
     },
+    messages: {
+      useJestSpyOn: 'Use jest.spyOn() instead.',
+    },
     fixable: 'code',
   },
   create(context) {
@@ -40,7 +43,7 @@ module.exports = {
 
         context.report({
           node,
-          message: 'Use jest.spyOn() instead.',
+          messageId: 'useJestSpyOn',
           fix(fixer) {
             const leftPropQuote =
               node.left.property.type === 'Identifier' ? "'" : '';

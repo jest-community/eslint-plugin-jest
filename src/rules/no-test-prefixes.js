@@ -7,6 +7,9 @@ module.exports = {
     docs: {
       url: getDocsUrl(__filename),
     },
+    messages: {
+      usePreferredName: 'Use "{{ preferredNodeName }}" instead',
+    },
     fixable: 'code',
   },
   create(context) {
@@ -21,7 +24,7 @@ module.exports = {
         if (!preferredNodeName) return;
 
         context.report({
-          message: 'Use "{{ preferredNodeName }}" instead',
+          messageId: 'usePreferredName',
           node: node.callee,
           data: { preferredNodeName },
           fix(fixer) {
