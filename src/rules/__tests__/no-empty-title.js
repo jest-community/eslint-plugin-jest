@@ -11,6 +11,7 @@ const ruleTester = new RuleTester({
 
 ruleTester.run('no-empty-title', rule, {
   valid: [
+    'describe()',
     'someFn("", function () {})',
     'describe(1, function () {})',
     'describe("foo", function () {})',
