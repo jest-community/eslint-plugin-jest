@@ -130,12 +130,14 @@ const isDescribe = node =>
   describeAliases[getNodeName(node.callee)];
 
 const isFunction = node =>
-  (node && node.type === 'FunctionExpression') ||
-  node.type === 'ArrowFunctionExpression';
+  node &&
+  (node.type === 'FunctionExpression' ||
+    node.type === 'ArrowFunctionExpression');
 
 const isString = node =>
-  (node && (node.type === 'Literal' && typeof node.value === 'string')) ||
-  isTemplateLiteral(node);
+  node &&
+  ((node.type === 'Literal' && typeof node.value === 'string') ||
+    isTemplateLiteral(node));
 
 const isTemplateLiteral = node => node && node.type === 'TemplateLiteral';
 
