@@ -3,6 +3,7 @@
 const { RuleTester } = require('eslint');
 const rule = require('../no-large-snapshots');
 
+const { parse } = require('babel-eslint');
 const noLargeSnapshots = rule.create;
 
 const ruleTester = new RuleTester({
@@ -10,6 +11,10 @@ const ruleTester = new RuleTester({
     ecmaVersion: 2015,
   },
 });
+
+// lines - 1 to account for the starting newline we always add.
+const generateSnapshotNode = ({ lines, title = 'a big component 1' }) =>
+  parse(`exports[\`${title}\`] = \`\n${'line\n'.repeat(lines - 1)}\`;`).body[0];
 
 ruleTester.run('no-large-snapshots', rule, {
   valid: [
@@ -80,43 +85,13 @@ describe('no-large-snapshots', () => {
   });
 
   describe('toMatchSnapshot expression statement and call expressions', () => {
-    const testNode = {
-      type: 'CallExpression',
-      callee: {
-        type: 'Identifier',
-        name: 'it',
-      },
-      arguments: [
-        {
-          type: 'Literal',
-          value: 'a big component',
-          raw: "'a big component'",
-        },
-      ],
-    };
-    const expectNode = {
-      type: 'CallExpression',
-      callee: {
-        type: 'MemberExpression',
-        object: {
-          type: 'CallExpression',
-          callee: {
-            type: 'Identifier',
-            name: 'expect',
-          },
-          arguments: [
-            {
-              type: 'Identifier',
-              name: 'something',
-            },
-          ],
-        },
-        property: {
-          type: 'Identifier',
-          name: 'toMatchSnapshot',
-        },
-      },
-    };
+    const {
+      body: [{ expression: testNode }],
+    } = parse(`it('a big component', () => { });`);
+
+    const {
+      body: [{ expression: expectNode }],
+    } = parse('expect(something).toMatchSnapshot();');
 
     afterEach(() => {
       const mockContext = {
@@ -132,33 +107,7 @@ describe('no-large-snapshots', () => {
         report: mockReport,
       };
 
-      const snapshotNode = {
-        type: 'ExpressionStatement',
-        expression: {
-          left: {
-            property: {
-              type: 'TemplateLiteral',
-              quasis: [
-                {
-                  type: 'TemplateElement',
-                  value: {
-                    raw: 'a big component 1',
-                    cooked: 'a big component 1',
-                  },
-                },
-              ],
-            },
-          },
-        },
-        loc: {
-          start: {
-            line: 1,
-          },
-          end: {
-            line: 53,
-          },
-        },
-      };
+      const snapshotNode = generateSnapshotNode({ lines: 52 });
 
       noLargeSnapshots(mockContext).ExpressionStatement(snapshotNode);
 
@@ -177,33 +126,8 @@ describe('no-large-snapshots', () => {
         report: mockReport,
       };
 
-      const snapshotNode = {
-        type: 'ExpressionStatement',
-        expression: {
-          left: {
-            property: {
-              type: 'TemplateLiteral',
-              quasis: [
-                {
-                  type: 'TemplateElement',
-                  value: {
-                    raw: 'a big component 1',
-                    cooked: 'a big component 1',
-                  },
-                },
-              ],
-            },
-          },
-        },
-        loc: {
-          start: {
-            line: 1,
-          },
-          end: {
-            line: 109,
-          },
-        },
-      };
+      const snapshotNode = generateSnapshotNode({ lines: 108 });
+
       noLargeSnapshots(mockContext).ExpressionStatement(snapshotNode);
       mockContext.getFilename = () => 'mock.test.js';
       noLargeSnapshots(mockContext).CallExpression(testNode);
@@ -220,33 +144,8 @@ describe('no-large-snapshots', () => {
         options: [{ maxSize: 0 }],
         report: mockReport,
       };
-      const snapshotNode = {
-        type: 'ExpressionStatement',
-        expression: {
-          left: {
-            property: {
-              type: 'TemplateLiteral',
-              quasis: [
-                {
-                  type: 'TemplateElement',
-                  value: {
-                    raw: 'a big component 1',
-                    cooked: 'a big component 1',
-                  },
-                },
-              ],
-            },
-          },
-        },
-        loc: {
-          start: {
-            line: 1,
-          },
-          end: {
-            line: 2,
-          },
-        },
-      };
+      const snapshotNode = generateSnapshotNode({ lines: 1 });
+
       noLargeSnapshots(mockContext).ExpressionStatement(snapshotNode);
 
       mockContext.getFilename = () => 'mock.test.js';
@@ -284,60 +183,8 @@ describe('no-large-snapshots', () => {
     });
 
     it('should report on 2nd snapshot in a test, but not 1st', () => {
-      const snapshotNode1 = {
-        type: 'ExpressionStatement',
-        expression: {
-          left: {
-            property: {
-              type: 'TemplateLiteral',
-              quasis: [
-                {
-                  type: 'TemplateElement',
-                  value: {
-                    raw: 'a big component 1',
-                    cooked: 'a big component 1',
-                  },
-                },
-              ],
-            },
-          },
-        },
-        loc: {
-          start: {
-            line: 1,
-          },
-          end: {
-            line: 5,
-          },
-        },
-      };
-      const snapshotNode2 = {
-        type: 'ExpressionStatement',
-        expression: {
-          left: {
-            property: {
-              type: 'TemplateLiteral',
-              quasis: [
-                {
-                  type: 'TemplateElement',
-                  value: {
-                    raw: 'a big component 2',
-                    cooked: 'a big component 2',
-                  },
-                },
-              ],
-            },
-          },
-        },
-        loc: {
-          start: {
-            line: 1,
-          },
-          end: {
-            line: 59,
-          },
-        },
-      };
+      const snapshotNode1 = generateSnapshotNode({ lines: 4 });
+      const snapshotNode2 = generateSnapshotNode({ lines: 58 });
 
       const mockReport = jest.fn();
       const mockContext = {
@@ -362,60 +209,12 @@ describe('no-large-snapshots', () => {
     });
 
     it('should report on 2 snapshots in the same test', () => {
-      const snapshotNode1 = {
-        type: 'ExpressionStatement',
-        expression: {
-          left: {
-            property: {
-              type: 'TemplateLiteral',
-              quasis: [
-                {
-                  type: 'TemplateElement',
-                  value: {
-                    raw: 'a big component 1',
-                    cooked: 'a big component 1',
-                  },
-                },
-              ],
-            },
-          },
-        },
-        loc: {
-          start: {
-            line: 1,
-          },
-          end: {
-            line: 59,
-          },
-        },
-      };
-      const snapshotNode2 = {
-        type: 'ExpressionStatement',
-        expression: {
-          left: {
-            property: {
-              type: 'TemplateLiteral',
-              quasis: [
-                {
-                  type: 'TemplateElement',
-                  value: {
-                    raw: 'a big component 2',
-                    cooked: 'a big component 2',
-                  },
-                },
-              ],
-            },
-          },
-        },
-        loc: {
-          start: {
-            line: 1,
-          },
-          end: {
-            line: 59,
-          },
-        },
-      };
+      const snapshotNode1 = generateSnapshotNode({ lines: 58 });
+
+      const snapshotNode2 = generateSnapshotNode({
+        lines: 58,
+        title: 'a big component 2',
+      });
 
       const mockReport = jest.fn();
       const mockContext = {

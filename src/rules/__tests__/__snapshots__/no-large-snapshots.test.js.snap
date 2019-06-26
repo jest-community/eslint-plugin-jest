@@ -8,27 +8,134 @@ Array [
       "lineLimit": 0,
     },
     "messageId": "noSnapshot",
-    "node": Object {
-      "callee": Object {
-        "object": Object {
+    "node": Node {
+      "_babelType": "CallExpression",
+      "arguments": Array [],
+      "callee": Node {
+        "_babelType": "MemberExpression",
+        "computed": false,
+        "end": 33,
+        "loc": SourceLocation {
+          "end": Position {
+            "column": 33,
+            "line": 1,
+          },
+          "start": Position {
+            "column": 0,
+            "line": 1,
+          },
+        },
+        "object": Node {
+          "_babelType": "CallExpression",
           "arguments": Array [
-            Object {
+            Node {
+              "_babelType": "Identifier",
+              "end": 16,
+              "loc": SourceLocation {
+                "end": Position {
+                  "column": 16,
+                  "line": 1,
+                },
+                "identifierName": "something",
+                "start": Position {
+                  "column": 7,
+                  "line": 1,
+                },
+              },
               "name": "something",
+              "range": Array [
+                7,
+                16,
+              ],
+              "start": 7,
               "type": "Identifier",
             },
           ],
-          "callee": Object {
+          "callee": Node {
+            "_babelType": "Identifier",
+            "end": 6,
+            "loc": SourceLocation {
+              "end": Position {
+                "column": 6,
+                "line": 1,
+              },
+              "identifierName": "expect",
+              "start": Position {
+                "column": 0,
+                "line": 1,
+              },
+            },
             "name": "expect",
+            "range": Array [
+              0,
+              6,
+            ],
+            "start": 0,
             "type": "Identifier",
           },
+          "end": 17,
+          "loc": SourceLocation {
+            "end": Position {
+              "column": 17,
+              "line": 1,
+            },
+            "start": Position {
+              "column": 0,
+              "line": 1,
+            },
+          },
+          "range": Array [
+            0,
+            17,
+          ],
+          "start": 0,
           "type": "CallExpression",
         },
-        "property": Object {
+        "property": Node {
+          "_babelType": "Identifier",
+          "end": 33,
+          "loc": SourceLocation {
+            "end": Position {
+              "column": 33,
+              "line": 1,
+            },
+            "identifierName": "toMatchSnapshot",
+            "start": Position {
+              "column": 18,
+              "line": 1,
+            },
+          },
           "name": "toMatchSnapshot",
+          "range": Array [
+            18,
+            33,
+          ],
+          "start": 18,
           "type": "Identifier",
         },
+        "range": Array [
+          0,
+          33,
+        ],
+        "start": 0,
         "type": "MemberExpression",
       },
+      "end": 35,
+      "loc": SourceLocation {
+        "end": Position {
+          "column": 35,
+          "line": 1,
+        },
+        "start": Position {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        35,
+      ],
+      "start": 0,
       "type": "CallExpression",
     },
   },
@@ -43,27 +150,134 @@ Array [
       "lineLimit": 70,
     },
     "messageId": "tooLongSnapshots",
-    "node": Object {
-      "callee": Object {
-        "object": Object {
+    "node": Node {
+      "_babelType": "CallExpression",
+      "arguments": Array [],
+      "callee": Node {
+        "_babelType": "MemberExpression",
+        "computed": false,
+        "end": 33,
+        "loc": SourceLocation {
+          "end": Position {
+            "column": 33,
+            "line": 1,
+          },
+          "start": Position {
+            "column": 0,
+            "line": 1,
+          },
+        },
+        "object": Node {
+          "_babelType": "CallExpression",
           "arguments": Array [
-            Object {
+            Node {
+              "_babelType": "Identifier",
+              "end": 16,
+              "loc": SourceLocation {
+                "end": Position {
+                  "column": 16,
+                  "line": 1,
+                },
+                "identifierName": "something",
+                "start": Position {
+                  "column": 7,
+                  "line": 1,
+                },
+              },
               "name": "something",
+              "range": Array [
+                7,
+                16,
+              ],
+              "start": 7,
               "type": "Identifier",
             },
           ],
-          "callee": Object {
+          "callee": Node {
+            "_babelType": "Identifier",
+            "end": 6,
+            "loc": SourceLocation {
+              "end": Position {
+                "column": 6,
+                "line": 1,
+              },
+              "identifierName": "expect",
+              "start": Position {
+                "column": 0,
+                "line": 1,
+              },
+            },
             "name": "expect",
+            "range": Array [
+              0,
+              6,
+            ],
+            "start": 0,
             "type": "Identifier",
           },
+          "end": 17,
+          "loc": SourceLocation {
+            "end": Position {
+              "column": 17,
+              "line": 1,
+            },
+            "start": Position {
+              "column": 0,
+              "line": 1,
+            },
+          },
+          "range": Array [
+            0,
+            17,
+          ],
+          "start": 0,
           "type": "CallExpression",
         },
-        "property": Object {
+        "property": Node {
+          "_babelType": "Identifier",
+          "end": 33,
+          "loc": SourceLocation {
+            "end": Position {
+              "column": 33,
+              "line": 1,
+            },
+            "identifierName": "toMatchSnapshot",
+            "start": Position {
+              "column": 18,
+              "line": 1,
+            },
+          },
           "name": "toMatchSnapshot",
+          "range": Array [
+            18,
+            33,
+          ],
+          "start": 18,
           "type": "Identifier",
         },
+        "range": Array [
+          0,
+          33,
+        ],
+        "start": 0,
         "type": "MemberExpression",
       },
+      "end": 35,
+      "loc": SourceLocation {
+        "end": Position {
+          "column": 35,
+          "line": 1,
+        },
+        "start": Position {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        35,
+      ],
+      "start": 0,
       "type": "CallExpression",
     },
   },
@@ -78,27 +292,134 @@ Array [
       "lineLimit": 50,
     },
     "messageId": "tooLongSnapshots",
-    "node": Object {
-      "callee": Object {
-        "object": Object {
+    "node": Node {
+      "_babelType": "CallExpression",
+      "arguments": Array [],
+      "callee": Node {
+        "_babelType": "MemberExpression",
+        "computed": false,
+        "end": 33,
+        "loc": SourceLocation {
+          "end": Position {
+            "column": 33,
+            "line": 1,
+          },
+          "start": Position {
+            "column": 0,
+            "line": 1,
+          },
+        },
+        "object": Node {
+          "_babelType": "CallExpression",
           "arguments": Array [
-            Object {
+            Node {
+              "_babelType": "Identifier",
+              "end": 16,
+              "loc": SourceLocation {
+                "end": Position {
+                  "column": 16,
+                  "line": 1,
+                },
+                "identifierName": "something",
+                "start": Position {
+                  "column": 7,
+                  "line": 1,
+                },
+              },
               "name": "something",
+              "range": Array [
+                7,
+                16,
+              ],
+              "start": 7,
               "type": "Identifier",
             },
           ],
-          "callee": Object {
+          "callee": Node {
+            "_babelType": "Identifier",
+            "end": 6,
+            "loc": SourceLocation {
+              "end": Position {
+                "column": 6,
+                "line": 1,
+              },
+              "identifierName": "expect",
+              "start": Position {
+                "column": 0,
+                "line": 1,
+              },
+            },
             "name": "expect",
+            "range": Array [
+              0,
+              6,
+            ],
+            "start": 0,
             "type": "Identifier",
           },
+          "end": 17,
+          "loc": SourceLocation {
+            "end": Position {
+              "column": 17,
+              "line": 1,
+            },
+            "start": Position {
+              "column": 0,
+              "line": 1,
+            },
+          },
+          "range": Array [
+            0,
+            17,
+          ],
+          "start": 0,
           "type": "CallExpression",
         },
-        "property": Object {
+        "property": Node {
+          "_babelType": "Identifier",
+          "end": 33,
+          "loc": SourceLocation {
+            "end": Position {
+              "column": 33,
+              "line": 1,
+            },
+            "identifierName": "toMatchSnapshot",
+            "start": Position {
+              "column": 18,
+              "line": 1,
+            },
+          },
           "name": "toMatchSnapshot",
+          "range": Array [
+            18,
+            33,
+          ],
+          "start": 18,
           "type": "Identifier",
         },
+        "range": Array [
+          0,
+          33,
+        ],
+        "start": 0,
         "type": "MemberExpression",
       },
+      "end": 35,
+      "loc": SourceLocation {
+        "end": Position {
+          "column": 35,
+          "line": 1,
+        },
+        "start": Position {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        35,
+      ],
+      "start": 0,
       "type": "CallExpression",
     },
   },
@@ -114,27 +435,134 @@ Array [
         "lineLimit": 50,
       },
       "messageId": "tooLongSnapshots",
-      "node": Object {
-        "callee": Object {
-          "object": Object {
+      "node": Node {
+        "_babelType": "CallExpression",
+        "arguments": Array [],
+        "callee": Node {
+          "_babelType": "MemberExpression",
+          "computed": false,
+          "end": 33,
+          "loc": SourceLocation {
+            "end": Position {
+              "column": 33,
+              "line": 1,
+            },
+            "start": Position {
+              "column": 0,
+              "line": 1,
+            },
+          },
+          "object": Node {
+            "_babelType": "CallExpression",
             "arguments": Array [
-              Object {
+              Node {
+                "_babelType": "Identifier",
+                "end": 16,
+                "loc": SourceLocation {
+                  "end": Position {
+                    "column": 16,
+                    "line": 1,
+                  },
+                  "identifierName": "something",
+                  "start": Position {
+                    "column": 7,
+                    "line": 1,
+                  },
+                },
                 "name": "something",
+                "range": Array [
+                  7,
+                  16,
+                ],
+                "start": 7,
                 "type": "Identifier",
               },
             ],
-            "callee": Object {
+            "callee": Node {
+              "_babelType": "Identifier",
+              "end": 6,
+              "loc": SourceLocation {
+                "end": Position {
+                  "column": 6,
+                  "line": 1,
+                },
+                "identifierName": "expect",
+                "start": Position {
+                  "column": 0,
+                  "line": 1,
+                },
+              },
               "name": "expect",
+              "range": Array [
+                0,
+                6,
+              ],
+              "start": 0,
               "type": "Identifier",
             },
+            "end": 17,
+            "loc": SourceLocation {
+              "end": Position {
+                "column": 17,
+                "line": 1,
+              },
+              "start": Position {
+                "column": 0,
+                "line": 1,
+              },
+            },
+            "range": Array [
+              0,
+              17,
+            ],
+            "start": 0,
             "type": "CallExpression",
           },
-          "property": Object {
+          "property": Node {
+            "_babelType": "Identifier",
+            "end": 33,
+            "loc": SourceLocation {
+              "end": Position {
+                "column": 33,
+                "line": 1,
+              },
+              "identifierName": "toMatchSnapshot",
+              "start": Position {
+                "column": 18,
+                "line": 1,
+              },
+            },
             "name": "toMatchSnapshot",
+            "range": Array [
+              18,
+              33,
+            ],
+            "start": 18,
             "type": "Identifier",
           },
+          "range": Array [
+            0,
+            33,
+          ],
+          "start": 0,
           "type": "MemberExpression",
         },
+        "end": 35,
+        "loc": SourceLocation {
+          "end": Position {
+            "column": 35,
+            "line": 1,
+          },
+          "start": Position {
+            "column": 0,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          0,
+          35,
+        ],
+        "start": 0,
         "type": "CallExpression",
       },
     },
@@ -146,27 +574,134 @@ Array [
         "lineLimit": 50,
       },
       "messageId": "tooLongSnapshots",
-      "node": Object {
-        "callee": Object {
-          "object": Object {
+      "node": Node {
+        "_babelType": "CallExpression",
+        "arguments": Array [],
+        "callee": Node {
+          "_babelType": "MemberExpression",
+          "computed": false,
+          "end": 33,
+          "loc": SourceLocation {
+            "end": Position {
+              "column": 33,
+              "line": 1,
+            },
+            "start": Position {
+              "column": 0,
+              "line": 1,
+            },
+          },
+          "object": Node {
+            "_babelType": "CallExpression",
             "arguments": Array [
-              Object {
+              Node {
+                "_babelType": "Identifier",
+                "end": 16,
+                "loc": SourceLocation {
+                  "end": Position {
+                    "column": 16,
+                    "line": 1,
+                  },
+                  "identifierName": "something",
+                  "start": Position {
+                    "column": 7,
+                    "line": 1,
+                  },
+                },
                 "name": "something",
+                "range": Array [
+                  7,
+                  16,
+                ],
+                "start": 7,
                 "type": "Identifier",
               },
             ],
-            "callee": Object {
+            "callee": Node {
+              "_babelType": "Identifier",
+              "end": 6,
+              "loc": SourceLocation {
+                "end": Position {
+                  "column": 6,
+                  "line": 1,
+                },
+                "identifierName": "expect",
+                "start": Position {
+                  "column": 0,
+                  "line": 1,
+                },
+              },
               "name": "expect",
+              "range": Array [
+                0,
+                6,
+              ],
+              "start": 0,
               "type": "Identifier",
             },
+            "end": 17,
+            "loc": SourceLocation {
+              "end": Position {
+                "column": 17,
+                "line": 1,
+              },
+              "start": Position {
+                "column": 0,
+                "line": 1,
+              },
+            },
+            "range": Array [
+              0,
+              17,
+            ],
+            "start": 0,
             "type": "CallExpression",
           },
-          "property": Object {
+          "property": Node {
+            "_babelType": "Identifier",
+            "end": 33,
+            "loc": SourceLocation {
+              "end": Position {
+                "column": 33,
+                "line": 1,
+              },
+              "identifierName": "toMatchSnapshot",
+              "start": Position {
+                "column": 18,
+                "line": 1,
+              },
+            },
             "name": "toMatchSnapshot",
+            "range": Array [
+              18,
+              33,
+            ],
+            "start": 18,
             "type": "Identifier",
           },
+          "range": Array [
+            0,
+            33,
+          ],
+          "start": 0,
           "type": "MemberExpression",
         },
+        "end": 35,
+        "loc": SourceLocation {
+          "end": Position {
+            "column": 35,
+            "line": 1,
+          },
+          "start": Position {
+            "column": 0,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          0,
+          35,
+        ],
+        "start": 0,
         "type": "CallExpression",
       },
     },
@@ -182,27 +717,134 @@ Array [
       "lineLimit": 50,
     },
     "messageId": "tooLongSnapshots",
-    "node": Object {
-      "callee": Object {
-        "object": Object {
+    "node": Node {
+      "_babelType": "CallExpression",
+      "arguments": Array [],
+      "callee": Node {
+        "_babelType": "MemberExpression",
+        "computed": false,
+        "end": 33,
+        "loc": SourceLocation {
+          "end": Position {
+            "column": 33,
+            "line": 1,
+          },
+          "start": Position {
+            "column": 0,
+            "line": 1,
+          },
+        },
+        "object": Node {
+          "_babelType": "CallExpression",
           "arguments": Array [
-            Object {
+            Node {
+              "_babelType": "Identifier",
+              "end": 16,
+              "loc": SourceLocation {
+                "end": Position {
+                  "column": 16,
+                  "line": 1,
+                },
+                "identifierName": "something",
+                "start": Position {
+                  "column": 7,
+                  "line": 1,
+                },
+              },
               "name": "something",
+              "range": Array [
+                7,
+                16,
+              ],
+              "start": 7,
               "type": "Identifier",
             },
           ],
-          "callee": Object {
+          "callee": Node {
+            "_babelType": "Identifier",
+            "end": 6,
+            "loc": SourceLocation {
+              "end": Position {
+                "column": 6,
+                "line": 1,
+              },
+              "identifierName": "expect",
+              "start": Position {
+                "column": 0,
+                "line": 1,
+              },
+            },
             "name": "expect",
+            "range": Array [
+              0,
+              6,
+            ],
+            "start": 0,
             "type": "Identifier",
           },
+          "end": 17,
+          "loc": SourceLocation {
+            "end": Position {
+              "column": 17,
+              "line": 1,
+            },
+            "start": Position {
+              "column": 0,
+              "line": 1,
+            },
+          },
+          "range": Array [
+            0,
+            17,
+          ],
+          "start": 0,
           "type": "CallExpression",
         },
-        "property": Object {
+        "property": Node {
+          "_babelType": "Identifier",
+          "end": 33,
+          "loc": SourceLocation {
+            "end": Position {
+              "column": 33,
+              "line": 1,
+            },
+            "identifierName": "toMatchSnapshot",
+            "start": Position {
+              "column": 18,
+              "line": 1,
+            },
+          },
           "name": "toMatchSnapshot",
+          "range": Array [
+            18,
+            33,
+          ],
+          "start": 18,
           "type": "Identifier",
         },
+        "range": Array [
+          0,
+          33,
+        ],
+        "start": 0,
         "type": "MemberExpression",
       },
+      "end": 35,
+      "loc": SourceLocation {
+        "end": Position {
+          "column": 35,
+          "line": 1,
+        },
+        "start": Position {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        35,
+      ],
+      "start": 0,
       "type": "CallExpression",
     },
   },
