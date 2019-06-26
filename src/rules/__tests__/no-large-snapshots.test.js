@@ -237,5 +237,62 @@ describe('no-large-snapshots', () => {
       expect(mockReport).toHaveBeenCalledTimes(2);
       expect(mockReport.mock.calls).toMatchSnapshot();
     });
+
+    it('should report on 2 snapshots in 2 seperate test cases', () => {
+      const snapshots = [
+        generateSnapshotNode({ lines: 58 }),
+        generateSnapshotNode({
+          lines: 58,
+          title: 'a big component 2',
+        }),
+        generateSnapshotNode({
+          lines: 58,
+          title: 'another big one 1',
+        }),
+        generateSnapshotNode({
+          lines: 58,
+          title: 'another big one 2',
+        }),
+      ];
+
+      const mockReport = jest.fn();
+      const mockContext = {
+        getFilename: () => 'mock-component.jsx.snap',
+        options: [],
+        report: mockReport,
+      };
+
+      //4 snapshots
+      snapshots.forEach(snapshotNode =>
+        noLargeSnapshots(mockContext).ExpressionStatement(snapshotNode),
+      );
+
+      //first test
+      mockContext.getFilename = () => 'mock.test.js';
+      noLargeSnapshots(mockContext).CallExpression(testNode);
+
+      //2 expects
+      noLargeSnapshots(mockContext).CallExpression(expectNode);
+      noLargeSnapshots(mockContext).CallExpression(expectNode);
+
+      //exit first test
+      noLargeSnapshots(mockContext)['CallExpression:exit'](testNode);
+
+      //2nd test
+      const {
+        body: [{ expression: testNode2 }],
+      } = parse(`it('another big one', () => { });`);
+      noLargeSnapshots(mockContext).CallExpression(testNode2);
+
+      //2 expects
+      noLargeSnapshots(mockContext).CallExpression(expectNode);
+      noLargeSnapshots(mockContext).CallExpression(expectNode);
+
+      //exit 2nd test
+      noLargeSnapshots(mockContext)['CallExpression:exit'](testNode2);
+
+      expect(mockReport).toHaveBeenCalledTimes(4);
+      expect(mockReport.mock.calls).toMatchSnapshot();
+    });
   });
 });
