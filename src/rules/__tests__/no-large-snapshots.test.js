@@ -182,6 +182,35 @@ describe('no-large-snapshots', () => {
       expect(mockReport).not.toHaveBeenCalled();
     });
 
+    it('should report on a snapshot in a describe', () => {
+      const {
+        body: [{ expression: describeNode }],
+      } = parse('describe("a category", () => {});');
+
+      const snapshotNode = generateSnapshotNode({
+        lines: 58,
+        title: 'a category a big component 1',
+      });
+
+      const mockReport = jest.fn();
+      const mockContext = {
+        getFilename: () => 'mock-component.jsx.snap',
+        options: [],
+        report: mockReport,
+      };
+
+      noLargeSnapshots(mockContext).ExpressionStatement(snapshotNode);
+
+      mockContext.getFilename = () => 'mock.test.js';
+      noLargeSnapshots(mockContext).CallExpression(describeNode);
+      noLargeSnapshots(mockContext).CallExpression(testNode);
+      noLargeSnapshots(mockContext).CallExpression(expectNode);
+      noLargeSnapshots(mockContext)['CallExpression:exit'](testNode);
+      noLargeSnapshots(mockContext)['CallExpression:exit'](describeNode);
+      expect(mockReport).toHaveBeenCalledTimes(1);
+      expect(mockReport.mock.calls[0]).toMatchSnapshot();
+    });
+
     it('should report on 2nd snapshot in a test, but not 1st', () => {
       const snapshotNode1 = generateSnapshotNode({ lines: 4 });
       const snapshotNode2 = generateSnapshotNode({ lines: 58 });
