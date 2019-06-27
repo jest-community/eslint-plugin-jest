@@ -1,6 +1,6 @@
 'use strict';
-
-const { getDocsUrl } = require('./util');
+const path = require('path');
+const { getDocsUrl, getStringValue } = require('./util');
 
 const reportOnViolation = (context, node) => {
   const lineLimit =
@@ -10,8 +10,29 @@ const reportOnViolation = (context, node) => {
   const startLine = node.loc.start.line;
   const endLine = node.loc.end.line;
   const lineCount = endLine - startLine;
+  const whitelistedSnapshots =
+    context.options &&
+    context.options[0] &&
+    context.options[0].whitelistedSnapshots;
 
-  if (lineCount > lineLimit) {
+  let isWhitelisted = false;
+  if (whitelistedSnapshots) {
+    const fileName = path.relative(process.cwd(), context.getFilename());
+    const whitelistedSnapshotsInFile = whitelistedSnapshots[fileName];
+    if (whitelistedSnapshotsInFile) {
+      const snapshotName = getStringValue(node.expression.left.property);
+      isWhitelisted =
+        whitelistedSnapshotsInFile.find(name => {
+          if (name.test && typeof name.test === 'function') {
+            return name.test(snapshotName);
+          } else {
+            return name === snapshotName;
+          }
+        }) != null;
+    }
+  }
+
+  if (!isWhitelisted && lineCount > lineLimit) {
     context.report({
       messageId: lineLimit === 0 ? 'noSnapshot' : 'tooLongSnapshots',
       data: { lineLimit, lineCount },
