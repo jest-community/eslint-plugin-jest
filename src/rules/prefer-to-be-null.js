@@ -21,6 +21,7 @@ module.exports = {
       useToBeNull: 'Use toBeNull() instead',
     },
     fixable: 'code',
+    schema: [],
   },
   create(context) {
     return {

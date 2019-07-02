@@ -24,6 +24,7 @@ module.exports = {
     messages: {
       noReturnValue: 'Jest tests should not return a value.',
     },
+    schema: [],
   },
   create(context) {
     return {

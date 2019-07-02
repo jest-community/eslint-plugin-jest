@@ -27,6 +27,7 @@ module.exports = {
     messages: {
       focusedTest: 'Unexpected focused test.',
     },
+    schema: [],
   },
   create: context => ({
     CallExpression(node) {

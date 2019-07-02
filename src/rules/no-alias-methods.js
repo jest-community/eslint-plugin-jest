@@ -11,6 +11,7 @@ module.exports = {
       replaceAlias: `Replace {{ replace }}() with its canonical name of {{ canonical }}()`,
     },
     fixable: 'code',
+    schema: [],
   },
   create(context) {
     // The Jest methods which have aliases. The canonical name is the first

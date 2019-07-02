@@ -17,6 +17,7 @@ module.exports = {
       disabledSuite: 'Disabled test suite',
       disabledTest: 'Disabled test',
     },
+    schema: [],
   },
   create(context) {
     let suiteDepth = 0;

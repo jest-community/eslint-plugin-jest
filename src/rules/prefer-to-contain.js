@@ -87,6 +87,7 @@ module.exports = {
       useToContain: 'Use toContain() instead',
     },
     fixable: 'code',
+    schema: [],
   },
   create(context) {
     return {

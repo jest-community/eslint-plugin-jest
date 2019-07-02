@@ -11,6 +11,7 @@ module.exports = {
       illegalTestCallback: 'Illegal usage of test callback',
     },
     fixable: 'code',
+    schema: [],
   },
   create(context) {
     return {

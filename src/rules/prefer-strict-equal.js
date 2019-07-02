@@ -11,6 +11,7 @@ module.exports = {
       useToStrictEqual: 'Use toStrictEqual() instead',
     },
     fixable: 'code',
+    schema: [],
   },
   create(context) {
     return {
