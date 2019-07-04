@@ -57,6 +57,12 @@ module.exports = {
           maxSize: {
             type: 'number',
           },
+          whitelistedSnapshots: {
+            type: 'object',
+            patternProperties: {
+              '*': { type: 'array' },
+            },
+          },
         },
         additionalProperties: false,
       },
