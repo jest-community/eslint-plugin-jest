@@ -15,6 +15,7 @@ module.exports = {
     messages: {
       noManualImport: `Mocks should not be manually imported from a ${mocksDirName} directory. Instead use jest.mock and import from the original module path.`,
     },
+    schema: [],
   },
   create(context) {
     return {

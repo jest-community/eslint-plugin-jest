@@ -49,6 +49,7 @@ module.exports = {
       haveExpectAssertions:
         'Every test should have either `expect.assertions(<number of assertions>)` or `expect.hasAssertions()` as its first expression',
     },
+    schema: [],
   },
   create(context) {
     return {

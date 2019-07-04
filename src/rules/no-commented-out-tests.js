@@ -16,6 +16,7 @@ module.exports = {
     messages: {
       commentedTests: 'Some tests seem to be commented',
     },
+    schema: [],
   },
   create(context) {
     const sourceCode = context.getSourceCode();

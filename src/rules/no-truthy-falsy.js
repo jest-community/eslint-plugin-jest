@@ -17,6 +17,7 @@ module.exports = {
     messages: {
       avoidMessage: 'Avoid {{methodName}}',
     },
+    schema: [],
   },
   create(context) {
     return {

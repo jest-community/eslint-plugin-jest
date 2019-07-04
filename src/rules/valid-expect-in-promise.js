@@ -131,6 +131,7 @@ module.exports = {
       returnPromise:
         'Promise should be returned to test its fulfillment or rejection',
     },
+    schema: [],
   },
   create(context) {
     return {

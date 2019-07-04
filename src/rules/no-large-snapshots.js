@@ -50,6 +50,17 @@ module.exports = {
       tooLongSnapshots:
         'Expected Jest snapshot to be smaller than {{ lineLimit }} lines but was {{ lineCount }} lines long',
     },
+    schema: [
+      {
+        type: 'object',
+        properties: {
+          maxSize: {
+            type: 'number',
+          },
+        },
+        additionalProperties: false,
+      },
+    ],
   },
   create(context) {
     if (context.getFilename().endsWith('.snap')) {

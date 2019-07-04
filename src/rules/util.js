@@ -125,18 +125,24 @@ const isTestCase = node =>
   testCaseNames[getNodeName(node.callee)];
 
 const isDescribe = node =>
-  node.type === 'CallExpression' && describeAliases[getNodeName(node.callee)];
+  node &&
+  node.type === 'CallExpression' &&
+  describeAliases[getNodeName(node.callee)];
 
 const isFunction = node =>
-  node.type === 'FunctionExpression' || node.type === 'ArrowFunctionExpression';
+  node &&
+  (node.type === 'FunctionExpression' ||
+    node.type === 'ArrowFunctionExpression');
 
 const isString = node =>
-  (node.type === 'Literal' && typeof node.value === 'string') ||
-  isTemplateLiteral(node);
+  node &&
+  ((node.type === 'Literal' && typeof node.value === 'string') ||
+    isTemplateLiteral(node));
 
-const isTemplateLiteral = node => node.type === 'TemplateLiteral';
+const isTemplateLiteral = node => node && node.type === 'TemplateLiteral';
 
-const hasExpressions = node => node.expressions && node.expressions.length > 0;
+const hasExpressions = node =>
+  node && node.expressions && node.expressions.length > 0;
 
 const getStringValue = arg =>
   isTemplateLiteral(arg) ? arg.quasis[0].value.raw : arg.value;

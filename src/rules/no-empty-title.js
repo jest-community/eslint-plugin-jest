@@ -19,6 +19,7 @@ module.exports = {
       describe: 'describe should not have an empty title',
       test: 'test should not have an empty title',
     },
+    schema: [],
   },
   create(context) {
     return {

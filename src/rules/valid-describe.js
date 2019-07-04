@@ -39,6 +39,7 @@ module.exports = {
       unexpectedReturnInDescribe:
         'Unexpected return statement in describe callback',
     },
+    schema: [],
   },
   create(context) {
     return {

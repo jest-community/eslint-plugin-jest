@@ -11,11 +11,22 @@ const rules = fs
     (acc, curr) => Object.assign(acc, { [curr]: require(`./rules/${curr}`) }),
     {},
   );
+let allRules = {};
+Object.keys(rules).forEach(function(key) {
+  allRules[`jest/${key}`] = 'error';
+});
 
 const snapshotProcessor = require('./processors/snapshot-processor');
 
 module.exports = {
   configs: {
+    all: {
+      plugins: ['jest'],
+      env: {
+        'jest/globals': true,
+      },
+      rules: allRules,
+    },
     recommended: {
       plugins: ['jest'],
       env: {

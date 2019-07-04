@@ -87,6 +87,21 @@ See
 [ESLint documentation](http://eslint.org/docs/user-guide/configuring#extending-configuration-files)
 for more information about extending configuration files.
 
+### All
+
+If you want to enable all rules instead of only some you can do so by adding the
+`all` configuration to your `.eslintrc` config file:
+
+```json
+{
+  "extends": ["plugin:jest/all"]
+}
+```
+
+While the `recommended` and `style` configurations only change in major versions
+the `all` configuration may change in any release and is thus unsuited for
+installations requiring long-term consistency.
+
 ## Rules
 
 | Rule                         | Description                                                       | Recommended      | Fixable             |

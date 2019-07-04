@@ -10,6 +10,7 @@ module.exports = {
     messages: {
       requireRethrow: 'Add an error message to {{ propertyName }}()',
     },
+    schema: [],
   },
   create(context) {
     return {

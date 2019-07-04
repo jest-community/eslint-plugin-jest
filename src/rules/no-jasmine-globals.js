@@ -19,6 +19,7 @@ module.exports = {
         'Illegal usage of `pending`, prefer explicitly skipping a test using `test.skip`',
       illegalJasmine: 'Illegal usage of jasmine global',
     },
+    schema: [],
   },
   create(context) {
     return {

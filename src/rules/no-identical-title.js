@@ -54,6 +54,7 @@ module.exports = {
       multipleDescribeTitle:
         'Describe block title is used multiple times in the same describe block.',
     },
+    schema: [],
   },
   create(context) {
     const contexts = [newDescribeContext()];

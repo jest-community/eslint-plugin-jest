@@ -31,6 +31,7 @@ module.exports = {
       useJestSpyOn: 'Use jest.spyOn() instead.',
     },
     fixable: 'code',
+    schema: [],
   },
   create(context) {
     return {

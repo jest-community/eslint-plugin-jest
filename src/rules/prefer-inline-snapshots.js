@@ -12,6 +12,7 @@ module.exports = {
       toMatchError: 'Use toThrowErrorMatchingInlineSnapshot() instead',
     },
     fixable: 'code',
+    schema: [],
   },
   create(context) {
     return {
