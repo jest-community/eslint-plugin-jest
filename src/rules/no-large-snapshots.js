@@ -21,14 +21,13 @@ const reportOnViolation = (context, node) => {
     const whitelistedSnapshotsInFile = whitelistedSnapshots[fileName];
     if (whitelistedSnapshotsInFile) {
       const snapshotName = getStringValue(node.expression.left.property);
-      isWhitelisted =
-        whitelistedSnapshotsInFile.find(name => {
-          if (name.test && typeof name.test === 'function') {
-            return name.test(snapshotName);
-          } else {
-            return name === snapshotName;
-          }
-        }) != null;
+      isWhitelisted = whitelistedSnapshotsInFile.some(name => {
+        if (name.test && typeof name.test === 'function') {
+          return name.test(snapshotName);
+        } else {
+          return name === snapshotName;
+        }
+      });
     }
   }
 
