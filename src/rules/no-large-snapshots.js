@@ -60,7 +60,7 @@ module.exports = {
           whitelistedSnapshots: {
             type: 'object',
             patternProperties: {
-              '*': { type: 'array' },
+              '.*': { type: 'array' },
             },
           },
         },
