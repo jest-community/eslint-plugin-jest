@@ -10,6 +10,7 @@ module.exports = {
     messages: {
       unexpectedImport: `Jest is automatically in scope. Do not import "jest", as Jest doesn't export anything.`,
     },
+    schema: [],
   },
   create(context) {
     return {

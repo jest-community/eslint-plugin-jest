@@ -55,6 +55,21 @@ module.exports = {
     messages: {
       unexpectedLowercase: '`{{ method }}`s should begin with lowercase',
     },
+    schema: [
+      {
+        type: 'object',
+        properties: {
+          ignore: {
+            type: 'array',
+            items: {
+              enum: ['describe', 'test', 'it'],
+            },
+            additionalItems: false,
+          },
+        },
+        additionalProperties: false,
+      },
+    ],
     fixable: 'code',
   },
   create(context) {

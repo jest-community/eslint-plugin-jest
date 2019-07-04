@@ -10,6 +10,7 @@ module.exports = {
     messages: {
       preferCalledWith: 'Prefer {{name}}With(/* expected args */)',
     },
+    schema: [],
   },
   create(context) {
     return {

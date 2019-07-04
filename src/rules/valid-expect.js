@@ -23,6 +23,7 @@ module.exports = {
       propertyWithoutMatcher: '"{{ propertyName }}" needs to call a matcher.',
       matcherOnPropertyNotCalled: '"{{ propertyName }}" was not called.',
     },
+    schema: [],
   },
   create(context) {
     return {

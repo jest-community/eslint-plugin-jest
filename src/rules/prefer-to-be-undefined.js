@@ -21,6 +21,7 @@ module.exports = {
       useToBeUndefined: 'Use toBeUndefined() instead',
     },
     fixable: 'code',
+    schema: [],
   },
   create(context) {
     return {

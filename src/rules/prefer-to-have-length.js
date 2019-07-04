@@ -18,6 +18,7 @@ module.exports = {
       useToHaveLength: 'Use toHaveLength() instead',
     },
     fixable: 'code',
+    schema: [],
   },
   create(context) {
     return {

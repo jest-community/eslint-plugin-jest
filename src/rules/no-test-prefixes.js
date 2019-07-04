@@ -11,6 +11,7 @@ module.exports = {
       usePreferredName: 'Use "{{ preferredNodeName }}" instead',
     },
     fixable: 'code',
+    schema: [],
   },
   create(context) {
     return {

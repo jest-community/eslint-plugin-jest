@@ -52,6 +52,7 @@ module.exports = {
         'Prefer todo test case over unimplemented test case',
     },
     fixable: 'code',
+    schema: [],
   },
   create(context) {
     return {
