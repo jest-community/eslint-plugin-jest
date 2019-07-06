@@ -3,7 +3,7 @@ import { resolve } from 'path';
 import { rules } from '../';
 
 const ruleNames = Object.keys(rules);
-const numberOfRules = 33;
+const numberOfRules = 34;
 
 describe('rules', () => {
   it('should have a corresponding doc for each rule', () => {

@@ -117,6 +117,7 @@ installations requiring long-term consistency.
 | [no-focused-tests][]         | Disallow focused tests                                            | ![recommended][] |                     |
 | [no-hooks][]                 | Disallow setup and teardown hooks                                 |                  |                     |
 | [no-identical-title][]       | Disallow identical titles                                         | ![recommended][] |                     |
+| [no-if][]                    | Disallow conditional logic                                        |                  |                     |
 | [no-jasmine-globals][]       | Disallow Jasmine globals                                          | ![recommended][] | ![fixable-yellow][] |
 | [no-jest-import][]           | Disallow importing `jest`                                         | ![recommended][] |                     |
 | [no-mocks-import][]          | Disallow manually importing from `__mocks__`                      |                  |                     |
@@ -165,6 +166,7 @@ https://github.com/dangreenisrael/eslint-plugin-jest-formatting
 [no-focused-tests]: docs/rules/no-focused-tests.md
 [no-hooks]: docs/rules/no-hooks.md
 [no-identical-title]: docs/rules/no-identical-title.md
+[no-if]: docs/rules/no-if.md
 [no-jasmine-globals]: docs/rules/no-jasmine-globals.md
 [no-jest-import]: docs/rules/no-jest-import.md
 [no-mocks-import]: docs/rules/no-mocks-import.md
