@@ -131,4 +131,5 @@ In an `.eslintrc.js` file:
       }]
   }
 ...
+
 ```
