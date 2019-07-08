@@ -1,5 +1,5 @@
 'use strict';
-const path = require('path');
+
 const { getDocsUrl, getStringValue } = require('./util');
 
 const reportOnViolation = (context, node) => {
@@ -17,7 +17,7 @@ const reportOnViolation = (context, node) => {
 
   let isWhitelisted = false;
   if (whitelistedSnapshots) {
-    const fileName = path.relative(process.cwd(), context.getFilename());
+    const fileName = context.getFilename();
     const whitelistedSnapshotsInFile = whitelistedSnapshots[fileName];
     if (whitelistedSnapshotsInFile) {
       const snapshotName = getStringValue(node.expression.left.property);
