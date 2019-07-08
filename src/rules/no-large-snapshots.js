@@ -16,9 +16,11 @@ const reportOnViolation = (context, node) => {
     context.options[0].whitelistedSnapshots;
 
   let isWhitelisted = false;
+
   if (whitelistedSnapshots) {
     const fileName = context.getFilename();
     const whitelistedSnapshotsInFile = whitelistedSnapshots[fileName];
+
     if (whitelistedSnapshotsInFile) {
       const snapshotName = getStringValue(node.expression.left.property);
       isWhitelisted = whitelistedSnapshotsInFile.some(name => {
