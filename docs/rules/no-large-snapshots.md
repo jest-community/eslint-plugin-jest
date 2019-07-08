@@ -114,7 +114,7 @@ In an `eslintrc` file:
 In addition there is an option for whitelisting large snapshot files. Since
 `//eslint` comments will be removed when a `.snap` file is updated, this option
 provides a way of whitelisting large snapshots. The list of whitelistedSnapshots
-is keyed first on the relative filepath of the snapshot file. You can then
+is keyed first on the absolute filepath of the snapshot file. You can then
 provide an array of strings to match the snapshot names against. If you're using
 a `.eslintrc.js` file, you can use regular expressions AND strings.
 
@@ -126,7 +126,7 @@ In an `.eslintrc.js` file:
     "jest/no-large-snapshots": ["error",
       {
         "whitelistedSnapshots": {
-          "relative/path/to/file.js.snap": ["snapshot name 1", /a big snapshot \d+/]
+          "/path/to/file.js.snap": ["snapshot name 1", /a big snapshot \d+/]
         }
       }]
   }
