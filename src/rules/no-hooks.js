@@ -1,6 +1,6 @@
 'use strict';
 
-const { getDocsUrl } = require('./util');
+const { getDocsUrl, isHook } = require('./util');
 
 module.exports = {
   meta: {
@@ -24,13 +24,6 @@ module.exports = {
     },
   ],
   create(context) {
-    const testHookNames = Object.assign(Object.create(null), {
-      beforeAll: true,
-      beforeEach: true,
-      afterAll: true,
-      afterEach: true,
-    });
-
     const whitelistedHookNames = (
       context.options[0] || { allow: [] }
     ).allow.reduce((hashMap, value) => {
@@ -38,7 +31,6 @@ module.exports = {
       return hashMap;
     }, Object.create(null));
 
-    const isHook = node => testHookNames[node.callee.name];
     const isWhitelisted = node => whitelistedHookNames[node.callee.name];
 
     return {

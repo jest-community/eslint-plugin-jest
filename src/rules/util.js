@@ -99,6 +99,13 @@ const testCaseNames = Object.assign(Object.create(null), {
   xtest: true,
 });
 
+const testHookNames = Object.assign(Object.create(null), {
+  beforeAll: true,
+  beforeEach: true,
+  afterAll: true,
+  afterEach: true,
+});
+
 const getNodeName = node => {
   function joinNames(a, b) {
     return a && b ? `${a}.${b}` : null;
@@ -118,6 +125,11 @@ const getNodeName = node => {
 
   return null;
 };
+
+const isHook = node =>
+  node &&
+  node.type === 'CallExpression' &&
+  testHookNames[getNodeName(node.callee)];
 
 const isTestCase = node =>
   node &&
@@ -224,6 +236,7 @@ module.exports = {
   getStringValue,
   isDescribe,
   isFunction,
+  isHook,
   isTemplateLiteral,
   isTestCase,
   isString,
