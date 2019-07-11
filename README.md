@@ -158,6 +158,7 @@ https://github.com/dangreenisrael/eslint-plugin-jest-formatting
 [lowercase-name]: docs/rules/lowercase-name.md
 [no-alias-methods]: docs/rules/no-alias-methods.md
 [no-disabled-tests]: docs/rules/no-disabled-tests.md
+[no-duplicate-hooks]: docs/rules/no-duplicate-hooks.md
 [no-commented-out-tests]: docs/rules/no-commented-out-tests.md
 [no-empty-title]: docs/rules/no-empty-title.md
 [no-focused-tests]: docs/rules/no-focused-tests.md

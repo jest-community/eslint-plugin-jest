@@ -5,7 +5,7 @@ const path = require('path');
 const { rules } = require('../');
 
 const ruleNames = Object.keys(rules);
-const numberOfRules = 32;
+const numberOfRules = 33;
 
 describe('rules', () => {
   it('should have a corresponding doc for each rule', () => {
