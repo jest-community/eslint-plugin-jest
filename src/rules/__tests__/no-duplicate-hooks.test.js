@@ -27,6 +27,21 @@ ruleTester.run('basic describe block', rule, {
       '  some_fn();',
       '})',
     ].join('\n'),
+    [
+      'describe("foo", () => {',
+      '  beforeAll(() => {',
+      '  }),',
+      '  beforeEach(() => {',
+      '  }),',
+      '  afterEach(() => {',
+      '  }),',
+      '  afterAll(() => {',
+      '  }),',
+      '  test("bar", () => {',
+      '    some_fn();',
+      '  })',
+      '})',
+    ].join('\n'),
   ],
 
   invalid: [
