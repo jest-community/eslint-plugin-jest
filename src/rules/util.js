@@ -79,32 +79,32 @@ const argument = node =>
 const argument2 = node =>
   node.parent.parent.parent.arguments && node.parent.parent.parent.arguments[0];
 
-const describeAliases = Object.assign(Object.create(null), {
-  describe: true,
-  'describe.only': true,
-  'describe.skip': true,
-  fdescribe: true,
-  xdescribe: true,
-});
+const describeAliases = new Set([
+  'describe',
+  'describe.only',
+  'describe.skip',
+  'fdescribe',
+  'xdescribe',
+]);
 
-const testCaseNames = Object.assign(Object.create(null), {
-  fit: true,
-  it: true,
-  'it.only': true,
-  'it.skip': true,
-  test: true,
-  'test.only': true,
-  'test.skip': true,
-  xit: true,
-  xtest: true,
-});
+const testCaseNames = new Set([
+  'fit',
+  'it',
+  'it.only',
+  'it.skip',
+  'test',
+  'test.only',
+  'test.skip',
+  'xit',
+  'xtest',
+]);
 
-const testHookNames = Object.assign(Object.create(null), {
-  beforeAll: true,
-  beforeEach: true,
-  afterAll: true,
-  afterEach: true,
-});
+const testHookNames = new Set([
+  'beforeAll',
+  'beforeEach',
+  'afterAll',
+  'afterEach',
+]);
 
 const getNodeName = node => {
   function joinNames(a, b) {
@@ -129,17 +129,17 @@ const getNodeName = node => {
 const isHook = node =>
   node &&
   node.type === 'CallExpression' &&
-  testHookNames[getNodeName(node.callee)];
+  testHookNames.has(getNodeName(node.callee));
 
 const isTestCase = node =>
   node &&
   node.type === 'CallExpression' &&
-  testCaseNames[getNodeName(node.callee)];
+  testCaseNames.has(getNodeName(node.callee));
 
 const isDescribe = node =>
   node &&
   node.type === 'CallExpression' &&
-  describeAliases[getNodeName(node.callee)];
+  describeAliases.has(getNodeName(node.callee));
 
 const isFunction = node =>
   node &&
