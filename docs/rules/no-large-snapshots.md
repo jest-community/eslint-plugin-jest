@@ -122,6 +122,7 @@ In an `.eslintrc.js` file:
 
 ```javascript
 ...
+
   "rules": {
     "jest/no-large-snapshots": ["error",
       {
@@ -130,5 +131,6 @@ In an `.eslintrc.js` file:
         }
       }]
   }
+
 ...
 ```
