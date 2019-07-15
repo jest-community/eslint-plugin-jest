@@ -3,7 +3,7 @@
 
 <div align="center">
   <a href="https://eslint.org/">
-    <img width="150" height="150" src="https://eslint.org/img/logo.svg">
+    <img width="150" height="150" src="https://eslint.org/assets/img/logo.svg">
   </a>
   <a href="https://facebook.github.io/jest/">
     <img width="150" height="150" vspace="" hspace="25" src="https://jestjs.io/img/jest.png">
@@ -112,6 +112,7 @@ installations requiring long-term consistency.
 | [no-alias-methods][]         | Disallow alias methods                                            | ![recommended][] | ![fixable-green][]  |
 | [no-disabled-tests][]        | Disallow disabled tests                                           | ![recommended][] |                     |
 | [no-commented-out-tests][]   | Disallow commented out tests                                      |                  |                     |
+| [no-duplicate-hooks][]       | Disallow duplicate hooks withing a `describe` block               |                  |                     |
 | [no-empty-title][]           | Disallow empty titles                                             |                  |                     |
 | [no-focused-tests][]         | Disallow focused tests                                            | ![recommended][] |                     |
 | [no-hooks][]                 | Disallow setup and teardown hooks                                 |                  |                     |
@@ -158,6 +159,7 @@ https://github.com/dangreenisrael/eslint-plugin-jest-formatting
 [lowercase-name]: docs/rules/lowercase-name.md
 [no-alias-methods]: docs/rules/no-alias-methods.md
 [no-disabled-tests]: docs/rules/no-disabled-tests.md
+[no-duplicate-hooks]: docs/rules/no-duplicate-hooks.md
 [no-commented-out-tests]: docs/rules/no-commented-out-tests.md
 [no-empty-title]: docs/rules/no-empty-title.md
 [no-focused-tests]: docs/rules/no-focused-tests.md

@@ -2,16 +2,14 @@
 
 const { getDocsUrl } = require('./util');
 
-const testFunctions = Object.assign(Object.create(null), {
-  describe: true,
-  it: true,
-  test: true,
-});
+const testFunctions = new Set(['describe', 'it', 'test']);
 
-const matchesTestFunction = object => object && testFunctions[object.name];
+const matchesTestFunction = object => object && testFunctions.has(object.name);
 
 const isCallToFocusedTestFunction = object =>
-  object && object.name[0] === 'f' && testFunctions[object.name.substring(1)];
+  object &&
+  object.name[0] === 'f' &&
+  testFunctions.has(object.name.substring(1));
 
 const isPropertyNamedOnly = property =>
   property && (property.name === 'only' || property.value === 'only');
