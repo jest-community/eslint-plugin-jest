@@ -90,6 +90,9 @@ module.exports = {
         '"{{ propertyName }}" is not a valid property of expect.',
       propertyWithoutMatcher: '"{{ propertyName }}" needs to call a matcher.',
       matcherOnPropertyNotCalled: '"{{ propertyName }}" was not called.',
+      asyncMustBeAwaited: 'Async assertions must be awaited{{ orReturned }}.',
+      promisesWithAsyncAssertionsMustBeAwaited:
+        'Promises which return async assertions must be awaited{{ orReturned }}.',
     },
     schema: [
       {
@@ -219,8 +222,8 @@ module.exports = {
             const allowReturn = !options[0] || !options[0].alwaysAwait;
             const isParentArrayExpression =
               parentNode.parent.type === 'ArrayExpression';
-            const messageReturn = allowReturn ? ' or returned' : '';
-            let message = `Async assertions must be awaited${messageReturn}.`;
+            const orReturned = allowReturn ? ' or returned' : '';
+            let messageId = 'asyncMustBeAwaited';
 
             // Promise.x([expect()]) || Promise.x(expect())
             if (promiseArgumentTypes.includes(parentNode.parent.type)) {
@@ -230,7 +233,7 @@ module.exports = {
 
               if (promiseNode) {
                 parentNode = promiseNode;
-                message = `Promises which return async assertions must be awaited${messageReturn}.`;
+                messageId = 'promisesWithAsyncAssertionsMustBeAwaited';
               }
             }
 
@@ -240,7 +243,10 @@ module.exports = {
             ) {
               context.report({
                 loc: parentNode.loc,
-                message,
+                data: {
+                  orReturned,
+                },
+                messageId,
                 node,
               });
 
