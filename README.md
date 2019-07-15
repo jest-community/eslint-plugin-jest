@@ -3,7 +3,7 @@
 
 <div align="center">
   <a href="https://eslint.org/">
-    <img width="150" height="150" src="https://eslint.org/img/logo.svg">
+    <img width="150" height="150" src="https://eslint.org/assets/img/logo.svg">
   </a>
   <a href="https://facebook.github.io/jest/">
     <img width="150" height="150" vspace="" hspace="25" src="https://jestjs.io/img/jest.png">
