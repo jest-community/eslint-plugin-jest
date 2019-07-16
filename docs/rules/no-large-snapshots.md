@@ -98,7 +98,7 @@ line 4
 
 ## Options
 
-This rule has option for modifying the max number of lines allowed for a
+This rule has an option for modifying the max number of lines allowed for a
 snapshot:
 
 In an `eslintrc` file:
@@ -109,4 +109,50 @@ In an `eslintrc` file:
     "jest/no-large-snapshots": ["warn", { "maxSize": 12 }]
   }
 ...
+```
+
+In addition there is an option for whitelisting large snapshot files. Since
+`//eslint` comments will be removed when a `.snap` file is updated, this option
+provides a way of whitelisting large snapshots. The list of whitelistedSnapshots
+is keyed first on the absolute filepath of the snapshot file. You can then
+provide an array of strings to match the snapshot names against. If you're using
+a `.eslintrc.js` file, you can use regular expressions AND strings.
+
+In an `.eslintrc.js` file:
+
+```javascript
+...
+
+  "rules": {
+    "jest/no-large-snapshots": ["error",
+      {
+        "whitelistedSnapshots": {
+          "/path/to/file.js.snap": ["snapshot name 1", /a big snapshot \d+/]
+        }
+      }]
+  }
+
+...
+```
+
+Note: If you store your paths as relative paths, you can use `path.resolve` so
+that it can be shared between computers. For example, suppose you have your
+whitelisted snapshots in a file called `allowed-snaps.js` which stores them as
+relative paths. To convert them to absolute paths you can do something like the
+following:
+
+```javascript
+const path = require('path');
+const {mapKeys} = require('lodash');
+
+
+const allowedSnapshots = require('./allowed-snaps.js');
+const whitelistedSnapshots = mapKeys(allowedSnapshots, (val, file) => path.resolve(__dirname, file));
+
+...
+  rules: {
+    "jest/no-large-snapshots": ["error",
+      { whitelistedSnapshots }
+    ]
+  }
 ```
