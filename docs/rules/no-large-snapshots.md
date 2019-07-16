@@ -134,3 +134,25 @@ In an `.eslintrc.js` file:
 
 ...
 ```
+
+Note: If you store your paths as relative paths, you can use `path.resolve` so
+that it can be shared between computers. For example, suppose you have your
+whitelisted snapshots in a file called `allowed-snaps.js` which stores them as
+relative paths. To convert them to absolute paths you can do something like the
+following:
+
+```javascript
+const path = require('path');
+const {mapKeys} = require('lodash');
+
+
+const allowedSnapshots = require('./allowed-snaps.js');
+const whitelistedSnapshots = mapKeys(allowedSnapshots, (val, file) => path.resolve(__dirname, file));
+
+...
+  rules: {
+    "jest/no-large-snapshots": ["error",
+      { whitelistedSnapshots }
+    ]
+  }
+```
