@@ -19,17 +19,22 @@ module.exports = {
           return;
         }
 
-        const propertyName = method(node) && method(node).name;
+        let targetNode = method(node);
+        if (targetNode.name === 'rejects') {
+          targetNode = method(node.parent);
+        }
+
+        const propertyName = method(targetNode) && method(targetNode).name;
 
         // Look for `toThrow` calls with no arguments.
         if (
           ['toThrow', 'toThrowError'].includes(propertyName) &&
-          !argument(node)
+          !argument(targetNode)
         ) {
           context.report({
             messageId: 'requireRethrow',
             data: { propertyName },
-            node: method(node),
+            node: targetNode,
           });
         }
       },
