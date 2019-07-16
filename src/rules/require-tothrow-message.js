@@ -1,8 +1,6 @@
-'use strict';
+import { argument, expectCase, getDocsUrl, method } from './util';
 
-const { argument, expectCase, getDocsUrl, method } = require('./util');
-
-module.exports = {
+export default {
   meta: {
     docs: {
       url: getDocsUrl(__filename),

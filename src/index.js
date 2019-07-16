@@ -1,14 +1,23 @@
-'use strict';
+import { readdirSync } from 'fs';
+import { basename, join } from 'path';
+import * as snapshotProcessor from './processors/snapshot-processor';
 
-const fs = require('fs');
-const path = require('path');
+// copied from https://github.com/babel/babel/blob/d8da63c929f2d28c401571e2a43166678c555bc4/packages/babel-helpers/src/helpers.js#L602-L606
+/* istanbul ignore next */
+function interopRequireDefault(obj) {
+  return obj && obj.__esModule ? obj : { default: obj };
+}
 
-const rules = fs
-  .readdirSync(path.join(__dirname, 'rules'))
+function importDefault(moduleName) {
+  return interopRequireDefault(require(moduleName)).default;
+}
+
+const rules = readdirSync(join(__dirname, 'rules'))
   .filter(rule => rule !== '__tests__' && rule !== 'util.js')
-  .map(rule => path.basename(rule, '.js'))
+  .map(rule => basename(rule, '.js'))
   .reduce(
-    (acc, curr) => Object.assign(acc, { [curr]: require(`./rules/${curr}`) }),
+    (acc, curr) =>
+      Object.assign(acc, { [curr]: importDefault(`./rules/${curr}`) }),
     {},
   );
 let allRules = {};
@@ -16,8 +25,7 @@ Object.keys(rules).forEach(function(key) {
   allRules[`jest/${key}`] = 'error';
 });
 
-const snapshotProcessor = require('./processors/snapshot-processor');
-
+// eslint-disable-next-line import/no-commonjs
 module.exports = {
   configs: {
     all: {

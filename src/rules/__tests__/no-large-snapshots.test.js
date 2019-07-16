@@ -1,15 +1,15 @@
-'use strict';
+import { RuleTester } from 'eslint';
+import { parse } from 'babel-eslint';
+import rule from '../no-large-snapshots';
 
-const { RuleTester } = require('eslint');
-const rule = require('../no-large-snapshots');
 const noLargeSnapshots = rule.create;
-const { parse } = require('babel-eslint');
 
 const ruleTester = new RuleTester({
   parserOptions: {
     ecmaVersion: 2015,
   },
 });
+
 // lines - 1 to account for the starting newline we always add.
 const generateSnapshotNode = ({ lines, title = 'a big component 1' }) =>
   parse(`exports[\`${title}\`] = \`\n${'line\n'.repeat(lines - 1)}\`;`).body[0];

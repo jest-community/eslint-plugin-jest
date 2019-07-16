@@ -1,6 +1,4 @@
-'use strict';
-
-const snapshotProcessor = require('../snapshot-processor');
+import * as snapshotProcessor from '../snapshot-processor';
 
 describe('snapshot-processor', () => {
   it('exports an object with preprocess and postprocess functions', () => {

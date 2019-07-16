@@ -1,6 +1,4 @@
-'use strict';
-
-const { getDocsUrl } = require('./util');
+import { getDocsUrl } from './util';
 
 const testFunctions = new Set(['describe', 'it', 'test']);
 
@@ -17,7 +15,7 @@ const isPropertyNamedOnly = property =>
 const isCallToTestOnlyFunction = callee =>
   matchesTestFunction(callee.object) && isPropertyNamedOnly(callee.property);
 
-module.exports = {
+export default {
   meta: {
     docs: {
       url: getDocsUrl(__filename),

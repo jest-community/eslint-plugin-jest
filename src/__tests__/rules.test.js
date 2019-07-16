@@ -1,8 +1,6 @@
-'use strict';
-
-const fs = require('fs');
-const path = require('path');
-const { rules } = require('../');
+import { existsSync } from 'fs';
+import { resolve } from 'path';
+import { rules } from '../';
 
 const ruleNames = Object.keys(rules);
 const numberOfRules = 33;
@@ -10,9 +8,9 @@ const numberOfRules = 33;
 describe('rules', () => {
   it('should have a corresponding doc for each rule', () => {
     ruleNames.forEach(rule => {
-      const docPath = path.resolve(__dirname, '../../docs/rules', `${rule}.md`);
+      const docPath = resolve(__dirname, '../../docs/rules', `${rule}.md`);
 
-      if (!fs.existsSync(docPath)) {
+      if (!existsSync(docPath)) {
         throw new Error(
           `Could not find documentation file for rule "${rule}" in path "${docPath}"`,
         );

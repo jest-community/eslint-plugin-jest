@@ -1,6 +1,4 @@
-'use strict';
-
-const { getDocsUrl, isDescribe, isFunction } = require('./util');
+import { getDocsUrl, isDescribe, isFunction } from './util';
 
 const isAsync = node => node.async;
 
@@ -25,7 +23,7 @@ const paramsLocation = params => {
   };
 };
 
-module.exports = {
+export default {
   meta: {
     docs: {
       url: getDocsUrl(__filename),

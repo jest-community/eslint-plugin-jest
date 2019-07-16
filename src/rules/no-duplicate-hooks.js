@@ -1,6 +1,4 @@
-'use strict';
-
-const { getDocsUrl, isDescribe, isHook } = require('./util');
+import { getDocsUrl, isDescribe, isHook } from './util';
 
 const newHookContext = () => ({
   beforeAll: 0,
@@ -9,7 +7,7 @@ const newHookContext = () => ({
   afterEach: 0,
 });
 
-module.exports = {
+export default {
   meta: {
     docs: {
       url: getDocsUrl(__filename),

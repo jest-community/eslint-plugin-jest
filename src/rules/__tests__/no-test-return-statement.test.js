@@ -1,7 +1,5 @@
-'use strict';
-
-const { RuleTester } = require('eslint');
-const rule = require('../no-test-return-statement');
+import { RuleTester } from 'eslint';
+import rule from '../no-test-return-statement';
 
 const ruleTester = new RuleTester({ parserOptions: { ecmaVersion: 2015 } });
 

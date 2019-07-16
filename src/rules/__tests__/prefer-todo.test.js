@@ -1,7 +1,5 @@
-'use strict';
-
-const { RuleTester } = require('eslint');
-const rule = require('../prefer-todo');
+import { RuleTester } from 'eslint';
+import rule from '../prefer-todo';
 
 const ruleTester = new RuleTester({
   parserOptions: { ecmaVersion: 2015 },

@@ -1,12 +1,10 @@
-'use strict';
-
-const {
-  getDocsUrl,
-  isFunction,
+import {
   composeFixers,
+  getDocsUrl,
   getNodeName,
+  isFunction,
   isString,
-} = require('./util');
+} from './util';
 
 function isOnlyTestTitle(node) {
   return node.arguments.length === 1;
@@ -41,7 +39,7 @@ const isTestCase = node =>
   node.type === 'CallExpression' &&
   ['it', 'test', 'it.skip', 'test.skip'].includes(getNodeName(node.callee));
 
-module.exports = {
+export default {
   meta: {
     docs: {
       url: getDocsUrl(__filename),

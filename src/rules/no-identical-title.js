@@ -1,13 +1,11 @@
-'use strict';
-
-const {
+import {
   getDocsUrl,
-  isDescribe,
-  isTestCase,
-  isString,
-  hasExpressions,
   getStringValue,
-} = require('./util');
+  hasExpressions,
+  isDescribe,
+  isString,
+  isTestCase,
+} from './util';
 
 const newDescribeContext = () => ({
   describeTitles: [],
@@ -43,7 +41,7 @@ const isFirstArgValid = arg => {
   return true;
 };
 
-module.exports = {
+export default {
   meta: {
     docs: {
       url: getDocsUrl(__filename),

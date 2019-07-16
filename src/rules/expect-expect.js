@@ -1,13 +1,11 @@
-'use strict';
-
 /*
  * This implementation is adapted from eslint-plugin-jasmine.
  * MIT license, Remco Haszing.
  */
 
-const { getDocsUrl, getNodeName } = require('./util');
+import { getDocsUrl, getNodeName } from './util';
 
-module.exports = {
+export default {
   meta: {
     docs: {
       url: getDocsUrl(__filename),
