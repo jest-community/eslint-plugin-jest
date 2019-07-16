@@ -2,6 +2,8 @@
 
 const { getDocsUrl, getStringValue } = require('./util');
 
+const path = require('path');
+
 const reportOnViolation = (context, node) => {
   const lineLimit =
     context.options[0] && Number.isFinite(context.options[0].maxSize)
@@ -14,6 +16,16 @@ const reportOnViolation = (context, node) => {
     context.options &&
     context.options[0] &&
     context.options[0].whitelistedSnapshots;
+
+  const allPathsAreAbsolute = Object.keys(whitelistedSnapshots || {}).every(
+    path.isAbsolute,
+  );
+
+  if (!allPathsAreAbsolute) {
+    throw new Error(
+      'All paths for whitelistedSnapshots must be absolute. You can use JS config and `path.resolve`',
+    );
+  }
 
   let isWhitelisted = false;
 
