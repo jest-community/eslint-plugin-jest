@@ -1,7 +1,8 @@
-import { RuleTester } from 'eslint';
+import { TSESLint } from '@typescript-eslint/experimental-utils';
 import rule from '../no-commented-out-tests';
 
-const ruleTester = new RuleTester({
+const ruleTester = new TSESLint.RuleTester({
+  parser: '@typescript-eslint/parser',
   parserOptions: {
     sourceType: 'module',
   },
@@ -24,6 +25,7 @@ ruleTester.run('no-commented-out-tests', rule, {
     'testSomething()',
     '// latest(dates)',
     '// TODO: unify with Git implementation from Shipit (?)',
+    '#!/usr/bin/env node',
     [
       'import { pending } from "actions"',
       '',
@@ -141,8 +143,8 @@ ruleTester.run('no-commented-out-tests', rule, {
     {
       code: `
       foo()
-      /* 
-      describe("has title but no callback", () => {}) 
+      /*
+      describe("has title but no callback", () => {})
       */
       bar()`,
       errors: [{ messageId: 'commentedTests', column: 7, line: 3 }],
