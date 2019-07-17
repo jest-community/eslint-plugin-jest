@@ -85,7 +85,7 @@ const describeAliases = new Set([
   'xdescribe',
 ]);
 
-const testCaseNames = new Set([
+export const testCaseNames = new Set([
   'fit',
   'it',
   'it.only',
