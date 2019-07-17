@@ -3,13 +3,20 @@
 const { globals } = require('./').environments.globals;
 
 module.exports = {
+  parser: '@typescript-eslint/parser',
   extends: [
-    'eslint:recommended',
     'plugin:eslint-plugin/recommended',
     'plugin:node/recommended',
+    'plugin:@typescript-eslint/eslint-recommended',
     'prettier',
   ],
-  plugins: ['eslint-plugin', 'node', 'prettier', 'import'],
+  plugins: [
+    'eslint-plugin',
+    'node',
+    'prettier',
+    'import',
+    '@typescript-eslint',
+  ],
   parserOptions: {
     ecmaVersion: 2018,
   },
@@ -35,7 +42,7 @@ module.exports = {
   },
   overrides: [
     {
-      files: ['*.test.js'],
+      files: ['*.test.js', '*.test.ts'],
       globals,
     },
     {
