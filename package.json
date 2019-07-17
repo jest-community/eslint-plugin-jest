@@ -27,19 +27,30 @@
   },
   "scripts": {
     "prepare": "yarn build && yarn postbuild",
-    "lint": "eslint . --ignore-pattern '!.eslintrc.js'",
+    "lint": "eslint . --ignore-pattern '!.eslintrc.js' --ext js,ts",
     "prettylint": "prettylint docs/**/*.md README.md package.json",
     "prepublishOnly": "yarn build",
+    "pretest": "yarn build",
     "test": "jest",
-    "build": "babel src --out-dir lib",
-    "postbuild": "rimraf lib/**/__tests__/**"
+    "build": "babel --extensions .js,.ts src --out-dir lib",
+    "postbuild": "rimraf lib/**/__tests__/**",
+    "typecheck": "tsc -p ."
+  },
+  "dependencies": {
+    "@typescript-eslint/experimental-utils": "^1.12.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.4.4",
     "@babel/core": "^7.4.4",
     "@babel/preset-env": "^7.4.4",
+    "@babel/preset-typescript": "^7.3.3",
     "@commitlint/cli": "^6.0.0",
     "@commitlint/config-conventional": "^6.0.0",
+    "@types/eslint": "^4.16.6",
+    "@types/jest": "^24.0.15",
+    "@types/node": "^12.6.6",
+    "@typescript-eslint/eslint-plugin": "^1.12.0",
+    "@typescript-eslint/parser": "^1.12.0",
     "babel-eslint": "^10.0.2",
     "babel-jest": "^24.8.0",
     "eslint": "^5.1.0",
@@ -54,7 +65,8 @@
     "lint-staged": "^8.0.4",
     "prettier": "^1.10.2",
     "prettylint": "^1.0.0",
-    "rimraf": "^2.6.3"
+    "rimraf": "^2.6.3",
+    "typescript": "^3.5.3"
   },
   "prettier": {
     "proseWrap": "always",
@@ -62,7 +74,7 @@
     "trailingComma": "all"
   },
   "lint-staged": {
-    "*.js": [
+    "*.{js,ts}": [
       "eslint --fix",
       "git add"
     ],
