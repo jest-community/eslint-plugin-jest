@@ -26,12 +26,13 @@
     "eslint": ">=5"
   },
   "scripts": {
-    "prepare": "yarn build",
+    "prepare": "yarn build && yarn postbuild",
     "lint": "eslint . --ignore-pattern '!.eslintrc.js'",
     "prettylint": "prettylint docs/**/*.md README.md package.json",
     "prepublishOnly": "yarn build",
     "test": "jest",
-    "build": "babel src --out-dir lib"
+    "build": "babel src --out-dir lib",
+    "postbuild": "rimraf lib/**/__tests__/**"
   },
   "devDependencies": {
     "@babel/cli": "^7.4.4",
@@ -51,7 +52,8 @@
     "jest-runner-eslint": "^0.7.1",
     "lint-staged": "^8.0.4",
     "prettier": "^1.10.2",
-    "prettylint": "^1.0.0"
+    "prettylint": "^1.0.0",
+    "rimraf": "^2.6.3"
   },
   "prettier": {
     "proseWrap": "always",
