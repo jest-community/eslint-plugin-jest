@@ -12,8 +12,19 @@ export default {
   },
   create(context) {
     return {
-      ExportNamedDeclaration(node) {
+      'ExportNamedDeclaration, ExportDefaultDeclaration'(node) {
         context.report({ node, messageId: 'unexpectedExport' });
+      },
+      'AssignmentExpression > MemberExpression'(node) {
+        let { object, property } = node;
+
+        if (object.type === 'MemberExpression') {
+          ({ object, property } = object);
+        }
+
+        if (object.name === 'module' && !!property.name.match(/^exports?$/)) {
+          context.report({ node, messageId: 'unexpectedExport' });
+        }
       },
     };
   },

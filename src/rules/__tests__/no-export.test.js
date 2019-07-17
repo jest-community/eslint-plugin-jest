@@ -9,9 +9,9 @@ const ruleTester = new RuleTester({
 
 ruleTester.run('no-export', rule, {
   valid: [
-    {
-      code: 'describe("a test", () => { expect(1).toBe(1); })',
-    },
+    'describe("a test", () => { expect(1).toBe(1); })',
+    'window.location = "hello"',
+    'module.somethingElse = "foo";',
   ],
   invalid: [
     {
@@ -19,6 +19,20 @@ ruleTester.run('no-export', rule, {
         'export const myThing = "hello";  describe("a test", () => { expect(1).toBe(1);});',
       parserOptions: { sourceType: 'module' },
       errors: [{ endColumn: 32, column: 1, messageId: 'unexpectedExport' }],
+    },
+    {
+      code:
+        'export default function() {};  describe("a test", () => { expect(1).toBe(1);});',
+      parserOptions: { sourceType: 'module' },
+      errors: [{ endColumn: 29, column: 1, messageId: 'unexpectedExport' }],
+    },
+    {
+      code: 'module.exports = function() {};',
+      errors: [{ endColumn: 15, column: 1, messageId: 'unexpectedExport' }],
+    },
+    {
+      code: 'module.export.thing = function() {};',
+      errors: [{ endColumn: 20, column: 1, messageId: 'unexpectedExport' }],
     },
   ],
 });
