@@ -1,4 +1,4 @@
-import { getDocsUrl, testCaseNames, getNodeName, isTestCase } from './util';
+import { getDocsUrl, getNodeName, isTestCase, testCaseNames } from './util';
 
 const isTestArrowFunction = node =>
   node !== undefined &&
