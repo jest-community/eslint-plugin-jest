@@ -1,7 +1,6 @@
-'use strict';
+import { RuleTester } from 'eslint';
+import rule from '../no-mocks-import';
 
-const rule = require('../no-mocks-import.js');
-const { RuleTester } = require('eslint');
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-mocks-import', rule, {

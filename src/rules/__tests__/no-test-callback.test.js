@@ -1,7 +1,5 @@
-'use strict';
-
-const { RuleTester } = require('eslint');
-const rule = require('../no-test-callback');
+import { RuleTester } from 'eslint';
+import rule from '../no-test-callback';
 
 const ruleTester = new RuleTester({
   parserOptions: {

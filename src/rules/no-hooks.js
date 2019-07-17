@@ -1,8 +1,6 @@
-'use strict';
+import { getDocsUrl, isHook } from './util';
 
-const { getDocsUrl, isHook } = require('./util');
-
-module.exports = {
+export default {
   meta: {
     docs: {
       url: getDocsUrl(__filename),

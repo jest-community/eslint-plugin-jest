@@ -1,8 +1,5 @@
-'use strict';
-
-const { getDocsUrl, getStringValue } = require('./util');
-
-const path = require('path');
+import { isAbsolute } from 'path';
+import { getDocsUrl, getStringValue } from './util';
 
 const reportOnViolation = (context, node) => {
   const lineLimit =
@@ -18,7 +15,7 @@ const reportOnViolation = (context, node) => {
     context.options[0].whitelistedSnapshots;
 
   const allPathsAreAbsolute = Object.keys(whitelistedSnapshots || {}).every(
-    path.isAbsolute,
+    isAbsolute,
   );
 
   if (!allPathsAreAbsolute) {
@@ -54,7 +51,7 @@ const reportOnViolation = (context, node) => {
   }
 };
 
-module.exports = {
+export default {
   meta: {
     docs: {
       url: getDocsUrl(__filename),

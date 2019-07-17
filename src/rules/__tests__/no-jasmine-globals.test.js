@@ -1,7 +1,5 @@
-'use strict';
-
-const { RuleTester } = require('eslint');
-const rule = require('../no-jasmine-globals');
+import { RuleTester } from 'eslint';
+import rule from '../no-jasmine-globals';
 
 const ruleTester = new RuleTester();
 

@@ -1,6 +1,4 @@
-'use strict';
-
-const { getDocsUrl } = require('./util');
+import { getDocsUrl } from './util';
 
 const isItTestOrDescribeFunction = node => {
   return (
@@ -47,7 +45,7 @@ const descriptionBeginsWithLowerCase = node => {
   return false;
 };
 
-module.exports = {
+export default {
   meta: {
     docs: {
       url: getDocsUrl(__filename),

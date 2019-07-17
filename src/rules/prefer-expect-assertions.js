@@ -1,6 +1,4 @@
-'use strict';
-
-const { getDocsUrl } = require('./util');
+import { getDocsUrl } from './util';
 
 const validateArguments = expression => {
   return (
@@ -40,7 +38,7 @@ const reportMsg = (context, node) => {
   context.report({ messageId: 'haveExpectAssertions', node });
 };
 
-module.exports = {
+export default {
   meta: {
     docs: {
       url: getDocsUrl(__filename),
