@@ -16,7 +16,6 @@
   },
   "files": [
     "docs/",
-    "src/",
     "lib/"
   ],
   "main": "lib/",
