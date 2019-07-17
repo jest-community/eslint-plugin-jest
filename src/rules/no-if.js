@@ -15,25 +15,8 @@ export default {
       uri: getDocsUrl('jest/no-if'),
     },
     messages: {
-      noIf: [
-        'Tests should not contain if statements.',
-        'This is usually an indication that you',
-        'are attempting to test too much at once',
-        'or not testing what you intend to.',
-        'Consider breaking the if statement out',
-        'into a separate test to resolve this error.',
-      ].join(' '),
-      noConditional: [
-        'Tests should not contain conditional statements.',
-        'This is usually an indication that you',
-        'are attempting to test too much at once',
-        'or not testing what you intend to.',
-        'Consider writing a separate test for',
-        'each fork in the conditional statement.',
-        'If your conditionals are required to',
-        'satisfy the typescript type checker, consider',
-        'using a non-null assertion operator (!) instead.',
-      ].join(' '),
+      noIf: 'Tests should not contain if statements.',
+      noConditional: 'Tests should not contain conditional statements.',
     },
   },
 
