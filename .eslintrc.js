@@ -26,6 +26,7 @@ module.exports = {
       'error',
       { VariableDeclarator: { array: true, object: true } },
     ],
+    'sort-imports': ['error', { ignoreDeclarationSort: true }],
     'prettier/prettier': 'error',
     'node/no-unsupported-features/es-syntax': 'off',
     'node/no-unsupported-features/es-builtins': 'error',
