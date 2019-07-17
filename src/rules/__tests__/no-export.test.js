@@ -27,6 +27,11 @@ ruleTester.run('no-export', rule, {
       errors: [{ endColumn: 29, column: 1, messageId: 'unexpectedExport' }],
     },
     {
+      code:
+        'module.exports["foo"] = function() {};  describe("a test", () => { expect(1).toBe(1);});',
+      errors: [{ endColumn: 22, column: 1, messageId: 'unexpectedExport' }],
+    },
+    {
       code: 'module.exports = function() {};',
       errors: [{ endColumn: 15, column: 1, messageId: 'unexpectedExport' }],
     },
