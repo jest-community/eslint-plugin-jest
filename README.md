@@ -112,7 +112,7 @@ installations requiring long-term consistency.
 | [no-alias-methods][]         | Disallow alias methods                                            | ![recommended][] | ![fixable-green][]  |
 | [no-disabled-tests][]        | Disallow disabled tests                                           | ![recommended][] |                     |
 | [no-commented-out-tests][]   | Disallow commented out tests                                      |                  |                     |
-| [no-duplicate-hooks][]       | Disallow duplicate hooks within a `describe` block               |                  |                     |
+| [no-duplicate-hooks][]       | Disallow duplicate hooks within a `describe` block                |                  |                     |
 | [no-empty-title][]           | Disallow empty titles                                             |                  |                     |
 | [no-focused-tests][]         | Disallow focused tests                                            | ![recommended][] |                     |
 | [no-hooks][]                 | Disallow setup and teardown hooks                                 |                  |                     |
