@@ -20,6 +20,14 @@ enum DescribeAlias {
   'xdescribe',
 }
 
+enum TestCaseName {
+  'fit',
+  'it',
+  'test',
+  'xit',
+  'xtest',
+}
+
 enum HookName {
   'beforeAll',
   'beforeEach',
@@ -42,6 +50,16 @@ export const isHook = (node: TSESTree.CallExpression): boolean => {
     (node.callee.type === AST_NODE_TYPES.MemberExpression &&
       node.callee.object.type === AST_NODE_TYPES.Identifier &&
       node.callee.object.name in HookName)
+  );
+};
+
+export const isTestCase = (node: TSESTree.CallExpression): boolean => {
+  return (
+    (node.callee.type === AST_NODE_TYPES.Identifier &&
+      node.callee.name in TestCaseName) ||
+    (node.callee.type === AST_NODE_TYPES.MemberExpression &&
+      node.callee.object.type === AST_NODE_TYPES.Identifier &&
+      node.callee.object.name in TestCaseName)
   );
 };
 
