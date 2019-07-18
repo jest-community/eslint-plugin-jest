@@ -2,7 +2,6 @@ import { TSESLint } from '@typescript-eslint/experimental-utils';
 import rule from '../lowercase-name';
 
 const ruleTester = new TSESLint.RuleTester({
-  parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaVersion: 6,
   },
