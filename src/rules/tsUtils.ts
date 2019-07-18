@@ -35,6 +35,19 @@ export enum HookName {
   'afterEach' = 'afterEach',
 }
 
+export type JestFunctionName = DescribeAlias | TestCaseName | HookName;
+
+interface JestFunctionIdentifier<FunctionName extends JestFunctionName>
+  extends TSESTree.Identifier {
+  name: FunctionName;
+}
+
+export interface JestFunctionCallExpression<
+  FunctionName extends JestFunctionName = JestFunctionName
+> extends TSESTree.CallExpression {
+  callee: JestFunctionIdentifier<FunctionName>;
+}
+
 export type FunctionExpression =
   | TSESTree.ArrowFunctionExpression
   | TSESTree.FunctionExpression;
@@ -43,7 +56,10 @@ export const isFunction = (node: TSESTree.Node): node is FunctionExpression =>
   node.type === AST_NODE_TYPES.FunctionExpression ||
   node.type === AST_NODE_TYPES.ArrowFunctionExpression;
 
-export const isHook = (node: TSESTree.CallExpression): boolean => {
+/* istanbul ignore next */
+export const isHook = (
+  node: TSESTree.CallExpression,
+): node is JestFunctionCallExpression<HookName> => {
   return (
     (node.callee.type === AST_NODE_TYPES.Identifier &&
       node.callee.name in HookName) ||
@@ -53,7 +69,10 @@ export const isHook = (node: TSESTree.CallExpression): boolean => {
   );
 };
 
-export const isTestCase = (node: TSESTree.CallExpression): boolean => {
+/* istanbul ignore next */
+export const isTestCase = (
+  node: TSESTree.CallExpression,
+): node is JestFunctionCallExpression<TestCaseName> => {
   return (
     (node.callee.type === AST_NODE_TYPES.Identifier &&
       node.callee.name in TestCaseName) ||
@@ -63,7 +82,9 @@ export const isTestCase = (node: TSESTree.CallExpression): boolean => {
   );
 };
 
-export const isDescribe = (node: TSESTree.CallExpression): boolean => {
+export const isDescribe = (
+  node: TSESTree.CallExpression,
+): node is JestFunctionCallExpression<DescribeAlias> => {
   return (
     (node.callee.type === AST_NODE_TYPES.Identifier &&
       node.callee.name in DescribeAlias) ||
