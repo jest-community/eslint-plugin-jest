@@ -1,5 +1,6 @@
 import { TSESLint } from '@typescript-eslint/experimental-utils';
 import rule from '../lowercase-name';
+import { DescribeAlias, TestCaseName } from '../tsUtils';
 
 const ruleTester = new TSESLint.RuleTester({
   parserOptions: {
@@ -54,7 +55,7 @@ ruleTester.run('lowercase-name', rule, {
       errors: [
         {
           messageId: 'unexpectedLowercase',
-          data: { method: 'it' },
+          data: { method: TestCaseName.it },
           column: 1,
           line: 1,
         },
@@ -66,7 +67,7 @@ ruleTester.run('lowercase-name', rule, {
       errors: [
         {
           messageId: 'unexpectedLowercase',
-          data: { method: 'it' },
+          data: { method: TestCaseName.it },
           column: 1,
           line: 1,
         },
@@ -78,7 +79,7 @@ ruleTester.run('lowercase-name', rule, {
       errors: [
         {
           messageId: 'unexpectedLowercase',
-          data: { method: 'it' },
+          data: { method: TestCaseName.it },
           column: 1,
           line: 1,
         },
@@ -90,7 +91,7 @@ ruleTester.run('lowercase-name', rule, {
       errors: [
         {
           messageId: 'unexpectedLowercase',
-          data: { method: 'test' },
+          data: { method: TestCaseName.test },
           column: 1,
           line: 1,
         },
@@ -102,7 +103,7 @@ ruleTester.run('lowercase-name', rule, {
       errors: [
         {
           messageId: 'unexpectedLowercase',
-          data: { method: 'test' },
+          data: { method: TestCaseName.test },
           column: 1,
           line: 1,
         },
@@ -114,7 +115,7 @@ ruleTester.run('lowercase-name', rule, {
       errors: [
         {
           messageId: 'unexpectedLowercase',
-          data: { method: 'test' },
+          data: { method: TestCaseName.test },
           column: 1,
           line: 1,
         },
@@ -126,7 +127,7 @@ ruleTester.run('lowercase-name', rule, {
       errors: [
         {
           messageId: 'unexpectedLowercase',
-          data: { method: 'describe' },
+          data: { method: DescribeAlias.describe },
           column: 1,
           line: 1,
         },
@@ -138,7 +139,7 @@ ruleTester.run('lowercase-name', rule, {
       errors: [
         {
           messageId: 'unexpectedLowercase',
-          data: { method: 'describe' },
+          data: { method: DescribeAlias.describe },
           column: 1,
           line: 1,
         },
@@ -150,7 +151,7 @@ ruleTester.run('lowercase-name', rule, {
       errors: [
         {
           messageId: 'unexpectedLowercase',
-          data: { method: 'describe' },
+          data: { method: DescribeAlias.describe },
           column: 1,
           line: 1,
         },
@@ -162,7 +163,7 @@ ruleTester.run('lowercase-name', rule, {
       errors: [
         {
           messageId: 'unexpectedLowercase',
-          data: { method: 'describe' },
+          data: { method: DescribeAlias.describe },
           column: 1,
           line: 1,
         },
@@ -175,15 +176,15 @@ ruleTester.run('lowercase-name with ignore=describe', rule, {
   valid: [
     {
       code: "describe('Foo', function () {})",
-      options: [{ ignore: ['describe'] }],
+      options: [{ ignore: [DescribeAlias.describe] }],
     },
     {
       code: 'describe("Foo", function () {})',
-      options: [{ ignore: ['describe'] }],
+      options: [{ ignore: [DescribeAlias.describe] }],
     },
     {
       code: 'describe(`Foo`, function () {})',
-      options: [{ ignore: ['describe'] }],
+      options: [{ ignore: [DescribeAlias.describe] }],
     },
   ],
   invalid: [],
@@ -193,15 +194,15 @@ ruleTester.run('lowercase-name with ignore=test', rule, {
   valid: [
     {
       code: "test('Foo', function () {})",
-      options: [{ ignore: ['test'] }],
+      options: [{ ignore: [TestCaseName.test] }],
     },
     {
       code: 'test("Foo", function () {})',
-      options: [{ ignore: ['test'] }],
+      options: [{ ignore: [TestCaseName.test] }],
     },
     {
       code: 'test(`Foo`, function () {})',
-      options: [{ ignore: ['test'] }],
+      options: [{ ignore: [TestCaseName.test] }],
     },
   ],
   invalid: [],
@@ -211,15 +212,15 @@ ruleTester.run('lowercase-name with ignore=it', rule, {
   valid: [
     {
       code: "it('Foo', function () {})",
-      options: [{ ignore: ['it'] }],
+      options: [{ ignore: [TestCaseName.it] }],
     },
     {
       code: 'it("Foo", function () {})',
-      options: [{ ignore: ['it'] }],
+      options: [{ ignore: [TestCaseName.it] }],
     },
     {
       code: 'it(`Foo`, function () {})',
-      options: [{ ignore: ['it'] }],
+      options: [{ ignore: [TestCaseName.it] }],
     },
   ],
   invalid: [],
