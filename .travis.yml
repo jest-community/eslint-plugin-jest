@@ -35,6 +35,8 @@ branches:
   # Practical when batching releases
   - next
   - "/^greenkeeper/.*$/"
+  # While migrating to typescript
+  - reapply-ts
 env:
   global:
   - BUILD_LEADER_ID=6
