@@ -2,17 +2,15 @@ import {
   AST_NODE_TYPES,
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
-import { createRule } from './tsUtils';
-
-type JestFunctionName = 'it' | 'test' | 'describe';
-
-interface JestFunctionIdentifier extends TSESTree.Identifier {
-  name: JestFunctionName;
-}
-
-interface TestFunctionCallExpression extends TSESTree.CallExpression {
-  callee: JestFunctionIdentifier;
-}
+import {
+  DescribeAlias,
+  JestFunctionCallExpression,
+  JestFunctionName,
+  TestCaseName,
+  createRule,
+  isDescribe,
+  isTestCase,
+} from './tsUtils';
 
 type ArgumentLiteral = TSESTree.Literal | TSESTree.TemplateLiteral;
 
@@ -20,22 +18,10 @@ interface FirstArgumentStringCallExpression extends TSESTree.CallExpression {
   arguments: [ArgumentLiteral];
 }
 
-type CallExpressionWithCorrectCalleeAndArguments = TestFunctionCallExpression &
+type CallExpressionWithCorrectCalleeAndArguments = JestFunctionCallExpression<
+  TestCaseName.it | TestCaseName.test | DescribeAlias.describe
+> &
   FirstArgumentStringCallExpression;
-
-const isItTestOrDescribeFunction = (
-  node: TSESTree.CallExpression,
-): node is TestFunctionCallExpression => {
-  const { callee } = node;
-
-  if (callee.type !== AST_NODE_TYPES.Identifier) {
-    return false;
-  }
-
-  const { name } = callee;
-
-  return name === 'it' || name === 'test' || name === 'describe';
-};
 
 const hasStringAsFirstArgument = (
   node: TSESTree.CallExpression,
@@ -48,7 +34,9 @@ const hasStringAsFirstArgument = (
 const isJestFunctionWithLiteralArg = (
   node: TSESTree.CallExpression,
 ): node is CallExpressionWithCorrectCalleeAndArguments =>
-  isItTestOrDescribeFunction(node) && hasStringAsFirstArgument(node);
+  (isTestCase(node) || isDescribe(node)) &&
+  ['it', 'test', 'describe'].includes(node.callee.name) &&
+  hasStringAsFirstArgument(node);
 
 const testDescription = (argument: ArgumentLiteral): string | null => {
   if (argument.type === AST_NODE_TYPES.Literal) {
