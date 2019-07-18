@@ -2,7 +2,6 @@ import { TSESLint } from '@typescript-eslint/experimental-utils';
 import rule from '../no-commented-out-tests';
 
 const ruleTester = new TSESLint.RuleTester({
-  parser: '@typescript-eslint/parser',
   parserOptions: {
     sourceType: 'module',
   },
