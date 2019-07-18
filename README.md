@@ -114,6 +114,7 @@ installations requiring long-term consistency.
 | [no-commented-out-tests][]   | Disallow commented out tests                                      |                  |                     |
 | [no-duplicate-hooks][]       | Disallow duplicate hooks within a `describe` block                |                  |                     |
 | [no-empty-title][]           | Disallow empty titles                                             |                  |                     |
+| [no-export][]                | Disallow export from test files                                   | ![recommended][] |                     |
 | [no-focused-tests][]         | Disallow focused tests                                            | ![recommended][] |                     |
 | [no-hooks][]                 | Disallow setup and teardown hooks                                 |                  |                     |
 | [no-identical-title][]       | Disallow identical titles                                         | ![recommended][] |                     |
@@ -163,6 +164,7 @@ https://github.com/dangreenisrael/eslint-plugin-jest-formatting
 [no-duplicate-hooks]: docs/rules/no-duplicate-hooks.md
 [no-commented-out-tests]: docs/rules/no-commented-out-tests.md
 [no-empty-title]: docs/rules/no-empty-title.md
+[no-export]: docs/rules/no-export.md
 [no-focused-tests]: docs/rules/no-focused-tests.md
 [no-hooks]: docs/rules/no-hooks.md
 [no-identical-title]: docs/rules/no-identical-title.md

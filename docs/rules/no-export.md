@@ -1,12 +1,7 @@
 # no export from test file (no-export)
 
-I ran into this issue when we had a set of helper functions in 1 test file that
-got exported directly from a `-test.js` file. The test that was importing this
-file then executes both it's own tests as well as the tests in the imported
-file. We started seeing phantom snapshots show up that we weren't able to find
-the origin of until we finally tracked it down and realized that a test file was
-exporting shared functions. We fixed this by moving those functions out into
-seperate files, but that was the inspiration of this rule.
+Prevents exports from test files. If a file has at least 1 test in it, then this
+rule will prevent exports.
 
 ## Rule Details
 

@@ -4,40 +4,47 @@ import rule from '../no-export';
 const ruleTester = new RuleTester({
   parserOptions: {
     ecmaVersion: 2015,
+    sourceType: 'module',
   },
 });
 
 ruleTester.run('no-export', rule, {
   valid: [
     'describe("a test", () => { expect(1).toBe(1); })',
-    'window.location = "hello"',
+    'window.location = "valid"',
     'module.somethingElse = "foo";',
+    'export const myThing = "valid"',
+    'export default function () {}',
+    'module.exports = function(){}',
+    'module.exports.myThing = "valid";',
   ],
   invalid: [
     {
       code:
-        'export const myThing = "hello";  describe("a test", () => { expect(1).toBe(1);});',
+        'export const myThing = "invalid";  test("a test", () => { expect(1).toBe(1);});',
       parserOptions: { sourceType: 'module' },
-      errors: [{ endColumn: 32, column: 1, messageId: 'unexpectedExport' }],
+      errors: [{ endColumn: 34, column: 1, messageId: 'unexpectedExport' }],
     },
     {
       code:
-        'export default function() {};  describe("a test", () => { expect(1).toBe(1);});',
+        'export default function() {};  test("a test", () => { expect(1).toBe(1);});',
       parserOptions: { sourceType: 'module' },
       errors: [{ endColumn: 29, column: 1, messageId: 'unexpectedExport' }],
     },
     {
       code:
-        'module.exports["foo"] = function() {};  describe("a test", () => { expect(1).toBe(1);});',
-      errors: [{ endColumn: 22, column: 1, messageId: 'unexpectedExport' }],
+        'module.exports["invalid"] = function() {};  test("a test", () => { expect(1).toBe(1);});',
+      errors: [{ endColumn: 26, column: 1, messageId: 'unexpectedExport' }],
     },
     {
-      code: 'module.exports = function() {};',
+      code:
+        'module.exports = function() {}; ;  test("a test", () => { expect(1).toBe(1);});',
       errors: [{ endColumn: 15, column: 1, messageId: 'unexpectedExport' }],
     },
     {
-      code: 'module.export.thing = function() {};',
-      errors: [{ endColumn: 20, column: 1, messageId: 'unexpectedExport' }],
+      code:
+        'module.export.invalid = function() {}; ;  test("a test", () => { expect(1).toBe(1);});',
+      errors: [{ endColumn: 22, column: 1, messageId: 'unexpectedExport' }],
     },
   ],
 });
