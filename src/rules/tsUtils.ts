@@ -20,6 +20,13 @@ enum DescribeAlias {
   'xdescribe',
 }
 
+enum HookName {
+  'beforeAll',
+  'beforeEach',
+  'afterAll',
+  'afterEach',
+}
+
 export type FunctionExpression =
   | TSESTree.ArrowFunctionExpression
   | TSESTree.FunctionExpression;
@@ -27,6 +34,16 @@ export type FunctionExpression =
 export const isFunction = (node: TSESTree.Node): node is FunctionExpression =>
   node.type === AST_NODE_TYPES.FunctionExpression ||
   node.type === AST_NODE_TYPES.ArrowFunctionExpression;
+
+export const isHook = (node: TSESTree.CallExpression): boolean => {
+  return (
+    (node.callee.type === AST_NODE_TYPES.Identifier &&
+      node.callee.name in HookName) ||
+    (node.callee.type === AST_NODE_TYPES.MemberExpression &&
+      node.callee.object.type === AST_NODE_TYPES.Identifier &&
+      node.callee.object.name in HookName)
+  );
+};
 
 export const isDescribe = (node: TSESTree.CallExpression): boolean => {
   return (
