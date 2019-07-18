@@ -1,14 +1,21 @@
-import { getDocsUrl, isDescribe, isFunction } from './util';
+import { createRule, isDescribe, isFunction } from './tsUtils';
+import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/typescript-estree';
 
-const isAsync = node => node.async;
+type FunctionExpression =
+  | TSESTree.ArrowFunctionExpression
+  | TSESTree.FunctionExpression;
 
-const isString = node =>
-  (node.type === 'Literal' && typeof node.value === 'string') ||
-  node.type === 'TemplateLiteral';
+const isAsync = (node: FunctionExpression): boolean => node.async;
 
-const hasParams = node => node.params.length > 0;
+const isString = (node: TSESTree.Node): boolean =>
+  (node.type === AST_NODE_TYPES.Literal && typeof node.value === 'string') ||
+  node.type === AST_NODE_TYPES.TemplateLiteral;
 
-const paramsLocation = params => {
+const hasParams = (node: FunctionExpression): boolean => node.params.length > 0;
+
+const paramsLocation = (
+  params: TSESTree.Expression[] | TSESTree.Parameter[],
+) => {
   const [first] = params;
   const last = params[params.length - 1];
   return {
@@ -23,10 +30,15 @@ const paramsLocation = params => {
   };
 };
 
-export default {
+export default createRule({
+  name: __filename,
   meta: {
+    type: 'problem',
     docs: {
-      url: getDocsUrl(__filename),
+      description:
+        'Using an improper `describe()` callback function can lead to unexpected test errors.',
+      category: 'Possible Errors',
+      recommended: 'warn',
     },
     messages: {
       nameAndCallback: 'Describe requires name and callback arguments',
@@ -38,7 +50,8 @@ export default {
         'Unexpected return statement in describe callback',
     },
     schema: [],
-  },
+  } as const,
+  defaultOptions: [],
   create(context) {
     return {
       CallExpression(node) {
@@ -51,14 +64,14 @@ export default {
           }
 
           const [name] = node.arguments;
-          const [, callbackFunction] = node.arguments;
+          let [, callbackFunction] = node.arguments;
           if (!isString(name)) {
             context.report({
               messageId: 'firstArgumentMustBeName',
               loc: paramsLocation(node.arguments),
             });
           }
-          if (callbackFunction === undefined) {
+          if (!callbackFunction) {
             context.report({
               messageId: 'nameAndCallback',
               loc: paramsLocation(node.arguments),
@@ -73,7 +86,8 @@ export default {
             });
 
             return;
-          }
+          } else callbackFunction = callbackFunction as FunctionExpression;
+
           if (isAsync(callbackFunction)) {
             context.report({
               messageId: 'noAsyncDescribeCallback',
@@ -86,7 +100,10 @@ export default {
               loc: paramsLocation(callbackFunction.params),
             });
           }
-          if (callbackFunction.body.type === 'BlockStatement') {
+          if (
+            callbackFunction.body &&
+            callbackFunction.body.type === AST_NODE_TYPES.BlockStatement
+          ) {
             callbackFunction.body.body.forEach(node => {
               if (node.type === 'ReturnStatement') {
                 context.report({
@@ -100,4 +117,4 @@ export default {
       },
     };
   },
-};
+});

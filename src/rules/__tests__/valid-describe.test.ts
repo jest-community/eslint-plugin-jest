@@ -1,7 +1,8 @@
-import { RuleTester } from 'eslint';
+import { TSESLint } from '@typescript-eslint/experimental-utils';
 import rule from '../valid-describe';
 
-const ruleTester = new RuleTester({
+const ruleTester = new TSESLint.RuleTester({
+  parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaVersion: 8,
   },
