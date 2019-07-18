@@ -1,10 +1,10 @@
+import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/typescript-estree';
 import {
   FunctionExpression,
   createRule,
   isDescribe,
   isFunction,
 } from './tsUtils';
-import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/typescript-estree';
 
 const isAsync = (node: FunctionExpression): boolean => node.async;
 
