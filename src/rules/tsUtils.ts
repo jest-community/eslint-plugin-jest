@@ -127,3 +127,7 @@ export const isDescribe = (
       node.callee.object.name in DescribeAlias)
   );
 };
+
+export const isLiteralNode = (node: {
+  type: AST_NODE_TYPES;
+}): node is TSESTree.Literal => node.type === AST_NODE_TYPES.Literal;
