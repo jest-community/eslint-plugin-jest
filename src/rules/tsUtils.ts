@@ -14,13 +14,13 @@ export const createRule = ESLintUtils.RuleCreator(name => {
   return `${REPO_URL}/blob/v${version}/docs/rules/${ruleName}.md`;
 });
 
-enum DescribeAlias {
+export enum DescribeAlias {
   'describe' = 'describe',
   'fdescribe' = 'fdescribe',
   'xdescribe' = 'xdescribe',
 }
 
-enum TestCaseName {
+export enum TestCaseName {
   'fit' = 'fit',
   'it' = 'it',
   'test' = 'test',
@@ -28,7 +28,7 @@ enum TestCaseName {
   'xtest' = 'xtest',
 }
 
-enum HookName {
+export enum HookName {
   'beforeAll' = 'beforeAll',
   'beforeEach' = 'beforeEach',
   'afterAll' = 'afterAll',
