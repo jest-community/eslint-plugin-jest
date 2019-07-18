@@ -15,24 +15,24 @@ export const createRule = ESLintUtils.RuleCreator(name => {
 });
 
 enum DescribeAlias {
-  'describe',
-  'fdescribe',
-  'xdescribe',
+  'describe' = 'describe',
+  'fdescribe' = 'fdescribe',
+  'xdescribe' = 'xdescribe',
 }
 
 enum TestCaseName {
-  'fit',
-  'it',
-  'test',
-  'xit',
-  'xtest',
+  'fit' = 'fit',
+  'it' = 'it',
+  'test' = 'test',
+  'xit' = 'xit',
+  'xtest' = 'xtest',
 }
 
 enum HookName {
-  'beforeAll',
-  'beforeEach',
-  'afterAll',
-  'afterEach',
+  'beforeAll' = 'beforeAll',
+  'beforeEach' = 'beforeEach',
+  'afterAll' = 'afterAll',
+  'afterEach' = 'afterEach',
 }
 
 export type FunctionExpression =
