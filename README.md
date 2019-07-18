@@ -114,7 +114,7 @@ installations requiring long-term consistency.
 | [no-commented-out-tests][]   | Disallow commented out tests                                      |                  |                     |
 | [no-duplicate-hooks][]       | Disallow duplicate hooks within a `describe` block                |                  |                     |
 | [no-empty-title][]           | Disallow empty titles                                             |                  |                     |
-| [no-export][]                | Disallow export from test files                                   | ![recommended][] |                     |
+| [no-export][]                | Disallow export from test files                                   |                  |                     |
 | [no-focused-tests][]         | Disallow focused tests                                            | ![recommended][] |                     |
 | [no-hooks][]                 | Disallow setup and teardown hooks                                 |                  |                     |
 | [no-identical-title][]       | Disallow identical titles                                         | ![recommended][] |                     |

@@ -1,28 +1,26 @@
 import { getDocsUrl, isTestCase } from './util';
 
-let exportNodes = [];
-let hasTestCase = false;
-const messageId = 'unexpectedExport';
 export default {
   meta: {
     docs: {
       url: getDocsUrl(__filename),
     },
     messages: {
-      [messageId]: `Do not export from a test file.`,
+      unexpectedExport: `Do not export from a test file.`,
     },
     schema: [],
   },
   create(context) {
+    const exportNodes = [];
+    let hasTestCase = false;
+
     return {
       'Program:exit'() {
         if (hasTestCase && exportNodes.length > 0) {
           for (let node of exportNodes) {
-            context.report({ node, messageId });
+            context.report({ node, messageId: 'unexpectedExport' });
           }
         }
-        exportNodes = [];
-        hasTestCase = false;
       },
 
       CallExpression(node) {
@@ -40,7 +38,7 @@ export default {
           ({ object, property } = object);
         }
 
-        if (object.name === 'module' && !!property.name.match(/^exports?$/)) {
+        if (object.name === 'module' && /^exports?$/.test(property.name)) {
           exportNodes.push(node);
         }
       },
