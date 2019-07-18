@@ -1,9 +1,10 @@
-import { createRule, isDescribe, isFunction } from './tsUtils';
+import {
+  FunctionExpression,
+  createRule,
+  isDescribe,
+  isFunction,
+} from './tsUtils';
 import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/typescript-estree';
-
-type FunctionExpression =
-  | TSESTree.ArrowFunctionExpression
-  | TSESTree.FunctionExpression;
 
 const isAsync = (node: FunctionExpression): boolean => node.async;
 
@@ -64,7 +65,7 @@ export default createRule({
           }
 
           const [name] = node.arguments;
-          let [, callbackFunction] = node.arguments;
+          const [, callbackFunction] = node.arguments;
           if (!isString(name)) {
             context.report({
               messageId: 'firstArgumentMustBeName',
@@ -79,39 +80,38 @@ export default createRule({
 
             return;
           }
-          if (!isFunction(callbackFunction)) {
+          if (isFunction(callbackFunction)) {
+            if (isAsync(callbackFunction)) {
+              context.report({
+                messageId: 'noAsyncDescribeCallback',
+                node: callbackFunction,
+              });
+            }
+            if (hasParams(callbackFunction)) {
+              context.report({
+                messageId: 'unexpectedDescribeArgument',
+                loc: paramsLocation(callbackFunction.params),
+              });
+            }
+            if (
+              callbackFunction.body &&
+              callbackFunction.body.type === AST_NODE_TYPES.BlockStatement
+            ) {
+              callbackFunction.body.body.forEach(node => {
+                if (node.type === 'ReturnStatement') {
+                  context.report({
+                    messageId: 'unexpectedReturnInDescribe',
+                    node,
+                  });
+                }
+              });
+            }
+          } else {
             context.report({
               messageId: 'secondArgumentMustBeFunction',
               loc: paramsLocation(node.arguments),
             });
-
             return;
-          } else callbackFunction = callbackFunction as FunctionExpression;
-
-          if (isAsync(callbackFunction)) {
-            context.report({
-              messageId: 'noAsyncDescribeCallback',
-              node: callbackFunction,
-            });
-          }
-          if (hasParams(callbackFunction)) {
-            context.report({
-              messageId: 'unexpectedDescribeArgument',
-              loc: paramsLocation(callbackFunction.params),
-            });
-          }
-          if (
-            callbackFunction.body &&
-            callbackFunction.body.type === AST_NODE_TYPES.BlockStatement
-          ) {
-            callbackFunction.body.body.forEach(node => {
-              if (node.type === 'ReturnStatement') {
-                context.report({
-                  messageId: 'unexpectedReturnInDescribe',
-                  node,
-                });
-              }
-            });
           }
         }
       },
