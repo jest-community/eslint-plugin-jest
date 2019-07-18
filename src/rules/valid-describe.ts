@@ -20,15 +20,9 @@ const paramsLocation = (
   const [first] = params;
   const last = params[params.length - 1];
   return {
-    start: {
-      line: first.loc.start.line,
-      column: first.loc.start.column,
-    },
-    end: {
-      line: last.loc.end.line,
-      column: last.loc.end.column,
-    },
-  };
+    start: first.loc.start,
+    end: last.loc.end,
+  }
 };
 
 export default createRule({
