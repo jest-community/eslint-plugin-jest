@@ -69,7 +69,6 @@ export const isHook = (
   );
 };
 
-/* istanbul ignore next */
 export const isTestCase = (
   node: TSESTree.CallExpression,
 ): node is JestFunctionCallExpression<TestCaseName> => {
