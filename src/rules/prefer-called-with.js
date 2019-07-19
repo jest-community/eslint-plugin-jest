@@ -1,6 +1,11 @@
 'use strict';
 
-const { getDocsUrl, expectCase, expectNotCase, method } = require('./util');
+const {
+  getDocsUrl,
+  expectCaseWithParent,
+  expectNotCase,
+  method,
+} = require('./util');
 
 module.exports = {
   meta: {
@@ -16,7 +21,7 @@ module.exports = {
     return {
       CallExpression(node) {
         // Could check resolves/rejects here but not a likely idiom.
-        if (expectCase(node) && !expectNotCase(node)) {
+        if (expectCaseWithParent(node) && !expectNotCase(node)) {
           const methodNode = method(node);
           const { name } = methodNode;
           if (name === 'toBeCalled' || name === 'toHaveBeenCalled') {
