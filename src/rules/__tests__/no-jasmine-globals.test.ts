@@ -54,6 +54,10 @@ ruleTester.run('no-jasmine-globals', rule, {
       output: 'jest.setTimeout(5000);',
     },
     {
+      code: 'jasmine.DEFAULT_TIMEOUT_INTERVAL = function() {}',
+      errors: [{ messageId: 'illegalJasmine', column: 1, line: 1 }],
+    },
+    {
       code: 'jasmine.addMatchers(matchers)',
       errors: [
         {

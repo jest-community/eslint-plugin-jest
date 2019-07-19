@@ -128,18 +128,19 @@ export default createRule({
             ) {
               const { right } = parent;
 
-              if (right.type !== AST_NODE_TYPES.Literal) {
+              if (right.type === AST_NODE_TYPES.Literal) {
+                context.report({
+                  fix: fixer => [
+                    fixer.replaceText(
+                      parent,
+                      `jest.setTimeout(${right.value})`,
+                    ),
+                  ],
+                  node,
+                  messageId: 'illegalJasmine',
+                });
                 return;
               }
-
-              context.report({
-                fix: fixer => [
-                  fixer.replaceText(parent, `jest.setTimeout(${right.value})`),
-                ],
-                node,
-                messageId: 'illegalJasmine',
-              });
-              return;
             }
 
             context.report({ node, messageId: 'illegalJasmine' });
