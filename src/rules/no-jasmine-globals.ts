@@ -76,9 +76,7 @@ export default createRule({
             functionName === 'stringMatching'
           ) {
             context.report({
-              fix(fixer) {
-                return [fixer.replaceText(callee.object, 'expect')];
-              },
+              fix: fixer => [fixer.replaceText(callee.object, 'expect')],
               node,
               messageId: 'illegalMethod',
               data: {
