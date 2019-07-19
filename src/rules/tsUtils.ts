@@ -27,14 +27,14 @@ export const getNodeName = (node: TSESTree.Node): string | null => {
   }
 
   switch (node.type) {
-    case 'Identifier':
+    case AST_NODE_TYPES.Identifier:
       return node.name;
-    case 'Literal':
+    case AST_NODE_TYPES.Literal:
       return `${node.value}`;
-    case 'TemplateLiteral':
+    case AST_NODE_TYPES.TemplateLiteral:
       if (node.expressions.length === 0) return node.quasis[0].value.cooked;
       break;
-    case 'MemberExpression':
+    case AST_NODE_TYPES.MemberExpression:
       return joinNames(getNodeName(node.object), getNodeName(node.property));
   }
 
