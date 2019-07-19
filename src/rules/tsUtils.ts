@@ -21,6 +21,31 @@ enum DescribeAlias {
   'xdescribe',
 }
 
+/* istanbul ignore next */
+export const getNodeName = (node?: TSESTree.Node): string | null => {
+  function joinNames(a?: string | null, b?: string | null): string | null {
+    return a && b ? `${a}.${b}` : null;
+  }
+
+  if (!node) {
+    return null;
+  }
+
+  switch (node.type) {
+    case 'Identifier':
+      return node.name;
+    case 'Literal':
+      return `${node.value}`;
+    case 'TemplateLiteral':
+      if (node.expressions.length === 0) return node.quasis[0].value.cooked;
+      break;
+    case 'MemberExpression':
+      return joinNames(getNodeName(node.object), getNodeName(node.property));
+  }
+
+  return null;
+};
+
 export type FunctionExpression =
   | TSESTree.ArrowFunctionExpression
   | TSESTree.FunctionExpression;
