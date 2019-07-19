@@ -1,4 +1,4 @@
-import { getDocsUrl, isDescribe, isHook } from './util';
+import { createRule, isDescribe, isHook } from './tsUtils';
 
 const newHookContext = () => ({
   beforeAll: 0,
@@ -7,15 +7,22 @@ const newHookContext = () => ({
   afterEach: 0,
 });
 
-export default {
+export default createRule({
+  name: __filename,
   meta: {
     docs: {
-      url: getDocsUrl(__filename),
+      category: 'Best Practices',
+      description: 'Disallow duplicate setup and teardown hooks',
+      recommended: false,
     },
     messages: {
       noDuplicateHook: 'Duplicate {{hook}} in describe block',
     },
+    fixable: 'code',
+    schema: [],
+    type: 'suggestion',
   },
+  defaultOptions: [],
   create(context) {
     const hookContexts = [newHookContext()];
     return {
@@ -43,4 +50,4 @@ export default {
       },
     };
   },
-};
+});
