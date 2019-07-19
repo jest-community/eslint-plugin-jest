@@ -1,7 +1,7 @@
-import { RuleTester } from 'eslint';
+import { TSESLint } from '@typescript-eslint/experimental-utils';
 import rule from '../no-focused-tests';
 
-const ruleTester = new RuleTester();
+const ruleTester = new TSESLint.RuleTester();
 
 ruleTester.run('no-focused-tests', rule, {
   valid: [
