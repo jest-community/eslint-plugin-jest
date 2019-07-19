@@ -15,6 +15,7 @@ ruleTester.run('no-truthy-falsy', rule, {
     'expect("anything").not.toEqual(true);',
     'expect(Promise.resolve({})).resolves.toBe(true);',
     'expect(Promise.reject({})).rejects.toBe(true);',
+    'expect(a);',
   ],
 
   invalid: [

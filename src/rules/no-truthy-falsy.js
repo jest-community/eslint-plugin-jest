@@ -2,7 +2,7 @@
 
 const {
   getDocsUrl,
-  expectCase,
+  expectCaseWithParent,
   expectNotCase,
   expectResolvesCase,
   expectRejectsCase,
@@ -23,7 +23,7 @@ module.exports = {
     return {
       CallExpression(node) {
         if (
-          expectCase(node) ||
+          expectCaseWithParent(node) ||
           expectNotCase(node) ||
           expectResolvesCase(node) ||
           expectRejectsCase(node)

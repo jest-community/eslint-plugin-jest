@@ -25,6 +25,7 @@ ruleTester.run('prefer-to-contain', rule, {
     `expect(a.test(b)).resolves.toEqual(true)`,
     `expect(a.test(b)).resolves.not.toEqual(true)`,
     `expect(a).not.toContain(b)`,
+    'expect(a);',
   ],
   invalid: [
     {

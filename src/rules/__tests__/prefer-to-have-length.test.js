@@ -12,6 +12,7 @@ ruleTester.run('prefer-to-have-length', rule, {
     'expect(result).toBe(true);',
     `expect(user.getUserName(5)).resolves.toEqual('Paul')`,
     `expect(user.getUserName(5)).rejects.toEqual('Paul')`,
+    'expect(a);',
   ],
 
   invalid: [

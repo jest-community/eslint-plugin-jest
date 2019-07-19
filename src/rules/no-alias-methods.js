@@ -1,6 +1,6 @@
 'use strict';
 
-const { expectCase, getDocsUrl, method } = require('./util');
+const { expectCaseWithParent, getDocsUrl, method } = require('./util');
 
 module.exports = {
   meta: {
@@ -32,7 +32,7 @@ module.exports = {
 
     return {
       CallExpression(node) {
-        if (!expectCase(node)) {
+        if (!expectCaseWithParent(node)) {
           return;
         }
 

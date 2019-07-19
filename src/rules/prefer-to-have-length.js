@@ -2,7 +2,7 @@
 
 const {
   getDocsUrl,
-  expectCase,
+  expectCaseWithParent,
   expectNotCase,
   expectResolvesCase,
   expectRejectsCase,
@@ -29,7 +29,7 @@ module.exports = {
             expectResolvesCase(node) ||
             expectRejectsCase(node)
           ) &&
-          expectCase(node) &&
+          expectCaseWithParent(node) &&
           (method(node).name === 'toBe' || method(node).name === 'toEqual') &&
           node.arguments[0].property &&
           node.arguments[0].property.name === 'length'

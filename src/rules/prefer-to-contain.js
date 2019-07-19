@@ -2,7 +2,7 @@
 
 const {
   getDocsUrl,
-  expectCase,
+  expectCaseWithParent,
   expectResolvesCase,
   expectRejectsCase,
   method,
@@ -94,7 +94,7 @@ module.exports = {
       CallExpression(node) {
         if (
           !(expectResolvesCase(node) || expectRejectsCase(node)) &&
-          expectCase(node) &&
+          expectCaseWithParent(node) &&
           (isEqualityNegation(node) || isValidEqualityCheck(node)) &&
           isValidIncludesMethod(node)
         ) {
