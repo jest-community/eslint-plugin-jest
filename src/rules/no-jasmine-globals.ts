@@ -65,12 +65,11 @@ export default createRule({
           return;
         }
 
-        if (calleeName.startsWith('jasmine.')) {
+        if (
+          callee.type === AST_NODE_TYPES.MemberExpression &&
+          calleeName.startsWith('jasmine.')
+        ) {
           const functionName = calleeName.replace('jasmine.', '');
-
-          if (callee.type !== AST_NODE_TYPES.MemberExpression) {
-            return;
-          }
 
           if (
             functionName === 'any' ||
