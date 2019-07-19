@@ -15,6 +15,7 @@ ruleTester.run('no-disabled-tests', rule, {
     'it.only("foo", function () {})',
     'test("foo", function () {})',
     'test.only("foo", function () {})',
+    'describe[`${"skip"}`]("foo", function () {})',
     'var appliedSkip = describe.skip; appliedSkip.apply(describe)',
     'var calledSkip = it.skip; calledSkip.call(it)',
     '({ f: function () {} }).f()',
@@ -55,6 +56,10 @@ ruleTester.run('no-disabled-tests', rule, {
   invalid: [
     {
       code: 'describe.skip("foo", function () {})',
+      errors: [{ messageId: 'skippedTestSuite', column: 1, line: 1 }],
+    },
+    {
+      code: 'describe[`skip`]("foo", function () {})',
       errors: [{ messageId: 'skippedTestSuite', column: 1, line: 1 }],
     },
     {
