@@ -1,7 +1,7 @@
-import { RuleTester } from 'eslint';
+import { TSESLint } from '@typescript-eslint/experimental-utils';
 import rule from '../no-disabled-tests';
 
-const ruleTester = new RuleTester({
+const ruleTester = new TSESLint.RuleTester({
   parserOptions: {
     sourceType: 'module',
   },
