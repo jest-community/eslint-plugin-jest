@@ -14,10 +14,38 @@ export const createRule = ESLintUtils.RuleCreator(name => {
   return `${REPO_URL}/blob/v${version}/docs/rules/${ruleName}.md`;
 });
 
-enum DescribeAlias {
-  'describe',
-  'fdescribe',
-  'xdescribe',
+export enum DescribeAlias {
+  'describe' = 'describe',
+  'fdescribe' = 'fdescribe',
+  'xdescribe' = 'xdescribe',
+}
+
+export enum TestCaseName {
+  'fit' = 'fit',
+  'it' = 'it',
+  'test' = 'test',
+  'xit' = 'xit',
+  'xtest' = 'xtest',
+}
+
+export enum HookName {
+  'beforeAll' = 'beforeAll',
+  'beforeEach' = 'beforeEach',
+  'afterAll' = 'afterAll',
+  'afterEach' = 'afterEach',
+}
+
+export type JestFunctionName = DescribeAlias | TestCaseName | HookName;
+
+interface JestFunctionIdentifier<FunctionName extends JestFunctionName>
+  extends TSESTree.Identifier {
+  name: FunctionName;
+}
+
+export interface JestFunctionCallExpression<
+  FunctionName extends JestFunctionName = JestFunctionName
+> extends TSESTree.CallExpression {
+  callee: JestFunctionIdentifier<FunctionName>;
 }
 
 export type FunctionExpression =
@@ -28,7 +56,34 @@ export const isFunction = (node: TSESTree.Node): node is FunctionExpression =>
   node.type === AST_NODE_TYPES.FunctionExpression ||
   node.type === AST_NODE_TYPES.ArrowFunctionExpression;
 
-export const isDescribe = (node: TSESTree.CallExpression): boolean => {
+/* istanbul ignore next */
+export const isHook = (
+  node: TSESTree.CallExpression,
+): node is JestFunctionCallExpression<HookName> => {
+  return (
+    (node.callee.type === AST_NODE_TYPES.Identifier &&
+      node.callee.name in HookName) ||
+    (node.callee.type === AST_NODE_TYPES.MemberExpression &&
+      node.callee.object.type === AST_NODE_TYPES.Identifier &&
+      node.callee.object.name in HookName)
+  );
+};
+
+export const isTestCase = (
+  node: TSESTree.CallExpression,
+): node is JestFunctionCallExpression<TestCaseName> => {
+  return (
+    (node.callee.type === AST_NODE_TYPES.Identifier &&
+      node.callee.name in TestCaseName) ||
+    (node.callee.type === AST_NODE_TYPES.MemberExpression &&
+      node.callee.object.type === AST_NODE_TYPES.Identifier &&
+      node.callee.object.name in TestCaseName)
+  );
+};
+
+export const isDescribe = (
+  node: TSESTree.CallExpression,
+): node is JestFunctionCallExpression<DescribeAlias> => {
   return (
     (node.callee.type === AST_NODE_TYPES.Identifier &&
       node.callee.name in DescribeAlias) ||
