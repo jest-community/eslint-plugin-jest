@@ -21,7 +21,6 @@ enum DescribeAlias {
   'xdescribe',
 }
 
-/* istanbul ignore next */
 export const getNodeName = (node?: TSESTree.Node): string | null => {
   function joinNames(a?: string | null, b?: string | null): string | null {
     return a && b ? `${a}.${b}` : null;
@@ -95,7 +94,6 @@ const collectReferences = (scope: TSESLint.Scope.Scope) => {
   return { locals, unresolved };
 };
 
-/* istanbul ignore next */
 export const scopeHasLocalReference = (
   scope: TSESLint.Scope.Scope,
   referenceName: string,
