@@ -95,7 +95,7 @@ export default createRule({
               messageId: 'illegalMethod',
               data: {
                 method: calleeName,
-                replacement: `expect.extend`,
+                replacement: 'expect.extend',
               },
             });
             return;
