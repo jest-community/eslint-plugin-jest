@@ -1,5 +1,6 @@
 import {
   AST_NODE_TYPES,
+  TSESLint,
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
 import {
@@ -130,7 +131,7 @@ export default createRule({
               // guaranteed by jestFunctionName
               const description = testDescription(firstArg)!;
 
-              const rangeIgnoringQuotes: [number, number] = [
+              const rangeIgnoringQuotes: TSESLint.AST.Range = [
                 firstArg.range[0] + 1,
                 firstArg.range[1] - 1,
               ];
