@@ -7,6 +7,12 @@ const REPO_URL = 'https://github.com/jest-community/eslint-plugin-jest';
 
 const expectCase = node => node && node.callee && node.callee.name === 'expect';
 
+const expectCaseWithParent = node =>
+  expectCase(node) &&
+  node.parent &&
+  node.parent.type === 'MemberExpression' &&
+  node.parent.parent;
+
 const expectNotCase = node =>
   expectCase(node) &&
   node.parent.parent.type === 'MemberExpression' &&
@@ -238,6 +244,7 @@ module.exports = {
   argument,
   argument2,
   expectCase,
+  expectCaseWithParent,
   expectNotCase,
   expectResolvesCase,
   expectNotResolvesCase,
