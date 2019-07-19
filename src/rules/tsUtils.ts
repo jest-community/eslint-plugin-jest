@@ -43,7 +43,6 @@ export const isLiteralNode = (node: {
   type: AST_NODE_TYPES;
 }): node is TSESTree.Literal => node.type === AST_NODE_TYPES.Literal;
 
-/* istanbul ignore next */
 const collectReferences = (scope: TSESLint.Scope.Scope) => {
   const locals = new Set();
   const unresolved = new Set();
@@ -69,4 +68,19 @@ const collectReferences = (scope: TSESLint.Scope.Scope) => {
   }
 
   return { locals, unresolved };
+};
+
+/* istanbul ignore next */
+export const scopeHasLocalReference = (
+  scope: TSESLint.Scope.Scope,
+  referenceName: string,
+) => {
+  const references = collectReferences(scope);
+  return (
+    // referenceName was found as a local variable or function declaration.
+    references.locals.has(referenceName) ||
+    // referenceName was not found as an unresolved reference,
+    // meaning it is likely not an implicit global reference.
+    !references.unresolved.has(referenceName)
+  );
 };
