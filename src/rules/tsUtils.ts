@@ -21,13 +21,9 @@ enum DescribeAlias {
   'xdescribe',
 }
 
-export const getNodeName = (node?: TSESTree.Node): string | null => {
+export const getNodeName = (node: TSESTree.Node): string | null => {
   function joinNames(a?: string | null, b?: string | null): string | null {
     return a && b ? `${a}.${b}` : null;
-  }
-
-  if (!node) {
-    return null;
   }
 
   switch (node.type) {
