@@ -31,7 +31,7 @@ export default createRule({
         const { callee } = node;
         const calleeName = getNodeName(callee);
 
-        if (callee.type !== AST_NODE_TYPES.MemberExpression || !calleeName) {
+        if (!calleeName) {
           return;
         }
 
@@ -67,6 +67,10 @@ export default createRule({
 
         if (calleeName.startsWith('jasmine.')) {
           const functionName = calleeName.replace('jasmine.', '');
+
+          if (callee.type !== AST_NODE_TYPES.MemberExpression) {
+            return;
+          }
 
           if (
             functionName === 'any' ||
