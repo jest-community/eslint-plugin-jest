@@ -1,11 +1,14 @@
-import { getDocsUrl, getNodeName, scopeHasLocalReference } from './util';
+import { AST_NODE_TYPES } from '@typescript-eslint/experimental-utils';
+import { createRule, getNodeName, scopeHasLocalReference } from './tsUtils';
 
-export default {
+export default createRule({
+  name: __filename,
   meta: {
     docs: {
-      url: getDocsUrl(__filename),
+      category: 'Best Practices',
+      description: 'Disallow Jasmine globals',
+      recommended: false,
     },
-    fixable: 'code',
     messages: {
       illegalGlobal:
         'Illegal usage of global `{{ global }}`, prefer `{{ replacement }}`',
@@ -17,16 +20,21 @@ export default {
         'Illegal usage of `pending`, prefer explicitly skipping a test using `test.skip`',
       illegalJasmine: 'Illegal usage of jasmine global',
     },
+    fixable: 'code',
     schema: [],
+    type: 'suggestion',
   },
+  defaultOptions: [],
   create(context) {
     return {
       CallExpression(node) {
-        const calleeName = getNodeName(node.callee);
+        const { callee } = node;
+        const calleeName = getNodeName(callee);
 
-        if (!calleeName) {
+        if (callee.type !== AST_NODE_TYPES.MemberExpression || !calleeName) {
           return;
         }
+
         if (
           calleeName === 'spyOn' ||
           calleeName === 'spyOnProperty' ||
@@ -69,7 +77,7 @@ export default {
           ) {
             context.report({
               fix(fixer) {
-                return [fixer.replaceText(node.callee.object, 'expect')];
+                return [fixer.replaceText(callee.object, 'expect')];
               },
               node,
               messageId: 'illegalMethod',
@@ -109,18 +117,26 @@ export default {
         }
       },
       MemberExpression(node) {
-        if (node.object.name === 'jasmine') {
-          if (node.parent.type === 'AssignmentExpression') {
-            if (node.property.name === 'DEFAULT_TIMEOUT_INTERVAL') {
+        if ('name' in node.object && node.object.name === 'jasmine') {
+          const { parent, property } = node;
+
+          if (parent && parent.type === AST_NODE_TYPES.AssignmentExpression) {
+            if (
+              'name' in property &&
+              property.name === 'DEFAULT_TIMEOUT_INTERVAL'
+            ) {
+              const { right } = parent;
+
               context.report({
-                fix(fixer) {
-                  return [
-                    fixer.replaceText(
-                      node.parent,
-                      `jest.setTimeout(${node.parent.right.value})`,
-                    ),
-                  ];
-                },
+                fix:
+                  right.type !== AST_NODE_TYPES.Literal
+                    ? null
+                    : fixer => [
+                        fixer.replaceText(
+                          parent,
+                          `jest.setTimeout(${right.value})`,
+                        ),
+                      ],
                 node,
                 messageId: 'illegalJasmine',
               });
@@ -133,4 +149,4 @@ export default {
       },
     };
   },
-};
+});
