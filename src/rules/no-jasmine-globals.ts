@@ -127,16 +127,14 @@ export default createRule({
             ) {
               const { right } = parent;
 
+              if (right.type !== AST_NODE_TYPES.Literal) {
+                return;
+              }
+
               context.report({
-                fix:
-                  right.type !== AST_NODE_TYPES.Literal
-                    ? null
-                    : fixer => [
-                        fixer.replaceText(
-                          parent,
-                          `jest.setTimeout(${right.value})`,
-                        ),
-                      ],
+                fix: fixer => [
+                  fixer.replaceText(parent, `jest.setTimeout(${right.value})`),
+                ],
                 node,
                 messageId: 'illegalJasmine',
               });
