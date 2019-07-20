@@ -38,7 +38,9 @@ export default createRule({
   create(context) {
     const stack: Array<boolean> = [];
 
-    function validate(node: TSESTree.Node) {
+    function validate(
+      node: TSESTree.ConditionalExpression | TSESTree.IfStatement,
+    ) {
       const lastElementInStack = stack[stack.length - 1];
 
       if (stack.length === 0 || lastElementInStack === false) {
