@@ -109,11 +109,6 @@ export const getNodeName = node => {
   switch (node && node.type) {
     case 'Identifier':
       return node.name;
-    case 'Literal':
-      return node.value;
-    case 'TemplateLiteral':
-      if (node.expressions.length === 0) return node.quasis[0].value.cooked;
-      break;
     case 'MemberExpression':
       return joinNames(getNodeName(node.object), getNodeName(node.property));
   }
