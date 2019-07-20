@@ -30,16 +30,17 @@ export default createRule({
         }
 
         const [argument] = callback.params;
-        const { body } = callback;
-
-        if (!body || !('name' in argument)) {
-          return;
-        }
 
         context.report({
           node: argument,
           messageId: 'illegalTestCallback',
           fix(fixer) {
+            const { body } = callback;
+
+            if (!body) {
+              throw new Error('Unexpected null - please file a github issue');
+            }
+
             const sourceCode = context.getSourceCode();
             const firstBodyToken = sourceCode.getFirstToken(body);
             const lastBodyToken = sourceCode.getLastToken(body);
@@ -47,6 +48,7 @@ export default createRule({
             const tokenAfterArgument = sourceCode.getTokenAfter(argument);
 
             if (
+              !('name' in argument) ||
               !firstBodyToken ||
               !lastBodyToken ||
               !tokenBeforeArgument ||
