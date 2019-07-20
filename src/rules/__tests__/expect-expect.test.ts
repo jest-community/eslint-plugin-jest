@@ -1,7 +1,10 @@
-import { RuleTester } from 'eslint';
+import {
+  AST_NODE_TYPES,
+  TSESLint,
+} from '@typescript-eslint/experimental-utils';
 import rule from '../expect-expect';
 
-const ruleTester = new RuleTester({
+const ruleTester = new TSESLint.RuleTester({
   parserOptions: {
     ecmaVersion: 6,
   },
@@ -37,7 +40,7 @@ ruleTester.run('expect-expect', rule, {
       errors: [
         {
           messageId: 'noAssertions',
-          type: 'CallExpression',
+          type: AST_NODE_TYPES.CallExpression,
         },
       ],
     },
@@ -46,7 +49,7 @@ ruleTester.run('expect-expect', rule, {
       errors: [
         {
           messageId: 'noAssertions',
-          type: 'CallExpression',
+          type: AST_NODE_TYPES.CallExpression,
         },
       ],
     },
@@ -55,7 +58,7 @@ ruleTester.run('expect-expect', rule, {
       errors: [
         {
           messageId: 'noAssertions',
-          type: 'CallExpression',
+          type: AST_NODE_TYPES.CallExpression,
         },
       ],
     },
@@ -65,7 +68,7 @@ ruleTester.run('expect-expect', rule, {
       errors: [
         {
           messageId: 'noAssertions',
-          type: 'CallExpression',
+          type: AST_NODE_TYPES.CallExpression,
         },
       ],
     },
@@ -75,7 +78,7 @@ ruleTester.run('expect-expect', rule, {
       errors: [
         {
           messageId: 'noAssertions',
-          type: 'CallExpression',
+          type: AST_NODE_TYPES.CallExpression,
         },
       ],
     },
