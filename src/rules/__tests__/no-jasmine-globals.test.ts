@@ -1,7 +1,7 @@
-import { RuleTester } from 'eslint';
+import { TSESLint } from '@typescript-eslint/experimental-utils';
 import rule from '../no-jasmine-globals';
 
-const ruleTester = new RuleTester();
+const ruleTester = new TSESLint.RuleTester();
 
 ruleTester.run('no-jasmine-globals', rule, {
   valid: [
@@ -52,6 +52,10 @@ ruleTester.run('no-jasmine-globals', rule, {
       code: 'jasmine.DEFAULT_TIMEOUT_INTERVAL = 5000;',
       errors: [{ messageId: 'illegalJasmine', column: 1, line: 1 }],
       output: 'jest.setTimeout(5000);',
+    },
+    {
+      code: 'jasmine.DEFAULT_TIMEOUT_INTERVAL = function() {}',
+      errors: [{ messageId: 'illegalJasmine', column: 1, line: 1 }],
     },
     {
       code: 'jasmine.addMatchers(matchers)',
