@@ -79,7 +79,7 @@ export const argument2 = node =>
 
 const describeAliases = new Set(['describe', 'fdescribe', 'xdescribe']);
 
-export const testCaseNames = new Set(['fit', 'it', 'test', 'xit', 'xtest']);
+const testCaseNames = new Set(['fit', 'it', 'test', 'xit', 'xtest']);
 
 const testHookNames = new Set([
   'beforeAll',
