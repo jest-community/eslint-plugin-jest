@@ -5,7 +5,7 @@ import {
 } from '@typescript-eslint/experimental-utils';
 import {
   DescribeAlias,
-  JestFunctionCallExpression,
+  JestFunctionCallExpressionWithIdentifierCallee,
   JestFunctionName,
   TestCaseName,
   createRule,
@@ -19,7 +19,7 @@ interface FirstArgumentStringCallExpression extends TSESTree.CallExpression {
   arguments: [ArgumentLiteral];
 }
 
-type CallExpressionWithCorrectCalleeAndArguments = JestFunctionCallExpression<
+type CallExpressionWithCorrectCalleeAndArguments = JestFunctionCallExpressionWithIdentifierCallee<
   TestCaseName.it | TestCaseName.test | DescribeAlias.describe
 > &
   FirstArgumentStringCallExpression;
@@ -36,7 +36,7 @@ const isJestFunctionWithLiteralArg = (
   node: TSESTree.CallExpression,
 ): node is CallExpressionWithCorrectCalleeAndArguments =>
   (isTestCase(node) || isDescribe(node)) &&
-  ['it', 'test', 'describe'].includes(node.callee.name) &&
+  node.callee.type === AST_NODE_TYPES.Identifier &&
   hasStringAsFirstArgument(node);
 
 const testDescription = (argument: ArgumentLiteral): string | null => {

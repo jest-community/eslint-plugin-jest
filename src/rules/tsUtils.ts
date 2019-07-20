@@ -38,16 +38,34 @@ export enum HookName {
 
 export type JestFunctionName = DescribeAlias | TestCaseName | HookName;
 
-interface JestFunctionIdentifier<FunctionName extends JestFunctionName>
+export interface JestFunctionIdentifier<FunctionName extends JestFunctionName>
   extends TSESTree.Identifier {
   name: FunctionName;
 }
 
-export interface JestFunctionCallExpression<
-  FunctionName extends JestFunctionName = JestFunctionName
+export interface JestFunctionMemberExpression<
+  FunctionName extends JestFunctionName
+> extends TSESTree.MemberExpression {
+  object: JestFunctionIdentifier<FunctionName>;
+}
+
+export interface JestFunctionCallExpressionWithMemberExpressionCallee<
+  FunctionName extends JestFunctionName
+> extends TSESTree.CallExpression {
+  callee: JestFunctionMemberExpression<FunctionName>;
+}
+
+export interface JestFunctionCallExpressionWithIdentifierCallee<
+  FunctionName extends JestFunctionName
 > extends TSESTree.CallExpression {
   callee: JestFunctionIdentifier<FunctionName>;
 }
+
+export type JestFunctionCallExpression<
+  FunctionName extends JestFunctionName = JestFunctionName
+> =
+  | JestFunctionCallExpressionWithMemberExpressionCallee<FunctionName>
+  | JestFunctionCallExpressionWithIdentifierCallee<FunctionName>;
 
 export const getNodeName = (node: TSESTree.Node): string | null => {
   function joinNames(a?: string | null, b?: string | null): string | null {
@@ -80,13 +98,10 @@ export const isFunction = (node: TSESTree.Node): node is FunctionExpression =>
 /* istanbul ignore next */
 export const isHook = (
   node: TSESTree.CallExpression,
-): node is JestFunctionCallExpression<HookName> => {
+): node is JestFunctionCallExpressionWithIdentifierCallee<HookName> => {
   return (
-    (node.callee.type === AST_NODE_TYPES.Identifier &&
-      node.callee.name in HookName) ||
-    (node.callee.type === AST_NODE_TYPES.MemberExpression &&
-      node.callee.object.type === AST_NODE_TYPES.Identifier &&
-      node.callee.object.name in HookName)
+    node.callee.type === AST_NODE_TYPES.Identifier &&
+    node.callee.name in HookName
   );
 };
 
