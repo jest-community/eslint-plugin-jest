@@ -101,13 +101,6 @@ const describeAliases = new Set(['describe', 'fdescribe', 'xdescribe']);
 
 const testCaseNames = new Set(['fit', 'it', 'test', 'xit', 'xtest']);
 
-const testHookNames = new Set([
-  'beforeAll',
-  'beforeEach',
-  'afterAll',
-  'afterEach',
-]);
-
 export const getNodeName = node => {
   function joinNames(a, b) {
     return a && b ? `${a}.${b}` : null;
@@ -127,12 +120,6 @@ export const getNodeName = node => {
 
   return null;
 };
-
-export const isHook = node =>
-  node &&
-  node.type === 'CallExpression' &&
-  node.callee.type === 'Identifier' &&
-  testHookNames.has(node.callee.name);
 
 export const isTestCase = node =>
   node &&

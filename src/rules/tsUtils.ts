@@ -95,7 +95,6 @@ export const isFunction = (node: TSESTree.Node): node is FunctionExpression =>
   node.type === AST_NODE_TYPES.FunctionExpression ||
   node.type === AST_NODE_TYPES.ArrowFunctionExpression;
 
-/* istanbul ignore next */
 export const isHook = (
   node: TSESTree.CallExpression,
 ): node is JestFunctionCallExpressionWithIdentifierCallee<HookName> => {
