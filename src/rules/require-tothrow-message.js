@@ -1,4 +1,4 @@
-import { argument, expectCase, getDocsUrl, method } from './util';
+import { argument, expectCaseWithParent, getDocsUrl, method } from './util';
 
 export default {
   meta: {
@@ -13,7 +13,7 @@ export default {
   create(context) {
     return {
       CallExpression(node) {
-        if (!expectCase(node)) {
+        if (!expectCaseWithParent(node)) {
           return;
         }
 

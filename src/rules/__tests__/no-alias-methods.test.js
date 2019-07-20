@@ -17,6 +17,7 @@ ruleTester.run('no-alias-methods', rule, {
     'expect(a).toHaveNthReturnedWith()',
     'expect(a).toThrow()',
     'expect(a).rejects;',
+    'expect(a);',
   ],
 
   invalid: [

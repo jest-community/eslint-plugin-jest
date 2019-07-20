@@ -1,4 +1,4 @@
-import { expectCase, getDocsUrl, method } from './util';
+import { expectCaseWithParent, getDocsUrl, method } from './util';
 
 export default {
   meta: {
@@ -30,7 +30,7 @@ export default {
 
     return {
       CallExpression(node) {
-        if (!expectCase(node)) {
+        if (!expectCaseWithParent(node)) {
           return;
         }
 

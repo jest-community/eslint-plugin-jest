@@ -57,6 +57,7 @@ ruleTester.run('require-tothrow-message', rule, {
         await expect(throwErrorAsync()).resolves.not.toThrow();
         await expect(throwErrorAsync()).resolves.not.toThrowError();
     })`,
+    'expect(a);',
   ],
 
   invalid: [

@@ -1,4 +1,9 @@
-import { expectCase, expectNotCase, getDocsUrl, method } from './util';
+import {
+  expectCaseWithParent,
+  expectNotCase,
+  getDocsUrl,
+  method,
+} from './util';
 
 export default {
   meta: {
@@ -14,7 +19,7 @@ export default {
     return {
       CallExpression(node) {
         // Could check resolves/rejects here but not a likely idiom.
-        if (expectCase(node) && !expectNotCase(node)) {
+        if (expectCaseWithParent(node) && !expectNotCase(node)) {
           const methodNode = method(node);
           const { name } = methodNode;
           if (name === 'toBeCalled' || name === 'toHaveBeenCalled') {

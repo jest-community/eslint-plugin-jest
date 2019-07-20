@@ -1,8 +1,8 @@
 import {
-  expectCase,
+  expectCaseWithParent,
   expectNotCase,
-  expectRejectCase,
-  expectResolveCase,
+  expectRejectsCase,
+  expectResolvesCase,
   getDocsUrl,
   method,
 } from './util';
@@ -24,10 +24,10 @@ export default {
         if (
           !(
             expectNotCase(node) ||
-            expectResolveCase(node) ||
-            expectRejectCase(node)
+            expectResolvesCase(node) ||
+            expectRejectsCase(node)
           ) &&
-          expectCase(node) &&
+          expectCaseWithParent(node) &&
           (method(node).name === 'toBe' || method(node).name === 'toEqual') &&
           node.arguments[0].property &&
           node.arguments[0].property.name === 'length'

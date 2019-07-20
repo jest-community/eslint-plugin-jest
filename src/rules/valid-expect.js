@@ -3,9 +3,77 @@
  * MIT license, Tom Vincent.
  */
 
-import { getDocsUrl } from './util';
+import {
+  expectCase,
+  expectNotRejectsCase,
+  expectNotResolvesCase,
+  expectRejectsCase,
+  expectResolvesCase,
+  getDocsUrl,
+} from './util';
 
 const expectProperties = ['not', 'resolves', 'rejects'];
+const promiseArgumentTypes = ['CallExpression', 'ArrayExpression'];
+
+/**
+ * expect statement can have chained matchers.
+ * We are looking for the closest CallExpression
+ * to find `expect().x.y.z.t()` usage.
+ *
+ * @Returns CallExpressionNode
+ */
+const getClosestParentCallExpressionNode = node => {
+  if (!node || !node.parent || !node.parent.parent) {
+    return null;
+  }
+
+  if (node.parent.type === 'CallExpression') {
+    return node.parent;
+  }
+  return getClosestParentCallExpressionNode(node.parent);
+};
+
+/**
+ * Async assertions might be called in Promise
+ * methods like `Promise.x(expect1)` or `Promise.x([expect1, expect2])`.
+ * If that's the case, Promise node have to be awaited or returned.
+ *
+ * @Returns CallExpressionNode
+ */
+const getPromiseCallExpressionNode = node => {
+  if (
+    node &&
+    node.type === 'ArrayExpression' &&
+    node.parent &&
+    node.parent.type === 'CallExpression'
+  ) {
+    node = node.parent;
+  }
+
+  if (
+    node.type === 'CallExpression' &&
+    node.callee &&
+    node.callee.type === 'MemberExpression' &&
+    node.callee.object.name === 'Promise' &&
+    node.parent
+  ) {
+    return node;
+  }
+
+  return null;
+};
+
+const checkIfValidReturn = (parentCallExpressionNode, allowReturn) => {
+  const validParentNodeTypes = ['ArrowFunctionExpression', 'AwaitExpression'];
+  if (allowReturn) {
+    validParentNodeTypes.push('ReturnStatement');
+  }
+
+  return validParentNodeTypes.includes(parentCallExpressionNode.type);
+};
+
+const promiseArrayExceptionKey = ({ start, end }) =>
+  `${start.line}:${start.column}-${end.line}:${end.column}`;
 
 export default {
   meta: {
@@ -20,16 +88,41 @@ export default {
         '"{{ propertyName }}" is not a valid property of expect.',
       propertyWithoutMatcher: '"{{ propertyName }}" needs to call a matcher.',
       matcherOnPropertyNotCalled: '"{{ propertyName }}" was not called.',
+      asyncMustBeAwaited: 'Async assertions must be awaited{{ orReturned }}.',
+      promisesWithAsyncAssertionsMustBeAwaited:
+        'Promises which return async assertions must be awaited{{ orReturned }}.',
     },
-    schema: [],
+    schema: [
+      {
+        type: 'object',
+        properties: {
+          alwaysAwait: {
+            type: 'boolean',
+            default: false,
+          },
+        },
+        additionalProperties: false,
+      },
+    ],
   },
   create(context) {
+    // Context state
+    const arrayExceptions = {};
+
+    const pushPromiseArrayException = loc => {
+      const key = promiseArrayExceptionKey(loc);
+      arrayExceptions[key] = true;
+    };
+
+    const promiseArrayExceptionExists = loc => {
+      const key = promiseArrayExceptionKey(loc);
+      return !!arrayExceptions[key];
+    };
+
     return {
       CallExpression(node) {
-        const calleeName = node.callee.name;
-
-        if (calleeName === 'expect') {
-          // checking "expect()" arguments
+        // checking "expect()" arguments
+        if (expectCase(node)) {
           if (node.arguments.length > 1) {
             const secondArgumentLocStart = node.arguments[1].loc.start;
             const lastArgumentLocEnd =
@@ -47,7 +140,7 @@ export default {
               node,
             });
           } else if (node.arguments.length === 0) {
-            const expectLength = calleeName.length;
+            const expectLength = node.callee.name.length;
             context.report({
               loc: {
                 end: {
@@ -111,6 +204,53 @@ export default {
                     : 'matcherOnPropertyNotCalled',
                 node: parentProperty,
               });
+            }
+          }
+        }
+
+        if (
+          expectResolvesCase(node) ||
+          expectRejectsCase(node) ||
+          expectNotResolvesCase(node) ||
+          expectNotRejectsCase(node)
+        ) {
+          let parentNode = getClosestParentCallExpressionNode(node);
+          if (parentNode) {
+            const { options } = context;
+            const allowReturn = !options[0] || !options[0].alwaysAwait;
+            const isParentArrayExpression =
+              parentNode.parent.type === 'ArrayExpression';
+            const orReturned = allowReturn ? ' or returned' : '';
+            let messageId = 'asyncMustBeAwaited';
+
+            // Promise.x([expect()]) || Promise.x(expect())
+            if (promiseArgumentTypes.includes(parentNode.parent.type)) {
+              const promiseNode = getPromiseCallExpressionNode(
+                parentNode.parent,
+              );
+
+              if (promiseNode) {
+                parentNode = promiseNode;
+                messageId = 'promisesWithAsyncAssertionsMustBeAwaited';
+              }
+            }
+
+            if (
+              !checkIfValidReturn(parentNode.parent, allowReturn) &&
+              !promiseArrayExceptionExists(parentNode.loc)
+            ) {
+              context.report({
+                loc: parentNode.loc,
+                data: {
+                  orReturned,
+                },
+                messageId,
+                node,
+              });
+
+              if (isParentArrayExpression) {
+                pushPromiseArrayException(parentNode.loc);
+              }
             }
           }
         }

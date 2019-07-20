@@ -1,8 +1,8 @@
 import {
   argument,
-  expectCase,
-  expectRejectCase,
-  expectResolveCase,
+  expectCaseWithParent,
+  expectRejectsCase,
+  expectResolvesCase,
   getDocsUrl,
   method,
 } from './util';
@@ -91,8 +91,8 @@ export default {
     return {
       CallExpression(node) {
         if (
-          !(expectResolveCase(node) || expectRejectCase(node)) &&
-          expectCase(node) &&
+          !(expectResolvesCase(node) || expectRejectsCase(node)) &&
+          expectCaseWithParent(node) &&
           (isEqualityNegation(node) || isValidEqualityCheck(node)) &&
           isValidIncludesMethod(node)
         ) {

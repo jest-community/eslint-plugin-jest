@@ -15,6 +15,7 @@ ruleTester.run('prefer-called-with', rule, {
     'expect(fn).not.toHaveBeenCalledWith();',
     'expect(fn).toBeCalledTimes(0);',
     'expect(fn).toHaveBeenCalledTimes(0);',
+    'expect(fn);',
   ],
 
   invalid: [

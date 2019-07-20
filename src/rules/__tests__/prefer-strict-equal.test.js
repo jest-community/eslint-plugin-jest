@@ -7,6 +7,7 @@ ruleTester.run('prefer-strict-equal', rule, {
   valid: [
     'expect(something).toStrictEqual(somethingElse);',
     "a().toEqual('b')",
+    'expect(a);',
   ],
   invalid: [
     {

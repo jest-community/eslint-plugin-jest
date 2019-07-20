@@ -4,8 +4,10 @@ import { version } from '../../package.json';
 const REPO_URL = 'https://github.com/jest-community/eslint-plugin-jest';
 
 export const expectCase = node =>
-  node.callee.name === 'expect' &&
-  node.arguments.length === 1 &&
+  node && node.callee && node.callee.name === 'expect';
+
+export const expectCaseWithParent = node =>
+  expectCase(node) &&
   node.parent &&
   node.parent.type === 'MemberExpression' &&
   node.parent.parent;
@@ -15,18 +17,32 @@ export const expectNotCase = node =>
   node.parent.parent.type === 'MemberExpression' &&
   methodName(node) === 'not';
 
-export const expectResolveCase = node =>
+export const expectResolvesCase = node =>
   expectCase(node) &&
   node.parent.parent.type === 'MemberExpression' &&
-  methodName(node) === 'resolve';
+  methodName(node) === 'resolves';
 
-export const expectRejectCase = node =>
+export const expectNotResolvesCase = node =>
+  expectNotCase(node) &&
+  node.parent.parent.type === 'MemberExpression' &&
+  methodName(node.parent) === 'resolves';
+
+export const expectRejectsCase = node =>
   expectCase(node) &&
   node.parent.parent.type === 'MemberExpression' &&
-  methodName(node) === 'reject';
+  methodName(node) === 'rejects';
+
+export const expectNotRejectsCase = node =>
+  expectNotCase(node) &&
+  node.parent.parent.type === 'MemberExpression' &&
+  methodName(node.parent) === 'rejects';
 
 export const expectToBeCase = (node, arg) =>
-  !(expectNotCase(node) || expectResolveCase(node) || expectRejectCase(node)) &&
+  !(
+    expectNotCase(node) ||
+    expectResolvesCase(node) ||
+    expectRejectsCase(node)
+  ) &&
   expectCase(node) &&
   methodName(node) === 'toBe' &&
   argument(node) &&
@@ -45,7 +61,11 @@ export const expectNotToBeCase = (node, arg) =>
     (argument2(node).name === 'undefined' && arg === undefined));
 
 export const expectToEqualCase = (node, arg) =>
-  !(expectNotCase(node) || expectResolveCase(node) || expectRejectCase(node)) &&
+  !(
+    expectNotCase(node) ||
+    expectResolvesCase(node) ||
+    expectRejectsCase(node)
+  ) &&
   expectCase(node) &&
   methodName(node) === 'toEqual' &&
   argument(node) &&

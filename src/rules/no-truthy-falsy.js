@@ -1,8 +1,8 @@
 import {
-  expectCase,
+  expectCaseWithParent,
   expectNotCase,
-  expectRejectCase,
-  expectResolveCase,
+  expectRejectsCase,
+  expectResolvesCase,
   getDocsUrl,
   method,
 } from './util';
@@ -21,10 +21,10 @@ export default {
     return {
       CallExpression(node) {
         if (
-          expectCase(node) ||
+          expectCaseWithParent(node) ||
           expectNotCase(node) ||
-          expectResolveCase(node) ||
-          expectRejectCase(node)
+          expectResolvesCase(node) ||
+          expectRejectsCase(node)
         ) {
           const targetNode =
             node.parent.parent.type === 'MemberExpression' ? node.parent : node;
