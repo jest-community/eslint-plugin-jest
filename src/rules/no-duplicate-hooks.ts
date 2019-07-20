@@ -18,7 +18,7 @@ export default createRule({
     messages: {
       noDuplicateHook: 'Duplicate {{hook}} in describe block',
     },
-    fixable: 'code',
+    fixable: false,
     schema: [],
     type: 'suggestion',
   },
