@@ -1,16 +1,21 @@
-import { getDocsUrl, isTestCase } from './util';
+import { createRule, isFunction, isTestCase } from './tsUtils';
 
-export default {
+export default createRule({
+  name: __filename,
   meta: {
     docs: {
-      url: getDocsUrl(__filename),
+      category: 'Best Practices',
+      description: 'Avoid using a callback in asynchronous tests',
+      recommended: false,
     },
     messages: {
       illegalTestCallback: 'Illegal usage of test callback',
     },
     fixable: 'code',
     schema: [],
+    type: 'suggestion',
   },
+  defaultOptions: [],
   create(context) {
     return {
       CallExpression(node) {
@@ -20,24 +25,36 @@ export default {
 
         const [, callback] = node.arguments;
 
-        if (
-          !/^(Arrow)?FunctionExpression$/.test(callback.type) ||
-          callback.params.length !== 1
-        ) {
+        if (!isFunction(callback) || callback.params.length !== 1) {
           return;
         }
 
         const [argument] = callback.params;
+        const { body } = callback;
+
+        if (!body || !('name' in argument)) {
+          return;
+        }
+
         context.report({
           node: argument,
           messageId: 'illegalTestCallback',
           fix(fixer) {
             const sourceCode = context.getSourceCode();
-            const { body } = callback;
             const firstBodyToken = sourceCode.getFirstToken(body);
             const lastBodyToken = sourceCode.getLastToken(body);
             const tokenBeforeArgument = sourceCode.getTokenBefore(argument);
             const tokenAfterArgument = sourceCode.getTokenAfter(argument);
+
+            if (
+              !firstBodyToken ||
+              !lastBodyToken ||
+              !tokenBeforeArgument ||
+              !tokenAfterArgument
+            ) {
+              throw new Error('Unexpected null - please file a github issue');
+            }
+
             const argumentInParens =
               tokenBeforeArgument.value === '(' &&
               tokenAfterArgument.value === ')';
@@ -78,4 +95,4 @@ export default {
       },
     };
   },
-};
+});
