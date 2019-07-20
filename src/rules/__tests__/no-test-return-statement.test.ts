@@ -1,7 +1,9 @@
-import { RuleTester } from 'eslint';
+import { TSESLint } from '@typescript-eslint/experimental-utils';
 import rule from '../no-test-return-statement';
 
-const ruleTester = new RuleTester({ parserOptions: { ecmaVersion: 2015 } });
+const ruleTester = new TSESLint.RuleTester({
+  parserOptions: { ecmaVersion: 2015 },
+});
 
 ruleTester.run('no-test-prefixes', rule, {
   valid: [
