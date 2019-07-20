@@ -1,9 +1,12 @@
-import { getDocsUrl, getNodeName, isDescribe, isTestCase } from './util';
+import { createRule, getNodeName, isDescribe, isTestCase } from './tsUtils';
 
-export default {
+export default createRule({
+  name: __filename,
   meta: {
     docs: {
-      url: getDocsUrl(__filename),
+      category: 'Best Practices',
+      description: 'Have control over `test` and `it` usages',
+      recommended: false,
     },
     fixable: 'code',
     messages: {
@@ -26,7 +29,14 @@ export default {
         additionalProperties: false,
       },
     ],
+    type: 'suggestion',
   },
+  defaultOptions: [
+    { fn: 'test', withinDescribe: 'it' } as {
+      fn?: string;
+      withinDescribe?: string;
+    },
+  ],
   create(context) {
     const configObj = context.options[0] || {};
     const testKeyword = configObj.fn || 'test';
@@ -38,6 +48,10 @@ export default {
     return {
       CallExpression(node) {
         const nodeName = getNodeName(node.callee);
+
+        if (!nodeName) {
+          return;
+        }
 
         if (isDescribe(node)) {
           describeNestingLevel++;
@@ -101,9 +115,9 @@ export default {
       },
     };
   },
-};
+});
 
-function getPreferredNodeName(nodeName, preferredTestKeyword) {
+function getPreferredNodeName(nodeName: string, preferredTestKeyword: string) {
   switch (nodeName) {
     case 'fit':
       return 'test.only';
@@ -114,7 +128,7 @@ function getPreferredNodeName(nodeName, preferredTestKeyword) {
   }
 }
 
-function getOppositeTestKeyword(test) {
+function getOppositeTestKeyword(test: string) {
   if (test === 'test') {
     return 'it';
   }
