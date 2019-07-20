@@ -12,9 +12,7 @@ const testCaseNames = new Set<string | null>([
   'test.skip',
 ]);
 
-const isTestArrowFunction = (node: TSESTree.Node) =>
-  node !== undefined &&
-  node.type === AST_NODE_TYPES.ArrowFunctionExpression &&
+const isTestArrowFunction = (node: TSESTree.ArrowFunctionExpression) =>
   node.parent !== undefined &&
   node.parent.type === AST_NODE_TYPES.CallExpression &&
   testCaseNames.has(getNodeName(node.parent.callee));
