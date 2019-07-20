@@ -67,14 +67,6 @@ export type JestFunctionCallExpression<
   | JestFunctionCallExpressionWithMemberExpressionCallee<FunctionName>
   | JestFunctionCallExpressionWithIdentifierCallee<FunctionName>;
 
-export type FunctionExpression =
-  | TSESTree.ArrowFunctionExpression
-  | TSESTree.FunctionExpression;
-
-export const isFunction = (node: TSESTree.Node): node is FunctionExpression =>
-  node.type === AST_NODE_TYPES.FunctionExpression ||
-  node.type === AST_NODE_TYPES.ArrowFunctionExpression;
-
 export const getNodeName = (node: TSESTree.Node): string | null => {
   function joinNames(a?: string | null, b?: string | null): string | null {
     return a && b ? `${a}.${b}` : null;
@@ -94,6 +86,14 @@ export const getNodeName = (node: TSESTree.Node): string | null => {
 
   return null;
 };
+
+export type FunctionExpression =
+  | TSESTree.ArrowFunctionExpression
+  | TSESTree.FunctionExpression;
+
+export const isFunction = (node: TSESTree.Node): node is FunctionExpression =>
+  node.type === AST_NODE_TYPES.FunctionExpression ||
+  node.type === AST_NODE_TYPES.ArrowFunctionExpression;
 
 /* istanbul ignore next */
 export const isHook = (
