@@ -1,22 +1,27 @@
-import { getDocsUrl, getNodeName, isDescribe, isTestCase } from './util';
+import { createRule, getNodeName, isDescribe, isTestCase } from './tsUtils';
 
-export default {
+export default createRule({
+  name: __filename,
   meta: {
     docs: {
-      url: getDocsUrl(__filename),
+      category: 'Best Practices',
+      description: 'Use `.only` and `.skip` over `f` and `x`',
+      recommended: 'error',
     },
     messages: {
       usePreferredName: 'Use "{{ preferredNodeName }}" instead',
     },
     fixable: 'code',
     schema: [],
+    type: 'suggestion',
   },
+  defaultOptions: [],
   create(context) {
     return {
       CallExpression(node) {
         const nodeName = getNodeName(node.callee);
 
-        if (!isDescribe(node) && !isTestCase(node)) return;
+        if (!nodeName || (!isDescribe(node) && !isTestCase(node))) return;
 
         const preferredNodeName = getPreferredNodeName(nodeName);
 
@@ -33,9 +38,9 @@ export default {
       },
     };
   },
-};
+});
 
-function getPreferredNodeName(nodeName) {
+function getPreferredNodeName(nodeName: string) {
   const firstChar = nodeName.charAt(0);
 
   if (firstChar === 'f') {
