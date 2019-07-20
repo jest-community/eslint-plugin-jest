@@ -98,13 +98,10 @@ export const getNodeName = (node: TSESTree.Node): string | null => {
 /* istanbul ignore next */
 export const isHook = (
   node: TSESTree.CallExpression,
-): node is JestFunctionCallExpression<HookName> => {
+): node is JestFunctionCallExpressionWithIdentifierCallee<HookName> => {
   return (
-    (node.callee.type === AST_NODE_TYPES.Identifier &&
-      node.callee.name in HookName) ||
-    (node.callee.type === AST_NODE_TYPES.MemberExpression &&
-      node.callee.object.type === AST_NODE_TYPES.Identifier &&
-      node.callee.object.name in HookName)
+    node.callee.type === AST_NODE_TYPES.Identifier &&
+    node.callee.name in HookName
   );
 };
 
