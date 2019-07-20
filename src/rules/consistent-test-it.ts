@@ -34,8 +34,8 @@ export default createRule({
   },
   defaultOptions: [
     { fn: 'test', withinDescribe: 'it' } as {
-      fn?: string;
-      withinDescribe?: string;
+      fn?: 'it' | 'test';
+      withinDescribe?: 'it' | 'test';
     },
   ],
   create(context) {
