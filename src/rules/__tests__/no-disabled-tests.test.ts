@@ -1,7 +1,7 @@
-import { RuleTester } from 'eslint';
+import { TSESLint } from '@typescript-eslint/experimental-utils';
 import rule from '../no-disabled-tests';
 
-const ruleTester = new RuleTester({
+const ruleTester = new TSESLint.RuleTester({
   parserOptions: {
     sourceType: 'module',
   },
@@ -15,6 +15,7 @@ ruleTester.run('no-disabled-tests', rule, {
     'it.only("foo", function () {})',
     'test("foo", function () {})',
     'test.only("foo", function () {})',
+    'describe[`${"skip"}`]("foo", function () {})',
     'var appliedSkip = describe.skip; appliedSkip.apply(describe)',
     'var calledSkip = it.skip; calledSkip.call(it)',
     '({ f: function () {} }).f()',
@@ -55,6 +56,10 @@ ruleTester.run('no-disabled-tests', rule, {
   invalid: [
     {
       code: 'describe.skip("foo", function () {})',
+      errors: [{ messageId: 'skippedTestSuite', column: 1, line: 1 }],
+    },
+    {
+      code: 'describe[`skip`]("foo", function () {})',
       errors: [{ messageId: 'skippedTestSuite', column: 1, line: 1 }],
     },
     {
