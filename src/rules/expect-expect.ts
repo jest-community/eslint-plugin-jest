@@ -3,12 +3,19 @@
  * MIT license, Remco Haszing.
  */
 
-import { getDocsUrl, getNodeName } from './util';
+import {
+  AST_NODE_TYPES,
+  TSESTree,
+} from '@typescript-eslint/experimental-utils';
+import { createRule, getNodeName } from './tsUtils';
 
-export default {
+export default createRule({
+  name: __filename,
   meta: {
     docs: {
-      url: getDocsUrl(__filename),
+      category: 'Best Practices',
+      description: 'Enforce assertion to be made in a test body',
+      recommended: false,
     },
     messages: {
       noAssertions: 'Test has no assertions',
@@ -25,24 +32,25 @@ export default {
         additionalProperties: false,
       },
     ],
+    type: 'suggestion',
   },
-  create(context) {
-    const unchecked = [];
-    const assertFunctionNames = new Set(
-      context.options[0] && context.options[0].assertFunctionNames
-        ? context.options[0].assertFunctionNames
-        : ['expect'],
-    );
+  defaultOptions: [{ assertFunctionNames: ['expect'] }],
+  create(context, [{ assertFunctionNames }]) {
+    const unchecked: TSESTree.CallExpression[] = [];
 
     return {
       CallExpression(node) {
         const name = getNodeName(node.callee);
         if (name === 'it' || name === 'test') {
           unchecked.push(node);
-        } else if (assertFunctionNames.has(name)) {
+        } else if (name && assertFunctionNames.includes(name)) {
           // Return early in case of nested `it` statements.
           for (const ancestor of context.getAncestors()) {
-            const index = unchecked.indexOf(ancestor);
+            const index =
+              ancestor.type === AST_NODE_TYPES.CallExpression
+                ? unchecked.indexOf(ancestor)
+                : -1;
+
             if (index !== -1) {
               unchecked.splice(index, 1);
               break;
@@ -57,4 +65,4 @@ export default {
       },
     };
   },
-};
+});
