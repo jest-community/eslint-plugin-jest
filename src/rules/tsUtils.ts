@@ -38,16 +38,42 @@ export enum HookName {
 
 export type JestFunctionName = DescribeAlias | TestCaseName | HookName;
 
-interface JestFunctionIdentifier<FunctionName extends JestFunctionName>
+export interface JestFunctionIdentifier<FunctionName extends JestFunctionName>
   extends TSESTree.Identifier {
   name: FunctionName;
 }
 
-export interface JestFunctionCallExpression<
-  FunctionName extends JestFunctionName = JestFunctionName
+export interface JestFunctionMemberExpression<
+  FunctionName extends JestFunctionName
+> extends TSESTree.MemberExpression {
+  object: JestFunctionIdentifier<FunctionName>;
+}
+
+export interface JestFunctionCallExpressionWithMemberExpressionCallee<
+  FunctionName extends JestFunctionName
+> extends TSESTree.CallExpression {
+  callee: JestFunctionMemberExpression<FunctionName>;
+}
+
+export interface JestFunctionCallExpressionWithIdentifierCallee<
+  FunctionName extends JestFunctionName
 > extends TSESTree.CallExpression {
   callee: JestFunctionIdentifier<FunctionName>;
 }
+
+export type JestFunctionCallExpression<
+  FunctionName extends JestFunctionName = JestFunctionName
+> =
+  | JestFunctionCallExpressionWithMemberExpressionCallee<FunctionName>
+  | JestFunctionCallExpressionWithIdentifierCallee<FunctionName>;
+
+export type FunctionExpression =
+  | TSESTree.ArrowFunctionExpression
+  | TSESTree.FunctionExpression;
+
+export const isFunction = (node: TSESTree.Node): node is FunctionExpression =>
+  node.type === AST_NODE_TYPES.FunctionExpression ||
+  node.type === AST_NODE_TYPES.ArrowFunctionExpression;
 
 export const getNodeName = (node: TSESTree.Node): string | null => {
   function joinNames(a?: string | null, b?: string | null): string | null {
@@ -68,14 +94,6 @@ export const getNodeName = (node: TSESTree.Node): string | null => {
 
   return null;
 };
-
-export type FunctionExpression =
-  | TSESTree.ArrowFunctionExpression
-  | TSESTree.FunctionExpression;
-
-export const isFunction = (node: TSESTree.Node): node is FunctionExpression =>
-  node.type === AST_NODE_TYPES.FunctionExpression ||
-  node.type === AST_NODE_TYPES.ArrowFunctionExpression;
 
 /* istanbul ignore next */
 export const isHook = (
