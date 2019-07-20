@@ -1,10 +1,9 @@
-import { getDocsUrl, getNodeName, isTestCase, testCaseNames } from './util';
+import { getDocsUrl, isTestCase } from './util';
 
 const isTestArrowFunction = node =>
   node !== undefined &&
   node.type === 'ArrowFunctionExpression' &&
-  node.parent.type === 'CallExpression' &&
-  testCaseNames.has(getNodeName(node.parent.callee));
+  isTestCase(node.parent);
 
 export default {
   meta: {

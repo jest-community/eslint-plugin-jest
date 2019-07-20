@@ -97,25 +97,9 @@ export const argument = node =>
 export const argument2 = node =>
   node.parent.parent.parent.arguments && node.parent.parent.parent.arguments[0];
 
-const describeAliases = new Set([
-  'describe',
-  'describe.only',
-  'describe.skip',
-  'fdescribe',
-  'xdescribe',
-]);
+const describeAliases = new Set(['describe', 'fdescribe', 'xdescribe']);
 
-export const testCaseNames = new Set([
-  'fit',
-  'it',
-  'it.only',
-  'it.skip',
-  'test',
-  'test.only',
-  'test.skip',
-  'xit',
-  'xtest',
-]);
+const testCaseNames = new Set(['fit', 'it', 'test', 'xit', 'xtest']);
 
 const testHookNames = new Set([
   'beforeAll',
@@ -147,17 +131,25 @@ export const getNodeName = node => {
 export const isHook = node =>
   node &&
   node.type === 'CallExpression' &&
-  testHookNames.has(getNodeName(node.callee));
+  node.callee.type === 'Identifier' &&
+  testHookNames.has(node.callee.name);
 
 export const isTestCase = node =>
   node &&
   node.type === 'CallExpression' &&
-  testCaseNames.has(getNodeName(node.callee));
+  ((node.callee.type === 'Identifier' && testCaseNames.has(node.callee.name)) ||
+    (node.callee.type === 'MemberExpression' &&
+      node.callee.object.type === 'Identifier' &&
+      testCaseNames.has(node.callee.object.name)));
 
 export const isDescribe = node =>
   node &&
   node.type === 'CallExpression' &&
-  describeAliases.has(getNodeName(node.callee));
+  ((node.callee.type === 'Identifier' &&
+    describeAliases.has(node.callee.name)) ||
+    (node.callee.type === 'MemberExpression' &&
+      node.callee.object.type === 'Identifier' &&
+      describeAliases.has(node.callee.object.name)));
 
 export const isFunction = node =>
   node &&
