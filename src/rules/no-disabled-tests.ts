@@ -1,9 +1,13 @@
-import { getDocsUrl, getNodeName, scopeHasLocalReference } from './util';
+import { createRule } from './tsUtils';
+import { getNodeName, scopeHasLocalReference } from './tsUtils';
 
-export default {
+export default createRule({
+  name: __filename,
   meta: {
     docs: {
-      url: getDocsUrl(__filename),
+      category: 'Best Practices',
+      description: 'Disallow disabled tests',
+      recommended: false,
     },
     messages: {
       missingFunction: 'Test is missing function argument',
@@ -16,7 +20,9 @@ export default {
       disabledTest: 'Disabled test',
     },
     schema: [],
+    type: 'suggestion',
   },
+  defaultOptions: [],
   create(context) {
     let suiteDepth = 0;
     let testDepth = 0;
@@ -72,4 +78,4 @@ export default {
       },
     };
   },
-};
+});
