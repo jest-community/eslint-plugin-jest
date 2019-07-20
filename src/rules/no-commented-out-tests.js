@@ -1,6 +1,4 @@
-'use strict';
-
-const { getDocsUrl } = require('./util');
+import { getDocsUrl } from './util';
 
 function hasTests(node) {
   return /^\s*(x|f)?(test|it|describe)(\.\w+|\[['"]\w+['"]\])?\s*\(/m.test(
@@ -8,7 +6,7 @@ function hasTests(node) {
   );
 }
 
-module.exports = {
+export default {
   meta: {
     docs: {
       url: getDocsUrl(__filename),

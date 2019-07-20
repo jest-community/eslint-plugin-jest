@@ -1,6 +1,4 @@
-'use strict';
-
-const { getDocsUrl, isFunction } = require('./util');
+import { getDocsUrl, isFunction } from './util';
 
 const isThenOrCatch = node => {
   return (
@@ -122,7 +120,7 @@ const isHavingAsyncCallBackParam = testFunction => {
   }
 };
 
-module.exports = {
+export default {
   meta: {
     docs: {
       url: getDocsUrl(__filename),

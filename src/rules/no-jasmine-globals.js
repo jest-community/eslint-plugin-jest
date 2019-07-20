@@ -1,8 +1,6 @@
-'use strict';
+import { getDocsUrl, getNodeName, scopeHasLocalReference } from './util';
 
-const { getDocsUrl, getNodeName, scopeHasLocalReference } = require('./util');
-
-module.exports = {
+export default {
   meta: {
     docs: {
       url: getDocsUrl(__filename),

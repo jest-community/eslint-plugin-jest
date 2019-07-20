@@ -1,6 +1,4 @@
-'use strict';
-
-const { getDocsUrl, isFunction, isTestCase } = require('./util');
+import { getDocsUrl, isFunction, isTestCase } from './util';
 
 const RETURN_STATEMENT = 'ReturnStatement';
 const BLOCK_STATEMENT = 'BlockStatement';
@@ -16,7 +14,7 @@ const getBody = args => {
   return [];
 };
 
-module.exports = {
+export default {
   meta: {
     docs: {
       url: getDocsUrl(__filename),

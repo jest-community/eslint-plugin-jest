@@ -1,13 +1,12 @@
-'use strict';
+import { posix } from 'path';
 
-const { posix } = require('path');
-const { getDocsUrl } = require('./util');
+import { getDocsUrl } from './util';
 
 const mocksDirName = '__mocks__';
 
 const isMockPath = path => path.split(posix.sep).includes(mocksDirName);
 
-module.exports = {
+export default {
   meta: {
     docs: {
       url: getDocsUrl(__filename),

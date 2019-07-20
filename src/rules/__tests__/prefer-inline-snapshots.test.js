@@ -1,7 +1,5 @@
-'use strict';
-
-const { RuleTester } = require('eslint');
-const rule = require('../prefer-inline-snapshots');
+import { RuleTester } from 'eslint';
+import rule from '../prefer-inline-snapshots';
 
 const ruleTester = new RuleTester();
 

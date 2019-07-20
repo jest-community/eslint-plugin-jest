@@ -1,6 +1,5 @@
-'use strict';
-
-const { getDocsUrl } = require('./util');
+import { isAbsolute } from 'path';
+import { getDocsUrl, getStringValue } from './util';
 
 const reportOnViolation = (context, node) => {
   const lineLimit =
@@ -10,8 +9,40 @@ const reportOnViolation = (context, node) => {
   const startLine = node.loc.start.line;
   const endLine = node.loc.end.line;
   const lineCount = endLine - startLine;
+  const whitelistedSnapshots =
+    context.options &&
+    context.options[0] &&
+    context.options[0].whitelistedSnapshots;
 
-  if (lineCount > lineLimit) {
+  const allPathsAreAbsolute = Object.keys(whitelistedSnapshots || {}).every(
+    isAbsolute,
+  );
+
+  if (!allPathsAreAbsolute) {
+    throw new Error(
+      'All paths for whitelistedSnapshots must be absolute. You can use JS config and `path.resolve`',
+    );
+  }
+
+  let isWhitelisted = false;
+
+  if (whitelistedSnapshots) {
+    const fileName = context.getFilename();
+    const whitelistedSnapshotsInFile = whitelistedSnapshots[fileName];
+
+    if (whitelistedSnapshotsInFile) {
+      const snapshotName = getStringValue(node.expression.left.property);
+      isWhitelisted = whitelistedSnapshotsInFile.some(name => {
+        if (name.test && typeof name.test === 'function') {
+          return name.test(snapshotName);
+        } else {
+          return name === snapshotName;
+        }
+      });
+    }
+  }
+
+  if (!isWhitelisted && lineCount > lineLimit) {
     context.report({
       messageId: lineLimit === 0 ? 'noSnapshot' : 'tooLongSnapshots',
       data: { lineLimit, lineCount },
@@ -20,7 +51,7 @@ const reportOnViolation = (context, node) => {
   }
 };
 
-module.exports = {
+export default {
   meta: {
     docs: {
       url: getDocsUrl(__filename),
@@ -36,6 +67,12 @@ module.exports = {
         properties: {
           maxSize: {
             type: 'number',
+          },
+          whitelistedSnapshots: {
+            type: 'object',
+            patternProperties: {
+              '.*': { type: 'array' },
+            },
           },
         },
         additionalProperties: false,

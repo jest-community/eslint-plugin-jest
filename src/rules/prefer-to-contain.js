@@ -1,13 +1,11 @@
-'use strict';
-
-const {
-  getDocsUrl,
-  expectCaseWithParent,
-  expectResolvesCase,
-  expectRejectsCase,
-  method,
+import {
   argument,
-} = require('./util');
+  expectCaseWithParent,
+  expectRejectsCase,
+  expectResolvesCase,
+  getDocsUrl,
+  method,
+} from './util';
 
 const isEqualityCheck = node =>
   method(node) &&
@@ -78,7 +76,7 @@ const getCommonFixes = (node, sourceCode, fixer) => {
   ];
 };
 
-module.exports = {
+export default {
   meta: {
     docs: {
       url: getDocsUrl(__filename),

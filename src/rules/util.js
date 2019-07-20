@@ -1,44 +1,43 @@
-'use strict';
-
-const path = require('path');
-const { version } = require('../../package.json');
+import { basename } from 'path';
+import { version } from '../../package.json';
 
 const REPO_URL = 'https://github.com/jest-community/eslint-plugin-jest';
 
-const expectCase = node => node && node.callee && node.callee.name === 'expect';
+export const expectCase = node =>
+  node && node.callee && node.callee.name === 'expect';
 
-const expectCaseWithParent = node =>
+export const expectCaseWithParent = node =>
   expectCase(node) &&
   node.parent &&
   node.parent.type === 'MemberExpression' &&
   node.parent.parent;
 
-const expectNotCase = node =>
+export const expectNotCase = node =>
   expectCase(node) &&
   node.parent.parent.type === 'MemberExpression' &&
   methodName(node) === 'not';
 
-const expectResolvesCase = node =>
+export const expectResolvesCase = node =>
   expectCase(node) &&
   node.parent.parent.type === 'MemberExpression' &&
   methodName(node) === 'resolves';
 
-const expectNotResolvesCase = node =>
+export const expectNotResolvesCase = node =>
   expectNotCase(node) &&
   node.parent.parent.type === 'MemberExpression' &&
   methodName(node.parent) === 'resolves';
 
-const expectRejectsCase = node =>
+export const expectRejectsCase = node =>
   expectCase(node) &&
   node.parent.parent.type === 'MemberExpression' &&
   methodName(node) === 'rejects';
 
-const expectNotRejectsCase = node =>
+export const expectNotRejectsCase = node =>
   expectNotCase(node) &&
   node.parent.parent.type === 'MemberExpression' &&
   methodName(node.parent) === 'rejects';
 
-const expectToBeCase = (node, arg) =>
+export const expectToBeCase = (node, arg) =>
   !(
     expectNotCase(node) ||
     expectResolvesCase(node) ||
@@ -52,7 +51,7 @@ const expectToBeCase = (node, arg) =>
     arg === null) ||
     (argument(node).name === 'undefined' && arg === undefined));
 
-const expectNotToBeCase = (node, arg) =>
+export const expectNotToBeCase = (node, arg) =>
   expectNotCase(node) &&
   methodName2(node) === 'toBe' &&
   argument2(node) &&
@@ -61,7 +60,7 @@ const expectNotToBeCase = (node, arg) =>
     arg === null) ||
     (argument2(node).name === 'undefined' && arg === undefined));
 
-const expectToEqualCase = (node, arg) =>
+export const expectToEqualCase = (node, arg) =>
   !(
     expectNotCase(node) ||
     expectResolvesCase(node) ||
@@ -75,7 +74,7 @@ const expectToEqualCase = (node, arg) =>
     arg === null) ||
     (argument(node).name === 'undefined' && arg === undefined));
 
-const expectNotToEqualCase = (node, arg) =>
+export const expectNotToEqualCase = (node, arg) =>
   expectNotCase(node) &&
   methodName2(node) === 'toEqual' &&
   argument2(node) &&
@@ -84,18 +83,18 @@ const expectNotToEqualCase = (node, arg) =>
     arg === null) ||
     (argument2(node).name === 'undefined' && arg === undefined));
 
-const method = node => node.parent.property;
+export const method = node => node.parent.property;
 
-const method2 = node => node.parent.parent.property;
+export const method2 = node => node.parent.parent.property;
 
 const methodName = node => method(node).name;
 
 const methodName2 = node => method2(node).name;
 
-const argument = node =>
+export const argument = node =>
   node.parent.parent.arguments && node.parent.parent.arguments[0];
 
-const argument2 = node =>
+export const argument2 = node =>
   node.parent.parent.parent.arguments && node.parent.parent.parent.arguments[0];
 
 const describeAliases = new Set([
@@ -106,7 +105,7 @@ const describeAliases = new Set([
   'xdescribe',
 ]);
 
-const testCaseNames = new Set([
+export const testCaseNames = new Set([
   'fit',
   'it',
   'it.only',
@@ -125,7 +124,7 @@ const testHookNames = new Set([
   'afterEach',
 ]);
 
-const getNodeName = node => {
+export const getNodeName = node => {
   function joinNames(a, b) {
     return a && b ? `${a}.${b}` : null;
   }
@@ -145,37 +144,38 @@ const getNodeName = node => {
   return null;
 };
 
-const isHook = node =>
+export const isHook = node =>
   node &&
   node.type === 'CallExpression' &&
   testHookNames.has(getNodeName(node.callee));
 
-const isTestCase = node =>
+export const isTestCase = node =>
   node &&
   node.type === 'CallExpression' &&
   testCaseNames.has(getNodeName(node.callee));
 
-const isDescribe = node =>
+export const isDescribe = node =>
   node &&
   node.type === 'CallExpression' &&
   describeAliases.has(getNodeName(node.callee));
 
-const isFunction = node =>
+export const isFunction = node =>
   node &&
   (node.type === 'FunctionExpression' ||
     node.type === 'ArrowFunctionExpression');
 
-const isString = node =>
+export const isString = node =>
   node &&
   ((node.type === 'Literal' && typeof node.value === 'string') ||
     isTemplateLiteral(node));
 
-const isTemplateLiteral = node => node && node.type === 'TemplateLiteral';
+export const isTemplateLiteral = node =>
+  node && node.type === 'TemplateLiteral';
 
-const hasExpressions = node =>
+export const hasExpressions = node =>
   node && node.expressions && node.expressions.length > 0;
 
-const getStringValue = arg =>
+export const getStringValue = arg =>
   isTemplateLiteral(arg) ? arg.quasis[0].value.raw : arg.value;
 
 /**
@@ -186,8 +186,8 @@ const getStringValue = arg =>
  * @param {string} filename - Name of the eslint rule
  * @returns {string} URL to the documentation for the given rule
  */
-const getDocsUrl = filename => {
-  const ruleName = path.basename(filename, '.js');
+export const getDocsUrl = filename => {
+  const ruleName = basename(filename, '.js');
 
   return `${REPO_URL}/blob/v${version}/docs/rules/${ruleName}.md`;
 };
@@ -219,7 +219,7 @@ const collectReferences = scope => {
   return { locals, unresolved };
 };
 
-const scopeHasLocalReference = (scope, referenceName) => {
+export const scopeHasLocalReference = (scope, referenceName) => {
   const references = collectReferences(scope);
   return (
     // referenceName was found as a local variable or function declaration.
@@ -230,40 +230,10 @@ const scopeHasLocalReference = (scope, referenceName) => {
   );
 };
 
-function composeFixers(node) {
+export function composeFixers(node) {
   return (...fixers) => {
     return fixerApi => {
       return fixers.reduce((all, fixer) => [...all, fixer(node, fixerApi)], []);
     };
   };
 }
-
-module.exports = {
-  method,
-  method2,
-  argument,
-  argument2,
-  expectCase,
-  expectCaseWithParent,
-  expectNotCase,
-  expectResolvesCase,
-  expectNotResolvesCase,
-  expectRejectsCase,
-  expectNotRejectsCase,
-  expectToBeCase,
-  expectNotToBeCase,
-  expectToEqualCase,
-  expectNotToEqualCase,
-  getNodeName,
-  getStringValue,
-  isDescribe,
-  isFunction,
-  isHook,
-  isTemplateLiteral,
-  isTestCase,
-  isString,
-  hasExpressions,
-  getDocsUrl,
-  scopeHasLocalReference,
-  composeFixers,
-};

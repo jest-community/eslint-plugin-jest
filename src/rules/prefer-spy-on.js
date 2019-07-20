@@ -1,6 +1,4 @@
-'use strict';
-
-const { getDocsUrl, getNodeName } = require('./util');
+import { getDocsUrl, getNodeName } from './util';
 
 const getJestFnCall = node => {
   if (
@@ -22,7 +20,7 @@ const getJestFnCall = node => {
   return getJestFnCall(obj);
 };
 
-module.exports = {
+export default {
   meta: {
     docs: {
       url: getDocsUrl(__filename),

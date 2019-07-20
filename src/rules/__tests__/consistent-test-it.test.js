@@ -1,7 +1,5 @@
-'use strict';
-
-const { RuleTester } = require('eslint');
-const rule = require('../consistent-test-it');
+import { RuleTester } from 'eslint';
+import rule from '../consistent-test-it';
 
 const ruleTester = new RuleTester({
   parserOptions: {

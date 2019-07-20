@@ -18,6 +18,10 @@ The following patterns are considered warnings:
 expect(() => a()).toThrow();
 
 expect(() => a()).toThrowError();
+
+await expect(a()).rejects.toThrow();
+
+await expect(a()).rejects.toThrowError();
 ```
 
 The following patterns are not considered warnings:
@@ -26,4 +30,8 @@ The following patterns are not considered warnings:
 expect(() => a()).toThrow('a');
 
 expect(() => a()).toThrowError('a');
+
+await expect(a()).rejects.toThrow('a');
+
+await expect(a()).rejects.toThrowError('a');
 ```

@@ -112,11 +112,13 @@ installations requiring long-term consistency.
 | [no-alias-methods][]         | Disallow alias methods                                            | ![recommended][] | ![fixable-green][]  |
 | [no-disabled-tests][]        | Disallow disabled tests                                           | ![recommended][] |                     |
 | [no-commented-out-tests][]   | Disallow commented out tests                                      |                  |                     |
-| [no-duplicate-hooks][]       | Disallow duplicate hooks withing a `describe` block               |                  |                     |
+| [no-duplicate-hooks][]       | Disallow duplicate hooks within a `describe` block                |                  |                     |
 | [no-empty-title][]           | Disallow empty titles                                             |                  |                     |
+| [no-export][]                | Disallow export from test files                                   |                  |                     |
 | [no-focused-tests][]         | Disallow focused tests                                            | ![recommended][] |                     |
 | [no-hooks][]                 | Disallow setup and teardown hooks                                 |                  |                     |
 | [no-identical-title][]       | Disallow identical titles                                         | ![recommended][] |                     |
+| [no-if][]                    | Disallow conditional logic                                        |                  |                     |
 | [no-jasmine-globals][]       | Disallow Jasmine globals                                          | ![recommended][] | ![fixable-yellow][] |
 | [no-jest-import][]           | Disallow importing `jest`                                         | ![recommended][] |                     |
 | [no-mocks-import][]          | Disallow manually importing from `__mocks__`                      |                  |                     |
@@ -162,9 +164,11 @@ https://github.com/dangreenisrael/eslint-plugin-jest-formatting
 [no-duplicate-hooks]: docs/rules/no-duplicate-hooks.md
 [no-commented-out-tests]: docs/rules/no-commented-out-tests.md
 [no-empty-title]: docs/rules/no-empty-title.md
+[no-export]: docs/rules/no-export.md
 [no-focused-tests]: docs/rules/no-focused-tests.md
 [no-hooks]: docs/rules/no-hooks.md
 [no-identical-title]: docs/rules/no-identical-title.md
+[no-if]: docs/rules/no-if.md
 [no-jasmine-globals]: docs/rules/no-jasmine-globals.md
 [no-jest-import]: docs/rules/no-jest-import.md
 [no-mocks-import]: docs/rules/no-mocks-import.md

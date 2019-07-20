@@ -1,18 +1,16 @@
-'use strict';
-
 /*
  * This implementation is ported from from eslint-plugin-jasmine.
  * MIT license, Tom Vincent.
  */
 
-const {
-  getDocsUrl,
+import {
   expectCase,
-  expectRejectsCase,
-  expectResolvesCase,
   expectNotRejectsCase,
   expectNotResolvesCase,
-} = require('./util');
+  expectRejectsCase,
+  expectResolvesCase,
+  getDocsUrl,
+} from './util';
 
 const expectProperties = ['not', 'resolves', 'rejects'];
 const promiseArgumentTypes = ['CallExpression', 'ArrayExpression'];
@@ -77,7 +75,7 @@ const checkIfValidReturn = (parentCallExpressionNode, allowReturn) => {
 const promiseArrayExceptionKey = ({ start, end }) =>
   `${start.line}:${start.column}-${end.line}:${end.column}`;
 
-module.exports = {
+export default {
   meta: {
     docs: {
       url: getDocsUrl(__filename),

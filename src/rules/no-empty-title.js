@@ -1,16 +1,14 @@
-'use strict';
-
-const {
+import {
   getDocsUrl,
+  getStringValue,
   hasExpressions,
   isDescribe,
-  isTestCase,
-  isTemplateLiteral,
   isString,
-  getStringValue,
-} = require('./util');
+  isTemplateLiteral,
+  isTestCase,
+} from './util';
 
-module.exports = {
+export default {
   meta: {
     docs: {
       url: getDocsUrl(__filename),
