@@ -1,7 +1,7 @@
-import { RuleTester } from 'eslint';
+import { TSESLint } from '@typescript-eslint/experimental-utils';
 import rule from '../no-test-prefixes';
 
-const ruleTester = new RuleTester();
+const ruleTester = new TSESLint.RuleTester();
 
 ruleTester.run('no-test-prefixes', rule, {
   valid: [
@@ -15,6 +15,7 @@ ruleTester.run('no-test-prefixes', rule, {
     'it.skip("foo", function () {})',
     'test.skip("foo", function () {})',
     'foo()',
+    '[1,2,3].forEach()',
   ],
   invalid: [
     {
