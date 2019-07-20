@@ -1,29 +1,38 @@
-import { getDocsUrl, isFunction, isTestCase } from './util';
+import { createRule, isFunction, isTestCase } from './tsUtils';
+import { TSESTree } from '@typescript-eslint/experimental-utils';
 
 const RETURN_STATEMENT = 'ReturnStatement';
 const BLOCK_STATEMENT = 'BlockStatement';
 
-const getBody = args => {
+const getBody = (args: TSESTree.Expression[]) => {
+  const [, secondArg] = args;
+
   if (
-    args.length > 1 &&
-    isFunction(args[1]) &&
-    args[1].body.type === BLOCK_STATEMENT
+    secondArg &&
+    isFunction(secondArg) &&
+    secondArg.body &&
+    secondArg.body.type === BLOCK_STATEMENT
   ) {
-    return args[1].body.body;
+    return secondArg.body.body;
   }
   return [];
 };
 
-export default {
+export default createRule({
+  name: __filename,
   meta: {
     docs: {
-      url: getDocsUrl(__filename),
+      category: 'Best Practices',
+      description: 'Disallow explicitly returning from tests',
+      recommended: false,
     },
     messages: {
       noReturnValue: 'Jest tests should not return a value.',
     },
     schema: [],
+    type: 'suggestion',
   },
+  defaultOptions: [],
   create(context) {
     return {
       CallExpression(node) {
@@ -36,4 +45,4 @@ export default {
       },
     };
   },
-};
+});
