@@ -1,3 +1,4 @@
+import { AST_NODE_TYPES } from '@typescript-eslint/experimental-utils';
 import { createRule, getNodeName, isDescribe, isTestCase } from './tsUtils';
 
 export default createRule({
@@ -70,7 +71,7 @@ export default createRule({
             data: { testKeyword, oppositeTestKeyword },
             fix(fixer) {
               const nodeToReplace =
-                node.callee.type === 'MemberExpression'
+                node.callee.type === AST_NODE_TYPES.MemberExpression
                   ? node.callee.object
                   : node.callee;
 
@@ -95,7 +96,7 @@ export default createRule({
             data: { testKeywordWithinDescribe, oppositeTestKeyword },
             fix(fixer) {
               const nodeToReplace =
-                node.callee.type === 'MemberExpression'
+                node.callee.type === AST_NODE_TYPES.MemberExpression
                   ? node.callee.object
                   : node.callee;
 
