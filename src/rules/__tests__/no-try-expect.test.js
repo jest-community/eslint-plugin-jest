@@ -2,42 +2,30 @@ import { RuleTester } from 'eslint';
 import rule from '../no-try-expect';
 
 const ruleTester = new RuleTester({
-  parser: require.resolve('babel-eslint'),
-});
-
-const errors = [
-  {
-    messageId: 'noTryExpect',
+  parserOptions: {
+    ecmaVersion: 2019,
   },
-];
+});
 
 ruleTester.run('no-try-catch', rule, {
   valid: [
-    {
-      code: `it('foo', () => {
+    `it('foo', () => {
         expect('foo').toEqual('foo');
-      })`,
-    },
-    {
-      code: `
-        it('foo', () => {
-          expect('bar').toEqual('bar');
-        });
-        try {
+    })`,
+    `it('foo', () => {
+      expect('bar').toEqual('bar');
+    });
+    try {
 
-        } catch {
-          expect('foo').toEqual('foo');
-        }`,
-    },
-    {
-      code: `
-        it.skip('foo');
-        try {
+    } catch {
+      expect('foo').toEqual('foo');
+    }`,
+    `it.skip('foo');
+    try {
 
-        } catch {
-          expect('foo').toEqual('foo');
-        }`,
-    },
+    } catch {
+      expect('foo').toEqual('foo');
+    }`,
   ],
   invalid: [
     {
@@ -48,7 +36,11 @@ ruleTester.run('no-try-catch', rule, {
           expect(err).toMatch('Error');
         }
       })`,
-      errors,
+      errors: [
+        {
+          messageId: 'noTryExpect',
+        },
+      ],
     },
     {
       code: `it('foo', async () => {
@@ -60,7 +52,11 @@ ruleTester.run('no-try-catch', rule, {
           }
         })
       })`,
-      errors,
+      errors: [
+        {
+          messageId: 'noTryExpect',
+        },
+      ],
     },
   ],
 });
