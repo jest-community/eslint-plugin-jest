@@ -5,9 +5,9 @@ This rule prevents the use of `expect` inside `catch` blocks.
 ## Rule Details
 
 Expectations inside a `catch` block can be silently skipped. While Jest provides
-an `expect.assertions(number)` helper, Shopify rarely uses this feature. Using
-`toThrow` concisely guarantees that an exception was thrown, and that its
-contents match expectations.
+an `expect.assertions(number)` helper, it might be cumbersome to add this to
+every single test. Using `toThrow` concisely guarantees that an exception was
+thrown, and that its contents match expectations.
 
 The following patterns are warnings:
 
@@ -27,6 +27,14 @@ it('bar', async () => {
     expect(err).toMatch(/foo error/);
   }
 });
+
+it('baz', async () => {
+  try {
+    await foo();
+  } catch (err) {
+    expect(err).toMatchObject({ code: 'MODULE_NOT_FOUND' });
+  }
+});
 ```
 
 The following patterns are not warnings:
@@ -38,5 +46,11 @@ it('foo', () => {
 
 it('bar', async () => {
   await expect(fooPromise).rejects.toThrow(/foo error/);
+});
+
+it('baz', async () => {
+  expect(() => foo()).toThrow(
+    expect.objectContaining({ code: 'MODULE_NOT_FOUND' }),
+  );
 });
 ```
