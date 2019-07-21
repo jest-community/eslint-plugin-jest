@@ -8,14 +8,18 @@ export default {
     },
     messages: {
       noSnapshots:
-        'Do not use {{method}} or related methods that generate snapshots.',
+        'Do not use {{ method }} or related methods that generate snapshots.',
     },
   },
 
   create(context) {
     return {
       CallExpression({ callee: { property } }) {
-        if (isSnapshot(property && property.name)) {
+        if (!property) {
+          return;
+        }
+
+        if (isSnapshot(property.name)) {
           context.report({
             messageId: 'noSnapshots',
             node: property,
@@ -33,5 +37,5 @@ function isSnapshot(name) {
     'toMatchInlineSnapshot',
     'toThrowErrorMatchingSnapshot',
     'toThrowErrorMatchingInlineSnapshot',
-  ].some(method => method === name);
+  ].includes(name);
 }

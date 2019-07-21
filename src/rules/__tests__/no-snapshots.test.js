@@ -3,30 +3,31 @@ import rule from '../no-snapshots';
 
 const ruleTester = new RuleTester();
 
-const errors = [{ messageId: 'noSnapshots' }];
-
 ruleTester.run('no-snapshots', rule, {
   valid: [
-    {
-      code: `expect(foo).toHaveProperty('foo');`,
-    },
+    `expect(foo).toHaveProperty('foo');`,
+    `expect(a)`,
+    `toMatchSnapshot();`,
+    `toMatchInlineSnapshot()`,
+    `toThrowErrorMatchingSnapshot()`,
+    `toThrowErrorMatchingInlineSnapshot()`,
   ],
   invalid: [
     {
       code: 'expect(foo).toMatchSnapshot();',
-      errors,
+      errors: [{ messageId: 'noSnapshots' }],
     },
     {
       code: 'expect(foo).toMatchInlineSnapshot();',
-      errors,
+      errors: [{ messageId: 'noSnapshots' }],
     },
     {
       code: 'expect(foo).toThrowErrorMatchingSnapshot();',
-      errors,
+      errors: [{ messageId: 'noSnapshots' }],
     },
     {
       code: 'expect(foo).toThrowErrorMatchingInlineSnapshot();',
-      errors,
+      errors: [{ messageId: 'noSnapshots' }],
     },
   ],
 });

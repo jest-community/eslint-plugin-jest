@@ -8,8 +8,8 @@ test blocks.
 
 ## Rule Details
 
-Using snapshots will often result in poorly documented, difficult to debug tests
-that encourage writing a single test to cover a broad area of functionality when
+Using snapshots may result in poorly documented, difficult to debug tests that
+encourage writing a single test to cover a broad area of functionality when
 seperate, more specific tests would be preferred. This rule aims to prevent the
 use of jest snapshots.
 
