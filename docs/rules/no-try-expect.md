@@ -49,7 +49,7 @@ it('bar', async () => {
 });
 
 it('baz', async () => {
-  expect(() => foo()).toThrow(
+  await expect(() => foo()).rejects.toThrow(
     expect.objectContaining({ code: 'MODULE_NOT_FOUND' }),
   );
 });
