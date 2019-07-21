@@ -37,8 +37,11 @@ export default createRule({
           fix(fixer) {
             const { body } = callback;
 
+            /* istanbul ignore if */
             if (!body) {
-              throw new Error('Unexpected null - please file a github issue');
+              throw new Error(
+                `Unexpected null when attempting to fix ${context.getFilename()} - please file a github issue at https://github.com/jest-community/eslint-plugin-jest`,
+              );
             }
 
             const sourceCode = context.getSourceCode();
@@ -47,6 +50,7 @@ export default createRule({
             const tokenBeforeArgument = sourceCode.getTokenBefore(argument);
             const tokenAfterArgument = sourceCode.getTokenAfter(argument);
 
+            /* istanbul ignore if */
             if (
               !('name' in argument) ||
               !firstBodyToken ||
@@ -54,7 +58,9 @@ export default createRule({
               !tokenBeforeArgument ||
               !tokenAfterArgument
             ) {
-              throw new Error('Unexpected null - please file a github issue');
+              throw new Error(
+                `Unexpected null when attempting to fix ${context.getFilename()} - please file a github issue at https://github.com/jest-community/eslint-plugin-jest`,
+              );
             }
 
             const argumentInParens =
