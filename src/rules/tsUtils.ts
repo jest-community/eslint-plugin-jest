@@ -15,6 +15,66 @@ export const createRule = ESLintUtils.RuleCreator(name => {
   return `${REPO_URL}/blob/v${version}/docs/rules/${ruleName}.md`;
 });
 
+interface JestExpectIdentifier extends TSESTree.Identifier {
+  name: 'expect';
+}
+
+/**
+ * Checks if the given `node` is considered a {@link JestExpectIdentifier}.
+ *
+ * A `node` is considered to be as such if it is of type `Identifier`,
+ * and `name`d `"expect"`.
+ *
+ * @param {Node} node
+ *
+ * @return {node is JestExpectIdentifier}
+ */
+const isExpectIdentifier = (
+  node: TSESTree.Node,
+): node is JestExpectIdentifier =>
+  node.type === AST_NODE_TYPES.Identifier && node.name === 'expect';
+
+// represents "expect()" specifically
+interface JestExpectCallExpression extends TSESTree.CallExpression {
+  callee: JestExpectIdentifier;
+}
+
+// represents expect usage like "expect().toBe" & "expect().not.toBe"
+interface JestExpectCallMemberExpression extends TSESTree.MemberExpression {
+  object: JestExpectCallMemberExpression | JestExpectCallExpression;
+  property: TSESTree.Identifier;
+}
+
+// represents expect usage like "expect.anything" & "expect.hasAssertions"
+interface JestExpectNamespaceMemberExpression
+  extends TSESTree.MemberExpression {
+  object: JestExpectIdentifier;
+  property: TSESTree.Identifier;
+}
+
+/**
+ * Checks if the given `node` is a {@link JestExpectCallExpression}.
+ *
+ * @param {Node} node
+ *
+ * @return {node is JestExpectCallExpression}
+ */
+const isExpectCall = (node: TSESTree.Node): node is JestExpectCallExpression =>
+  node.type === AST_NODE_TYPES.CallExpression &&
+  isExpectIdentifier(node.callee);
+
+interface JestExpectCallWithParent extends JestExpectCallExpression {
+  parent: JestExpectCallMemberExpression;
+}
+
+export const isExpectCallWithParent = (
+  node: TSESTree.Node,
+): node is JestExpectCallWithParent =>
+  isExpectCall(node) &&
+  node.parent !== undefined &&
+  node.parent.type === AST_NODE_TYPES.MemberExpression &&
+  node.parent.property.type === AST_NODE_TYPES.Identifier;
+
 export enum DescribeAlias {
   'describe' = 'describe',
   'fdescribe' = 'fdescribe',
