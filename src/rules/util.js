@@ -101,13 +101,18 @@ const describeAliases = new Set(['describe', 'fdescribe', 'xdescribe']);
 
 const testCaseNames = new Set(['fit', 'it', 'test', 'xit', 'xtest']);
 
+const describeProperties = new Set(['each', 'only', 'skip']);
+
+const testCaseProperties = new Set(['each', 'only', 'skip', 'todo']);
+
 export const isTestCase = node =>
   node &&
   node.type === 'CallExpression' &&
   ((node.callee.type === 'Identifier' && testCaseNames.has(node.callee.name)) ||
     (node.callee.type === 'MemberExpression' &&
       node.callee.object.type === 'Identifier' &&
-      testCaseNames.has(node.callee.object.name)));
+      testCaseNames.has(node.callee.object.name) &&
+      testCaseProperties.has(node.callee.property.name)));
 
 export const isDescribe = node =>
   node &&
@@ -116,7 +121,8 @@ export const isDescribe = node =>
     describeAliases.has(node.callee.name)) ||
     (node.callee.type === 'MemberExpression' &&
       node.callee.object.type === 'Identifier' &&
-      describeAliases.has(node.callee.object.name)));
+      describeAliases.has(node.callee.object.name) &&
+      describeProperties.has(node.callee.property.name)));
 
 export const isFunction = node =>
   node &&
