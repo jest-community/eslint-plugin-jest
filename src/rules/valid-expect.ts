@@ -2,15 +2,19 @@
  * This implementation is ported from from eslint-plugin-jasmine.
  * MIT license, Tom Vincent.
  */
+import {
+  AST_NODE_TYPES,
+  TSESTree,
+} from '@typescript-eslint/experimental-utils';
 
 import {
-  expectCase,
-  expectNotRejectsCase,
-  expectNotResolvesCase,
-  expectRejectsCase,
-  expectResolvesCase,
-  getDocsUrl,
-} from './util';
+  createRule,
+  isExpectCall,
+  isExpectNotRejectsCall,
+  isExpectNotResolvesCall,
+  isExpectRejectsCall,
+  isExpectResolvesCall,
+} from './tsUtils';
 
 const expectProperties = ['not', 'resolves', 'rejects'];
 const promiseArgumentTypes = ['CallExpression', 'ArrayExpression'];
@@ -22,7 +26,9 @@ const promiseArgumentTypes = ['CallExpression', 'ArrayExpression'];
  *
  * @Returns CallExpressionNode
  */
-const getClosestParentCallExpressionNode = node => {
+const getClosestParentCallExpressionNode = (
+  node: TSESTree.Node,
+): TSESTree.Node | null => {
   if (!node || !node.parent || !node.parent.parent) {
     return null;
   }
@@ -40,7 +46,9 @@ const getClosestParentCallExpressionNode = node => {
  *
  * @Returns CallExpressionNode
  */
-const getPromiseCallExpressionNode = node => {
+const getPromiseCallExpressionNode = (
+  node: TSESTree.Node,
+): TSESTree.Node | null => {
   if (
     node &&
     node.type === 'ArrayExpression' &&
@@ -54,6 +62,7 @@ const getPromiseCallExpressionNode = node => {
     node.type === 'CallExpression' &&
     node.callee &&
     node.callee.type === 'MemberExpression' &&
+    node.callee.object.type === AST_NODE_TYPES.Identifier &&
     node.callee.object.name === 'Promise' &&
     node.parent
   ) {
@@ -63,22 +72,33 @@ const getPromiseCallExpressionNode = node => {
   return null;
 };
 
-const checkIfValidReturn = (parentCallExpressionNode, allowReturn) => {
-  const validParentNodeTypes = ['ArrowFunctionExpression', 'AwaitExpression'];
+const checkIfValidReturn = (
+  parentCallExpressionNode: TSESTree.Node,
+  allowReturn: boolean,
+) => {
+  const validParentNodeTypes = [
+    AST_NODE_TYPES.ArrowFunctionExpression,
+    AST_NODE_TYPES.AwaitExpression,
+  ];
   if (allowReturn) {
-    validParentNodeTypes.push('ReturnStatement');
+    validParentNodeTypes.push(AST_NODE_TYPES.ReturnStatement);
   }
 
   return validParentNodeTypes.includes(parentCallExpressionNode.type);
 };
 
-const promiseArrayExceptionKey = ({ start, end }) =>
+const promiseArrayExceptionKey = ({ start, end }: TSESTree.SourceLocation) =>
   `${start.line}:${start.column}-${end.line}:${end.column}`;
 
-export default {
+export default createRule({
+  name: __filename,
   meta: {
+    type: 'problem',
     docs: {
-      url: getDocsUrl(__filename),
+      description:
+        'Ensure expect() is called with a single argument and there is an actual expectation made.',
+      category: 'Possible Errors',
+      recommended: 'error',
     },
     messages: {
       multipleArgs: 'More than one argument was passed to expect().',
@@ -104,17 +124,22 @@ export default {
         additionalProperties: false,
       },
     ],
-  },
+  } as const,
+  defaultOptions: [
+    {
+      alwaysAwait: false,
+    },
+  ],
   create(context) {
     // Context state
-    const arrayExceptions = {};
+    const arrayExceptions: { [key: string]: boolean } = {};
 
-    const pushPromiseArrayException = loc => {
+    const pushPromiseArrayException = (loc: TSESTree.SourceLocation) => {
       const key = promiseArrayExceptionKey(loc);
       arrayExceptions[key] = true;
     };
 
-    const promiseArrayExceptionExists = loc => {
+    const promiseArrayExceptionExists = (loc: TSESTree.SourceLocation) => {
       const key = promiseArrayExceptionKey(loc);
       return !!arrayExceptions[key];
     };
@@ -122,7 +147,7 @@ export default {
     return {
       CallExpression(node) {
         // checking "expect()" arguments
-        if (expectCase(node)) {
+        if (isExpectCall(node)) {
           if (node.arguments.length > 1) {
             const secondArgumentLocStart = node.arguments[1].loc.start;
             const lastArgumentLocEnd =
@@ -164,12 +189,12 @@ export default {
             node.parent.parent
           ) {
             let parentNode = node.parent;
-            let parentProperty = parentNode.property;
+            let parentProperty = parentNode.property as TSESTree.Identifier;
             let propertyName = parentProperty.name;
             let grandParent = parentNode.parent;
 
             // a property is accessed, get the next node
-            if (grandParent.type === 'MemberExpression') {
+            if (grandParent && grandParent.type === 'MemberExpression') {
               // a modifier is used, just get the next one
               if (expectProperties.indexOf(propertyName) > -1) {
                 grandParent = grandParent.parent;
@@ -186,13 +211,13 @@ export default {
               }
 
               // this next one should be the matcher
-              parentNode = parentNode.parent;
-              parentProperty = parentNode.property;
+              parentNode = parentNode.parent as TSESTree.MemberExpression;
+              parentProperty = parentNode.property as TSESTree.Identifier;
               propertyName = parentProperty.name;
             }
 
             // matcher was not called
-            if (grandParent.type === 'ExpressionStatement') {
+            if (grandParent && grandParent.type === 'ExpressionStatement') {
               context.report({
                 // For some reason `endColumn` isn't set in tests if `loc` is not
                 // added
@@ -209,13 +234,13 @@ export default {
         }
 
         if (
-          expectResolvesCase(node) ||
-          expectRejectsCase(node) ||
-          expectNotResolvesCase(node) ||
-          expectNotRejectsCase(node)
+          isExpectResolvesCall(node) ||
+          isExpectRejectsCall(node) ||
+          isExpectNotResolvesCall(node) ||
+          isExpectNotRejectsCall(node)
         ) {
           let parentNode = getClosestParentCallExpressionNode(node);
-          if (parentNode) {
+          if (parentNode && parentNode.parent) {
             const { options } = context;
             const allowReturn = !options[0] || !options[0].alwaysAwait;
             const isParentArrayExpression =
@@ -236,7 +261,10 @@ export default {
             }
 
             if (
-              !checkIfValidReturn(parentNode.parent, allowReturn) &&
+              !checkIfValidReturn(
+                parentNode.parent as TSESTree.Node,
+                allowReturn,
+              ) &&
               !promiseArrayExceptionExists(parentNode.loc)
             ) {
               context.report({
@@ -257,9 +285,11 @@ export default {
       },
 
       // nothing called on "expect()"
-      'CallExpression:exit'(node) {
+      'CallExpression:exit'(node: TSESTree.CallExpression) {
         if (
+          node.callee.type === AST_NODE_TYPES.Identifier &&
           node.callee.name === 'expect' &&
+          node.parent &&
           node.parent.type === 'ExpressionStatement'
         ) {
           context.report({
@@ -273,4 +303,4 @@ export default {
       },
     };
   },
-};
+});

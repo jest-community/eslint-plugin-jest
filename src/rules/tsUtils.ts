@@ -59,7 +59,9 @@ interface JestExpectNamespaceMemberExpression
  *
  * @return {node is JestExpectCallExpression}
  */
-const isExpectCall = (node: TSESTree.Node): node is JestExpectCallExpression =>
+export const isExpectCall = (
+  node: TSESTree.Node,
+): node is JestExpectCallExpression =>
   node.type === AST_NODE_TYPES.CallExpression &&
   isExpectIdentifier(node.callee);
 
@@ -74,6 +76,78 @@ export const isExpectCallWithParent = (
   node.parent !== undefined &&
   node.parent.type === AST_NODE_TYPES.MemberExpression &&
   node.parent.property.type === AST_NODE_TYPES.Identifier;
+
+export const methodName = (node: TSESTree.Node): string | undefined => {
+  if (
+    node.parent &&
+    node.parent.type === AST_NODE_TYPES.MemberExpression &&
+    node.parent.property &&
+    node.parent.property.type === AST_NODE_TYPES.Identifier
+  ) {
+    return node.parent.property.name;
+  }
+  return;
+};
+
+interface JestExpectNotCall extends JestExpectCallExpression {
+  parent: JestExpectCallMemberExpression;
+}
+export const isExpectNotCall = (
+  node: TSESTree.Node,
+): node is JestExpectNotCall =>
+  isExpectCall(node) &&
+  !!node.parent &&
+  !!node.parent.parent &&
+  node.parent.parent.type === 'MemberExpression' &&
+  methodName(node) === 'not';
+
+interface JestExpectResolvesCall extends JestExpectCallExpression {
+  parent: JestExpectCallMemberExpression;
+}
+export const isExpectResolvesCall = (
+  node: TSESTree.Node,
+): node is JestExpectResolvesCall =>
+  isExpectCall(node) &&
+  !!node.parent &&
+  !!node.parent.parent &&
+  node.parent.parent.type === 'MemberExpression' &&
+  methodName(node) === 'resolves';
+
+interface JestExpectNotResolvesCall extends JestExpectCallExpression {
+  parent: JestExpectCallMemberExpression;
+}
+export const isExpectNotResolvesCall = (
+  node: TSESTree.Node,
+): node is JestExpectNotResolvesCall =>
+  isExpectNotCall(node) &&
+  !!node.parent &&
+  !!node.parent.parent &&
+  node.parent.parent.type === 'MemberExpression' &&
+  methodName(node) === 'resolves';
+
+interface JestExpectRejectsCall extends JestExpectCallExpression {
+  parent: JestExpectCallMemberExpression;
+}
+export const isExpectRejectsCall = (
+  node: TSESTree.Node,
+): node is JestExpectRejectsCall =>
+  isExpectCall(node) &&
+  !!node.parent &&
+  !!node.parent.parent &&
+  node.parent.parent.type === 'MemberExpression' &&
+  methodName(node) === 'rejects';
+
+interface JestExpectNotRejectsCall extends JestExpectCallExpression {
+  parent: JestExpectCallMemberExpression;
+}
+export const isExpectNotRejectsCall = (
+  node: TSESTree.Node,
+): node is JestExpectNotRejectsCall =>
+  isExpectNotCall(node) &&
+  !!node.parent &&
+  !!node.parent.parent &&
+  node.parent.parent.type === 'MemberExpression' &&
+  methodName(node) === 'rejects';
 
 export enum DescribeAlias {
   'describe' = 'describe',
