@@ -113,6 +113,26 @@ ruleTester.run('no-identical-title', rule, {
         es6: true,
       },
     },
+    {
+      code: [
+        'const test = { content: () => "foo" }',
+        'test.content(`testing backticks with the same title`);',
+        'test.content(`testing backticks with the same title`);',
+      ].join('\n'),
+      env: {
+        es6: true,
+      },
+    },
+    {
+      code: [
+        'const describe = { content: () => "foo" }',
+        'describe.content(`testing backticks with the same title`);',
+        'describe.content(`testing backticks with the same title`);',
+      ].join('\n'),
+      env: {
+        es6: true,
+      },
+    },
   ],
 
   invalid: [
