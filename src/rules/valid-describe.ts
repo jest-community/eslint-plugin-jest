@@ -1,6 +1,7 @@
 import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/typescript-estree';
 import {
   FunctionExpression,
+  JestFunctionCallExpression,
   createRule,
   isDescribe,
   isFunction,
@@ -24,6 +25,11 @@ const paramsLocation = (
     end: last.loc.end,
   };
 };
+
+const isDescribeEach = (node: JestFunctionCallExpression) =>
+  node.callee.type === AST_NODE_TYPES.MemberExpression &&
+  node.callee.property.type === AST_NODE_TYPES.Identifier &&
+  node.callee.property.name === 'each';
 
 export default createRule({
   name: __filename,
@@ -50,63 +56,64 @@ export default createRule({
   create(context) {
     return {
       CallExpression(node) {
-        if (isDescribe(node)) {
-          if (node.arguments.length === 0) {
-            return context.report({
-              messageId: 'nameAndCallback',
-              loc: node.loc,
-            });
-          }
+        if (!isDescribe(node) || isDescribeEach(node)) {
+          return;
+        }
 
-          const [name] = node.arguments;
-          const [, callbackFunction] = node.arguments;
-          if (!isString(name)) {
-            context.report({
-              messageId: 'firstArgumentMustBeName',
-              loc: paramsLocation(node.arguments),
-            });
-          }
-          if (!callbackFunction) {
-            context.report({
-              messageId: 'nameAndCallback',
-              loc: paramsLocation(node.arguments),
-            });
+        if (node.arguments.length === 0) {
+          return context.report({
+            messageId: 'nameAndCallback',
+            loc: node.loc,
+          });
+        }
+        const [name] = node.arguments;
+        const [, callbackFunction] = node.arguments;
+        if (!isString(name)) {
+          context.report({
+            messageId: 'firstArgumentMustBeName',
+            loc: paramsLocation(node.arguments),
+          });
+        }
+        if (!callbackFunction) {
+          context.report({
+            messageId: 'nameAndCallback',
+            loc: paramsLocation(node.arguments),
+          });
 
-            return;
-          }
-          if (isFunction(callbackFunction)) {
-            if (isAsync(callbackFunction)) {
-              context.report({
-                messageId: 'noAsyncDescribeCallback',
-                node: callbackFunction,
-              });
-            }
-            if (hasParams(callbackFunction)) {
-              context.report({
-                messageId: 'unexpectedDescribeArgument',
-                loc: paramsLocation(callbackFunction.params),
-              });
-            }
-            if (
-              callbackFunction.body &&
-              callbackFunction.body.type === AST_NODE_TYPES.BlockStatement
-            ) {
-              callbackFunction.body.body.forEach(node => {
-                if (node.type === 'ReturnStatement') {
-                  context.report({
-                    messageId: 'unexpectedReturnInDescribe',
-                    node,
-                  });
-                }
-              });
-            }
-          } else {
+          return;
+        }
+        if (isFunction(callbackFunction)) {
+          if (isAsync(callbackFunction)) {
             context.report({
-              messageId: 'secondArgumentMustBeFunction',
-              loc: paramsLocation(node.arguments),
+              messageId: 'noAsyncDescribeCallback',
+              node: callbackFunction,
             });
-            return;
           }
+          if (hasParams(callbackFunction)) {
+            context.report({
+              messageId: 'unexpectedDescribeArgument',
+              loc: paramsLocation(callbackFunction.params),
+            });
+          }
+          if (
+            callbackFunction.body &&
+            callbackFunction.body.type === AST_NODE_TYPES.BlockStatement
+          ) {
+            callbackFunction.body.body.forEach(node => {
+              if (node.type === 'ReturnStatement') {
+                context.report({
+                  messageId: 'unexpectedReturnInDescribe',
+                  node,
+                });
+              }
+            });
+          }
+        } else {
+          context.report({
+            messageId: 'secondArgumentMustBeFunction',
+            loc: paramsLocation(node.arguments),
+          });
+          return;
         }
       },
     };
