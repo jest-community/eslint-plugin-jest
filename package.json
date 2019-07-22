@@ -37,7 +37,8 @@
     "typecheck": "tsc -p ."
   },
   "dependencies": {
-    "@typescript-eslint/experimental-utils": "^1.13.0"
+    "@typescript-eslint/experimental-utils": "^1.13.0",
+    "typescript": "^3.5.3"
   },
   "devDependencies": {
     "@babel/cli": "^7.4.4",
@@ -65,8 +66,7 @@
     "lint-staged": "^8.0.4",
     "prettier": "^1.10.2",
     "prettylint": "^1.0.0",
-    "rimraf": "^2.6.3",
-    "typescript": "^3.5.3"
+    "rimraf": "^2.6.3"
   },
   "prettier": {
     "proseWrap": "always",
