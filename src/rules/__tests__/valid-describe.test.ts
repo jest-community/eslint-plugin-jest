@@ -9,6 +9,7 @@ const ruleTester = new TSESLint.RuleTester({
 
 ruleTester.run('valid-describe', rule, {
   valid: [
+    'describe.each()()',
     'describe("foo", function() {})',
     'describe("foo", () => {})',
     'describe(`foo`, () => {})',

@@ -1,6 +1,7 @@
 import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/typescript-estree';
 import {
   FunctionExpression,
+  JestFunctionCallExpression,
   createRule,
   isDescribe,
   isFunction,
@@ -24,6 +25,11 @@ const paramsLocation = (
     end: last.loc.end,
   };
 };
+
+const isDescribeEach = (node: JestFunctionCallExpression) =>
+  node.callee.type === AST_NODE_TYPES.MemberExpression &&
+  node.callee.property.type === AST_NODE_TYPES.Identifier &&
+  node.callee.property.name === 'each';
 
 export default createRule({
   name: __filename,
@@ -50,14 +56,13 @@ export default createRule({
   create(context) {
     return {
       CallExpression(node) {
-        if (isDescribe(node)) {
+        if (isDescribe(node) && !isDescribeEach(node)) {
           if (node.arguments.length === 0) {
             return context.report({
               messageId: 'nameAndCallback',
               loc: node.loc,
             });
           }
-
           const [name] = node.arguments;
           const [, callbackFunction] = node.arguments;
           if (!isString(name)) {
