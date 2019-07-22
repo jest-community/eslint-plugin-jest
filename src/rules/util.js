@@ -101,21 +101,6 @@ const describeAliases = new Set(['describe', 'fdescribe', 'xdescribe']);
 
 const testCaseNames = new Set(['fit', 'it', 'test', 'xit', 'xtest']);
 
-export const getNodeName = node => {
-  function joinNames(a, b) {
-    return a && b ? `${a}.${b}` : null;
-  }
-
-  switch (node && node.type) {
-    case 'Identifier':
-      return node.name;
-    case 'MemberExpression':
-      return joinNames(getNodeName(node.object), getNodeName(node.property));
-  }
-
-  return null;
-};
-
 export const isTestCase = node =>
   node &&
   node.type === 'CallExpression' &&
@@ -165,11 +150,3 @@ export const getDocsUrl = filename => {
 
   return `${REPO_URL}/blob/v${version}/docs/rules/${ruleName}.md`;
 };
-
-export function composeFixers(node) {
-  return (...fixers) => {
-    return fixerApi => {
-      return fixers.reduce((all, fixer) => [...all, fixer(node, fixerApi)], []);
-    };
-  };
-}
