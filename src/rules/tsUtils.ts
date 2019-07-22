@@ -166,7 +166,7 @@ export const isHook = (
 ): node is JestFunctionCallExpressionWithIdentifierCallee<HookName> => {
   return (
     node.callee.type === AST_NODE_TYPES.Identifier &&
-    node.callee.name in HookName
+    HookName.hasOwnProperty(node.callee.name)
   );
 };
 
@@ -175,10 +175,10 @@ export const isTestCase = (
 ): node is JestFunctionCallExpression<TestCaseName> => {
   return (
     (node.callee.type === AST_NODE_TYPES.Identifier &&
-      node.callee.name in TestCaseName) ||
+      TestCaseName.hasOwnProperty(node.callee.name)) ||
     (node.callee.type === AST_NODE_TYPES.MemberExpression &&
       node.callee.object.type === AST_NODE_TYPES.Identifier &&
-      node.callee.object.name in TestCaseName)
+      TestCaseName.hasOwnProperty(node.callee.object.name))
   );
 };
 
@@ -187,10 +187,10 @@ export const isDescribe = (
 ): node is JestFunctionCallExpression<DescribeAlias> => {
   return (
     (node.callee.type === AST_NODE_TYPES.Identifier &&
-      node.callee.name in DescribeAlias) ||
+      DescribeAlias.hasOwnProperty(node.callee.name)) ||
     (node.callee.type === AST_NODE_TYPES.MemberExpression &&
       node.callee.object.type === AST_NODE_TYPES.Identifier &&
-      node.callee.object.name in DescribeAlias)
+      DescribeAlias.hasOwnProperty(node.callee.object.name))
   );
 };
 

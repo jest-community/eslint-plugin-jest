@@ -38,6 +38,10 @@ ruleTester.run('valid-describe', rule, {
       test('bar', () => {})
     )
     `,
+    `
+    if (hasOwnProperty(obj, key)) {
+    }
+    `,
   ],
   invalid: [
     {
