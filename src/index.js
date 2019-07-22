@@ -13,8 +13,16 @@ function importDefault(moduleName) {
 }
 
 const rules = readdirSync(join(__dirname, 'rules'))
-  .filter(rule => rule !== '__tests__' && rule !== 'util.js')
-  .map(rule => basename(rule, '.js'))
+  .filter(
+    rule =>
+      rule !== '__tests__' &&
+      rule !== 'util.js' &&
+      rule !== 'tsUtils.ts' &&
+      rule !== 'tsUtils.js',
+  )
+  .map(rule =>
+    rule.endsWith('js') ? basename(rule, '.js') : basename(rule, '.ts'),
+  )
   .reduce(
     (acc, curr) =>
       Object.assign(acc, { [curr]: importDefault(`./rules/${curr}`) }),
