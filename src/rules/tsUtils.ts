@@ -127,7 +127,13 @@ export type JestFunctionCallExpression<
   | JestFunctionCallExpressionWithMemberExpressionCallee<FunctionName>
   | JestFunctionCallExpressionWithIdentifierCallee<FunctionName>;
 
-export const getNodeName = (node: TSESTree.Node): string | null => {
+export function getNodeName(
+  node:
+    | JestFunctionMemberExpression<JestFunctionName>
+    | JestFunctionIdentifier<JestFunctionName>,
+): string;
+export function getNodeName(node: TSESTree.Node): string | null;
+export function getNodeName(node: TSESTree.Node): string | null {
   function joinNames(a?: string | null, b?: string | null): string | null {
     return a && b ? `${a}.${b}` : null;
   }
@@ -145,7 +151,7 @@ export const getNodeName = (node: TSESTree.Node): string | null => {
   }
 
   return null;
-};
+}
 
 export type FunctionExpression =
   | TSESTree.ArrowFunctionExpression
@@ -191,6 +197,27 @@ export const isDescribe = (
 export const isLiteralNode = (node: {
   type: AST_NODE_TYPES;
 }): node is TSESTree.Literal => node.type === AST_NODE_TYPES.Literal;
+
+export interface StringLiteral extends TSESTree.Literal {
+  value: string;
+}
+
+export type StringNode = StringLiteral | TSESTree.TemplateLiteral;
+
+export const isStringLiteral = (node: TSESTree.Node): node is StringLiteral =>
+  node.type === AST_NODE_TYPES.Literal && typeof node.value === 'string';
+
+export const isTemplateLiteral = (
+  node: TSESTree.Node,
+): node is TSESTree.TemplateLiteral =>
+  node && node.type === AST_NODE_TYPES.TemplateLiteral;
+
+export const isStringNode = (node: TSESTree.Node): node is StringNode =>
+  isStringLiteral(node) || isTemplateLiteral(node);
+
+/* istanbul ignore next we'll need this later */
+export const getStringValue = (arg: StringNode): string =>
+  isTemplateLiteral(arg) ? arg.quasis[0].value.raw : arg.value;
 
 const collectReferences = (scope: TSESLint.Scope.Scope) => {
   const locals = new Set();
