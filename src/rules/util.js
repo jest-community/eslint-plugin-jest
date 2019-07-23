@@ -112,6 +112,7 @@ export const isTestCase = node =>
     (node.callee.type === 'MemberExpression' &&
       node.callee.object.type === 'Identifier' &&
       testCaseNames.has(node.callee.object.name) &&
+      node.callee.property.type === 'Identifier' &&
       testCaseProperties.has(node.callee.property.name)));
 
 export const isDescribe = node =>
@@ -122,6 +123,7 @@ export const isDescribe = node =>
     (node.callee.type === 'MemberExpression' &&
       node.callee.object.type === 'Identifier' &&
       describeAliases.has(node.callee.object.name) &&
+      node.callee.property.type === 'Identifier' &&
       describeProperties.has(node.callee.property.name)));
 
 export const isFunction = node =>

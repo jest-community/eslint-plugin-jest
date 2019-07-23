@@ -96,6 +96,19 @@ export enum HookName {
   'afterEach' = 'afterEach',
 }
 
+export enum DescribeProperty {
+  'each' = 'each',
+  'only' = 'only',
+  'skip' = 'skip',
+}
+
+export enum TestCaseProperty {
+  'each' = 'each',
+  'only' = 'only',
+  'skip' = 'skip',
+  'todo' = 'todo',
+}
+
 export type JestFunctionName = DescribeAlias | TestCaseName | HookName;
 
 export interface JestFunctionIdentifier<FunctionName extends JestFunctionName>
@@ -178,7 +191,9 @@ export const isTestCase = (
       TestCaseName.hasOwnProperty(node.callee.name)) ||
     (node.callee.type === AST_NODE_TYPES.MemberExpression &&
       node.callee.object.type === AST_NODE_TYPES.Identifier &&
-      TestCaseName.hasOwnProperty(node.callee.object.name))
+      TestCaseName.hasOwnProperty(node.callee.object.name) &&
+      node.callee.property.type === AST_NODE_TYPES.Identifier &&
+      TestCaseProperty.hasOwnProperty(node.callee.property.name))
   );
 };
 
@@ -190,7 +205,9 @@ export const isDescribe = (
       DescribeAlias.hasOwnProperty(node.callee.name)) ||
     (node.callee.type === AST_NODE_TYPES.MemberExpression &&
       node.callee.object.type === AST_NODE_TYPES.Identifier &&
-      DescribeAlias.hasOwnProperty(node.callee.object.name))
+      DescribeAlias.hasOwnProperty(node.callee.object.name) &&
+      node.callee.property.type === AST_NODE_TYPES.Identifier &&
+      DescribeProperty.hasOwnProperty(node.callee.property.name))
   );
 };
 
