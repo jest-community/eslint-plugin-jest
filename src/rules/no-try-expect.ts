@@ -1,5 +1,5 @@
 import { TSESTree } from '@typescript-eslint/experimental-utils';
-import { createRule, isTestCase } from './tsUtils';
+import { createRule, isExpectCall, isTestCase } from './tsUtils';
 
 export default createRule({
   name: __filename,
@@ -25,9 +25,7 @@ export default createRule({
     let catchDepth = 0;
 
     function isThrowExpectCall(node: TSESTree.CallExpression) {
-      return (
-        catchDepth > 0 && 'name' in node.callee && node.callee.name === 'expect'
-      );
+      return catchDepth > 0 && isExpectCall(node);
     }
 
     return {
