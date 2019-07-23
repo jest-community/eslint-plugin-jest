@@ -1,9 +1,9 @@
-import { RuleTester } from 'eslint';
+import { TSESLint } from '@typescript-eslint/experimental-utils';
 import rule from '../no-try-expect';
 
-const ruleTester = new RuleTester({
+const ruleTester = new TSESLint.RuleTester({
   parserOptions: {
-    ecmaVersion: 2019,
+    ecmaVersion: 9,
   },
 });
 
@@ -17,13 +17,13 @@ ruleTester.run('no-try-catch', rule, {
     });
     try {
 
-    } catch {
+    } catch(e) {
       expect('foo').toEqual('foo');
     }`,
     `it.skip('foo');
     try {
 
-    } catch {
+    } catch(e) {
       expect('foo').toEqual('foo');
     }`,
   ],
