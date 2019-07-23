@@ -229,8 +229,15 @@ export const isTemplateLiteral = (
 ): node is TSESTree.TemplateLiteral =>
   node && node.type === AST_NODE_TYPES.TemplateLiteral;
 
-export const isStringNode = (node: TSESTree.Node): node is StringNode =>
-  isStringLiteral(node) || isTemplateLiteral(node);
+export const isStringNode = (
+  node: TSESTree.Node | undefined,
+): node is StringNode =>
+  node !== undefined && (isStringLiteral(node) || isTemplateLiteral(node));
+
+export const hasExpressions = (
+  node: TSESTree.Node,
+): node is TSESTree.Expression =>
+  'expressions' in node && node.expressions.length > 0;
 
 /* istanbul ignore next we'll need this later */
 export const getStringValue = (arg: StringNode): string =>

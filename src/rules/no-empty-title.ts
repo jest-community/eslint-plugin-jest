@@ -1,36 +1,37 @@
 import {
-  getDocsUrl,
+  createRule,
   getStringValue,
   hasExpressions,
   isDescribe,
-  isString,
+  isStringNode,
   isTemplateLiteral,
   isTestCase,
-} from './util';
+} from './tsUtils';
 
-export default {
+export default createRule({
+  name: __filename,
   meta: {
     docs: {
-      url: getDocsUrl(__filename),
+      category: 'Best Practices',
+      description: 'Disallow empty titles',
+      recommended: false,
     },
     messages: {
       describe: 'describe should not have an empty title',
       test: 'test should not have an empty title',
     },
+    type: 'suggestion',
     schema: [],
   },
+  defaultOptions: [],
   create(context) {
     return {
       CallExpression(node) {
-        const is = {
-          describe: isDescribe(node),
-          testCase: isTestCase(node),
-        };
-        if (!is.describe && !is.testCase) {
+        if (!isDescribe(node) && !isTestCase(node)) {
           return;
         }
         const [firstArgument] = node.arguments;
-        if (!isString(firstArgument)) {
+        if (!isStringNode(firstArgument)) {
           return;
         }
         if (isTemplateLiteral(firstArgument) && hasExpressions(firstArgument)) {
@@ -38,11 +39,11 @@ export default {
         }
         if (getStringValue(firstArgument) === '') {
           context.report({
-            messageId: is.describe ? 'describe' : 'test',
+            messageId: isDescribe(node) ? 'describe' : 'test',
             node,
           });
         }
       },
     };
   },
-};
+});
