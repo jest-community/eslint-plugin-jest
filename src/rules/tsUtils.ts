@@ -15,9 +15,13 @@ export const createRule = ESLintUtils.RuleCreator(name => {
   return `${REPO_URL}/blob/v${version}/docs/rules/${ruleName}.md`;
 });
 
-interface JestExpectIdentifier extends TSESTree.Identifier {
-  name: 'expect';
+interface JestSpecificIdentifier<Name extends string>
+  extends TSESTree.Identifier {
+  name: Name;
 }
+
+type JestExpectIdentifier = JestSpecificIdentifier<'expect'>;
+type JestNotIdentifier = JestSpecificIdentifier<'not'>;
 
 /**
  * Checks if the given `node` is considered a {@link JestExpectIdentifier}.
@@ -67,6 +71,16 @@ interface JestExpectCallWithParent extends JestExpectCallExpression {
   parent: JestExpectCallMemberExpression;
 }
 
+interface JestNotNamespaceMemberExpression
+  extends JestExpectCallMemberExpression {
+  object: JestExpectCallExpression;
+  property: JestNotIdentifier;
+}
+
+interface JestExpectCallWithNotParent extends JestExpectCallWithParent {
+  parent: JestNotNamespaceMemberExpression;
+}
+
 export const isExpectCallWithParent = (
   node: TSESTree.Node,
 ): node is JestExpectCallWithParent =>
@@ -74,6 +88,27 @@ export const isExpectCallWithParent = (
   node.parent !== undefined &&
   node.parent.type === AST_NODE_TYPES.MemberExpression &&
   node.parent.property.type === AST_NODE_TYPES.Identifier;
+
+/**
+ * Checks if the given `node` is a {@link JestExpectCallWithNotParent}.
+ *
+ * This is any call to `expect` that is followed by the `not` namespace:
+ *
+ * @example```
+ * expect('a').not.toBe('b');
+ * expect().not
+ * ```
+ *
+ * @param {Node} node
+ *
+ * @return {node is JestExpectCallWithNotParent}
+ */
+export const isExpectCallWithNot = (
+  node: TSESTree.Node,
+): node is JestExpectCallWithNotParent =>
+  isExpectCallWithParent(node) &&
+  node.parent.object.type === AST_NODE_TYPES.CallExpression &&
+  node.parent.property.name === 'not';
 
 export enum DescribeAlias {
   'describe' = 'describe',
