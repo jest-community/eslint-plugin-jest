@@ -13,46 +13,14 @@ ruleTester.run('valid-expect', rule, {
     'expect(true).toBeDefined();',
     'expect([1, 2, 3]).toEqual([1, 2, 3]);',
     'expect(undefined).not.toBeDefined();',
-    {
-      code:
-        'test("valid-expect", () => { return expect(Promise.resolve(2)).resolves.toBeDefined(); });',
-      options: [{ alwaysAwait: false }],
-    },
-    {
-      code:
-        'test("valid-expect", () => { return expect(Promise.reject(2)).rejects.toBeDefined(); });',
-      options: [{ alwaysAwait: false }],
-    },
-    {
-      code:
-        'test("valid-expect", () => { return expect(Promise.resolve(2)).not.resolves.toBeDefined(); });',
-      options: [{ alwaysAwait: false }],
-    },
-    {
-      code:
-        'test("valid-expect", () => { return expect(Promise.resolve(2)).not.rejects.toBeDefined(); });',
-      options: [{ alwaysAwait: false }],
-    },
-    {
-      code:
-        'test("valid-expect", function () { return expect(Promise.resolve(2)).not.resolves.toBeDefined(); });',
-      options: [{ alwaysAwait: false }],
-    },
-    {
-      code:
-        'test("valid-expect", function () { return expect(Promise.resolve(2)).not.rejects.toBeDefined(); });',
-      options: [{ alwaysAwait: false }],
-    },
-    {
-      code:
-        'test("valid-expect", function () { return Promise.resolve(expect(Promise.resolve(2)).not.resolves.toBeDefined()); });',
-      options: [{ alwaysAwait: false }],
-    },
-    {
-      code:
-        'test("valid-expect", function () { return Promise.resolve(expect(Promise.resolve(2)).not.rejects.toBeDefined()); });',
-      options: [{ alwaysAwait: false }],
-    },
+    'test("valid-expect", () => { return expect(Promise.resolve(2)).resolves.toBeDefined(); });',
+    'test("valid-expect", () => { return expect(Promise.reject(2)).rejects.toBeDefined(); });',
+    'test("valid-expect", () => { return expect(Promise.resolve(2)).not.resolves.toBeDefined(); });',
+    'test("valid-expect", () => { return expect(Promise.resolve(2)).not.rejects.toBeDefined(); });',
+    'test("valid-expect", function () { return expect(Promise.resolve(2)).not.resolves.toBeDefined(); });',
+    'test("valid-expect", function () { return expect(Promise.resolve(2)).not.rejects.toBeDefined(); });',
+    'test("valid-expect", function () { return Promise.resolve(expect(Promise.resolve(2)).not.resolves.toBeDefined()); });',
+    'test("valid-expect", function () { return Promise.resolve(expect(Promise.resolve(2)).not.rejects.toBeDefined()); });',
     {
       code:
         'test("valid-expect", () => expect(Promise.resolve(2)).resolves.toBeDefined());',
@@ -176,7 +144,8 @@ ruleTester.run('valid-expect', rule, {
         {
           column: 1,
           endColumn: 50,
-          message: 'Async assertions must be awaited or returned.',
+          messageId: 'asyncMustBeAwaited',
+          data: { orReturned: ' or returned' },
         },
       ],
     },
@@ -186,7 +155,8 @@ ruleTester.run('valid-expect', rule, {
         {
           column: 1,
           endColumn: 49,
-          message: 'Async assertions must be awaited or returned.',
+          messageId: 'asyncMustBeAwaited',
+          data: { orReturned: ' or returned' },
         },
       ],
     },
@@ -198,7 +168,7 @@ ruleTester.run('valid-expect', rule, {
         {
           column: 1,
           endColumn: 50,
-          message: 'Async assertions must be awaited.',
+          messageId: 'asyncMustBeAwaited',
         },
       ],
     },
@@ -211,7 +181,8 @@ ruleTester.run('valid-expect', rule, {
         {
           column: 30,
           endColumn: 79,
-          message: 'Async assertions must be awaited or returned.',
+          messageId: 'asyncMustBeAwaited',
+          data: { orReturned: ' or returned' },
         },
       ],
     },
@@ -223,7 +194,8 @@ ruleTester.run('valid-expect', rule, {
         {
           column: 30,
           endColumn: 83,
-          message: 'Async assertions must be awaited or returned.',
+          messageId: 'asyncMustBeAwaited',
+          data: { orReturned: ' or returned' },
         },
       ],
     },
@@ -235,7 +207,8 @@ ruleTester.run('valid-expect', rule, {
         {
           column: 30,
           endColumn: 78,
-          message: 'Async assertions must be awaited or returned.',
+          messageId: 'asyncMustBeAwaited',
+          data: { orReturned: ' or returned' },
         },
       ],
     },
@@ -247,7 +220,8 @@ ruleTester.run('valid-expect', rule, {
         {
           column: 30,
           endColumn: 82,
-          message: 'Async assertions must be awaited or returned.',
+          messageId: 'asyncMustBeAwaited',
+          data: { orReturned: ' or returned' },
         },
       ],
     },
@@ -259,7 +233,8 @@ ruleTester.run('valid-expect', rule, {
         {
           column: 36,
           endColumn: 85,
-          message: 'Async assertions must be awaited or returned.',
+          messageId: 'asyncMustBeAwaited',
+          data: { orReturned: ' or returned' },
         },
       ],
     },
@@ -270,7 +245,8 @@ ruleTester.run('valid-expect', rule, {
         {
           column: 36,
           endColumn: 89,
-          message: 'Async assertions must be awaited or returned.',
+          messageId: 'asyncMustBeAwaited',
+          data: { orReturned: ' or returned' },
         },
       ],
     },
@@ -285,13 +261,15 @@ ruleTester.run('valid-expect', rule, {
           line: 2,
           column: 11,
           endColumn: 64,
-          message: 'Async assertions must be awaited or returned.',
+          messageId: 'asyncMustBeAwaited',
+          data: { orReturned: ' or returned' },
         },
         {
           line: 3,
           column: 11,
           endColumn: 59,
-          message: 'Async assertions must be awaited or returned.',
+          messageId: 'asyncMustBeAwaited',
+          data: { orReturned: ' or returned' },
         },
       ],
     },
@@ -306,7 +284,8 @@ ruleTester.run('valid-expect', rule, {
           line: 3,
           column: 11,
           endColumn: 59,
-          message: 'Async assertions must be awaited or returned.',
+          messageId: 'asyncMustBeAwaited',
+          data: { orReturned: ' or returned' },
         },
       ],
     },
@@ -325,13 +304,13 @@ ruleTester.run('valid-expect', rule, {
           line: 2,
           column: 11,
           endColumn: 64,
-          message: 'Async assertions must be awaited.',
+          messageId: 'asyncMustBeAwaited',
         },
         {
           line: 3,
           column: 18,
           endColumn: 66,
-          message: 'Async assertions must be awaited.',
+          messageId: 'asyncMustBeAwaited',
         },
       ],
     },
@@ -341,13 +320,13 @@ ruleTester.run('valid-expect', rule, {
           expect(Promise.resolve(2)).not.resolves.toBeDefined(); 
           return expect(Promise.resolve(1)).rejects.toBeDefined(); 
         });`,
-      options: [{ alwaysAwait: false }],
       errors: [
         {
           line: 2,
           column: 11,
           endColumn: 64,
-          message: 'Async assertions must be awaited or returned.',
+          messageId: 'asyncMustBeAwaited',
+          data: { orReturned: ' or returned' },
         },
       ],
     },
@@ -363,7 +342,7 @@ ruleTester.run('valid-expect', rule, {
           line: 3,
           column: 18,
           endColumn: 66,
-          message: 'Async assertions must be awaited.',
+          messageId: 'asyncMustBeAwaited',
         },
       ],
     },
@@ -380,8 +359,8 @@ ruleTester.run('valid-expect', rule, {
           line: 2,
           column: 11,
           endColumn: 81,
-          message:
-            'Promises which return async assertions must be awaited or returned.',
+          messageId: 'promisesWithAsyncAssertionsMustBeAwaited',
+          data: { orReturned: ' or returned' },
         },
       ],
     },
@@ -394,8 +373,8 @@ ruleTester.run('valid-expect', rule, {
           line: 2,
           column: 11,
           endColumn: 80,
-          message:
-            'Promises which return async assertions must be awaited or returned.',
+          messageId: 'promisesWithAsyncAssertionsMustBeAwaited',
+          data: { orReturned: ' or returned' },
         },
       ],
     },
@@ -408,8 +387,8 @@ ruleTester.run('valid-expect', rule, {
           line: 2,
           column: 11,
           endColumn: 75,
-          message:
-            'Promises which return async assertions must be awaited or returned.',
+          messageId: 'promisesWithAsyncAssertionsMustBeAwaited',
+          data: { orReturned: ' or returned' },
         },
       ],
     },
@@ -424,7 +403,7 @@ ruleTester.run('valid-expect', rule, {
           line: 2,
           column: 11,
           endColumn: 81,
-          message: 'Promises which return async assertions must be awaited.',
+          messageId: 'promisesWithAsyncAssertionsMustBeAwaited',
         },
       ],
     },
@@ -442,8 +421,8 @@ ruleTester.run('valid-expect', rule, {
           column: 11,
           endLine: 5,
           endColumn: 13,
-          message:
-            'Promises which return async assertions must be awaited or returned.',
+          messageId: 'promisesWithAsyncAssertionsMustBeAwaited',
+          data: { orReturned: ' or returned' },
         },
       ],
     },
@@ -461,8 +440,8 @@ ruleTester.run('valid-expect', rule, {
           column: 11,
           endLine: 5,
           endColumn: 13,
-          message:
-            'Promises which return async assertions must be awaited or returned.',
+          messageId: 'promisesWithAsyncAssertionsMustBeAwaited',
+          data: { orReturned: ' or returned' },
         },
       ],
     },
@@ -480,14 +459,16 @@ ruleTester.run('valid-expect', rule, {
           column: 13,
           endLine: 3,
           endColumn: 66,
-          message: 'Async assertions must be awaited or returned.',
+          messageId: 'asyncMustBeAwaited',
+          data: { orReturned: ' or returned' },
         },
         {
           line: 4,
           column: 13,
           endLine: 4,
           endColumn: 66,
-          message: 'Async assertions must be awaited or returned.',
+          messageId: 'asyncMustBeAwaited',
+          data: { orReturned: ' or returned' },
         },
       ],
     },
@@ -498,7 +479,8 @@ ruleTester.run('valid-expect', rule, {
         {
           column: 37,
           endColumn: 41,
-          message: '"toBe" was not called.',
+          messageId: 'matcherOnPropertyNotCalled',
+          data: { propertyName: 'toBe' },
         },
       ],
     },
