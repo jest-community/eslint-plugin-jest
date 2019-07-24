@@ -1,7 +1,11 @@
-import { RuleTester } from 'eslint';
+import { TSESLint } from '@typescript-eslint/experimental-utils';
 import rule from '../no-identical-title';
 
-const ruleTester = new RuleTester();
+const ruleTester = new TSESLint.RuleTester({
+  parserOptions: {
+    ecmaVersion: 6,
+  },
+});
 
 ruleTester.run('no-identical-title', rule, {
   valid: [
@@ -58,21 +62,8 @@ ruleTester.run('no-identical-title', rule, {
       'describe("describe2", function() {});',
     ].join('\n'),
     ['it("it" + n, function() {});', 'it("it" + n, function() {});'].join('\n'),
-    {
-      code: [
-        'it(`it${n}`, function() {});',
-        'it(`it${n}`, function() {});',
-      ].join('\n'),
-      env: {
-        es6: true,
-      },
-    },
-    {
-      code: 'it(`${n}`, function() {});',
-      env: {
-        es6: true,
-      },
-    },
+    ['it(`it${n}`, function() {});', 'it(`it${n}`, function() {});'].join('\n'),
+    'it(`${n}`, function() {});',
     [
       'describe("title " + foo, function() {',
       '    describe("describe1", function() {});',
@@ -87,54 +78,28 @@ ruleTester.run('no-identical-title', rule, {
       '    });',
       '});',
     ].join('\n'),
-    {
-      code: [
-        'describe("describe", () => {',
-        '    it(`testing ${someVar} with the same title`, () => {});',
-        '    it(`testing ${someVar} with the same title`, () => {});',
-        '});',
-      ].join('\n'),
-      env: {
-        es6: true,
-      },
-    },
-    {
-      code: ['it(`it1`, () => {});', 'it(`it2`, () => {});'].join('\n'),
-      env: {
-        es6: true,
-      },
-    },
-    {
-      code: [
-        'describe(`describe1`, () => {});',
-        'describe(`describe2`, () => {});',
-      ].join('\n'),
-      env: {
-        es6: true,
-      },
-    },
-    {
-      code: [
-        'const test = { content: () => "foo" }',
-        'test.content(`testing backticks with the same title`);',
-        'test.content(`testing backticks with the same title`);',
-      ].join('\n'),
-      env: {
-        es6: true,
-      },
-    },
-    {
-      code: [
-        'const describe = { content: () => "foo" }',
-        'describe.content(`testing backticks with the same title`);',
-        'describe.content(`testing backticks with the same title`);',
-      ].join('\n'),
-      env: {
-        es6: true,
-      },
-    },
+    [
+      'describe("describe", () => {',
+      '    it(`testing ${someVar} with the same title`, () => {});',
+      '    it(`testing ${someVar} with the same title`, () => {});',
+      '});',
+    ].join('\n'),
+    ['it(`it1`, () => {});', 'it(`it2`, () => {});'].join('\n'),
+    [
+      'describe(`describe1`, () => {});',
+      'describe(`describe2`, () => {});',
+    ].join('\n'),
+    [
+      'const test = { content: () => "foo" }',
+      'test.content(`testing backticks with the same title`);',
+      'test.content(`testing backticks with the same title`);',
+    ].join('\n'),
+    [
+      'const describe = { content: () => "foo" }',
+      'describe.content(`testing backticks with the same title`);',
+      'describe.content(`testing backticks with the same title`);',
+    ].join('\n'),
   ],
-
   invalid: [
     {
       code: [
@@ -208,9 +173,6 @@ ruleTester.run('no-identical-title', rule, {
         '    it(`testing backticks with the same title`, () => {});',
         '});',
       ].join('\n'),
-      env: {
-        es6: true,
-      },
       errors: [{ messageId: 'multipleTestTitle', column: 5, line: 3 }],
     },
   ],
