@@ -128,6 +128,7 @@ installations requiring long-term consistency.
 | [no-test-return-statement][] | Disallow explicitly returning from tests                          |                  |                     |
 | [no-truthy-falsy][]          | Disallow using `toBeTruthy()` & `toBeFalsy()`                     |                  |                     |
 | [no-try-expect][]            | Prevent `catch` assertions in tests                               |                  |                     |
+| [prefer-called-with][]       | Suggest using `toBeCalledWith()` OR `toHaveBeenCalledWith()`      |                  |                     |
 | [prefer-expect-assertions][] | Suggest using `expect.assertions()` OR `expect.hasAssertions()`   |                  |                     |
 | [prefer-spy-on][]            | Suggest using `jest.spyOn()`                                      |                  | ![fixable-green][]  |
 | [prefer-strict-equal][]      | Suggest using `toStrictEqual()`                                   |                  | ![fixable-green][]  |
@@ -135,13 +136,12 @@ installations requiring long-term consistency.
 | [prefer-to-be-undefined][]   | Suggest using `toBeUndefined()`                                   |                  | ![fixable-green][]  |
 | [prefer-to-contain][]        | Suggest using `toContain()`                                       |                  | ![fixable-green][]  |
 | [prefer-to-have-length][]    | Suggest using `toHaveLength()`                                    |                  | ![fixable-green][]  |
+| [prefer-todo][]              | Suggest using `test.todo()`                                       |                  | ![fixable-green][]  |
 | [prefer-inline-snapshots][]  | Suggest using `toMatchInlineSnapshot()`                           |                  | ![fixable-green][]  |
 | [require-tothrow-message][]  | Require that `toThrow()` and `toThrowError` includes a message    |                  |                     |
 | [valid-describe][]           | Enforce valid `describe()` callback                               | ![recommended][] |                     |
 | [valid-expect-in-promise][]  | Enforce having return statement when testing with promises        | ![recommended][] |                     |
 | [valid-expect][]             | Enforce valid `expect()` usage                                    | ![recommended][] |                     |
-| [prefer-todo][]              | Suggest using `test.todo()`                                       |                  | ![fixable-green][]  |
-| [prefer-called-with][]       | Suggest using `toBeCalledWith()` OR `toHaveBeenCalledWith()`      |                  |                     |
 
 ## Credit
 
@@ -187,12 +187,12 @@ https://github.com/dangreenisrael/eslint-plugin-jest-formatting
 [prefer-to-be-undefined]: docs/rules/prefer-to-be-undefined.md
 [prefer-to-contain]: docs/rules/prefer-to-contain.md
 [prefer-to-have-length]: docs/rules/prefer-to-have-length.md
+[prefer-todo]: docs/rules/prefer-todo.md
 [prefer-inline-snapshots]: docs/rules/prefer-inline-snapshots.md
 [require-tothrow-message]: docs/rules/require-tothrow-message.md
 [valid-describe]: docs/rules/valid-describe.md
 [valid-expect-in-promise]: docs/rules/valid-expect-in-promise.md
 [valid-expect]: docs/rules/valid-expect.md
-[prefer-todo]: docs/rules/prefer-todo.md
 [fixable-green]: https://img.shields.io/badge/-fixable-green.svg
 [fixable-yellow]: https://img.shields.io/badge/-fixable-yellow.svg
 [recommended]: https://img.shields.io/badge/-recommended-lightgrey.svg
