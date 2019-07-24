@@ -110,8 +110,8 @@ installations requiring long-term consistency.
 | [expect-expect][]            | Enforce assertion to be made in a test body                       |                  |                     |
 | [lowercase-name][]           | Disallow capitalized test names                                   |                  | ![fixable-green][]  |
 | [no-alias-methods][]         | Disallow alias methods                                            | ![recommended][] | ![fixable-green][]  |
-| [no-disabled-tests][]        | Disallow disabled tests                                           | ![recommended][] |                     |
 | [no-commented-out-tests][]   | Disallow commented out tests                                      |                  |                     |
+| [no-disabled-tests][]        | Disallow disabled tests                                           | ![recommended][] |                     |
 | [no-duplicate-hooks][]       | Disallow duplicate hooks within a `describe` block                |                  |                     |
 | [no-empty-title][]           | Disallow empty titles                                             |                  |                     |
 | [no-export][]                | Disallow export from test files                                   |                  |                     |
@@ -121,27 +121,27 @@ installations requiring long-term consistency.
 | [no-if][]                    | Disallow conditional logic                                        |                  |                     |
 | [no-jasmine-globals][]       | Disallow Jasmine globals                                          | ![recommended][] | ![fixable-yellow][] |
 | [no-jest-import][]           | Disallow importing `jest`                                         | ![recommended][] |                     |
-| [no-mocks-import][]          | Disallow manually importing from `__mocks__`                      |                  |                     |
 | [no-large-snapshots][]       | Disallow large snapshots                                          |                  |                     |
+| [no-mocks-import][]          | Disallow manually importing from `__mocks__`                      |                  |                     |
 | [no-test-callback][]         | Using a callback in asynchronous tests                            |                  | ![fixable-green][]  |
 | [no-test-prefixes][]         | Disallow using `f` & `x` prefixes to define focused/skipped tests | ![recommended][] | ![fixable-green][]  |
 | [no-test-return-statement][] | Disallow explicitly returning from tests                          |                  |                     |
 | [no-truthy-falsy][]          | Disallow using `toBeTruthy()` & `toBeFalsy()`                     |                  |                     |
 | [no-try-expect][]            | Prevent `catch` assertions in tests                               |                  |                     |
+| [prefer-called-with][]       | Suggest using `toBeCalledWith()` OR `toHaveBeenCalledWith()`      |                  |                     |
 | [prefer-expect-assertions][] | Suggest using `expect.assertions()` OR `expect.hasAssertions()`   |                  |                     |
+| [prefer-inline-snapshots][]  | Suggest using `toMatchInlineSnapshot()`                           |                  | ![fixable-green][]  |
 | [prefer-spy-on][]            | Suggest using `jest.spyOn()`                                      |                  | ![fixable-green][]  |
 | [prefer-strict-equal][]      | Suggest using `toStrictEqual()`                                   |                  | ![fixable-green][]  |
 | [prefer-to-be-null][]        | Suggest using `toBeNull()`                                        |                  | ![fixable-green][]  |
 | [prefer-to-be-undefined][]   | Suggest using `toBeUndefined()`                                   |                  | ![fixable-green][]  |
 | [prefer-to-contain][]        | Suggest using `toContain()`                                       |                  | ![fixable-green][]  |
 | [prefer-to-have-length][]    | Suggest using `toHaveLength()`                                    |                  | ![fixable-green][]  |
-| [prefer-inline-snapshots][]  | Suggest using `toMatchInlineSnapshot()`                           |                  | ![fixable-green][]  |
+| [prefer-todo][]              | Suggest using `test.todo()`                                       |                  | ![fixable-green][]  |
 | [require-tothrow-message][]  | Require that `toThrow()` and `toThrowError` includes a message    |                  |                     |
 | [valid-describe][]           | Enforce valid `describe()` callback                               | ![recommended][] |                     |
 | [valid-expect-in-promise][]  | Enforce having return statement when testing with promises        | ![recommended][] |                     |
 | [valid-expect][]             | Enforce valid `expect()` usage                                    | ![recommended][] |                     |
-| [prefer-todo][]              | Suggest using `test.todo()`                                       |                  | ![fixable-green][]  |
-| [prefer-called-with][]       | Suggest using `toBeCalledWith()` OR `toHaveBeenCalledWith()`      |                  |                     |
 
 ## Credit
 
@@ -161,9 +161,9 @@ https://github.com/dangreenisrael/eslint-plugin-jest-formatting
 [expect-expect]: docs/rules/expect-expect.md
 [lowercase-name]: docs/rules/lowercase-name.md
 [no-alias-methods]: docs/rules/no-alias-methods.md
+[no-commented-out-tests]: docs/rules/no-commented-out-tests.md
 [no-disabled-tests]: docs/rules/no-disabled-tests.md
 [no-duplicate-hooks]: docs/rules/no-duplicate-hooks.md
-[no-commented-out-tests]: docs/rules/no-commented-out-tests.md
 [no-empty-title]: docs/rules/no-empty-title.md
 [no-export]: docs/rules/no-export.md
 [no-focused-tests]: docs/rules/no-focused-tests.md
@@ -172,8 +172,8 @@ https://github.com/dangreenisrael/eslint-plugin-jest-formatting
 [no-if]: docs/rules/no-if.md
 [no-jasmine-globals]: docs/rules/no-jasmine-globals.md
 [no-jest-import]: docs/rules/no-jest-import.md
-[no-mocks-import]: docs/rules/no-mocks-import.md
 [no-large-snapshots]: docs/rules/no-large-snapshots.md
+[no-mocks-import]: docs/rules/no-mocks-import.md
 [no-test-callback]: docs/rules/no-test-callback.md
 [no-test-prefixes]: docs/rules/no-test-prefixes.md
 [no-test-return-statement]: docs/rules/no-test-return-statement.md
@@ -181,18 +181,18 @@ https://github.com/dangreenisrael/eslint-plugin-jest-formatting
 [no-try-expect]: docs/rules/no-try-expect.md
 [prefer-called-with]: docs/rules/prefer-called-with.md
 [prefer-expect-assertions]: docs/rules/prefer-expect-assertions.md
+[prefer-inline-snapshots]: docs/rules/prefer-inline-snapshots.md
 [prefer-spy-on]: docs/rules/prefer-spy-on.md
 [prefer-strict-equal]: docs/rules/prefer-strict-equal.md
 [prefer-to-be-null]: docs/rules/prefer-to-be-null.md
 [prefer-to-be-undefined]: docs/rules/prefer-to-be-undefined.md
 [prefer-to-contain]: docs/rules/prefer-to-contain.md
 [prefer-to-have-length]: docs/rules/prefer-to-have-length.md
-[prefer-inline-snapshots]: docs/rules/prefer-inline-snapshots.md
+[prefer-todo]: docs/rules/prefer-todo.md
 [require-tothrow-message]: docs/rules/require-tothrow-message.md
 [valid-describe]: docs/rules/valid-describe.md
 [valid-expect-in-promise]: docs/rules/valid-expect-in-promise.md
 [valid-expect]: docs/rules/valid-expect.md
-[prefer-todo]: docs/rules/prefer-todo.md
 [fixable-green]: https://img.shields.io/badge/-fixable-green.svg
 [fixable-yellow]: https://img.shields.io/badge/-fixable-yellow.svg
 [recommended]: https://img.shields.io/badge/-recommended-lightgrey.svg
