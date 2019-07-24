@@ -130,6 +130,7 @@ installations requiring long-term consistency.
 | [no-try-expect][]            | Prevent `catch` assertions in tests                               |                  |                     |
 | [prefer-called-with][]       | Suggest using `toBeCalledWith()` OR `toHaveBeenCalledWith()`      |                  |                     |
 | [prefer-expect-assertions][] | Suggest using `expect.assertions()` OR `expect.hasAssertions()`   |                  |                     |
+| [prefer-inline-snapshots][]  | Suggest using `toMatchInlineSnapshot()`                           |                  | ![fixable-green][]  |
 | [prefer-spy-on][]            | Suggest using `jest.spyOn()`                                      |                  | ![fixable-green][]  |
 | [prefer-strict-equal][]      | Suggest using `toStrictEqual()`                                   |                  | ![fixable-green][]  |
 | [prefer-to-be-null][]        | Suggest using `toBeNull()`                                        |                  | ![fixable-green][]  |
@@ -137,7 +138,6 @@ installations requiring long-term consistency.
 | [prefer-to-contain][]        | Suggest using `toContain()`                                       |                  | ![fixable-green][]  |
 | [prefer-to-have-length][]    | Suggest using `toHaveLength()`                                    |                  | ![fixable-green][]  |
 | [prefer-todo][]              | Suggest using `test.todo()`                                       |                  | ![fixable-green][]  |
-| [prefer-inline-snapshots][]  | Suggest using `toMatchInlineSnapshot()`                           |                  | ![fixable-green][]  |
 | [require-tothrow-message][]  | Require that `toThrow()` and `toThrowError` includes a message    |                  |                     |
 | [valid-describe][]           | Enforce valid `describe()` callback                               | ![recommended][] |                     |
 | [valid-expect-in-promise][]  | Enforce having return statement when testing with promises        | ![recommended][] |                     |
@@ -181,6 +181,7 @@ https://github.com/dangreenisrael/eslint-plugin-jest-formatting
 [no-try-expect]: docs/rules/no-try-expect.md
 [prefer-called-with]: docs/rules/prefer-called-with.md
 [prefer-expect-assertions]: docs/rules/prefer-expect-assertions.md
+[prefer-inline-snapshots]: docs/rules/prefer-inline-snapshots.md
 [prefer-spy-on]: docs/rules/prefer-spy-on.md
 [prefer-strict-equal]: docs/rules/prefer-strict-equal.md
 [prefer-to-be-null]: docs/rules/prefer-to-be-null.md
@@ -188,7 +189,6 @@ https://github.com/dangreenisrael/eslint-plugin-jest-formatting
 [prefer-to-contain]: docs/rules/prefer-to-contain.md
 [prefer-to-have-length]: docs/rules/prefer-to-have-length.md
 [prefer-todo]: docs/rules/prefer-todo.md
-[prefer-inline-snapshots]: docs/rules/prefer-inline-snapshots.md
 [require-tothrow-message]: docs/rules/require-tothrow-message.md
 [valid-describe]: docs/rules/valid-describe.md
 [valid-expect-in-promise]: docs/rules/valid-expect-in-promise.md
