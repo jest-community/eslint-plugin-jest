@@ -1,8 +1,26 @@
-import {
-  AST_NODE_TYPES,
-  TSESTree,
-} from '@typescript-eslint/experimental-utils';
-import { createRule, isTestCase } from './tsUtils';
+import { createRule, isDescribe, isExpectCall, isFunction } from './tsUtils';
+import { TSESTree } from '@typescript-eslint/experimental-utils';
+
+const getBlockType = (stmt: TSESTree.BlockStatement) => {
+  const func = stmt.parent;
+  // functionDeclaration: function func() {}
+  if (func && func.type === 'FunctionDeclaration') {
+    return 'function';
+  } else if (func && isFunction(func) && func.parent) {
+    const expr = func.parent;
+    // arrowfunction or function expr
+    if (expr.type === 'VariableDeclarator') {
+      return 'function';
+      // if it's not a variable, it will be callExpr, we only care about describe
+    } else if (isDescribe(expr as TSESTree.CallExpression)) {
+      return 'describe';
+    } else {
+      return 'callExpr';
+    }
+  } else {
+    return false;
+  }
+};
 
 export default createRule({
   name: __filename,
@@ -20,39 +38,27 @@ export default createRule({
   },
   defaultOptions: [],
   create(context) {
-    const expectsOut: Array<TSESTree.CallExpression> = [];
-
-    const isExpectCall = (node: TSESTree.Node) => {
-      return (
-        node &&
-        node.type === AST_NODE_TYPES.CallExpression &&
-        node.callee.type === AST_NODE_TYPES.Identifier &&
-        node.callee.name === 'expect'
-      );
-    };
+    const callStack: Array<String> = [];
 
     return {
-      'Program:exit'() {
-        if (expectsOut.length > 0) {
-          for (const node of expectsOut) {
+      CallExpression(node) {
+        if (isExpectCall(node)) {
+          const parent = callStack[callStack.length - 1];
+          if (!parent || parent === 'describe') {
             context.report({ node, messageId: 'unexpectedExpect' });
           }
         }
       },
-
-      CallExpression(node) {
-        if (isExpectCall(node)) {
-          let foundTestCase = false;
-          let { parent } = node;
-          while (parent) {
-            if (parent.callee && isTestCase(parent)) {
-              foundTestCase = true;
-              break;
-            }
-            parent = parent.parent;
-          }
-
-          if (!foundTestCase) expectsOut.push(node);
+      BlockStatement(stmt) {
+        const blockType = getBlockType(stmt);
+        if (blockType) {
+          callStack.push(blockType);
+        }
+      },
+      'BlockStatement:exit'(stmt) {
+        const blockType = getBlockType(stmt);
+        if (blockType && blockType === callStack[callStack.length - 1]) {
+          callStack.pop();
         }
       },
     };
