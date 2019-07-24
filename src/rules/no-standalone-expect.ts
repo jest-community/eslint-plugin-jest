@@ -1,25 +1,26 @@
+import {
+  AST_NODE_TYPES,
+  TSESTree,
+} from '@typescript-eslint/experimental-utils';
 import { createRule, isDescribe, isExpectCall, isFunction } from './tsUtils';
-import { TSESTree } from '@typescript-eslint/experimental-utils';
 
 const getBlockType = (stmt: TSESTree.BlockStatement) => {
   const func = stmt.parent;
   // functionDeclaration: function func() {}
-  if (func && func.type === 'FunctionDeclaration') {
+  if (func && func.type === AST_NODE_TYPES.FunctionDeclaration) {
     return 'function';
   } else if (func && isFunction(func) && func.parent) {
     const expr = func.parent;
     // arrowfunction or function expr
-    if (expr.type === 'VariableDeclarator') {
+    if (expr.type === AST_NODE_TYPES.VariableDeclarator) {
       return 'function';
       // if it's not a variable, it will be callExpr, we only care about describe
-    } else if (isDescribe(expr as TSESTree.CallExpression)) {
+    } else if (expr.type === 'CallExpression' && isDescribe(expr)) {
       return 'describe';
-    } else {
-      return 'callExpr';
     }
-  } else {
-    return false;
+    return 'callExpr';
   }
+  return false;
 };
 
 export default createRule({
@@ -31,14 +32,14 @@ export default createRule({
       recommended: false,
     },
     messages: {
-      unexpectedExpect: `Expect must be inside of a test block.`,
+      unexpectedExpect: 'Expect must be inside of a test block.',
     },
     type: 'suggestion',
     schema: [],
   },
   defaultOptions: [],
   create(context) {
-    const callStack: Array<String> = [];
+    const callStack: String[] = [];
 
     return {
       CallExpression(node) {
