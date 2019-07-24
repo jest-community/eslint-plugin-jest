@@ -110,8 +110,8 @@ installations requiring long-term consistency.
 | [expect-expect][]            | Enforce assertion to be made in a test body                       |                  |                     |
 | [lowercase-name][]           | Disallow capitalized test names                                   |                  | ![fixable-green][]  |
 | [no-alias-methods][]         | Disallow alias methods                                            | ![recommended][] | ![fixable-green][]  |
-| [no-disabled-tests][]        | Disallow disabled tests                                           | ![recommended][] |                     |
 | [no-commented-out-tests][]   | Disallow commented out tests                                      |                  |                     |
+| [no-disabled-tests][]        | Disallow disabled tests                                           | ![recommended][] |                     |
 | [no-duplicate-hooks][]       | Disallow duplicate hooks within a `describe` block                |                  |                     |
 | [no-empty-title][]           | Disallow empty titles                                             |                  |                     |
 | [no-export][]                | Disallow export from test files                                   |                  |                     |
@@ -161,9 +161,9 @@ https://github.com/dangreenisrael/eslint-plugin-jest-formatting
 [expect-expect]: docs/rules/expect-expect.md
 [lowercase-name]: docs/rules/lowercase-name.md
 [no-alias-methods]: docs/rules/no-alias-methods.md
+[no-commented-out-tests]: docs/rules/no-commented-out-tests.md
 [no-disabled-tests]: docs/rules/no-disabled-tests.md
 [no-duplicate-hooks]: docs/rules/no-duplicate-hooks.md
-[no-commented-out-tests]: docs/rules/no-commented-out-tests.md
 [no-empty-title]: docs/rules/no-empty-title.md
 [no-export]: docs/rules/no-export.md
 [no-focused-tests]: docs/rules/no-focused-tests.md
