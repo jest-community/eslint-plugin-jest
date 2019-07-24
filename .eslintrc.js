@@ -25,6 +25,11 @@ module.exports = {
     es6: true,
   },
   rules: {
+    '@typescript-eslint/no-unnecessary-type-assertion': 'error',
+    '@typescript-eslint/no-unnecessary-qualifier': 'warn',
+    '@typescript-eslint/array-type': [ 'error', 'array-simple' ],
+    '@typescript-eslint/no-require-imports': 'error',
+    '@typescript-eslint/ban-ts-ignore': 'error',
     eqeqeq: ['error', 'smart'],
     strict: 'error',
     'prefer-template': 'warn',
