@@ -15,7 +15,10 @@ const getBlockType = (stmt: TSESTree.BlockStatement) => {
     if (expr.type === AST_NODE_TYPES.VariableDeclarator) {
       return 'function';
       // if it's not a variable, it will be callExpr, we only care about describe
-    } else if (expr.type === 'CallExpression' && isDescribe(expr)) {
+    } else if (
+      expr.type === AST_NODE_TYPES.CallExpression &&
+      isDescribe(expr)
+    ) {
       return 'describe';
     }
     return 'callExpr';

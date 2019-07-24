@@ -11,6 +11,9 @@ will not execute and therefore will trigger this rule. It is viable, however, to
 have an expect in a helper function that is called from within a test or it
 block so expects in a function will not trigger this rule.
 
+Statements like `expect.hasAssertions()` will NOT trigger this rule since these
+calls will execute if they are not in a test block.
+
 Examples of **incorrect** code for this rule:
 
 ```js
@@ -48,6 +51,10 @@ describe('a test', () => {
   it('an it', () => {
     helper();
   });
+});
+
+describe('a test', () => {
+  expect.hasAssertions(1);
 });
 ```
 
