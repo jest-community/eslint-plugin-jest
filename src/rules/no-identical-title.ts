@@ -23,8 +23,8 @@ export default createRule({
   meta: {
     docs: {
       category: 'Best Practices',
-      description: '',
-      recommended: false,
+      description: 'Disallow identical titles',
+      recommended: 'error',
     },
     messages: {
       multipleTestTitle:
