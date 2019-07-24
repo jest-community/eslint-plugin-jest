@@ -53,7 +53,7 @@ export default createRule({
         }
         const title = getStringValue(firstArgument);
         if (isTestCase(node)) {
-          if (currentLayer.testTitles.indexOf(title) !== -1) {
+          if (currentLayer.testTitles.includes(title)) {
             context.report({ messageId: 'multipleTestTitle', node });
           }
           currentLayer.testTitles.push(title);
@@ -62,7 +62,7 @@ export default createRule({
         if (!isDescribe(node)) {
           return;
         }
-        if (currentLayer.describeTitles.indexOf(title) !== -1) {
+        if (currentLayer.describeTitles.includes(title)) {
           context.report({ messageId: 'multipleDescribeTitle', node });
         }
         currentLayer.describeTitles.push(title);
