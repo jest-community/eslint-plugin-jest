@@ -121,8 +121,8 @@ installations requiring long-term consistency.
 | [no-if][]                    | Disallow conditional logic                                        |                  |                     |
 | [no-jasmine-globals][]       | Disallow Jasmine globals                                          | ![recommended][] | ![fixable-yellow][] |
 | [no-jest-import][]           | Disallow importing `jest`                                         | ![recommended][] |                     |
-| [no-mocks-import][]          | Disallow manually importing from `__mocks__`                      |                  |                     |
 | [no-large-snapshots][]       | Disallow large snapshots                                          |                  |                     |
+| [no-mocks-import][]          | Disallow manually importing from `__mocks__`                      |                  |                     |
 | [no-test-callback][]         | Using a callback in asynchronous tests                            |                  | ![fixable-green][]  |
 | [no-test-prefixes][]         | Disallow using `f` & `x` prefixes to define focused/skipped tests | ![recommended][] | ![fixable-green][]  |
 | [no-test-return-statement][] | Disallow explicitly returning from tests                          |                  |                     |
@@ -172,8 +172,8 @@ https://github.com/dangreenisrael/eslint-plugin-jest-formatting
 [no-if]: docs/rules/no-if.md
 [no-jasmine-globals]: docs/rules/no-jasmine-globals.md
 [no-jest-import]: docs/rules/no-jest-import.md
-[no-mocks-import]: docs/rules/no-mocks-import.md
 [no-large-snapshots]: docs/rules/no-large-snapshots.md
+[no-mocks-import]: docs/rules/no-mocks-import.md
 [no-test-callback]: docs/rules/no-test-callback.md
 [no-test-prefixes]: docs/rules/no-test-prefixes.md
 [no-test-return-statement]: docs/rules/no-test-return-statement.md
