@@ -102,11 +102,7 @@ export const isFunction = node =>
   (node.type === 'FunctionExpression' ||
     node.type === 'ArrowFunctionExpression');
 
-export const isTemplateLiteral = node =>
-  node && node.type === 'TemplateLiteral';
-
-export const getStringValue = arg =>
-  isTemplateLiteral(arg) ? arg.quasis[0].value.raw : arg.value;
+export const getStringValue = arg => arg.quasis[0].value.raw;
 
 /**
  * Generates the URL to documentation for the given rule name. It uses the
