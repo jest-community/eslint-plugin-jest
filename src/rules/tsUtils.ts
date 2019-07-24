@@ -59,7 +59,9 @@ interface JestExpectNamespaceMemberExpression
  *
  * @return {node is JestExpectCallExpression}
  */
-const isExpectCall = (node: TSESTree.Node): node is JestExpectCallExpression =>
+export const isExpectCall = (
+  node: TSESTree.Node,
+): node is JestExpectCallExpression =>
   node.type === AST_NODE_TYPES.CallExpression &&
   isExpectIdentifier(node.callee);
 
