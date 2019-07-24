@@ -1,10 +1,13 @@
-import { getDocsUrl, isTestCase } from './util';
+import { TSESTree } from '@typescript-eslint/experimental-utils';
+import { createRule, isExpectCall, isTestCase } from './tsUtils';
 
-export default {
+export default createRule({
+  name: __filename,
   meta: {
     docs: {
       description: 'Prefer using toThrow for exception tests',
-      uri: getDocsUrl(__filename),
+      category: 'Best Practices',
+      recommended: false,
     },
     messages: {
       noTryExpect: [
@@ -13,13 +16,16 @@ export default {
         'or "await expect(yourFunction()).rejects.toThrow()" for async tests',
       ].join(' '),
     },
+    type: 'problem',
+    schema: [],
   },
+  defaultOptions: [],
   create(context) {
     let isTest = false;
     let catchDepth = 0;
 
-    function isThrowExpectCall(node) {
-      return catchDepth > 0 && node.callee.name === 'expect';
+    function isThrowExpectCall(node: TSESTree.CallExpression) {
+      return catchDepth > 0 && isExpectCall(node);
     }
 
     return {
@@ -50,4 +56,4 @@ export default {
       },
     };
   },
-};
+});
