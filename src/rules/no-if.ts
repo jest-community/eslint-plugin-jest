@@ -34,7 +34,7 @@ export default createRule({
   },
   defaultOptions: [],
   create(context) {
-    const stack: Array<boolean> = [];
+    const stack: boolean[] = [];
 
     function validate(
       node: TSESTree.ConditionalExpression | TSESTree.IfStatement,

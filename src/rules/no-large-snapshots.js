@@ -35,9 +35,8 @@ const reportOnViolation = (context, node) => {
       isWhitelisted = whitelistedSnapshotsInFile.some(name => {
         if (name.test && typeof name.test === 'function') {
           return name.test(snapshotName);
-        } else {
-          return name === snapshotName;
         }
+        return name === snapshotName;
       });
     }
   }

@@ -25,11 +25,10 @@ module.exports = {
     es6: true,
   },
   rules: {
-    '@typescript-eslint/no-unnecessary-type-assertion': 'error',
-    '@typescript-eslint/no-unnecessary-qualifier': 'warn',
-    '@typescript-eslint/array-type': [ 'error', 'array-simple' ],
+    '@typescript-eslint/array-type': ['error', 'array-simple'],
     '@typescript-eslint/no-require-imports': 'error',
-    '@typescript-eslint/ban-ts-ignore': 'error',
+    '@typescript-eslint/ban-ts-ignore': 'warn',
+    'no-else-return': 'error',
     eqeqeq: ['error', 'smart'],
     strict: 'error',
     'prefer-template': 'warn',
@@ -47,6 +46,12 @@ module.exports = {
     'import/no-extraneous-dependencies': 'error',
   },
   overrides: [
+    {
+      files: ['*.js'],
+      rules: {
+        '@typescript-eslint/no-require-imports': 'off',
+      },
+    },
     {
       files: ['*.test.js', '*.test.ts'],
       globals,

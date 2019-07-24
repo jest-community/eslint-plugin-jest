@@ -14,9 +14,8 @@ const isExpectCallPresentInFunction = body => {
         return isExpectCall(line.expression);
       if (line.type === 'ReturnStatement') return isExpectCall(line.argument);
     });
-  } else {
-    return isExpectCall(body);
   }
+  return isExpectCall(body);
 };
 
 const isExpectCall = expression => {
