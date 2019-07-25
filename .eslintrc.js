@@ -28,6 +28,7 @@ module.exports = {
     '@typescript-eslint/array-type': ['error', 'array-simple'],
     '@typescript-eslint/no-require-imports': 'error',
     '@typescript-eslint/ban-ts-ignore': 'warn',
+    '@typescript-eslint/ban-types': 'error',
     'no-else-return': 'error',
     eqeqeq: ['error', 'smart'],
     strict: 'error',
