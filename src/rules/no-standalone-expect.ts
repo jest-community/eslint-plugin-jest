@@ -15,8 +15,12 @@ const getBlockType = (
 ): 'function' | 'describe' | 'callExpr' | false => {
   const func = stmt.parent;
 
+  /* istanbul ignore if */
+
   if (!func) {
-    return false;
+    throw new Error(
+      `Unexpected BlockStatement. No parent defined. - please file a github issue at https://github.com/jest-community/eslint-plugin-jest`,
+    );
   }
   // functionDeclaration: function func() {}
   if (func.type === AST_NODE_TYPES.FunctionDeclaration) {
