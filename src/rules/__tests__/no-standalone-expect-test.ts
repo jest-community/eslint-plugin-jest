@@ -25,6 +25,10 @@ ruleTester.run('no-standalone-expect', rule, {
       errors: [{ endColumn: 37, column: 28, messageId: 'unexpectedExpect' }],
     },
     {
+      code: 'describe("a test", () => expect(1).toBe(1));',
+      errors: [{ endColumn: 35, column: 26, messageId: 'unexpectedExpect' }],
+    },
+    {
       code:
         'describe("a test", () => { const func = () => { expect(1).toBe(1); }; expect(1).toBe(1); });',
       errors: [{ endColumn: 80, column: 71, messageId: 'unexpectedExpect' }],
