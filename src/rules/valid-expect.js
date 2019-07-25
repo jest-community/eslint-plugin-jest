@@ -132,6 +132,13 @@ export default {
       arrayExceptions[key] = true;
     };
 
+    /**
+     * Promise method that accepts an array of promises,
+     * ( eg. Promise.all), will throw warnings for the each
+     * unawaited or non-returned promise. To avoid throwing
+     * multiple warnings, we check if there is a warning in
+     * the given location.
+     */
     const promiseArrayExceptionExists = loc => {
       const key = promiseArrayExceptionKey(loc);
       return !!arrayExceptions[key];
@@ -234,13 +241,23 @@ export default {
         ) {
           let parentNode = getClosestParentCallExpressionNode(node);
           if (parentNode) {
-            const { options } = context;
-            const allowReturn = !options[0] || !options[0].alwaysAwait;
+            /**
+             * If parent node is an array expression, we'll report the warning,
+             * for the array object, not for each individual assertion.
+             */
             const isParentArrayExpression =
               parentNode.parent.type === 'ArrayExpression';
+
+            const { options } = context;
+            const allowReturn = !options[0] || !options[0].alwaysAwait;
             const orReturned = allowReturn ? ' or returned' : '';
             let messageId = 'asyncMustBeAwaited';
 
+            /**
+             * An async assertion can be chained with `then` or `catch` statements.
+             * In that case our target CallExpression node is the one with
+             * the last `then` or `catch` statement.
+             */
             parentNode = getParentIfThenified(parentNode);
 
             // Promise.x([expect()]) || Promise.x(expect())
@@ -256,7 +273,9 @@ export default {
             }
 
             if (
+              // If node is not awaited or returned
               !checkIfValidReturn(parentNode.parent, allowReturn) &&
+              // if we didn't warn user already
               !promiseArrayExceptionExists(parentNode.loc)
             ) {
               context.report({
