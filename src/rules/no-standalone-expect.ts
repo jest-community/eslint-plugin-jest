@@ -12,7 +12,7 @@ import {
 
 const getBlockType = (
   stmt: TSESTree.BlockStatement,
-): 'function' | 'describe' | false => {
+): 'function' | 'describe' | null => {
   const func = stmt.parent;
 
   /* istanbul ignore if */
@@ -35,9 +35,8 @@ const getBlockType = (
     if (expr.type === AST_NODE_TYPES.CallExpression && isDescribe(expr)) {
       return 'describe';
     }
-    return false;
   }
-  return false;
+  return null;
 };
 
 export default createRule({
