@@ -2,7 +2,13 @@ import {
   AST_NODE_TYPES,
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
-import { createRule, isDescribe, isExpectCall, isFunction } from './tsUtils';
+import {
+  createRule,
+  isDescribe,
+  isExpectCall,
+  isFunction,
+  isTestCase,
+} from './tsUtils';
 
 const getBlockType = (
   stmt: TSESTree.BlockStatement,
@@ -26,7 +32,7 @@ const getBlockType = (
     if (expr.type === AST_NODE_TYPES.CallExpression && isDescribe(expr)) {
       return 'describe';
     }
-    return 'callExpr';
+    return false;
   }
   return false;
 };
@@ -56,6 +62,14 @@ export default createRule({
           if (!parent || parent === 'describe') {
             context.report({ node, messageId: 'unexpectedExpect' });
           }
+        }
+        if (isTestCase(node)) {
+          callStack.push('test');
+        }
+      },
+      'CallExpression:exit'(node) {
+        if (isTestCase(node) && callStack[callStack.length - 1] === 'test') {
+          callStack.pop();
         }
       },
       BlockStatement(stmt) {
