@@ -53,13 +53,13 @@ export default createRule({
           }
         }
       },
-      BlockStatement(stmt) {
+      BlockStatement(stmt: TSESTree.BlockStatement) {
         const blockType = getBlockType(stmt);
         if (blockType) {
           callStack.push(blockType);
         }
       },
-      'BlockStatement:exit'(stmt) {
+      'BlockStatement:exit'(stmt: TSESTree.BlockStatement) {
         const blockType = getBlockType(stmt);
         if (blockType && blockType === callStack[callStack.length - 1]) {
           callStack.pop();

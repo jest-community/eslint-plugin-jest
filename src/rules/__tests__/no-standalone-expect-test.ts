@@ -4,7 +4,6 @@ import rule from '../no-standalone-expect';
 const ruleTester = new TSESLint.RuleTester({
   parserOptions: {
     ecmaVersion: 2015,
-    sourceType: 'module',
   },
 });
 
