@@ -88,6 +88,16 @@ export default createRule({
           callStack.pop();
         }
       },
+      ArrowFunctionExpression(node) {
+        if (node.parent && node.parent.type !== AST_NODE_TYPES.CallExpression) {
+          callStack.push('arrowFunc');
+        }
+      },
+      'ArrowFunctionExpression:exit'(node) {
+        if (callStack[callStack.length - 1] === 'arrowFunc') {
+          callStack.pop();
+        }
+      },
     };
   },
 });

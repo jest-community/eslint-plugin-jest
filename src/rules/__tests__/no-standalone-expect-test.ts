@@ -16,6 +16,7 @@ ruleTester.run('no-standalone-expect', rule, {
     'describe("a test", () => { const func = function(){ expect(1).toBe(1); }; });',
     'it("an it", () => expect(1).toBe(1))',
     'const func = function(){ expect(1).toBe(1); };',
+    'const func = () => expect(1).toBe(1);',
     'expect.hasAssertions()',
     '{}',
   ],
