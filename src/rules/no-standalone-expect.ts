@@ -12,11 +12,10 @@ import {
 
 const getBlockType = (
   stmt: TSESTree.BlockStatement,
-): 'function' | 'describe' | 'callExpr' | false => {
+): 'function' | 'describe' | false => {
   const func = stmt.parent;
 
   /* istanbul ignore if */
-
   if (!func) {
     throw new Error(
       `Unexpected BlockStatement. No parent defined. - please file a github issue at https://github.com/jest-community/eslint-plugin-jest`,
@@ -57,7 +56,7 @@ export default createRule({
   },
   defaultOptions: [],
   create(context) {
-    const callStack: string[] = [];
+    const callStack: Array<'test' | 'function' | 'describe' | 'arrowFunc'> = [];
 
     return {
       CallExpression(node) {
@@ -66,6 +65,7 @@ export default createRule({
           if (!parent || parent === 'describe') {
             context.report({ node, messageId: 'unexpectedExpect' });
           }
+          return;
         }
         if (isTestCase(node)) {
           callStack.push('test');
