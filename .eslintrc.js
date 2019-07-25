@@ -65,6 +65,7 @@ module.exports = {
     {
       files: ['.eslintrc.js', 'babel.config.js'],
       rules: {
+        '@typescript-eslint/no-require-imports': 'off',
         'import/no-commonjs': 'off',
       },
     },
