@@ -63,6 +63,24 @@ const getPromiseCallExpressionNode = node => {
   return null;
 };
 
+const getParentIfThenified = node => {
+  const grandParentNode = node.parent && node.parent.parent;
+
+  if (
+    grandParentNode &&
+    grandParentNode.type === 'CallExpression' &&
+    grandParentNode.callee &&
+    grandParentNode.callee.type === 'MemberExpression' &&
+    ['then', 'catch'].includes(grandParentNode.callee.property.name) &&
+    grandParentNode.parent
+  ) {
+    // Just in case `then`s are chained look one above.
+    return getParentIfThenified(grandParentNode);
+  }
+
+  return node;
+};
+
 const checkIfValidReturn = (parentCallExpressionNode, allowReturn) => {
   const validParentNodeTypes = ['ArrowFunctionExpression', 'AwaitExpression'];
   if (allowReturn) {
@@ -222,6 +240,8 @@ export default {
               parentNode.parent.type === 'ArrayExpression';
             const orReturned = allowReturn ? ' or returned' : '';
             let messageId = 'asyncMustBeAwaited';
+
+            parentNode = getParentIfThenified(parentNode);
 
             // Promise.x([expect()]) || Promise.x(expect())
             if (promiseArgumentTypes.includes(parentNode.parent.type)) {

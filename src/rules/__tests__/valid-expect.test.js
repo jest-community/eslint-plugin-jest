@@ -42,6 +42,35 @@ ruleTester.run('valid-expect', rule, {
     'test("valid-expect", async () => { await Promise.race([expect(Promise.reject(2)).not.rejects.toBeDefined(), expect(Promise.reject(2)).rejects.not.toBeDefined()]); });',
     'test("valid-expect", async () => { await Promise.allSettled([expect(Promise.reject(2)).not.rejects.toBeDefined(), expect(Promise.reject(2)).rejects.not.toBeDefined()]); });',
     'test("valid-expect", async () => { await Promise.any([expect(Promise.reject(2)).not.rejects.toBeDefined(), expect(Promise.reject(2)).rejects.not.toBeDefined()]); });',
+    'test("valid-expect", async () => { return expect(Promise.reject(2)).not.resolves.toBeDefined().then(() => console.log("valid-case")); });',
+    'test("valid-expect", async () => { return expect(Promise.reject(2)).not.resolves.toBeDefined().then(() => console.log("valid-case")).then(() => console.log("another valid case")); });',
+    'test("valid-expect", async () => { return expect(Promise.reject(2)).not.resolves.toBeDefined().catch(() => console.log("valid-case")); });',
+    'test("valid-expect", async () => { return expect(Promise.reject(2)).not.resolves.toBeDefined().then(() => console.log("valid-case")).catch(() => console.log("another valid case")); });',
+    'test("valid-expect", async () => { return expect(Promise.reject(2)).not.resolves.toBeDefined().then(() => { expect(someMock).toHaveBeenCalledTimes(1); }); });',
+    'test("valid-expect", async () => { await expect(Promise.reject(2)).not.resolves.toBeDefined().then(() => console.log("valid-case")); });',
+    'test("valid-expect", async () => { await expect(Promise.reject(2)).not.resolves.toBeDefined().then(() => console.log("valid-case")).then(() => console.log("another valid case")); });',
+    'test("valid-expect", async () => { await expect(Promise.reject(2)).not.resolves.toBeDefined().catch(() => console.log("valid-case")); });',
+    'test("valid-expect", async () => { await expect(Promise.reject(2)).not.resolves.toBeDefined().then(() => console.log("valid-case")).catch(() => console.log("another valid case")); });',
+    'test("valid-expect", async () => { await expect(Promise.reject(2)).not.resolves.toBeDefined().then(() => { expect(someMock).toHaveBeenCalledTimes(1); }); });',
+    {
+      code: `test("valid-expect", () => { 
+      return expect(functionReturningAPromise()).resolves.toEqual(1).then(() => {
+        return expect(Promise.resolve(2)).resolves.toBe(1);
+      });
+    });`,
+    },
+    {
+      code: `test("valid-expect", () => { 
+      return expect(functionReturningAPromise()).resolves.toEqual(1).then(async () => {
+        await expect(Promise.resolve(2)).resolves.toBe(1);
+      });
+    });`,
+    },
+    {
+      code: `test("valid-expect", () => { 
+      return expect(functionReturningAPromise()).resolves.toEqual(1).then(() => expect(Promise.resolve(2)).resolves.toBe(1));
+    });`,
+    },
   ],
 
   invalid: [
@@ -481,6 +510,41 @@ ruleTester.run('valid-expect', rule, {
           endColumn: 41,
           messageId: 'matcherOnPropertyNotCalled',
           data: { propertyName: 'toBe' },
+        },
+      ],
+    },
+    {
+      code: `test("valid-expect", () => { 
+        return expect(functionReturningAPromise()).resolves.toEqual(1).then(() => {
+          expect(Promise.resolve(2)).resolves.toBe(1);
+        });
+      });`,
+      errors: [
+        {
+          line: 3,
+          column: 11,
+          endLine: 3,
+          endColumn: 54,
+          messageId: 'asyncMustBeAwaited',
+          data: { orReturned: ' or returned' },
+        },
+      ],
+    },
+    {
+      code: `test("valid-expect", () => { 
+        return expect(functionReturningAPromise()).resolves.toEqual(1).then(async () => {
+          await expect(Promise.resolve(2)).resolves.toBe(1);
+          expect(Promise.resolve(4)).resolves.toBe(4);
+        });
+      });`,
+      errors: [
+        {
+          line: 4,
+          column: 11,
+          endLine: 4,
+          endColumn: 54,
+          messageId: 'asyncMustBeAwaited',
+          data: { orReturned: ' or returned' },
         },
       ],
     },
