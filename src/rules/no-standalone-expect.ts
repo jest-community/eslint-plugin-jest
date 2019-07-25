@@ -4,7 +4,7 @@ import {
 } from '@typescript-eslint/experimental-utils';
 import { createRule, isDescribe, isExpectCall, isFunction } from './tsUtils';
 
-const getBlockType = (stmt: TSESTree.BlockStatement) => {
+const getBlockType = (stmt: TSESTree.BlockStatement): String | false => {
   const func = stmt.parent;
   // functionDeclaration: function func() {}
   if (func && func.type === AST_NODE_TYPES.FunctionDeclaration) {

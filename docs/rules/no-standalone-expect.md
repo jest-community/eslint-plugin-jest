@@ -1,15 +1,17 @@
 # No standalone expect in a describe block (no-standalone-expect)
 
-Prevents expects outside of a test or it block. An expect within a helper
-function (but outside of a test or it block) will not trigger this rule.
+Prevents `expect` statements outside of a `test` or `it` block. An `expect`
+within a helper function (but outside of a `test` or `it` block) will not
+trigger this rule.
 
 ## Rule Details
 
-This rule aims to eliminate expects that will not be executed. An expect inside
-of a describe block but outside of a test or it block or outside of a describe
-will not execute and therefore will trigger this rule. It is viable, however, to
-have an expect in a helper function that is called from within a test or it
-block so expects in a function will not trigger this rule.
+This rule aims to eliminate `expect` statements that will not be executed. An
+`expect` inside of a `describe` block but outside of a `test` or `it` block or
+outside of a `describe` will not execute and therefore will trigger this rule.
+It is viable, however, to have an `expect` in a helper function that is called
+from within a `test` or `it` block so `expect` statements in a function will not
+trigger this rule.
 
 Statements like `expect.hasAssertions()` will NOT trigger this rule since these
 calls will execute if they are not in a test block.
@@ -59,8 +61,8 @@ describe('a test', () => {
 ```
 
 \*Note that this rule will not trigger if the helper function is never used even
-thought the expect will not execute. Rely on a rule like no-unused-vars for this
-case.
+thought the `expect` will not execute. Rely on a rule like no-unused-vars for
+this case.
 
 ## When Not To Use It
 
