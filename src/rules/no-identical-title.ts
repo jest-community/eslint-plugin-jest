@@ -10,7 +10,7 @@ import {
 
 interface DescribeContext {
   describeTitles: string[];
-  testTitles: String[];
+  testTitles: string[];
 }
 
 const newDescribeContext = (): DescribeContext => ({
