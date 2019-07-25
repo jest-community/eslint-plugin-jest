@@ -16,6 +16,7 @@ ruleTester.run('no-standalone-expect', rule, {
     'describe("a test", () => { const func = function(){ expect(1).toBe(1); }; });',
     'const func = function(){ expect(1).toBe(1); };',
     'expect.hasAssertions()',
+    '{}',
   ],
   invalid: [
     {
@@ -39,6 +40,10 @@ ruleTester.run('no-standalone-expect', rule, {
     {
       code: 'expect(1).toBe',
       errors: [{ endColumn: 10, column: 1, messageId: 'unexpectedExpect' }],
+    },
+    {
+      code: '{expect(1).toBe(1)}',
+      errors: [{ endColumn: 11, column: 2, messageId: 'unexpectedExpect' }],
     },
   ],
 });
