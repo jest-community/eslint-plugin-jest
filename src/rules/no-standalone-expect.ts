@@ -71,7 +71,7 @@ export default createRule({
           callStack.push('test');
         }
       },
-      'CallExpression:exit'(node) {
+      'CallExpression:exit'(node: TSESTree.CallExpression) {
         if (isTestCase(node) && callStack[callStack.length - 1] === 'test') {
           callStack.pop();
         }
@@ -93,7 +93,7 @@ export default createRule({
           callStack.push('arrowFunc');
         }
       },
-      'ArrowFunctionExpression:exit'(node) {
+      'ArrowFunctionExpression:exit'() {
         if (callStack[callStack.length - 1] === 'arrowFunc') {
           callStack.pop();
         }
