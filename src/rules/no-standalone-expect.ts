@@ -59,7 +59,12 @@ const isEach = (node: TSESTree.CallExpression): boolean => {
   return false;
 };
 
-type callStackEntry = 'test' | 'function' | 'describe' | 'arrowFunc';
+type callStackEntry =
+  | 'test'
+  | 'function'
+  | 'describe'
+  | 'arrowFunc'
+  | 'template';
 
 export default createRule({
   name: __filename,
@@ -93,10 +98,12 @@ export default createRule({
         }
       },
       'CallExpression:exit'(node: TSESTree.CallExpression) {
+        const top = callStack[callStack.length - 1];
         if (
-          (isTestCase(node) &&
+          ((isTestCase(node) &&
             node.callee.type !== AST_NODE_TYPES.MemberExpression) ||
-          isEach(node)
+            isEach(node)) &&
+          top === 'test'
         ) {
           callStack.pop();
         }
@@ -122,6 +129,14 @@ export default createRule({
         if (callStack[callStack.length - 1] === 'arrowFunc') {
           callStack.pop();
         }
+      },
+      'CallExpression > TaggedTemplateExpression'() {
+        if (callStack[callStack.length - 1] === 'template') {
+          callStack.pop();
+        }
+      },
+      'CallExpression > TaggedTemplateExpression:exit'() {
+        callStack.push('template');
       },
     };
   },
