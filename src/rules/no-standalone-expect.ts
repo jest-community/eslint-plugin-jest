@@ -44,16 +44,22 @@ const isEach = (node: TSESTree.CallExpression): boolean => {
   if (
     node &&
     node.callee &&
+    node.callee.type === AST_NODE_TYPES.CallExpression &&
     node.callee.callee &&
+    node.callee.callee.type === AST_NODE_TYPES.MemberExpression &&
     node.callee.callee.property &&
+    node.callee.callee.property.type === AST_NODE_TYPES.Identifier &&
     node.callee.callee.property.name === 'each' &&
     node.callee.callee.object &&
+    node.callee.callee.object.type === AST_NODE_TYPES.Identifier &&
     TestCaseName.hasOwnProperty(node.callee.callee.object.name)
   ) {
     return true;
   }
   return false;
 };
+
+type callStackEntry = 'test' | 'function' | 'describe' | 'arrowFunc';
 
 export default createRule({
   name: __filename,
@@ -71,7 +77,7 @@ export default createRule({
   },
   defaultOptions: [],
   create(context) {
-    const callStack: Array<'test' | 'function' | 'describe' | 'arrowFunc'> = [];
+    const callStack: callStackEntry[] = [];
 
     return {
       CallExpression(node) {
