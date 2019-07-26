@@ -96,14 +96,19 @@ export default createRule({
         if (isTestCase(node)) {
           callStack.push('test');
         }
+        if (node.callee.type === AST_NODE_TYPES.TaggedTemplateExpression) {
+          callStack.push('template');
+        }
       },
       'CallExpression:exit'(node: TSESTree.CallExpression) {
         const top = callStack[callStack.length - 1];
         if (
-          ((isTestCase(node) &&
+          (((isTestCase(node) &&
             node.callee.type !== AST_NODE_TYPES.MemberExpression) ||
             isEach(node)) &&
-          top === 'test'
+            top === 'test') ||
+          (node.callee.type === AST_NODE_TYPES.TaggedTemplateExpression &&
+            top === 'template')
         ) {
           callStack.pop();
         }
@@ -129,14 +134,6 @@ export default createRule({
         if (callStack[callStack.length - 1] === 'arrowFunc') {
           callStack.pop();
         }
-      },
-      'CallExpression > TaggedTemplateExpression'() {
-        if (callStack[callStack.length - 1] === 'template') {
-          callStack.pop();
-        }
-      },
-      'CallExpression > TaggedTemplateExpression:exit'() {
-        callStack.push('template');
       },
     };
   },
