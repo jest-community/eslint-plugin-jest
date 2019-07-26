@@ -19,6 +19,9 @@ ruleTester.run('no-standalone-expect', rule, {
     'const func = () => expect(1).toBe(1);',
     'expect.hasAssertions()',
     '{}',
+    'it.each([1, true])("trues", value => { expect(value).toBe(true); });',
+    'it.each([1, true])("trues", value => { expect(value).toBe(true); }); it("an it", () => { expect(1).toBe(1) });',
+    'it.only("an only", value => { expect(value).toBe(true); });',
   ],
   invalid: [
     {
@@ -50,6 +53,16 @@ ruleTester.run('no-standalone-expect', rule, {
     {
       code: '{expect(1).toBe(1)}',
       errors: [{ endColumn: 11, column: 2, messageId: 'unexpectedExpect' }],
+    },
+    {
+      code:
+        'it.each([1, true])("trues", value => { expect(value).toBe(true); }); expect(1).toBe(1);',
+      errors: [{ endColumn: 79, column: 70, messageId: 'unexpectedExpect' }],
+    },
+    {
+      code:
+        'describe.each([1, true])("trues", value => { expect(value).toBe(true); });',
+      errors: [{ endColumn: 59, column: 46, messageId: 'unexpectedExpect' }],
     },
   ],
 });

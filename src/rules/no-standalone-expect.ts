@@ -39,6 +39,19 @@ const getBlockType = (
   return null;
 };
 
+const isEach = (node: TSESTree.CallExpression): boolean => {
+  if (
+    node &&
+    node.callee &&
+    node.callee.callee &&
+    node.callee.callee.property &&
+    node.callee.callee.property.name === 'each'
+  ) {
+    return true;
+  }
+  return false;
+};
+
 export default createRule({
   name: __filename,
   meta: {
@@ -71,7 +84,11 @@ export default createRule({
         }
       },
       'CallExpression:exit'(node: TSESTree.CallExpression) {
-        if (isTestCase(node) && callStack[callStack.length - 1] === 'test') {
+        if (
+          (isTestCase(node) &&
+            node.callee.type !== AST_NODE_TYPES.MemberExpression) ||
+          isEach(node)
+        ) {
           callStack.pop();
         }
       },
