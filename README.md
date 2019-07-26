@@ -123,6 +123,7 @@ installations requiring long-term consistency.
 | [no-jest-import][]           | Disallow importing `jest`                                         | ![recommended][] |                     |
 | [no-large-snapshots][]       | Disallow large snapshots                                          |                  |                     |
 | [no-mocks-import][]          | Disallow manually importing from `__mocks__`                      |                  |                     |
+| [no-standalone-expect][]     | Prevents `expect` statements outside of a `test` or `it` block    |                  |                     |
 | [no-test-callback][]         | Using a callback in asynchronous tests                            |                  | ![fixable-green][]  |
 | [no-test-prefixes][]         | Disallow using `f` & `x` prefixes to define focused/skipped tests | ![recommended][] | ![fixable-green][]  |
 | [no-test-return-statement][] | Disallow explicitly returning from tests                          |                  |                     |
@@ -174,6 +175,7 @@ https://github.com/dangreenisrael/eslint-plugin-jest-formatting
 [no-jest-import]: docs/rules/no-jest-import.md
 [no-large-snapshots]: docs/rules/no-large-snapshots.md
 [no-mocks-import]: docs/rules/no-mocks-import.md
+[no-standalone-expect]: docs/rules/no-standalone-expect.md
 [no-test-callback]: docs/rules/no-test-callback.md
 [no-test-prefixes]: docs/rules/no-test-prefixes.md
 [no-test-return-statement]: docs/rules/no-test-return-statement.md
