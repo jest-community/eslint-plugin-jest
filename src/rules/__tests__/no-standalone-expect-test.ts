@@ -22,6 +22,7 @@ ruleTester.run('no-standalone-expect', rule, {
     'it.each([1, true])("trues", value => { expect(value).toBe(true); });',
     'it.each([1, true])("trues", value => { expect(value).toBe(true); }); it("an it", () => { expect(1).toBe(1) });',
     'it.only("an only", value => { expect(value).toBe(true); });',
+    'describe.each([1, true])("trues", value => { it("an it", () => expect(value).toBe(true) ); });',
   ],
   invalid: [
     {

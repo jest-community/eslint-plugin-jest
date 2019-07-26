@@ -3,6 +3,7 @@ import {
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
 import {
+  TestCaseName,
   createRule,
   isDescribe,
   isExpectCall,
@@ -45,7 +46,9 @@ const isEach = (node: TSESTree.CallExpression): boolean => {
     node.callee &&
     node.callee.callee &&
     node.callee.callee.property &&
-    node.callee.callee.property.name === 'each'
+    node.callee.callee.property.name === 'each' &&
+    node.callee.callee.object &&
+    TestCaseName.hasOwnProperty(node.callee.callee.object.name)
   ) {
     return true;
   }
