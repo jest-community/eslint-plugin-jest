@@ -89,7 +89,7 @@ export const method2 = node => node.parent.parent.property;
 
 const methodName = node => method(node) && method(node).name;
 
-const methodName2 = node => method2(node).name;
+const methodName2 = node => method2(node) && method2(node).name;
 
 export const argument = node =>
   node.parent.parent.arguments && node.parent.parent.arguments[0];
