@@ -14,6 +14,7 @@ ruleTester.run('prefer-to-be-undefined', rule, {
     'expect(something).not.toBe(somethingElse)',
     'expect(something).not.toEqual(somethingElse)',
     'expect(undefined).toBe',
+    'expect("something");',
   ],
 
   invalid: [
