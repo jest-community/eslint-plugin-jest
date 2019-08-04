@@ -5,15 +5,16 @@ import * as snapshotProcessor from './processors/snapshot-processor';
 
 // copied from https://github.com/babel/babel/blob/d8da63c929f2d28c401571e2a43166678c555bc4/packages/babel-helpers/src/helpers.js#L602-L606
 /* istanbul ignore next */
-function interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : { default: obj };
-}
+const interopRequireDefault = (obj: any): { default: any } =>
+  obj && obj.__esModule ? obj : { default: obj };
 
-function importDefault(moduleName) {
-  return interopRequireDefault(require(moduleName)).default;
-}
+const importDefault = (moduleName: string) =>
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  interopRequireDefault(require(moduleName)).default;
 
-const rules = readdirSync(join(__dirname, 'rules'))
+const rulesDir = join(__dirname, 'rules');
+
+const rules = readdirSync(rulesDir)
   .filter(
     rule =>
       rule !== '__tests__' &&
@@ -26,16 +27,13 @@ const rules = readdirSync(join(__dirname, 'rules'))
   )
   .reduce(
     (acc, curr) =>
-      Object.assign(acc, { [curr]: importDefault(`./rules/${curr}`) }),
+      Object.assign(acc, { [curr]: importDefault(join(rulesDir, curr)) }),
     {},
   );
-let allRules = {};
-Object.keys(rules).forEach(function(key) {
-  allRules[`jest/${key}`] = 'error';
-});
+const allRules: Record<string, string> = {};
+Object.keys(rules).forEach(key => (allRules[`jest/${key}`] = 'error'));
 
-// eslint-disable-next-line import/no-commonjs
-module.exports = {
+export default {
   configs: {
     all: {
       plugins: ['jest'],
