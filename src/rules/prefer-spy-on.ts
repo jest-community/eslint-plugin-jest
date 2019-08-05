@@ -2,12 +2,7 @@ import {
   AST_NODE_TYPES,
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
-import {
-  DescribeAlias,
-  TestCaseName,
-  createRule,
-  getNodeName,
-} from './tsUtils';
+import { createRule, getNodeName, isDescribe, isTestCase } from './tsUtils';
 
 const findNodeObject = (
   node: TSESTree.CallExpression | TSESTree.MemberExpression,
@@ -81,8 +76,7 @@ export default createRule({
         const isInTestBlock = ancestors.some(
           ancestor =>
             ancestor.type === AST_NODE_TYPES.CallExpression &&
-            (ancestor.callee.name in DescribeAlias ||
-              ancestor.callee.name in TestCaseName),
+            (isDescribe(ancestor) || isTestCase(ancestor)),
         );
 
         if (!isInTestBlock) return;
