@@ -4,21 +4,23 @@ import {
 } from '@typescript-eslint/experimental-utils';
 import { createRule } from './tsUtils';
 
-const isCallExpressionExpect = (node: TSESTree.MemberExpression) =>
-  node.object.type === AST_NODE_TYPES.CallExpression &&
-  node.object.callee.type === AST_NODE_TYPES.Identifier &&
-  node.object.callee.name === 'expect';
+function isCallExpressionExpect(node: TSESTree.MemberExpression) {
+  return (
+    node.object.type === AST_NODE_TYPES.CallExpression &&
+    node.object.callee.type === AST_NODE_TYPES.Identifier &&
+    node.object.callee.name === 'expect'
+  );
+}
 
-const isIdentifierResolves = (node: TSESTree.MemberExpression) =>
-  node.property.type === AST_NODE_TYPES.Identifier &&
-  node.property.name === 'resolves';
+function isIdentifierResolves(node: TSESTree.MemberExpression) {
+  return (
+    node.property.type === AST_NODE_TYPES.Identifier &&
+    node.property.name === 'resolves'
+  );
+}
 
-function isExpectResolves(node: TSESTree.MemberExpression) {
-  if (isCallExpressionExpect(node) && isIdentifierResolves(node)) {
-    return true;
-  }
-
-  return false;
+function isExpectResolves(node: TSESTree.MemberExpression): boolean {
+  return !!(isCallExpressionExpect(node) && isIdentifierResolves(node));
 }
 
 export default createRule({
