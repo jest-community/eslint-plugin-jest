@@ -17,11 +17,11 @@ ruleTester.run('prefer-spy-on', rule, {
     "test('', () => { Date.now = fn(); });",
     "test('', () => { obj.mock = jest.something(); });",
     "test('', () => { const mock = jest.fn(); });",
-    "test('', () => { mock = jest.fn(); });",
-    "test('', () => { const mockObj = { mock: jest.fn() }; });",
-    "test('', () => { mockObj = { mock: jest.fn() }; });",
-    "test('', () => { window[`${name}`] = jest[`fn${expression}`](); });",
-    "test('', () => jest.spyOn(Date, 'now'));",
+    "describe('', () => { mock = jest.fn(); });",
+    "describe('', () => { const mockObj = { mock: jest.fn() }; });",
+    "describe('', () => { mockObj = { mock: jest.fn() }; });",
+    "describe('', () => { window[`${name}`] = jest[`fn${expression}`](); });",
+    "describe('', () => jest.spyOn(Date, 'now'));",
     'Date.now = jest.fn();',
   ],
   invalid: [
@@ -77,7 +77,7 @@ ruleTester.run('prefer-spy-on', rule, {
         "test('', () => { jest.spyOn(obj.one, 'two'); const test = 10; });",
     },
     {
-      code: "test('', () => { obj.a = jest.fn(() => 10); });",
+      code: "describe('', () => { obj.a = jest.fn(() => 10); });",
       errors: [
         {
           messageId: 'useJestSpyOn',
@@ -85,11 +85,11 @@ ruleTester.run('prefer-spy-on', rule, {
         },
       ],
       output:
-        "test('', () => { jest.spyOn(obj, 'a').mockImplementation(() => 10); });",
+        "describe('', () => { jest.spyOn(obj, 'a').mockImplementation(() => 10); });",
     },
     {
       code:
-        "test('', () => { obj.a.b = jest.fn(() => ({})).mockReturnValue('default').mockReturnValueOnce('first call'); test(); });",
+        "describe('', () => { obj.a.b = jest.fn(() => ({})).mockReturnValue('default').mockReturnValueOnce('first call'); describe(); });",
       errors: [
         {
           messageId: 'useJestSpyOn',
@@ -97,11 +97,11 @@ ruleTester.run('prefer-spy-on', rule, {
         },
       ],
       output:
-        "test('', () => { jest.spyOn(obj.a, 'b').mockImplementation(() => ({})).mockReturnValue('default').mockReturnValueOnce('first call'); test(); });",
+        "describe('', () => { jest.spyOn(obj.a, 'b').mockImplementation(() => ({})).mockReturnValue('default').mockReturnValueOnce('first call'); describe(); });",
     },
     {
       code:
-        "test('', () => { window.fetch = jest.fn(() => ({})).one.two().three().four; });",
+        "describe('', () => { window.fetch = jest.fn(() => ({})).one.two().three().four; });",
       errors: [
         {
           messageId: 'useJestSpyOn',
@@ -109,7 +109,7 @@ ruleTester.run('prefer-spy-on', rule, {
         },
       ],
       output:
-        "test('', () => { jest.spyOn(window, 'fetch').mockImplementation(() => ({})).one.two().three().four; });",
+        "describe('', () => { jest.spyOn(window, 'fetch').mockImplementation(() => ({})).one.two().three().four; });",
     },
   ],
 });

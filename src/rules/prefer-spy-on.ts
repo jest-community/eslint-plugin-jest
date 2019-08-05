@@ -2,7 +2,12 @@ import {
   AST_NODE_TYPES,
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
-import { createRule, getNodeName } from './tsUtils';
+import {
+  DescribeAlias,
+  TestCaseName,
+  createRule,
+  getNodeName,
+} from './tsUtils';
 
 const findNodeObject = (
   node: TSESTree.CallExpression | TSESTree.MemberExpression,
@@ -69,13 +74,15 @@ export default createRule({
 
         if (!jestFnCall) return;
 
-        // The `jest.fn()` must be in a `test`/`it` block in order for us to
-        // report it.
+        // The `jest.fn()` must be in a `describe` block (so this includes all
+        // hook blocks) or `test` block (since they can be outside `describe`
+        // blocks) in order for us to report it.
         const ancestors = context.getAncestors();
         const isInTestBlock = ancestors.some(
           ancestor =>
             ancestor.type === AST_NODE_TYPES.CallExpression &&
-            ['it', 'test'].includes(ancestor.callee.name),
+            (ancestor.callee.name in DescribeAlias ||
+              ancestor.callee.name in TestCaseName),
         );
 
         if (!isInTestBlock) return;
