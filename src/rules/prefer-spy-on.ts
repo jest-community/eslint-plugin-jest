@@ -69,6 +69,17 @@ export default createRule({
 
         if (!jestFnCall) return;
 
+        // The `jest.fn()` must be in a `test`/`it` block in order for us to
+        // report it.
+        const ancestors = context.getAncestors();
+        const isInTestBlock = ancestors.some(
+          ancestor =>
+            ancestor.type === AST_NODE_TYPES.CallExpression &&
+            ['it', 'test'].includes(ancestor.callee.name),
+        );
+
+        if (!isInTestBlock) return;
+
         context.report({
           node,
           messageId: 'useJestSpyOn',
