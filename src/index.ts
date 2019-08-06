@@ -1,5 +1,5 @@
 import { readdirSync } from 'fs';
-import { basename, join } from 'path';
+import { join, parse } from 'path';
 import globals from './globals.json';
 import * as snapshotProcessor from './processors/snapshot-processor';
 
@@ -22,9 +22,7 @@ const rules = readdirSync(rulesDir)
       rule !== 'tsUtils.ts' &&
       rule !== 'tsUtils.js',
   )
-  .map(rule =>
-    rule.endsWith('js') ? basename(rule, '.js') : basename(rule, '.ts'),
-  )
+  .map(rule => parse(rule).name)
   .reduce(
     (acc, curr) =>
       Object.assign(acc, { [curr]: importDefault(join(rulesDir, curr)) }),
