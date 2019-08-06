@@ -30,8 +30,15 @@ const rules = readdirSync(rulesDir)
       Object.assign(acc, { [curr]: importDefault(join(rulesDir, curr)) }),
     {},
   );
-const allRules: Record<string, string> = {};
-Object.keys(rules).forEach(key => (allRules[`jest/${key}`] = 'error'));
+
+const allRules = Object.keys(rules).reduce<Record<string, string>>(
+  (rules, key) => {
+    rules[`jest/${key}`] = 'error';
+
+    return rules;
+  },
+  {},
+);
 
 // eslint-disable-next-line import/no-commonjs
 module.exports = {
