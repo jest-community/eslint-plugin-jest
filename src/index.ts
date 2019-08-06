@@ -13,16 +13,11 @@ const importDefault = (moduleName: string) =>
   interopRequireDefault(require(moduleName)).default;
 
 const rulesDir = join(__dirname, 'rules');
+const excludedFiles = ['__tests__', 'util', 'tsUtils'];
 
 const rules = readdirSync(rulesDir)
-  .filter(
-    rule =>
-      rule !== '__tests__' &&
-      rule !== 'util.js' &&
-      rule !== 'tsUtils.ts' &&
-      rule !== 'tsUtils.js',
-  )
   .map(rule => parse(rule).name)
+  .filter(rule => excludedFiles.includes(rule))
   .reduce(
     (acc, curr) =>
       Object.assign(acc, { [curr]: importDefault(join(rulesDir, curr)) }),
