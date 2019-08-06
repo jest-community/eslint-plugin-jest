@@ -32,7 +32,7 @@
     "prepublishOnly": "yarn build",
     "pretest": "yarn build",
     "test": "jest",
-    "build": "babel --extensions .js,.ts src --out-dir lib",
+    "build": "babel --extensions .js,.ts src --out-dir lib --copy-files",
     "postbuild": "rimraf lib/**/__tests__/**",
     "typecheck": "tsc -p ."
   },
