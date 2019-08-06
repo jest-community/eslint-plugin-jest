@@ -25,11 +25,7 @@ const rules = readdirSync(rulesDir)
   );
 
 const allRules = Object.keys(rules).reduce<Record<string, string>>(
-  (rules, key) => {
-    rules[`jest/${key}`] = 'error';
-
-    return rules;
-  },
+  (rules, key) => ({ ...rules, [`jest/${key}`]: 'error' }),
   {},
 );
 
