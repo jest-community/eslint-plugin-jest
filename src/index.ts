@@ -17,7 +17,7 @@ const excludedFiles = ['__tests__', 'util', 'tsUtils'];
 
 const rules = readdirSync(rulesDir)
   .map(rule => parse(rule).name)
-  .filter(rule => excludedFiles.includes(rule))
+  .filter(rule => !excludedFiles.includes(rule))
   .reduce(
     (acc, curr) =>
       Object.assign(acc, { [curr]: importDefault(join(rulesDir, curr)) }),
