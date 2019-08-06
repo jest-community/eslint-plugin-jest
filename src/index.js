@@ -1,5 +1,6 @@
 import { readdirSync } from 'fs';
 import { basename, join } from 'path';
+import globals from './globals.json';
 import * as snapshotProcessor from './processors/snapshot-processor';
 
 // copied from https://github.com/babel/babel/blob/d8da63c929f2d28c401571e2a43166678c555bc4/packages/babel-helpers/src/helpers.js#L602-L606
@@ -74,25 +75,7 @@ module.exports = {
   },
   environments: {
     globals: {
-      globals: {
-        afterAll: false,
-        afterEach: false,
-        beforeAll: false,
-        beforeEach: false,
-        describe: false,
-        expect: false,
-        fit: false,
-        it: false,
-        jasmine: false,
-        jest: false,
-        pending: false,
-        pit: false,
-        require: false,
-        test: false,
-        xdescribe: false,
-        xit: false,
-        xtest: false,
-      },
+      globals,
     },
   },
   processors: {
