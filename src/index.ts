@@ -33,7 +33,8 @@ const rules = readdirSync(rulesDir)
 const allRules: Record<string, string> = {};
 Object.keys(rules).forEach(key => (allRules[`jest/${key}`] = 'error'));
 
-export default {
+// eslint-disable-next-line import/no-commonjs
+module.exports = {
   configs: {
     all: {
       plugins: ['jest'],
