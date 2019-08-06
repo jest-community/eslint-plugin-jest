@@ -1,8 +1,7 @@
 import { existsSync } from 'fs';
 import { resolve } from 'path';
-import plugin from '../';
-
-const { rules } = plugin;
+// @ts-ignore
+import { rules } from '../';
 
 const ruleNames = Object.keys(rules);
 const numberOfRules = 37;
