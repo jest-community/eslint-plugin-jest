@@ -1,4 +1,4 @@
-import { snapshotProcessor } from '../snapshot-processor';
+import * as snapshotProcessor from '../snapshot-processor';
 
 describe('snapshot-processor', () => {
   it('exports an object with preprocess and postprocess functions', () => {
