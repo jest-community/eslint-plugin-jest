@@ -1,4 +1,5 @@
 // https://eslint.org/docs/developer-guide/working-with-plugins#processors-in-plugins
+// https://github.com/typescript-eslint/typescript-eslint/issues/808
 
 type PostprocessMessage = { ruleId: string };
 
