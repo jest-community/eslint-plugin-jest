@@ -1,38 +1,33 @@
 import { readdirSync } from 'fs';
-import { basename, join } from 'path';
+import { join, parse } from 'path';
 import globals from './globals.json';
 import * as snapshotProcessor from './processors/snapshot-processor';
 
 // copied from https://github.com/babel/babel/blob/d8da63c929f2d28c401571e2a43166678c555bc4/packages/babel-helpers/src/helpers.js#L602-L606
 /* istanbul ignore next */
-function interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : { default: obj };
-}
+const interopRequireDefault = (obj: any): { default: any } =>
+  obj && obj.__esModule ? obj : { default: obj };
 
-function importDefault(moduleName) {
-  return interopRequireDefault(require(moduleName)).default;
-}
+const importDefault = (moduleName: string) =>
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  interopRequireDefault(require(moduleName)).default;
 
-const rules = readdirSync(join(__dirname, 'rules'))
-  .filter(
-    rule =>
-      rule !== '__tests__' &&
-      rule !== 'util.js' &&
-      rule !== 'tsUtils.ts' &&
-      rule !== 'tsUtils.js',
-  )
-  .map(rule =>
-    rule.endsWith('js') ? basename(rule, '.js') : basename(rule, '.ts'),
-  )
+const rulesDir = join(__dirname, 'rules');
+const excludedFiles = ['__tests__', 'util', 'tsUtils'];
+
+const rules = readdirSync(rulesDir)
+  .map(rule => parse(rule).name)
+  .filter(rule => !excludedFiles.includes(rule))
   .reduce(
     (acc, curr) =>
-      Object.assign(acc, { [curr]: importDefault(`./rules/${curr}`) }),
+      Object.assign(acc, { [curr]: importDefault(join(rulesDir, curr)) }),
     {},
   );
-let allRules = {};
-Object.keys(rules).forEach(function(key) {
-  allRules[`jest/${key}`] = 'error';
-});
+
+const allRules = Object.keys(rules).reduce<Record<string, string>>(
+  (rules, key) => ({ ...rules, [`jest/${key}`]: 'error' }),
+  {},
+);
 
 // eslint-disable-next-line import/no-commonjs
 module.exports = {
