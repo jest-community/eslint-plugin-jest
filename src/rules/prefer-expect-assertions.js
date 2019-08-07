@@ -54,13 +54,13 @@ export default {
       'CallExpression[callee.name=/^(it|test)$/][arguments.1.body.body]'(node) {
         const testFuncBody = node.arguments[1].body.body;
 
-        if (!isFirstLineExprStmt(testFuncBody)) {
-          reportMsg(context, node);
-        } else {
+        if (isFirstLineExprStmt(testFuncBody)) {
           const testFuncFirstLine = getFunctionFirstLine(testFuncBody);
           if (!isExpectAssertionsOrHasAssertionsCall(testFuncFirstLine)) {
             reportMsg(context, node);
           }
+        } else {
+          reportMsg(context, node);
         }
       },
     };

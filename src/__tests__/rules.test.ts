@@ -1,5 +1,6 @@
 import { existsSync } from 'fs';
 import { resolve } from 'path';
+// @ts-ignore
 import { rules } from '../';
 
 const ruleNames = Object.keys(rules);

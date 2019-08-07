@@ -1,6 +1,6 @@
 'use strict';
 
-const { globals } = require('./').environments.globals;
+const globals = require('./src/globals.json');
 
 module.exports = {
   parser: '@typescript-eslint/parser',
@@ -30,6 +30,7 @@ module.exports = {
     '@typescript-eslint/ban-ts-ignore': 'warn',
     '@typescript-eslint/ban-types': 'error',
     'no-else-return': 'error',
+    'no-negated-condition': 'error',
     eqeqeq: ['error', 'smart'],
     strict: 'error',
     'prefer-template': 'warn',
