@@ -33,7 +33,7 @@ export default createRule({
   create: context => ({
     MemberExpression(node) {
       if (isExpectResolves(node)) {
-        context.report({ node, messageId: 'expectResolves' });
+        context.report({ node: node.property, messageId: 'expectResolves' });
       }
     },
   }),

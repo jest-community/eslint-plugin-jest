@@ -18,7 +18,7 @@ ruleTester.run('no-expect-resolves', rule, {
       code: `test('some test', async () => {
              await expect(Promise.resolve(1)).resolves.toBe(1);
          });`,
-      errors: [{ endColumn: 55, column: 20, messageId: 'expectResolves' }],
+      errors: [{ endColumn: 55, column: 47, messageId: 'expectResolves' }],
     },
   ],
 });
