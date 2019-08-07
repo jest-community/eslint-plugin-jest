@@ -4,7 +4,6 @@ import rule from '../no-expect-resolves';
 const ruleTester = new TSESLint.RuleTester({
   parserOptions: {
     ecmaVersion: 2017,
-    sourceType: 'module',
   },
 });
 
@@ -19,7 +18,6 @@ ruleTester.run('no-expect-resolves', rule, {
       code: `test('some test', async () => {
              await expect(Promise.resolve(1)).resolves.toBe(1);
          });`,
-      parserOptions: { sourceType: 'module' },
       errors: [{ endColumn: 55, column: 20, messageId: 'expectResolves' }],
     },
   ],
