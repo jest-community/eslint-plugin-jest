@@ -2,15 +2,7 @@ import {
   AST_NODE_TYPES,
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
-import { createRule } from './tsUtils';
-
-function isCallExpressionExpect(node: TSESTree.MemberExpression) {
-  return (
-    node.object.type === AST_NODE_TYPES.CallExpression &&
-    node.object.callee.type === AST_NODE_TYPES.Identifier &&
-    node.object.callee.name === 'expect'
-  );
-}
+import { createRule, isExpectCall } from './tsUtils';
 
 function isIdentifierResolves(node: TSESTree.MemberExpression) {
   return (
@@ -19,8 +11,8 @@ function isIdentifierResolves(node: TSESTree.MemberExpression) {
   );
 }
 
-function isExpectResolves(node: TSESTree.MemberExpression): boolean {
-  return !!(isCallExpressionExpect(node) && isIdentifierResolves(node));
+function isExpectResolves(node: TSESTree.MemberExpression) {
+  return isExpectCall(node.object) && isIdentifierResolves(node);
 }
 
 export default createRule({
