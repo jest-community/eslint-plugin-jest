@@ -114,6 +114,7 @@ installations requiring long-term consistency.
 | [no-disabled-tests][]        | Disallow disabled tests                                           | ![recommended][] |                     |
 | [no-duplicate-hooks][]       | Disallow duplicate hooks within a `describe` block                |                  |                     |
 | [no-empty-title][]           | Disallow empty titles                                             |                  |                     |
+| [no-expect-resolves][]       | Disallow using `expect().resolves`                                |                  |                     |
 | [no-export][]                | Disallow export from test files                                   |                  |                     |
 | [no-focused-tests][]         | Disallow focused tests                                            | ![recommended][] |                     |
 | [no-hooks][]                 | Disallow setup and teardown hooks                                 |                  |                     |
@@ -166,6 +167,7 @@ https://github.com/dangreenisrael/eslint-plugin-jest-formatting
 [no-disabled-tests]: docs/rules/no-disabled-tests.md
 [no-duplicate-hooks]: docs/rules/no-duplicate-hooks.md
 [no-empty-title]: docs/rules/no-empty-title.md
+[no-expect-resolves]: docs/rules/no-expect-resolves.md
 [no-export]: docs/rules/no-export.md
 [no-focused-tests]: docs/rules/no-focused-tests.md
 [no-hooks]: docs/rules/no-hooks.md
