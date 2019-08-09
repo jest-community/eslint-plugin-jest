@@ -29,8 +29,7 @@ const allRules = Object.keys(rules).reduce<Record<string, string>>(
   {},
 );
 
-// eslint-disable-next-line import/no-commonjs
-module.exports = {
+export = {
   configs: {
     all: {
       plugins: ['jest'],
