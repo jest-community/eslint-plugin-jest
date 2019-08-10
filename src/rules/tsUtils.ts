@@ -109,6 +109,41 @@ export const getStringValue = <S extends string>(node: StringNode<S>): S =>
   isTemplateLiteral(node) ? node.quasis[0].value.raw : node.value;
 
 /**
+ * Represents a `MemberExpression` with a "known" `property`.
+ */
+interface KnownMemberExpression<Name extends string = string>
+  extends TSESTree.MemberExpression {
+  property: AccessorNode<Name>;
+}
+
+/**
+ * Represents a `CallExpression` with a "known" `property` accessor.
+ *
+ * i.e `KnownCallExpression<'includes'>` represents `.includes()`.
+ */
+export interface KnownCallExpression<Name extends string = string>
+  extends TSESTree.CallExpression {
+  callee: CalledKnownMemberExpression<Name>;
+}
+
+/**
+ * Represents a `MemberExpression` with a "known" `property`, that is called.
+ *
+ * This is `KnownCallExpression` from the perspective of the `MemberExpression` node.
+ */
+export interface CalledKnownMemberExpression<Name extends string = string>
+  extends KnownMemberExpression<Name> {
+  parent: KnownCallExpression<Name>;
+}
+
+/**
+ * An `Identifier` with a known `name` value - i.e `expect`.
+ */
+interface KnownIdentifier<Name extends string> extends TSESTree.Identifier {
+  name: Name;
+}
+
+/**
  * Gets the value of the given `AccessorNode`,
  * account for the different node types.
  *
