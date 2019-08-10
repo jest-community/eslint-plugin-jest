@@ -109,6 +109,14 @@ export const getStringValue = <S extends string>(node: StringNode<S>): S =>
   isTemplateLiteral(node) ? node.quasis[0].value.raw : node.value;
 
 /**
+ * Represents a `MemberExpression` with a "known" `property`.
+ */
+interface KnownMemberExpression<Name extends string = string>
+  extends TSESTree.MemberExpression {
+  property: AccessorNode<Name>;
+}
+
+/**
  * An `Identifier` with a known `name` value - i.e `expect`.
  */
 interface KnownIdentifier<Name extends string> extends TSESTree.Identifier {
@@ -212,6 +220,43 @@ export const getAccessorValue = <S extends string = string>(
 type AccessorNode<Specifics extends string = string> =
   | StringNode<Specifics>
   | KnownIdentifier<Specifics>;
+
+interface ExpectCall extends TSESTree.CallExpression {
+  callee: AccessorNode<'expect'>;
+  parent: TSESTree.Node;
+}
+
+/**
+ * Represents a `MemberExpression` that comes after an `ExpectCall`.
+ */
+interface ExpectMember<
+  PropertyName extends ExpectPropertyName = ExpectPropertyName,
+  Parent extends TSESTree.Node | undefined = TSESTree.Node | undefined
+> extends KnownMemberExpression<PropertyName> {
+  object: ExpectCall | ExpectMember;
+  parent: Parent;
+}
+
+export const isExpectMember = <
+  Name extends ExpectPropertyName = ExpectPropertyName
+>(
+  node: TSESTree.Node,
+  name?: Name,
+): node is ExpectMember<Name> =>
+  node.type === AST_NODE_TYPES.MemberExpression &&
+  isSupportedAccessor(node.property, name);
+
+/**
+ * Represents all the jest matchers.
+ */
+type MatcherName = string /* & not ModifierName */;
+type ExpectPropertyName = ModifierName | MatcherName;
+
+export enum ModifierName {
+  not = 'not',
+  rejects = 'rejects',
+  resolves = 'resolves',
+}
 
 interface JestExpectIdentifier extends TSESTree.Identifier {
   name: 'expect';

@@ -102,8 +102,6 @@ export const isFunction = node =>
   (node.type === 'FunctionExpression' ||
     node.type === 'ArrowFunctionExpression');
 
-export const getStringValue = arg => arg.quasis[0].value.raw;
-
 /**
  * Generates the URL to documentation for the given rule name. It uses the
  * package version to build the link to a tagged version of the

@@ -1,20 +1,35 @@
+import {
+  AST_NODE_TYPES,
+  TSESLint,
+  TSESTree,
+} from '@typescript-eslint/experimental-utils';
 import { isAbsolute } from 'path';
-import { getDocsUrl, getStringValue } from './util';
+import {
+  createRule,
+  getAccessorValue,
+  isExpectMember,
+  isSupportedAccessor,
+} from './tsUtils';
 
-const reportOnViolation = (context, node) => {
-  const lineLimit =
-    context.options[0] && Number.isFinite(context.options[0].maxSize)
-      ? context.options[0].maxSize
-      : 50;
+interface RuleOptions {
+  maxSize?: number;
+  whitelistedSnapshots?: Record<string, Array<string | RegExp>>;
+}
+
+type MessageId = 'noSnapshot' | 'tooLongSnapshots';
+
+type RuleContext = TSESLint.RuleContext<MessageId, [RuleOptions]>;
+
+const reportOnViolation = (
+  context: RuleContext,
+  node: TSESTree.CallExpression | TSESTree.ExpressionStatement,
+  { maxSize: lineLimit = 50, whitelistedSnapshots = {} }: RuleOptions,
+) => {
   const startLine = node.loc.start.line;
   const endLine = node.loc.end.line;
   const lineCount = endLine - startLine;
-  const whitelistedSnapshots =
-    context.options &&
-    context.options[0] &&
-    context.options[0].whitelistedSnapshots;
 
-  const allPathsAreAbsolute = Object.keys(whitelistedSnapshots || {}).every(
+  const allPathsAreAbsolute = Object.keys(whitelistedSnapshots).every(
     isAbsolute,
   );
 
@@ -26,17 +41,23 @@ const reportOnViolation = (context, node) => {
 
   let isWhitelisted = false;
 
-  if (whitelistedSnapshots) {
+  if (
+    whitelistedSnapshots &&
+    node.type === AST_NODE_TYPES.ExpressionStatement &&
+    'left' in node.expression &&
+    isExpectMember(node.expression.left)
+  ) {
     const fileName = context.getFilename();
     const whitelistedSnapshotsInFile = whitelistedSnapshots[fileName];
 
     if (whitelistedSnapshotsInFile) {
-      const snapshotName = getStringValue(node.expression.left.property);
+      const snapshotName = getAccessorValue(node.expression.left.property);
       isWhitelisted = whitelistedSnapshotsInFile.some(name => {
-        if (name.test && typeof name.test === 'function') {
+        if (name instanceof RegExp) {
           return name.test(snapshotName);
         }
-        return name === snapshotName;
+
+        return snapshotName;
       });
     }
   }
@@ -50,16 +71,20 @@ const reportOnViolation = (context, node) => {
   }
 };
 
-export default {
+export default createRule<[RuleOptions], MessageId>({
+  name: __filename,
   meta: {
     docs: {
-      url: getDocsUrl(__filename),
+      category: 'Best Practices',
+      description: 'disallow large snapshots',
+      recommended: false,
     },
     messages: {
       noSnapshot: '`{{ lineCount }}`s should begin with lowercase',
       tooLongSnapshots:
         'Expected Jest snapshot to be smaller than {{ lineLimit }} lines but was {{ lineCount }} lines long',
     },
+    type: 'suggestion',
     schema: [
       {
         type: 'object',
@@ -78,23 +103,29 @@ export default {
       },
     ],
   },
-  create(context) {
+  defaultOptions: [{}],
+  create(context, [options]) {
     if (context.getFilename().endsWith('.snap')) {
       return {
         ExpressionStatement(node) {
-          reportOnViolation(context, node);
+          reportOnViolation(context, node, options);
         },
       };
     } else if (context.getFilename().endsWith('.js')) {
       return {
         CallExpression(node) {
-          const propertyName =
-            node.callee.property && node.callee.property.name;
           if (
-            propertyName === 'toMatchInlineSnapshot' ||
-            propertyName === 'toThrowErrorMatchingInlineSnapshot'
+            'property' in node.callee &&
+            (isSupportedAccessor(
+              node.callee.property,
+              'toMatchInlineSnapshot',
+            ) ||
+              isSupportedAccessor(
+                node.callee.property,
+                'toThrowErrorMatchingInlineSnapshot',
+              ))
           ) {
-            reportOnViolation(context, node);
+            reportOnViolation(context, node, options);
           }
         },
       };
@@ -102,4 +133,4 @@ export default {
 
     return {};
   },
-};
+});
