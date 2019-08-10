@@ -1,7 +1,6 @@
 import {
   createRule,
-  getStringValue,
-  hasExpressions,
+  getAccessorValue,
   isDescribe,
   isStringNode,
   isTemplateLiteral,
@@ -44,15 +43,15 @@ export default createRule({
         if (isDescribe(node)) {
           contexts.push(newDescribeContext());
         }
-        const [firstArgument] = node.arguments;
+        const [argument] = node.arguments;
         if (
-          !firstArgument ||
-          !isStringNode(firstArgument) ||
-          (isTemplateLiteral(firstArgument) && hasExpressions(firstArgument))
+          !argument ||
+          !isStringNode(argument) ||
+          (isTemplateLiteral(argument) && argument.expressions.length > 0)
         ) {
           return;
         }
-        const title = getStringValue(firstArgument);
+        const title = getAccessorValue(argument);
         if (isTestCase(node)) {
           if (currentLayer.testTitles.includes(title)) {
             context.report({ messageId: 'multipleTestTitle', node });
