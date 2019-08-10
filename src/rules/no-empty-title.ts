@@ -1,12 +1,4 @@
-import {
-  createRule,
-  getStringValue,
-  hasExpressions,
-  isDescribe,
-  isStringNode,
-  isTemplateLiteral,
-  isTestCase,
-} from './tsUtils';
+import { createRule, isDescribe, isStringNode, isTestCase } from './tsUtils';
 
 export default createRule({
   name: __filename,
@@ -31,18 +23,14 @@ export default createRule({
           return;
         }
         const [firstArgument] = node.arguments;
-        if (!isStringNode(firstArgument)) {
+        if (!firstArgument || !isStringNode(firstArgument, '')) {
           return;
         }
-        if (isTemplateLiteral(firstArgument) && hasExpressions(firstArgument)) {
-          return;
-        }
-        if (getStringValue(firstArgument) === '') {
-          context.report({
-            messageId: isDescribe(node) ? 'describe' : 'test',
-            node,
-          });
-        }
+
+        context.report({
+          messageId: isDescribe(node) ? 'describe' : 'test',
+          node,
+        });
       },
     };
   },
