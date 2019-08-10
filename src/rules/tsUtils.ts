@@ -15,6 +15,99 @@ export const createRule = ESLintUtils.RuleCreator(name => {
   return `${REPO_URL}/blob/v${version}/docs/rules/${ruleName}.md`;
 });
 
+/**
+ * A `Literal` with a `value` of type `string`.
+ */
+export interface StringLiteral<Value extends string = string>
+  extends TSESTree.Literal {
+  value: Value;
+}
+
+/**
+ * Checks if the given `node` is a `StringLiteral`.
+ *
+ * If a `value` is provided & the `node` is a `StringLiteral`,
+ * the `value` will be compared to that of the `StringLiteral`.
+ *
+ * @param {Node} node
+ * @param {V?} value
+ *
+ * @return {node is StringLiteral<V>}
+ *
+ * @template {V}.
+ */
+const isStringLiteral = <V extends string>(
+  node: TSESTree.Node,
+  value?: V,
+): node is StringLiteral<V> =>
+  node.type === AST_NODE_TYPES.Literal &&
+  typeof node.value === 'string' &&
+  (value === undefined || node.value === value);
+
+interface TemplateLiteral<Value extends string = string>
+  extends TSESTree.TemplateLiteral {
+  quasis: [TSESTree.TemplateElement & { value: { raw: Value; cooked: Value } }];
+}
+
+/**
+ * Checks if the given `node` is a `TemplateLiteral`.
+ *
+ * Complex `TemplateLiteral`s are not considered specific, and so will return `false`.
+ *
+ * If a `value` is provided & the `node` is a `TemplateLiteral`,
+ * the `value` will be compared to that of the `TemplateLiteral`.
+ *
+ * @param {Node} node
+ * @param {V?} value
+ *
+ * @return {node is TemplateLiteral<V>}
+ *
+ * @template V
+ */
+export const isTemplateLiteral = <V extends string>(
+  node: TSESTree.Node,
+  value?: V,
+): node is TemplateLiteral<V> =>
+  node.type === AST_NODE_TYPES.TemplateLiteral &&
+  (value === undefined ||
+    (node.quasis.length === 1 && // bail out if not simple
+      node.quasis[0].value.raw === value));
+
+type StringNode<S extends string = string> =
+  | StringLiteral<S>
+  | TemplateLiteral<S>;
+
+/**
+ * Checks if the given `node` is a {@link StringNode}.
+ *
+ * @param {Node} node
+ * @param {V?} specifics
+ *
+ * @return {node is StringNode}
+ *
+ * @template V
+ */
+export const isStringNode = <V extends string>(
+  node: TSESTree.Node,
+  specifics?: V,
+): node is StringNode<V> =>
+  isStringLiteral(node, specifics) || isTemplateLiteral(node, specifics);
+
+/**
+ * Gets the value of the given `StringNode`.
+ *
+ * If the `node` is a `TemplateLiteral`, the `raw` value is used;
+ * otherwise, `value` is returned instead.
+ *
+ * @param {StringNode<S>} node
+ *
+ * @return {S}
+ *
+ * @template S
+ */
+export const getStringValue = <S extends string>(node: StringNode<S>): S =>
+  isTemplateLiteral(node) ? node.quasis[0].value.raw : node.value;
+
 interface JestExpectIdentifier extends TSESTree.Identifier {
   name: 'expect';
 }
@@ -217,33 +310,10 @@ export const isLiteralNode = (node: {
   type: AST_NODE_TYPES;
 }): node is TSESTree.Literal => node.type === AST_NODE_TYPES.Literal;
 
-export interface StringLiteral extends TSESTree.Literal {
-  value: string;
-}
-
-export type StringNode = StringLiteral | TSESTree.TemplateLiteral;
-
-export const isStringLiteral = (node: TSESTree.Node): node is StringLiteral =>
-  node.type === AST_NODE_TYPES.Literal && typeof node.value === 'string';
-
-export const isTemplateLiteral = (
-  node: TSESTree.Node,
-): node is TSESTree.TemplateLiteral =>
-  node && node.type === AST_NODE_TYPES.TemplateLiteral;
-
-export const isStringNode = (
-  node: TSESTree.Node | undefined,
-): node is StringNode =>
-  node !== undefined && (isStringLiteral(node) || isTemplateLiteral(node));
-
 export const hasExpressions = (
   node: TSESTree.Node,
 ): node is TSESTree.Expression =>
   'expressions' in node && node.expressions.length > 0;
-
-/* istanbul ignore next we'll need this later */
-export const getStringValue = (arg: StringNode): string =>
-  isTemplateLiteral(arg) ? arg.quasis[0].value.raw : arg.value;
 
 const collectReferences = (scope: TSESLint.Scope.Scope) => {
   const locals = new Set();

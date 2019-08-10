@@ -46,6 +46,7 @@ export default createRule({
         }
         const [firstArgument] = node.arguments;
         if (
+          !firstArgument ||
           !isStringNode(firstArgument) ||
           (isTemplateLiteral(firstArgument) && hasExpressions(firstArgument))
         ) {
