@@ -185,6 +185,13 @@ export const hasOnlyOneArgument = (
   call.arguments && call.arguments.length === 1;
 
 /**
+ * An `Identifier` with a known `name` value - i.e `expect`.
+ */
+interface KnownIdentifier<Name extends string> extends TSESTree.Identifier {
+  name: Name;
+}
+
+/**
  * Gets the value of the given `AccessorNode`,
  * account for the different node types.
  *
