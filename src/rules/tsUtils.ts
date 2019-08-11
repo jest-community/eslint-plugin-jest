@@ -108,6 +108,22 @@ export const isStringNode = <V extends string>(
 export const getStringValue = <S extends string>(node: StringNode<S>): S =>
   isTemplateLiteral(node) ? node.quasis[0].value.raw : node.value;
 
+/**
+ * Gets the value of the given `AccessorNode`,
+ * account for the different node types.
+ *
+ * @param {AccessorNode<S>} accessor
+ *
+ * @return {S}
+ *
+ * @template S
+ */
+export const getAccessorValue = <S extends string = string>(
+  accessor: AccessorNode<S>,
+): S => getStringValue(accessor);
+
+type AccessorNode<Specifics extends string = string> = StringNode<Specifics>;
+
 interface JestExpectIdentifier extends TSESTree.Identifier {
   name: 'expect';
 }
@@ -135,13 +151,6 @@ interface JestExpectCallExpression extends TSESTree.CallExpression {
 // represents expect usage like "expect().toBe" & "expect().not.toBe"
 interface JestExpectCallMemberExpression extends TSESTree.MemberExpression {
   object: JestExpectCallMemberExpression | JestExpectCallExpression;
-  property: TSESTree.Identifier;
-}
-
-// represents expect usage like "expect.anything" & "expect.hasAssertions"
-interface JestExpectNamespaceMemberExpression
-  extends TSESTree.MemberExpression {
-  object: JestExpectIdentifier;
   property: TSESTree.Identifier;
 }
 
@@ -305,11 +314,6 @@ export const isDescribe = (
       DescribeProperty.hasOwnProperty(node.callee.property.name))
   );
 };
-
-export const hasExpressions = (
-  node: TSESTree.Node,
-): node is TSESTree.Expression =>
-  'expressions' in node && node.expressions.length > 0;
 
 const collectReferences = (scope: TSESLint.Scope.Scope) => {
   const locals = new Set();
