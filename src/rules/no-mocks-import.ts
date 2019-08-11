@@ -1,26 +1,23 @@
 import { TSESTree } from '@typescript-eslint/experimental-utils';
 import { posix } from 'path';
-import { createRule, isLiteralNode } from './tsUtils';
+import { createRule, getStringValue, isStringNode } from './tsUtils';
 
 const mocksDirName = '__mocks__';
 
 const isMockPath = (path: string) =>
   path.split(posix.sep).includes(mocksDirName);
 
-const isMockImportLiteral = (expression?: TSESTree.Expression): boolean =>
-  expression !== undefined &&
-  isLiteralNode(expression) &&
-  typeof expression.value === 'string' &&
-  isMockPath(expression.value);
+const isMockImportLiteral = (expression: TSESTree.Expression): boolean =>
+  isStringNode(expression) && isMockPath(getStringValue(expression));
 
 export default createRule({
   name: __filename,
   meta: {
     type: 'problem',
     docs: {
+      category: 'Best Practices',
       description:
         'When using `jest.mock`, your tests (just like the code being tested) should import from `./x`, not `./__mocks__/x`. Not following this rule can lead to confusion, because you will have multiple instances of the mocked module',
-      category: 'Best Practices',
       recommended: 'error',
     },
     messages: {
@@ -32,14 +29,16 @@ export default createRule({
   create(context) {
     return {
       ImportDeclaration(node: TSESTree.ImportDeclaration) {
-        if (isMockImportLiteral(node.source)) {
+        if (node.source && isMockImportLiteral(node.source)) {
           context.report({ node, messageId: 'noManualImport' });
         }
       },
       'CallExpression[callee.name="require"]'(node: TSESTree.CallExpression) {
-        if (isMockImportLiteral(node.arguments[0])) {
+        const [arg] = node.arguments;
+
+        if (arg && isMockImportLiteral(arg)) {
           context.report({
-            node: node.arguments[0],
+            node: arg,
             messageId: 'noManualImport',
           });
         }

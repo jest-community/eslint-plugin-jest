@@ -306,10 +306,6 @@ export const isDescribe = (
   );
 };
 
-export const isLiteralNode = (node: {
-  type: AST_NODE_TYPES;
-}): node is TSESTree.Literal => node.type === AST_NODE_TYPES.Literal;
-
 export const hasExpressions = (
   node: TSESTree.Node,
 ): node is TSESTree.Expression =>
