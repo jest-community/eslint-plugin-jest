@@ -113,7 +113,7 @@ export default createRule({
           callbackFunction.body.type === AST_NODE_TYPES.BlockStatement
         ) {
           callbackFunction.body.body.forEach(node => {
-            if (node.type === 'ReturnStatement') {
+            if (node.type === AST_NODE_TYPES.ReturnStatement) {
               context.report({
                 messageId: 'unexpectedReturnInDescribe',
                 node,
