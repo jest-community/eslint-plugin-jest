@@ -315,11 +315,6 @@ export const isDescribe = (
   );
 };
 
-export const hasExpressions = (
-  node: TSESTree.Node,
-): node is TSESTree.Expression =>
-  'expressions' in node && node.expressions.length > 0;
-
 const collectReferences = (scope: TSESLint.Scope.Scope) => {
   const locals = new Set();
   const unresolved = new Set();
