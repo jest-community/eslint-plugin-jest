@@ -183,7 +183,7 @@ export default createRule<unknown[], MessageIds>({
         if (testFunction && !isHavingAsyncCallBackParam(testFunction)) {
           const { body } = testFunction;
 
-          /* istanbul ignore next */
+          /* istanbul ignore if */
           if (!body) {
             throw new Error(
               `Unexpected null when attempting to fix ${context.getFilename()} - please file a github issue at https://github.com/jest-community/eslint-plugin-jest`,
