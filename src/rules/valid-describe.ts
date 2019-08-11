@@ -7,14 +7,11 @@ import {
   createRule,
   isDescribe,
   isFunction,
+  isStringNode,
   isSupportedAccessor,
 } from './tsUtils';
 
 const isAsync = (node: FunctionExpression): boolean => node.async;
-
-const isString = (node: TSESTree.Node): boolean =>
-  (node.type === AST_NODE_TYPES.Literal && typeof node.value === 'string') ||
-  node.type === AST_NODE_TYPES.TemplateLiteral;
 
 const hasParams = (node: FunctionExpression): boolean => node.params.length > 0;
 
@@ -70,7 +67,7 @@ export default createRule({
         }
         const [name] = node.arguments;
         const [, callbackFunction] = node.arguments;
-        if (!isString(name)) {
+        if (!isStringNode(name)) {
           context.report({
             messageId: 'firstArgumentMustBeName',
             loc: paramsLocation(node.arguments),
