@@ -154,7 +154,7 @@ const isHavingAsyncCallBackParam = (testFunction: FunctionExpression) =>
   testFunction.params[0] &&
   testFunction.params[0].type === AST_NODE_TYPES.Identifier;
 
-export default createRule<any[], MessageIds>({
+export default createRule<unknown[], MessageIds>({
   name: __filename,
   meta: {
     docs: {
