@@ -4,10 +4,10 @@ import {
 } from '@typescript-eslint/experimental-utils';
 import {
   FunctionExpression,
-  JestFunctionCallExpression,
   createRule,
   isDescribe,
   isFunction,
+  isSupportedAccessor,
 } from './tsUtils';
 
 const isAsync = (node: FunctionExpression): boolean => node.async;
@@ -29,10 +29,9 @@ const paramsLocation = (
   };
 };
 
-const isDescribeEach = (node: JestFunctionCallExpression) =>
+const isDescribeEach = (node: TSESTree.CallExpression) =>
   node.callee.type === AST_NODE_TYPES.MemberExpression &&
-  node.callee.property.type === AST_NODE_TYPES.Identifier &&
-  node.callee.property.name === 'each';
+  isSupportedAccessor(node.callee.property, 'each');
 
 export default createRule({
   name: __filename,
