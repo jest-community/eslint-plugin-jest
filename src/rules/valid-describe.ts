@@ -53,7 +53,7 @@ export default createRule({
         'Unexpected return statement in describe callback',
     },
     schema: [],
-  } as const,
+  },
   defaultOptions: [],
   create(context) {
     return {
