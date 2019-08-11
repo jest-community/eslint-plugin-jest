@@ -15,7 +15,7 @@ const matchesTestFunction = (
 
 const isCallToFocusedTestFunction = (object: TSESTree.Identifier | undefined) =>
   object &&
-  object.name[0] === 'f' &&
+  object.name.startsWith('f') &&
   testFunctions.has(object.name.substring(1));
 
 const isPropertyNamedOnly = (

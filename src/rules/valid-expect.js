@@ -196,7 +196,7 @@ export default {
             // a property is accessed, get the next node
             if (grandParent.type === 'MemberExpression') {
               // a modifier is used, just get the next one
-              if (expectProperties.indexOf(propertyName) > -1) {
+              if (expectProperties.includes(propertyName)) {
                 grandParent = grandParent.parent;
               } else {
                 // only a few properties are allowed
@@ -223,10 +223,9 @@ export default {
                 // added
                 loc: parentProperty.loc,
                 data: { propertyName },
-                messageId:
-                  expectProperties.indexOf(propertyName) > -1
-                    ? 'propertyWithoutMatcher'
-                    : 'matcherOnPropertyNotCalled',
+                messageId: expectProperties.includes(propertyName)
+                  ? 'propertyWithoutMatcher'
+                  : 'matcherOnPropertyNotCalled',
                 node: parentProperty,
               });
             }

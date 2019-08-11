@@ -61,7 +61,7 @@ export default createRule({
         if (
           isTestCase(node) &&
           describeNestingLevel === 0 &&
-          nodeName.indexOf(testKeyword) === -1
+          !nodeName.includes(testKeyword)
         ) {
           const oppositeTestKeyword = getOppositeTestKeyword(testKeyword);
 
@@ -84,7 +84,7 @@ export default createRule({
         if (
           isTestCase(node) &&
           describeNestingLevel > 0 &&
-          nodeName.indexOf(testKeywordWithinDescribe) === -1
+          !nodeName.includes(testKeywordWithinDescribe)
         ) {
           const oppositeTestKeyword = getOppositeTestKeyword(
             testKeywordWithinDescribe,

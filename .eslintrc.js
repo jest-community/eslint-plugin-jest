@@ -44,8 +44,9 @@ module.exports = {
     'node/no-unsupported-features/es-syntax': 'off',
     'node/no-unsupported-features/es-builtins': 'error',
     'import/no-commonjs': 'error',
-    'import/no-unused-modules': 'error',
+    'import/no-duplicates': 'error',
     'import/no-extraneous-dependencies': 'error',
+    'import/no-unused-modules': 'error',
   },
   overrides: [
     {

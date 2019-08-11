@@ -1,7 +1,7 @@
 import { RuleTester } from 'eslint';
 import rule from '../no-large-snapshots';
 
-const noLargeSnapshots = rule.create;
+const noLargeSnapshots = rule.create.bind(rule);
 
 const ruleTester = new RuleTester({
   parserOptions: {
