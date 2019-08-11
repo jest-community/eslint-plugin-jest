@@ -210,21 +210,6 @@ interface JestExpectIdentifier extends TSESTree.Identifier {
   name: 'expect';
 }
 
-/**
- * Checks if the given `node` is considered a {@link JestExpectIdentifier}.
- *
- * A `node` is considered to be as such if it is of type `Identifier`,
- * and `name`d `"expect"`.
- *
- * @param {Node} node
- *
- * @return {node is JestExpectIdentifier}
- */
-const isExpectIdentifier = (
-  node: TSESTree.Node,
-): node is JestExpectIdentifier =>
-  node.type === AST_NODE_TYPES.Identifier && node.name === 'expect';
-
 // represents "expect()" specifically
 interface JestExpectCallExpression extends TSESTree.CallExpression {
   callee: JestExpectIdentifier;
@@ -236,18 +221,27 @@ interface JestExpectCallMemberExpression extends TSESTree.MemberExpression {
   property: TSESTree.Identifier;
 }
 
+interface ExpectCall extends TSESTree.CallExpression {
+  callee: AccessorNode<'expect'>;
+  parent: TSESTree.Node;
+}
+
 /**
- * Checks if the given `node` is a {@link JestExpectCallExpression}.
+ * Checks if the given `node` is a valid `ExpectCall`.
+ *
+ * In order to be an `ExpectCall`, the `node` must:
+ *  * be a `CallExpression`,
+ *  * have an accessor named 'expect',
+ *  * have a `parent`.
  *
  * @param {Node} node
  *
- * @return {node is JestExpectCallExpression}
+ * @return {node is ExpectCall}
  */
-export const isExpectCall = (
-  node: TSESTree.Node,
-): node is JestExpectCallExpression =>
+export const isExpectCall = (node: TSESTree.Node): node is ExpectCall =>
   node.type === AST_NODE_TYPES.CallExpression &&
-  isExpectIdentifier(node.callee);
+  isSupportedAccessor(node.callee, 'expect') &&
+  node.parent !== undefined;
 
 interface JestExpectCallWithParent extends JestExpectCallExpression {
   parent: JestExpectCallMemberExpression;
