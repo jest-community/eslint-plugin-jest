@@ -15,6 +15,7 @@ const paramsLocation = (
 ) => {
   const [first] = params;
   const last = params[params.length - 1];
+
   return {
     start: first.loc.start,
     end: last.loc.end,
@@ -30,9 +31,9 @@ export default createRule({
   meta: {
     type: 'problem',
     docs: {
+      category: 'Possible Errors',
       description:
         'Using an improper `describe()` callback function can lead to unexpected test errors.',
-      category: 'Possible Errors',
       recommended: 'warn',
     },
     messages: {
@@ -60,8 +61,9 @@ export default createRule({
             loc: node.loc,
           });
         }
-        const [name] = node.arguments;
-        const [, callbackFunction] = node.arguments;
+
+        const [name, callback] = node.arguments;
+
         if (!isStringNode(name)) {
           context.report({
             messageId: 'firstArgumentMustBeName',
@@ -69,7 +71,7 @@ export default createRule({
           });
         }
 
-        if (!callbackFunction) {
+        if (!callback) {
           context.report({
             messageId: 'nameAndCallback',
             loc: paramsLocation(node.arguments),
@@ -78,33 +80,34 @@ export default createRule({
           return;
         }
 
-        if (!isFunction(callbackFunction)) {
+        if (!isFunction(callback)) {
           context.report({
             messageId: 'secondArgumentMustBeFunction',
             loc: paramsLocation(node.arguments),
           });
+
           return;
         }
 
-        if (callbackFunction.async) {
+        if (callback.async) {
           context.report({
             messageId: 'noAsyncDescribeCallback',
-            node: callbackFunction,
+            node: callback,
           });
         }
 
-        if (callbackFunction.params.length) {
+        if (callback.params.length) {
           context.report({
             messageId: 'unexpectedDescribeArgument',
-            loc: paramsLocation(callbackFunction.params),
+            loc: paramsLocation(callback.params),
           });
         }
 
         if (
-          callbackFunction.body &&
-          callbackFunction.body.type === AST_NODE_TYPES.BlockStatement
+          callback.body &&
+          callback.body.type === AST_NODE_TYPES.BlockStatement
         ) {
-          callbackFunction.body.body.forEach(node => {
+          callback.body.body.forEach(node => {
             if (node.type === AST_NODE_TYPES.ReturnStatement) {
               context.report({
                 messageId: 'unexpectedReturnInDescribe',
