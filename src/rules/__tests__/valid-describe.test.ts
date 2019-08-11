@@ -10,6 +10,15 @@ const ruleTester = new TSESLint.RuleTester({
 ruleTester.run('valid-describe', rule, {
   valid: [
     'describe.each()()',
+    'describe.each(() => {})()',
+    'describe["each"]()()',
+    'describe["each"](() => {})()',
+    'describe["each"](() => {})("foo")',
+    'describe.each(() => {})("foo")',
+    'describe["each"]()(() => {})',
+    'describe.each()(() => {})',
+    'describe["each"]("foo")(() => {})',
+    'describe.each("foo")(() => {})',
     'describe("foo", function() {})',
     'describe("foo", () => {})',
     'describe(`foo`, () => {})',
@@ -101,7 +110,8 @@ ruleTester.run('valid-describe', rule, {
             throw new Error('Fail');
           });
         });
-      });`,
+      });
+      `,
       errors: [{ messageId: 'noAsyncDescribeCallback', line: 6, column: 27 }],
     },
     {
