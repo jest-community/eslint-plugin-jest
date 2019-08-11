@@ -76,6 +76,7 @@ export default createRule({
             loc: paramsLocation(node.arguments),
           });
         }
+
         if (!callbackFunction) {
           context.report({
             messageId: 'nameAndCallback',
@@ -84,38 +85,41 @@ export default createRule({
 
           return;
         }
-        if (isFunction(callbackFunction)) {
-          if (isAsync(callbackFunction)) {
-            context.report({
-              messageId: 'noAsyncDescribeCallback',
-              node: callbackFunction,
-            });
-          }
-          if (hasParams(callbackFunction)) {
-            context.report({
-              messageId: 'unexpectedDescribeArgument',
-              loc: paramsLocation(callbackFunction.params),
-            });
-          }
-          if (
-            callbackFunction.body &&
-            callbackFunction.body.type === AST_NODE_TYPES.BlockStatement
-          ) {
-            callbackFunction.body.body.forEach(node => {
-              if (node.type === 'ReturnStatement') {
-                context.report({
-                  messageId: 'unexpectedReturnInDescribe',
-                  node,
-                });
-              }
-            });
-          }
-        } else {
+
+        if (!isFunction(callbackFunction)) {
           context.report({
             messageId: 'secondArgumentMustBeFunction',
             loc: paramsLocation(node.arguments),
           });
           return;
+        }
+
+        if (isAsync(callbackFunction)) {
+          context.report({
+            messageId: 'noAsyncDescribeCallback',
+            node: callbackFunction,
+          });
+        }
+
+        if (hasParams(callbackFunction)) {
+          context.report({
+            messageId: 'unexpectedDescribeArgument',
+            loc: paramsLocation(callbackFunction.params),
+          });
+        }
+
+        if (
+          callbackFunction.body &&
+          callbackFunction.body.type === AST_NODE_TYPES.BlockStatement
+        ) {
+          callbackFunction.body.body.forEach(node => {
+            if (node.type === 'ReturnStatement') {
+              context.report({
+                messageId: 'unexpectedReturnInDescribe',
+                node,
+              });
+            }
+          });
         }
       },
     };
