@@ -1,21 +1,30 @@
-import { RuleTester } from 'eslint';
+import {
+  AST_NODE_TYPES,
+  TSESLint,
+  TSESTree,
+} from '@typescript-eslint/experimental-utils';
 import rule from '../no-large-snapshots';
 
 const noLargeSnapshots = rule.create.bind(rule);
 
-const ruleTester = new RuleTester({
+const ruleTester = new TSESLint.RuleTester({
   parserOptions: {
     ecmaVersion: 2015,
   },
 });
 
-const generateSnapshotLines = lines => `\`\n${'line\n'.repeat(lines)}\``;
+const generateSnapshotLines = (lines: number) =>
+  `\`\n${'line\n'.repeat(lines)}\``;
 
-const generateExportsSnapshotString = (lines, title = 'a big component 1') =>
-  `exports[\`${title}\`] = ${generateSnapshotLines(lines - 1)};`;
+const generateExportsSnapshotString = (
+  lines: number,
+  title: string = 'a big component 1',
+) => `exports[\`${title}\`] = ${generateSnapshotLines(lines - 1)};`;
 
-const generateExpectInlineSnapsCode = (lines, matcher) =>
-  `expect(something).${matcher}(${generateSnapshotLines(lines)});`;
+const generateExpectInlineSnapsCode = (
+  lines: number,
+  matcher: 'toMatchInlineSnapshot' | 'toThrowErrorMatchingInlineSnapshot',
+) => `expect(something).${matcher}(${generateSnapshotLines(lines)});`;
 
 ruleTester.run('no-large-snapshots', rule, {
   valid: [
@@ -156,7 +165,9 @@ ruleTester.run('no-large-snapshots', rule, {
 });
 
 describe('no-large-snapshots', () => {
-  const buildBaseNode = type => ({
+  const buildBaseNode = <Type extends AST_NODE_TYPES>(
+    type: Type,
+  ): TSESTree.BaseNode & { type: Type } => ({
     type,
     range: [0, 1],
     loc: {
@@ -190,8 +201,8 @@ describe('no-large-snapshots', () => {
 
       expect(() =>
         ExpressionStatement({
-          ...buildBaseNode('ExpressionStatement'),
-          expression: buildBaseNode('JSXClosingFragment'),
+          ...buildBaseNode(AST_NODE_TYPES.ExpressionStatement),
+          expression: buildBaseNode(AST_NODE_TYPES.JSXClosingFragment),
         }),
       ).toThrow(
         'All paths for whitelistedSnapshots must be absolute. You can use JS config and `path.resolve`',
