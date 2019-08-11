@@ -164,6 +164,27 @@ export const isSupportedAccessor = <V extends string>(
   isIdentifier(node, value) || isStringNode(node, value);
 
 /**
+ * Represents a `CallExpression` with a single argument.
+ */
+export interface CallExpressionWithSingleArgument<
+  Argument extends TSESTree.Expression = TSESTree.Expression
+> extends TSESTree.CallExpression {
+  arguments: [Argument];
+}
+
+/**
+ * Guards that the given `call` has only one `argument`.
+ *
+ * @param {CallExpression} call
+ *
+ * @return {call is CallExpressionWithSingleArgument}
+ */
+export const hasOnlyOneArgument = (
+  call: TSESTree.CallExpression,
+): call is CallExpressionWithSingleArgument =>
+  call.arguments && call.arguments.length === 1;
+
+/**
  * Gets the value of the given `AccessorNode`,
  * account for the different node types.
  *

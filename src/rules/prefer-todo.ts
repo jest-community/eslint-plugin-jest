@@ -6,18 +6,14 @@ import {
 import {
   FunctionExpression,
   JestFunctionCallExpression,
-  StringLiteral,
   TestCaseName,
   createRule,
   getNodeName,
+  hasOnlyOneArgument,
   isFunction,
   isStringNode,
   isTestCase,
 } from './tsUtils';
-
-function isOnlyTestTitle(node: TSESTree.CallExpression) {
-  return node.arguments.length === 1;
-}
 
 function isFunctionBodyEmpty(node: FunctionExpression) {
   /* istanbul ignore next https://github.com/typescript-eslint/typescript-eslint/issues/734 */
@@ -49,16 +45,6 @@ function addTodo(
   return fixer.replaceText(node.callee, `${testName}.todo`);
 }
 
-interface CallExpressionWithStringArgument extends TSESTree.CallExpression {
-  arguments: [StringLiteral | TSESTree.TemplateLiteral];
-}
-
-function isFirstArgString(
-  node: TSESTree.CallExpression,
-): node is CallExpressionWithStringArgument {
-  return node.arguments[0] && isStringNode(node.arguments[0]);
-}
-
 const isTargetedTestCase = (
   node: TSESTree.CallExpression,
 ): node is JestFunctionCallExpression<TestCaseName> =>
@@ -88,7 +74,9 @@ export default createRule({
   create(context) {
     return {
       CallExpression(node) {
-        if (!isTargetedTestCase(node) || !isFirstArgString(node)) {
+        const [firstArg, secondArg] = node.arguments;
+
+        if (!isTargetedTestCase(node) || !isStringNode(firstArg)) {
           return;
         }
 
@@ -97,16 +85,13 @@ export default createRule({
             messageId: 'todoOverEmpty',
             node,
             fix: fixer => [
-              fixer.removeRange([
-                node.arguments[0].range[1],
-                node.arguments[1].range[1],
-              ]),
+              fixer.removeRange([firstArg.range[1], secondArg.range[1]]),
               addTodo(node, fixer),
             ],
           });
         }
 
-        if (isOnlyTestTitle(node)) {
+        if (hasOnlyOneArgument(node)) {
           context.report({
             messageId: 'todoOverUnimplemented',
             node,
