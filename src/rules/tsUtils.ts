@@ -117,6 +117,47 @@ interface KnownMemberExpression<Name extends string = string>
 }
 
 /**
+ * Represents a `CallExpression` with a "known" `property` accessor.
+ *
+ * i.e `KnownCallExpression<'includes'>` represents `.includes()`.
+ */
+export interface KnownCallExpression<Name extends string = string>
+  extends TSESTree.CallExpression {
+  callee: CalledKnownMemberExpression<Name>;
+}
+
+/**
+ * Represents a `MemberExpression` with a "known" `property`, that is called.
+ *
+ * This is `KnownCallExpression` from the perspective of the `MemberExpression` node.
+ */
+export interface CalledKnownMemberExpression<Name extends string = string>
+  extends KnownMemberExpression<Name> {
+  parent: KnownCallExpression<Name>;
+}
+
+/**
+ * Represents a `CallExpression` with a single argument.
+ */
+export interface CallExpressionWithSingleArgument<
+  Argument extends TSESTree.Expression = TSESTree.Expression
+> extends TSESTree.CallExpression {
+  arguments: [Argument];
+}
+
+/**
+ * Guards that the given `call` has only one `argument`.
+ *
+ * @param {CallExpression} call
+ *
+ * @return {call is CallExpressionWithSingleArgument}
+ */
+export const hasOnlyOneArgument = (
+  call: TSESTree.CallExpression,
+): call is CallExpressionWithSingleArgument =>
+  call.arguments && call.arguments.length === 1;
+
+/**
  * An `Identifier` with a known `name` value - i.e `expect`.
  */
 interface KnownIdentifier<Name extends string> extends TSESTree.Identifier {
@@ -170,34 +211,6 @@ export const isSupportedAccessor = <V extends string>(
   value?: V,
 ): node is AccessorNode<V> =>
   isIdentifier(node, value) || isStringNode(node, value);
-
-/**
- * Represents a `CallExpression` with a single argument.
- */
-export interface CallExpressionWithSingleArgument<
-  Argument extends TSESTree.Expression = TSESTree.Expression
-> extends TSESTree.CallExpression {
-  arguments: [Argument];
-}
-
-/**
- * Guards that the given `call` has only one `argument`.
- *
- * @param {CallExpression} call
- *
- * @return {call is CallExpressionWithSingleArgument}
- */
-export const hasOnlyOneArgument = (
-  call: TSESTree.CallExpression,
-): call is CallExpressionWithSingleArgument =>
-  call.arguments && call.arguments.length === 1;
-
-/**
- * An `Identifier` with a known `name` value - i.e `expect`.
- */
-interface KnownIdentifier<Name extends string> extends TSESTree.Identifier {
-  name: Name;
-}
 
 /**
  * Gets the value of the given `AccessorNode`,

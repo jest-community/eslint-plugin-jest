@@ -1,13 +1,208 @@
-import { RuleTester } from 'eslint';
+import { TSESLint } from '@typescript-eslint/experimental-utils';
 import rule from '../valid-expect-in-promise';
 
-const ruleTester = new RuleTester({
+const ruleTester = new TSESLint.RuleTester({
   parserOptions: {
     ecmaVersion: 8,
   },
 });
 
 ruleTester.run('valid-expect-in-promise', rule, {
+  valid: [
+    `
+      it('it1', () => new Promise((done) => {
+        test()
+          .then(() => {
+            expect(someThing).toEqual(true);
+            done();
+          });
+      }));
+    `,
+    `
+      it('it1', () => {
+        return somePromise.then(() => {
+          expect(someThing).toEqual(true);
+        });
+      });
+    `,
+    `
+      it('it1', function() {
+        return somePromise.catch(function() {
+          expect(someThing).toEqual(true);
+        });
+      });
+    `,
+    `
+      it('it1', function() {
+        return somePromise.then(function() {
+          doSomeThingButNotExpect();
+        });
+      });
+    `,
+    `
+      it('it1', function() {
+        return getSomeThing().getPromise().then(function() {
+          expect(someThing).toEqual(true);
+        });
+      });
+    `,
+    `
+      it('it1', function() {
+        return Promise.resolve().then(function() {
+          expect(someThing).toEqual(true);
+        });
+      });
+    `,
+    `
+      it('it1', function () {
+        return Promise.resolve().then(function () {
+          /*fulfillment*/
+          expect(someThing).toEqual(true);
+        }, function () {
+          /*rejection*/
+          expect(someThing).toEqual(true);
+        });
+      });
+    `,
+    `
+      it('it1', function () {
+        return Promise.resolve().then(function () {
+          /*fulfillment*/
+        }, function () {
+          /*rejection*/
+          expect(someThing).toEqual(true);
+        });
+      });
+    `,
+    `
+      it('it1', function () {
+        return somePromise.then()
+      });
+    `,
+    `
+      it('it1', async () => {
+        await Promise.resolve().then(function () {
+          expect(someThing).toEqual(true)
+        });
+      });
+    `,
+    `
+      it('it1', async () => {
+        await somePromise.then(() => {
+          expect(someThing).toEqual(true)
+        });
+      });
+    `,
+    `
+      it('it1', async () => {
+        await getSomeThing().getPromise().then(function () {
+          expect(someThing).toEqual(true)
+        });
+      });
+    `,
+    `
+      it('it1', () => {
+        return somePromise.then(() => {
+            expect(someThing).toEqual(true);
+          })
+          .then(() => {
+            expect(someThing).toEqual(true);
+          })
+      });
+    `,
+    `
+      it('it1', () => {
+        return somePromise.then(() => {
+            expect(someThing).toEqual(true);
+          })
+          .catch(() => {
+            expect(someThing).toEqual(false);
+          })
+      });
+    `,
+    `
+     test('later return', () => {
+       const promise = something().then(value => {
+         expect(value).toBe('red');
+       });
+
+       return promise;
+     });
+    `,
+    `
+     it('shorthand arrow', () =>
+       something().then(value => {
+         expect(() => {
+           value();
+         }).toThrow();
+       }));
+    `,
+    `
+      it('promise test', () => {
+        const somePromise = getThatPromise();
+        somePromise.then((data) => {
+          expect(data).toEqual('foo');
+        });
+        expect(somePromise).toBeDefined();
+        return somePromise;
+      });
+    `,
+    `
+      test('promise test', function () {
+        let somePromise = getThatPromise();
+        somePromise.then((data) => {
+          expect(data).toEqual('foo');
+        });
+        expect(somePromise).toBeDefined();
+        return somePromise;
+      });
+    `,
+    `
+      it('crawls for files based on patterns', () => {
+        const promise = nodeCrawl({}).then(data => {
+          expect(childProcess.spawn).lastCalledWith('find');
+        });
+        return promise;
+      });
+    `,
+    `
+      it('test function',
+        () => {
+          return Builder.getPromiseBuilder().get().build()
+            .then((data) => {
+              expect(data).toEqual('Hi');
+            });
+      });
+    `,
+    `
+      notATestFunction('not a test function',
+        () => {
+          Builder.getPromiseBuilder().get().build()
+            .then((data) => {
+              expect(data).toEqual('Hi');
+            });
+      });
+    `,
+    `
+      it("it1", () => somePromise.then(() => {
+        expect(someThing).toEqual(true)
+      }))
+    `,
+    ` it("it1", () => somePromise.then(() => expect(someThing).toEqual(true)))`,
+
+    `
+      it('promise test with done', (done) => {
+        const promise = getPromise();
+        promise.then(() => expect(someThing).toEqual(true));
+      });
+    `,
+    `
+      it('name of done param does not matter', (nameDoesNotMatter) => {
+        const promise = getPromise();
+        promise.then(() => expect(someThing).toEqual(true));
+      });
+    `,
+  ],
   invalid: [
     {
       code: `
@@ -19,6 +214,16 @@ ruleTester.run('valid-expect-in-promise', rule, {
       `,
       errors: [{ column: 12, endColumn: 15, messageId: 'returnPromise' }],
     },
+    // {
+    //   code: `
+    //      it('it1', () => {
+    //        somePromise['then'](() => {
+    //          expect(someThing).toEqual(true);
+    //        });
+    //      });
+    //   `,
+    //   errors: [{ column: 12, endColumn: 15, messageId: 'returnPromise' }],
+    // },
     {
       code: `
         it('it1', function() {
@@ -114,223 +319,5 @@ ruleTester.run('valid-expect-in-promise', rule, {
       `,
       errors: [{ column: 18, endColumn: 14, messageId: 'returnPromise' }],
     },
-  ],
-
-  valid: [
-    `
-      it('it1', () => new Promise((done) => {
-        test()
-          .then(() => {
-            expect(someThing).toEqual(true);
-            done();
-          });
-      }));
-    `,
-    `
-      it('it1', () => {
-        return somePromise.then(() => {
-          expect(someThing).toEqual(true);
-        });
-      });
-    `,
-
-    `
-      it('it1', function() {
-        return somePromise.catch(function() {
-          expect(someThing).toEqual(true);
-        });
-      });
-    `,
-
-    `
-      it('it1', function() {
-        return somePromise.then(function() {
-          doSomeThingButNotExpect();
-        });
-      });
-    `,
-
-    `
-      it('it1', function() {
-        return getSomeThing().getPromise().then(function() {
-          expect(someThing).toEqual(true);
-        });
-      });
-    `,
-
-    `
-      it('it1', function() {
-        return Promise.resolve().then(function() {
-          expect(someThing).toEqual(true);
-        });
-      });
-    `,
-
-    `
-      it('it1', function () {
-        return Promise.resolve().then(function () {
-          /*fulfillment*/
-          expect(someThing).toEqual(true);
-        }, function () {
-          /*rejection*/
-          expect(someThing).toEqual(true);
-        });
-      });
-    `,
-
-    `
-      it('it1', function () {
-        return Promise.resolve().then(function () {
-          /*fulfillment*/
-        }, function () {
-          /*rejection*/
-          expect(someThing).toEqual(true);
-        });
-      });
-    `,
-
-    `
-      it('it1', function () {
-        return somePromise.then()
-      });
-    `,
-
-    `
-      it('it1', async () => {
-        await Promise.resolve().then(function () {
-          expect(someThing).toEqual(true)
-        });
-      });
-    `,
-
-    `
-      it('it1', async () => {
-        await somePromise.then(() => {
-          expect(someThing).toEqual(true)
-        });
-      });
-    `,
-
-    `
-      it('it1', async () => {
-        await getSomeThing().getPromise().then(function () {
-          expect(someThing).toEqual(true)
-        });
-      });
-    `,
-
-    `
-      it('it1', () => {
-        return somePromise.then(() => {
-            expect(someThing).toEqual(true);
-          })
-          .then(() => {
-            expect(someThing).toEqual(true);
-          })
-      });
-    `,
-
-    `
-      it('it1', () => {
-        return somePromise.then(() => {
-            expect(someThing).toEqual(true);
-          })
-          .catch(() => {
-            expect(someThing).toEqual(false);
-          })
-      });
-    `,
-
-    `
-     test('later return', () => {
-       const promise = something().then(value => {
-         expect(value).toBe('red');
-       });
-
-       return promise;
-     });
-    `,
-
-    `
-     it('shorthand arrow', () =>
-       something().then(value => {
-         expect(() => {
-           value();
-         }).toThrow();
-       }));
-    `,
-
-    `
-      it('promise test', () => {
-        const somePromise = getThatPromise();
-        somePromise.then((data) => {
-          expect(data).toEqual('foo');
-        });
-        expect(somePromise).toBeDefined();
-        return somePromise;
-      });
-    `,
-
-    `
-      test('promise test', function () {
-        let somePromise = getThatPromise();
-        somePromise.then((data) => {
-          expect(data).toEqual('foo');
-        });
-        expect(somePromise).toBeDefined();
-        return somePromise;
-      });
-    `,
-
-    `
-      it('crawls for files based on patterns', () => {
-        const promise = nodeCrawl({}).then(data => {
-          expect(childProcess.spawn).lastCalledWith('find');
-        });
-        return promise;
-      });
-    `,
-
-    `
-      it('test function',
-        () => {
-          return Builder.getPromiseBuilder().get().build()
-            .then((data) => {
-              expect(data).toEqual('Hi');
-            });
-      });
-    `,
-
-    `
-      notATestFunction('not a test function',
-        () => {
-          Builder.getPromiseBuilder().get().build()
-            .then((data) => {
-              expect(data).toEqual('Hi');
-            });
-      });
-    `,
-
-    `
-      it("it1", () => somePromise.then(() => {
-        expect(someThing).toEqual(true)
-      }))
-    `,
-
-    ` it("it1", () => somePromise.then(() => expect(someThing).toEqual(true)))`,
-
-    `
-      it('promise test with done', (done) => {
-        const promise = getPromise();
-        promise.then(() => expect(someThing).toEqual(true));
-      });
-    `,
-
-    `
-      it('name of done param does not matter', (nameDoesNotMatter) => {
-        const promise = getPromise();
-        promise.then(() => expect(someThing).toEqual(true));
-      });
-    `,
   ],
 });

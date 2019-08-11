@@ -97,11 +97,6 @@ export const argument = node =>
 export const argument2 = node =>
   node.parent.parent.parent.arguments && node.parent.parent.parent.arguments[0];
 
-export const isFunction = node =>
-  node &&
-  (node.type === 'FunctionExpression' ||
-    node.type === 'ArrowFunctionExpression');
-
 /**
  * Generates the URL to documentation for the given rule name. It uses the
  * package version to build the link to a tagged version of the
