@@ -109,6 +109,61 @@ export const getStringValue = <S extends string>(node: StringNode<S>): S =>
   isTemplateLiteral(node) ? node.quasis[0].value.raw : node.value;
 
 /**
+ * An `Identifier` with a known `name` value - i.e `expect`.
+ */
+interface KnownIdentifier<Name extends string> extends TSESTree.Identifier {
+  name: Name;
+}
+
+/**
+ * Checks if the given `node` is an `Identifier`.
+ *
+ * If a `name` is provided, & the `node` is an `Identifier`,
+ * the `name` will be compared to that of the `identifier`.
+ *
+ * @param {Node} node
+ * @param {V?} name
+ *
+ * @return {node is KnownIdentifier<Name>}
+ *
+ * @template V
+ */
+const isIdentifier = <V extends string>(
+  node: TSESTree.Node,
+  name?: V,
+): node is KnownIdentifier<V> =>
+  node.type === AST_NODE_TYPES.Identifier &&
+  (name === undefined || node.name === name);
+
+/**
+ * Checks if the given `node` is a "supported accessor".
+ *
+ * This means that it's a node can be used to access properties,
+ * and who's "value" can be statically determined.
+ *
+ * `MemberExpression` nodes most commonly contain accessors,
+ * but it's possible for other nodes to contain them.
+ *
+ * If a `value` is provided & the `node` is an `AccessorNode`,
+ * the `value` will be compared to that of the `AccessorNode`.
+ *
+ * Note that `value` here refers to the normalised value.
+ * The property that holds the value is not always called `name`.
+ *
+ * @param {Node} node
+ * @param {V?} value
+ *
+ * @return {node is AccessorNode<V>}
+ *
+ * @template V
+ */
+export const isSupportedAccessor = <V extends string>(
+  node: TSESTree.Node,
+  value?: V,
+): node is AccessorNode<V> =>
+  isIdentifier(node, value) || isStringNode(node, value);
+
+/**
  * Represents a `CallExpression` with a single argument.
  */
 export interface CallExpressionWithSingleArgument<
@@ -141,9 +196,15 @@ export const hasOnlyOneArgument = (
  */
 export const getAccessorValue = <S extends string = string>(
   accessor: AccessorNode<S>,
-): S => getStringValue(accessor);
+): S =>
+  /* istanbul ignore next */
+  accessor.type === AST_NODE_TYPES.Identifier
+    ? accessor.name
+    : getStringValue(accessor);
 
-type AccessorNode<Specifics extends string = string> = StringNode<Specifics>;
+type AccessorNode<Specifics extends string = string> =
+  | StringNode<Specifics>
+  | KnownIdentifier<Specifics>;
 
 interface JestExpectIdentifier extends TSESTree.Identifier {
   name: 'expect';
