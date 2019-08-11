@@ -3,17 +3,12 @@ import {
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
 import {
-  FunctionExpression,
   createRule,
   isDescribe,
   isFunction,
   isStringNode,
   isSupportedAccessor,
 } from './tsUtils';
-
-const isAsync = (node: FunctionExpression): boolean => node.async;
-
-const hasParams = (node: FunctionExpression): boolean => node.params.length > 0;
 
 const paramsLocation = (
   params: TSESTree.Expression[] | TSESTree.Parameter[],
@@ -91,14 +86,14 @@ export default createRule({
           return;
         }
 
-        if (isAsync(callbackFunction)) {
+        if (callbackFunction.async) {
           context.report({
             messageId: 'noAsyncDescribeCallback',
             node: callbackFunction,
           });
         }
 
-        if (hasParams(callbackFunction)) {
+        if (callbackFunction.params.length) {
           context.report({
             messageId: 'unexpectedDescribeArgument',
             loc: paramsLocation(callbackFunction.params),
