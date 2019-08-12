@@ -79,7 +79,7 @@ export default createRule({
             const argSource = arg && context.getSourceCode().getText(arg);
             const mockImplementation = argSource
               ? `.mockImplementation(${argSource})`
-              : '';
+              : '.mockImplementation()';
 
             return [
               fixer.insertTextBefore(left, `jest.spyOn(`),

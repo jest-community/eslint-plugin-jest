@@ -31,7 +31,7 @@ ruleTester.run('prefer-spy-on', rule, {
           type: AST_NODE_TYPES.AssignmentExpression,
         },
       ],
-      output: "jest.spyOn(obj, 'a'); const test = 10;",
+      output: "jest.spyOn(obj, 'a').mockImplementation(); const test = 10;",
     },
     {
       code: "Date['now'] = jest['fn']()",
@@ -41,7 +41,7 @@ ruleTester.run('prefer-spy-on', rule, {
           type: AST_NODE_TYPES.AssignmentExpression,
         },
       ],
-      output: "jest.spyOn(Date, 'now')",
+      output: "jest.spyOn(Date, 'now').mockImplementation()",
     },
     {
       code: 'window[`${name}`] = jest[`fn`]()',
@@ -51,7 +51,7 @@ ruleTester.run('prefer-spy-on', rule, {
           type: AST_NODE_TYPES.AssignmentExpression,
         },
       ],
-      output: 'jest.spyOn(window, `${name}`)',
+      output: 'jest.spyOn(window, `${name}`).mockImplementation()',
     },
     {
       code: "obj['prop' + 1] = jest['fn']()",
@@ -61,7 +61,7 @@ ruleTester.run('prefer-spy-on', rule, {
           type: AST_NODE_TYPES.AssignmentExpression,
         },
       ],
-      output: "jest.spyOn(obj, 'prop' + 1)",
+      output: "jest.spyOn(obj, 'prop' + 1).mockImplementation()",
     },
     {
       code: 'obj.one.two = jest.fn(); const test = 10;',
@@ -71,7 +71,8 @@ ruleTester.run('prefer-spy-on', rule, {
           type: AST_NODE_TYPES.AssignmentExpression,
         },
       ],
-      output: "jest.spyOn(obj.one, 'two'); const test = 10;",
+      output:
+        "jest.spyOn(obj.one, 'two').mockImplementation(); const test = 10;",
     },
     {
       code: 'obj.a = jest.fn(() => 10)',
