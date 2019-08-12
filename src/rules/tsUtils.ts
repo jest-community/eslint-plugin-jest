@@ -430,10 +430,12 @@ const reparseMemberAsModifier = (
     !isSpecificMember(parsedMember, ModifierName.resolves) &&
     !isSpecificMember(parsedMember, ModifierName.rejects)
   ) {
+    // ts doesn't think that the ModifierName.not check is the direct inverse as the above two checks
+    // todo: impossible at runtime, but can't be typed w/o negation support
     throw new Error(
       `modifier name must be either "${ModifierName.resolves}" or "${ModifierName.rejects}" (got "${parsedMember.name}")`,
-    ); // ts doesn't think that the ModifierName.not check is the direct inverse as the above two checks
-  } // todo: impossible at runtime, but can't be typed w/o negation support
+    );
+  }
 
   /* istanbul ignore next */
   const negation =
