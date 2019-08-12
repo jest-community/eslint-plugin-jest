@@ -1,7 +1,7 @@
-import { RuleTester } from 'eslint';
+import { TSESLint } from '@typescript-eslint/experimental-utils';
 import rule from '../prefer-called-with';
 
-const ruleTester = new RuleTester();
+const ruleTester = new TSESLint.RuleTester();
 
 ruleTester.run('prefer-called-with', rule, {
   valid: [
