@@ -1,7 +1,7 @@
-import { RuleTester } from 'eslint';
+import { TSESLint } from '@typescript-eslint/experimental-utils';
 import rule from '../no-truthy-falsy';
 
-const ruleTester = new RuleTester();
+const ruleTester = new TSESLint.RuleTester();
 
 ruleTester.run('no-truthy-falsy', rule, {
   valid: [
@@ -19,6 +19,17 @@ ruleTester.run('no-truthy-falsy', rule, {
   invalid: [
     {
       code: 'expect(true).toBeTruthy();',
+      errors: [
+        {
+          messageId: 'avoidMessage',
+          data: { methodName: 'toBeTruthy' },
+          column: 14,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: 'expect(true)["toBeTruthy"]();',
       errors: [
         {
           messageId: 'avoidMessage',
