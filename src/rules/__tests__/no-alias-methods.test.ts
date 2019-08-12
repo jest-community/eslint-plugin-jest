@@ -1,7 +1,7 @@
-import { RuleTester } from 'eslint';
+import { TSESLint } from '@typescript-eslint/experimental-utils';
 import rule from '../no-alias-methods';
 
-const ruleTester = new RuleTester();
+const ruleTester = new TSESLint.RuleTester();
 
 ruleTester.run('no-alias-methods', rule, {
   valid: [

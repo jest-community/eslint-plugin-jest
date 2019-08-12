@@ -1,19 +1,25 @@
-import { expectCaseWithParent, getDocsUrl, method } from './util';
+import { createRule, isExpectCall, parseExpectCall } from './tsUtils';
 
-export default {
+export default createRule({
+  name: __filename,
   meta: {
     docs: {
-      url: getDocsUrl(__filename),
+      category: 'Best Practices',
+      description: 'Disallow alias methods',
+      recommended: 'warn',
     },
     messages: {
       replaceAlias: `Replace {{ replace }}() with its canonical name of {{ canonical }}()`,
     },
     fixable: 'code',
+    type: 'suggestion',
     schema: [],
   },
+  defaultOptions: [],
   create(context) {
     // The Jest methods which have aliases. The canonical name is the first
     // index of each item.
+    // todo: replace w/ Map
     const methodNames = [
       ['toHaveBeenCalled', 'toBeCalled'],
       ['toHaveBeenCalledTimes', 'toBeCalledTimes'],
@@ -30,27 +36,18 @@ export default {
 
     return {
       CallExpression(node) {
-        if (!expectCaseWithParent(node)) {
+        if (!isExpectCall(node)) {
           return;
         }
 
-        let targetNode = method(node);
-        if (
-          targetNode.name === 'resolves' ||
-          targetNode.name === 'rejects' ||
-          targetNode.name === 'not'
-        ) {
-          targetNode = method(node.parent);
-        }
+        const { matcher } = parseExpectCall(node);
 
-        if (!targetNode) {
+        if (!matcher) {
           return;
         }
 
         // Check if the method used matches any of ours
-        const methodItem = methodNames.find(
-          item => item[1] === targetNode.name,
-        );
+        const methodItem = methodNames.find(item => item[1] === matcher.name);
 
         if (methodItem) {
           context.report({
@@ -59,11 +56,13 @@ export default {
               replace: methodItem[1],
               canonical: methodItem[0],
             },
-            node: targetNode,
-            fix: fixer => [fixer.replaceText(targetNode, methodItem[0])],
+            node: matcher.node.property,
+            fix: fixer => [
+              fixer.replaceText(matcher.node.property, methodItem[0]),
+            ],
           });
         }
       },
     };
   },
-};
+});

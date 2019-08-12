@@ -320,6 +320,175 @@ export const isExpectCallWithParent = (
   node.parent.type === AST_NODE_TYPES.MemberExpression &&
   node.parent.property.type === AST_NODE_TYPES.Identifier;
 
+interface ParsedExpectMember<
+  Name extends ExpectPropertyName = ExpectPropertyName,
+  Node extends ExpectMember<Name> = ExpectMember<Name>
+> {
+  name: Name;
+  node: Node;
+}
+
+/**
+ * Represents a parsed expect matcher, such as `toBe`, `toContain`, and so on.
+ */
+export interface ParsedExpectMatcher<
+  Matcher extends MatcherName = MatcherName,
+  Node extends ExpectMember<Matcher> = ExpectMember<Matcher>
+> extends ParsedExpectMember<Matcher, Node> {
+  arguments: TSESTree.CallExpression['arguments'] | null;
+}
+
+type BaseParsedModifier<
+  Modifier extends ModifierName = ModifierName
+> = ParsedExpectMember<Modifier>;
+
+type NegatableModifierName = ModifierName.rejects | ModifierName.resolves;
+type NotNegatableModifierName = ModifierName.not;
+
+/**
+ * Represents a parsed modifier that can be followed by a `not` negation modifier.
+ */
+interface NegatableParsedModifier<
+  Modifier extends NegatableModifierName = NegatableModifierName
+> extends BaseParsedModifier<Modifier> {
+  negation?: ExpectMember<ModifierName.not>;
+}
+
+/**
+ * Represents a parsed modifier that cannot be followed by a `not` negation modifier.
+ */
+export interface NotNegatableParsedModifier<
+  Modifier extends NotNegatableModifierName = NotNegatableModifierName
+> extends BaseParsedModifier<Modifier> {
+  negation?: never;
+}
+
+type ParsedExpectModifier =
+  | NotNegatableParsedModifier<NotNegatableModifierName>
+  | NegatableParsedModifier<NegatableModifierName>;
+
+interface Expectation<ExpectNode extends ExpectCall = ExpectCall> {
+  expect: ExpectNode;
+  modifier?: ParsedExpectModifier;
+  matcher?: ParsedExpectMatcher;
+}
+
+const parseExpectMember = <S extends ExpectPropertyName>(
+  expectMember: ExpectMember<S>,
+): ParsedExpectMember<S> => ({
+  name: getAccessorValue<S>(expectMember.property),
+  node: expectMember,
+});
+
+const reparseAsMatcher = (
+  parsedMember: ParsedExpectMember,
+): ParsedExpectMatcher => ({
+  ...parsedMember,
+  /**
+   * The arguments being passed to this `Matcher`, if any.
+   *
+   * If this matcher isn't called, this will be `null`.
+   */
+  arguments:
+    /* istanbul ignore next */
+    parsedMember.node.parent &&
+    parsedMember.node.parent.type === AST_NODE_TYPES.CallExpression
+      ? parsedMember.node.parent.arguments
+      : null,
+});
+
+/**
+ * Re-parses the given `parsedMember` as a `ParsedExpectModifier`.
+ *
+ * If the given `parsedMember` does not have a `name` of a valid `Modifier`,
+ * an exception will be thrown.
+ *
+ * @param {ParsedExpectMember<ModifierName>} parsedMember
+ *
+ * @return {ParsedExpectModifier}
+ */
+const reparseMemberAsModifier = (
+  parsedMember: ParsedExpectMember<ModifierName>,
+): ParsedExpectModifier => {
+  if (isSpecificMember(parsedMember, ModifierName.not)) {
+    return parsedMember;
+  }
+
+  /* istanbul ignore if */
+  if (
+    !isSpecificMember(parsedMember, ModifierName.resolves) &&
+    !isSpecificMember(parsedMember, ModifierName.rejects)
+  ) {
+    // ts doesn't think that the ModifierName.not check is the direct inverse as the above two checks
+    // todo: impossible at runtime, but can't be typed w/o negation support
+    throw new Error(
+      `modifier name must be either "${ModifierName.resolves}" or "${ModifierName.rejects}" (got "${parsedMember.name}")`,
+    );
+  }
+
+  /* istanbul ignore next */
+  const negation =
+    parsedMember.node.parent &&
+    isExpectMember(parsedMember.node.parent, ModifierName.not)
+      ? parsedMember.node.parent
+      : undefined;
+
+  return {
+    ...parsedMember,
+    negation,
+  };
+};
+
+const isSpecificMember = <Name extends ExpectPropertyName>(
+  member: ParsedExpectMember,
+  specific: Name,
+): member is ParsedExpectMember<Name> => member.name === specific;
+
+/**
+ * Checks if the given `ParsedExpectMember` should be re-parsed as an `ParsedExpectModifier`.
+ *
+ * @param {ParsedExpectMember} member
+ *
+ * @return {member is ParsedExpectMember<ModifierName>}
+ */
+const shouldBeParsedExpectModifier = (
+  member: ParsedExpectMember,
+): member is ParsedExpectMember<ModifierName> =>
+  ModifierName.hasOwnProperty(member.name);
+
+export const parseExpectCall = <ExpectNode extends ExpectCall>(
+  expect: ExpectNode,
+): Expectation<ExpectNode> => {
+  const expectation: Expectation<ExpectNode> = {
+    expect,
+  };
+
+  if (!isExpectMember(expect.parent)) {
+    return expectation;
+  }
+
+  const parsedMember = parseExpectMember(expect.parent);
+  if (!shouldBeParsedExpectModifier(parsedMember)) {
+    expectation.matcher = reparseAsMatcher(parsedMember);
+
+    return expectation;
+  }
+
+  const modifier = (expectation.modifier = reparseMemberAsModifier(
+    parsedMember,
+  ));
+
+  const memberNode = modifier.negation || modifier.node;
+
+  if (!memberNode.parent || !isExpectMember(memberNode.parent)) {
+    return expectation;
+  }
+
+  expectation.matcher = reparseAsMatcher(parseExpectMember(memberNode.parent));
+
+  return expectation;
+};
+
 export enum DescribeAlias {
   'describe' = 'describe',
   'fdescribe' = 'fdescribe',
