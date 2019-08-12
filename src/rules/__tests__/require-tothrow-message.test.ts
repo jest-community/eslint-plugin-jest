@@ -1,7 +1,7 @@
-import { RuleTester } from 'eslint';
+import { TSESLint } from '@typescript-eslint/experimental-utils';
 import rule from '../require-tothrow-message';
 
-const ruleTester = new RuleTester({
+const ruleTester = new TSESLint.RuleTester({
   parserOptions: {
     ecmaVersion: 8,
   },

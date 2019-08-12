@@ -399,7 +399,6 @@ const reparseMemberAsModifier = (
     );
   }
 
-  /* istanbul ignore next */
   const negation =
     parsedMember.node.parent &&
     isExpectMember(parsedMember.node.parent, ModifierName.not)
