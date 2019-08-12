@@ -1,4 +1,4 @@
-import { createRule, isExpectCallWithParent } from './tsUtils';
+import { createRule, isExpectCall, parseExpectCall } from './tsUtils';
 
 export default createRule({
   name: __filename,
@@ -12,26 +12,26 @@ export default createRule({
       useToStrictEqual: 'Use toStrictEqual() instead',
     },
     fixable: 'code',
-    schema: [],
     type: 'suggestion',
+    schema: [],
   },
   defaultOptions: [],
   create(context) {
     return {
       CallExpression(node) {
-        if (!isExpectCallWithParent(node)) {
+        if (!isExpectCall(node)) {
           return;
         }
 
-        const methodNode = node.parent.property;
+        const { matcher } = parseExpectCall(node);
 
-        if (methodNode && methodNode.name === 'toEqual') {
+        if (matcher && matcher.name === 'toEqual') {
           context.report({
-            fix(fixer) {
-              return [fixer.replaceText(methodNode, 'toStrictEqual')];
-            },
+            fix: fixer => [
+              fixer.replaceText(matcher.node.property, 'toStrictEqual'),
+            ],
             messageId: 'useToStrictEqual',
-            node: methodNode,
+            node: matcher.node.property,
           });
         }
       },
