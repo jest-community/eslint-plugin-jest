@@ -489,8 +489,7 @@ export const parseExpectCall = <ExpectNode extends ExpectCall>(
     parsedMember,
   ));
 
-  const memberNode =
-    ('negation' in modifier && modifier.negation) || modifier.node;
+  const memberNode = modifier.negation || modifier.node;
 
   if (!memberNode.parent || !isExpectMember(memberNode.parent)) {
     return expectation;
