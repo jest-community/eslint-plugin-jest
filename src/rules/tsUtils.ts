@@ -308,18 +308,6 @@ export const isExpectCall = (node: TSESTree.Node): node is ExpectCall =>
   isSupportedAccessor(node.callee, 'expect') &&
   node.parent !== undefined;
 
-interface JestExpectCallWithParent extends JestExpectCallExpression {
-  parent: JestExpectCallMemberExpression;
-}
-
-export const isExpectCallWithParent = (
-  node: TSESTree.Node,
-): node is JestExpectCallWithParent =>
-  isExpectCall(node) &&
-  node.parent !== undefined &&
-  node.parent.type === AST_NODE_TYPES.MemberExpression &&
-  node.parent.property.type === AST_NODE_TYPES.Identifier;
-
 interface ParsedExpectMember<
   Name extends ExpectPropertyName = ExpectPropertyName,
   Node extends ExpectMember<Name> = ExpectMember<Name>
