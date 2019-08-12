@@ -22,20 +22,10 @@ export const expectResolvesCase = node =>
   node.parent.parent.type === 'MemberExpression' &&
   methodName(node) === 'resolves';
 
-export const expectNotResolvesCase = node =>
-  expectNotCase(node) &&
-  node.parent.parent.type === 'MemberExpression' &&
-  methodName(node.parent) === 'resolves';
-
 export const expectRejectsCase = node =>
   expectCase(node) &&
   node.parent.parent.type === 'MemberExpression' &&
   methodName(node) === 'rejects';
-
-export const expectNotRejectsCase = node =>
-  expectNotCase(node) &&
-  node.parent.parent.type === 'MemberExpression' &&
-  methodName(node.parent) === 'rejects';
 
 export const expectToBeCase = (node, arg) =>
   !(
