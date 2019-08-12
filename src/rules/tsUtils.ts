@@ -336,14 +336,6 @@ export interface ParsedExpectMatcher<
   Node extends ExpectMember<Matcher> = ExpectMember<Matcher>
 > extends ParsedExpectMember<Matcher, Node> {
   arguments: TSESTree.CallExpression['arguments'] | null;
-  // isNamed<PossibleName extends Matcher>(
-  //   name: PossibleName,
-  //   ...or: PossibleName[]
-  // ): this is ParsedExpectMatcher<PossibleName>;
-  // isNamed<PossibleName extends Matcher>(
-  //   // name: PossibleName,
-  //   ...names: [PossibleName, ...PossibleName[]]
-  // ): this is ParsedExpectMatcher<PossibleName, Node>;
 }
 
 type BaseParsedModifier<
@@ -403,9 +395,6 @@ const reparseAsMatcher = (
     parsedMember.node.parent.type === AST_NODE_TYPES.CallExpression
       ? parsedMember.node.parent.arguments
       : null,
-  // isNamed(...names: string[]) {
-  //   return names.includes(this.name);
-  // },
 });
 
 /**
