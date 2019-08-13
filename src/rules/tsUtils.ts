@@ -271,21 +271,6 @@ export enum ModifierName {
   resolves = 'resolves',
 }
 
-interface JestExpectIdentifier extends TSESTree.Identifier {
-  name: 'expect';
-}
-
-// represents "expect()" specifically
-interface JestExpectCallExpression extends TSESTree.CallExpression {
-  callee: JestExpectIdentifier;
-}
-
-// represents expect usage like "expect().toBe" & "expect().not.toBe"
-interface JestExpectCallMemberExpression extends TSESTree.MemberExpression {
-  object: JestExpectCallMemberExpression | JestExpectCallExpression;
-  property: TSESTree.Identifier;
-}
-
 interface ExpectCall extends TSESTree.CallExpression {
   callee: AccessorNode<'expect'>;
   parent: TSESTree.Node;
