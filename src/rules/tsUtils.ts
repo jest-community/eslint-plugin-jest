@@ -240,6 +240,31 @@ interface ExpectCall extends TSESTree.CallExpression {
 }
 
 /**
+ * Checks if the given `node` is a valid `ExpectCall`.
+ *
+ * In order to be an `ExpectCall`, the `node` must:
+ *  * be a `CallExpression`,
+ *  * have an accessor named 'expect',
+ *  * have a `parent`.
+ *
+ * @param {Node} node
+ *
+ * @return {node is ExpectCall}
+ */
+export const isExpectCall = (node: TSESTree.Node): node is ExpectCall =>
+  node.type === AST_NODE_TYPES.CallExpression &&
+  isSupportedAccessor(node.callee, 'expect') &&
+  node.parent !== undefined;
+
+interface ParsedExpectMember<
+  Name extends ExpectPropertyName = ExpectPropertyName,
+  Node extends ExpectMember<Name> = ExpectMember<Name>
+> {
+  name: Name;
+  node: Node;
+}
+
+/**
  * Represents a `MemberExpression` that comes after an `ExpectCall`.
  */
 interface ExpectMember<
@@ -265,6 +290,25 @@ export const isExpectMember = <
 type MatcherName = string /* & not ModifierName */;
 type ExpectPropertyName = ModifierName | MatcherName;
 
+export type ParsedEqualityMatcherCall<
+  Argument extends TSESTree.Expression = TSESTree.Expression
+> = Omit<ParsedExpectMatcher<EqualityMatcher>, 'arguments'> & {
+  // todo: probs should also type node parent as CallExpression
+  arguments: [Argument];
+};
+
+enum EqualityMatcher {
+  toBe = 'toBe',
+  toEqual = 'toEqual',
+}
+
+export const isParsedEqualityMatcherCall = (
+  matcher: ParsedExpectMatcher,
+): matcher is ParsedEqualityMatcherCall =>
+  EqualityMatcher.hasOwnProperty(matcher.name) &&
+  matcher.arguments !== null &&
+  matcher.arguments.length === 1;
+
 export enum ModifierName {
   not = 'not',
   rejects = 'rejects',
@@ -274,31 +318,6 @@ export enum ModifierName {
 interface ExpectCall extends TSESTree.CallExpression {
   callee: AccessorNode<'expect'>;
   parent: TSESTree.Node;
-}
-
-/**
- * Checks if the given `node` is a valid `ExpectCall`.
- *
- * In order to be an `ExpectCall`, the `node` must:
- *  * be a `CallExpression`,
- *  * have an accessor named 'expect',
- *  * have a `parent`.
- *
- * @param {Node} node
- *
- * @return {node is ExpectCall}
- */
-export const isExpectCall = (node: TSESTree.Node): node is ExpectCall =>
-  node.type === AST_NODE_TYPES.CallExpression &&
-  isSupportedAccessor(node.callee, 'expect') &&
-  node.parent !== undefined;
-
-interface ParsedExpectMember<
-  Name extends ExpectPropertyName = ExpectPropertyName,
-  Node extends ExpectMember<Name> = ExpectMember<Name>
-> {
-  name: Name;
-  node: Node;
 }
 
 /**
@@ -363,7 +382,6 @@ const reparseAsMatcher = (
    * If this matcher isn't called, this will be `null`.
    */
   arguments:
-    /* istanbul ignore next */
     parsedMember.node.parent &&
     parsedMember.node.parent.type === AST_NODE_TYPES.CallExpression
       ? parsedMember.node.parent.arguments
@@ -399,7 +417,6 @@ const reparseMemberAsModifier = (
     );
   }
 
-  /* istanbul ignore next */
   const negation =
     parsedMember.node.parent &&
     isExpectMember(parsedMember.node.parent, ModifierName.not)
