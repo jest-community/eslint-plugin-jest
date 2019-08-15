@@ -58,7 +58,7 @@ export default createRule({
                 token => token.value === '.',
               );
 
-            /* istanbul ignore next */
+            /* istanbul ignore if */
             if (propertyDot === null) {
               throw new Error(
                 `Unexpected null when attempting to fix ${context.getFilename()} - please file a github issue at https://github.com/jest-community/eslint-plugin-jest`,

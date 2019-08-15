@@ -37,7 +37,7 @@ export default createRule({
           fix(fixer) {
             const { body } = callback;
 
-            /* istanbul ignore if */
+            /* istanbul ignore if https://github.com/typescript-eslint/typescript-eslint/issues/734 */
             if (!body) {
               throw new Error(
                 `Unexpected null when attempting to fix ${context.getFilename()} - please file a github issue at https://github.com/jest-community/eslint-plugin-jest`,
