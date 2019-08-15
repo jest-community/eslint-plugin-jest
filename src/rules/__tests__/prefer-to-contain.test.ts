@@ -1,7 +1,7 @@
-import { RuleTester } from 'eslint';
+import { TSESLint } from '@typescript-eslint/experimental-utils';
 import rule from '../prefer-to-contain';
 
-const ruleTester = new RuleTester();
+const ruleTester = new TSESLint.RuleTester();
 
 ruleTester.run('prefer-to-contain', rule, {
   valid: [
@@ -31,6 +31,12 @@ ruleTester.run('prefer-to-contain', rule, {
       errors: [{ messageId: 'useToContain', column: 23, line: 1 }],
       output: 'expect(a).toContain(b);',
     },
+    // todo: support this, as it's counted by isSupportedAccessor
+    // {
+    //   code: "expect(a['includes'](b)).toEqual(true);",
+    //   errors: [{ messageId: 'useToContain', column: 23, line: 1 }],
+    //   output: 'expect(a).toContain(b);',
+    // },
     {
       code: 'expect(a.includes(b)).toEqual(false);',
       errors: [{ messageId: 'useToContain', column: 23, line: 1 }],
