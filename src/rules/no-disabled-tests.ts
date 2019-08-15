@@ -1,4 +1,4 @@
-import { createRule, getNodeName, scopeHasLocalReference } from './tsUtils';
+import { createRule, getNodeName, scopeHasLocalReference } from './utils';
 
 export default createRule({
   name: __filename,

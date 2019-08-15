@@ -1,4 +1,4 @@
-import { createRule, isFunction, isTestCase } from './tsUtils';
+import { createRule, isFunction, isTestCase } from './utils';
 
 export default createRule({
   name: __filename,

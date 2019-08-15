@@ -9,7 +9,7 @@ import {
   isExpectCall,
   isParsedEqualityMatcherCall,
   parseExpectCall,
-} from './tsUtils';
+} from './utils';
 
 interface NullLiteral extends TSESTree.Literal {
   value: null;

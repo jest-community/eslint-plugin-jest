@@ -9,7 +9,7 @@ import {
   getAccessorValue,
   isExpectMember,
   isSupportedAccessor,
-} from './tsUtils';
+} from './utils';
 
 interface RuleOptions {
   maxSize?: number;

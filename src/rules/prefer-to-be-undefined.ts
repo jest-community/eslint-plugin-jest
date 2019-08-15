@@ -9,7 +9,7 @@ import {
   isExpectCall,
   isParsedEqualityMatcherCall,
   parseExpectCall,
-} from './tsUtils';
+} from './utils';
 
 interface UndefinedIdentifier extends TSESTree.Identifier {
   name: 'undefined';

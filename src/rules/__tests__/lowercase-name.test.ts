@@ -1,6 +1,6 @@
 import { TSESLint } from '@typescript-eslint/experimental-utils';
 import rule from '../lowercase-name';
-import { DescribeAlias, TestCaseName } from '../tsUtils';
+import { DescribeAlias, TestCaseName } from '../utils';
 
 const ruleTester = new TSESLint.RuleTester({
   parserOptions: {

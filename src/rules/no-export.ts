@@ -2,7 +2,7 @@ import {
   AST_NODE_TYPES,
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
-import { createRule, isTestCase } from './tsUtils';
+import { createRule, isTestCase } from './utils';
 
 export default createRule({
   name: __filename,

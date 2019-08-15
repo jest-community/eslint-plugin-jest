@@ -2,7 +2,7 @@ import {
   AST_NODE_TYPES,
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
-import { createRule, getNodeName } from './tsUtils';
+import { createRule, getNodeName } from './utils';
 
 const findNodeObject = (
   node: TSESTree.CallExpression | TSESTree.MemberExpression,

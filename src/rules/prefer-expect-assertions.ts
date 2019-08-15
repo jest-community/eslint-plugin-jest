@@ -2,7 +2,7 @@ import {
   AST_NODE_TYPES,
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
-import { createRule, getAccessorValue, isSupportedAccessor } from './tsUtils';
+import { createRule, getAccessorValue, isSupportedAccessor } from './utils';
 
 const isExpectAssertionsOrHasAssertionsCall = (expression: TSESTree.Node) => {
   if (

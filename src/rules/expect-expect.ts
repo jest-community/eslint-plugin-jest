@@ -7,7 +7,7 @@ import {
   AST_NODE_TYPES,
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
-import { createRule, getNodeName } from './tsUtils';
+import { createRule, getNodeName } from './utils';
 
 export default createRule({
   name: __filename,

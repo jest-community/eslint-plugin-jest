@@ -2,7 +2,7 @@ import {
   AST_NODE_TYPES,
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
-import { createRule, isExpectCall } from './tsUtils';
+import { createRule, isExpectCall } from './utils';
 
 function isIdentifierResolves(node: TSESTree.MemberExpression) {
   return (

@@ -1,4 +1,4 @@
-import { TestCaseName, createRule, getNodeName, isTestCase } from './tsUtils';
+import { TestCaseName, createRule, getNodeName, isTestCase } from './utils';
 import {
   AST_NODE_TYPES,
   TSESTree,

@@ -11,7 +11,7 @@ import {
   createRule,
   isDescribe,
   isTestCase,
-} from './tsUtils';
+} from './utils';
 
 type ArgumentLiteral = TSESTree.Literal | TSESTree.TemplateLiteral;
 

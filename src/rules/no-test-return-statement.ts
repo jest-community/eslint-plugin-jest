@@ -1,4 +1,4 @@
-import { createRule, isFunction, isTestCase } from './tsUtils';
+import { createRule, isFunction, isTestCase } from './utils';
 import { TSESTree } from '@typescript-eslint/experimental-utils';
 
 const RETURN_STATEMENT = 'ReturnStatement';
