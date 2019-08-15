@@ -1,7 +1,7 @@
-import { RuleTester } from 'eslint';
+import { TSESLint } from '@typescript-eslint/experimental-utils';
 import rule from '../prefer-to-be-undefined';
 
-const ruleTester = new RuleTester();
+const ruleTester = new TSESLint.RuleTester();
 
 ruleTester.run('prefer-to-be-undefined', rule, {
   valid: [
@@ -9,6 +9,7 @@ ruleTester.run('prefer-to-be-undefined', rule, {
     'expect(true).not.toBeUndefined();',
     'expect({}).toEqual({});',
     'expect(null).toEqual(null);',
+    'expect(something).toBe()',
     'expect(something).toBe(somethingElse)',
     'expect(something).toEqual(somethingElse)',
     'expect(something).not.toBe(somethingElse)',
