@@ -16,7 +16,7 @@ import {
 } from './tsUtils';
 
 function isFunctionBodyEmpty(node: FunctionExpression) {
-  /* istanbul ignore next https://github.com/typescript-eslint/typescript-eslint/issues/734 */
+  /* istanbul ignore if https://github.com/typescript-eslint/typescript-eslint/issues/734 */
   if (!node.body) {
     throw new Error(
       `Unexpected null while performing prefer-todo - please file a github issue at https://github.com/jest-community/eslint-plugin-jest`,

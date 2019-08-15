@@ -225,7 +225,6 @@ export const isSupportedAccessor = <V extends string>(
 export const getAccessorValue = <S extends string = string>(
   accessor: AccessorNode<S>,
 ): S =>
-  /* istanbul ignore next */
   accessor.type === AST_NODE_TYPES.Identifier
     ? accessor.name
     : getStringValue(accessor);
