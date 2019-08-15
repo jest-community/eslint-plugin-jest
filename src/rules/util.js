@@ -36,19 +36,13 @@ export const expectToBeCase = (node, arg) =>
   expectCase(node) &&
   methodName(node) === 'toBe' &&
   argument(node) &&
-  ((argument(node).type === 'Literal' &&
-    argument(node).value === null &&
-    arg === null) ||
-    (argument(node).name === 'undefined' && arg === undefined));
+  (argument(node).name === 'undefined' && arg === undefined);
 
 export const expectNotToBeCase = (node, arg) =>
   expectNotCase(node) &&
   methodName2(node) === 'toBe' &&
   argument2(node) &&
-  ((argument2(node).type === 'Literal' &&
-    argument2(node).value === null &&
-    arg === null) ||
-    (argument2(node).name === 'undefined' && arg === undefined));
+  (argument2(node).name === 'undefined' && arg === undefined);
 
 export const expectToEqualCase = (node, arg) =>
   !(
@@ -59,19 +53,13 @@ export const expectToEqualCase = (node, arg) =>
   expectCase(node) &&
   methodName(node) === 'toEqual' &&
   argument(node) &&
-  ((argument(node).type === 'Literal' &&
-    argument(node).value === null &&
-    arg === null) ||
-    (argument(node).name === 'undefined' && arg === undefined));
+  (argument(node).name === 'undefined' && arg === undefined);
 
 export const expectNotToEqualCase = (node, arg) =>
   expectNotCase(node) &&
   methodName2(node) === 'toEqual' &&
   argument2(node) &&
-  ((argument2(node).type === 'Literal' &&
-    argument2(node).value === null &&
-    arg === null) ||
-    (argument2(node).name === 'undefined' && arg === undefined));
+  (argument2(node).name === 'undefined' && arg === undefined);
 
 export const method = node => node.parent.property;
 
