@@ -296,6 +296,12 @@ export type ParsedEqualityMatcherCall<
   arguments: [Argument];
 };
 
+export enum ModifierName {
+  not = 'not',
+  rejects = 'rejects',
+  resolves = 'resolves',
+}
+
 enum EqualityMatcher {
   toBe = 'toBe',
   toEqual = 'toEqual',
@@ -307,17 +313,6 @@ export const isParsedEqualityMatcherCall = (
   EqualityMatcher.hasOwnProperty(matcher.name) &&
   matcher.arguments !== null &&
   matcher.arguments.length === 1;
-
-export enum ModifierName {
-  not = 'not',
-  rejects = 'rejects',
-  resolves = 'resolves',
-}
-
-interface ExpectCall extends TSESTree.CallExpression {
-  callee: AccessorNode<'expect'>;
-  parent: TSESTree.Node;
-}
 
 /**
  * Represents a parsed expect matcher, such as `toBe`, `toContain`, and so on.
