@@ -1,4 +1,4 @@
-import { createRule, getNodeName, isDescribe, isTestCase } from './tsUtils';
+import { createRule, getNodeName, isDescribe, isTestCase } from './utils';
 
 export default createRule({
   name: __filename,

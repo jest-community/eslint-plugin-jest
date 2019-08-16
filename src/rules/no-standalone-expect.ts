@@ -9,7 +9,7 @@ import {
   isExpectCall,
   isFunction,
   isTestCase,
-} from './tsUtils';
+} from './utils';
 
 const getBlockType = (
   stmt: TSESTree.BlockStatement,

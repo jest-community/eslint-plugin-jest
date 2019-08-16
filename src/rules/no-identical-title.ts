@@ -5,7 +5,7 @@ import {
   isStringNode,
   isTemplateLiteral,
   isTestCase,
-} from './tsUtils';
+} from './utils';
 
 interface DescribeContext {
   describeTitles: string[];

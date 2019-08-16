@@ -1,5 +1,5 @@
 import { TSESTree } from '@typescript-eslint/experimental-utils';
-import { createRule } from './tsUtils';
+import { createRule } from './utils';
 
 function hasTests(node: TSESTree.Comment) {
   return /^\s*(x|f)?(test|it|describe)(\.\w+|\[['"]\w+['"]\])?\s*\(/m.test(

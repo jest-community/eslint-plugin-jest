@@ -1,5 +1,5 @@
 import { AST_NODE_TYPES } from '@typescript-eslint/experimental-utils';
-import { createRule, getNodeName, isDescribe, isTestCase } from './tsUtils';
+import { createRule, getNodeName, isDescribe, isTestCase } from './utils';
 
 export default createRule({
   name: __filename,

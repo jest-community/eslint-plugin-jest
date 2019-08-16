@@ -1,4 +1,4 @@
-import { createRule, isDescribe, isHook } from './tsUtils';
+import { createRule, isDescribe, isHook } from './utils';
 
 const newHookContext = () => ({
   beforeAll: 0,

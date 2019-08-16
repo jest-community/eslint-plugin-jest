@@ -1,4 +1,4 @@
-import { createRule, isExpectCall, parseExpectCall } from './tsUtils';
+import { createRule, isExpectCall, parseExpectCall } from './utils';
 
 export default createRule({
   name: __filename,

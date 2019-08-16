@@ -1,5 +1,5 @@
 import { TSESTree } from '@typescript-eslint/experimental-utils';
-import { createRule, isExpectCall, isTestCase } from './tsUtils';
+import { createRule, isExpectCall, isTestCase } from './utils';
 
 export default createRule({
   name: __filename,

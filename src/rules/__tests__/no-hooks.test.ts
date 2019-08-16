@@ -1,6 +1,6 @@
 import { TSESLint } from '@typescript-eslint/experimental-utils';
 import rule from '../no-hooks';
-import { HookName } from '../tsUtils';
+import { HookName } from '../utils';
 
 const ruleTester = new TSESLint.RuleTester({
   parserOptions: {

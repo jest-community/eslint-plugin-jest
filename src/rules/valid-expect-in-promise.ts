@@ -13,7 +13,7 @@ import {
   isExpectMember,
   isFunction,
   isSupportedAccessor,
-} from './tsUtils';
+} from './utils';
 
 type MessageIds = 'returnPromise';
 type RuleContext = TSESLint.RuleContext<MessageIds, unknown[]>;

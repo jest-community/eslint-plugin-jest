@@ -15,7 +15,7 @@ import {
   isExpectMember,
   isSupportedAccessor,
   parseExpectCall,
-} from './tsUtils';
+} from './utils';
 
 /**
  * Async assertions might be called in Promise

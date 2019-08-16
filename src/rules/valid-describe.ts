@@ -8,7 +8,7 @@ import {
   isFunction,
   isStringNode,
   isSupportedAccessor,
-} from './tsUtils';
+} from './utils';
 
 const paramsLocation = (
   params: TSESTree.Expression[] | TSESTree.Parameter[],

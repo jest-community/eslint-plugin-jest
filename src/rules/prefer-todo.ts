@@ -13,7 +13,7 @@ import {
   isFunction,
   isStringNode,
   isTestCase,
-} from './tsUtils';
+} from './utils';
 
 function isFunctionBodyEmpty(node: FunctionExpression) {
   /* istanbul ignore if https://github.com/typescript-eslint/typescript-eslint/issues/734 */

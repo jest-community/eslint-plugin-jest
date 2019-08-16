@@ -2,7 +2,7 @@ import {
   AST_NODE_TYPES,
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
-import { DescribeAlias, TestCaseName, createRule } from './tsUtils';
+import { DescribeAlias, TestCaseName, createRule } from './utils';
 
 const testFunctions = new Set(['describe', 'it', 'test']);
 

@@ -16,7 +16,7 @@ import {
   isParsedEqualityMatcherCall,
   isSupportedAccessor,
   parseExpectCall,
-} from './tsUtils';
+} from './utils';
 
 interface BooleanLiteral extends TSESTree.Literal {
   value: boolean;

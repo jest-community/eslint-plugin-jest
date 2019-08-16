@@ -13,7 +13,7 @@ const importDefault = (moduleName: string) =>
   interopRequireDefault(require(moduleName)).default;
 
 const rulesDir = join(__dirname, 'rules');
-const excludedFiles = ['__tests__', 'util', 'tsUtils'];
+const excludedFiles = ['__tests__', 'utils'];
 
 const rules = readdirSync(rulesDir)
   .map(rule => parse(rule).name)

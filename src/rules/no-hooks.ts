@@ -1,4 +1,4 @@
-import { HookName, createRule, isHook } from './tsUtils';
+import { HookName, createRule, isHook } from './utils';
 
 export default createRule({
   name: __filename,

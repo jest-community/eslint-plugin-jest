@@ -1,5 +1,5 @@
 import { AST_NODE_TYPES } from '@typescript-eslint/experimental-utils';
-import { createRule, getNodeName, scopeHasLocalReference } from './tsUtils';
+import { createRule, getNodeName, scopeHasLocalReference } from './utils';
 
 export default createRule({
   name: __filename,
