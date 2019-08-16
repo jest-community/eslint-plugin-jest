@@ -1,5 +1,6 @@
 'use strict';
 
+// todo: https://github.com/babel/babel/issues/8529 :'(
 module.exports = {
   plugins: ['replace-ts-export-assignment'],
   presets: [
