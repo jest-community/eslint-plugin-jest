@@ -6,6 +6,7 @@ import {
 import {
   CallExpressionWithSingleArgument,
   KnownCallExpression,
+  MaybeTypeCast,
   ModifierName,
   NotNegatableParsedModifier,
   ParsedEqualityMatcherCall,
@@ -27,7 +28,7 @@ const isBooleanLiteral = (node: TSESTree.Node): node is BooleanLiteral =>
   node.type === AST_NODE_TYPES.Literal && typeof node.value === 'boolean';
 
 type ParsedBooleanEqualityMatcherCall = ParsedEqualityMatcherCall<
-  BooleanLiteral
+  MaybeTypeCast<BooleanLiteral>
 >;
 
 /**
@@ -104,7 +105,7 @@ const getNegationFixes = (
   const negationPropertyDot = findPropertyDotToken(modifier.node, sourceCode);
 
   const toContainFunc = buildToContainFuncExpectation(
-    matcher.arguments[0].value,
+    followTypeAssertionChain(matcher.arguments[0]).value,
   );
 
   /* istanbul ignore if */
@@ -218,7 +219,7 @@ export default createRule({
             }
 
             const toContainFunc = buildToContainFuncExpectation(
-              !matcher.arguments[0].value,
+              !followTypeAssertionChain(matcher.arguments[0]).value,
             );
 
             const [containArg] = includesCall.arguments;

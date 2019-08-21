@@ -33,14 +33,21 @@ interface TypeAssertionChain<
   Expression extends TSESTree.Expression = TSESTree.Expression
 > extends TSESTree.TSTypeAssertion {
   // expression: TypeAssertionChain<Expression> | Expression;
-  expression: any; // https://github.com/typescript-eslint/typescript-eslint/issues/802
+  expression: any; // todo: replace w/ above once typescript-eslint is updated to v2.0.0
 }
 
-export const followTypeAssertionChain = (
-  expression: TSESTree.Expression | TSTypeCastExpression,
-): TSESTree.Expression =>
-  expression.type === AST_NODE_TYPES.TSAsExpression ||
-  expression.type === AST_NODE_TYPES.TSTypeAssertion
+const isTypeCastExpression = <Expression extends TSESTree.Expression>(
+  node: MaybeTypeCast<Expression>,
+): node is TSTypeCastExpression<Expression> =>
+  node.type === AST_NODE_TYPES.TSAsExpression ||
+  node.type === AST_NODE_TYPES.TSTypeAssertion;
+
+export const followTypeAssertionChain = <
+  Expression extends TSESTree.Expression
+>(
+  expression: MaybeTypeCast<Expression>,
+): Expression =>
+  isTypeCastExpression(expression)
     ? followTypeAssertionChain(expression.expression)
     : expression;
 
