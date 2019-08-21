@@ -11,6 +11,7 @@ import {
   ParsedEqualityMatcherCall,
   ParsedExpectMatcher,
   createRule,
+  followTypeAssertionChain,
   hasOnlyOneArgument,
   isExpectCall,
   isParsedEqualityMatcherCall,
@@ -45,7 +46,7 @@ const isBooleanEqualityMatcher = (
   matcher: ParsedExpectMatcher,
 ): matcher is ParsedBooleanEqualityMatcherCall =>
   isParsedEqualityMatcherCall(matcher) &&
-  isBooleanLiteral(matcher.arguments[0]);
+  isBooleanLiteral(followTypeAssertionChain(matcher.arguments[0]));
 
 type FixableIncludesCallExpression = KnownCallExpression<'includes'> &
   CallExpressionWithSingleArgument;

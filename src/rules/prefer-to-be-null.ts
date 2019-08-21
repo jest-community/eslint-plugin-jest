@@ -3,9 +3,11 @@ import {
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
 import {
+  MaybeTypeCast,
   ParsedEqualityMatcherCall,
   ParsedExpectMatcher,
   createRule,
+  followTypeAssertionChain,
   isExpectCall,
   isParsedEqualityMatcherCall,
   parseExpectCall,
@@ -24,12 +26,13 @@ const isNullLiteral = (node: TSESTree.Node): node is NullLiteral =>
  *
  * @param {ParsedExpectMatcher} matcher
  *
- * @return {matcher is ParsedEqualityMatcherCall<NullLiteral>}
+ * @return {matcher is ParsedEqualityMatcherCall<MaybeTypeCast<NullLiteral>>}
  */
 const isNullEqualityMatcher = (
   matcher: ParsedExpectMatcher,
-): matcher is ParsedEqualityMatcherCall<NullLiteral> =>
-  isParsedEqualityMatcherCall(matcher) && isNullLiteral(matcher.arguments[0]);
+): matcher is ParsedEqualityMatcherCall<MaybeTypeCast<NullLiteral>> =>
+  isParsedEqualityMatcherCall(matcher) &&
+  isNullLiteral(followTypeAssertionChain(matcher.arguments[0]));
 
 export default createRule({
   name: __filename,

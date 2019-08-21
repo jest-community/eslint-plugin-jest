@@ -41,3 +41,23 @@ ruleTester.run('prefer-to-be-undefined', rule, {
     },
   ],
 });
+
+new TSESLint.RuleTester({
+  parser: '@typescript-eslint/parser',
+}).run('prefer-to-be-undefined: typescript edition', rule, {
+  valid: [
+    "(expect('Model must be bound to an array if the multiple property is true') as any).toHaveBeenTipped()",
+  ],
+  invalid: [
+    {
+      code: 'expect(undefined).toBe(undefined as unknown as string as any);',
+      errors: [{ messageId: 'useToBeUndefined', column: 19, line: 1 }],
+      output: 'expect(undefined).toBeUndefined();',
+    },
+    {
+      code: 'expect("a string").not.toEqual(undefined as number);',
+      errors: [{ messageId: 'useToBeUndefined', column: 24, line: 1 }],
+      output: 'expect("a string").not.toBeUndefined();',
+    },
+  ],
+});
