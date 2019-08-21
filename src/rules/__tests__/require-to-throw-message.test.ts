@@ -1,5 +1,6 @@
 import { TSESLint } from '@typescript-eslint/experimental-utils';
-import rule from '../require-tothrow-message';
+import rule from '../require-to-throw-message';
+import deprecatedRule from '../require-tothrow-message'; // remove in major version bump
 
 const ruleTester = new TSESLint.RuleTester({
   parserOptions: {
@@ -7,7 +8,7 @@ const ruleTester = new TSESLint.RuleTester({
   },
 });
 
-ruleTester.run('require-tothrow-message', rule, {
+ruleTester.run('require-to-throw-message', rule, {
   valid: [
     // String
     "expect(() => { throw new Error('a'); }).toThrow('a');",
@@ -105,6 +106,25 @@ ruleTester.run('require-tothrow-message', rule, {
           data: { propertyName: 'toThrowError' },
           column: 49,
           line: 4,
+        },
+      ],
+    },
+  ],
+});
+
+// remove in major version bump
+ruleTester.run('require-tothrow-message', deprecatedRule, {
+  valid: ["expect(() => { throw new Error('a'); }).toThrow('a');"],
+
+  invalid: [
+    {
+      code: "expect(() => { throw new Error('a'); }).toThrow();",
+      errors: [
+        {
+          messageId: 'requireRethrow',
+          data: { propertyName: 'toThrow' },
+          column: 41,
+          line: 1,
         },
       ],
     },
