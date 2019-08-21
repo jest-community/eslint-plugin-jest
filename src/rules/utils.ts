@@ -15,6 +15,35 @@ export const createRule = ESLintUtils.RuleCreator(name => {
   return `${REPO_URL}/blob/v${version}/docs/rules/${ruleName}.md`;
 });
 
+export type MaybeTypeCast<Expression extends TSESTree.Expression> =
+  | TSTypeCastExpression<Expression>
+  | Expression;
+
+export type TSTypeCastExpression<
+  Expression extends TSESTree.Expression = TSESTree.Expression
+> = AsExpressionChain<Expression> | TypeAssertionChain<Expression>;
+
+interface AsExpressionChain<
+  Expression extends TSESTree.Expression = TSESTree.Expression
+> extends TSESTree.TSAsExpression {
+  expression: AsExpressionChain<Expression> | Expression;
+}
+
+interface TypeAssertionChain<
+  Expression extends TSESTree.Expression = TSESTree.Expression
+> extends TSESTree.TSTypeAssertion {
+  // expression: TypeAssertionChain<Expression> | Expression;
+  expression: any; // https://github.com/typescript-eslint/typescript-eslint/issues/802
+}
+
+export const followTypeAssertionChain = (
+  expression: TSESTree.Expression | TSTypeCastExpression,
+): TSESTree.Expression =>
+  expression.type === AST_NODE_TYPES.TSAsExpression ||
+  expression.type === AST_NODE_TYPES.TSTypeAssertion
+    ? followTypeAssertionChain(expression.expression)
+    : expression;
+
 /**
  * A `Literal` with a `value` of type `string`.
  */

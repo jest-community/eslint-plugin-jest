@@ -6,6 +6,7 @@ import {
   ParsedEqualityMatcherCall,
   ParsedExpectMatcher,
   createRule,
+  followTypeAssertionChain,
   isExpectCall,
   isParsedEqualityMatcherCall,
   parseExpectCall,
@@ -26,13 +27,13 @@ const isUndefinedIdentifier = (
  *
  * @param {ParsedExpectMatcher} matcher
  *
- * @return {matcher is ParsedEqualityMatcherCall<UndefinedIdentifier>}
+ * @return {matcher is ParsedEqualityMatcherCall<MaybeTypeCast<UndefinedIdentifier>>}
  */
 const isUndefinedEqualityMatcher = (
   matcher: ParsedExpectMatcher,
 ): matcher is ParsedEqualityMatcherCall<UndefinedIdentifier> =>
   isParsedEqualityMatcherCall(matcher) &&
-  isUndefinedIdentifier(matcher.arguments[0]);
+  isUndefinedIdentifier(followTypeAssertionChain(matcher.arguments[0]));
 
 export default createRule({
   name: __filename,

@@ -43,3 +43,23 @@ ruleTester.run('prefer-to-be-null', rule, {
     },
   ],
 });
+
+new TSESLint.RuleTester({
+  parser: '@typescript-eslint/parser',
+}).run('prefer-to-be-null: typescript edition', rule, {
+  valid: [
+    "(expect('Model must be bound to an array if the multiple property is true') as any).toHaveBeenTipped()",
+  ],
+  invalid: [
+    {
+      code: 'expect(null).toBe(null as unknown as string as unknown as any);',
+      errors: [{ messageId: 'useToBeNull', column: 14, line: 1 }],
+      output: 'expect(null).toBeNull();',
+    },
+    {
+      code: 'expect("a string").not.toEqual(null as number);',
+      errors: [{ messageId: 'useToBeNull', column: 24, line: 1 }],
+      output: 'expect("a string").not.toBeNull();',
+    },
+  ],
+});
