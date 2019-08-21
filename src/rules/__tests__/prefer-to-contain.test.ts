@@ -114,3 +114,19 @@ ruleTester.run('prefer-to-contain', rule, {
     },
   ],
 });
+
+new TSESLint.RuleTester({
+  parser: '@typescript-eslint/parser',
+}).run('prefer-to-be-null: typescript edition', rule, {
+  valid: [
+    "(expect('Model must be bound to an array if the multiple property is true') as any).toHaveBeenTipped()",
+    'expect(a.includes(b)).toEqual(0 as boolean);',
+  ],
+  invalid: [
+    {
+      code: 'expect(a.includes(b)).toEqual(false as boolean);',
+      errors: [{ messageId: 'useToContain', column: 23, line: 1 }],
+      output: 'expect(a).not.toContain(b);',
+    },
+  ],
+});
