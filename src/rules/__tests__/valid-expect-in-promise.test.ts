@@ -202,6 +202,15 @@ ruleTester.run('valid-expect-in-promise', rule, {
         promise.then(() => expect(someThing).toEqual(true));
       });
     `,
+    `
+      it('await combined with then works', async () => {
+        const text = await fetch('url')
+          .then(res => res.text())
+          .then(text => text);
+
+        expect(text).toBe('text');
+      });
+    `,
   ],
   invalid: [
     {
