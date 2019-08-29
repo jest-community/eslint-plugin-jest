@@ -29,8 +29,13 @@ ruleTester.run('no-standalone-hook', rule, {
       test("my other test", () => {})
     });
     `,
+    'foo()',
   ],
   invalid: [
+    {
+      code: 'beforeEach("my test", () => {})',
+      errors: [{ messageId: 'unexpectedHook' }],
+    },
     {
       code: `
       test("my test", () => {})
