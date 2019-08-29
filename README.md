@@ -104,46 +104,47 @@ installations requiring long-term consistency.
 
 ## Rules
 
-| Rule                         | Description                                                       | Recommended      | Fixable             |
-| ---------------------------- | ----------------------------------------------------------------- | ---------------- | ------------------- |
-| [consistent-test-it][]       | Enforce consistent test or it keyword                             |                  | ![fixable-green][]  |
-| [expect-expect][]            | Enforce assertion to be made in a test body                       |                  |                     |
-| [lowercase-name][]           | Disallow capitalized test names                                   |                  | ![fixable-green][]  |
-| [no-alias-methods][]         | Disallow alias methods                                            | ![recommended][] | ![fixable-green][]  |
-| [no-commented-out-tests][]   | Disallow commented out tests                                      |                  |                     |
-| [no-disabled-tests][]        | Disallow disabled tests                                           | ![recommended][] |                     |
-| [no-duplicate-hooks][]       | Disallow duplicate hooks within a `describe` block                |                  |                     |
-| [no-empty-title][]           | Disallow empty titles                                             |                  |                     |
-| [no-expect-resolves][]       | Disallow using `expect().resolves`                                |                  |                     |
-| [no-export][]                | Disallow export from test files                                   |                  |                     |
-| [no-focused-tests][]         | Disallow focused tests                                            | ![recommended][] |                     |
-| [no-hooks][]                 | Disallow setup and teardown hooks                                 |                  |                     |
-| [no-identical-title][]       | Disallow identical titles                                         | ![recommended][] |                     |
-| [no-if][]                    | Disallow conditional logic                                        |                  |                     |
-| [no-jasmine-globals][]       | Disallow Jasmine globals                                          | ![recommended][] | ![fixable-yellow][] |
-| [no-jest-import][]           | Disallow importing `jest`                                         | ![recommended][] |                     |
-| [no-large-snapshots][]       | Disallow large snapshots                                          |                  |                     |
-| [no-mocks-import][]          | Disallow manually importing from `__mocks__`                      |                  |                     |
-| [no-standalone-expect][]     | Prevents `expect` statements outside of a `test` or `it` block    |                  |                     |
-| [no-test-callback][]         | Using a callback in asynchronous tests                            |                  | ![fixable-green][]  |
-| [no-test-prefixes][]         | Disallow using `f` & `x` prefixes to define focused/skipped tests | ![recommended][] | ![fixable-green][]  |
-| [no-test-return-statement][] | Disallow explicitly returning from tests                          |                  |                     |
-| [no-truthy-falsy][]          | Disallow using `toBeTruthy()` & `toBeFalsy()`                     |                  |                     |
-| [no-try-expect][]            | Prevent `catch` assertions in tests                               |                  |                     |
-| [prefer-called-with][]       | Suggest using `toBeCalledWith()` OR `toHaveBeenCalledWith()`      |                  |                     |
-| [prefer-expect-assertions][] | Suggest using `expect.assertions()` OR `expect.hasAssertions()`   |                  |                     |
-| [prefer-inline-snapshots][]  | Suggest using `toMatchInlineSnapshot()`                           |                  | ![fixable-green][]  |
-| [prefer-spy-on][]            | Suggest using `jest.spyOn()`                                      |                  | ![fixable-green][]  |
-| [prefer-strict-equal][]      | Suggest using `toStrictEqual()`                                   |                  | ![fixable-green][]  |
-| [prefer-to-be-null][]        | Suggest using `toBeNull()`                                        |                  | ![fixable-green][]  |
-| [prefer-to-be-undefined][]   | Suggest using `toBeUndefined()`                                   |                  | ![fixable-green][]  |
-| [prefer-to-contain][]        | Suggest using `toContain()`                                       |                  | ![fixable-green][]  |
-| [prefer-to-have-length][]    | Suggest using `toHaveLength()`                                    |                  | ![fixable-green][]  |
-| [prefer-todo][]              | Suggest using `test.todo()`                                       |                  | ![fixable-green][]  |
-| [require-tothrow-message][]  | Require that `toThrow()` and `toThrowError` includes a message    |                  |                     |
-| [valid-describe][]           | Enforce valid `describe()` callback                               | ![recommended][] |                     |
-| [valid-expect-in-promise][]  | Enforce having return statement when testing with promises        | ![recommended][] |                     |
-| [valid-expect][]             | Enforce valid `expect()` usage                                    | ![recommended][] |                     |
+| Rule                           | Description                                                       | Recommended      | Fixable             |
+| ------------------------------ | ----------------------------------------------------------------- | ---------------- | ------------------- |
+| [consistent-test-it][]         | Enforce consistent test or it keyword                             |                  | ![fixable-green][]  |
+| [expect-expect][]              | Enforce assertion to be made in a test body                       |                  |                     |
+| [lowercase-name][]             | Disallow capitalized test names                                   |                  | ![fixable-green][]  |
+| [no-alias-methods][]           | Disallow alias methods                                            | ![recommended][] | ![fixable-green][]  |
+| [no-commented-out-tests][]     | Disallow commented out tests                                      |                  |                     |
+| [no-disabled-tests][]          | Disallow disabled tests                                           | ![recommended][] |                     |
+| [no-duplicate-hooks][]         | Disallow duplicate hooks within a `describe` block                |                  |                     |
+| [no-empty-title][]             | Disallow empty titles                                             |                  |                     |
+| [no-expect-resolves][]         | Disallow using `expect().resolves`                                |                  |                     |
+| [no-export][]                  | Disallow export from test files                                   |                  |                     |
+| [no-focused-tests][]           | Disallow focused tests                                            | ![recommended][] |                     |
+| [no-hooks][]                   | Disallow setup and teardown hooks                                 |                  |                     |
+| [no-identical-title][]         | Disallow identical titles                                         | ![recommended][] |                     |
+| [no-if][]                      | Disallow conditional logic                                        |                  |                     |
+| [no-jasmine-globals][]         | Disallow Jasmine globals                                          | ![recommended][] | ![fixable-yellow][] |
+| [no-jest-import][]             | Disallow importing `jest`                                         | ![recommended][] |                     |
+| [no-large-snapshots][]         | Disallow large snapshots                                          |                  |                     |
+| [no-mocks-import][]            | Disallow manually importing from `__mocks__`                      |                  |                     |
+| [no-standalone-expect][]       | Prevents `expect` statements outside of a `test` or `it` block    |                  |                     |
+| [no-test-callback][]           | Using a callback in asynchronous tests                            |                  | ![fixable-green][]  |
+| [no-test-prefixes][]           | Disallow using `f` & `x` prefixes to define focused/skipped tests | ![recommended][] | ![fixable-green][]  |
+| [no-test-return-statement][]   | Disallow explicitly returning from tests                          |                  |                     |
+| [no-truthy-falsy][]            | Disallow using `toBeTruthy()` & `toBeFalsy()`                     |                  |                     |
+| [no-try-expect][]              | Prevent `catch` assertions in tests                               |                  |                     |
+| [prefer-called-with][]         | Suggest using `toBeCalledWith()` OR `toHaveBeenCalledWith()`      |                  |                     |
+| [prefer-expect-assertions][]   | Suggest using `expect.assertions()` OR `expect.hasAssertions()`   |                  |                     |
+| [prefer-inline-snapshots][]    | Suggest using `toMatchInlineSnapshot()`                           |                  | ![fixable-green][]  |
+| [prefer-spy-on][]              | Suggest using `jest.spyOn()`                                      |                  | ![fixable-green][]  |
+| [prefer-strict-equal][]        | Suggest using `toStrictEqual()`                                   |                  | ![fixable-green][]  |
+| [prefer-to-be-null][]          | Suggest using `toBeNull()`                                        |                  | ![fixable-green][]  |
+| [prefer-to-be-undefined][]     | Suggest using `toBeUndefined()`                                   |                  | ![fixable-green][]  |
+| [prefer-to-contain][]          | Suggest using `toContain()`                                       |                  | ![fixable-green][]  |
+| [prefer-to-have-length][]      | Suggest using `toHaveLength()`                                    |                  | ![fixable-green][]  |
+| [prefer-todo][]                | Suggest using `test.todo()`                                       |                  | ![fixable-green][]  |
+| [require-top-level-describe][] | Require a top-level `describe` block                              |                  |                     |
+| [require-tothrow-message][]    | Require that `toThrow()` and `toThrowError` includes a message    |                  |                     |
+| [valid-describe][]             | Enforce valid `describe()` callback                               | ![recommended][] |                     |
+| [valid-expect-in-promise][]    | Enforce having return statement when testing with promises        | ![recommended][] |                     |
+| [valid-expect][]               | Enforce valid `expect()` usage                                    | ![recommended][] |                     |
 
 ## Credit
 
@@ -193,6 +194,7 @@ https://github.com/dangreenisrael/eslint-plugin-jest-formatting
 [prefer-to-contain]: docs/rules/prefer-to-contain.md
 [prefer-to-have-length]: docs/rules/prefer-to-have-length.md
 [prefer-todo]: docs/rules/prefer-todo.md
+[require-top-level-describe]: docs/rules/require-top-level-describe.md
 [require-tothrow-message]: docs/rules/require-tothrow-message.md
 [valid-describe]: docs/rules/valid-describe.md
 [valid-expect-in-promise]: docs/rules/valid-expect-in-promise.md
