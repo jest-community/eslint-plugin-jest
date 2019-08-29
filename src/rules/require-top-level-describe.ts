@@ -12,24 +12,31 @@ export default createRule({
       recommended: false,
     },
     messages: {
-      unexpectedMethod: 'There must be a top-level describe block.',
+      unexpectedMethod: 'All test cases must be wrapped in a describe block.',
     },
     type: 'suggestion',
     schema: [],
   },
   defaultOptions: [],
   create(context) {
-    let numberOfDescribeBlock = 0;
+    let numberOfDescribeBlocks = 0;
     return {
       CallExpression(node) {
-        isDescribe(node) && numberOfDescribeBlock++;
-        if ((isTestCase(node) || isHook(node)) && numberOfDescribeBlock === 0) {
+        if (isDescribe(node)) {
+          numberOfDescribeBlocks++;
+          return;
+        }
+
+        if (
+          (numberOfDescribeBlocks === 0 && isTestCase(node)) ||
+          isHook(node)
+        ) {
           context.report({ node, messageId: 'unexpectedMethod' });
         }
       },
       'CallExpression:exit'(node: TSESTree.CallExpression) {
         if (isDescribe(node)) {
-          numberOfDescribeBlock--;
+          numberOfDescribeBlocks--;
         }
       },
     };
