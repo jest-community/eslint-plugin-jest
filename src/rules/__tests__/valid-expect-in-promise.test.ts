@@ -206,6 +206,14 @@ ruleTester.run('valid-expect-in-promise', rule, {
   invalid: [
     {
       code: `
+    it('test function', async () => {
+      Builder.getPromiseBuilder().get().build().then((data) => expect(data).toEqual('Hi'));
+    });
+  `,
+      errors: [{ column: 7, endColumn: 92, messageId: 'returnPromise' }],
+    },
+    {
+      code: `
          it('it1', () => {
            somePromise.then(() => {
              expect(someThing).toEqual(true);

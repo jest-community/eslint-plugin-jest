@@ -154,6 +154,67 @@ const isHavingAsyncCallBackParam = (testFunction: FunctionExpression) =>
   testFunction.params[0] &&
   testFunction.params[0].type === AST_NODE_TYPES.Identifier;
 
+/**
+ * Checks if the given `functionExpression` is `await`ed in its body.
+ *
+ * @param {FunctionExpression} functionExpression
+ *
+ * @return {boolean}
+ */
+const isAwaited = (functionExpression: FunctionExpression) => {
+  if (!functionExpression.async) {
+    return false;
+  }
+
+  const body = getFunctionBody(functionExpression);
+
+  if (body.type !== AST_NODE_TYPES.BlockStatement) {
+    return false;
+  }
+
+  return body.body.some(value => {
+    if (value.type === AST_NODE_TYPES.VariableDeclaration) {
+      return value.declarations.some(
+        declaration =>
+          declaration.init &&
+          declaration.init.type === AST_NODE_TYPES.AwaitExpression,
+      );
+    }
+
+    if (value.type === AST_NODE_TYPES.ExpressionStatement) {
+      return value.expression.type === AST_NODE_TYPES.AwaitExpression;
+    }
+
+    return false;
+  });
+};
+
+/**
+ * Gets the `body` of the given `functionExpression`, ensuring it's not `null`.
+ *
+ * This is required for TypeScript to be happy.
+ *
+ * @param {FunctionExpression} functionExpression
+ * @param {string} fileName
+ * @return {ArrowFunctionExpression["body"]}
+ *
+ * @see https://github.com/typescript-eslint/typescript-eslint/issues/734
+ */
+const getFunctionBody = (
+  functionExpression: FunctionExpression,
+  fileName: string = 'a file',
+): TSESTree.ArrowFunctionExpression['body'] => {
+  const { body } = functionExpression;
+  /* istanbul ignore if https://github.com/typescript-eslint/typescript-eslint/issues/734 */
+  if (!body) {
+    throw new Error(
+      `Unexpected null when attempting to fix ${fileName} - please file a github issue at https://github.com/jest-community/eslint-plugin-jest`,
+    );
+  }
+
+  return body;
+};
+
 export default createRule<unknown[], MessageIds>({
   name: __filename,
   meta: {
@@ -180,15 +241,12 @@ export default createRule<unknown[], MessageIds>({
           return;
         }
         const testFunction = findTestFunction(node);
-        if (testFunction && !isHavingAsyncCallBackParam(testFunction)) {
-          const { body } = testFunction;
-
-          /* istanbul ignore if https://github.com/typescript-eslint/typescript-eslint/issues/734 */
-          if (!body) {
-            throw new Error(
-              `Unexpected null when attempting to fix ${context.getFilename()} - please file a github issue at https://github.com/jest-community/eslint-plugin-jest`,
-            );
-          }
+        if (
+          testFunction &&
+          !isHavingAsyncCallBackParam(testFunction) &&
+          !isAwaited(testFunction)
+        ) {
+          const body = getFunctionBody(testFunction, context.getFilename());
 
           if (body.type !== AST_NODE_TYPES.BlockStatement) {
             return;
