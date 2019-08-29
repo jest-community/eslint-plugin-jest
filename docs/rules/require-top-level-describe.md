@@ -23,6 +23,11 @@ describe('test suite', () => {
 // Below a describe block
 describe('test suite', () => {});
 test('my test', () => {});
+
+// Same for hooks
+beforeAll('my beforeAll', () => {});
+describe('test suite', () => {});
+afterEach('my afterEach', () => {});
 ```
 
 The following patterns are **not** considered warnings:

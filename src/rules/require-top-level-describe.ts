@@ -12,7 +12,8 @@ export default createRule({
       recommended: false,
     },
     messages: {
-      unexpectedMethod: 'All test cases must be wrapped in a describe block.',
+      unexpectedTestCase: 'All test cases must be wrapped in a describe block.',
+      unexpectedHook: 'All hooks must be wrapped in a describe block.',
     },
     type: 'suggestion',
     schema: [],
@@ -27,11 +28,16 @@ export default createRule({
           return;
         }
 
-        if (
-          (numberOfDescribeBlocks === 0 && isTestCase(node)) ||
-          isHook(node)
-        ) {
-          context.report({ node, messageId: 'unexpectedMethod' });
+        if (numberOfDescribeBlocks === 0) {
+          if (isTestCase(node)) {
+            context.report({ node, messageId: 'unexpectedTestCase' });
+            return;
+          }
+
+          if (isHook(node)) {
+            context.report({ node, messageId: 'unexpectedHook' });
+            return;
+          }
         }
       },
       'CallExpression:exit'(node: TSESTree.CallExpression) {

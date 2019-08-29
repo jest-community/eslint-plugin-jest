@@ -36,7 +36,7 @@ ruleTester.run('no-standalone-hook', rule, {
       test("my test", () => {})
       describe("test suite", () => {});
       `,
-      errors: [{ messageId: 'unexpectedMethod' }],
+      errors: [{ messageId: 'unexpectedTestCase' }],
     },
     {
       code: `
@@ -45,14 +45,14 @@ ruleTester.run('no-standalone-hook', rule, {
         it("test", () => {})
       });
       `,
-      errors: [{ messageId: 'unexpectedMethod' }],
+      errors: [{ messageId: 'unexpectedTestCase' }],
     },
     {
       code: `
       describe("test suite", () => {});
       afterAll("my test", () => {})
       `,
-      errors: [{ messageId: 'unexpectedMethod' }],
+      errors: [{ messageId: 'unexpectedHook' }],
     },
   ],
 });
