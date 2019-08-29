@@ -104,7 +104,7 @@
         "displayName": "lint",
         "runner": "jest-runner-eslint",
         "testMatch": [
-          "<rootDir>/**/*.js"
+          "<rootDir>/**/*.{js,ts}"
         ],
         "testPathIgnorePatterns": [
           "<rootDir>/lib/.*"
