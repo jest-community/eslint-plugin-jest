@@ -341,6 +341,7 @@ export enum ModifierName {
 enum EqualityMatcher {
   toBe = 'toBe',
   toEqual = 'toEqual',
+  toStrictEqual = 'toStrictEqual',
 }
 
 export const isParsedEqualityMatcherCall = (
