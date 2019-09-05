@@ -5,8 +5,8 @@ asserting expectations on object's length property.
 
 ## Rule details
 
-This rule triggers a warning if `toBe()` is used to assert object's length
-property.
+This rule triggers a warning if `toBe()`, `isEqual()` or `toStrictEqual()` is
+used to assert object's length property.
 
 ```js
 expect(files.length).toBe(1);
