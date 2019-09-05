@@ -67,8 +67,8 @@ ruleTester.run('require-to-throw-message', rule, {
       code: "expect(() => { throw new Error('a'); }).toThrow();",
       errors: [
         {
-          messageId: 'requireRethrow',
-          data: { propertyName: 'toThrow' },
+          messageId: 'addErrorMessage',
+          data: { matcherName: 'toThrow' },
           column: 41,
           line: 1,
         },
@@ -79,8 +79,8 @@ ruleTester.run('require-to-throw-message', rule, {
       code: "expect(() => { throw new Error('a'); }).toThrowError();",
       errors: [
         {
-          messageId: 'requireRethrow',
-          data: { propertyName: 'toThrowError' },
+          messageId: 'addErrorMessage',
+          data: { matcherName: 'toThrowError' },
           column: 41,
           line: 1,
         },
@@ -96,14 +96,14 @@ ruleTester.run('require-to-throw-message', rule, {
     })`,
       errors: [
         {
-          messageId: 'requireRethrow',
-          data: { propertyName: 'toThrow' },
+          messageId: 'addErrorMessage',
+          data: { matcherName: 'toThrow' },
           column: 49,
           line: 3,
         },
         {
-          messageId: 'requireRethrow',
-          data: { propertyName: 'toThrowError' },
+          messageId: 'addErrorMessage',
+          data: { matcherName: 'toThrowError' },
           column: 49,
           line: 4,
         },
@@ -121,8 +121,8 @@ ruleTester.run('require-tothrow-message', deprecatedRule, {
       code: "expect(() => { throw new Error('a'); }).toThrow();",
       errors: [
         {
-          messageId: 'requireRethrow',
-          data: { propertyName: 'toThrow' },
+          messageId: 'addErrorMessage',
+          data: { matcherName: 'toThrow' },
           column: 41,
           line: 1,
         },
