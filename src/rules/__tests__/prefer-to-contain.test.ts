@@ -73,6 +73,26 @@ ruleTester.run('prefer-to-contain', rule, {
       output: 'expect(a).not.toContain(b);',
     },
     {
+      code: 'expect(a.includes(b)).toStrictEqual(true);',
+      errors: [{ messageId: 'useToContain', column: 23, line: 1 }],
+      output: 'expect(a).toContain(b);',
+    },
+    {
+      code: 'expect(a.includes(b)).toStrictEqual(false);',
+      errors: [{ messageId: 'useToContain', column: 23, line: 1 }],
+      output: 'expect(a).not.toContain(b);',
+    },
+    {
+      code: 'expect(a.includes(b)).not.toStrictEqual(false);',
+      errors: [{ messageId: 'useToContain', column: 23, line: 1 }],
+      output: 'expect(a).toContain(b);',
+    },
+    {
+      code: 'expect(a.includes(b)).not.toStrictEqual(true);',
+      errors: [{ messageId: 'useToContain', column: 23, line: 1 }],
+      output: 'expect(a).not.toContain(b);',
+    },
+    {
       code: 'expect(a.test(t).includes(b.test(p))).toEqual(true);',
       errors: [{ messageId: 'useToContain', column: 39, line: 1 }],
       output: 'expect(a.test(t)).toContain(b.test(p));',
@@ -109,6 +129,26 @@ ruleTester.run('prefer-to-contain', rule, {
     },
     {
       code: 'expect([{a:1}].includes({a:1})).not.toBe(false);',
+      errors: [{ messageId: 'useToContain', column: 33, line: 1 }],
+      output: 'expect([{a:1}]).toContain({a:1});',
+    },
+    {
+      code: 'expect([{a:1}].includes({a:1})).toStrictEqual(true);',
+      errors: [{ messageId: 'useToContain', column: 33, line: 1 }],
+      output: 'expect([{a:1}]).toContain({a:1});',
+    },
+    {
+      code: 'expect([{a:1}].includes({a:1})).toStrictEqual(false);',
+      errors: [{ messageId: 'useToContain', column: 33, line: 1 }],
+      output: 'expect([{a:1}]).not.toContain({a:1});',
+    },
+    {
+      code: 'expect([{a:1}].includes({a:1})).not.toStrictEqual(true);',
+      errors: [{ messageId: 'useToContain', column: 33, line: 1 }],
+      output: 'expect([{a:1}]).not.toContain({a:1});',
+    },
+    {
+      code: 'expect([{a:1}].includes({a:1})).not.toStrictEqual(false);',
       errors: [{ messageId: 'useToContain', column: 33, line: 1 }],
       output: 'expect([{a:1}]).toContain({a:1});',
     },

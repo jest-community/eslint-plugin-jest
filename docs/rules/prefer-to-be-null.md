@@ -5,7 +5,8 @@ asserting expections on null value.
 
 ## Rule details
 
-This rule triggers a warning if `toBe()` is used to assert a null value.
+This rule triggers a warning if `toBe()`, `isEqual()` or `toStrictEqual()` is
+used to assert a null value.
 
 ```js
 expect(null).toBe(null);
@@ -15,10 +16,14 @@ This rule is enabled by default.
 
 ### Default configuration
 
-The following pattern is considered warning:
+The following patterns are considered warnings:
 
 ```js
 expect(null).toBe(null);
+
+expect(null).isEqual(null);
+
+expect(null).toStrictEqual(null);
 ```
 
 The following pattern is not warning:

@@ -36,5 +36,10 @@ ruleTester.run('prefer-to-have-length', rule, {
       errors: [{ messageId: 'useToHaveLength', column: 22, line: 1 }],
       output: 'expect(files).toHaveLength(1);',
     },
+    {
+      code: 'expect(files.length).toStrictEqual(1);',
+      errors: [{ messageId: 'useToHaveLength', column: 22, line: 1 }],
+      output: 'expect(files).toHaveLength(1);',
+    },
   ],
 });

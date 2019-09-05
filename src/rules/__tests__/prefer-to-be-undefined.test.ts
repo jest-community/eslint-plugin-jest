@@ -30,12 +30,22 @@ ruleTester.run('prefer-to-be-undefined', rule, {
       output: 'expect(undefined).toBeUndefined();',
     },
     {
+      code: 'expect(undefined).toStrictEqual(undefined);',
+      errors: [{ messageId: 'useToBeUndefined', column: 19, line: 1 }],
+      output: 'expect(undefined).toBeUndefined();',
+    },
+    {
       code: 'expect("a string").not.toBe(undefined);',
       errors: [{ messageId: 'useToBeUndefined', column: 24, line: 1 }],
       output: 'expect("a string").not.toBeUndefined();',
     },
     {
       code: 'expect("a string").not.toEqual(undefined);',
+      errors: [{ messageId: 'useToBeUndefined', column: 24, line: 1 }],
+      output: 'expect("a string").not.toBeUndefined();',
+    },
+    {
+      code: 'expect("a string").not.toStrictEqual(undefined);',
       errors: [{ messageId: 'useToBeUndefined', column: 24, line: 1 }],
       output: 'expect("a string").not.toBeUndefined();',
     },

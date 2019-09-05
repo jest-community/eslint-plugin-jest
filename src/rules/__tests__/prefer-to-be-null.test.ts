@@ -32,12 +32,22 @@ ruleTester.run('prefer-to-be-null', rule, {
       output: 'expect(null).toBeNull();',
     },
     {
+      code: 'expect(null).toStrictEqual(null);',
+      errors: [{ messageId: 'useToBeNull', column: 14, line: 1 }],
+      output: 'expect(null).toBeNull();',
+    },
+    {
       code: 'expect("a string").not.toBe(null);',
       errors: [{ messageId: 'useToBeNull', column: 24, line: 1 }],
       output: 'expect("a string").not.toBeNull();',
     },
     {
       code: 'expect("a string").not.toEqual(null);',
+      errors: [{ messageId: 'useToBeNull', column: 24, line: 1 }],
+      output: 'expect("a string").not.toBeNull();',
+    },
+    {
+      code: 'expect("a string").not.toStrictEqual(null);',
       errors: [{ messageId: 'useToBeNull', column: 24, line: 1 }],
       output: 'expect("a string").not.toBeNull();',
     },
