@@ -16,10 +16,14 @@ This rule is enabled by default.
 
 ### Default configuration
 
-The following pattern is considered warning:
+The following patterns are considered warnings:
 
 ```js
 expect(files.length).toBe(1);
+
+expect(files.length).toEqual(1);
+
+expect(files.length).toStrictEqual(1);
 ```
 
 The following pattern is not warning:
