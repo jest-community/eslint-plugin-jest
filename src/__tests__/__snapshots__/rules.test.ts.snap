@@ -18,6 +18,7 @@ Object {
       "jest/no-disabled-tests": "error",
       "jest/no-duplicate-hooks": "error",
       "jest/no-expect-resolves": "error",
+      "jest/no-expect-to-match-object": "error",
       "jest/no-export": "error",
       "jest/no-focused-tests": "error",
       "jest/no-hooks": "error",
