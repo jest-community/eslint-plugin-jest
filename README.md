@@ -76,12 +76,16 @@ config file:
 
 This plugin also exports a configuration named `style`, which adds some
 stylistic rules, such as `prefer-to-be-null`, which enforces usage of `toBeNull`
-over `toBe(null)`. All rules included are:
+over `toBe(null)`.
 
-- `prefer-to-be-null`
-- `prefer-to-be-undefined`
-- `prefer-to-contain`
-- `prefer-to-have-length`
+To enable this configuration use the `extends` property in your `.eslintrc`
+config file:
+
+```json
+{
+  "extends": ["plugin:jest/style"]
+}
+```
 
 See
 [ESLint documentation](http://eslint.org/docs/user-guide/configuring#extending-configuration-files)
@@ -104,7 +108,7 @@ installations requiring long-term consistency.
 
 ## Rules
 
-| Rule                           | Description                                                       | Recommended      | Fixable             |
+| Rule                           | Description                                                       | Configurations   | Fixable             |
 | ------------------------------ | ----------------------------------------------------------------- | ---------------- | ------------------- |
 | [consistent-test-it][]         | Enforce consistent test or it keyword                             |                  | ![fixable-green][]  |
 | [expect-expect][]              | Enforce assertion to be made in a test body                       |                  |                     |
@@ -135,10 +139,10 @@ installations requiring long-term consistency.
 | [prefer-inline-snapshots][]    | Suggest using `toMatchInlineSnapshot()`                           |                  | ![fixable-green][]  |
 | [prefer-spy-on][]              | Suggest using `jest.spyOn()`                                      |                  | ![fixable-green][]  |
 | [prefer-strict-equal][]        | Suggest using `toStrictEqual()`                                   |                  | ![fixable-green][]  |
-| [prefer-to-be-null][]          | Suggest using `toBeNull()`                                        |                  | ![fixable-green][]  |
-| [prefer-to-be-undefined][]     | Suggest using `toBeUndefined()`                                   |                  | ![fixable-green][]  |
-| [prefer-to-contain][]          | Suggest using `toContain()`                                       |                  | ![fixable-green][]  |
-| [prefer-to-have-length][]      | Suggest using `toHaveLength()`                                    |                  | ![fixable-green][]  |
+| [prefer-to-be-null][]          | Suggest using `toBeNull()`                                        | ![style][]       | ![fixable-green][]  |
+| [prefer-to-be-undefined][]     | Suggest using `toBeUndefined()`                                   | ![style][]       | ![fixable-green][]  |
+| [prefer-to-contain][]          | Suggest using `toContain()`                                       | ![style][]       | ![fixable-green][]  |
+| [prefer-to-have-length][]      | Suggest using `toHaveLength()`                                    | ![style][]       | ![fixable-green][]  |
 | [prefer-todo][]                | Suggest using `test.todo()`                                       |                  | ![fixable-green][]  |
 | [require-top-level-describe][] | Require a top-level `describe` block                              |                  |                     |
 | [require-tothrow-message][]    | Require that `toThrow()` and `toThrowError` includes a message    |                  |                     |
@@ -202,3 +206,4 @@ https://github.com/dangreenisrael/eslint-plugin-jest-formatting
 [fixable-green]: https://img.shields.io/badge/-fixable-green.svg
 [fixable-yellow]: https://img.shields.io/badge/-fixable-yellow.svg
 [recommended]: https://img.shields.io/badge/-recommended-lightgrey.svg
+[style]: https://img.shields.io/badge/-style-blue.svg
