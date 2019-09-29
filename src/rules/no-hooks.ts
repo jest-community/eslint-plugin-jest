@@ -27,17 +27,9 @@ export default createRule({
   },
   defaultOptions: [{ allow: [] } as { allow: readonly HookName[] }],
   create(context, [{ allow }]) {
-    const whitelistedHookNames = allow.reduce((hashMap, value) => {
-      hashMap[value] = true;
-      return hashMap;
-    }, Object.create(null));
-
-    const isWhitelisted = (node: { callee: { name: string } }) =>
-      whitelistedHookNames[node.callee.name];
-
     return {
       CallExpression(node) {
-        if (isHook(node) && !isWhitelisted(node)) {
+        if (isHook(node) && !allow.includes(node.callee.name)) {
           context.report({
             node,
             messageId: 'unexpectedHook',
