@@ -7,7 +7,15 @@ import {
   isTestCase,
 } from './utils';
 
-export default createRule({
+export default createRule<
+  [
+    Partial<{
+      fn: TestCaseName.it | TestCaseName.test;
+      withinDescribe: TestCaseName.it | TestCaseName.test;
+    }>,
+  ],
+  'consistentMethod' | 'consistentMethodWithingDescribe'
+>({
   name: __filename,
   meta: {
     docs: {
@@ -38,12 +46,7 @@ export default createRule({
     ],
     type: 'suggestion',
   },
-  defaultOptions: [
-    { fn: TestCaseName.test, withinDescribe: TestCaseName.it } as {
-      fn?: TestCaseName.it | TestCaseName.test;
-      withinDescribe?: TestCaseName.it | TestCaseName.test;
-    },
-  ],
+  defaultOptions: [{ fn: TestCaseName.test, withinDescribe: TestCaseName.it }],
   create(context) {
     const configObj = context.options[0] || {};
     const testKeyword = configObj.fn || TestCaseName.test;
