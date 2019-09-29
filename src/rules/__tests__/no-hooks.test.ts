@@ -17,6 +17,7 @@ ruleTester.run('no-hooks', rule, {
       code: 'afterEach(() => {}); afterAll(() => {});',
       options: [{ allow: [HookName.afterEach, HookName.afterAll] }],
     },
+    { code: 'test("foo")', options: [{ allow: undefined }] },
   ],
   invalid: [
     {

@@ -1,6 +1,9 @@
 import { HookName, createRule, isHook } from './utils';
 
-export default createRule({
+export default createRule<
+  [Partial<{ allow: readonly HookName[] }>],
+  'unexpectedHook'
+>({
   name: __filename,
   meta: {
     docs: {
@@ -25,8 +28,8 @@ export default createRule({
     ],
     type: 'suggestion',
   },
-  defaultOptions: [{ allow: [] } as { allow: readonly HookName[] }],
-  create(context, [{ allow }]) {
+  defaultOptions: [{ allow: [] }],
+  create(context, [{ allow = [] }]) {
     return {
       CallExpression(node) {
         if (isHook(node) && !allow.includes(node.callee.name)) {
