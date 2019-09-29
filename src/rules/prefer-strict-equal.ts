@@ -1,4 +1,10 @@
-import { createRule, isExpectCall, parseExpectCall } from './utils';
+import {
+  EqualityMatcher,
+  createRule,
+  isExpectCall,
+  isParsedEqualityMatcherCall,
+  parseExpectCall,
+} from './utils';
 
 export default createRule({
   name: __filename,
@@ -25,10 +31,16 @@ export default createRule({
 
         const { matcher } = parseExpectCall(node);
 
-        if (matcher && matcher.name === 'toEqual') {
+        if (
+          matcher &&
+          isParsedEqualityMatcherCall(matcher, EqualityMatcher.toEqual)
+        ) {
           context.report({
             fix: fixer => [
-              fixer.replaceText(matcher.node.property, 'toStrictEqual'),
+              fixer.replaceText(
+                matcher.node.property,
+                EqualityMatcher.toStrictEqual,
+              ),
             ],
             messageId: 'useToStrictEqual',
             node: matcher.node.property,
