@@ -54,9 +54,13 @@ const testDescription = (argument: ArgumentLiteral): string | null => {
 
 const jestFunctionName = (
   node: CallExpressionWithCorrectCalleeAndArguments,
+  allowedPrefixes: readonly string[],
 ) => {
   const description = testDescription(node.arguments[0]);
-  if (description === null) {
+  if (
+    description === null ||
+    allowedPrefixes.some(name => description.startsWith(name))
+  ) {
     return null;
   }
 
@@ -73,7 +77,15 @@ const jestFunctionName = (
   return null;
 };
 
-export default createRule({
+export default createRule<
+  [
+    Partial<{
+      ignore: readonly JestFunctionName[];
+      allowedPrefixes: readonly string[];
+    }>,
+  ],
+  'unexpectedLowercase'
+>({
   name: __filename,
   meta: {
     type: 'suggestion',
@@ -96,19 +108,24 @@ export default createRule({
             items: { enum: ['describe', 'test', 'it'] },
             additionalItems: false,
           },
+          allowedPrefixes: {
+            type: 'array',
+            items: { type: 'string' },
+            additionalItems: false,
+          },
         },
         additionalProperties: false,
       },
     ],
   } as const,
-  defaultOptions: [{ ignore: [] } as { ignore: readonly JestFunctionName[] }],
-  create(context, [{ ignore }]) {
+  defaultOptions: [{ ignore: [], allowedPrefixes: [] }],
+  create(context, [{ ignore = [], allowedPrefixes = [] }]) {
     return {
       CallExpression(node) {
         if (!isJestFunctionWithLiteralArg(node)) {
           return;
         }
-        const erroneousMethod = jestFunctionName(node);
+        const erroneousMethod = jestFunctionName(node, allowedPrefixes);
 
         if (erroneousMethod && !ignore.includes(node.callee.name)) {
           context.report({
