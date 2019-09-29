@@ -32,6 +32,10 @@ ruleTester.run('expect-expect', rule, {
       ].join('\n'),
       options: [{ assertFunctionNames: ['td.verify'] }],
     },
+    {
+      code: 'it("should pass", () => expect(true).toBeDefined())',
+      options: [{ assertFunctionNames: undefined }],
+    },
   ],
 
   invalid: [

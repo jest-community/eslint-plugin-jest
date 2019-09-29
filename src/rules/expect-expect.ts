@@ -9,7 +9,10 @@ import {
 } from '@typescript-eslint/experimental-utils';
 import { createRule, getNodeName } from './utils';
 
-export default createRule({
+export default createRule<
+  [Partial<{ assertFunctionNames: readonly string[] }>],
+  'noAssertions'
+>({
   name: __filename,
   meta: {
     docs: {
@@ -35,7 +38,7 @@ export default createRule({
     type: 'suggestion',
   },
   defaultOptions: [{ assertFunctionNames: ['expect'] }],
-  create(context, [{ assertFunctionNames }]) {
+  create(context, [{ assertFunctionNames = ['expect'] }]) {
     const unchecked: TSESTree.CallExpression[] = [];
 
     return {
