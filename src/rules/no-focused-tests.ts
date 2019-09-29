@@ -4,7 +4,11 @@ import {
 } from '@typescript-eslint/experimental-utils';
 import { DescribeAlias, TestCaseName, createRule } from './utils';
 
-const testFunctions = new Set(['describe', 'it', 'test']);
+const testFunctions = new Set<string>([
+  DescribeAlias.describe,
+  TestCaseName.test,
+  TestCaseName.it,
+]);
 
 const matchesTestFunction = (
   object: TSESTree.LeftHandSideExpression | undefined,
