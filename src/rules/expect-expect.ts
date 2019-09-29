@@ -7,7 +7,7 @@ import {
   AST_NODE_TYPES,
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
-import { createRule, getNodeName } from './utils';
+import { TestCaseName, createRule, getNodeName } from './utils';
 
 export default createRule<
   [Partial<{ assertFunctionNames: readonly string[] }>],
@@ -44,7 +44,7 @@ export default createRule<
     return {
       CallExpression(node) {
         const name = getNodeName(node.callee);
-        if (name === 'it' || name === 'test') {
+        if (name === TestCaseName.it || name === TestCaseName.test) {
           unchecked.push(node);
         } else if (name && assertFunctionNames.includes(name)) {
           // Return early in case of nested `it` statements.
