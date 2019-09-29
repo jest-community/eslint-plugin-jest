@@ -6,7 +6,6 @@ import {
 import {
   DescribeAlias,
   JestFunctionCallExpressionWithIdentifierCallee,
-  JestFunctionName,
   TestCaseName,
   createRule,
   isDescribe,
@@ -19,8 +18,13 @@ interface FirstArgumentStringCallExpression extends TSESTree.CallExpression {
   arguments: [ArgumentLiteral];
 }
 
+type IgnorableFunctionExpressions =
+  | TestCaseName.it
+  | TestCaseName.test
+  | DescribeAlias.describe;
+
 type CallExpressionWithCorrectCalleeAndArguments = JestFunctionCallExpressionWithIdentifierCallee<
-  TestCaseName.it | TestCaseName.test | DescribeAlias.describe
+  IgnorableFunctionExpressions
 > &
   FirstArgumentStringCallExpression;
 
@@ -80,7 +84,7 @@ const jestFunctionName = (
 export default createRule<
   [
     Partial<{
-      ignore: readonly JestFunctionName[];
+      ignore: readonly IgnorableFunctionExpressions[];
       allowedPrefixes: readonly string[];
     }>,
   ],
