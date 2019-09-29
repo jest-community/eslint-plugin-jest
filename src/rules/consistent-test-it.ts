@@ -1,5 +1,11 @@
 import { AST_NODE_TYPES } from '@typescript-eslint/experimental-utils';
-import { createRule, getNodeName, isDescribe, isTestCase } from './utils';
+import {
+  TestCaseName,
+  createRule,
+  getNodeName,
+  isDescribe,
+  isTestCase,
+} from './utils';
 
 export default createRule({
   name: __filename,
@@ -21,10 +27,10 @@ export default createRule({
         type: 'object',
         properties: {
           fn: {
-            enum: ['it', 'test'],
+            enum: [TestCaseName.it, TestCaseName.test],
           },
           withinDescribe: {
-            enum: ['it', 'test'],
+            enum: [TestCaseName.it, TestCaseName.test],
           },
         },
         additionalProperties: false,
@@ -33,16 +39,16 @@ export default createRule({
     type: 'suggestion',
   },
   defaultOptions: [
-    { fn: 'test', withinDescribe: 'it' } as {
-      fn?: 'it' | 'test';
-      withinDescribe?: 'it' | 'test';
+    { fn: TestCaseName.test, withinDescribe: TestCaseName.it } as {
+      fn?: TestCaseName.it | TestCaseName.test;
+      withinDescribe?: TestCaseName.it | TestCaseName.test;
     },
   ],
   create(context) {
     const configObj = context.options[0] || {};
-    const testKeyword = configObj.fn || 'test';
+    const testKeyword = configObj.fn || TestCaseName.test;
     const testKeywordWithinDescribe =
-      configObj.withinDescribe || configObj.fn || 'it';
+      configObj.withinDescribe || configObj.fn || TestCaseName.it;
 
     let describeNestingLevel = 0;
 
@@ -118,9 +124,12 @@ export default createRule({
   },
 });
 
-function getPreferredNodeName(nodeName: string, preferredTestKeyword: string) {
+function getPreferredNodeName(
+  nodeName: string,
+  preferredTestKeyword: TestCaseName.test | TestCaseName.it,
+) {
   switch (nodeName) {
-    case 'fit':
+    case TestCaseName.fit:
       return 'test.only';
     default:
       return nodeName.startsWith('f') || nodeName.startsWith('x')
@@ -129,10 +138,10 @@ function getPreferredNodeName(nodeName: string, preferredTestKeyword: string) {
   }
 }
 
-function getOppositeTestKeyword(test: string) {
-  if (test === 'test') {
-    return 'it';
+function getOppositeTestKeyword(test: TestCaseName.test | TestCaseName.it) {
+  if (test === TestCaseName.test) {
+    return TestCaseName.it;
   }
 
-  return 'test';
+  return TestCaseName.test;
 }
