@@ -49,7 +49,7 @@ const isTargetedTestCase = (
   node: TSESTree.CallExpression,
 ): node is JestFunctionCallExpression<TestCaseName> =>
   isTestCase(node) &&
-  (['it', 'test', 'it.skip', 'test.skip'] as Array<string | null>).includes(
+  [TestCaseName.it, TestCaseName.test, 'it.skip', 'test.skip'].includes(
     getNodeName(node.callee),
   );
 

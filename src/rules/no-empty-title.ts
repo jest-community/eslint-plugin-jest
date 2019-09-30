@@ -1,4 +1,11 @@
-import { createRule, isDescribe, isStringNode, isTestCase } from './utils';
+import {
+  DescribeAlias,
+  TestCaseName,
+  createRule,
+  isDescribe,
+  isStringNode,
+  isTestCase,
+} from './utils';
 
 export default createRule({
   name: __filename,
@@ -28,7 +35,9 @@ export default createRule({
         }
 
         context.report({
-          messageId: isDescribe(node) ? 'describe' : 'test',
+          messageId: isDescribe(node)
+            ? DescribeAlias.describe
+            : TestCaseName.test,
           node,
         });
       },
