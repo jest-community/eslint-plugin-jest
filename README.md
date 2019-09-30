@@ -136,6 +136,7 @@ installations requiring long-term consistency.
 | [no-try-expect][]              | Prevent `catch` assertions in tests                               |                  |                     |
 | [prefer-called-with][]         | Suggest using `toBeCalledWith()` OR `toHaveBeenCalledWith()`      |                  |                     |
 | [prefer-expect-assertions][]   | Suggest using `expect.assertions()` OR `expect.hasAssertions()`   |                  |                     |
+| [prefer-hooks-on-top][]        | Suggest to have all hooks at top-level before tests               |                  |                     |
 | [prefer-inline-snapshots][]    | Suggest using `toMatchInlineSnapshot()`                           |                  | ![fixable-green][]  |
 | [prefer-spy-on][]              | Suggest using `jest.spyOn()`                                      |                  | ![fixable-green][]  |
 | [prefer-strict-equal][]        | Suggest using `toStrictEqual()`                                   |                  | ![fixable-green][]  |
@@ -191,6 +192,7 @@ https://github.com/dangreenisrael/eslint-plugin-jest-formatting
 [prefer-called-with]: docs/rules/prefer-called-with.md
 [prefer-expect-assertions]: docs/rules/prefer-expect-assertions.md
 [prefer-inline-snapshots]: docs/rules/prefer-inline-snapshots.md
+[prefer-hooks-on-top]: docs/rules/prefer-hooks-on-top.md
 [prefer-spy-on]: docs/rules/prefer-spy-on.md
 [prefer-strict-equal]: docs/rules/prefer-strict-equal.md
 [prefer-to-be-null]: docs/rules/prefer-to-be-null.md
