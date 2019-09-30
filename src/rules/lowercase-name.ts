@@ -103,17 +103,6 @@ export default createRule({
   } as const,
   defaultOptions: [{ ignore: [] } as { ignore: readonly JestFunctionName[] }],
   create(context, [{ ignore }]) {
-    const ignoredFunctionNames = ignore.reduce<
-      Record<string, true | undefined>
-    >((accumulator, value) => {
-      accumulator[value] = true;
-      return accumulator;
-    }, Object.create(null));
-
-    const isIgnoredFunctionName = (
-      node: CallExpressionWithCorrectCalleeAndArguments,
-    ) => ignoredFunctionNames[node.callee.name];
-
     return {
       CallExpression(node) {
         if (!isJestFunctionWithLiteralArg(node)) {
@@ -121,7 +110,7 @@ export default createRule({
         }
         const erroneousMethod = jestFunctionName(node);
 
-        if (erroneousMethod && !isIgnoredFunctionName(node)) {
+        if (erroneousMethod && !ignore.includes(node.callee.name)) {
           context.report({
             messageId: 'unexpectedLowercase',
             data: { method: erroneousMethod },
