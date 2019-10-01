@@ -9,13 +9,13 @@ const ruleTester = new TSESLint.RuleTester({
 
 ruleTester.run('basic describe block', rule, {
   valid: [
-    `describe("foo" () => {
+    `describe("foo", () => {
         beforeEach(() => {
         });
         someSetupFn();
         afterEach(() => {
         });
-        test("bar" () => {
+        test("bar", () => {
           some_fn();
         });
       });`,
@@ -37,7 +37,7 @@ ruleTester.run('basic describe block', rule, {
       errors: [
         {
           messageId: 'noHookOnTop',
-          column: 3,
+          column: 11,
           line: 7,
         },
       ],
@@ -47,19 +47,19 @@ ruleTester.run('basic describe block', rule, {
 
 ruleTester.run('multiple describe blocks', rule, {
   valid: [
-    `describe.skip("foo" () => {
+    `describe.skip("foo", () => {
         beforeEach(() => {
         });
         beforeAll(() => {
         });
-        test("bar" () => {
+        test("bar", () => {
           some_fn();
         });
       });
-      describe("foo" () => {
+      describe("foo", () => {
         beforeEach(() => {
         });
-        test("bar" () => {
+        test("bar", () => {
           some_fn();
         });
       });`,
@@ -67,31 +67,31 @@ ruleTester.run('multiple describe blocks', rule, {
 
   invalid: [
     {
-      code: `describe.skip("foo" () => {
+      code: `describe.skip("foo", () => {
           beforeEach(() => {
           });
-          test("bar" () => {
+          test("bar", () => {
             some_fn();
           });
           beforeAll(() => {
           });
-          test("bar" () => {
+          test("bar", () => {
             some_fn();
           });
         });
-        describe("foo" () => {
+        describe("foo", () => {
           beforeEach(() => {
           });
           beforeEach(() => {
           });
           beforeAll(() => {
           });
-          test("bar" () => {
+          test("bar", () => {
             some_fn();
           });
         });
-        describe("foo" () => {
-          test("bar" () => {
+        describe("foo", () => {
+          test("bar", () => {
             some_fn();
           });
           beforeEach(() => {
@@ -104,22 +104,22 @@ ruleTester.run('multiple describe blocks', rule, {
       errors: [
         {
           messageId: 'noHookOnTop',
-          column: 3,
+          column: 11,
           line: 7,
         },
         {
           messageId: 'noHookOnTop',
-          column: 3,
+          column: 11,
           line: 28,
         },
         {
           messageId: 'noHookOnTop',
-          column: 3,
+          column: 11,
           line: 30,
         },
         {
           messageId: 'noHookOnTop',
-          column: 3,
+          column: 11,
           line: 32,
         },
       ],
@@ -129,16 +129,16 @@ ruleTester.run('multiple describe blocks', rule, {
 
 ruleTester.run('nested describe blocks', rule, {
   valid: [
-    `describe("foo" () => {
+    `describe("foo", () => {
         beforeEach(() => {
         });
-        test("bar" () => {
+        test("bar", () => {
           some_fn();
         });
-        describe("inner_foo" () => {
+        describe("inner_foo" , () => {
           beforeEach(() => {
           });
-          test("inner bar" () => {
+          test("inner bar", () => {
             some_fn();
           });
         });
@@ -147,26 +147,26 @@ ruleTester.run('nested describe blocks', rule, {
 
   invalid: [
     {
-      code: `describe("foo" () => {
+      code: `describe("foo", () => {
           beforeAll(() => {
           });
-          test("bar" () => {
+          test("bar", () => {
             some_fn();
           });
-          describe("inner_foo" () => {
+          describe("inner_foo" , () => {
             beforeEach(() => {
             });
-            test("inner bar" () => {
+            test("inner bar", () => {
               some_fn();
             });
-            test("inner bar" () => {
+            test("inner bar", () => {
               some_fn();
             });
             beforeAll(() => {
             });
             afterAll(() => {
             });
-            test("inner bar" () => {
+            test("inner bar", () => {
               some_fn();
             });
           });
@@ -174,12 +174,12 @@ ruleTester.run('nested describe blocks', rule, {
       errors: [
         {
           messageId: 'noHookOnTop',
-          column: 5,
+          column: 13,
           line: 16,
         },
         {
           messageId: 'noHookOnTop',
-          column: 5,
+          column: 13,
           line: 18,
         },
       ],
