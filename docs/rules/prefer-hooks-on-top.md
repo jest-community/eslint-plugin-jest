@@ -64,7 +64,7 @@ describe("foo" () => {
   beforeEach(() => {
     //some hook code
   });
-  
+
   // Not affected by rule
   someSetup();
 
