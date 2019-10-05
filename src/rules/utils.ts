@@ -326,8 +326,9 @@ type MatcherName = string /* & not ModifierName */;
 type ExpectPropertyName = ModifierName | MatcherName;
 
 export type ParsedEqualityMatcherCall<
-  Argument extends TSESTree.Expression = TSESTree.Expression
-> = Omit<ParsedExpectMatcher<EqualityMatcher>, 'arguments'> & {
+  Argument extends TSESTree.Expression = TSESTree.Expression,
+  Matcher extends EqualityMatcher = EqualityMatcher
+> = Omit<ParsedExpectMatcher<Matcher>, 'arguments'> & {
   // todo: probs should also type node parent as CallExpression
   arguments: [Argument];
 };
@@ -338,16 +339,21 @@ export enum ModifierName {
   resolves = 'resolves',
 }
 
-enum EqualityMatcher {
+export enum EqualityMatcher {
   toBe = 'toBe',
   toEqual = 'toEqual',
   toStrictEqual = 'toStrictEqual',
 }
 
-export const isParsedEqualityMatcherCall = (
+export const isParsedEqualityMatcherCall = <
+  MatcherName extends EqualityMatcher = EqualityMatcher
+>(
   matcher: ParsedExpectMatcher,
-): matcher is ParsedEqualityMatcherCall =>
-  EqualityMatcher.hasOwnProperty(matcher.name) &&
+  name?: MatcherName,
+): matcher is ParsedEqualityMatcherCall<TSESTree.Expression, MatcherName> =>
+  (name
+    ? matcher.name === name
+    : EqualityMatcher.hasOwnProperty(matcher.name)) &&
   matcher.arguments !== null &&
   matcher.arguments.length === 1;
 
