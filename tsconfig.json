@@ -2,9 +2,9 @@
   "compilerOptions": {
     "target": "es5",
     "module": "commonjs",
+    "moduleResolution": "node",
     "noEmit": true,
     "strict": true,
-    "moduleResolution": "node",
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "forceConsistentCasingInFileNames": true
