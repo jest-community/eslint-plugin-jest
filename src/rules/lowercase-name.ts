@@ -5,6 +5,7 @@ import {
 } from '@typescript-eslint/experimental-utils';
 import {
   DescribeAlias,
+  TopCase,
   JestFunctionCallExpressionWithIdentifierCallee,
   JestFunctionName,
   TestCaseName,
@@ -52,6 +53,32 @@ const testDescription = (argument: ArgumentLiteral): string | null => {
   return argument.quasis[0].value.raw;
 };
 
+const jestTopFunctioName = (
+  node: CallExpressionWithCorrectCalleeAndArguments,
+  counter: number,
+) => {
+  const description = testDescription(node.arguments[0]);
+  if (description === null) {
+    return null;
+  }
+
+  if (counter !== 1) {
+    return null;
+  }
+
+  const firstCharacter = description.charAt(0);
+
+  if (!firstCharacter) {
+    return null;
+  }
+
+  if (firstCharacter === firstCharacter.toUpperCase()) {
+    return node.callee.name;
+  }
+ 
+  return null;
+}
+
 const jestFunctionName = (
   node: CallExpressionWithCorrectCalleeAndArguments,
 ) => {
@@ -93,7 +120,7 @@ export default createRule({
         properties: {
           ignore: {
             type: 'array',
-            items: { enum: ['describe', 'test', 'it'] },
+            items: { enum: ['describe', 'test', 'it', 'top'] },
             additionalItems: false,
           },
         },
@@ -103,14 +130,25 @@ export default createRule({
   } as const,
   defaultOptions: [{ ignore: [] } as { ignore: readonly JestFunctionName[] }],
   create(context, [{ ignore }]) {
+    let counter: number = 0
     return {
+
       CallExpression(node) {
         if (!isJestFunctionWithLiteralArg(node)) {
           return;
         }
+
+        if (isTestCase || isDescribe) {
+          counter += 1
+        }
+
+        const topMethod = jestTopFunctioName(node, counter);
+
+        const topMethodIgnore = topMethod && ignore.includes(TopCase.top);
+    
         const erroneousMethod = jestFunctionName(node);
 
-        if (erroneousMethod && !ignore.includes(node.callee.name)) {
+        if (erroneousMethod && !ignore.includes(node.callee.name) && topMethodIgnore!==true) {
           context.report({
             messageId: 'unexpectedLowercase',
             data: { method: erroneousMethod },

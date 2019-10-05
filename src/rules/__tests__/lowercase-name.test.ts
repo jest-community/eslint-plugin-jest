@@ -1,6 +1,6 @@
 import { TSESLint } from '@typescript-eslint/experimental-utils';
 import rule from '../lowercase-name';
-import { DescribeAlias, TestCaseName } from '../utils';
+import { DescribeAlias, TestCaseName, TopCase } from '../utils';
 
 const ruleTester = new TSESLint.RuleTester({
   parserOptions: {
@@ -221,6 +221,40 @@ ruleTester.run('lowercase-name with ignore=it', rule, {
     {
       code: 'it(`Foo`, function () {})',
       options: [{ ignore: [TestCaseName.it] }],
+    },
+  ],
+  invalid: [],
+});
+
+ruleTester.run('uppercase-name with ignore=top', rule, {
+  valid: [
+    {
+      code: `describe("Foo", () => {
+            test("bar", () => {
+             some_fn();
+           })
+        })`,
+      options: [{ ignore: [TopCase.top] }],
+    },
+    {
+      code: `describe("Foo", () => {
+                 it("bar", () => {
+                 some_fn();
+                })
+         })`,
+      options: [{ ignore: [TopCase.top] }],
+    },
+    {
+      code: 'describe(`Foo`, function () {})',
+      options: [{ ignore: [TopCase.top] }],
+    },
+    {
+      code: 'test(`Foo`, function () {})',
+      options: [{ ignore: [TopCase.top] }],
+    },
+    {
+      code: 'it(`Foo`, function () {})',
+      options: [{ ignore: [TopCase.top] }],
     },
   ],
   invalid: [],

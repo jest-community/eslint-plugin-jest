@@ -550,7 +550,11 @@ export enum TestCaseProperty {
   'todo' = 'todo',
 }
 
-export type JestFunctionName = DescribeAlias | TestCaseName | HookName;
+export enum TopCase {
+  'top' = 'top',
+}
+
+export type JestFunctionName = DescribeAlias | TestCaseName | HookName | TopCase;
 
 export interface JestFunctionIdentifier<FunctionName extends JestFunctionName>
   extends TSESTree.Identifier {
