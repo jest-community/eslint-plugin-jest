@@ -49,7 +49,7 @@ export = {
         'jest/no-focused-tests': 'error',
         'jest/no-identical-title': 'error',
         'jest/no-jest-import': 'error',
-        // 'jest/no-mocks-import': 'error',
+        'jest/no-mocks-import': 'error',
         'jest/no-jasmine-globals': 'warn',
         'jest/no-test-prefixes': 'error',
         'jest/valid-describe': 'error',
