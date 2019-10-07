@@ -7,9 +7,9 @@ const excludeRules = [
   'require-tothrow-message',
 ];
 
-const ruleNames = Object.keys(plugin.rules).filter(rule => {
-  return excludeRules.includes(rule) === false;
-});
+const ruleNames = Object.keys(plugin.rules).filter(
+  rule => !excludeRules.includes(rule),
+);
 
 const numberOfRules = 39;
 
