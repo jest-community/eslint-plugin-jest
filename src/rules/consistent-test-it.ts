@@ -14,7 +14,7 @@ export default createRule<
       withinDescribe: TestCaseName.it | TestCaseName.test;
     }>,
   ],
-  'consistentMethod' | 'consistentMethodWithingDescribe'
+  'consistentMethod' | 'consistentMethodWithinDescribe'
 >({
   name: __filename,
   meta: {
@@ -27,7 +27,7 @@ export default createRule<
     messages: {
       consistentMethod:
         "Prefer using '{{ testKeyword }}' instead of '{{ oppositeTestKeyword }}'",
-      consistentMethodWithingDescribe:
+      consistentMethodWithinDescribe:
         "Prefer using '{{ testKeywordWithinDescribe }}' instead of '{{ oppositeTestKeyword }}' within describe",
     },
     schema: [
@@ -100,7 +100,7 @@ export default createRule<
           );
 
           context.report({
-            messageId: 'consistentMethodWithingDescribe',
+            messageId: 'consistentMethodWithinDescribe',
             node: node.callee,
             data: { testKeywordWithinDescribe, oppositeTestKeyword },
             fix(fixer) {

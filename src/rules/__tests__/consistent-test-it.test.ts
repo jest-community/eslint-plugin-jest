@@ -107,7 +107,7 @@ ruleTester.run('consistent-test-it with fn=test', rule, {
       options: [{ fn: TestCaseName.test }],
       errors: [
         {
-          messageId: 'consistentMethodWithingDescribe',
+          messageId: 'consistentMethodWithinDescribe',
           data: {
             testKeywordWithinDescribe: TestCaseName.test,
             oppositeTestKeyword: TestCaseName.it,
@@ -208,7 +208,7 @@ ruleTester.run('consistent-test-it with fn=it', rule, {
       options: [{ fn: TestCaseName.it }],
       errors: [
         {
-          messageId: 'consistentMethodWithingDescribe',
+          messageId: 'consistentMethodWithinDescribe',
           data: {
             testKeywordWithinDescribe: TestCaseName.it,
             oppositeTestKeyword: TestCaseName.test,
@@ -249,7 +249,7 @@ ruleTester.run('consistent-test-it with fn=test and withinDescribe=it ', rule, {
       options: [{ fn: TestCaseName.test, withinDescribe: TestCaseName.it }],
       errors: [
         {
-          messageId: 'consistentMethodWithingDescribe',
+          messageId: 'consistentMethodWithinDescribe',
           data: {
             testKeywordWithinDescribe: TestCaseName.it,
             oppositeTestKeyword: TestCaseName.test,
@@ -263,7 +263,7 @@ ruleTester.run('consistent-test-it with fn=test and withinDescribe=it ', rule, {
       options: [{ fn: TestCaseName.test, withinDescribe: TestCaseName.it }],
       errors: [
         {
-          messageId: 'consistentMethodWithingDescribe',
+          messageId: 'consistentMethodWithinDescribe',
           data: {
             testKeywordWithinDescribe: TestCaseName.it,
             oppositeTestKeyword: TestCaseName.test,
@@ -277,7 +277,7 @@ ruleTester.run('consistent-test-it with fn=test and withinDescribe=it ', rule, {
       options: [{ fn: TestCaseName.test, withinDescribe: TestCaseName.it }],
       errors: [
         {
-          messageId: 'consistentMethodWithingDescribe',
+          messageId: 'consistentMethodWithinDescribe',
           data: {
             testKeywordWithinDescribe: TestCaseName.it,
             oppositeTestKeyword: TestCaseName.test,
@@ -291,7 +291,7 @@ ruleTester.run('consistent-test-it with fn=test and withinDescribe=it ', rule, {
       options: [{ fn: TestCaseName.test, withinDescribe: TestCaseName.it }],
       errors: [
         {
-          messageId: 'consistentMethodWithingDescribe',
+          messageId: 'consistentMethodWithinDescribe',
           data: {
             testKeywordWithinDescribe: TestCaseName.it,
             oppositeTestKeyword: TestCaseName.test,
@@ -332,7 +332,7 @@ ruleTester.run('consistent-test-it with fn=it and withinDescribe=test ', rule, {
       options: [{ fn: TestCaseName.it, withinDescribe: TestCaseName.test }],
       errors: [
         {
-          messageId: 'consistentMethodWithingDescribe',
+          messageId: 'consistentMethodWithinDescribe',
           data: {
             testKeywordWithinDescribe: TestCaseName.test,
             oppositeTestKeyword: TestCaseName.it,
@@ -346,7 +346,7 @@ ruleTester.run('consistent-test-it with fn=it and withinDescribe=test ', rule, {
       options: [{ fn: TestCaseName.it, withinDescribe: TestCaseName.test }],
       errors: [
         {
-          messageId: 'consistentMethodWithingDescribe',
+          messageId: 'consistentMethodWithinDescribe',
           data: {
             testKeywordWithinDescribe: TestCaseName.test,
             oppositeTestKeyword: TestCaseName.it,
@@ -360,7 +360,7 @@ ruleTester.run('consistent-test-it with fn=it and withinDescribe=test ', rule, {
       options: [{ fn: TestCaseName.it, withinDescribe: TestCaseName.test }],
       errors: [
         {
-          messageId: 'consistentMethodWithingDescribe',
+          messageId: 'consistentMethodWithinDescribe',
           data: {
             testKeywordWithinDescribe: TestCaseName.test,
             oppositeTestKeyword: TestCaseName.it,
@@ -374,7 +374,7 @@ ruleTester.run('consistent-test-it with fn=it and withinDescribe=test ', rule, {
       options: [{ fn: TestCaseName.it, withinDescribe: TestCaseName.test }],
       errors: [
         {
-          messageId: 'consistentMethodWithingDescribe',
+          messageId: 'consistentMethodWithinDescribe',
           data: {
             testKeywordWithinDescribe: TestCaseName.test,
             oppositeTestKeyword: TestCaseName.it,
@@ -406,7 +406,7 @@ ruleTester.run(
         options: [{ fn: TestCaseName.test, withinDescribe: TestCaseName.test }],
         errors: [
           {
-            messageId: 'consistentMethodWithingDescribe',
+            messageId: 'consistentMethodWithinDescribe',
             data: {
               testKeywordWithinDescribe: TestCaseName.test,
               oppositeTestKeyword: TestCaseName.it,
@@ -450,7 +450,7 @@ ruleTester.run('consistent-test-it with fn=it and withinDescribe=it ', rule, {
       options: [{ fn: TestCaseName.it, withinDescribe: TestCaseName.it }],
       errors: [
         {
-          messageId: 'consistentMethodWithingDescribe',
+          messageId: 'consistentMethodWithinDescribe',
           data: {
             testKeywordWithinDescribe: TestCaseName.it,
             oppositeTestKeyword: TestCaseName.test,
@@ -487,7 +487,7 @@ ruleTester.run('consistent-test-it defaults without config object', rule, {
       code: 'describe("suite", () => { test("foo") })',
       errors: [
         {
-          messageId: 'consistentMethodWithingDescribe',
+          messageId: 'consistentMethodWithinDescribe',
           data: {
             testKeywordWithinDescribe: TestCaseName.it,
             oppositeTestKeyword: TestCaseName.test,
@@ -530,7 +530,7 @@ ruleTester.run('consistent-test-it with withinDescribe=it', rule, {
       options: [{ withinDescribe: TestCaseName.it }],
       errors: [
         {
-          messageId: 'consistentMethodWithingDescribe',
+          messageId: 'consistentMethodWithinDescribe',
           data: {
             testKeywordWithinDescribe: TestCaseName.it,
             oppositeTestKeyword: TestCaseName.test,
@@ -573,7 +573,7 @@ ruleTester.run('consistent-test-it with withinDescribe=test', rule, {
       options: [{ withinDescribe: TestCaseName.test }],
       errors: [
         {
-          messageId: 'consistentMethodWithingDescribe',
+          messageId: 'consistentMethodWithinDescribe',
           data: {
             testKeywordWithinDescribe: TestCaseName.test,
             oppositeTestKeyword: TestCaseName.it,
