@@ -84,6 +84,16 @@ export default createRule({
       ) {
         context.report({ messageId: 'focusedTest', node: callee });
       }
+
+      if (
+        callee.type === AST_NODE_TYPES.TaggedTemplateExpression &&
+        callee.tag.type === AST_NODE_TYPES.MemberExpression &&
+        callee.tag.object &&
+        callee.tag.object.type === AST_NODE_TYPES.Identifier &&
+        isCallToFocusedTestFunction(callee.tag.object)
+      ) {
+        context.report({ messageId: 'focusedTest', node: callee });
+      }
     },
   }),
 });
