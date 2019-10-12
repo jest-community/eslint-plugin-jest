@@ -37,6 +37,8 @@ const isExpectCallPresentInFunction = (body: TSESTree.Node) => {
       if (line.type === AST_NODE_TYPES.ReturnStatement && line.argument) {
         return isFullExpectCall(line.argument);
       }
+
+      return false;
     });
   }
 
@@ -147,6 +149,8 @@ const verifyExpectWithReturn = (
         return true;
       }
     }
+
+    return false;
   });
 };
 
