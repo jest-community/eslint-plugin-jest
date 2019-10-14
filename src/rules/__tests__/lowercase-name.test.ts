@@ -256,6 +256,28 @@ ruleTester.run('uppercase-name with ignore=top', rule, {
       code: 'it(`Foo`, function () {})',
       options: [{ ignore: [TopCase.top] }],
     },
+    {
+      code: `describe('MyFirstClass', () => {});
+      describe('MySecondClass', () => {});`,
+      options: [{ ignore: [TopCase.top] }],
+    },
   ],
-  invalid: [],
+  invalid: [
+    {
+      code:`describe("Xyz abc"){
+        test("Cde"){}
+      }`,
+      output: `describe("Xyz abc"){
+        test("cde"){}
+      }`,
+      errors: [
+        {
+          messageId: 'unexpectedLowercase',
+          data: { method: DescribeAlias.describe },
+          column: 1,
+          line: 1,
+        },
+      ],
+    }
+  ],
 });
