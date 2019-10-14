@@ -285,7 +285,7 @@ ruleTester.run('uppercase-name with ignore=top', rule, {
     }
   ],
 }
-               
+
 ruleTester.run('lowercase-name with allowedPrefixes', rule, {
   valid: [
     {
@@ -300,6 +300,10 @@ ruleTester.run('lowercase-name with allowedPrefixes', rule, {
       code: 'it(`PATCH /live`, function () {})',
       options: [{ allowedPrefixes: ['GET', 'PATCH'] }],
     },
+    {
+      code: `describe('MyFirstClass', () => {});
+      describe('MySecondClass', () => {});`,
+      options: [{ ignore: [TopCase.top] }],
+    },
   ],
-  invalid: [],
 });
