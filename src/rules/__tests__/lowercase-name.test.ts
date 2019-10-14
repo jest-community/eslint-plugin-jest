@@ -46,6 +46,10 @@ ruleTester.run('lowercase-name', rule, {
     'describe(``)',
     'describe("")',
     'describe(42)',
+    {
+      code: 'describe(42)',
+      options: [{ ignore: undefined, allowedPrefixes: undefined }],
+    },
   ],
 
   invalid: [
@@ -224,7 +228,7 @@ ruleTester.run('lowercase-name with ignore=it', rule, {
     },
   ],
   invalid: [],
-});
+})
 
 ruleTester.run('uppercase-name with ignore=top', rule, {
   valid: [
@@ -280,4 +284,22 @@ ruleTester.run('uppercase-name with ignore=top', rule, {
       ],
     }
   ],
+}
+               
+ruleTester.run('lowercase-name with allowedPrefixes', rule, {
+  valid: [
+    {
+      code: "it('GET /live', function () {})",
+      options: [{ allowedPrefixes: ['GET'] }],
+    },
+    {
+      code: 'it("POST /live", function () {})',
+      options: [{ allowedPrefixes: ['GET', 'POST'] }],
+    },
+    {
+      code: 'it(`PATCH /live`, function () {})',
+      options: [{ allowedPrefixes: ['GET', 'PATCH'] }],
+    },
+  ],
+  invalid: [],
 });

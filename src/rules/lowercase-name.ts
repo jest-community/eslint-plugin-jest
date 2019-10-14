@@ -81,9 +81,13 @@ const jestTopFunctioName = (
 
 const jestFunctionName = (
   node: CallExpressionWithCorrectCalleeAndArguments,
+  allowedPrefixes: readonly string[],
 ) => {
   const description = testDescription(node.arguments[0]);
-  if (description === null) {
+  if (
+    description === null ||
+    allowedPrefixes.some(name => description.startsWith(name))
+  ) {
     return null;
   }
 
@@ -100,7 +104,15 @@ const jestFunctionName = (
   return null;
 };
 
-export default createRule({
+export default createRule<
+  [
+    Partial<{
+      ignore: readonly JestFunctionName[];
+      allowedPrefixes: readonly string[];
+    }>,
+  ],
+  'unexpectedLowercase'
+>({
   name: __filename,
   meta: {
     type: 'suggestion',
@@ -123,14 +135,19 @@ export default createRule({
             items: { enum: ['describe', 'test', 'it', 'top'] },
             additionalItems: false,
           },
+          allowedPrefixes: {
+            type: 'array',
+            items: { type: 'string' },
+            additionalItems: false,
+          },
         },
         additionalProperties: false,
       },
     ],
   } as const,
-  defaultOptions: [{ ignore: [] } as { ignore: readonly JestFunctionName[] }],
-  create(context, [{ ignore }]) {
-    let counter: number = 0
+
+  defaultOptions: [{ ignore: [], allowedPrefixes: [] }],
+  create(context, [{ ignore = [], allowedPrefixes = [] }]) {
     return {
 
       CallExpression(node) {
@@ -146,7 +163,7 @@ export default createRule({
 
         const topMethodIgnore = topMethod && ignore.includes(TopCase.top);
     
-        const erroneousMethod = jestFunctionName(node);
+        const erroneousMethod = jestFunctionName(node, allowedPrefixes);
 
         if (erroneousMethod && !ignore.includes(node.callee.name) && topMethodIgnore!==true) {
           context.report({
