@@ -554,7 +554,11 @@ export enum TopCase {
   'top' = 'top',
 }
 
-export type JestFunctionName = DescribeAlias | TestCaseName | HookName | TopCase;
+export type JestFunctionName =
+  | DescribeAlias
+  | TestCaseName
+  | HookName
+  | TopCase;
 
 export interface JestFunctionIdentifier<FunctionName extends JestFunctionName>
   extends TSESTree.Identifier {
@@ -655,6 +659,13 @@ export const isDescribe = (
       DescribeProperty.hasOwnProperty(node.callee.property.name))
   );
 };
+
+export function isTopMostJestFunction(node: TSESTree.CallExpression): boolean {
+  if (node.parent && node.parent.parent && node.parent.parent.parent === null) {
+    return true;
+  }
+  return false;
+}
 
 const collectReferences = (scope: TSESLint.Scope.Scope) => {
   const locals = new Set();

@@ -5,13 +5,14 @@ import {
 } from '@typescript-eslint/experimental-utils';
 import {
   DescribeAlias,
-  TopCase,
   JestFunctionCallExpressionWithIdentifierCallee,
   JestFunctionName,
   TestCaseName,
+  TopCase,
   createRule,
   isDescribe,
   isTestCase,
+  isTopMostJestFunction,
 } from './utils';
 
 type ArgumentLiteral = TSESTree.Literal | TSESTree.TemplateLiteral;
@@ -55,29 +56,24 @@ const testDescription = (argument: ArgumentLiteral): string | null => {
 
 const jestTopFunctioName = (
   node: CallExpressionWithCorrectCalleeAndArguments,
-  counter: number,
+  isTop: boolean,
 ) => {
   const description = testDescription(node.arguments[0]);
+  if (isTop !== true) {
+    return null;
+  }
+
   if (description === null) {
     return null;
   }
-
-  if (counter !== 1) {
-    return null;
-  }
-
   const firstCharacter = description.charAt(0);
-
-  if (!firstCharacter) {
-    return null;
-  }
 
   if (firstCharacter === firstCharacter.toUpperCase()) {
     return node.callee.name;
   }
- 
+
   return null;
-}
+};
 
 const jestFunctionName = (
   node: CallExpressionWithCorrectCalleeAndArguments,
@@ -149,23 +145,19 @@ export default createRule<
   defaultOptions: [{ ignore: [], allowedPrefixes: [] }],
   create(context, [{ ignore = [], allowedPrefixes = [] }]) {
     return {
-
       CallExpression(node) {
         if (!isJestFunctionWithLiteralArg(node)) {
           return;
         }
 
-        if (isTestCase || isDescribe) {
-          counter += 1
+        const topMethod = jestTopFunctioName(node, isTopMostJestFunction(node));
+        if (topMethod && ignore.includes(TopCase.top)) {
+          return;
         }
 
-        const topMethod = jestTopFunctioName(node, counter);
-
-        const topMethodIgnore = topMethod && ignore.includes(TopCase.top);
-    
         const erroneousMethod = jestFunctionName(node, allowedPrefixes);
 
-        if (erroneousMethod && !ignore.includes(node.callee.name) && topMethodIgnore!==true) {
+        if (erroneousMethod && !ignore.includes(node.callee.name)) {
           context.report({
             messageId: 'unexpectedLowercase',
             data: { method: erroneousMethod },

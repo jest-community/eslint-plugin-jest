@@ -228,18 +228,10 @@ ruleTester.run('lowercase-name with ignore=it', rule, {
     },
   ],
   invalid: [],
-})
+});
 
 ruleTester.run('uppercase-name with ignore=top', rule, {
   valid: [
-    {
-      code: `describe("Foo", () => {
-            test("bar", () => {
-             some_fn();
-           })
-        })`,
-      options: [{ ignore: [TopCase.top] }],
-    },
     {
       code: `describe("Foo", () => {
                  it("bar", () => {
@@ -268,23 +260,20 @@ ruleTester.run('uppercase-name with ignore=top', rule, {
   ],
   invalid: [
     {
-      code:`describe("Xyz abc"){
-        test("Cde"){}
-      }`,
-      output: `describe("Xyz abc"){
-        test("cde"){}
-      }`,
+      code: `describe("Foo", () => {test("Bar foo", () => {})})`,
+      options: [{ ignore: [TopCase.top] }],
+      output: `describe("Foo", () => {test("bar foo", () => {})})`,
       errors: [
         {
           messageId: 'unexpectedLowercase',
-          data: { method: DescribeAlias.describe },
-          column: 1,
+          data: { method: TestCaseName.test },
+          column: 24,
           line: 1,
         },
       ],
-    }
+    },
   ],
-}
+});
 
 ruleTester.run('lowercase-name with allowedPrefixes', rule, {
   valid: [
@@ -300,10 +289,6 @@ ruleTester.run('lowercase-name with allowedPrefixes', rule, {
       code: 'it(`PATCH /live`, function () {})',
       options: [{ allowedPrefixes: ['GET', 'PATCH'] }],
     },
-    {
-      code: `describe('MyFirstClass', () => {});
-      describe('MySecondClass', () => {});`,
-      options: [{ ignore: [TopCase.top] }],
-    },
   ],
+  invalid: [],
 });
