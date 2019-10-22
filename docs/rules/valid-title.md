@@ -1,4 +1,4 @@
-# Disallow duplicate setup and teardown hooks (no-duplicate-hooks)
+# describe/test titles should be valid (valid-title)
 
 A describe/ test block should not contain accidentalSpace or duplicatePrefix.
 

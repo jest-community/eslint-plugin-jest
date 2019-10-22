@@ -150,6 +150,7 @@ installations requiring long-term consistency.
 | [valid-describe][]             | Enforce valid `describe()` callback                               | ![recommended][] |                     |
 | [valid-expect-in-promise][]    | Enforce having return statement when testing with promises        | ![recommended][] |                     |
 | [valid-expect][]               | Enforce valid `expect()` usage                                    | ![recommended][] |                     |
+| [valid-title][]                | Disallow invalid `describe`/`test` titles                         |                  |                     |
 
 ## Credit
 
