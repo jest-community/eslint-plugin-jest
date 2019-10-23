@@ -9,6 +9,10 @@ const ruleTester = new TSESLint.RuleTester({
 
 ruleTester.run('no-accidental-space', rule, {
   valid: [
+    'it()',
+    'describe()',
+    'it("")',
+    'it.each()()',
     'describe("foo", function () {})',
     'describe(6, function () {})',
     'fdescribe("foo", function () {})',
