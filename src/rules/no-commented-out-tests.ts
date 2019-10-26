@@ -21,7 +21,7 @@ export default createRule({
     },
     schema: [],
     type: 'suggestion',
-  } as const,
+  },
   defaultOptions: [],
   create(context) {
     const sourceCode = context.getSourceCode();
