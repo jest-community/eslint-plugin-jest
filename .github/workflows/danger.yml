@@ -1,0 +1,18 @@
+name: Danger
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  danger:
+    name: release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - uses: danger/danger
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
