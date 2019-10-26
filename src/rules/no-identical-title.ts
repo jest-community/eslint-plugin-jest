@@ -1,6 +1,6 @@
 import {
   createRule,
-  getAccessorValue,
+  getStringValue,
   isDescribe,
   isStringNode,
   isTestCase,
@@ -46,7 +46,9 @@ export default createRule({
         if (!argument || !isStringNode(argument)) {
           return;
         }
-        const title = getAccessorValue(argument);
+
+        const title = getStringValue(argument);
+
         if (isTestCase(node)) {
           if (currentLayer.testTitles.includes(title)) {
             context.report({ messageId: 'multipleTestTitle', node });
