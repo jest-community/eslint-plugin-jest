@@ -7,11 +7,117 @@ const ruleTester = new TSESLint.RuleTester({
   },
 });
 
+ruleTester.run('no-empty-title', rule, {
+  valid: [
+    'describe()',
+    'someFn("", function () {})',
+    'describe(1, function () {})',
+    'describe("foo", function () {})',
+    'describe("foo", function () { it("bar", function () {}) })',
+    'test("foo", function () {})',
+    'test(`foo`, function () {})',
+    'test(`${foo}`, function () {})',
+    "it('foo', function () {})",
+    "xdescribe('foo', function () {})",
+    "xit('foo', function () {})",
+    "xtest('foo', function () {})",
+  ],
+  invalid: [
+    {
+      code: 'describe("", function () {})',
+      errors: [
+        {
+          messageId: 'emptyTitle',
+          column: 1,
+          line: 1,
+          data: { jestFunctionName: 'describe' },
+        },
+      ],
+    },
+    {
+      code: ["describe('foo', () => {", "it('', () => {})", '})'].join('\n'),
+      errors: [
+        {
+          messageId: 'emptyTitle',
+          column: 1,
+          line: 2,
+          data: { jestFunctionName: 'test' },
+        },
+      ],
+    },
+    {
+      code: 'it("", function () {})',
+      errors: [
+        {
+          messageId: 'emptyTitle',
+          column: 1,
+          line: 1,
+          data: { jestFunctionName: 'test' },
+        },
+      ],
+    },
+    {
+      code: 'test("", function () {})',
+      errors: [
+        {
+          messageId: 'emptyTitle',
+          column: 1,
+          line: 1,
+          data: { jestFunctionName: 'test' },
+        },
+      ],
+    },
+    {
+      code: 'test(``, function () {})',
+      errors: [
+        {
+          messageId: 'emptyTitle',
+          column: 1,
+          line: 1,
+          data: { jestFunctionName: 'test' },
+        },
+      ],
+    },
+    {
+      code: "xdescribe('', () => {})",
+      errors: [
+        {
+          messageId: 'emptyTitle',
+          column: 1,
+          line: 1,
+          data: { jestFunctionName: 'describe' },
+        },
+      ],
+    },
+    {
+      code: "xit('', () => {})",
+      errors: [
+        {
+          messageId: 'emptyTitle',
+          column: 1,
+          line: 1,
+          data: { jestFunctionName: 'test' },
+        },
+      ],
+    },
+    {
+      code: "xtest('', () => {})",
+      errors: [
+        {
+          messageId: 'emptyTitle',
+          column: 1,
+          line: 1,
+          data: { jestFunctionName: 'test' },
+        },
+      ],
+    },
+  ],
+});
+
 ruleTester.run('no-accidental-space', rule, {
   valid: [
     'it()',
     'describe()',
-    'it("")',
     'it.each()()',
     'describe("foo", function () {})',
     'describe(6, function () {})',

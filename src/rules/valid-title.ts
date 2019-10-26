@@ -1,4 +1,6 @@
 import {
+  DescribeAlias,
+  TestCaseName,
   createRule,
   getNodeName,
   getStringValue,
@@ -27,6 +29,7 @@ export default createRule({
       recommended: false,
     },
     messages: {
+      emptyTitle: '{{ jestFunctionName }} should not have an empty title',
       duplicatePrefix: 'should not have duplicate prefix',
       accidentalSpace: 'should not have space in the beginning',
     },
@@ -42,7 +45,22 @@ export default createRule({
         if (!node.arguments.length) return;
 
         const title = getNodeTitle(node);
-        if (!title) return;
+
+        if (!title) {
+          if (typeof title === 'string') {
+            context.report({
+              messageId: 'emptyTitle',
+              data: {
+                jestFunctionName: isDescribe(node)
+                  ? DescribeAlias.describe
+                  : TestCaseName.test,
+              },
+              node,
+            });
+          }
+
+          return;
+        }
 
         if (title.trimLeft().length !== title.length) {
           context.report({
