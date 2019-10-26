@@ -5,6 +5,6 @@ module.exports = {
   plugins: ['replace-ts-export-assignment'],
   presets: [
     '@babel/preset-typescript',
-    ['@babel/preset-env', { targets: { node: 6 } }],
+    ['@babel/preset-env', { targets: { node: 8 } }],
   ],
 };

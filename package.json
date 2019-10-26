@@ -20,7 +20,7 @@
   ],
   "main": "lib/",
   "engines": {
-    "node": ">=6"
+    "node": ">=8"
   },
   "peerDependencies": {
     "eslint": ">=5"
