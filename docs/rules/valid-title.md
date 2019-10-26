@@ -3,6 +3,7 @@
 Checks that the title of Jest blocks are valid by ensuring that titles are:
 
 - not empty,
+- is a string,
 - not prefixed with their block name,
 - have no leading or trailing spaces
 
@@ -38,6 +39,31 @@ it('foo', () => {});
 xdescribe('foo', () => {});
 xit('foo', () => {});
 xtest('foo', () => {});
+```
+
+**titleMustBeString**
+
+Titles should always be a string literal or expression.
+
+Examples of **incorrect** code for this rule:
+
+```js
+it(123, () => {});
+describe(String(/.+/), () => {});
+describe(myFunction, () => {});
+xdescribe(myFunction, () => {});
+describe(6, function () {})
+```
+
+Examples of **correct** code for this rule:
+
+```js
+it("is a string", () => {});
+test("is a string", () => {});
+xtest("is a string", () => {});
+describe("is a string", () => {});
+describe.skip("is a string", () => {});
+fdescribe("is a string", () => {});
 ```
 
 **duplicatePrefix**
