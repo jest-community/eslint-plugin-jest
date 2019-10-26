@@ -9,12 +9,35 @@ on:
       - master
 
 jobs:
-  test:
-    name: Test on Node.js ${{ matrix.node-version }} and ${{ matrix.os }}
+  test-node:
+    name: Test on Node.js ${{ matrix.node-version }}
     strategy:
       fail-fast: false
       matrix:
         node-version: [6.x, 8.x, 10.x, 12.x, 13.x]
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: install
+        run: yarn
+      - name: run prettylint
+        run: yarn prettylint
+      - name: run typecheck
+        run: yarn typecheck
+      - name: run tests
+        run: yarn test --coverage
+        env:
+          CI: true
+  test-os:
+    name: Test on ${{ matrix.os }} using Node.js LTS
+    strategy:
+      fail-fast: false
+      matrix:
         os: [ubuntu-latest, windows-latest, macOS-latest]
     runs-on: ${{ matrix.os }}
 
@@ -23,7 +46,7 @@ jobs:
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 12.x
       - name: install
         run: yarn
       - name: run prettylint
