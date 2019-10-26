@@ -3,7 +3,6 @@ import {
   getAccessorValue,
   isDescribe,
   isStringNode,
-  isTemplateLiteral,
   isTestCase,
 } from './utils';
 
@@ -44,11 +43,7 @@ export default createRule({
           contexts.push(newDescribeContext());
         }
         const [argument] = node.arguments;
-        if (
-          !argument ||
-          !isStringNode(argument) ||
-          (isTemplateLiteral(argument) && argument.expressions.length > 0)
-        ) {
+        if (!argument || !isStringNode(argument)) {
           return;
         }
         const title = getAccessorValue(argument);
