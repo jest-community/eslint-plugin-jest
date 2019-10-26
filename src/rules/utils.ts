@@ -105,9 +105,8 @@ export const isTemplateLiteral = <V extends string>(
   value?: V,
 ): node is TemplateLiteral<V> =>
   node.type === AST_NODE_TYPES.TemplateLiteral &&
-  (value === undefined ||
-    (node.quasis.length === 1 && // bail out if not simple
-      node.quasis[0].value.raw === value));
+  node.quasis.length === 1 && // bail out if not simple
+  (value === undefined || node.quasis[0].value.raw === value);
 
 type StringNode<S extends string = string> =
   | StringLiteral<S>
