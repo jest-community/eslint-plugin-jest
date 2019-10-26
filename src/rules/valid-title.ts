@@ -3,6 +3,8 @@ import {
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
 import {
+  DescribeAlias,
+  TestCaseName,
   createRule,
   getNodeName,
   getStringValue,
@@ -23,6 +25,7 @@ export default createRule({
       recommended: false,
     },
     messages: {
+      emptyTitle: '{{ jestFunctionName }} should not have an empty title',
       duplicatePrefix: 'should not have duplicate prefix',
       accidentalSpace: 'should not have leading or trailing spaces',
     },
@@ -47,6 +50,18 @@ export default createRule({
         const title = getStringValue(argument);
 
         if (!title) {
+          if (typeof title === 'string') {
+            context.report({
+              messageId: 'emptyTitle',
+              data: {
+                jestFunctionName: isDescribe(node)
+                  ? DescribeAlias.describe
+                  : TestCaseName.test,
+              },
+              node,
+            });
+          }
+
           return;
         }
 
