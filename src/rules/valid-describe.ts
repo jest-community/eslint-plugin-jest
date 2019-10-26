@@ -6,7 +6,6 @@ import {
   createRule,
   isDescribe,
   isFunction,
-  isStringNode,
   isSupportedAccessor,
 } from './utils';
 
@@ -38,7 +37,6 @@ export default createRule({
     },
     messages: {
       nameAndCallback: 'Describe requires name and callback arguments',
-      firstArgumentMustBeName: 'First argument must be name',
       secondArgumentMustBeFunction: 'Second argument must be function',
       noAsyncDescribeCallback: 'No async describe callback',
       unexpectedDescribeArgument: 'Unexpected argument(s) in describe callback',
@@ -55,21 +53,14 @@ export default createRule({
           return;
         }
 
-        if (node.arguments.length === 0) {
+        if (node.arguments.length < 1) {
           return context.report({
             messageId: 'nameAndCallback',
             loc: node.loc,
           });
         }
 
-        const [name, callback] = node.arguments;
-
-        if (!isStringNode(name)) {
-          context.report({
-            messageId: 'firstArgumentMustBeName',
-            loc: paramsLocation(node.arguments),
-          });
-        }
+        const [, callback] = node.arguments;
 
         if (!callback) {
           context.report({

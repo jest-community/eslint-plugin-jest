@@ -7,11 +7,83 @@ const ruleTester = new TSESLint.RuleTester({
   },
 });
 
+ruleTester.run('title-must-be-string', rule, {
+  valid: [
+    'it("is a string", () => {});',
+    'test("is a string", () => {});',
+    'xtest("is a string", () => {});',
+    'describe("is a string", () => {});',
+    'describe.skip("is a string", () => {});',
+    'fdescribe("is a string", () => {});',
+  ],
+  invalid: [
+    {
+      code: 'it(123, () => {});',
+      errors: [
+        {
+          messageId: 'titleMustBeString',
+          column: 4,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: 'describe(String(/.+/), () => {});',
+      errors: [
+        {
+          messageId: 'titleMustBeString',
+          column: 10,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: 'describe(myFunction, () => {});',
+      errors: [
+        {
+          messageId: 'titleMustBeString',
+          column: 10,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: 'xdescribe(myFunction, () => {});',
+      errors: [
+        {
+          messageId: 'titleMustBeString',
+          column: 11,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: 'describe(6, function () {})',
+      errors: [
+        {
+          messageId: 'titleMustBeString',
+          column: 10,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: 'describe.skip(123, () => {});',
+      errors: [
+        {
+          messageId: 'titleMustBeString',
+          column: 15,
+          line: 1,
+        },
+      ],
+    },
+  ],
+});
+
 ruleTester.run('no-empty-title', rule, {
   valid: [
     'describe()',
     'someFn("", function () {})',
-    'describe(1, function () {})',
     'describe("foo", function () {})',
     'describe("foo", function () { it("bar", function () {}) })',
     'test("foo", function () {})',
@@ -120,7 +192,6 @@ ruleTester.run('no-accidental-space', rule, {
     'describe()',
     'it.each()()',
     'describe("foo", function () {})',
-    'describe(6, function () {})',
     'fdescribe("foo", function () {})',
     'xdescribe("foo", function () {})',
     'it("foo", function () {})',

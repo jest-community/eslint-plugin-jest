@@ -25,6 +25,7 @@ export default createRule({
       recommended: false,
     },
     messages: {
+      titleMustBeString: 'Title must be a string',
       emptyTitle: '{{ jestFunctionName }} should not have an empty title',
       duplicatePrefix: 'should not have duplicate prefix',
       accidentalSpace: 'should not have leading or trailing spaces',
@@ -44,23 +45,28 @@ export default createRule({
         const [argument] = node.arguments;
 
         if (!isStringNode(argument)) {
+          if (argument.type !== AST_NODE_TYPES.TemplateLiteral) {
+            context.report({
+              messageId: 'titleMustBeString',
+              loc: argument.loc,
+            });
+          }
+
           return;
         }
 
         const title = getStringValue(argument);
 
         if (!title) {
-          if (typeof title === 'string') {
-            context.report({
-              messageId: 'emptyTitle',
-              data: {
-                jestFunctionName: isDescribe(node)
-                  ? DescribeAlias.describe
-                  : TestCaseName.test,
-              },
-              node,
-            });
-          }
+          context.report({
+            messageId: 'emptyTitle',
+            data: {
+              jestFunctionName: isDescribe(node)
+                ? DescribeAlias.describe
+                : TestCaseName.test,
+            },
+            node,
+          });
 
           return;
         }

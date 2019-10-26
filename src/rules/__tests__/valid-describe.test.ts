@@ -55,10 +55,7 @@ ruleTester.run('valid-describe', rule, {
   invalid: [
     {
       code: 'describe(() => {})',
-      errors: [
-        { messageId: 'firstArgumentMustBeName', line: 1, column: 10 },
-        { messageId: 'nameAndCallback', line: 1, column: 10 },
-      ],
+      errors: [{ messageId: 'nameAndCallback', line: 1, column: 10 }],
     },
     {
       code: 'describe("foo")',
