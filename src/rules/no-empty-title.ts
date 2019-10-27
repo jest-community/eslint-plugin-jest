@@ -29,8 +29,8 @@ export default createRule({
         if (!isDescribe(node) && !isTestCase(node)) {
           return;
         }
-        const [firstArgument] = node.arguments;
-        if (!firstArgument || !isStringNode(firstArgument, '')) {
+        const [argument] = node.arguments;
+        if (!argument || !isStringNode(argument, '')) {
           return;
         }
 
@@ -38,7 +38,7 @@ export default createRule({
           messageId: isDescribe(node)
             ? DescribeAlias.describe
             : TestCaseName.test,
-          node,
+          node: argument,
         });
       },
     };

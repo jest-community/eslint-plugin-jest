@@ -32,35 +32,35 @@ ruleTester.run('no-accidental-space', rule, {
   invalid: [
     {
       code: 'describe(" foo", function () {})',
-      errors: [{ messageId: 'accidentalSpace', column: 1, line: 1 }],
+      errors: [{ messageId: 'accidentalSpace', column: 10, line: 1 }],
     },
     {
       code: 'fdescribe(" foo", function () {})',
-      errors: [{ messageId: 'accidentalSpace', column: 1, line: 1 }],
+      errors: [{ messageId: 'accidentalSpace', column: 11, line: 1 }],
     },
     {
       code: 'xdescribe(" foo", function () {})',
-      errors: [{ messageId: 'accidentalSpace', column: 1, line: 1 }],
+      errors: [{ messageId: 'accidentalSpace', column: 11, line: 1 }],
     },
     {
       code: 'it(" foo", function () {})',
-      errors: [{ messageId: 'accidentalSpace', column: 1, line: 1 }],
+      errors: [{ messageId: 'accidentalSpace', column: 4, line: 1 }],
     },
     {
       code: 'fit(" foo", function () {})',
-      errors: [{ messageId: 'accidentalSpace', column: 1, line: 1 }],
+      errors: [{ messageId: 'accidentalSpace', column: 5, line: 1 }],
     },
     {
       code: 'xit(" foo", function () {})',
-      errors: [{ messageId: 'accidentalSpace', column: 1, line: 1 }],
+      errors: [{ messageId: 'accidentalSpace', column: 5, line: 1 }],
     },
     {
       code: 'test(" foo", function () {})',
-      errors: [{ messageId: 'accidentalSpace', column: 1, line: 1 }],
+      errors: [{ messageId: 'accidentalSpace', column: 6, line: 1 }],
     },
     {
       code: 'xtest(" foo", function () {})',
-      errors: [{ messageId: 'accidentalSpace', column: 1, line: 1 }],
+      errors: [{ messageId: 'accidentalSpace', column: 7, line: 1 }],
     },
     {
       code: `
@@ -68,7 +68,7 @@ ruleTester.run('no-accidental-space', rule, {
         it('bar', () => {})
       })
       `,
-      errors: [{ messageId: 'accidentalSpace', column: 7, line: 2 }],
+      errors: [{ messageId: 'accidentalSpace', column: 16, line: 2 }],
     },
     {
       code: `
@@ -76,7 +76,7 @@ ruleTester.run('no-accidental-space', rule, {
         it(' bar', () => {})
       })
       `,
-      errors: [{ messageId: 'accidentalSpace', column: 9, line: 3 }],
+      errors: [{ messageId: 'accidentalSpace', column: 12, line: 3 }],
     },
   ],
 });
@@ -90,15 +90,15 @@ ruleTester.run('no-duplicate-prefix ft describe', rule, {
   invalid: [
     {
       code: 'describe("describe foo", function () {})',
-      errors: [{ messageId: 'duplicatePrefix', column: 1, line: 1 }],
+      errors: [{ messageId: 'duplicatePrefix', column: 10, line: 1 }],
     },
     {
       code: 'fdescribe("describe foo", function () {})',
-      errors: [{ messageId: 'duplicatePrefix', column: 1, line: 1 }],
+      errors: [{ messageId: 'duplicatePrefix', column: 11, line: 1 }],
     },
     {
       code: 'xdescribe("describe foo", function () {})',
-      errors: [{ messageId: 'duplicatePrefix', column: 1, line: 1 }],
+      errors: [{ messageId: 'duplicatePrefix', column: 11, line: 1 }],
     },
   ],
 });
@@ -108,11 +108,11 @@ ruleTester.run('no-duplicate-prefix ft test', rule, {
   invalid: [
     {
       code: 'test("test foo", function () {})',
-      errors: [{ messageId: 'duplicatePrefix', column: 1, line: 1 }],
+      errors: [{ messageId: 'duplicatePrefix', column: 6, line: 1 }],
     },
     {
       code: 'xtest("test foo", function () {})',
-      errors: [{ messageId: 'duplicatePrefix', column: 1, line: 1 }],
+      errors: [{ messageId: 'duplicatePrefix', column: 7, line: 1 }],
     },
   ],
 });
@@ -126,15 +126,15 @@ ruleTester.run('no-duplicate-prefix ft it', rule, {
   invalid: [
     {
       code: 'it("it foo", function () {})',
-      errors: [{ messageId: 'duplicatePrefix', column: 1, line: 1 }],
+      errors: [{ messageId: 'duplicatePrefix', column: 4, line: 1 }],
     },
     {
       code: 'fit("it foo", function () {})',
-      errors: [{ messageId: 'duplicatePrefix', column: 1, line: 1 }],
+      errors: [{ messageId: 'duplicatePrefix', column: 5, line: 1 }],
     },
     {
       code: 'xit("it foo", function () {})',
-      errors: [{ messageId: 'duplicatePrefix', column: 1, line: 1 }],
+      errors: [{ messageId: 'duplicatePrefix', column: 5, line: 1 }],
     },
   ],
 });
@@ -152,14 +152,14 @@ ruleTester.run('no-duplicate-prefix ft nested', rule, {
       describe('describe foo', () => {
         it('bar', () => {})
       })`,
-      errors: [{ messageId: 'duplicatePrefix', column: 7, line: 2 }],
+      errors: [{ messageId: 'duplicatePrefix', column: 16, line: 2 }],
     },
     {
       code: `
       describe('foo', () => {
         it('it bar', () => {})
       })`,
-      errors: [{ messageId: 'duplicatePrefix', column: 9, line: 3 }],
+      errors: [{ messageId: 'duplicatePrefix', column: 12, line: 3 }],
     },
   ],
 });
