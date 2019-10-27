@@ -1,6 +1,6 @@
 import { TSESLint } from '@typescript-eslint/experimental-utils';
 import resolveFrom from 'resolve-from';
-import rule from '../require-tothrow-message';
+import rule from '../require-to-throw-message';
 
 const ruleTester = new TSESLint.RuleTester({
   parser: resolveFrom(require.resolve('eslint'), 'espree'),
@@ -9,7 +9,7 @@ const ruleTester = new TSESLint.RuleTester({
   },
 });
 
-ruleTester.run('require-tothrow-message', rule, {
+ruleTester.run('require-to-throw-message', rule, {
   valid: [
     // String
     "expect(() => { throw new Error('a'); }).toThrow('a');",
@@ -68,8 +68,8 @@ ruleTester.run('require-tothrow-message', rule, {
       code: "expect(() => { throw new Error('a'); }).toThrow();",
       errors: [
         {
-          messageId: 'requireRethrow',
-          data: { propertyName: 'toThrow' },
+          messageId: 'addErrorMessage',
+          data: { matcherName: 'toThrow' },
           column: 41,
           line: 1,
         },
@@ -80,8 +80,8 @@ ruleTester.run('require-tothrow-message', rule, {
       code: "expect(() => { throw new Error('a'); }).toThrowError();",
       errors: [
         {
-          messageId: 'requireRethrow',
-          data: { propertyName: 'toThrowError' },
+          messageId: 'addErrorMessage',
+          data: { matcherName: 'toThrowError' },
           column: 41,
           line: 1,
         },
@@ -97,14 +97,14 @@ ruleTester.run('require-tothrow-message', rule, {
     })`,
       errors: [
         {
-          messageId: 'requireRethrow',
-          data: { propertyName: 'toThrow' },
+          messageId: 'addErrorMessage',
+          data: { matcherName: 'toThrow' },
           column: 49,
           line: 3,
         },
         {
-          messageId: 'requireRethrow',
-          data: { propertyName: 'toThrowError' },
+          messageId: 'addErrorMessage',
+          data: { matcherName: 'toThrowError' },
           column: 49,
           line: 4,
         },
