@@ -1,4 +1,7 @@
-import { TSESTree } from '@typescript-eslint/experimental-utils';
+import {
+  AST_NODE_TYPES,
+  TSESTree,
+} from '@typescript-eslint/experimental-utils';
 import {
   createRule,
   getNodeName,
@@ -25,6 +28,7 @@ export default createRule({
     },
     type: 'suggestion',
     schema: [],
+    fixable: 'code',
   },
   defaultOptions: [],
   create(context) {
@@ -50,6 +54,19 @@ export default createRule({
           context.report({
             messageId: 'accidentalSpace',
             node: argument,
+            fix(fixer) {
+              const stringValue =
+                argument.type === AST_NODE_TYPES.TemplateLiteral
+                  ? `\`${argument.quasis[0].value.raw}\``
+                  : argument.raw;
+
+              return [
+                fixer.replaceTextRange(
+                  argument.range,
+                  stringValue.replace(/^([`'"]) +?/, '$1'),
+                ),
+              ];
+            },
           });
         }
 
