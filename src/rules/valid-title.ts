@@ -35,7 +35,7 @@ export default createRule({
   defaultOptions: [],
   create(context) {
     return {
-      CallExpression(node) {
+      CallExpression(node: TSESTree.CallExpression) {
         if (!(isDescribe(node) || isTestCase(node)) || !node.arguments.length) {
           return;
         }
