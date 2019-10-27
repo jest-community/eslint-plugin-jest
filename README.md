@@ -1,5 +1,5 @@
 [![Actions Status](https://github.com/jest-community/eslint-plugin-jest/workflows/Unit%20tests/badge.svg)](https://github.com/jest-community/eslint-plugin-jest/actions)
-[![Greenkeeper badge](https://badges.greenkeeper.io/jest-community/eslint-plugin-jest.svg)](https://greenkeeper.io/)
+[![Renovate badge](https://badges.renovateapi.com/github/jest-community/eslint-plugin-jest)](https://renovatebot.com/)
 
 <div align="center">
   <a href="https://eslint.org/">
