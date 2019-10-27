@@ -2,14 +2,7 @@ import { existsSync } from 'fs';
 import { resolve } from 'path';
 import plugin from '../';
 
-const excludeRules = [
-  // require-tothrow-message has been renamed to require-to-throw-message, remove in major version bump
-  'require-tothrow-message',
-];
-
-const ruleNames = Object.keys(plugin.rules).filter(
-  rule => !excludeRules.includes(rule),
-);
+const ruleNames = Object.keys(plugin.rules);
 
 const numberOfRules = 40;
 
