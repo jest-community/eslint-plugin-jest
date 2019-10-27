@@ -49,7 +49,7 @@ export default createRule({
         if (title.trimLeft().length !== title.length) {
           context.report({
             messageId: 'accidentalSpace',
-            node,
+            node: argument,
           });
         }
 
@@ -59,7 +59,7 @@ export default createRule({
         if (firstWord.toLowerCase() === nodeName) {
           context.report({
             messageId: 'duplicatePrefix',
-            node,
+            node: argument,
           });
         }
       },
