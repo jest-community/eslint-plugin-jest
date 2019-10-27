@@ -31,7 +31,7 @@ jobs:
       - name: install with eslint v${{matrix.eslint-version }}
         run: |
           yarn
-          yarn add --dev ${{matrix.eslint-version }}
+          yarn add --dev eslint@${{matrix.eslint-version }}
       - name: run prettylint
         run: yarn prettylint
       - name: run typecheck
