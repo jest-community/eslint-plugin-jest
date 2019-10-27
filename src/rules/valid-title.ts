@@ -1,3 +1,4 @@
+import { TSESTree } from '@typescript-eslint/experimental-utils';
 import {
   createRule,
   getNodeName,
@@ -6,8 +7,6 @@ import {
   isStringNode,
   isTestCase,
 } from './utils';
-
-import { TSESTree } from '@typescript-eslint/experimental-utils';
 
 const trimFXprefix = (word: string) =>
   ['f', 'x'].includes(word.charAt(0)) ? word.substr(1) : word;
