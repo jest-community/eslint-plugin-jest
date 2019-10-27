@@ -53,6 +53,7 @@ export = {
         'jest/no-jest-import': 'error',
         'jest/no-mocks-import': 'error',
         'jest/no-jasmine-globals': 'warn',
+        'jest/no-test-callback': 'error',
         'jest/no-test-prefixes': 'error',
         'jest/no-try-expect': 'error',
         'jest/valid-describe': 'error',
