@@ -21,7 +21,7 @@ jobs:
         run: yarn typecheck
       - name: run tests
         run: yarn test --coverage
-      - run: npx semantic-release@15
+      - run: yarn semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
