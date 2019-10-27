@@ -77,6 +77,19 @@ export default createRule({
           context.report({
             messageId: 'duplicatePrefix',
             node: argument,
+            fix(fixer) {
+              const stringValue =
+                argument.type === AST_NODE_TYPES.TemplateLiteral
+                  ? `\`${argument.quasis[0].value.raw}\``
+                  : argument.raw;
+
+              return [
+                fixer.replaceTextRange(
+                  argument.range,
+                  stringValue.replace(/^([`'"]).+? /, '$1'),
+                ),
+              ];
+            },
           });
         }
       },
