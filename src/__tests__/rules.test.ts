@@ -26,4 +26,33 @@ describe('rules', () => {
       );
     }
   });
+
+  it('should export configs that refer to actual rules', () => {
+    const recommendedConfigs = plugin.configs;
+
+    expect(recommendedConfigs).toMatchSnapshot();
+    expect(Object.keys(recommendedConfigs)).toEqual([
+      'all',
+      'recommended',
+      'style',
+    ]);
+    expect(Object.keys(recommendedConfigs.all.rules)).toHaveLength(
+      ruleNames.length,
+    );
+    const allConfigRules = Object.values(recommendedConfigs)
+      .map(config => Object.keys(config.rules))
+      .reduce((previousValue, currentValue) => [
+        ...previousValue,
+        ...currentValue,
+      ]);
+
+    allConfigRules.forEach(rule => {
+      const ruleNamePrefix = 'jest/';
+      const ruleName = rule.slice(ruleNamePrefix.length);
+      expect(rule.startsWith(ruleNamePrefix)).toBe(true);
+      expect(ruleNames).toContain(ruleName);
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
+      expect(() => require(`../rules/${ruleName}`)).not.toThrow();
+    });
+  });
 });
