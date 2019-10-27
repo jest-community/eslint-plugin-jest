@@ -14,7 +14,7 @@ export default createRule({
       recommended: false,
     },
     messages: {
-      requireRethrow: 'Add an error message to {{ propertyName }}()',
+      addErrorMessage: 'Add an error message to {{ propertyName }}()',
     },
     type: 'suggestion',
     schema: [],
@@ -39,8 +39,8 @@ export default createRule({
         ) {
           // Look for `toThrow` calls with no arguments.
           context.report({
-            messageId: 'requireRethrow', // todo: rename to 'addErrorMessage'
-            data: { propertyName: matcher.name }, // todo: rename to 'matcherName'
+            messageId: 'addErrorMessage',
+            data: { matcherName: matcher.name },
             node: matcher.node.property,
           });
         }
