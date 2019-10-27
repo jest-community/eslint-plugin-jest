@@ -100,7 +100,7 @@ interface TemplateLiteral<Value extends string = string>
  *
  * @template V
  */
-export const isTemplateLiteral = <V extends string>(
+const isTemplateLiteral = <V extends string>(
   node: TSESTree.Node,
   value?: V,
 ): node is TemplateLiteral<V> =>
