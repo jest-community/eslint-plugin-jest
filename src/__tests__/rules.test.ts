@@ -3,7 +3,6 @@ import { resolve } from 'path';
 import plugin from '../';
 
 const ruleNames = Object.keys(plugin.rules);
-
 const numberOfRules = 40;
 
 describe('rules', () => {
