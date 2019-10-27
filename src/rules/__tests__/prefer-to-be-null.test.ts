@@ -55,7 +55,7 @@ ruleTester.run('prefer-to-be-null', rule, {
 });
 
 new TSESLint.RuleTester({
-  parser: '@typescript-eslint/parser',
+  parser: require.resolve('@typescript-eslint/parser'),
 }).run('prefer-to-be-null: typescript edition', rule, {
   valid: [
     "(expect('Model must be bound to an array if the multiple property is true') as any).toHaveBeenTipped()",
