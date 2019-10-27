@@ -12,9 +12,23 @@ ruleTester.run('title-must-be-string', rule, {
     'it("is a string", () => {});',
     'test("is a string", () => {});',
     'xtest("is a string", () => {});',
+    'xtest(`${myFunc} is a string`, () => {});',
     'describe("is a string", () => {});',
     'describe.skip("is a string", () => {});',
+    'describe.skip(`${myFunc} is a string`, () => {});',
     'fdescribe("is a string", () => {});',
+    {
+      code: 'describe(String(/.+/), () => {});',
+      options: [{ ignoreTypeOfDescribeName: true }],
+    },
+    {
+      code: 'describe(myFunction, () => {});',
+      options: [{ ignoreTypeOfDescribeName: true }],
+    },
+    {
+      code: 'xdescribe(skipFunction, () => {});',
+      options: [{ ignoreTypeOfDescribeName: true }],
+    },
   ],
   invalid: [
     {
@@ -28,7 +42,29 @@ ruleTester.run('title-must-be-string', rule, {
       ],
     },
     {
+      code: 'test.skip(123, () => {});',
+      options: [{ ignoreTypeOfDescribeName: true }],
+      errors: [
+        {
+          messageId: 'titleMustBeString',
+          column: 11,
+          line: 1,
+        },
+      ],
+    },
+    {
       code: 'describe(String(/.+/), () => {});',
+      errors: [
+        {
+          messageId: 'titleMustBeString',
+          column: 10,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: 'describe(myFunction, () => 1);',
+      options: [{ ignoreTypeOfDescribeName: false }],
       errors: [
         {
           messageId: 'titleMustBeString',
