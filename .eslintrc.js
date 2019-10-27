@@ -3,7 +3,7 @@
 const globals = require('./src/globals.json');
 
 module.exports = {
-  parser: '@typescript-eslint/parser',
+  parser: require.resolve('@typescript-eslint/parser'),
   extends: [
     'plugin:eslint-plugin/recommended',
     'plugin:node/recommended',
@@ -25,10 +25,11 @@ module.exports = {
     es6: true,
   },
   rules: {
-    '@typescript-eslint/array-type': ['error', {default: 'array-simple'}],
+    '@typescript-eslint/array-type': ['error', { default: 'array-simple' }],
     '@typescript-eslint/no-require-imports': 'error',
     '@typescript-eslint/ban-ts-ignore': 'warn',
     '@typescript-eslint/ban-types': 'error',
+    '@typescript-eslint/no-unused-vars': 'error',
     'no-else-return': 'error',
     'no-negated-condition': 'error',
     eqeqeq: ['error', 'smart'],

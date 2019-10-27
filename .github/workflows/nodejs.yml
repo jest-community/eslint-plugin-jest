@@ -12,11 +12,14 @@ on:
 
 jobs:
   test-node:
-    name: Test on Node.js ${{ matrix.node-version }}
+    name:
+      # prettier-ignore
+      Test on Node.js v${{ matrix.node-version }} and eslint v${{matrix.eslint-version }}
     strategy:
       fail-fast: false
       matrix:
         node-version: [8.x, 10.x, 12.x, 13.x]
+        eslint-version: [5, 6]
     runs-on: ubuntu-latest
 
     steps:
@@ -25,8 +28,10 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - name: install
-        run: yarn
+      - name: install with eslint v${{matrix.eslint-version }}
+        run: |
+          yarn
+          yarn add --dev eslint@${{matrix.eslint-version }}
       - name: run prettylint
         run: yarn prettylint
       - name: run typecheck
