@@ -1,6 +1,9 @@
 # describe/test titles should be valid (valid-title)
 
-A describe/ test block should not contain accidentalSpace or duplicatePrefix.
+Checks that the title of Jest blocks are valid by ensuring that titles are:
+
+- not prefixed with their block name,
+- have no leading or trailing spaces
 
 ## Rule Details
 

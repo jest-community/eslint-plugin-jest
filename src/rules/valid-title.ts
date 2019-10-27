@@ -1,3 +1,4 @@
+import { TSESTree } from '@typescript-eslint/experimental-utils';
 import {
   createRule,
   getNodeName,
@@ -7,16 +8,8 @@ import {
   isTestCase,
 } from './utils';
 
-import { TSESTree } from '@typescript-eslint/experimental-utils';
-
 const trimFXprefix = (word: string) =>
   ['f', 'x'].includes(word.charAt(0)) ? word.substr(1) : word;
-
-const getNodeTitle = (node: TSESTree.CallExpression): string | null => {
-  const [argument] = node.arguments;
-
-  return isStringNode(argument) ? getStringValue(argument) : null;
-};
 
 export default createRule({
   name: __filename,
@@ -36,13 +29,22 @@ export default createRule({
   defaultOptions: [],
   create(context) {
     return {
-      CallExpression(node) {
-        if (!isDescribe(node) && !isTestCase(node)) return;
+      CallExpression(node: TSESTree.CallExpression) {
+        if (!(isDescribe(node) || isTestCase(node)) || !node.arguments.length) {
+          return;
+        }
 
-        if (!node.arguments.length) return;
+        const [argument] = node.arguments;
 
-        const title = getNodeTitle(node);
-        if (!title) return;
+        if (!isStringNode(argument)) {
+          return;
+        }
+
+        const title = getStringValue(argument);
+
+        if (!title) {
+          return;
+        }
 
         if (title.trimLeft().length !== title.length) {
           context.report({
