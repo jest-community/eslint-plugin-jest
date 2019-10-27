@@ -2,10 +2,11 @@ import {
   AST_NODE_TYPES,
   TSESLint,
 } from '@typescript-eslint/experimental-utils';
+import resolveFrom from 'resolve-from';
 import rule from '../expect-expect';
 
 const ruleTester = new TSESLint.RuleTester({
-  parser: 'espree',
+  parser: resolveFrom(require.resolve('eslint'), 'espree'),
   parserOptions: {
     ecmaVersion: 6,
   },
