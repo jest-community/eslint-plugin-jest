@@ -31,11 +31,22 @@ export default createRule({
       accidentalSpace: 'should not have leading or trailing spaces',
     },
     type: 'suggestion',
-    schema: [],
+    schema: [
+      {
+        type: 'object',
+        properties: {
+          ignoreTypeOfDescribeName: {
+            type: 'boolean',
+            default: false,
+          },
+        },
+        additionalProperties: false,
+      },
+    ],
     fixable: 'code',
   },
-  defaultOptions: [],
-  create(context) {
+  defaultOptions: [{ ignoreTypeOfDescribeName: false }],
+  create(context, [{ ignoreTypeOfDescribeName }]) {
     return {
       CallExpression(node: TSESTree.CallExpression) {
         if (!(isDescribe(node) || isTestCase(node)) || !node.arguments.length) {
@@ -45,7 +56,10 @@ export default createRule({
         const [argument] = node.arguments;
 
         if (!isStringNode(argument)) {
-          if (argument.type !== AST_NODE_TYPES.TemplateLiteral) {
+          if (
+            argument.type !== AST_NODE_TYPES.TemplateLiteral &&
+            !(ignoreTypeOfDescribeName && isDescribe(node))
+          ) {
             context.report({
               messageId: 'titleMustBeString',
               loc: argument.loc,

@@ -43,7 +43,10 @@ xtest('foo', () => {});
 
 **titleMustBeString**
 
-Titles should always be a string literal or expression.
+Titles for test blocks should always be a string literal or expression.
+
+This is also applied to describe blocks by default, but can be turned off via
+the `ignoreTypeOfDescribeName` option:
 
 Examples of **incorrect** code for this rule:
 
@@ -52,18 +55,34 @@ it(123, () => {});
 describe(String(/.+/), () => {});
 describe(myFunction, () => {});
 xdescribe(myFunction, () => {});
-describe(6, function () {})
+describe(6, function() {});
 ```
 
 Examples of **correct** code for this rule:
 
 ```js
-it("is a string", () => {});
-test("is a string", () => {});
-xtest("is a string", () => {});
-describe("is a string", () => {});
-describe.skip("is a string", () => {});
-fdescribe("is a string", () => {});
+it('is a string', () => {});
+test('is a string', () => {});
+xtest('is a string', () => {});
+describe('is a string', () => {});
+describe.skip('is a string', () => {});
+fdescribe('is a string', () => {});
+```
+
+Examples of **correct** code when `ignoreTypeOfDescribeName` is `true`:
+
+```js
+it('is a string', () => {});
+test('is a string', () => {});
+xtest('is a string', () => {});
+describe('is a string', () => {});
+describe.skip('is a string', () => {});
+fdescribe('is a string', () => {});
+
+describe(String(/.+/), () => {});
+describe(myFunction, () => {});
+xdescribe(myFunction, () => {});
+describe(6, function() {});
 ```
 
 **duplicatePrefix**
