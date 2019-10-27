@@ -51,7 +51,10 @@ export default createRule({
 
         if (isTestCase(node)) {
           if (currentLayer.testTitles.includes(title)) {
-            context.report({ messageId: 'multipleTestTitle', node });
+            context.report({
+              messageId: 'multipleTestTitle',
+              node: argument,
+            });
           }
           currentLayer.testTitles.push(title);
         }
@@ -60,7 +63,10 @@ export default createRule({
           return;
         }
         if (currentLayer.describeTitles.includes(title)) {
-          context.report({ messageId: 'multipleDescribeTitle', node });
+          context.report({
+            messageId: 'multipleDescribeTitle',
+            node: argument,
+          });
         }
         currentLayer.describeTitles.push(title);
       },
