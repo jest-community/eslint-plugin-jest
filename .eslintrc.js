@@ -63,7 +63,7 @@ module.exports = {
       globals,
     },
     {
-      files: 'src/**/*',
+      files: ['src/**/*', 'dangerfile.ts'],
       parserOptions: {
         sourceType: 'module',
       },

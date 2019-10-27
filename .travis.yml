@@ -12,13 +12,6 @@ before_script: greenkeeper-lockfile-update
 script:
 - yarn test --coverage --maxWorkers 2
 after_script: greenkeeper-lockfile-upload
-jobs:
-  include:
-  - stage: danger
-    node_js: lts/*
-    os: linux
-    script:
-    - npx -p danger@^3 danger ci
 cache:
   yarn: true
 branches:
