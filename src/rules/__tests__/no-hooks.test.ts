@@ -3,6 +3,7 @@ import rule from '../no-hooks';
 import { HookName } from '../utils';
 
 const ruleTester = new TSESLint.RuleTester({
+  parser: 'espree',
   parserOptions: {
     ecmaVersion: 6,
   },

@@ -25,7 +25,7 @@ module.exports = {
     es6: true,
   },
   rules: {
-    '@typescript-eslint/array-type': ['error', 'array-simple'],
+    '@typescript-eslint/array-type': ['error', {default: 'array-simple'}],
     '@typescript-eslint/no-require-imports': 'error',
     '@typescript-eslint/ban-ts-ignore': 'warn',
     '@typescript-eslint/ban-types': 'error',
@@ -41,6 +41,8 @@ module.exports = {
     ],
     'sort-imports': ['error', { ignoreDeclarationSort: true }],
     'prettier/prettier': 'error',
+    // TS covers this
+    'node/no-missing-import': 'off',
     'node/no-unsupported-features/es-syntax': 'off',
     'node/no-unsupported-features/es-builtins': 'error',
     'import/no-commonjs': 'error',

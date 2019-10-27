@@ -2,6 +2,7 @@ import { TSESLint } from '@typescript-eslint/experimental-utils';
 import rule from '../valid-describe';
 
 const ruleTester = new TSESLint.RuleTester({
+  parser: 'espree',
   parserOptions: {
     ecmaVersion: 8,
   },
