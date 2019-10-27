@@ -100,14 +100,13 @@ interface TemplateLiteral<Value extends string = string>
  *
  * @template V
  */
-export const isTemplateLiteral = <V extends string>(
+const isTemplateLiteral = <V extends string>(
   node: TSESTree.Node,
   value?: V,
 ): node is TemplateLiteral<V> =>
   node.type === AST_NODE_TYPES.TemplateLiteral &&
-  (value === undefined ||
-    (node.quasis.length === 1 && // bail out if not simple
-      node.quasis[0].value.raw === value));
+  node.quasis.length === 1 && // bail out if not simple
+  (value === undefined || node.quasis[0].value.raw === value);
 
 type StringNode<S extends string = string> =
   | StringLiteral<S>
@@ -326,8 +325,9 @@ type MatcherName = string /* & not ModifierName */;
 type ExpectPropertyName = ModifierName | MatcherName;
 
 export type ParsedEqualityMatcherCall<
-  Argument extends TSESTree.Expression = TSESTree.Expression
-> = Omit<ParsedExpectMatcher<EqualityMatcher>, 'arguments'> & {
+  Argument extends TSESTree.Expression = TSESTree.Expression,
+  Matcher extends EqualityMatcher = EqualityMatcher
+> = Omit<ParsedExpectMatcher<Matcher>, 'arguments'> & {
   // todo: probs should also type node parent as CallExpression
   arguments: [Argument];
 };
@@ -338,16 +338,21 @@ export enum ModifierName {
   resolves = 'resolves',
 }
 
-enum EqualityMatcher {
+export enum EqualityMatcher {
   toBe = 'toBe',
   toEqual = 'toEqual',
   toStrictEqual = 'toStrictEqual',
 }
 
-export const isParsedEqualityMatcherCall = (
+export const isParsedEqualityMatcherCall = <
+  MatcherName extends EqualityMatcher = EqualityMatcher
+>(
   matcher: ParsedExpectMatcher,
-): matcher is ParsedEqualityMatcherCall =>
-  EqualityMatcher.hasOwnProperty(matcher.name) &&
+  name?: MatcherName,
+): matcher is ParsedEqualityMatcherCall<TSESTree.Expression, MatcherName> =>
+  (name
+    ? matcher.name === name
+    : EqualityMatcher.hasOwnProperty(matcher.name)) &&
   matcher.arguments !== null &&
   matcher.arguments.length === 1;
 

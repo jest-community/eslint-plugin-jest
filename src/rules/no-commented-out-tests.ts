@@ -2,7 +2,7 @@ import { TSESTree } from '@typescript-eslint/experimental-utils';
 import { createRule } from './utils';
 
 function hasTests(node: TSESTree.Comment) {
-  return /^\s*(x|f)?(test|it|describe)(\.\w+|\[['"]\w+['"]\])?\s*\(/m.test(
+  return /^\s*[xf]?(test|it|describe)(\.\w+|\[['"]\w+['"]\])?\s*\(/m.test(
     node.value,
   );
 }
@@ -21,7 +21,7 @@ export default createRule({
     },
     schema: [],
     type: 'suggestion',
-  } as const,
+  },
   defaultOptions: [],
   create(context) {
     const sourceCode = context.getSourceCode();

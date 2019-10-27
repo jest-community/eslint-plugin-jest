@@ -5,7 +5,7 @@ asserting expections on undefined value.
 
 ## Rule details
 
-This rule triggers a warning if `toBe()`, `isEqual()` or `toStrictEqual()` is
+This rule triggers a warning if `toBe()`, `toEqual()` or `toStrictEqual()` is
 used to assert an undefined value.
 
 ```js
@@ -21,7 +21,7 @@ The following patterns are considered warnings:
 ```js
 expect(undefined).toBe(undefined);
 
-expect(undefined).isEqual(undefined);
+expect(undefined).toEqual(undefined);
 
 expect(undefined).toStrictEqual(undefined);
 ```

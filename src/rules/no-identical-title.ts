@@ -1,9 +1,8 @@
 import {
   createRule,
-  getAccessorValue,
+  getStringValue,
   isDescribe,
   isStringNode,
-  isTemplateLiteral,
   isTestCase,
 } from './utils';
 
@@ -44,17 +43,18 @@ export default createRule({
           contexts.push(newDescribeContext());
         }
         const [argument] = node.arguments;
-        if (
-          !argument ||
-          !isStringNode(argument) ||
-          (isTemplateLiteral(argument) && argument.expressions.length > 0)
-        ) {
+        if (!argument || !isStringNode(argument)) {
           return;
         }
-        const title = getAccessorValue(argument);
+
+        const title = getStringValue(argument);
+
         if (isTestCase(node)) {
           if (currentLayer.testTitles.includes(title)) {
-            context.report({ messageId: 'multipleTestTitle', node });
+            context.report({
+              messageId: 'multipleTestTitle',
+              node: argument,
+            });
           }
           currentLayer.testTitles.push(title);
         }
@@ -63,7 +63,10 @@ export default createRule({
           return;
         }
         if (currentLayer.describeTitles.includes(title)) {
-          context.report({ messageId: 'multipleDescribeTitle', node });
+          context.report({
+            messageId: 'multipleDescribeTitle',
+            node: argument,
+          });
         }
         currentLayer.describeTitles.push(title);
       },

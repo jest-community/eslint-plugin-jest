@@ -70,3 +70,19 @@ Example of **correct** code for the `{ "ignore": ["it"] }` option:
 
 it('Uppercase description');
 ```
+
+### `allow`
+
+This array option whitelists prefixes that titles can start with with capitals.
+This can be useful when writing tests for api endpoints, where you'd like to
+prefix with the HTTP method.
+
+By default, nothing is allowed (the equivalent of `{ "allow": [] }`).
+
+Example of **correct** code for the `{ "allow": ["GET"] }` option:
+
+```js
+/* eslint jest/lowercase-name: ["error", { "allow": ["GET"] }] */
+
+describe('GET /live');
+```

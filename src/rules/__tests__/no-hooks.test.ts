@@ -1,8 +1,10 @@
 import { TSESLint } from '@typescript-eslint/experimental-utils';
+import resolveFrom from 'resolve-from';
 import rule from '../no-hooks';
 import { HookName } from '../utils';
 
 const ruleTester = new TSESLint.RuleTester({
+  parser: resolveFrom(require.resolve('eslint'), 'espree'),
   parserOptions: {
     ecmaVersion: 6,
   },
@@ -17,6 +19,7 @@ ruleTester.run('no-hooks', rule, {
       code: 'afterEach(() => {}); afterAll(() => {});',
       options: [{ allow: [HookName.afterEach, HookName.afterAll] }],
     },
+    { code: 'test("foo")', options: [{ allow: undefined }] },
   ],
   invalid: [
     {

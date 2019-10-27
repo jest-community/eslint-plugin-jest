@@ -3,11 +3,13 @@ import {
   TSESLint,
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
+import resolveFrom from 'resolve-from';
 import rule from '../no-large-snapshots';
 
 const noLargeSnapshots = rule.create.bind(rule);
 
 const ruleTester = new TSESLint.RuleTester({
+  parser: resolveFrom(require.resolve('eslint'), 'espree'),
   parserOptions: {
     ecmaVersion: 2015,
   },

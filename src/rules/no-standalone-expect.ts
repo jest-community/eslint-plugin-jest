@@ -3,6 +3,7 @@ import {
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
 import {
+  DescribeAlias,
   TestCaseName,
   createRule,
   isDescribe,
@@ -13,7 +14,7 @@ import {
 
 const getBlockType = (
   stmt: TSESTree.BlockStatement,
-): 'function' | 'describe' | null => {
+): 'function' | DescribeAlias.describe | null => {
   const func = stmt.parent;
 
   /* istanbul ignore if */
@@ -34,7 +35,7 @@ const getBlockType = (
     }
     // if it's not a variable, it will be callExpr, we only care about describe
     if (expr.type === AST_NODE_TYPES.CallExpression && isDescribe(expr)) {
-      return 'describe';
+      return DescribeAlias.describe;
     }
   }
   return null;
@@ -60,9 +61,9 @@ const isEach = (node: TSESTree.CallExpression): boolean => {
 };
 
 type callStackEntry =
-  | 'test'
+  | TestCaseName.test
   | 'function'
-  | 'describe'
+  | DescribeAlias.describe
   | 'arrowFunc'
   | 'template';
 
@@ -88,13 +89,13 @@ export default createRule({
       CallExpression(node) {
         if (isExpectCall(node)) {
           const parent = callStack[callStack.length - 1];
-          if (!parent || parent === 'describe') {
+          if (!parent || parent === DescribeAlias.describe) {
             context.report({ node, messageId: 'unexpectedExpect' });
           }
           return;
         }
         if (isTestCase(node)) {
-          callStack.push('test');
+          callStack.push(TestCaseName.test);
         }
         if (node.callee.type === AST_NODE_TYPES.TaggedTemplateExpression) {
           callStack.push('template');
@@ -106,7 +107,7 @@ export default createRule({
           (((isTestCase(node) &&
             node.callee.type !== AST_NODE_TYPES.MemberExpression) ||
             isEach(node)) &&
-            top === 'test') ||
+            top === TestCaseName.test) ||
           (node.callee.type === AST_NODE_TYPES.TaggedTemplateExpression &&
             top === 'template')
         ) {

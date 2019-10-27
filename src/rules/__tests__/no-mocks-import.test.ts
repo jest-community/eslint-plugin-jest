@@ -1,7 +1,13 @@
 import { TSESLint } from '@typescript-eslint/experimental-utils';
+import resolveFrom from 'resolve-from';
 import rule from '../no-mocks-import';
 
-const ruleTester = new TSESLint.RuleTester();
+const ruleTester = new TSESLint.RuleTester({
+  parser: resolveFrom(require.resolve('eslint'), 'espree'),
+  parserOptions: {
+    ecmaVersion: 6,
+  },
+});
 
 ruleTester.run('no-mocks-import', rule, {
   valid: [

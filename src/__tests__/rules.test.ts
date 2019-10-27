@@ -11,7 +11,7 @@ const ruleNames = Object.keys(plugin.rules).filter(
   rule => !excludeRules.includes(rule),
 );
 
-const numberOfRules = 39;
+const numberOfRules = 40;
 
 describe('rules', () => {
   it('should have a corresponding doc for each rule', () => {

@@ -6,7 +6,6 @@ import {
 import {
   DescribeAlias,
   JestFunctionCallExpressionWithIdentifierCallee,
-  JestFunctionName,
   TestCaseName,
   createRule,
   isDescribe,
@@ -19,8 +18,13 @@ interface FirstArgumentStringCallExpression extends TSESTree.CallExpression {
   arguments: [ArgumentLiteral];
 }
 
+type IgnorableFunctionExpressions =
+  | TestCaseName.it
+  | TestCaseName.test
+  | DescribeAlias.describe;
+
 type CallExpressionWithCorrectCalleeAndArguments = JestFunctionCallExpressionWithIdentifierCallee<
-  TestCaseName.it | TestCaseName.test | DescribeAlias.describe
+  IgnorableFunctionExpressions
 > &
   FirstArgumentStringCallExpression;
 
@@ -54,9 +58,13 @@ const testDescription = (argument: ArgumentLiteral): string | null => {
 
 const jestFunctionName = (
   node: CallExpressionWithCorrectCalleeAndArguments,
+  allowedPrefixes: readonly string[],
 ) => {
   const description = testDescription(node.arguments[0]);
-  if (description === null) {
+  if (
+    description === null ||
+    allowedPrefixes.some(name => description.startsWith(name))
+  ) {
     return null;
   }
 
@@ -73,7 +81,15 @@ const jestFunctionName = (
   return null;
 };
 
-export default createRule({
+export default createRule<
+  [
+    Partial<{
+      ignore: readonly IgnorableFunctionExpressions[];
+      allowedPrefixes: readonly string[];
+    }>,
+  ],
+  'unexpectedLowercase'
+>({
   name: __filename,
   meta: {
     type: 'suggestion',
@@ -93,7 +109,18 @@ export default createRule({
         properties: {
           ignore: {
             type: 'array',
-            items: { enum: ['describe', 'test', 'it'] },
+            items: {
+              enum: [
+                DescribeAlias.describe,
+                TestCaseName.test,
+                TestCaseName.it,
+              ],
+            },
+            additionalItems: false,
+          },
+          allowedPrefixes: {
+            type: 'array',
+            items: { type: 'string' },
             additionalItems: false,
           },
         },
@@ -101,27 +128,16 @@ export default createRule({
       },
     ],
   } as const,
-  defaultOptions: [{ ignore: [] } as { ignore: readonly JestFunctionName[] }],
-  create(context, [{ ignore }]) {
-    const ignoredFunctionNames = ignore.reduce<
-      Record<string, true | undefined>
-    >((accumulator, value) => {
-      accumulator[value] = true;
-      return accumulator;
-    }, Object.create(null));
-
-    const isIgnoredFunctionName = (
-      node: CallExpressionWithCorrectCalleeAndArguments,
-    ) => ignoredFunctionNames[node.callee.name];
-
+  defaultOptions: [{ ignore: [], allowedPrefixes: [] }],
+  create(context, [{ ignore = [], allowedPrefixes = [] }]) {
     return {
       CallExpression(node) {
         if (!isJestFunctionWithLiteralArg(node)) {
           return;
         }
-        const erroneousMethod = jestFunctionName(node);
+        const erroneousMethod = jestFunctionName(node, allowedPrefixes);
 
-        if (erroneousMethod && !isIgnoredFunctionName(node)) {
+        if (erroneousMethod && !ignore.includes(node.callee.name)) {
           context.report({
             messageId: 'unexpectedLowercase',
             data: { method: erroneousMethod },

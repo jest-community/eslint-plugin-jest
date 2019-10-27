@@ -50,4 +50,6 @@ function getPreferredNodeName(nodeName: string) {
   if (firstChar === 'x') {
     return `${nodeName.slice(1)}.skip`;
   }
+
+  return null;
 }

@@ -76,12 +76,16 @@ config file:
 
 This plugin also exports a configuration named `style`, which adds some
 stylistic rules, such as `prefer-to-be-null`, which enforces usage of `toBeNull`
-over `toBe(null)`. All rules included are:
+over `toBe(null)`.
 
-- `prefer-to-be-null`
-- `prefer-to-be-undefined`
-- `prefer-to-contain`
-- `prefer-to-have-length`
+To enable this configuration use the `extends` property in your `.eslintrc`
+config file:
+
+```json
+{
+  "extends": ["plugin:jest/style"]
+}
+```
 
 See
 [ESLint documentation](http://eslint.org/docs/user-guide/configuring#extending-configuration-files)
@@ -104,18 +108,17 @@ installations requiring long-term consistency.
 
 ## Rules
 
-| Rule                           | Description                                                       | Recommended      | Fixable             |
+| Rule                           | Description                                                       | Configurations   | Fixable             |
 | ------------------------------ | ----------------------------------------------------------------- | ---------------- | ------------------- |
 | [consistent-test-it][]         | Enforce consistent test or it keyword                             |                  | ![fixable-green][]  |
-| [expect-expect][]              | Enforce assertion to be made in a test body                       |                  |                     |
+| [expect-expect][]              | Enforce assertion to be made in a test body                       | ![recommended][] |                     |
 | [lowercase-name][]             | Disallow capitalized test names                                   |                  | ![fixable-green][]  |
-| [no-alias-methods][]           | Disallow alias methods                                            | ![recommended][] | ![fixable-green][]  |
-| [no-commented-out-tests][]     | Disallow commented out tests                                      |                  |                     |
+| [no-alias-methods][]           | Disallow alias methods                                            | ![style][]       | ![fixable-green][]  |
+| [no-commented-out-tests][]     | Disallow commented out tests                                      | ![recommended][] |                     |
 | [no-disabled-tests][]          | Disallow disabled tests                                           | ![recommended][] |                     |
 | [no-duplicate-hooks][]         | Disallow duplicate hooks within a `describe` block                |                  |                     |
-| [no-empty-title][]             | Disallow empty titles                                             |                  |                     |
 | [no-expect-resolves][]         | Disallow using `expect().resolves`                                |                  |                     |
-| [no-export][]                  | Disallow export from test files                                   |                  |                     |
+| [no-export][]                  | Disallow export from test files                                   | ![recommended][] |                     |
 | [no-focused-tests][]           | Disallow focused tests                                            | ![recommended][] |                     |
 | [no-hooks][]                   | Disallow setup and teardown hooks                                 |                  |                     |
 | [no-identical-title][]         | Disallow identical titles                                         | ![recommended][] |                     |
@@ -123,28 +126,30 @@ installations requiring long-term consistency.
 | [no-jasmine-globals][]         | Disallow Jasmine globals                                          | ![recommended][] | ![fixable-yellow][] |
 | [no-jest-import][]             | Disallow importing `jest`                                         | ![recommended][] |                     |
 | [no-large-snapshots][]         | Disallow large snapshots                                          |                  |                     |
-| [no-mocks-import][]            | Disallow manually importing from `__mocks__`                      |                  |                     |
+| [no-mocks-import][]            | Disallow manually importing from `__mocks__`                      | ![recommended][] |                     |
 | [no-standalone-expect][]       | Prevents `expect` statements outside of a `test` or `it` block    |                  |                     |
-| [no-test-callback][]           | Using a callback in asynchronous tests                            |                  | ![fixable-green][]  |
+| [no-test-callback][]           | Using a callback in asynchronous tests                            | ![recommended][] | ![fixable-green][]  |
 | [no-test-prefixes][]           | Disallow using `f` & `x` prefixes to define focused/skipped tests | ![recommended][] | ![fixable-green][]  |
 | [no-test-return-statement][]   | Disallow explicitly returning from tests                          |                  |                     |
 | [no-truthy-falsy][]            | Disallow using `toBeTruthy()` & `toBeFalsy()`                     |                  |                     |
-| [no-try-expect][]              | Prevent `catch` assertions in tests                               |                  |                     |
+| [no-try-expect][]              | Prevent `catch` assertions in tests                               | ![recommended][] |                     |
 | [prefer-called-with][]         | Suggest using `toBeCalledWith()` OR `toHaveBeenCalledWith()`      |                  |                     |
 | [prefer-expect-assertions][]   | Suggest using `expect.assertions()` OR `expect.hasAssertions()`   |                  |                     |
+| [prefer-hooks-on-top][]        | Suggest to have all hooks at top-level before tests               |                  |                     |
 | [prefer-inline-snapshots][]    | Suggest using `toMatchInlineSnapshot()`                           |                  | ![fixable-green][]  |
 | [prefer-spy-on][]              | Suggest using `jest.spyOn()`                                      |                  | ![fixable-green][]  |
 | [prefer-strict-equal][]        | Suggest using `toStrictEqual()`                                   |                  | ![fixable-green][]  |
-| [prefer-to-be-null][]          | Suggest using `toBeNull()`                                        |                  | ![fixable-green][]  |
-| [prefer-to-be-undefined][]     | Suggest using `toBeUndefined()`                                   |                  | ![fixable-green][]  |
-| [prefer-to-contain][]          | Suggest using `toContain()`                                       |                  | ![fixable-green][]  |
-| [prefer-to-have-length][]      | Suggest using `toHaveLength()`                                    |                  | ![fixable-green][]  |
+| [prefer-to-be-null][]          | Suggest using `toBeNull()`                                        | ![style][]       | ![fixable-green][]  |
+| [prefer-to-be-undefined][]     | Suggest using `toBeUndefined()`                                   | ![style][]       | ![fixable-green][]  |
+| [prefer-to-contain][]          | Suggest using `toContain()`                                       | ![style][]       | ![fixable-green][]  |
+| [prefer-to-have-length][]      | Suggest using `toHaveLength()`                                    | ![style][]       | ![fixable-green][]  |
 | [prefer-todo][]                | Suggest using `test.todo()`                                       |                  | ![fixable-green][]  |
 | [require-top-level-describe][] | Require a top-level `describe` block                              |                  |                     |
 | [require-to-throw-message][]   | Require that `toThrow()` and `toThrowError` includes a message    |                  |                     |
 | [valid-describe][]             | Enforce valid `describe()` callback                               | ![recommended][] |                     |
 | [valid-expect-in-promise][]    | Enforce having return statement when testing with promises        | ![recommended][] |                     |
 | [valid-expect][]               | Enforce valid `expect()` usage                                    | ![recommended][] |                     |
+| [valid-title][]                | Enforce valid titles for jest blocks                              |                  |                     |
 
 ## Credit
 
@@ -167,7 +172,6 @@ https://github.com/dangreenisrael/eslint-plugin-jest-formatting
 [no-commented-out-tests]: docs/rules/no-commented-out-tests.md
 [no-disabled-tests]: docs/rules/no-disabled-tests.md
 [no-duplicate-hooks]: docs/rules/no-duplicate-hooks.md
-[no-empty-title]: docs/rules/no-empty-title.md
 [no-expect-resolves]: docs/rules/no-expect-resolves.md
 [no-export]: docs/rules/no-export.md
 [no-focused-tests]: docs/rules/no-focused-tests.md
@@ -187,6 +191,7 @@ https://github.com/dangreenisrael/eslint-plugin-jest-formatting
 [prefer-called-with]: docs/rules/prefer-called-with.md
 [prefer-expect-assertions]: docs/rules/prefer-expect-assertions.md
 [prefer-inline-snapshots]: docs/rules/prefer-inline-snapshots.md
+[prefer-hooks-on-top]: docs/rules/prefer-hooks-on-top.md
 [prefer-spy-on]: docs/rules/prefer-spy-on.md
 [prefer-strict-equal]: docs/rules/prefer-strict-equal.md
 [prefer-to-be-null]: docs/rules/prefer-to-be-null.md
@@ -199,6 +204,8 @@ https://github.com/dangreenisrael/eslint-plugin-jest-formatting
 [valid-describe]: docs/rules/valid-describe.md
 [valid-expect-in-promise]: docs/rules/valid-expect-in-promise.md
 [valid-expect]: docs/rules/valid-expect.md
+[valid-title]: docs/rules/valid-title.md
 [fixable-green]: https://img.shields.io/badge/-fixable-green.svg
 [fixable-yellow]: https://img.shields.io/badge/-fixable-yellow.svg
 [recommended]: https://img.shields.io/badge/-recommended-lightgrey.svg
+[style]: https://img.shields.io/badge/-style-blue.svg

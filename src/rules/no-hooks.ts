@@ -1,6 +1,9 @@
 import { HookName, createRule, isHook } from './utils';
 
-export default createRule({
+export default createRule<
+  [Partial<{ allow: readonly HookName[] }>],
+  'unexpectedHook'
+>({
   name: __filename,
   meta: {
     docs: {
@@ -25,19 +28,11 @@ export default createRule({
     ],
     type: 'suggestion',
   },
-  defaultOptions: [{ allow: [] } as { allow: readonly HookName[] }],
-  create(context, [{ allow }]) {
-    const whitelistedHookNames = allow.reduce((hashMap, value) => {
-      hashMap[value] = true;
-      return hashMap;
-    }, Object.create(null));
-
-    const isWhitelisted = (node: { callee: { name: string } }) =>
-      whitelistedHookNames[node.callee.name];
-
+  defaultOptions: [{ allow: [] }],
+  create(context, [{ allow = [] }]) {
     return {
       CallExpression(node) {
-        if (isHook(node) && !isWhitelisted(node)) {
+        if (isHook(node) && !allow.includes(node.callee.name)) {
           context.report({
             node,
             messageId: 'unexpectedHook',

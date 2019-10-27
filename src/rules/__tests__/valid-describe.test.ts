@@ -1,7 +1,9 @@
 import { TSESLint } from '@typescript-eslint/experimental-utils';
+import resolveFrom from 'resolve-from';
 import rule from '../valid-describe';
 
 const ruleTester = new TSESLint.RuleTester({
+  parser: resolveFrom(require.resolve('eslint'), 'espree'),
   parserOptions: {
     ecmaVersion: 8,
   },
@@ -55,10 +57,7 @@ ruleTester.run('valid-describe', rule, {
   invalid: [
     {
       code: 'describe(() => {})',
-      errors: [
-        { messageId: 'firstArgumentMustBeName', line: 1, column: 10 },
-        { messageId: 'nameAndCallback', line: 1, column: 10 },
-      ],
+      errors: [{ messageId: 'nameAndCallback', line: 1, column: 10 }],
     },
     {
       code: 'describe("foo")',

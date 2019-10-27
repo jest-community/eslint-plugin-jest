@@ -1,8 +1,10 @@
 import { TSESLint } from '@typescript-eslint/experimental-utils';
+import resolveFrom from 'resolve-from';
 import rule from '../require-to-throw-message';
 import deprecatedRule from '../require-tothrow-message'; // remove in major version bump
 
 const ruleTester = new TSESLint.RuleTester({
+  parser: resolveFrom(require.resolve('eslint'), 'espree'),
   parserOptions: {
     ecmaVersion: 8,
   },
