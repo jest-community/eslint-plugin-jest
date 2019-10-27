@@ -25,35 +25,35 @@ ruleTester.run('no-empty-title', rule, {
   invalid: [
     {
       code: 'describe("", function () {})',
-      errors: [{ messageId: 'describe', column: 1, line: 1 }],
+      errors: [{ messageId: 'describe', column: 10, line: 1 }],
     },
     {
       code: ["describe('foo', () => {", "it('', () => {})", '})'].join('\n'),
-      errors: [{ messageId: 'test', column: 1, line: 2 }],
+      errors: [{ messageId: 'test', column: 4, line: 2 }],
     },
     {
       code: 'it("", function () {})',
-      errors: [{ messageId: 'test', column: 1, line: 1 }],
+      errors: [{ messageId: 'test', column: 4, line: 1 }],
     },
     {
       code: 'test("", function () {})',
-      errors: [{ messageId: 'test', column: 1, line: 1 }],
+      errors: [{ messageId: 'test', column: 6, line: 1 }],
     },
     {
       code: 'test(``, function () {})',
-      errors: [{ messageId: 'test', column: 1, line: 1 }],
+      errors: [{ messageId: 'test', column: 6, line: 1 }],
     },
     {
       code: "xdescribe('', () => {})",
-      errors: [{ messageId: 'describe', column: 1, line: 1 }],
+      errors: [{ messageId: 'describe', column: 11, line: 1 }],
     },
     {
       code: "xit('', () => {})",
-      errors: [{ messageId: 'test', column: 1, line: 1 }],
+      errors: [{ messageId: 'test', column: 5, line: 1 }],
     },
     {
       code: "xtest('', () => {})",
-      errors: [{ messageId: 'test', column: 1, line: 1 }],
+      errors: [{ messageId: 'test', column: 7, line: 1 }],
     },
   ],
 });
