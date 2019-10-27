@@ -42,6 +42,11 @@ ruleTester.run('no-accidental-space', rule, {
       output: 'describe("foo foe fum", function () {})',
     },
     {
+      code: 'describe("foo foe fum ", function () {})',
+      errors: [{ messageId: 'accidentalSpace', column: 10, line: 1 }],
+      output: 'describe("foo foe fum", function () {})',
+    },
+    {
       code: 'fdescribe(" foo", function () {})',
       errors: [{ messageId: 'accidentalSpace', column: 11, line: 1 }],
       output: 'fdescribe("foo", function () {})',
@@ -67,6 +72,11 @@ ruleTester.run('no-accidental-space', rule, {
       output: 'fit("foo", function () {})',
     },
     {
+      code: 'fit("foo ", function () {})',
+      errors: [{ messageId: 'accidentalSpace', column: 5, line: 1 }],
+      output: 'fit("foo", function () {})',
+    },
+    {
       code: 'xit(" foo", function () {})',
       errors: [{ messageId: 'accidentalSpace', column: 5, line: 1 }],
       output: 'xit("foo", function () {})',
@@ -87,7 +97,17 @@ ruleTester.run('no-accidental-space', rule, {
       output: 'test(`foo bar bang`, function () {})',
     },
     {
+      code: 'test(` foo bar bang  `, function () {})',
+      errors: [{ messageId: 'accidentalSpace', column: 6, line: 1 }],
+      output: 'test(`foo bar bang`, function () {})',
+    },
+    {
       code: 'xtest(" foo", function () {})',
+      errors: [{ messageId: 'accidentalSpace', column: 7, line: 1 }],
+      output: 'xtest("foo", function () {})',
+    },
+    {
+      code: 'xtest(" foo  ", function () {})',
       errors: [{ messageId: 'accidentalSpace', column: 7, line: 1 }],
       output: 'xtest("foo", function () {})',
     },

@@ -54,6 +54,10 @@ describe('foo', () => {
 describe(' foo', () => {
   test('bar', () => {});
 });
+
+describe('foo  ', () => {
+  test('bar', () => {});
+});
 ```
 
 Examples of **correct** code for this rule

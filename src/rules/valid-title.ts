@@ -24,7 +24,7 @@ export default createRule({
     },
     messages: {
       duplicatePrefix: 'should not have duplicate prefix',
-      accidentalSpace: 'should not have space in the beginning',
+      accidentalSpace: 'should not have leading or trailing spaces',
     },
     type: 'suggestion',
     schema: [],
@@ -50,7 +50,7 @@ export default createRule({
           return;
         }
 
-        if (title.trimLeft().length !== title.length) {
+        if (title.trim().length !== title.length) {
           context.report({
             messageId: 'accidentalSpace',
             node: argument,
@@ -63,7 +63,9 @@ export default createRule({
               return [
                 fixer.replaceTextRange(
                   argument.range,
-                  stringValue.replace(/^([`'"]) +?/, '$1'),
+                  stringValue
+                    .replace(/^([`'"]) +?/, '$1')
+                    .replace(/ +?([`'"])$/, '$1'),
                 ),
               ];
             },
