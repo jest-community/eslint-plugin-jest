@@ -3,6 +3,7 @@ import rule from '../lowercase-name';
 import { DescribeAlias, TestCaseName } from '../utils';
 
 const ruleTester = new TSESLint.RuleTester({
+  parser: 'espree',
   parserOptions: {
     ecmaVersion: 6,
   },

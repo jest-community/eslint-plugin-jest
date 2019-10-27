@@ -8,6 +8,7 @@ import rule from '../no-large-snapshots';
 const noLargeSnapshots = rule.create.bind(rule);
 
 const ruleTester = new TSESLint.RuleTester({
+  parser: 'espree',
   parserOptions: {
     ecmaVersion: 2015,
   },
