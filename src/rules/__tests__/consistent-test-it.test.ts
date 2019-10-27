@@ -3,6 +3,7 @@ import rule from '../consistent-test-it';
 import { TestCaseName } from '../utils';
 
 const ruleTester = new TSESLint.RuleTester({
+  parser: 'espree',
   parserOptions: {
     ecmaVersion: 6,
   },

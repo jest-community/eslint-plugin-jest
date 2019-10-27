@@ -5,6 +5,7 @@ import {
 import rule from '../prefer-spy-on';
 
 const ruleTester = new TSESLint.RuleTester({
+  parser: 'espree',
   parserOptions: {
     ecmaVersion: 6,
   },
