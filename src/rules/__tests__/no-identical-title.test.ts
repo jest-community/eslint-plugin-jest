@@ -1,8 +1,9 @@
 import { TSESLint } from '@typescript-eslint/experimental-utils';
+import resolveFrom from 'resolve-from';
 import rule from '../no-identical-title';
 
 const ruleTester = new TSESLint.RuleTester({
-  parser: 'espree',
+  parser: resolveFrom(require.resolve('eslint'), 'espree'),
   parserOptions: {
     ecmaVersion: 6,
   },
