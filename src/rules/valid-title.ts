@@ -37,9 +37,9 @@ export default createRule({
   create(context) {
     return {
       CallExpression(node) {
-        if (!isDescribe(node) && !isTestCase(node)) return;
-
-        if (!node.arguments.length) return;
+        if (!(isDescribe(node) || isTestCase(node)) || !node.arguments.length) {
+          return;
+        }
 
         const title = getNodeTitle(node);
         if (!title) return;
