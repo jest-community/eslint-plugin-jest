@@ -11,12 +11,6 @@ import {
 const trimFXprefix = (word: string) =>
   ['f', 'x'].includes(word.charAt(0)) ? word.substr(1) : word;
 
-const getNodeTitle = (node: TSESTree.CallExpression): string | null => {
-  const [argument] = node.arguments;
-
-  return isStringNode(argument) ? getStringValue(argument) : null;
-};
-
 export default createRule({
   name: __filename,
   meta: {
@@ -40,8 +34,17 @@ export default createRule({
           return;
         }
 
-        const title = getNodeTitle(node);
-        if (!title) return;
+        const [argument] = node.arguments;
+
+        if (!isStringNode(argument)) {
+          return;
+        }
+
+        const title = getStringValue(argument);
+
+        if (!title) {
+          return;
+        }
 
         if (title.trimLeft().length !== title.length) {
           context.report({
