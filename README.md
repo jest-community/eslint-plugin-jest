@@ -111,14 +111,14 @@ installations requiring long-term consistency.
 | Rule                           | Description                                                       | Configurations   | Fixable             |
 | ------------------------------ | ----------------------------------------------------------------- | ---------------- | ------------------- |
 | [consistent-test-it][]         | Enforce consistent test or it keyword                             |                  | ![fixable-green][]  |
-| [expect-expect][]              | Enforce assertion to be made in a test body                       |                  |                     |
+| [expect-expect][]              | Enforce assertion to be made in a test body                       | ![recommended][] |                     |
 | [lowercase-name][]             | Disallow capitalized test names                                   |                  | ![fixable-green][]  |
-| [no-alias-methods][]           | Disallow alias methods                                            | ![recommended][] | ![fixable-green][]  |
-| [no-commented-out-tests][]     | Disallow commented out tests                                      |                  |                     |
+| [no-alias-methods][]           | Disallow alias methods                                            | ![style][]       | ![fixable-green][]  |
+| [no-commented-out-tests][]     | Disallow commented out tests                                      | ![recommended][] |                     |
 | [no-disabled-tests][]          | Disallow disabled tests                                           | ![recommended][] |                     |
 | [no-duplicate-hooks][]         | Disallow duplicate hooks within a `describe` block                |                  |                     |
 | [no-expect-resolves][]         | Disallow using `expect().resolves`                                |                  |                     |
-| [no-export][]                  | Disallow export from test files                                   |                  |                     |
+| [no-export][]                  | Disallow export from test files                                   | ![recommended][] |                     |
 | [no-focused-tests][]           | Disallow focused tests                                            | ![recommended][] |                     |
 | [no-hooks][]                   | Disallow setup and teardown hooks                                 |                  |                     |
 | [no-identical-title][]         | Disallow identical titles                                         | ![recommended][] |                     |
@@ -126,13 +126,13 @@ installations requiring long-term consistency.
 | [no-jasmine-globals][]         | Disallow Jasmine globals                                          | ![recommended][] | ![fixable-yellow][] |
 | [no-jest-import][]             | Disallow importing `jest`                                         | ![recommended][] |                     |
 | [no-large-snapshots][]         | Disallow large snapshots                                          |                  |                     |
-| [no-mocks-import][]            | Disallow manually importing from `__mocks__`                      |                  |                     |
+| [no-mocks-import][]            | Disallow manually importing from `__mocks__`                      | ![recommended][] |                     |
 | [no-standalone-expect][]       | Prevents `expect` statements outside of a `test` or `it` block    |                  |                     |
 | [no-test-callback][]           | Using a callback in asynchronous tests                            |                  | ![fixable-green][]  |
 | [no-test-prefixes][]           | Disallow using `f` & `x` prefixes to define focused/skipped tests | ![recommended][] | ![fixable-green][]  |
 | [no-test-return-statement][]   | Disallow explicitly returning from tests                          |                  |                     |
 | [no-truthy-falsy][]            | Disallow using `toBeTruthy()` & `toBeFalsy()`                     |                  |                     |
-| [no-try-expect][]              | Prevent `catch` assertions in tests                               |                  |                     |
+| [no-try-expect][]              | Prevent `catch` assertions in tests                               | ![recommended][] |                     |
 | [prefer-called-with][]         | Suggest using `toBeCalledWith()` OR `toHaveBeenCalledWith()`      |                  |                     |
 | [prefer-expect-assertions][]   | Suggest using `expect.assertions()` OR `expect.hasAssertions()`   |                  |                     |
 | [prefer-hooks-on-top][]        | Suggest to have all hooks at top-level before tests               |                  |                     |

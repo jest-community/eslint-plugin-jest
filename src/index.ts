@@ -44,14 +44,17 @@ export = {
         'jest/globals': true,
       },
       rules: {
-        'jest/no-alias-methods': 'warn',
+        'jest/expect-expect': 'warn',
+        'jest/no-commented-out-tests': 'warn',
         'jest/no-disabled-tests': 'warn',
+        'jest/no-export': 'error',
         'jest/no-focused-tests': 'error',
         'jest/no-identical-title': 'error',
         'jest/no-jest-import': 'error',
-        // 'jest/no-mocks-import': 'error',
+        'jest/no-mocks-import': 'error',
         'jest/no-jasmine-globals': 'warn',
         'jest/no-test-prefixes': 'error',
+        'jest/no-try-expect': 'error',
         'jest/valid-describe': 'error',
         'jest/valid-expect': 'error',
         'jest/valid-expect-in-promise': 'error',
@@ -60,6 +63,7 @@ export = {
     style: {
       plugins: ['jest'],
       rules: {
+        'jest/no-alias-methods': 'warn',
         'jest/prefer-to-be-null': 'error',
         'jest/prefer-to-be-undefined': 'error',
         'jest/prefer-to-contain': 'error',
