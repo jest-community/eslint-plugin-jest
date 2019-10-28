@@ -34,6 +34,16 @@ ruleTester.run('title-must-be-string', rule, {
   ],
   invalid: [
     {
+      code: 'it.each([])(1, () => {});',
+      errors: [
+        {
+          messageId: 'titleMustBeString',
+          column: 13,
+          line: 1,
+        },
+      ],
+    },
+    {
       code: 'it(123, () => {});',
       errors: [
         {

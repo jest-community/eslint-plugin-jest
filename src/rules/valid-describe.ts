@@ -4,9 +4,9 @@ import {
 } from '@typescript-eslint/experimental-utils';
 import {
   createRule,
+  getJestFunctionArguments,
   isDescribe,
   isFunction,
-  isSupportedAccessor,
 } from './utils';
 
 const paramsLocation = (
@@ -20,10 +20,6 @@ const paramsLocation = (
     end: last.loc.end,
   };
 };
-
-const isDescribeEach = (node: TSESTree.CallExpression) =>
-  node.callee.type === AST_NODE_TYPES.MemberExpression &&
-  isSupportedAccessor(node.callee.property, 'each');
 
 export default createRule({
   name: __filename,
@@ -49,23 +45,25 @@ export default createRule({
   create(context) {
     return {
       CallExpression(node) {
-        if (!isDescribe(node) || isDescribeEach(node)) {
+        if (!isDescribe(node)) {
           return;
         }
 
-        if (node.arguments.length < 1) {
+        const nodeArguments = getJestFunctionArguments(node);
+
+        if (nodeArguments.length < 1) {
           return context.report({
             messageId: 'nameAndCallback',
             loc: node.loc,
           });
         }
 
-        const [, callback] = node.arguments;
+        const [, callback] = nodeArguments;
 
         if (!callback) {
           context.report({
             messageId: 'nameAndCallback',
-            loc: paramsLocation(node.arguments),
+            loc: paramsLocation(nodeArguments),
           });
 
           return;
@@ -74,7 +72,7 @@ export default createRule({
         if (!isFunction(callback)) {
           context.report({
             messageId: 'secondArgumentMustBeFunction',
-            loc: paramsLocation(node.arguments),
+            loc: paramsLocation(nodeArguments),
           });
 
           return;
