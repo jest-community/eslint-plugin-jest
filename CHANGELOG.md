@@ -1,3 +1,11 @@
+## [23.0.2](https://github.com/jest-community/eslint-plugin-jest/compare/v23.0.1...v23.0.2) (2019-10-28)
+
+### Bug Fixes
+
+- **prefer-todo:** ensure argument exists before trying to access it
+  ([#462](https://github.com/jest-community/eslint-plugin-jest/issues/462))
+  ([a87c8c2](https://github.com/jest-community/eslint-plugin-jest/commit/a87c8c29e1faf9d5364c9074d988aa95ef6cc987))
+
 ## [23.0.1](https://github.com/jest-community/eslint-plugin-jest/compare/v23.0.0...v23.0.1) (2019-10-28)
 
 ### Bug Fixes
