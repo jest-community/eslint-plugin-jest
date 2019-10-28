@@ -76,7 +76,7 @@ export default createRule({
       CallExpression(node) {
         const [firstArg, secondArg] = node.arguments;
 
-        if (!isTargetedTestCase(node) || !isStringNode(firstArg)) {
+        if (!firstArg || !isTargetedTestCase(node) || !isStringNode(firstArg)) {
           return;
         }
 

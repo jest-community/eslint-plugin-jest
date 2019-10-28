@@ -9,6 +9,7 @@ const ruleTester = new TSESLint.RuleTester({
 
 ruleTester.run('prefer-todo', rule, {
   valid: [
+    'test()',
     'test.todo("i need to write this test");',
     'test(obj)',
     'fit("foo")',
