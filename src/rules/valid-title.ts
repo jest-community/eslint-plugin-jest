@@ -6,6 +6,7 @@ import {
   DescribeAlias,
   TestCaseName,
   createRule,
+  getJestFunctionArguments,
   getNodeName,
   getStringValue,
   isDescribe,
@@ -53,7 +54,7 @@ export default createRule({
           return;
         }
 
-        const [argument] = node.arguments;
+        const [argument] = getJestFunctionArguments(node);
 
         if (!isStringNode(argument)) {
           if (
