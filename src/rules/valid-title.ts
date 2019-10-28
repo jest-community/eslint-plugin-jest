@@ -17,6 +17,20 @@ import {
 const trimFXprefix = (word: string) =>
   ['f', 'x'].includes(word.charAt(0)) ? word.substr(1) : word;
 
+const doesBinaryExpressionContainStringNode = (
+  binaryExp: TSESTree.BinaryExpression,
+): boolean => {
+  if (isStringNode(binaryExp.right)) {
+    return true;
+  }
+
+  if (binaryExp.left.type === AST_NODE_TYPES.BinaryExpression) {
+    return doesBinaryExpressionContainStringNode(binaryExp.left);
+  }
+
+  return isStringNode(binaryExp.left);
+};
+
 export default createRule({
   name: __filename,
   meta: {
@@ -57,6 +71,13 @@ export default createRule({
         const [argument] = getJestFunctionArguments(node);
 
         if (!isStringNode(argument)) {
+          if (
+            argument.type === AST_NODE_TYPES.BinaryExpression &&
+            doesBinaryExpressionContainStringNode(argument)
+          ) {
+            return;
+          }
+
           if (
             argument.type !== AST_NODE_TYPES.TemplateLiteral &&
             !(ignoreTypeOfDescribeName && isDescribe(node))

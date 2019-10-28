@@ -12,6 +12,8 @@ const ruleTester = new TSESLint.RuleTester({
 ruleTester.run('title-must-be-string', rule, {
   valid: [
     'it("is a string", () => {});',
+    'it("is" + " a " + " string", () => {});',
+    'it(1 + " + " + 1, () => {});',
     'test("is a string", () => {});',
     'xtest("is a string", () => {});',
     'xtest(`${myFunc} is a string`, () => {});',
@@ -45,6 +47,16 @@ ruleTester.run('title-must-be-string', rule, {
     },
     {
       code: 'it(123, () => {});',
+      errors: [
+        {
+          messageId: 'titleMustBeString',
+          column: 4,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: 'it(1 + 2 + 3, () => {});',
       errors: [
         {
           messageId: 'titleMustBeString',
