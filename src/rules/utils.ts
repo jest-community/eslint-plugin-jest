@@ -550,6 +550,7 @@ export enum TestCaseProperty {
 }
 
 export type JestFunctionName = DescribeAlias | TestCaseName | HookName;
+export type JestPropertyName = DescribeProperty | TestCaseProperty;
 
 export interface JestFunctionIdentifier<FunctionName extends JestFunctionName>
   extends TSESTree.Identifier {
@@ -557,15 +558,24 @@ export interface JestFunctionIdentifier<FunctionName extends JestFunctionName>
 }
 
 export interface JestFunctionMemberExpression<
-  FunctionName extends JestFunctionName
-> extends TSESTree.MemberExpression {
+  FunctionName extends JestFunctionName,
+  PropertyName extends JestPropertyName = JestPropertyName
+> extends KnownMemberExpression<PropertyName> {
+  object: JestFunctionIdentifier<FunctionName>;
+}
+
+export interface JestFunctionMemberExpression<
+  FunctionName extends JestFunctionName,
+  PropertyName extends JestPropertyName = JestPropertyName
+> extends KnownMemberExpression<PropertyName> {
   object: JestFunctionIdentifier<FunctionName>;
 }
 
 export interface JestFunctionCallExpressionWithMemberExpressionCallee<
-  FunctionName extends JestFunctionName
+  FunctionName extends JestFunctionName,
+  PropertyName extends JestPropertyName = JestPropertyName
 > extends TSESTree.CallExpression {
-  callee: JestFunctionMemberExpression<FunctionName>;
+  callee: JestFunctionMemberExpression<FunctionName, PropertyName>;
 }
 
 export interface JestFunctionCallExpressionWithIdentifierCallee<
@@ -650,6 +660,21 @@ export const isDescribe = (
       DescribeProperty.hasOwnProperty(node.callee.property.name))
   );
 };
+
+/**
+ * Checks if the given `describe` is a call to `describe.each`.
+ *
+ * @param {JestFunctionCallExpression<DescribeAlias>} node
+ * @return {node is JestFunctionCallExpression<DescribeAlias, DescribeProperty.each>}
+ */
+export const isDescribeEach = (
+  node: JestFunctionCallExpression<DescribeAlias>,
+): node is JestFunctionCallExpressionWithMemberExpressionCallee<
+  DescribeAlias,
+  DescribeProperty.each
+> =>
+  node.callee.type === AST_NODE_TYPES.MemberExpression &&
+  isSupportedAccessor(node.callee.property, DescribeProperty.each);
 
 /**
  * Gets the arguments of the given `JestFunctionCallExpression`.
