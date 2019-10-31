@@ -16,6 +16,7 @@ ruleTester.run('valid-describe', rule, {
     'describe["each"](() => {})("foo")',
     'describe["each"]()(() => {})',
     'describe["each"]("foo")(() => {})',
+    'describe.each([1, 2, 3])("%s", (a, b) => {});',
     'describe("foo", function() {})',
     'describe("foo", () => {})',
     'describe(`foo`, () => {})',

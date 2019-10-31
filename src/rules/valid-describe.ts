@@ -6,6 +6,7 @@ import {
   createRule,
   getJestFunctionArguments,
   isDescribe,
+  isDescribeEach,
   isFunction,
 } from './utils';
 
@@ -85,7 +86,7 @@ export default createRule({
           });
         }
 
-        if (callback.params.length) {
+        if (!isDescribeEach(node) && callback.params.length) {
           context.report({
             messageId: 'unexpectedDescribeArgument',
             loc: paramsLocation(callback.params),
