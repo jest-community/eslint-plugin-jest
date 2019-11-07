@@ -10,6 +10,8 @@ export default createRule({
     },
     messages: {
       illegalTestCallback: 'Illegal usage of test callback',
+      useAwaitInsteadOfCallback:
+        'Use await instead of callback in async functions',
     },
     fixable: 'code',
     schema: [],
@@ -30,6 +32,15 @@ export default createRule({
         }
 
         const [argument] = callback.params;
+
+        if (callback.async) {
+          context.report({
+            node: argument,
+            messageId: 'useAwaitInsteadOfCallback',
+          });
+
+          return;
+        }
 
         context.report({
           node: argument,
@@ -84,7 +95,7 @@ export default createRule({
             let replaceBefore = true;
 
             if (body.type === 'BlockStatement') {
-              const keyword = callback.async ? 'await' : 'return';
+              const keyword = 'return';
 
               beforeReplacement = `${keyword} ${beforeReplacement}{`;
               afterReplacement += '}';
