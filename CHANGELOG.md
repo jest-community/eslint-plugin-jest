@@ -1,3 +1,12 @@
+## [23.0.3](https://github.com/jest-community/eslint-plugin-jest/compare/v23.0.2...v23.0.3) (2019-11-08)
+
+### Bug Fixes
+
+- **no-test-callback:** don't provide fix for `async` functions
+  ([#469](https://github.com/jest-community/eslint-plugin-jest/issues/469))
+  ([09111e0](https://github.com/jest-community/eslint-plugin-jest/commit/09111e0c951aaa930c9a2c8e0ca84251b3196e94)),
+  closes [#466](https://github.com/jest-community/eslint-plugin-jest/issues/466)
+
 ## [23.0.2](https://github.com/jest-community/eslint-plugin-jest/compare/v23.0.1...v23.0.2) (2019-10-28)
 
 ### Bug Fixes
