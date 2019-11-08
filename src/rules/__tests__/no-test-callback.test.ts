@@ -54,20 +54,38 @@ ruleTester.run('no-test-callback', rule, {
     },
     {
       code: 'test("something", async done => {done();})',
-      errors: [{ messageId: 'illegalTestCallback', line: 1, column: 25 }],
-      output:
-        'test("something", async () => {await new Promise(done => {done();})})',
+      errors: [{ messageId: 'useAwaitInsteadOfCallback', line: 1, column: 25 }],
     },
     {
       code: 'test("something", async done => done())',
-      errors: [{ messageId: 'illegalTestCallback', line: 1, column: 25 }],
-      output: 'test("something", async () => new Promise(done => done()))',
+      errors: [{ messageId: 'useAwaitInsteadOfCallback', line: 1, column: 25 }],
     },
     {
       code: 'test("something", async function (done) {done();})',
-      errors: [{ messageId: 'illegalTestCallback', line: 1, column: 35 }],
-      output:
-        'test("something", async function () {await new Promise((done) => {done();})})',
+      errors: [{ messageId: 'useAwaitInsteadOfCallback', line: 1, column: 35 }],
+    },
+    {
+      code: `
+      test('my test', async (done) => {
+        await myAsyncTask();
+        expect(true).toBe(false);
+        done();
+      });
+      `,
+      errors: [{ messageId: 'useAwaitInsteadOfCallback', line: 2, column: 30 }],
+    },
+    {
+      code: `
+      test('something', (done) => {
+        done();
+      });
+      `,
+      errors: [{ messageId: 'illegalTestCallback', line: 2, column: 26 }],
+      output: `
+      test('something', () => {return new Promise((done) => {
+        done();
+      })});
+      `,
     },
   ],
 });
