@@ -1,3 +1,11 @@
+## [23.0.4](https://github.com/jest-community/eslint-plugin-jest/compare/v23.0.3...v23.0.4) (2019-11-14)
+
+### Bug Fixes
+
+- get correct ruleName without specifying file extension
+  ([#473](https://github.com/jest-community/eslint-plugin-jest/issues/473))
+  ([f09203e](https://github.com/jest-community/eslint-plugin-jest/commit/f09203ed05a69c83baadf6149ae17513c85b170f))
+
 ## [23.0.3](https://github.com/jest-community/eslint-plugin-jest/compare/v23.0.2...v23.0.3) (2019-11-08)
 
 ### Bug Fixes
