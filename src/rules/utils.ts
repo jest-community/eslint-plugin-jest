@@ -1,5 +1,5 @@
 // TODO: rename to utils.ts when TS migration is complete
-import { basename } from 'path';
+import { parse as parsePath } from 'path';
 import {
   AST_NODE_TYPES,
   ESLintUtils,
@@ -11,7 +11,7 @@ import { version } from '../../package.json';
 const REPO_URL = 'https://github.com/jest-community/eslint-plugin-jest';
 
 export const createRule = ESLintUtils.RuleCreator(name => {
-  const ruleName = basename(name, '.ts');
+  const ruleName = parsePath(name).name;
   return `${REPO_URL}/blob/v${version}/docs/rules/${ruleName}.md`;
 });
 
