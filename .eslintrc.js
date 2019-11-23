@@ -6,12 +6,14 @@ module.exports = {
   parser: require.resolve('@typescript-eslint/parser'),
   extends: [
     'plugin:eslint-plugin/recommended',
+    'plugin:eslint-comments/recommended',
     'plugin:node/recommended',
     'plugin:@typescript-eslint/eslint-recommended',
     'prettier',
   ],
   plugins: [
     'eslint-plugin',
+    'eslint-comments',
     'node',
     'prettier',
     'import',
