@@ -1,14 +1,13 @@
 import { TSESLint } from '@typescript-eslint/experimental-utils';
+import resolveFrom from 'resolve-from';
 import rule from '../no-try-expect';
 
-const ruleTester = new TSESLint.RuleTester(
-  // @ts-ignore: https://github.com/typescript-eslint/typescript-eslint/pull/746
-  {
-    parserOptions: {
-      ecmaVersion: 2019,
-    },
+const ruleTester = new TSESLint.RuleTester({
+  parser: resolveFrom(require.resolve('eslint'), 'espree'),
+  parserOptions: {
+    ecmaVersion: 2019,
   },
-);
+});
 
 ruleTester.run('no-try-catch', rule, {
   valid: [
