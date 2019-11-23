@@ -32,8 +32,7 @@ interface AsExpressionChain<
 interface TypeAssertionChain<
   Expression extends TSESTree.Expression = TSESTree.Expression
 > extends TSESTree.TSTypeAssertion {
-  // expression: TypeAssertionChain<Expression> | Expression;
-  expression: any; // todo: replace w/ above once typescript-eslint is updated to v2.0.0
+  expression: TypeAssertionChain<Expression> | Expression;
 }
 
 const isTypeCastExpression = <Expression extends TSESTree.Expression>(
