@@ -41,11 +41,9 @@ const isFirstLineExprStmt = (
   functionBody[0].type === AST_NODE_TYPES.ExpressionStatement;
 
 interface PreferExpectAssertionsCallExpression extends TSESTree.CallExpression {
-  // prettier-ignore
-  // WEB-40105
   arguments: [
     TSESTree.Expression,
-    TSESTree.ArrowFunctionExpression & { body: TSESTree.BlockStatement }
+    TSESTree.ArrowFunctionExpression & { body: TSESTree.BlockStatement },
   ];
 }
 
