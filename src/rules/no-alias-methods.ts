@@ -17,7 +17,7 @@ export default createRule({
   },
   defaultOptions: [],
   create(context) {
-    // The Jest methods which have aliases. The canonical name is the first index of each item.
+    // map of jest matcher aliases & their canonical names
     const methodNames: Record<string, string> = {
       toBeCalled: 'toHaveBeenCalled',
       toBeCalledTimes: 'toHaveBeenCalledTimes',
