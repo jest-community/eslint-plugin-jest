@@ -26,7 +26,10 @@ ruleTester.run('no-alias-methods', rule, {
       errors: [
         {
           messageId: 'replaceAlias',
-          data: { alias: 'toBeCalled', canonical: 'toHaveBeenCalled' },
+          data: {
+            alias: 'toBeCalled',
+            canonical: 'toHaveBeenCalled',
+          },
           column: 11,
           line: 1,
         },
@@ -98,7 +101,10 @@ ruleTester.run('no-alias-methods', rule, {
       errors: [
         {
           messageId: 'replaceAlias',
-          data: { alias: 'toReturn', canonical: 'toHaveReturned' },
+          data: {
+            alias: 'toReturn',
+            canonical: 'toHaveReturned',
+          },
           column: 11,
           line: 1,
         },
@@ -110,7 +116,10 @@ ruleTester.run('no-alias-methods', rule, {
       errors: [
         {
           messageId: 'replaceAlias',
-          data: { alias: 'toReturnTimes', canonical: 'toHaveReturnedTimes' },
+          data: {
+            alias: 'toReturnTimes',
+            canonical: 'toHaveReturnedTimes',
+          },
           column: 11,
           line: 1,
         },
@@ -122,7 +131,10 @@ ruleTester.run('no-alias-methods', rule, {
       errors: [
         {
           messageId: 'replaceAlias',
-          data: { alias: 'toReturnWith', canonical: 'toHaveReturnedWith' },
+          data: {
+            alias: 'toReturnWith',
+            canonical: 'toHaveReturnedWith',
+          },
           column: 11,
           line: 1,
         },
@@ -164,7 +176,10 @@ ruleTester.run('no-alias-methods', rule, {
       errors: [
         {
           messageId: 'replaceAlias',
-          data: { alias: 'toThrowError', canonical: 'toThrow' },
+          data: {
+            alias: 'toThrowError',
+            canonical: 'toThrow',
+          },
           column: 11,
           line: 1,
         },
@@ -176,7 +191,10 @@ ruleTester.run('no-alias-methods', rule, {
       errors: [
         {
           messageId: 'replaceAlias',
-          data: { alias: 'toThrowError', canonical: 'toThrow' },
+          data: {
+            alias: 'toThrowError',
+            canonical: 'toThrow',
+          },
           column: 20,
           line: 1,
         },
@@ -188,7 +206,10 @@ ruleTester.run('no-alias-methods', rule, {
       errors: [
         {
           messageId: 'replaceAlias',
-          data: { alias: 'toThrowError', canonical: 'toThrow' },
+          data: {
+            alias: 'toThrowError',
+            canonical: 'toThrow',
+          },
           column: 19,
           line: 1,
         },
@@ -200,7 +221,10 @@ ruleTester.run('no-alias-methods', rule, {
       errors: [
         {
           messageId: 'replaceAlias',
-          data: { alias: 'toThrowError', canonical: 'toThrow' },
+          data: {
+            alias: 'toThrowError',
+            canonical: 'toThrow',
+          },
           column: 15,
           line: 1,
         },
