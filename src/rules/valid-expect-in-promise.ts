@@ -119,12 +119,10 @@ const isParentThenOrPromiseReturned = (
   node.type === AST_NODE_TYPES.ReturnStatement ||
   isPromiseReturnedLater(node, testFunctionBody);
 
-// prettier-ignore
-// WEB-40105
 type PromiseCallbacks = [
   TSESTree.Expression | undefined,
-  TSESTree.Expression | undefined
-]
+  TSESTree.Expression | undefined,
+];
 
 const verifyExpectWithReturn = (
   promiseCallbacks: PromiseCallbacks,

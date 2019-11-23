@@ -8,7 +8,7 @@ import rule from '../prefer-spy-on';
 const ruleTester = new TSESLint.RuleTester({
   parser: resolveFrom(require.resolve('eslint'), 'espree'),
   parserOptions: {
-    ecmaVersion: 6,
+    ecmaVersion: 2015,
   },
 });
 

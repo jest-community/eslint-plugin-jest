@@ -10,24 +10,18 @@ const testFunctions = new Set<string>([
   TestCaseName.it,
 ]);
 
-const matchesTestFunction = (
-  object: TSESTree.LeftHandSideExpression | undefined,
-) =>
-  object &&
+const matchesTestFunction = (object: TSESTree.LeftHandSideExpression) =>
   'name' in object &&
   (object.name in TestCaseName || object.name in DescribeAlias);
 
-const isCallToFocusedTestFunction = (object: TSESTree.Identifier | undefined) =>
-  object &&
-  object.name.startsWith('f') &&
-  testFunctions.has(object.name.substring(1));
+const isCallToFocusedTestFunction = (object: TSESTree.Identifier) =>
+  object.name.startsWith('f') && testFunctions.has(object.name.substring(1));
 
 const isPropertyNamedOnly = (
-  property: TSESTree.Expression | TSESTree.Identifier | undefined,
+  property: TSESTree.Expression | TSESTree.Identifier,
 ) =>
-  property &&
-  (('name' in property && property.name === 'only') ||
-    ('value' in property && property.value === 'only'));
+  ('name' in property && property.name === 'only') ||
+  ('value' in property && property.value === 'only');
 
 const isCallToTestOnlyFunction = (callee: TSESTree.MemberExpression) =>
   matchesTestFunction(callee.object) && isPropertyNamedOnly(callee.property);

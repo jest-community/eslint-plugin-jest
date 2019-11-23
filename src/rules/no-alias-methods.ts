@@ -9,7 +9,7 @@ export default createRule({
       recommended: 'warn',
     },
     messages: {
-      replaceAlias: `Replace {{ replace }}() with its canonical name of {{ canonical }}()`,
+      replaceAlias: `Replace {{ alias }}() with its canonical name of {{ canonical }}()`,
     },
     fixable: 'code',
     type: 'suggestion',
@@ -17,22 +17,20 @@ export default createRule({
   },
   defaultOptions: [],
   create(context) {
-    // The Jest methods which have aliases. The canonical name is the first
-    // index of each item.
-    // todo: replace w/ Map
-    const methodNames = [
-      ['toHaveBeenCalled', 'toBeCalled'],
-      ['toHaveBeenCalledTimes', 'toBeCalledTimes'],
-      ['toHaveBeenCalledWith', 'toBeCalledWith'],
-      ['toHaveBeenLastCalledWith', 'lastCalledWith'],
-      ['toHaveBeenNthCalledWith', 'nthCalledWith'],
-      ['toHaveReturned', 'toReturn'],
-      ['toHaveReturnedTimes', 'toReturnTimes'],
-      ['toHaveReturnedWith', 'toReturnWith'],
-      ['toHaveLastReturnedWith', 'lastReturnedWith'],
-      ['toHaveNthReturnedWith', 'nthReturnedWith'],
-      ['toThrow', 'toThrowError'],
-    ];
+    // map of jest matcher aliases & their canonical names
+    const methodNames: Record<string, string> = {
+      toBeCalled: 'toHaveBeenCalled',
+      toBeCalledTimes: 'toHaveBeenCalledTimes',
+      toBeCalledWith: 'toHaveBeenCalledWith',
+      lastCalledWith: 'toHaveBeenLastCalledWith',
+      nthCalledWith: 'toHaveBeenNthCalledWith',
+      toReturn: 'toHaveReturned',
+      toReturnTimes: 'toHaveReturnedTimes',
+      toReturnWith: 'toHaveReturnedWith',
+      lastReturnedWith: 'toHaveLastReturnedWith',
+      nthReturnedWith: 'toHaveNthReturnedWith',
+      toThrowError: 'toThrow',
+    };
 
     return {
       CallExpression(node) {
@@ -46,20 +44,18 @@ export default createRule({
           return;
         }
 
-        // Check if the method used matches any of ours
-        const methodItem = methodNames.find(item => item[1] === matcher.name);
+        const alias = matcher.name;
+        if (alias in methodNames) {
+          const canonical = methodNames[alias];
 
-        if (methodItem) {
           context.report({
             messageId: 'replaceAlias',
             data: {
-              replace: methodItem[1],
-              canonical: methodItem[0],
+              alias,
+              canonical,
             },
             node: matcher.node.property,
-            fix: fixer => [
-              fixer.replaceText(matcher.node.property, methodItem[0]),
-            ],
+            fix: fixer => [fixer.replaceText(matcher.node.property, canonical)],
           });
         }
       },

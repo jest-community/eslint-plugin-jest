@@ -14,7 +14,7 @@ export default createRule({
       recommended: false,
     },
     messages: {
-      addErrorMessage: 'Add an error message to {{ propertyName }}()',
+      addErrorMessage: 'Add an error message to {{ matcherName }}()',
     },
     type: 'suggestion',
     schema: [],

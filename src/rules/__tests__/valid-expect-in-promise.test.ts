@@ -5,7 +5,7 @@ import rule from '../valid-expect-in-promise';
 const ruleTester = new TSESLint.RuleTester({
   parser: resolveFrom(require.resolve('eslint'), 'espree'),
   parserOptions: {
-    ecmaVersion: 8,
+    ecmaVersion: 2017,
   },
 });
 
