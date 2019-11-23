@@ -9,7 +9,7 @@ export default createRule({
       recommended: 'warn',
     },
     messages: {
-      replaceAlias: `Replace {{ replace }}() with its canonical name of {{ canonical }}()`,
+      replaceAlias: `Replace {{ alias }}() with its canonical name of {{ canonical }}()`,
     },
     fixable: 'code',
     type: 'suggestion',
@@ -51,7 +51,7 @@ export default createRule({
           context.report({
             messageId: 'replaceAlias',
             data: {
-              replace: alias,
+              alias,
               canonical,
             },
             node: matcher.node.property,
