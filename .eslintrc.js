@@ -9,7 +9,8 @@ module.exports = {
     'plugin:eslint-comments/recommended',
     'plugin:node/recommended',
     'plugin:@typescript-eslint/eslint-recommended',
-    'prettier',
+    'plugin:prettier/recommended',
+    'prettier/@typescript-eslint',
   ],
   plugins: [
     'eslint-plugin',
@@ -43,7 +44,6 @@ module.exports = {
       { VariableDeclarator: { array: true, object: true } },
     ],
     'sort-imports': ['error', { ignoreDeclarationSort: true }],
-    'prettier/prettier': 'error',
     // TS covers this
     'node/no-missing-import': 'off',
     'node/no-unsupported-features/es-syntax': 'off',
