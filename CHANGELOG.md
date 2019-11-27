@@ -1,3 +1,11 @@
+## [23.0.5](https://github.com/jest-community/eslint-plugin-jest/compare/v23.0.4...v23.0.5) (2019-11-27)
+
+### Bug Fixes
+
+- typo in the `require-to-throw-message` docs
+  ([#487](https://github.com/jest-community/eslint-plugin-jest/issues/487))
+  ([3526213](https://github.com/jest-community/eslint-plugin-jest/commit/35262135e3bb407b9c40991d2651ca4b201eebff))
+
 ## [23.0.4](https://github.com/jest-community/eslint-plugin-jest/compare/v23.0.3...v23.0.4) (2019-11-14)
 
 ### Bug Fixes
