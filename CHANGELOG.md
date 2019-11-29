@@ -1,3 +1,11 @@
+# [23.1.0](https://github.com/jest-community/eslint-plugin-jest/compare/v23.0.5...v23.1.0) (2019-11-29)
+
+### Features
+
+- **no-focused-tests:** check each with table format
+  ([#430](https://github.com/jest-community/eslint-plugin-jest/issues/430))
+  ([154c0b8](https://github.com/jest-community/eslint-plugin-jest/commit/154c0b8e5310f0c1bf715a8c60de5d84faa1bc48))
+
 ## [23.0.5](https://github.com/jest-community/eslint-plugin-jest/compare/v23.0.4...v23.0.5) (2019-11-27)
 
 ### Bug Fixes
