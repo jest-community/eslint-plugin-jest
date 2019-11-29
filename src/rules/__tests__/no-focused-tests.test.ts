@@ -1,7 +1,13 @@
 import { TSESLint } from '@typescript-eslint/experimental-utils';
+import resolveFrom from 'resolve-from';
 import rule from '../no-focused-tests';
 
-const ruleTester = new TSESLint.RuleTester();
+const ruleTester = new TSESLint.RuleTester({
+  parser: resolveFrom(require.resolve('eslint'), 'espree'),
+  parserOptions: {
+    ecmaVersion: 6,
+  },
+});
 
 ruleTester.run('no-focused-tests', rule, {
   valid: [
@@ -13,6 +19,10 @@ ruleTester.run('no-focused-tests', rule, {
     'test.skip()',
     'var appliedOnly = describe.only; appliedOnly.apply(describe)',
     'var calledOnly = it.only; calledOnly.call(it)',
+    'it.each()()',
+    'it.each`table`()',
+    'test.each()()',
+    'test.each`table`()',
   ],
 
   invalid: [
@@ -62,6 +72,14 @@ ruleTester.run('no-focused-tests', rule, {
     },
     {
       code: 'fit.each()',
+      errors: [{ messageId: 'focusedTest', column: 1, line: 1 }],
+    },
+    {
+      code: 'fit.each`table`()',
+      errors: [{ messageId: 'focusedTest', column: 1, line: 1 }],
+    },
+    {
+      code: 'ftest.each`table`()',
       errors: [{ messageId: 'focusedTest', column: 1, line: 1 }],
     },
   ],
