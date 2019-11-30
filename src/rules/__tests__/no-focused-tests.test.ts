@@ -35,6 +35,10 @@ ruleTester.run('no-focused-tests', rule, {
       errors: [{ messageId: 'focusedTest', column: 10, line: 1 }],
     },
     {
+      code: 'describe.only.each`table`()',
+      errors: [{ messageId: 'focusedTest', column: 10, line: 1 }],
+    },
+    {
       code: 'describe["only"]()',
       errors: [{ messageId: 'focusedTest', column: 10, line: 1 }],
     },
@@ -47,6 +51,10 @@ ruleTester.run('no-focused-tests', rule, {
       errors: [{ messageId: 'focusedTest', column: 4, line: 1 }],
     },
     {
+      code: 'it.only.each`table`()',
+      errors: [{ messageId: 'focusedTest', column: 4, line: 1 }],
+    },
+    {
       code: 'it["only"]()',
       errors: [{ messageId: 'focusedTest', column: 4, line: 1 }],
     },
@@ -56,6 +64,10 @@ ruleTester.run('no-focused-tests', rule, {
     },
     {
       code: 'test.only.each()',
+      errors: [{ messageId: 'focusedTest', column: 6, line: 1 }],
+    },
+    {
+      code: 'test.only.each`table`()',
       errors: [{ messageId: 'focusedTest', column: 6, line: 1 }],
     },
     {
