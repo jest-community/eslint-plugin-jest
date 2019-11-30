@@ -1,3 +1,11 @@
+## [23.1.1](https://github.com/jest-community/eslint-plugin-jest/compare/v23.1.0...v23.1.1) (2019-11-30)
+
+### Bug Fixes
+
+- **no-focused-tests:** detect table format uage of `.only.each`
+  ([#489](https://github.com/jest-community/eslint-plugin-jest/issues/489))
+  ([d03bcf4](https://github.com/jest-community/eslint-plugin-jest/commit/d03bcf49e9e4f068bead25a4bc4c962762d56c02))
+
 # [23.1.0](https://github.com/jest-community/eslint-plugin-jest/compare/v23.0.5...v23.1.0) (2019-11-29)
 
 ### Features
