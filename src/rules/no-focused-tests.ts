@@ -44,7 +44,10 @@ export default createRule({
   defaultOptions: [],
   create: context => ({
     CallExpression(node) {
-      const { callee } = node;
+      const callee =
+        node.callee.type === AST_NODE_TYPES.TaggedTemplateExpression
+          ? node.callee.tag
+          : node.callee;
 
       if (callee.type === AST_NODE_TYPES.MemberExpression) {
         if (
@@ -75,16 +78,6 @@ export default createRule({
       if (
         callee.type === AST_NODE_TYPES.Identifier &&
         isCallToFocusedTestFunction(callee)
-      ) {
-        context.report({ messageId: 'focusedTest', node: callee });
-      }
-
-      if (
-        callee.type === AST_NODE_TYPES.TaggedTemplateExpression &&
-        callee.tag.type === AST_NODE_TYPES.MemberExpression &&
-        callee.tag.object &&
-        callee.tag.object.type === AST_NODE_TYPES.Identifier &&
-        isCallToFocusedTestFunction(callee.tag.object)
       ) {
         context.report({ messageId: 'focusedTest', node: callee });
       }
