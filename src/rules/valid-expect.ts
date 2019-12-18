@@ -90,6 +90,12 @@ const isAcceptableReturnNode = (
     AST_NODE_TYPES.AwaitExpression,
   ].includes(node.type);
 
+const isNoAssertionsParentNode = (node: TSESTree.Node): boolean =>
+  node.type === AST_NODE_TYPES.ExpressionStatement ||
+  (node.type === AST_NODE_TYPES.AwaitExpression &&
+    node.parent !== undefined &&
+    node.parent.type === AST_NODE_TYPES.ExpressionStatement);
+
 const promiseArrayExceptionKey = ({ start, end }: TSESTree.SourceLocation) =>
   `${start.line}:${start.column}-${end.line}:${end.column}`;
 
@@ -280,10 +286,7 @@ export default createRule<[{ alwaysAwait?: boolean }], MessageIds>({
 
       // nothing called on "expect()"
       'CallExpression:exit'(node: TSESTree.CallExpression) {
-        if (
-          isExpectCall(node) &&
-          node.parent.type === AST_NODE_TYPES.ExpressionStatement
-        ) {
+        if (isExpectCall(node) && isNoAssertionsParentNode(node.parent)) {
           context.report({ messageId: 'noAssertions', node });
         }
       },

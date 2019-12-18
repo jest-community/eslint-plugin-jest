@@ -578,5 +578,11 @@ ruleTester.run('valid-expect', rule, {
         },
       ],
     },
+    {
+      code: `test("valid-expect", async () => {
+        await expect(Promise.resolve(1));
+      });`,
+      errors: [{ endColumn: 41, column: 15, messageId: 'noAssertions' }],
+    },
   ],
 });
