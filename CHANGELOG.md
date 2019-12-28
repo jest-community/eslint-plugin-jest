@@ -1,3 +1,11 @@
+# [23.2.0](https://github.com/jest-community/eslint-plugin-jest/compare/v23.1.1...v23.2.0) (2019-12-28)
+
+### Features
+
+- **valid-expect:** warn on `await expect()` with no assertions
+  ([#496](https://github.com/jest-community/eslint-plugin-jest/issues/496))
+  ([19798dd](https://github.com/jest-community/eslint-plugin-jest/commit/19798dd540c8a0f5ac7883f67a28ee67d9e5fc7a))
+
 ## [23.1.1](https://github.com/jest-community/eslint-plugin-jest/compare/v23.1.0...v23.1.1) (2019-11-30)
 
 ### Bug Fixes
