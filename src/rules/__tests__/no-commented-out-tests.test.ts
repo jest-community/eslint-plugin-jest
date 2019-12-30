@@ -17,8 +17,10 @@ ruleTester.run('no-commented-out-tests', rule, {
     'it("foo", function () {})',
     'describe.only("foo", function () {})',
     'it.only("foo", function () {})',
+    'it.concurrent("foo", function () {})',
     'test("foo", function () {})',
     'test.only("foo", function () {})',
+    'test.concurrent("foo", function () {})',
     'var appliedSkip = describe.skip; appliedSkip.apply(describe)',
     'var calledSkip = it.skip; calledSkip.call(it)',
     '({ f: function () {} }).f()',
@@ -81,11 +83,19 @@ ruleTester.run('no-commented-out-tests', rule, {
       errors: [{ messageId: 'commentedTests', column: 1, line: 1 }],
     },
     {
+      code: '// it.concurrent("foo", function () {})',
+      errors: [{ messageId: 'commentedTests', column: 1, line: 1 }],
+    },
+    {
       code: '// it["skip"]("foo", function () {})',
       errors: [{ messageId: 'commentedTests', column: 1, line: 1 }],
     },
     {
       code: '// test.skip("foo", function () {})',
+      errors: [{ messageId: 'commentedTests', column: 1, line: 1 }],
+    },
+    {
+      code: '// test.concurrent("foo", function () {})',
       errors: [{ messageId: 'commentedTests', column: 1, line: 1 }],
     },
     {

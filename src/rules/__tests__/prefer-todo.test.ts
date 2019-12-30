@@ -10,11 +10,15 @@ const ruleTester = new TSESLint.RuleTester({
 ruleTester.run('prefer-todo', rule, {
   valid: [
     'test()',
+    'test.concurrent()',
     'test.todo("i need to write this test");',
     'test(obj)',
+    'test.concurrent(obj)',
     'fit("foo")',
+    'fit.concurrent("foo")',
     'xit("foo")',
     'test("stub", () => expect(1).toBe(1));',
+    'test.concurrent("stub", () => expect(1).toBe(1));',
     `
       supportsDone && params.length < test.length
         ? done => test(...params, done)

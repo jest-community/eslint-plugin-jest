@@ -28,6 +28,12 @@ ruleTester.run('no-try-catch', rule, {
     } catch {
       expect('foo').toEqual('foo');
     }`,
+    `it.concurrent.skip('foo');
+    try {
+
+    } catch {
+      expect('foo').toEqual('foo');
+    }`,
   ],
   invalid: [
     {

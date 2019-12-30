@@ -56,11 +56,31 @@ ruleTester.run('title-must-be-string', rule, {
       ],
     },
     {
+      code: 'it.concurrent(123, () => {});',
+      errors: [
+        {
+          messageId: 'titleMustBeString',
+          column: 15,
+          line: 1,
+        },
+      ],
+    },
+    {
       code: 'it(1 + 2 + 3, () => {});',
       errors: [
         {
           messageId: 'titleMustBeString',
           column: 4,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: 'it.concurrent(1 + 2 + 3, () => {});',
+      errors: [
+        {
+          messageId: 'titleMustBeString',
+          column: 15,
           line: 1,
         },
       ],
@@ -72,6 +92,17 @@ ruleTester.run('title-must-be-string', rule, {
         {
           messageId: 'titleMustBeString',
           column: 11,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: 'test.concurrent.skip(123, () => {});',
+      options: [{ ignoreTypeOfDescribeName: true }],
+      errors: [
+        {
+          messageId: 'titleMustBeString',
+          column: 22,
           line: 1,
         },
       ],
@@ -147,9 +178,13 @@ ruleTester.run('no-empty-title', rule, {
     'describe("foo", function () {})',
     'describe("foo", function () { it("bar", function () {}) })',
     'test("foo", function () {})',
+    'test.concurrent("foo", function () {})',
     'test(`foo`, function () {})',
+    'test.concurrent(`foo`, function () {})',
     'test(`${foo}`, function () {})',
+    'test.concurrent(`${foo}`, function () {})',
     "it('foo', function () {})",
+    "it.concurrent('foo', function () {})",
     "xdescribe('foo', function () {})",
     "xit('foo', function () {})",
     "xtest('foo', function () {})",
@@ -189,6 +224,17 @@ ruleTester.run('no-empty-title', rule, {
       ],
     },
     {
+      code: 'it.concurrent("", function () {})',
+      errors: [
+        {
+          messageId: 'emptyTitle',
+          column: 1,
+          line: 1,
+          data: { jestFunctionName: 'test' },
+        },
+      ],
+    },
+    {
       code: 'test("", function () {})',
       errors: [
         {
@@ -200,7 +246,29 @@ ruleTester.run('no-empty-title', rule, {
       ],
     },
     {
+      code: 'test.concurrent("", function () {})',
+      errors: [
+        {
+          messageId: 'emptyTitle',
+          column: 1,
+          line: 1,
+          data: { jestFunctionName: 'test' },
+        },
+      ],
+    },
+    {
       code: 'test(``, function () {})',
+      errors: [
+        {
+          messageId: 'emptyTitle',
+          column: 1,
+          line: 1,
+          data: { jestFunctionName: 'test' },
+        },
+      ],
+    },
+    {
+      code: 'test.concurrent(``, function () {})',
       errors: [
         {
           messageId: 'emptyTitle',
@@ -249,15 +317,19 @@ ruleTester.run('no-empty-title', rule, {
 ruleTester.run('no-accidental-space', rule, {
   valid: [
     'it()',
+    'it.concurrent()',
     'describe()',
     'it.each()()',
     'describe("foo", function () {})',
     'fdescribe("foo", function () {})',
     'xdescribe("foo", function () {})',
     'it("foo", function () {})',
+    'it.concurrent("foo", function () {})',
     'fit("foo", function () {})',
+    'fit.concurrent("foo", function () {})',
     'xit("foo", function () {})',
     'test("foo", function () {})',
+    'test.concurrent("foo", function () {})',
     'xtest("foo", function () {})',
     'xtest(`foo`, function () {})',
     'someFn("foo", function () {})',
@@ -304,14 +376,29 @@ ruleTester.run('no-accidental-space', rule, {
       output: 'it("foo", function () {})',
     },
     {
+      code: 'it.concurrent(" foo", function () {})',
+      errors: [{ messageId: 'accidentalSpace', column: 15, line: 1 }],
+      output: 'it.concurrent("foo", function () {})',
+    },
+    {
       code: 'fit(" foo", function () {})',
       errors: [{ messageId: 'accidentalSpace', column: 5, line: 1 }],
       output: 'fit("foo", function () {})',
     },
     {
+      code: 'fit.concurrent(" foo", function () {})',
+      errors: [{ messageId: 'accidentalSpace', column: 16, line: 1 }],
+      output: 'fit.concurrent("foo", function () {})',
+    },
+    {
       code: 'fit("foo ", function () {})',
       errors: [{ messageId: 'accidentalSpace', column: 5, line: 1 }],
       output: 'fit("foo", function () {})',
+    },
+    {
+      code: 'fit.concurrent("foo ", function () {})',
+      errors: [{ messageId: 'accidentalSpace', column: 16, line: 1 }],
+      output: 'fit.concurrent("foo", function () {})',
     },
     {
       code: 'xit(" foo", function () {})',
@@ -324,9 +411,19 @@ ruleTester.run('no-accidental-space', rule, {
       output: 'test("foo", function () {})',
     },
     {
+      code: 'test.concurrent(" foo", function () {})',
+      errors: [{ messageId: 'accidentalSpace', column: 17, line: 1 }],
+      output: 'test.concurrent("foo", function () {})',
+    },
+    {
       code: 'test(` foo`, function () {})',
       errors: [{ messageId: 'accidentalSpace', column: 6, line: 1 }],
       output: 'test(`foo`, function () {})',
+    },
+    {
+      code: 'test.concurrent(` foo`, function () {})',
+      errors: [{ messageId: 'accidentalSpace', column: 17, line: 1 }],
+      output: 'test.concurrent(`foo`, function () {})',
     },
     {
       code: 'test(` foo bar bang`, function () {})',
@@ -334,9 +431,19 @@ ruleTester.run('no-accidental-space', rule, {
       output: 'test(`foo bar bang`, function () {})',
     },
     {
+      code: 'test.concurrent(` foo bar bang`, function () {})',
+      errors: [{ messageId: 'accidentalSpace', column: 17, line: 1 }],
+      output: 'test.concurrent(`foo bar bang`, function () {})',
+    },
+    {
       code: 'test(` foo bar bang  `, function () {})',
       errors: [{ messageId: 'accidentalSpace', column: 6, line: 1 }],
       output: 'test(`foo bar bang`, function () {})',
+    },
+    {
+      code: 'test.concurrent(` foo bar bang  `, function () {})',
+      errors: [{ messageId: 'accidentalSpace', column: 17, line: 1 }],
+      output: 'test.concurrent(`foo bar bang`, function () {})',
     },
     {
       code: 'xtest(" foo", function () {})',

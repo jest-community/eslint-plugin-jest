@@ -25,10 +25,22 @@ ruleTester.run('no-identical-title', rule, {
       '});',
     ].join('\n'),
     ['it("it1", function() {});', 'it("it2", function() {});'].join('\n'),
+    [
+      'it.concurrent("it1", function() {});',
+      'it.concurrent("it2", function() {});',
+    ].join('\n'),
     ['it.only("it1", function() {});', 'it("it2", function() {});'].join('\n'),
     ['it.only("it1", function() {});', 'it.only("it2", function() {});'].join(
       '\n',
     ),
+    [
+      'it.concurrent.only("it1", function() {});',
+      'it.concurrent("it2", function() {});',
+    ].join('\n'),
+    [
+      'it.concurrent.only("it1", function() {});',
+      'it.concurrent.only("it2", function() {});',
+    ].join('\n'),
     ['describe("title", function() {});', 'it("title", function() {});'].join(
       '\n',
     ),
@@ -120,10 +132,24 @@ ruleTester.run('no-identical-title', rule, {
     },
     {
       code: [
+        'it.concurrent("it1", function() {});',
+        'it.concurrent("it1", function() {});',
+      ].join('\n'),
+      errors: [{ messageId: 'multipleTestTitle', column: 15, line: 2 }],
+    },
+    {
+      code: [
         'it.only("it1", function() {});',
         'it("it1", function() {});',
       ].join('\n'),
       errors: [{ messageId: 'multipleTestTitle', column: 4, line: 2 }],
+    },
+    {
+      code: [
+        'it.concurrent.only("it1", function() {});',
+        'it.concurrent("it1", function() {});',
+      ].join('\n'),
+      errors: [{ messageId: 'multipleTestTitle', column: 15, line: 2 }],
     },
     {
       code: ['fit("it1", function() {});', 'it("it1", function() {});'].join(
@@ -137,6 +163,13 @@ ruleTester.run('no-identical-title', rule, {
         'it.only("it1", function() {});',
       ].join('\n'),
       errors: [{ messageId: 'multipleTestTitle', column: 9, line: 2 }],
+    },
+    {
+      code: [
+        'it.concurrent.only("it1", function() {});',
+        'it.concurrent.only("it1", function() {});',
+      ].join('\n'),
+      errors: [{ messageId: 'multipleTestTitle', column: 20, line: 2 }],
     },
     {
       code: [

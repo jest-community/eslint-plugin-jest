@@ -191,7 +191,27 @@ ruleTester.run('no-if', rule, {
       ],
     },
     {
+      code: `it.concurrent.skip('foo', () => {
+        if('bar') {}
+      })`,
+      errors: [
+        {
+          messageId: 'noIf',
+        },
+      ],
+    },
+    {
       code: `it.only('foo', () => {
+        if('bar') {}
+      })`,
+      errors: [
+        {
+          messageId: 'noIf',
+        },
+      ],
+    },
+    {
+      code: `it.concurrent.only('foo', () => {
         if('bar') {}
       })`,
       errors: [
@@ -221,6 +241,16 @@ ruleTester.run('no-if', rule, {
       ],
     },
     {
+      code: `fit.concurrent('foo', () => {
+        if('bar') {}
+      })`,
+      errors: [
+        {
+          messageId: 'noIf',
+        },
+      ],
+    },
+    {
       code: `test('foo', () => {
         if('bar') {}
       })`,
@@ -231,7 +261,7 @@ ruleTester.run('no-if', rule, {
       ],
     },
     {
-      code: `test.skip('foo', () => {
+      code: `test.concurrent.skip('foo', () => {
         if('bar') {}
       })`,
       errors: [
@@ -241,7 +271,7 @@ ruleTester.run('no-if', rule, {
       ],
     },
     {
-      code: `test.only('foo', () => {
+      code: `test.concurrent.only('foo', () => {
         if('bar') {}
       })`,
       errors: [
