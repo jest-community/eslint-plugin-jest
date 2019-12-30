@@ -16,8 +16,10 @@ ruleTester.run('no-disabled-tests', rule, {
     'it("foo", function () {})',
     'describe.only("foo", function () {})',
     'it.only("foo", function () {})',
+    'it.concurrent("foo", function () {})',
     'test("foo", function () {})',
     'test.only("foo", function () {})',
+    'test.concurrent("foo", function () {})',
     'describe[`${"skip"}`]("foo", function () {})',
     'var appliedSkip = describe.skip; appliedSkip.apply(describe)',
     'var calledSkip = it.skip; calledSkip.call(it)',
@@ -74,11 +76,19 @@ ruleTester.run('no-disabled-tests', rule, {
       errors: [{ messageId: 'skippedTest', column: 1, line: 1 }],
     },
     {
+      code: 'it.concurrent.skip("foo", function () {})',
+      errors: [{ messageId: 'skippedTest', column: 1, line: 1 }],
+    },
+    {
       code: 'it["skip"]("foo", function () {})',
       errors: [{ messageId: 'skippedTest', column: 1, line: 1 }],
     },
     {
       code: 'test.skip("foo", function () {})',
+      errors: [{ messageId: 'skippedTest', column: 1, line: 1 }],
+    },
+    {
+      code: 'test.concurrent.skip("foo", function () {})',
       errors: [{ messageId: 'skippedTest', column: 1, line: 1 }],
     },
     {

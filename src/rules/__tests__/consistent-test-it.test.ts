@@ -25,6 +25,10 @@ ruleTester.run('consistent-test-it with fn=test', rule, {
       options: [{ fn: TestCaseName.test }],
     },
     {
+      code: 'test.concurrent("foo")',
+      options: [{ fn: TestCaseName.test }],
+    },
+    {
       code: 'xtest("foo")',
       options: [{ fn: TestCaseName.test }],
     },
@@ -91,6 +95,20 @@ ruleTester.run('consistent-test-it with fn=test', rule, {
       output: 'test.skip("foo")',
     },
     {
+      code: 'it.concurrent("foo")',
+      options: [{ fn: TestCaseName.test }],
+      errors: [
+        {
+          messageId: 'consistentMethod',
+          data: {
+            testKeyword: TestCaseName.test,
+            oppositeTestKeyword: TestCaseName.it,
+          },
+        },
+      ],
+      output: 'test.concurrent("foo")',
+    },
+    {
       code: 'it.only("foo")',
       options: [{ fn: TestCaseName.test }],
       errors: [
@@ -144,6 +162,10 @@ ruleTester.run('consistent-test-it with fn=it', rule, {
       options: [{ fn: TestCaseName.it }],
     },
     {
+      code: 'it.concurrent("foo")',
+      options: [{ fn: TestCaseName.it }],
+    },
+    {
       code: 'describe("suite", () => { it("foo") })',
       options: [{ fn: TestCaseName.it }],
     },
@@ -192,6 +214,20 @@ ruleTester.run('consistent-test-it with fn=it', rule, {
       output: 'it.skip("foo")',
     },
     {
+      code: 'test.concurrent("foo")',
+      options: [{ fn: TestCaseName.it }],
+      errors: [
+        {
+          messageId: 'consistentMethod',
+          data: {
+            testKeyword: TestCaseName.it,
+            oppositeTestKeyword: TestCaseName.test,
+          },
+        },
+      ],
+      output: 'it.concurrent("foo")',
+    },
+    {
       code: 'test.only("foo")',
       options: [{ fn: TestCaseName.it }],
       errors: [
@@ -234,6 +270,10 @@ ruleTester.run('consistent-test-it with fn=test and withinDescribe=it ', rule, {
     },
     {
       code: 'test.skip("foo")',
+      options: [{ fn: TestCaseName.test, withinDescribe: TestCaseName.it }],
+    },
+    {
+      code: 'test.concurrent("foo")',
       options: [{ fn: TestCaseName.test, withinDescribe: TestCaseName.it }],
     },
     {
@@ -302,6 +342,20 @@ ruleTester.run('consistent-test-it with fn=test and withinDescribe=it ', rule, {
       ],
       output: 'describe("suite", () => { it.skip("foo") })',
     },
+    {
+      code: 'describe("suite", () => { test.concurrent("foo") })',
+      options: [{ fn: TestCaseName.test, withinDescribe: TestCaseName.it }],
+      errors: [
+        {
+          messageId: 'consistentMethodWithinDescribe',
+          data: {
+            testKeywordWithinDescribe: TestCaseName.it,
+            oppositeTestKeyword: TestCaseName.test,
+          },
+        },
+      ],
+      output: 'describe("suite", () => { it.concurrent("foo") })',
+    },
   ],
 });
 
@@ -317,6 +371,10 @@ ruleTester.run('consistent-test-it with fn=it and withinDescribe=test ', rule, {
     },
     {
       code: 'it.skip("foo")',
+      options: [{ fn: TestCaseName.it, withinDescribe: TestCaseName.test }],
+    },
+    {
+      code: 'it.concurrent("foo")',
       options: [{ fn: TestCaseName.it, withinDescribe: TestCaseName.test }],
     },
     {
@@ -384,6 +442,20 @@ ruleTester.run('consistent-test-it with fn=it and withinDescribe=test ', rule, {
         },
       ],
       output: 'describe("suite", () => { test.skip("foo") })',
+    },
+    {
+      code: 'describe("suite", () => { it.concurrent("foo") })',
+      options: [{ fn: TestCaseName.it, withinDescribe: TestCaseName.test }],
+      errors: [
+        {
+          messageId: 'consistentMethodWithinDescribe',
+          data: {
+            testKeywordWithinDescribe: TestCaseName.test,
+            oppositeTestKeyword: TestCaseName.it,
+          },
+        },
+      ],
+      output: 'describe("suite", () => { test.concurrent("foo") })',
     },
   ],
 });

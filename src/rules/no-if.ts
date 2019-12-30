@@ -7,9 +7,14 @@ import {
 const testCaseNames = new Set<string | null>([
   ...Object.keys(TestCaseName),
   'it.only',
+  'it.concurrent.only',
   'it.skip',
+  'it.concurrent.skip',
   'test.only',
+  'test.concurrent.only',
   'test.skip',
+  'test.concurrent.skip',
+  'fit.concurrent',
 ]);
 
 const isTestArrowFunction = (node: TSESTree.ArrowFunctionExpression) =>

@@ -45,7 +45,9 @@ export default createRule({
             break;
 
           case 'it.skip':
+          case 'it.concurrent.skip':
           case 'test.skip':
+          case 'test.concurrent.skip':
             context.report({ messageId: 'skippedTest', node });
             break;
         }

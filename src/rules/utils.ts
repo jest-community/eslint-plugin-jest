@@ -542,6 +542,7 @@ export enum DescribeProperty {
 
 export enum TestCaseProperty {
   'each' = 'each',
+  'concurrent' = 'concurrent',
   'only' = 'only',
   'skip' = 'skip',
   'todo' = 'todo',
@@ -631,6 +632,22 @@ export const isHook = (
   );
 };
 
+const isConcurrentTestCase = (
+  node: TSESTree.CallExpression,
+): node is JestFunctionCallExpression<TestCaseName> => {
+  console.log(node);
+  return (
+    node.callee.type === AST_NODE_TYPES.MemberExpression &&
+    node.callee.object.type === AST_NODE_TYPES.MemberExpression &&
+    TestCaseName.hasOwnProperty(
+      ((node.callee.object as TSESTree.MemberExpression)
+        .object as TSESTree.Identifier).name,
+    ) &&
+    node.callee.property.type === AST_NODE_TYPES.Identifier &&
+    TestCaseProperty.hasOwnProperty(node.callee.property.name)
+  );
+};
+
 export const isTestCase = (
   node: TSESTree.CallExpression,
 ): node is JestFunctionCallExpression<TestCaseName> => {
@@ -641,7 +658,8 @@ export const isTestCase = (
       node.callee.object.type === AST_NODE_TYPES.Identifier &&
       TestCaseName.hasOwnProperty(node.callee.object.name) &&
       node.callee.property.type === AST_NODE_TYPES.Identifier &&
-      TestCaseProperty.hasOwnProperty(node.callee.property.name))
+      TestCaseProperty.hasOwnProperty(node.callee.property.name)) ||
+    isConcurrentTestCase(node)
   );
 };
 
