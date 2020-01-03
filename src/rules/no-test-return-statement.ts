@@ -2,8 +2,14 @@ import {
   AST_NODE_TYPES,
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
-import { createRule, isFunction, isTestCase } from './utils';
+import {
+  createRule,
+  getTestCallExpressionsFromDeclaredVariables,
+  isFunction,
+  isTestCase,
+} from './utils';
 
+const RETURN_STATEMENT = 'ReturnStatement';
 const getBody = (args: TSESTree.Expression[]) => {
   const [, secondArg] = args;
 
@@ -40,6 +46,20 @@ export default createRule({
         const body = getBody(node.arguments);
         const returnStmt = body.find(
           t => t.type === AST_NODE_TYPES.ReturnStatement,
+        );
+        if (!returnStmt) return;
+
+        context.report({ messageId: 'noReturnValue', node: returnStmt });
+      },
+      FunctionDeclaration(node) {
+        const declaredVariables = context.getDeclaredVariables(node);
+        const testCallExpressions = getTestCallExpressionsFromDeclaredVariables(
+          declaredVariables,
+        );
+        if (testCallExpressions.length === 0) return;
+
+        const returnStmt = node.body.body.find(
+          t => t.type === RETURN_STATEMENT,
         );
         if (!returnStmt) return;
 

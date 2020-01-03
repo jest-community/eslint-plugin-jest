@@ -23,6 +23,16 @@ ruleTester.run('no-test-prefixes', rule, {
       expect(1).toBe(1);
     });
     `,
+    `
+    it("one", myTest);
+    function myTest() {
+      expect(1).toBe(1);
+    }
+    `,
+    `
+    it("one", () => expect(1).toBe(1));
+    function myHelper() {}
+    `,
   ],
   invalid: [
     {
@@ -40,6 +50,15 @@ ruleTester.run('no-test-prefixes', rule, {
       });
       `,
       errors: [{ messageId: 'noReturnValue', column: 9, line: 3 }],
+    },
+    {
+      code: `
+        it("one", myTest);
+        function myTest () {
+          return expect(1).toBe(1);
+        }
+      `,
+      errors: [{ messageId: 'noReturnValue', column: 11, line: 4 }],
     },
   ],
 });

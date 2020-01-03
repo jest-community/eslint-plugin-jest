@@ -633,6 +633,27 @@ export const isHook = (
   node.callee.type === AST_NODE_TYPES.Identifier &&
   HookName.hasOwnProperty(node.callee.name);
 
+export const getTestCallExpressionsFromDeclaredVariables = (
+  declaredVaiables: TSESLint.Scope.Variable[],
+): Array<JestFunctionCallExpression<TestCaseName>> => {
+  return declaredVaiables.reduce<
+    Array<JestFunctionCallExpression<TestCaseName>>
+  >(
+    (acc, { references }) =>
+      acc.concat(
+        references
+          .map(({ identifier }) => identifier.parent)
+          .filter(
+            (node): node is JestFunctionCallExpression<TestCaseName> =>
+              !!node &&
+              node.type === AST_NODE_TYPES.CallExpression &&
+              isTestCase(node),
+          ),
+      ),
+    [],
+  );
+};
+
 export const isTestCase = (
   node: TSESTree.CallExpression,
 ): node is JestFunctionCallExpression<TestCaseName> =>

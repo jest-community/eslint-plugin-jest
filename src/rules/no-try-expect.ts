@@ -1,5 +1,10 @@
 import { TSESTree } from '@typescript-eslint/experimental-utils';
-import { createRule, isExpectCall, isTestCase } from './utils';
+import {
+  createRule,
+  getTestCallExpressionsFromDeclaredVariables,
+  isExpectCall,
+  isTestCase,
+} from './utils';
 
 export default createRule({
   name: __filename,
@@ -39,6 +44,16 @@ export default createRule({
           });
         }
       },
+      FunctionDeclaration(node) {
+        const declaredVariables = context.getDeclaredVariables(node);
+        const testCallExpressions = getTestCallExpressionsFromDeclaredVariables(
+          declaredVariables,
+        );
+
+        if (testCallExpressions.length > 0) {
+          isTest = true;
+        }
+      },
       CatchClause() {
         if (isTest) {
           ++catchDepth;
@@ -51,6 +66,16 @@ export default createRule({
       },
       'CallExpression:exit'(node) {
         if (isTestCase(node)) {
+          isTest = false;
+        }
+      },
+      'FunctionDeclaration:exit'(node) {
+        const declaredVariables = context.getDeclaredVariables(node);
+        const testCallExpressions = getTestCallExpressionsFromDeclaredVariables(
+          declaredVariables,
+        );
+
+        if (testCallExpressions.length > 0) {
           isTest = false;
         }
       },

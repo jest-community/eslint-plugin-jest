@@ -17,6 +17,7 @@ ruleTester.run('expect-expect', rule, {
     'it("should pass", () => expect(true).toBeDefined())',
     'test("should pass", () => expect(true).toBeDefined())',
     'it("should pass", () => somePromise().then(() => expect(true).toBeDefined()))',
+    'it("should pass", myTest); function myTest() { expect(true).toBeDefined() }',
     {
       code:
         'test("should pass", () => { expect(true).toBeDefined(); foo(true).toBe(true); })',
@@ -43,6 +44,15 @@ ruleTester.run('expect-expect', rule, {
   invalid: [
     {
       code: 'it("should fail", () => {});',
+      errors: [
+        {
+          messageId: 'noAssertions',
+          type: AST_NODE_TYPES.CallExpression,
+        },
+      ],
+    },
+    {
+      code: 'it("should fail", myTest); function myTest() {}',
       errors: [
         {
           messageId: 'noAssertions',

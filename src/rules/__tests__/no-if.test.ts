@@ -18,6 +18,9 @@ ruleTester.run('no-if', rule, {
       code: `it('foo', () => {})`,
     },
     {
+      code: `it('foo', () => {}); function myTest() { if('bar') {} }`,
+    },
+    {
       code: `foo('bar', () => {
         if(baz) {}
       })`,
@@ -296,6 +299,14 @@ ruleTester.run('no-if', rule, {
           if('bar') {}
         })
       })`,
+      errors: [
+        {
+          messageId: 'noIf',
+        },
+      ],
+    },
+    {
+      code: `it('foo', myTest); function myTest() { if ('bar') {} }`,
       errors: [
         {
           messageId: 'noIf',
