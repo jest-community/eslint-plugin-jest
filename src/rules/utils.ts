@@ -18,7 +18,7 @@ export type MaybeTypeCast<Expression extends TSESTree.Expression> =
   | TSTypeCastExpression<Expression>
   | Expression;
 
-export type TSTypeCastExpression<
+type TSTypeCastExpression<
   Expression extends TSESTree.Expression = TSESTree.Expression
 > = AsExpressionChain<Expression> | TypeAssertionChain<Expression>;
 
@@ -52,7 +52,7 @@ export const followTypeAssertionChain = <
 /**
  * A `Literal` with a `value` of type `string`.
  */
-export interface StringLiteral<Value extends string = string>
+interface StringLiteral<Value extends string = string>
   extends TSESTree.Literal {
   value: Value;
 }
@@ -548,29 +548,29 @@ export enum TestCaseProperty {
   'todo' = 'todo',
 }
 
-export type JestFunctionName = DescribeAlias | TestCaseName | HookName;
-export type JestPropertyName = DescribeProperty | TestCaseProperty;
+type JestFunctionName = DescribeAlias | TestCaseName | HookName;
+type JestPropertyName = DescribeProperty | TestCaseProperty;
 
-export interface JestFunctionIdentifier<FunctionName extends JestFunctionName>
+interface JestFunctionIdentifier<FunctionName extends JestFunctionName>
   extends TSESTree.Identifier {
   name: FunctionName;
 }
 
-export interface JestFunctionMemberExpression<
+interface JestFunctionMemberExpression<
   FunctionName extends JestFunctionName,
   PropertyName extends JestPropertyName = JestPropertyName
 > extends KnownMemberExpression<PropertyName> {
   object: JestFunctionIdentifier<FunctionName>;
 }
 
-export interface JestFunctionMemberExpression<
+interface JestFunctionMemberExpression<
   FunctionName extends JestFunctionName,
   PropertyName extends JestPropertyName = JestPropertyName
 > extends KnownMemberExpression<PropertyName> {
   object: JestFunctionIdentifier<FunctionName>;
 }
 
-export interface JestFunctionCallExpressionWithMemberExpressionCallee<
+interface JestFunctionCallExpressionWithMemberExpressionCallee<
   FunctionName extends JestFunctionName,
   PropertyName extends JestPropertyName = JestPropertyName
 > extends TSESTree.CallExpression {
