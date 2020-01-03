@@ -390,8 +390,8 @@ export interface NotNegatableParsedModifier<
 }
 
 type ParsedExpectModifier =
-  | NotNegatableParsedModifier<NotNegatableModifierName>
-  | NegatableParsedModifier<NegatableModifierName>;
+  | NotNegatableParsedModifier
+  | NegatableParsedModifier;
 
 interface Expectation<ExpectNode extends ExpectCall = ExpectCall> {
   expect: ExpectNode;
