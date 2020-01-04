@@ -17,6 +17,7 @@ ruleTester.run('prefer-todo', rule, {
     'fit("foo")',
     'fit.concurrent("foo")',
     'xit("foo")',
+    'test("foo", 1)',
     'test("stub", () => expect(1).toBe(1));',
     'test.concurrent("stub", () => expect(1).toBe(1));',
     `
@@ -28,32 +29,32 @@ ruleTester.run('prefer-todo', rule, {
   invalid: [
     {
       code: `test("i need to write this test");`,
-      errors: [{ messageId: 'todoOverUnimplemented' }],
+      errors: [{ messageId: 'unimplementedTest' }],
       output: 'test.todo("i need to write this test");',
     },
     {
       code: 'test(`i need to write this test`);',
-      errors: [{ messageId: 'todoOverUnimplemented' }],
+      errors: [{ messageId: 'unimplementedTest' }],
       output: 'test.todo(`i need to write this test`);',
     },
     {
       code: 'it("foo", function () {})',
-      errors: [{ messageId: 'todoOverEmpty' }],
+      errors: [{ messageId: 'emptyTest' }],
       output: 'it.todo("foo")',
     },
     {
       code: 'it("foo", () => {})',
-      errors: [{ messageId: 'todoOverEmpty' }],
+      errors: [{ messageId: 'emptyTest' }],
       output: 'it.todo("foo")',
     },
     {
       code: `test.skip("i need to write this test", () => {});`,
-      errors: [{ messageId: 'todoOverEmpty' }],
+      errors: [{ messageId: 'emptyTest' }],
       output: 'test.todo("i need to write this test");',
     },
     {
       code: `test.skip("i need to write this test", function() {});`,
-      errors: [{ messageId: 'todoOverEmpty' }],
+      errors: [{ messageId: 'emptyTest' }],
       output: 'test.todo("i need to write this test");',
     },
   ],

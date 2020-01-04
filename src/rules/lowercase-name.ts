@@ -4,19 +4,17 @@ import {
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
 import {
+  CallExpressionWithSingleArgument,
   DescribeAlias,
   JestFunctionCallExpressionWithIdentifierCallee,
+  StringNode,
   TestCaseName,
   createRule,
+  getStringValue,
   isDescribe,
+  isStringNode,
   isTestCase,
 } from './utils';
-
-type ArgumentLiteral = TSESTree.Literal | TSESTree.TemplateLiteral;
-
-interface FirstArgumentStringCallExpression extends TSESTree.CallExpression {
-  arguments: [ArgumentLiteral];
-}
 
 type IgnorableFunctionExpressions =
   | TestCaseName.it
@@ -26,15 +24,12 @@ type IgnorableFunctionExpressions =
 type CallExpressionWithCorrectCalleeAndArguments = JestFunctionCallExpressionWithIdentifierCallee<
   IgnorableFunctionExpressions
 > &
-  FirstArgumentStringCallExpression;
+  CallExpressionWithSingleArgument<StringNode>;
 
 const hasStringAsFirstArgument = (
   node: TSESTree.CallExpression,
-): node is FirstArgumentStringCallExpression =>
-  node.arguments &&
-  node.arguments[0] &&
-  (node.arguments[0].type === AST_NODE_TYPES.Literal ||
-    node.arguments[0].type === AST_NODE_TYPES.TemplateLiteral);
+): node is CallExpressionWithSingleArgument<StringNode> =>
+  node.arguments[0] && isStringNode(node.arguments[0]);
 
 const isJestFunctionWithLiteralArg = (
   node: TSESTree.CallExpression,
@@ -43,42 +38,22 @@ const isJestFunctionWithLiteralArg = (
   node.callee.type === AST_NODE_TYPES.Identifier &&
   hasStringAsFirstArgument(node);
 
-const testDescription = (argument: ArgumentLiteral): string | null => {
-  if (argument.type === AST_NODE_TYPES.Literal) {
-    const { value } = argument;
-
-    if (typeof value === 'string') {
-      return value;
-    }
-    return null;
-  }
-
-  return argument.quasis[0].value.raw;
-};
-
 const jestFunctionName = (
   node: CallExpressionWithCorrectCalleeAndArguments,
   allowedPrefixes: readonly string[],
 ) => {
-  const description = testDescription(node.arguments[0]);
-  if (
-    description === null ||
-    allowedPrefixes.some(name => description.startsWith(name))
-  ) {
+  const description = getStringValue(node.arguments[0]);
+  if (allowedPrefixes.some(name => description.startsWith(name))) {
     return null;
   }
 
   const firstCharacter = description.charAt(0);
 
-  if (!firstCharacter) {
+  if (!firstCharacter || firstCharacter === firstCharacter.toLowerCase()) {
     return null;
   }
 
-  if (firstCharacter !== firstCharacter.toLowerCase()) {
-    return node.callee.name;
-  }
-
-  return null;
+  return node.callee.name;
 };
 
 export default createRule<
@@ -131,7 +106,7 @@ export default createRule<
   defaultOptions: [{ ignore: [], allowedPrefixes: [] }],
   create(context, [{ ignore = [], allowedPrefixes = [] }]) {
     return {
-      CallExpression(node) {
+      CallExpression(node: TSESTree.CallExpression) {
         if (!isJestFunctionWithLiteralArg(node)) {
           return;
         }
@@ -140,12 +115,12 @@ export default createRule<
         if (erroneousMethod && !ignore.includes(node.callee.name)) {
           context.report({
             messageId: 'unexpectedLowercase',
+            node: node.arguments[0],
             data: { method: erroneousMethod },
-            node,
             fix(fixer) {
               const [firstArg] = node.arguments;
-              // guaranteed by jestFunctionName
-              const description = testDescription(firstArg)!;
+
+              const description = getStringValue(firstArg);
 
               const rangeIgnoringQuotes: TSESLint.AST.Range = [
                 firstArg.range[0] + 1,

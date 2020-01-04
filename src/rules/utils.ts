@@ -18,7 +18,7 @@ export type MaybeTypeCast<Expression extends TSESTree.Expression> =
   | TSTypeCastExpression<Expression>
   | Expression;
 
-export type TSTypeCastExpression<
+type TSTypeCastExpression<
   Expression extends TSESTree.Expression = TSESTree.Expression
 > = AsExpressionChain<Expression> | TypeAssertionChain<Expression>;
 
@@ -52,7 +52,7 @@ export const followTypeAssertionChain = <
 /**
  * A `Literal` with a `value` of type `string`.
  */
-export interface StringLiteral<Value extends string = string>
+interface StringLiteral<Value extends string = string>
   extends TSESTree.Literal {
   value: Value;
 }
@@ -106,7 +106,7 @@ const isTemplateLiteral = <V extends string>(
   node.quasis.length === 1 && // bail out if not simple
   (value === undefined || node.quasis[0].value.raw === value);
 
-type StringNode<S extends string = string> =
+export type StringNode<S extends string = string> =
   | StringLiteral<S>
   | TemplateLiteral<S>;
 
@@ -361,6 +361,10 @@ export interface ParsedExpectMatcher<
   Matcher extends MatcherName = MatcherName,
   Node extends ExpectMember<Matcher> = ExpectMember<Matcher>
 > extends ParsedExpectMember<Matcher, Node> {
+  /**
+   * The arguments being passed to the matcher.
+   * A value of `null` means the matcher isn't being called.
+   */
   arguments: TSESTree.CallExpression['arguments'] | null;
 }
 
@@ -390,8 +394,8 @@ export interface NotNegatableParsedModifier<
 }
 
 type ParsedExpectModifier =
-  | NotNegatableParsedModifier<NotNegatableModifierName>
-  | NegatableParsedModifier<NegatableModifierName>;
+  | NotNegatableParsedModifier
+  | NegatableParsedModifier;
 
 interface Expectation<ExpectNode extends ExpectCall = ExpectCall> {
   expect: ExpectNode;
@@ -548,29 +552,29 @@ export enum TestCaseProperty {
   'todo' = 'todo',
 }
 
-export type JestFunctionName = DescribeAlias | TestCaseName | HookName;
-export type JestPropertyName = DescribeProperty | TestCaseProperty;
+type JestFunctionName = DescribeAlias | TestCaseName | HookName;
+type JestPropertyName = DescribeProperty | TestCaseProperty;
 
-export interface JestFunctionIdentifier<FunctionName extends JestFunctionName>
+interface JestFunctionIdentifier<FunctionName extends JestFunctionName>
   extends TSESTree.Identifier {
   name: FunctionName;
 }
 
-export interface JestFunctionMemberExpression<
+interface JestFunctionMemberExpression<
   FunctionName extends JestFunctionName,
   PropertyName extends JestPropertyName = JestPropertyName
 > extends KnownMemberExpression<PropertyName> {
   object: JestFunctionIdentifier<FunctionName>;
 }
 
-export interface JestFunctionMemberExpression<
+interface JestFunctionMemberExpression<
   FunctionName extends JestFunctionName,
   PropertyName extends JestPropertyName = JestPropertyName
 > extends KnownMemberExpression<PropertyName> {
   object: JestFunctionIdentifier<FunctionName>;
 }
 
-export interface JestFunctionCallExpressionWithMemberExpressionCallee<
+interface JestFunctionCallExpressionWithMemberExpressionCallee<
   FunctionName extends JestFunctionName,
   PropertyName extends JestPropertyName = JestPropertyName
 > extends TSESTree.CallExpression {

@@ -41,24 +41,13 @@ const getBlockType = (
   return null;
 };
 
-const isEach = (node: TSESTree.CallExpression): boolean => {
-  if (
-    node &&
-    node.callee &&
-    node.callee.type === AST_NODE_TYPES.CallExpression &&
-    node.callee.callee &&
-    node.callee.callee.type === AST_NODE_TYPES.MemberExpression &&
-    node.callee.callee.property &&
-    node.callee.callee.property.type === AST_NODE_TYPES.Identifier &&
-    node.callee.callee.property.name === 'each' &&
-    node.callee.callee.object &&
-    node.callee.callee.object.type === AST_NODE_TYPES.Identifier &&
-    TestCaseName.hasOwnProperty(node.callee.callee.object.name)
-  ) {
-    return true;
-  }
-  return false;
-};
+const isEach = (node: TSESTree.CallExpression): boolean =>
+  node.callee.type === AST_NODE_TYPES.CallExpression &&
+  node.callee.callee.type === AST_NODE_TYPES.MemberExpression &&
+  node.callee.callee.property.type === AST_NODE_TYPES.Identifier &&
+  node.callee.callee.property.name === 'each' &&
+  node.callee.callee.object.type === AST_NODE_TYPES.Identifier &&
+  TestCaseName.hasOwnProperty(node.callee.callee.object.name);
 
 type callStackEntry =
   | TestCaseName.test

@@ -1,8 +1,8 @@
-import { TSESTree } from '@typescript-eslint/experimental-utils';
+import {
+  AST_NODE_TYPES,
+  TSESTree,
+} from '@typescript-eslint/experimental-utils';
 import { createRule, isFunction, isTestCase } from './utils';
-
-const RETURN_STATEMENT = 'ReturnStatement';
-const BLOCK_STATEMENT = 'BlockStatement';
 
 const getBody = (args: TSESTree.Expression[]) => {
   const [, secondArg] = args;
@@ -11,7 +11,7 @@ const getBody = (args: TSESTree.Expression[]) => {
     secondArg &&
     isFunction(secondArg) &&
     secondArg.body &&
-    secondArg.body.type === BLOCK_STATEMENT
+    secondArg.body.type === AST_NODE_TYPES.BlockStatement
   ) {
     return secondArg.body.body;
   }
@@ -38,7 +38,9 @@ export default createRule({
       CallExpression(node) {
         if (!isTestCase(node)) return;
         const body = getBody(node.arguments);
-        const returnStmt = body.find(t => t.type === RETURN_STATEMENT);
+        const returnStmt = body.find(
+          t => t.type === AST_NODE_TYPES.ReturnStatement,
+        );
         if (!returnStmt) return;
 
         context.report({ messageId: 'noReturnValue', node: returnStmt });

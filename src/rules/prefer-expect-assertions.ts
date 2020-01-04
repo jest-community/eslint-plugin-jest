@@ -2,7 +2,12 @@ import {
   AST_NODE_TYPES,
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
-import { createRule, getAccessorValue, isSupportedAccessor } from './utils';
+import {
+  createRule,
+  getAccessorValue,
+  hasOnlyOneArgument,
+  isSupportedAccessor,
+} from './utils';
 
 const isExpectAssertionsOrHasAssertionsCall = (expression: TSESTree.Node) => {
   if (
@@ -23,8 +28,7 @@ const isExpectAssertionsOrHasAssertionsCall = (expression: TSESTree.Node) => {
   const [arg] = expression.arguments;
 
   return (
-    expression.arguments &&
-    expression.arguments.length === 1 &&
+    hasOnlyOneArgument(expression) &&
     arg.type === AST_NODE_TYPES.Literal &&
     typeof arg.value === 'number' &&
     Number.isInteger(arg.value)

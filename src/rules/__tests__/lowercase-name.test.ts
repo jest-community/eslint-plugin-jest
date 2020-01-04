@@ -16,6 +16,8 @@ ruleTester.run('lowercase-name', rule, {
     'foo.bar()',
     'it()',
     "it(' ', function () {})",
+    'it(true, function () {})',
+    'it(MY_CONSTANT, function () {})',
     'it(" ", function () {})',
     'it(` `, function () {})',
     "it('foo', function () {})",
@@ -62,7 +64,7 @@ ruleTester.run('lowercase-name', rule, {
         {
           messageId: 'unexpectedLowercase',
           data: { method: TestCaseName.it },
-          column: 1,
+          column: 4,
           line: 1,
         },
       ],
@@ -74,7 +76,7 @@ ruleTester.run('lowercase-name', rule, {
         {
           messageId: 'unexpectedLowercase',
           data: { method: TestCaseName.it },
-          column: 1,
+          column: 4,
           line: 1,
         },
       ],
@@ -86,7 +88,7 @@ ruleTester.run('lowercase-name', rule, {
         {
           messageId: 'unexpectedLowercase',
           data: { method: TestCaseName.it },
-          column: 1,
+          column: 4,
           line: 1,
         },
       ],
@@ -98,7 +100,7 @@ ruleTester.run('lowercase-name', rule, {
         {
           messageId: 'unexpectedLowercase',
           data: { method: TestCaseName.test },
-          column: 1,
+          column: 6,
           line: 1,
         },
       ],
@@ -110,7 +112,7 @@ ruleTester.run('lowercase-name', rule, {
         {
           messageId: 'unexpectedLowercase',
           data: { method: TestCaseName.test },
-          column: 1,
+          column: 6,
           line: 1,
         },
       ],
@@ -122,7 +124,7 @@ ruleTester.run('lowercase-name', rule, {
         {
           messageId: 'unexpectedLowercase',
           data: { method: TestCaseName.test },
-          column: 1,
+          column: 6,
           line: 1,
         },
       ],
@@ -134,7 +136,7 @@ ruleTester.run('lowercase-name', rule, {
         {
           messageId: 'unexpectedLowercase',
           data: { method: DescribeAlias.describe },
-          column: 1,
+          column: 10,
           line: 1,
         },
       ],
@@ -146,7 +148,7 @@ ruleTester.run('lowercase-name', rule, {
         {
           messageId: 'unexpectedLowercase',
           data: { method: DescribeAlias.describe },
-          column: 1,
+          column: 10,
           line: 1,
         },
       ],
@@ -158,7 +160,7 @@ ruleTester.run('lowercase-name', rule, {
         {
           messageId: 'unexpectedLowercase',
           data: { method: DescribeAlias.describe },
-          column: 1,
+          column: 10,
           line: 1,
         },
       ],
@@ -170,7 +172,7 @@ ruleTester.run('lowercase-name', rule, {
         {
           messageId: 'unexpectedLowercase',
           data: { method: DescribeAlias.describe },
-          column: 1,
+          column: 10,
           line: 1,
         },
       ],

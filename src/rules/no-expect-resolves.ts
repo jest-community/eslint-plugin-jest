@@ -1,19 +1,9 @@
 import {
-  AST_NODE_TYPES,
-  TSESTree,
-} from '@typescript-eslint/experimental-utils';
-import { createRule, isExpectCall } from './utils';
-
-function isIdentifierResolves(node: TSESTree.MemberExpression) {
-  return (
-    node.property.type === AST_NODE_TYPES.Identifier &&
-    node.property.name === 'resolves'
-  );
-}
-
-function isExpectResolves(node: TSESTree.MemberExpression) {
-  return isExpectCall(node.object) && isIdentifierResolves(node);
-}
+  ModifierName,
+  createRule,
+  isExpectCall,
+  isSupportedAccessor,
+} from './utils';
 
 export default createRule({
   name: __filename,
@@ -32,7 +22,10 @@ export default createRule({
   defaultOptions: [],
   create: context => ({
     MemberExpression(node) {
-      if (isExpectResolves(node)) {
+      if (
+        isExpectCall(node.object) &&
+        isSupportedAccessor(node.property, ModifierName.resolves)
+      ) {
         context.report({ node: node.property, messageId: 'expectResolves' });
       }
     },
