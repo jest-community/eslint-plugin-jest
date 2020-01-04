@@ -106,7 +106,7 @@ export default createRule<
   defaultOptions: [{ ignore: [], allowedPrefixes: [] }],
   create(context, [{ ignore = [], allowedPrefixes = [] }]) {
     return {
-      CallExpression(node) {
+      CallExpression(node: TSESTree.CallExpression) {
         if (!isJestFunctionWithLiteralArg(node)) {
           return;
         }
@@ -115,8 +115,8 @@ export default createRule<
         if (erroneousMethod && !ignore.includes(node.callee.name)) {
           context.report({
             messageId: 'unexpectedLowercase',
+            node: node.arguments[0],
             data: { method: erroneousMethod },
-            node,
             fix(fixer) {
               const [firstArg] = node.arguments;
 
