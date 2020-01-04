@@ -18,11 +18,22 @@ const testFunctions = new Set<string>([
   ...validTestCaseNames,
 ]);
 
-const isConcurrentExpression = (expression: TSESTree.Node) =>
-  getNodeName(expression) &&
-  new RegExp(
-    `(${validTestCaseNames.join('|')})\.${TestCaseProperty.concurrent}`,
-  ).test(getNodeName(expression) as string);
+interface ConcurrentExpression extends TSESTree.MemberExpression {
+  parent: TSESTree.MemberExpression;
+}
+
+const isConcurrentExpression = (
+  expression: TSESTree.MemberExpression,
+): expression is ConcurrentExpression => {
+  const nodeName = getNodeName(expression);
+
+  return (
+    !!nodeName &&
+    new RegExp(
+      `(${validTestCaseNames.join('|')})\.${TestCaseProperty.concurrent}`,
+    ).test(nodeName)
+  );
+};
 
 const matchesTestFunction = (object: TSESTree.LeftHandSideExpression) =>
   'name' in object &&
@@ -34,9 +45,7 @@ const isCallToFocusedTestFunction = (object: TSESTree.Identifier) =>
 const isCallToTestOnlyFunction = (callee: TSESTree.MemberExpression) =>
   matchesTestFunction(callee.object) &&
   isSupportedAccessor(
-    isConcurrentExpression(callee)
-      ? (callee.parent as TSESTree.MemberExpression).property
-      : callee.property,
+    isConcurrentExpression(callee) ? callee.parent.property : callee.property,
     'only',
   );
 
