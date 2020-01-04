@@ -4,6 +4,7 @@ import {
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
 import {
+  CallExpressionWithSingleArgument,
   DescribeAlias,
   JestFunctionCallExpressionWithIdentifierCallee,
   TestCaseName,
@@ -14,10 +15,6 @@ import {
 
 type ArgumentLiteral = TSESTree.Literal | TSESTree.TemplateLiteral;
 
-interface FirstArgumentStringCallExpression extends TSESTree.CallExpression {
-  arguments: [ArgumentLiteral];
-}
-
 type IgnorableFunctionExpressions =
   | TestCaseName.it
   | TestCaseName.test
@@ -26,11 +23,11 @@ type IgnorableFunctionExpressions =
 type CallExpressionWithCorrectCalleeAndArguments = JestFunctionCallExpressionWithIdentifierCallee<
   IgnorableFunctionExpressions
 > &
-  FirstArgumentStringCallExpression;
+  CallExpressionWithSingleArgument<ArgumentLiteral>;
 
 const hasStringAsFirstArgument = (
   node: TSESTree.CallExpression,
-): node is FirstArgumentStringCallExpression =>
+): node is CallExpressionWithSingleArgument<ArgumentLiteral> =>
   node.arguments &&
   node.arguments[0] &&
   (node.arguments[0].type === AST_NODE_TYPES.Literal ||
