@@ -361,6 +361,10 @@ export interface ParsedExpectMatcher<
   Matcher extends MatcherName = MatcherName,
   Node extends ExpectMember<Matcher> = ExpectMember<Matcher>
 > extends ParsedExpectMember<Matcher, Node> {
+  /**
+   * The arguments being passed to the matcher.
+   * A value of `null` means the matcher isn't being called.
+   */
   arguments: TSESTree.CallExpression['arguments'] | null;
 }
 
