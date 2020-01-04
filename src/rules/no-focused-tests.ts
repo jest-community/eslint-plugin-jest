@@ -7,7 +7,6 @@ import {
   TestCaseName,
   TestCaseProperty,
   createRule,
-  getNodeName,
   isSupportedAccessor,
 } from './utils';
 
@@ -24,16 +23,11 @@ interface ConcurrentExpression extends TSESTree.MemberExpression {
 
 const isConcurrentExpression = (
   expression: TSESTree.MemberExpression,
-): expression is ConcurrentExpression => {
-  const nodeName = getNodeName(expression);
-
-  return (
-    !!nodeName &&
-    new RegExp(
-      `(${validTestCaseNames.join('|')})\.${TestCaseProperty.concurrent}`,
-    ).test(nodeName)
-  );
-};
+): expression is ConcurrentExpression =>
+  expression.type === AST_NODE_TYPES.MemberExpression &&
+  isSupportedAccessor(expression.property, TestCaseProperty.concurrent) &&
+  !!expression.parent &&
+  expression.parent.type === AST_NODE_TYPES.MemberExpression;
 
 const matchesTestFunction = (object: TSESTree.LeftHandSideExpression) =>
   'name' in object &&
