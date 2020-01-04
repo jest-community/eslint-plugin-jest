@@ -131,14 +131,13 @@ function getPreferredNodeName(
   nodeName: string,
   preferredTestKeyword: TestCaseName.test | TestCaseName.it,
 ) {
-  switch (nodeName) {
-    case TestCaseName.fit:
-      return 'test.only';
-    default:
-      return nodeName.startsWith('f') || nodeName.startsWith('x')
-        ? nodeName.charAt(0) + preferredTestKeyword
-        : preferredTestKeyword;
+  if (nodeName === TestCaseName.fit) {
+    return 'test.only';
   }
+
+  return nodeName.startsWith('f') || nodeName.startsWith('x')
+    ? nodeName.charAt(0) + preferredTestKeyword
+    : preferredTestKeyword;
 }
 
 function getOppositeTestKeyword(test: TestCaseName.test | TestCaseName.it) {
