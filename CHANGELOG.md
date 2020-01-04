@@ -1,3 +1,12 @@
+# [23.3.0](https://github.com/jest-community/eslint-plugin-jest/compare/v23.2.0...v23.3.0) (2020-01-04)
+
+### Features
+
+- **rules:** add .concurrent support
+  ([#498](https://github.com/jest-community/eslint-plugin-jest/issues/498))
+  ([#502](https://github.com/jest-community/eslint-plugin-jest/issues/502))
+  ([dcba5f1](https://github.com/jest-community/eslint-plugin-jest/commit/dcba5f1f1c6429a8bce2ff9aae71c02a6ffa1c2b))
+
 # [23.2.0](https://github.com/jest-community/eslint-plugin-jest/compare/v23.1.1...v23.2.0) (2019-12-28)
 
 ### Features
