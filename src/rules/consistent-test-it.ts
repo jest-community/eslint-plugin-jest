@@ -1,4 +1,8 @@
-import { AST_NODE_TYPES } from '@typescript-eslint/experimental-utils';
+import {
+  AST_NODE_TYPES,
+  TSESLint,
+  TSESTree,
+} from '@typescript-eslint/experimental-utils';
 import {
   TestCaseName,
   createRule,
@@ -6,6 +10,17 @@ import {
   isDescribe,
   isTestCase,
 } from './utils';
+
+const buildFixer = (
+  callee: TSESTree.LeftHandSideExpression,
+  nodeName: string,
+  preferredTestKeyword: TestCaseName.test | TestCaseName.it,
+) => (fixer: TSESLint.RuleFixer) => [
+  fixer.replaceText(
+    callee.type === AST_NODE_TYPES.MemberExpression ? callee.object : callee,
+    getPreferredNodeName(nodeName, preferredTestKeyword),
+  ),
+];
 
 export default createRule<
   [
@@ -56,7 +71,7 @@ export default createRule<
     let describeNestingLevel = 0;
 
     return {
-      CallExpression(node) {
+      CallExpression(node: TSESTree.CallExpression) {
         const nodeName = getNodeName(node.callee);
 
         if (!nodeName) {
@@ -78,15 +93,7 @@ export default createRule<
             messageId: 'consistentMethod',
             node: node.callee,
             data: { testKeyword, oppositeTestKeyword },
-            fix(fixer) {
-              const nodeToReplace =
-                node.callee.type === AST_NODE_TYPES.MemberExpression
-                  ? node.callee.object
-                  : node.callee;
-
-              const fixedNodeName = getPreferredNodeName(nodeName, testKeyword);
-              return [fixer.replaceText(nodeToReplace, fixedNodeName)];
-            },
+            fix: buildFixer(node.callee, nodeName, testKeyword),
           });
         }
 
@@ -103,18 +110,7 @@ export default createRule<
             messageId: 'consistentMethodWithinDescribe',
             node: node.callee,
             data: { testKeywordWithinDescribe, oppositeTestKeyword },
-            fix(fixer) {
-              const nodeToReplace =
-                node.callee.type === AST_NODE_TYPES.MemberExpression
-                  ? node.callee.object
-                  : node.callee;
-
-              const fixedNodeName = getPreferredNodeName(
-                nodeName,
-                testKeywordWithinDescribe,
-              );
-              return [fixer.replaceText(nodeToReplace, fixedNodeName)];
-            },
+            fix: buildFixer(node.callee, nodeName, testKeywordWithinDescribe),
           });
         }
       },
