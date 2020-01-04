@@ -1,8 +1,8 @@
-import { TestCaseName, createRule, getNodeName, isTestCase } from './utils';
 import {
   AST_NODE_TYPES,
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
+import { TestCaseName, createRule, getNodeName, isTestCase } from './utils';
 
 const testCaseNames = new Set<string | null>([
   ...Object.keys(TestCaseName),

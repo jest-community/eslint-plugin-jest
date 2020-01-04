@@ -53,6 +53,10 @@ module.exports = {
     'import/no-duplicates': 'error',
     'import/no-extraneous-dependencies': 'error',
     'import/no-unused-modules': 'error',
+    'import/order': [
+      'error',
+      { alphabetize: { order: 'asc' }, 'newlines-between': 'never' },
+    ],
   },
   overrides: [
     {
