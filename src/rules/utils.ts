@@ -542,6 +542,7 @@ export enum DescribeProperty {
 
 export enum TestCaseProperty {
   'each' = 'each',
+  'concurrent' = 'concurrent',
   'only' = 'only',
   'skip' = 'skip',
   'todo' = 'todo',
@@ -624,40 +625,34 @@ export const isFunction = (node: TSESTree.Node): node is FunctionExpression =>
 
 export const isHook = (
   node: TSESTree.CallExpression,
-): node is JestFunctionCallExpressionWithIdentifierCallee<HookName> => {
-  return (
-    node.callee.type === AST_NODE_TYPES.Identifier &&
-    HookName.hasOwnProperty(node.callee.name)
-  );
-};
+): node is JestFunctionCallExpressionWithIdentifierCallee<HookName> =>
+  node.callee.type === AST_NODE_TYPES.Identifier &&
+  HookName.hasOwnProperty(node.callee.name);
 
 export const isTestCase = (
   node: TSESTree.CallExpression,
-): node is JestFunctionCallExpression<TestCaseName> => {
-  return (
-    (node.callee.type === AST_NODE_TYPES.Identifier &&
-      TestCaseName.hasOwnProperty(node.callee.name)) ||
-    (node.callee.type === AST_NODE_TYPES.MemberExpression &&
-      node.callee.object.type === AST_NODE_TYPES.Identifier &&
-      TestCaseName.hasOwnProperty(node.callee.object.name) &&
-      node.callee.property.type === AST_NODE_TYPES.Identifier &&
-      TestCaseProperty.hasOwnProperty(node.callee.property.name))
-  );
-};
+): node is JestFunctionCallExpression<TestCaseName> =>
+  (node.callee.type === AST_NODE_TYPES.Identifier &&
+    TestCaseName.hasOwnProperty(node.callee.name)) ||
+  (node.callee.type === AST_NODE_TYPES.MemberExpression &&
+    node.callee.property.type === AST_NODE_TYPES.Identifier &&
+    TestCaseProperty.hasOwnProperty(node.callee.property.name) &&
+    ((node.callee.object.type === AST_NODE_TYPES.Identifier &&
+      TestCaseName.hasOwnProperty(node.callee.object.name)) ||
+      (node.callee.object.type === AST_NODE_TYPES.MemberExpression &&
+        node.callee.object.object.type === AST_NODE_TYPES.Identifier &&
+        TestCaseName.hasOwnProperty(node.callee.object.object.name))));
 
 export const isDescribe = (
   node: TSESTree.CallExpression,
-): node is JestFunctionCallExpression<DescribeAlias> => {
-  return (
-    (node.callee.type === AST_NODE_TYPES.Identifier &&
-      DescribeAlias.hasOwnProperty(node.callee.name)) ||
-    (node.callee.type === AST_NODE_TYPES.MemberExpression &&
-      node.callee.object.type === AST_NODE_TYPES.Identifier &&
-      DescribeAlias.hasOwnProperty(node.callee.object.name) &&
-      node.callee.property.type === AST_NODE_TYPES.Identifier &&
-      DescribeProperty.hasOwnProperty(node.callee.property.name))
-  );
-};
+): node is JestFunctionCallExpression<DescribeAlias> =>
+  (node.callee.type === AST_NODE_TYPES.Identifier &&
+    DescribeAlias.hasOwnProperty(node.callee.name)) ||
+  (node.callee.type === AST_NODE_TYPES.MemberExpression &&
+    node.callee.object.type === AST_NODE_TYPES.Identifier &&
+    DescribeAlias.hasOwnProperty(node.callee.object.name) &&
+    node.callee.property.type === AST_NODE_TYPES.Identifier &&
+    DescribeProperty.hasOwnProperty(node.callee.property.name));
 
 /**
  * Checks if the given `describe` is a call to `describe.each`.

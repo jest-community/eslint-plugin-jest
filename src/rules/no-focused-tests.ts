@@ -5,15 +5,29 @@ import {
 import {
   DescribeAlias,
   TestCaseName,
+  TestCaseProperty,
   createRule,
   isSupportedAccessor,
 } from './utils';
 
+const validTestCaseNames = [TestCaseName.test, TestCaseName.it];
+
 const testFunctions = new Set<string>([
   DescribeAlias.describe,
-  TestCaseName.test,
-  TestCaseName.it,
+  ...validTestCaseNames,
 ]);
+
+interface ConcurrentExpression extends TSESTree.MemberExpression {
+  parent: TSESTree.MemberExpression;
+}
+
+const isConcurrentExpression = (
+  expression: TSESTree.MemberExpression,
+): expression is ConcurrentExpression =>
+  expression.type === AST_NODE_TYPES.MemberExpression &&
+  isSupportedAccessor(expression.property, TestCaseProperty.concurrent) &&
+  !!expression.parent &&
+  expression.parent.type === AST_NODE_TYPES.MemberExpression;
 
 const matchesTestFunction = (object: TSESTree.LeftHandSideExpression) =>
   'name' in object &&
@@ -24,7 +38,10 @@ const isCallToFocusedTestFunction = (object: TSESTree.Identifier) =>
 
 const isCallToTestOnlyFunction = (callee: TSESTree.MemberExpression) =>
   matchesTestFunction(callee.object) &&
-  isSupportedAccessor(callee.property, 'only');
+  isSupportedAccessor(
+    isConcurrentExpression(callee) ? callee.parent.property : callee.property,
+    'only',
+  );
 
 export default createRule({
   name: __filename,

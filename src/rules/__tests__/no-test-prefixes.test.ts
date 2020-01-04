@@ -7,13 +7,19 @@ ruleTester.run('no-test-prefixes', rule, {
   valid: [
     'describe("foo", function () {})',
     'it("foo", function () {})',
+    'it.concurrent("foo", function () {})',
     'test("foo", function () {})',
+    'test.concurrent("foo", function () {})',
     'describe.only("foo", function () {})',
     'it.only("foo", function () {})',
+    'it.concurrent.only("foo", function () {})',
     'test.only("foo", function () {})',
+    'test.concurrent.only("foo", function () {})',
     'describe.skip("foo", function () {})',
     'it.skip("foo", function () {})',
+    'it.concurrent.skip("foo", function () {})',
     'test.skip("foo", function () {})',
+    'test.concurrent.skip("foo", function () {})',
     'foo()',
     '[1,2,3].forEach()',
   ],
@@ -41,6 +47,18 @@ ruleTester.run('no-test-prefixes', rule, {
         },
       ],
       output: 'it.only("foo", function () {})',
+    },
+    {
+      code: 'fit.concurrent("foo", function () {})',
+      errors: [
+        {
+          messageId: 'usePreferredName',
+          data: { preferredNodeName: 'it.concurrent.only' },
+          column: 1,
+          line: 1,
+        },
+      ],
+      output: 'it.concurrent.only("foo", function () {})',
     },
     {
       code: 'xdescribe("foo", function () {})',

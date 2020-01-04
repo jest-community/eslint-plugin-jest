@@ -32,6 +32,7 @@ ruleTester.run('no-standalone-expect', rule, {
     });
     `,
     'it.only("an only", value => { expect(value).toBe(true); });',
+    'it.concurrent("an concurrent", value => { expect(value).toBe(true); });',
     'describe.each([1, true])("trues", value => { it("an it", () => expect(value).toBe(true) ); });',
   ],
   invalid: [
