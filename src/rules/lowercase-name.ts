@@ -49,15 +49,11 @@ const jestFunctionName = (
 
   const firstCharacter = description.charAt(0);
 
-  if (!firstCharacter) {
+  if (!firstCharacter || firstCharacter === firstCharacter.toLowerCase()) {
     return null;
   }
 
-  if (firstCharacter !== firstCharacter.toLowerCase()) {
-    return node.callee.name;
-  }
-
-  return null;
+  return node.callee.name;
 };
 
 export default createRule<
