@@ -10,7 +10,7 @@ export default createRule({
       recommended: false,
     },
     messages: {
-      avoidMessage: 'Avoid {{ methodName }}',
+      avoidMatcher: 'Avoid {{ matcherName }}',
     },
     type: 'suggestion',
     schema: [],
@@ -29,9 +29,9 @@ export default createRule({
         }
 
         context.report({
-          data: { methodName: matcher.name }, // todo: rename to 'matcherName'
-          messageId: 'avoidMessage', // todo: rename to 'avoidMatcher'
+          messageId: 'avoidMatcher',
           node: matcher.node.property,
+          data: { matcherName: matcher.name },
         });
       },
     };

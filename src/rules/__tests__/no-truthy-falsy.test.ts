@@ -21,8 +21,8 @@ ruleTester.run('no-truthy-falsy', rule, {
       code: 'expect(true).toBeTruthy();',
       errors: [
         {
-          messageId: 'avoidMessage',
-          data: { methodName: 'toBeTruthy' },
+          messageId: 'avoidMatcher',
+          data: { matcherName: 'toBeTruthy' },
           column: 14,
           line: 1,
         },
@@ -32,8 +32,8 @@ ruleTester.run('no-truthy-falsy', rule, {
       code: 'expect(true)["toBeTruthy"]();',
       errors: [
         {
-          messageId: 'avoidMessage',
-          data: { methodName: 'toBeTruthy' },
+          messageId: 'avoidMatcher',
+          data: { matcherName: 'toBeTruthy' },
           column: 14,
           line: 1,
         },
@@ -43,8 +43,8 @@ ruleTester.run('no-truthy-falsy', rule, {
       code: 'expect(false).not.toBeTruthy();',
       errors: [
         {
-          messageId: 'avoidMessage',
-          data: { methodName: 'toBeTruthy' },
+          messageId: 'avoidMatcher',
+          data: { matcherName: 'toBeTruthy' },
           column: 19,
           line: 1,
         },
@@ -54,8 +54,8 @@ ruleTester.run('no-truthy-falsy', rule, {
       code: 'expect(Promise.resolve({})).resolves.toBeTruthy()',
       errors: [
         {
-          messageId: 'avoidMessage',
-          data: { methodName: 'toBeTruthy' },
+          messageId: 'avoidMatcher',
+          data: { matcherName: 'toBeTruthy' },
           column: 38,
           line: 1,
         },
@@ -65,8 +65,8 @@ ruleTester.run('no-truthy-falsy', rule, {
       code: 'expect(Promise.resolve({})).rejects.toBeTruthy()',
       errors: [
         {
-          messageId: 'avoidMessage',
-          data: { methodName: 'toBeTruthy' },
+          messageId: 'avoidMatcher',
+          data: { matcherName: 'toBeTruthy' },
           column: 37,
           line: 1,
         },
@@ -76,8 +76,8 @@ ruleTester.run('no-truthy-falsy', rule, {
       code: 'expect(false).toBeFalsy();',
       errors: [
         {
-          messageId: 'avoidMessage',
-          data: { methodName: 'toBeFalsy' },
+          messageId: 'avoidMatcher',
+          data: { matcherName: 'toBeFalsy' },
           column: 15,
           line: 1,
         },
@@ -87,8 +87,8 @@ ruleTester.run('no-truthy-falsy', rule, {
       code: 'expect(true).not.toBeFalsy();',
       errors: [
         {
-          messageId: 'avoidMessage',
-          data: { methodName: 'toBeFalsy' },
+          messageId: 'avoidMatcher',
+          data: { matcherName: 'toBeFalsy' },
           column: 18,
           line: 1,
         },
@@ -98,8 +98,8 @@ ruleTester.run('no-truthy-falsy', rule, {
       code: 'expect(Promise.resolve({})).resolves.toBeFalsy()',
       errors: [
         {
-          messageId: 'avoidMessage',
-          data: { methodName: 'toBeFalsy' },
+          messageId: 'avoidMatcher',
+          data: { matcherName: 'toBeFalsy' },
           column: 38,
           line: 1,
         },
@@ -109,8 +109,8 @@ ruleTester.run('no-truthy-falsy', rule, {
       code: 'expect(Promise.resolve({})).rejects.toBeFalsy()',
       errors: [
         {
-          messageId: 'avoidMessage',
-          data: { methodName: 'toBeFalsy' },
+          messageId: 'avoidMatcher',
+          data: { matcherName: 'toBeFalsy' },
           column: 37,
           line: 1,
         },
