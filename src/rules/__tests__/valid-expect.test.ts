@@ -99,25 +99,31 @@ ruleTester.run('valid-expect', rule, {
      */
     {
       code: 'expect().toBe(true);',
-      errors: [{ endColumn: 8, column: 7, messageId: 'noArgs' }],
+      errors: [
+        { endColumn: 8, column: 7, messageId: 'incorrectNumberOfArguments' },
+      ],
     },
     {
       code: 'expect().toEqual("something");',
-      errors: [{ endColumn: 8, column: 7, messageId: 'noArgs' }],
+      errors: [
+        { endColumn: 8, column: 7, messageId: 'incorrectNumberOfArguments' },
+      ],
     },
     {
       code: 'expect("something", "else").toEqual("something");',
-      errors: [{ endColumn: 26, column: 21, messageId: 'multipleArgs' }],
+      errors: [
+        { endColumn: 26, column: 21, messageId: 'incorrectNumberOfArguments' },
+      ],
     },
     {
       code: 'expect("something");',
-      errors: [{ endColumn: 20, column: 1, messageId: 'noAssertions' }],
+      errors: [{ endColumn: 20, column: 1, messageId: 'matcherNotFound' }],
     },
     {
       code: 'expect();',
       errors: [
-        { endColumn: 9, column: 1, messageId: 'noAssertions' },
-        { endColumn: 8, column: 7, messageId: 'noArgs' },
+        { endColumn: 9, column: 1, messageId: 'matcherNotFound' },
+        { endColumn: 8, column: 7, messageId: 'incorrectNumberOfArguments' },
       ],
     },
     {
@@ -126,8 +132,7 @@ ruleTester.run('valid-expect', rule, {
         {
           endColumn: 25,
           column: 14,
-          messageId: 'matcherOnPropertyNotCalled',
-          data: { propertyName: 'toBeDefined' },
+          messageId: 'matcherNotCalled',
         },
       ],
     },
@@ -137,8 +142,7 @@ ruleTester.run('valid-expect', rule, {
         {
           endColumn: 29,
           column: 18,
-          messageId: 'matcherOnPropertyNotCalled',
-          data: { propertyName: 'toBeDefined' },
+          messageId: 'matcherNotCalled',
         },
       ],
     },
@@ -148,8 +152,8 @@ ruleTester.run('valid-expect', rule, {
         {
           endColumn: 18,
           column: 14,
-          messageId: 'invalidProperty',
-          data: { propertyName: 'nope' },
+          messageId: 'modifierUnknown',
+          data: { modifierName: 'nope' },
         },
       ],
     },
@@ -159,8 +163,7 @@ ruleTester.run('valid-expect', rule, {
         {
           endColumn: 22,
           column: 14,
-          messageId: 'propertyWithoutMatcher',
-          data: { propertyName: 'resolves' },
+          messageId: 'matcherNotFound',
         },
       ],
     },
@@ -170,8 +173,7 @@ ruleTester.run('valid-expect', rule, {
         {
           endColumn: 21,
           column: 14,
-          messageId: 'propertyWithoutMatcher',
-          data: { propertyName: 'rejects' },
+          messageId: 'matcherNotFound',
         },
       ],
     },
@@ -181,8 +183,7 @@ ruleTester.run('valid-expect', rule, {
         {
           endColumn: 17,
           column: 14,
-          messageId: 'propertyWithoutMatcher',
-          data: { propertyName: 'not' },
+          messageId: 'matcherNotFound',
         },
       ],
     },
@@ -538,8 +539,7 @@ ruleTester.run('valid-expect', rule, {
         {
           column: 37,
           endColumn: 41,
-          messageId: 'matcherOnPropertyNotCalled',
-          data: { propertyName: 'toBe' },
+          messageId: 'matcherNotCalled',
         },
       ],
     },
@@ -582,7 +582,7 @@ ruleTester.run('valid-expect', rule, {
       code: `test("valid-expect", async () => {
         await expect(Promise.resolve(1));
       });`,
-      errors: [{ endColumn: 41, column: 15, messageId: 'noAssertions' }],
+      errors: [{ endColumn: 41, column: 15, messageId: 'matcherNotFound' }],
     },
   ],
 });
