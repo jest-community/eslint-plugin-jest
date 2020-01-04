@@ -1,3 +1,4 @@
+import { AST_NODE_TYPES } from '@typescript-eslint/experimental-utils';
 import { createRule, isFunction, isTestCase } from './utils';
 
 export default createRule({
@@ -94,7 +95,7 @@ export default createRule({
             let afterReplacement = ')';
             let replaceBefore = true;
 
-            if (body.type === 'BlockStatement') {
+            if (body.type === AST_NODE_TYPES.BlockStatement) {
               const keyword = 'return';
 
               beforeReplacement = `${keyword} ${beforeReplacement}{`;
