@@ -16,6 +16,8 @@ ruleTester.run('lowercase-name', rule, {
     'foo.bar()',
     'it()',
     "it(' ', function () {})",
+    'it(true, function () {})',
+    'it(MY_CONSTANT, function () {})',
     'it(" ", function () {})',
     'it(` `, function () {})',
     "it('foo', function () {})",
