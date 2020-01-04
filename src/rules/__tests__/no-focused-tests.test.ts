@@ -25,6 +25,7 @@ ruleTester.run('no-focused-tests', rule, {
     'it.each`table`()',
     'test.each()()',
     'test.each`table`()',
+    'test.concurrent()',
   ],
 
   invalid: [
