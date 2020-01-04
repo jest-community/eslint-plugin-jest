@@ -1,5 +1,10 @@
 import { AST_NODE_TYPES } from '@typescript-eslint/experimental-utils';
-import { createRule, getNodeName, scopeHasLocalReference } from './utils';
+import {
+  createRule,
+  getNodeName,
+  isSupportedAccessor,
+  scopeHasLocalReference,
+} from './utils';
 
 export default createRule({
   name: __filename,
@@ -118,14 +123,11 @@ export default createRule({
         }
       },
       MemberExpression(node) {
-        if ('name' in node.object && node.object.name === 'jasmine') {
+        if (isSupportedAccessor(node.object, 'jasmine')) {
           const { parent, property } = node;
 
           if (parent && parent.type === AST_NODE_TYPES.AssignmentExpression) {
-            if (
-              'name' in property &&
-              property.name === 'DEFAULT_TIMEOUT_INTERVAL'
-            ) {
+            if (isSupportedAccessor(property, 'DEFAULT_TIMEOUT_INTERVAL')) {
               const { right } = parent;
 
               if (right.type === AST_NODE_TYPES.Literal) {
