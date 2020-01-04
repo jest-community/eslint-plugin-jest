@@ -4,7 +4,6 @@ import {
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
 import {
-  FunctionExpression,
   JestFunctionCallExpression,
   TestCaseName,
   createRule,
@@ -15,7 +14,11 @@ import {
   isTestCase,
 } from './utils';
 
-function isFunctionBodyEmpty(node: FunctionExpression) {
+function isEmptyFunction(node: TSESTree.Expression) {
+  if (!isFunction(node)) {
+    return false;
+  }
+
   /* istanbul ignore if https://github.com/typescript-eslint/typescript-eslint/issues/734 */
   if (!node.body) {
     throw new Error(
@@ -30,12 +33,7 @@ function isFunctionBodyEmpty(node: FunctionExpression) {
   );
 }
 
-function isTestBodyEmpty(node: TSESTree.CallExpression) {
-  const [, fn] = node.arguments;
-  return fn && isFunction(fn) && isFunctionBodyEmpty(fn);
-}
-
-function addTodo(
+function createTodoFixer(
   node: JestFunctionCallExpression<TestCaseName>,
   fixer: TSESLint.RuleFixer,
 ) {
@@ -62,9 +60,8 @@ export default createRule({
       recommended: false,
     },
     messages: {
-      todoOverEmpty: 'Prefer todo test case over empty test case',
-      todoOverUnimplemented:
-        'Prefer todo test case over unimplemented test case',
+      emptyTest: 'Prefer todo test case over empty test case',
+      unimplementedTest: 'Prefer todo test case over unimplemented test case',
     },
     fixable: 'code',
     schema: [],
@@ -74,28 +71,28 @@ export default createRule({
   create(context) {
     return {
       CallExpression(node) {
-        const [firstArg, secondArg] = node.arguments;
+        const [title, callback] = node.arguments;
 
-        if (!firstArg || !isTargetedTestCase(node) || !isStringNode(firstArg)) {
+        if (!title || !isTargetedTestCase(node) || !isStringNode(title)) {
           return;
         }
 
-        if (isTestBodyEmpty(node)) {
+        if (callback && isEmptyFunction(callback)) {
           context.report({
-            messageId: 'todoOverEmpty',
+            messageId: 'emptyTest',
             node,
             fix: fixer => [
-              fixer.removeRange([firstArg.range[1], secondArg.range[1]]),
-              addTodo(node, fixer),
+              fixer.removeRange([title.range[1], callback.range[1]]),
+              createTodoFixer(node, fixer),
             ],
           });
         }
 
         if (hasOnlyOneArgument(node)) {
           context.report({
-            messageId: 'todoOverUnimplemented',
+            messageId: 'unimplementedTest',
             node,
-            fix: fixer => [addTodo(node, fixer)],
+            fix: fixer => [createTodoFixer(node, fixer)],
           });
         }
       },
