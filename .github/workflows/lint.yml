@@ -9,6 +9,8 @@ jobs:
         with:
           fetch-depth: 0
       - uses: wagoid/commitlint-github-action@v1.2.2
+        with:
+          configFile: './package.json'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   danger:
