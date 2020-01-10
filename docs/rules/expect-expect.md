@@ -76,22 +76,23 @@ test('returns sum', () =>
 );
 ```
 
-Examples of **correct** code for deep assertion functions with the
-`{ "assertFunctionNames": ["expect", "tester.foo.expect"] }` option:
+Examples of **correct** code for working with the HTTP assertions library
+[SuperTest](https://www.npmjs.com/package/supertest) with the
+`{ "assertFunctionNames": ["expect", "request.get.expect"] }` option:
 
 ```js
-/* eslint jest/expect-expect: ["error", { "assertFunctionNames": ["expect", "tester.foo.expect"] }] */
-test('nested expect method call', () => {
-  class Foo {
-    expect(k) {
-      return k;
-    }
-  }
-  let tester = {
-    foo: function() {
-      return new Foo();
-    },
-  };
-  tester.foo().expect(123);
+/* eslint jest/expect-expect: ["error", { "assertFunctionNames": ["expect", "request.get.expect"] }] */
+const request = require('supertest');
+const express = require('express');
+
+const app = express();
+
+describe('GET /user', function() {
+  it('responds with json', function(done) {
+    request(app)
+      .get('/user')
+      .expect('Content-Type', /json/)
+      .expect(200, done);
+  });
 });
 ```

@@ -54,6 +54,25 @@ ruleTester.run('expect-expect', rule, {
       options: [{ assertFunctionNames: ['tester.foo.expect'] }],
     },
     {
+      code: `test('verifies recursive expect method call', () => {
+                    class Foo {
+                      expect(k) {
+                        return this;
+                      }
+                      bar() {
+                          return this;
+                      }
+                    }
+                    let tester = {
+                        foo: function() {
+                            return new Foo()
+                        }
+                    }
+                    tester.foo().bar().expect(456);
+                  });`,
+      options: [{ assertFunctionNames: ['tester.foo.bar.expect'] }],
+    },
+    {
       code: [
         'test("verifies the function call", () => {',
         '  td.verify(someFunctionCall())',
