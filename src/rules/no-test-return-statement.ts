@@ -9,7 +9,6 @@ import {
   isTestCase,
 } from './utils';
 
-const RETURN_STATEMENT = 'ReturnStatement';
 const getBody = (args: TSESTree.Expression[]) => {
   const [, secondArg] = args;
 
@@ -59,7 +58,7 @@ export default createRule({
         if (testCallExpressions.length === 0) return;
 
         const returnStmt = node.body.body.find(
-          t => t.type === RETURN_STATEMENT,
+          t => t.type === AST_NODE_TYPES.ReturnStatement,
         );
         if (!returnStmt) return;
 
