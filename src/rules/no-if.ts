@@ -2,7 +2,13 @@ import {
   AST_NODE_TYPES,
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
-import { TestCaseName, createRule, getNodeName, isTestCase } from './utils';
+import {
+  TestCaseName,
+  createRule,
+  getNodeName,
+  getTestCallExpressionsFromDeclaredVariables,
+  isTestCase,
+} from './utils';
 
 const testCaseNames = new Set<string | null>([
   ...Object.keys(TestCaseName),
@@ -68,8 +74,13 @@ export default createRule({
       FunctionExpression() {
         stack.push(false);
       },
-      FunctionDeclaration() {
-        stack.push(false);
+      FunctionDeclaration(node) {
+        const declaredVariables = context.getDeclaredVariables(node);
+        const testCallExpressions = getTestCallExpressionsFromDeclaredVariables(
+          declaredVariables,
+        );
+
+        stack.push(testCallExpressions.length > 0);
       },
       ArrowFunctionExpression(node) {
         stack.push(isTestArrowFunction(node));

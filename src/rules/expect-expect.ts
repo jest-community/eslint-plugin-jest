@@ -7,7 +7,12 @@ import {
   AST_NODE_TYPES,
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
-import { TestCaseName, createRule, getNodeName } from './utils';
+import {
+  TestCaseName,
+  createRule,
+  getNodeName,
+  getTestCallExpressionsFromDeclaredVariables,
+} from './utils';
 
 export default createRule<
   [Partial<{ assertFunctionNames: readonly string[] }>],
@@ -41,6 +46,29 @@ export default createRule<
   create(context, [{ assertFunctionNames = ['expect'] }]) {
     const unchecked: TSESTree.CallExpression[] = [];
 
+    function checkCallExpressionUsed(nodes: TSESTree.Node[]) {
+      for (const node of nodes) {
+        const index =
+          node.type === AST_NODE_TYPES.CallExpression
+            ? unchecked.indexOf(node)
+            : -1;
+
+        if (node.type === AST_NODE_TYPES.FunctionDeclaration) {
+          const declaredVariables = context.getDeclaredVariables(node);
+          const testCallExpressions = getTestCallExpressionsFromDeclaredVariables(
+            declaredVariables,
+          );
+
+          checkCallExpressionUsed(testCallExpressions);
+        }
+
+        if (index !== -1) {
+          unchecked.splice(index, 1);
+          break;
+        }
+      }
+    }
+
     return {
       CallExpression(node) {
         const name = getNodeName(node.callee);
@@ -48,17 +76,7 @@ export default createRule<
           unchecked.push(node);
         } else if (name && assertFunctionNames.includes(name)) {
           // Return early in case of nested `it` statements.
-          for (const ancestor of context.getAncestors()) {
-            const index =
-              ancestor.type === AST_NODE_TYPES.CallExpression
-                ? unchecked.indexOf(ancestor)
-                : -1;
-
-            if (index !== -1) {
-              unchecked.splice(index, 1);
-              break;
-            }
-          }
+          checkCallExpressionUsed(context.getAncestors());
         }
       },
       'Program:exit'() {

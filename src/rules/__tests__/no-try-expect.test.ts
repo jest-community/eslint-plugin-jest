@@ -14,17 +14,21 @@ ruleTester.run('no-try-catch', rule, {
     `it('foo', () => {
         expect('foo').toEqual('foo');
     })`,
+    `it('foo', () => {})
+    function myTest() {
+      try {
+      } catch {
+      }
+    }`,
     `it('foo', () => {
       expect('bar').toEqual('bar');
     });
     try {
-
     } catch {
       expect('foo').toEqual('foo');
     }`,
     `it.skip('foo');
     try {
-
     } catch {
       expect('foo').toEqual('foo');
     }`,
@@ -44,6 +48,22 @@ ruleTester.run('no-try-catch', rule, {
           expect(err).toMatch('Error');
         }
       })`,
+      errors: [
+        {
+          messageId: 'noTryExpect',
+        },
+      ],
+    },
+    {
+      code: `it('foo', myTest)
+      function myTest() {
+        try {
+
+        } catch (err) {
+          expect(err).toMatch('Error');
+        }
+      }
+      `,
       errors: [
         {
           messageId: 'noTryExpect',
