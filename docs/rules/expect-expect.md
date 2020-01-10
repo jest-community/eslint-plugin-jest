@@ -75,3 +75,23 @@ test('returns sum', () =>
     .run();
 );
 ```
+
+Examples of **correct** code for deep assertion functions with the
+`{ "assertFunctionNames": ["expect", "tester.foo.expect"] }` option:
+
+```js
+/* eslint jest/expect-expect: ["error", { "assertFunctionNames": ["expect", "tester.foo.expect"] }] */
+test('nested expect method call', () => {
+  class Foo {
+    expect(k) {
+      return k;
+    }
+  }
+  let tester = {
+    foo: function() {
+      return new Foo();
+    },
+  };
+  tester.foo().expect(123);
+});
+```

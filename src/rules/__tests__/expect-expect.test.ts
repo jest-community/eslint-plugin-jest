@@ -27,6 +27,33 @@ ruleTester.run('expect-expect', rule, {
       options: [{ assertFunctionNames: ['expectSaga'] }],
     },
     {
+      code: `test('verifies expect method call', () => {
+        class Foo {
+          expect(k) {
+            return k;
+          }
+        }
+        new Foo().expect(123);
+      });`,
+      options: [{ assertFunctionNames: ['Foo.expect'] }],
+    },
+    {
+      code: `test('verifies deep expect method call', () => {
+              class Foo {
+                expect(k) {
+                  return k;
+                }
+              }
+              let tester = {
+                  foo: function() {
+                      return new Foo()
+                  }
+              }
+              tester.foo().expect(123);
+            });`,
+      options: [{ assertFunctionNames: ['tester.foo.expect'] }],
+    },
+    {
       code: [
         'test("verifies the function call", () => {',
         '  td.verify(someFunctionCall())',
