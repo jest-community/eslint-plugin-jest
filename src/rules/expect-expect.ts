@@ -7,6 +7,7 @@ import {
   AST_NODE_TYPES,
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
+import micromatch from 'micromatch';
 import {
   TestCaseName,
   createRule,
@@ -74,7 +75,7 @@ export default createRule<
         const name = getNodeName(node.callee);
         if (name === TestCaseName.it || name === TestCaseName.test) {
           unchecked.push(node);
-        } else if (name && assertFunctionNames.includes(name)) {
+        } else if (name && micromatch.isMatch(name, assertFunctionNames)) {
           // Return early in case of nested `it` statements.
           checkCallExpressionUsed(context.getAncestors());
         }
