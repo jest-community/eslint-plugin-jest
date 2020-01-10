@@ -1,3 +1,15 @@
+# [23.4.0](https://github.com/jest-community/eslint-plugin-jest/compare/v23.3.0...v23.4.0) (2020-01-10)
+
+### Features
+
+- **expect-expect:** support chained function names
+  ([#471](https://github.com/jest-community/eslint-plugin-jest/issues/471))
+  ([#508](https://github.com/jest-community/eslint-plugin-jest/issues/508))
+  ([beb1aec](https://github.com/jest-community/eslint-plugin-jest/commit/beb1aececee80589c182e95bc64ef01d97eb5e78))
+- **rules:** add support for function declaration as test case
+  ([#504](https://github.com/jest-community/eslint-plugin-jest/issues/504))
+  ([ac7fa48](https://github.com/jest-community/eslint-plugin-jest/commit/ac7fa487d05705bee1b2d5264d5096f0232ae1e1))
+
 # [23.3.0](https://github.com/jest-community/eslint-plugin-jest/compare/v23.2.0...v23.3.0) (2020-01-04)
 
 ### Features
