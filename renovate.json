@@ -3,5 +3,6 @@
     "config:base"
   ],
   "lockFileMaintenance": { "enabled": true },
-  "rangeStrategy": "replace"
+  "rangeStrategy": "replace",
+  "ignorePresets": ["group:semantic-releaseMonorepo"]
 }
