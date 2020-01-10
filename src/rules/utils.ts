@@ -614,6 +614,10 @@ export function getNodeName(node: TSESTree.Node): string | null {
       break;
     case AST_NODE_TYPES.MemberExpression:
       return joinNames(getNodeName(node.object), getNodeName(node.property));
+    case AST_NODE_TYPES.NewExpression:
+      return getNodeName(node.callee);
+    case AST_NODE_TYPES.CallExpression:
+      return getNodeName(node.callee);
   }
 
   return null;

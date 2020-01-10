@@ -75,3 +75,24 @@ test('returns sum', () =>
     .run();
 );
 ```
+
+Examples of **correct** code for working with the HTTP assertions library
+[SuperTest](https://www.npmjs.com/package/supertest) with the
+`{ "assertFunctionNames": ["expect", "request.get.expect"] }` option:
+
+```js
+/* eslint jest/expect-expect: ["error", { "assertFunctionNames": ["expect", "request.get.expect"] }] */
+const request = require('supertest');
+const express = require('express');
+
+const app = express();
+
+describe('GET /user', function() {
+  it('responds with json', function(done) {
+    request(app)
+      .get('/user')
+      .expect('Content-Type', /json/)
+      .expect(200, done);
+  });
+});
+```
