@@ -9,7 +9,413 @@ const ruleTester = new TSESLint.RuleTester({
   },
 });
 
-ruleTester.run('no-if', rule, {
+ruleTester.run('conditional expressions', rule, {
+  valid: [
+    {
+      code: 'const x = y ? 1 : 0',
+    },
+    {
+      code: `it('foo', () => {
+        const foo = function(bar) {
+          return foo ? bar : null;
+        };
+      });`,
+    },
+  ],
+  invalid: [
+    {
+      code: `it('foo', () => {
+        const foo = bar ? foo : baz;
+      })
+      `,
+      errors: [
+        {
+          data: { condition: 'conditional' },
+          messageId: 'noConditionalExpect',
+        },
+      ],
+    },
+    {
+      code: `it('foo', () => {
+        const foo = bar ? foo : baz;
+      })
+      const foo = bar ? foo : baz;
+      `,
+      errors: [
+        {
+          data: { condition: 'conditional' },
+          messageId: 'noConditionalExpect',
+        },
+      ],
+    },
+    {
+      code: `it('foo', () => {
+        const foo = bar ? foo : baz;
+        const anotherFoo = anotherBar ? anotherFoo : anotherBaz;
+      })
+      `,
+      errors: [
+        {
+          data: { condition: 'conditional' },
+          messageId: 'noConditionalExpect',
+        },
+        {
+          data: { condition: 'conditional' },
+          messageId: 'noConditionalExpect',
+        },
+      ],
+    },
+  ],
+});
+
+ruleTester.run('switch statements', rule, {
+  valid: [
+    {
+      code: `
+      switch (true) {
+        case true: {}
+      }
+      `,
+    },
+    {
+      code: `it('foo', () => {})`,
+    },
+    {
+      code: `
+      it('foo', () => {});
+      function myTest() {
+        switch ('bar') {
+        }
+      }
+      `,
+    },
+    {
+      code: `
+      foo('bar', () => {
+        switch(baz) {}
+      })
+      `,
+    },
+    {
+      code: `
+      describe('foo', () => {
+        switch('bar') {}
+      })
+      `,
+    },
+    {
+      code: `
+      describe.skip('foo', () => {
+        switch('bar') {}
+      })
+      `,
+    },
+    {
+      code: `
+      xdescribe('foo', () => {
+        switch('bar') {}
+      })
+      `,
+    },
+    {
+      code: `
+      fdescribe('foo', () => {
+        switch('bar') {}
+      })
+      `,
+    },
+    {
+      code: `describe('foo', () => {
+        switch('bar') {}
+      })
+      switch('bar') {}
+      `,
+    },
+    {
+      code: `
+      describe('foo', () => {
+        afterEach(() => {
+          switch('bar') {}
+        });
+      });
+      `,
+    },
+    {
+      code: `
+      it('valid', () => {
+        const values = something.map(thing => {
+          switch (thing.isFoo) {
+            case true:
+              return thing.foo;
+            default:
+              return thing.bar;
+          }
+        });
+
+        expect(values).toStrictEqual(['foo']);
+      });
+      `,
+    },
+    {
+      code: `
+      describe('valid', () => {
+        it('still valid', () => {
+          const values = something.map(thing => {
+            switch (thing.isFoo) {
+              case true:
+                return thing.foo;
+              default:
+                return thing.bar;
+            }
+          });
+
+          expect(values).toStrictEqual(['foo']);
+        });
+      });
+      `,
+    },
+  ],
+  invalid: [
+    {
+      code: `
+      it('foo', () => {
+        switch (true) {
+          case true: {}
+        }
+      })
+      `,
+      errors: [
+        {
+          data: { condition: 'switch' },
+          messageId: 'noConditionalExpect',
+        },
+      ],
+    },
+    {
+      code: `it('foo', () => {
+        switch('bar') {}
+      })`,
+      errors: [
+        {
+          data: { condition: 'switch' },
+          messageId: 'noConditionalExpect',
+        },
+      ],
+    },
+    {
+      code: `it.skip('foo', () => {
+        switch('bar') {}
+      })`,
+      errors: [
+        {
+          data: { condition: 'switch' },
+          messageId: 'noConditionalExpect',
+        },
+      ],
+    },
+    {
+      code: `it.concurrent.skip('foo', () => {
+        switch('bar') {}
+      })`,
+      errors: [
+        {
+          data: { condition: 'switch' },
+          messageId: 'noConditionalExpect',
+        },
+      ],
+    },
+    {
+      code: `it.only('foo', () => {
+        switch('bar') {}
+      })`,
+      errors: [
+        {
+          data: { condition: 'switch' },
+          messageId: 'noConditionalExpect',
+        },
+      ],
+    },
+    {
+      code: `it.concurrent.only('foo', () => {
+        switch('bar') {}
+      })`,
+      errors: [
+        {
+          data: { condition: 'switch' },
+          messageId: 'noConditionalExpect',
+        },
+      ],
+    },
+    {
+      code: `xit('foo', () => {
+        switch('bar') {}
+      })`,
+      errors: [
+        {
+          data: { condition: 'switch' },
+          messageId: 'noConditionalExpect',
+        },
+      ],
+    },
+    {
+      code: `fit('foo', () => {
+        switch('bar') {}
+      })`,
+      errors: [
+        {
+          data: { condition: 'switch' },
+          messageId: 'noConditionalExpect',
+        },
+      ],
+    },
+    {
+      code: `fit.concurrent('foo', () => {
+        switch('bar') {}
+      })`,
+      errors: [
+        {
+          data: { condition: 'switch' },
+          messageId: 'noConditionalExpect',
+        },
+      ],
+    },
+    {
+      code: `test('foo', () => {
+        switch('bar') {}
+      })`,
+      errors: [
+        {
+          data: { condition: 'switch' },
+          messageId: 'noConditionalExpect',
+        },
+      ],
+    },
+    {
+      code: `test.concurrent.skip('foo', () => {
+        switch('bar') {}
+      })`,
+      errors: [
+        {
+          data: { condition: 'switch' },
+          messageId: 'noConditionalExpect',
+        },
+      ],
+    },
+    {
+      code: `test.concurrent.only('foo', () => {
+        switch('bar') {}
+      })`,
+      errors: [
+        {
+          data: { condition: 'switch' },
+          messageId: 'noConditionalExpect',
+        },
+      ],
+    },
+    {
+      code: `xtest('foo', () => {
+        switch('bar') {}
+      })`,
+      errors: [
+        {
+          data: { condition: 'switch' },
+          messageId: 'noConditionalExpect',
+        },
+      ],
+    },
+    {
+      code: `describe('foo', () => {
+        it('bar', () => {
+          switch('bar') {}
+        })
+      })`,
+      errors: [
+        {
+          data: { condition: 'switch' },
+          messageId: 'noConditionalExpect',
+        },
+      ],
+    },
+    {
+      code: `it('foo', myTest); function myTest() { switch ('bar') {} }`,
+      errors: [
+        {
+          data: { condition: 'switch' },
+          messageId: 'noConditionalExpect',
+        },
+      ],
+    },
+    {
+      code: `describe('foo', () => {
+        it('bar', () => {
+          switch('bar') {}
+        })
+        it('baz', () => {
+          switch('qux') {}
+          switch('quux') {}
+        })
+      })`,
+      errors: [
+        {
+          data: { condition: 'switch' },
+          messageId: 'noConditionalExpect',
+        },
+        {
+          data: { condition: 'switch' },
+          messageId: 'noConditionalExpect',
+        },
+        {
+          data: { condition: 'switch' },
+          messageId: 'noConditionalExpect',
+        },
+      ],
+    },
+    {
+      code: `it('foo', () => {
+        callExpression()
+        switch ('bar') {}
+      })
+      `,
+      errors: [
+        {
+          data: { condition: 'switch' },
+          messageId: 'noConditionalExpect',
+        },
+      ],
+    },
+    {
+      code: `
+      describe('valid', () => {
+        describe('still valid', () => {
+          it('really still valid', () => {
+            const values = something.map((thing) => {
+              switch (thing.isFoo) {
+                case true:
+                  return thing.foo;
+                default:
+                  return thing.bar;
+              }
+            });
+
+            switch('invalid') {
+              case true:
+                expect(values).toStrictEqual(['foo']);
+            }
+          });
+        });
+      });
+      `,
+      errors: [
+        {
+          data: { condition: 'switch' },
+          messageId: 'noConditionalExpect',
+        },
+      ],
+    },
+  ],
+});
+
+ruleTester.run('if statements', rule, {
   valid: [
     {
       code: `if(foo) {}`,
@@ -124,39 +530,12 @@ ruleTester.run('no-if', rule, {
     },
     {
       code: `it('foo', () => {
-        const foo = bar(() => qux ? qux() : false);
-      });
-      `,
-    },
-    {
-      code: `it('foo', () => {
-        const foo = bar => {
-          return foo ? bar : null;
-        };
-      });`,
-    },
-    {
-      code: `it('foo', () => {
-        const foo = function(bar) {
-          return foo ? bar : null;
-        };
-      });`,
-    },
-    {
-      code: `it('foo', () => {
         const foo = function(bar) {
           if (bar) {
             return 1;
           } else {
             return 2;
           }
-        };
-      });`,
-    },
-    {
-      code: `it('foo', () => {
-        function foo(bar) {
-          return foo ? bar : null;
         };
       });`,
     },
@@ -174,12 +553,29 @@ ruleTester.run('no-if', rule, {
   ],
   invalid: [
     {
+      code: `
+      it('foo', () => {
+        switch (true) {
+          case true: {
+          }
+        }
+      })
+      `,
+      errors: [
+        {
+          data: { condition: 'if' },
+          messageId: 'noConditionalExpect',
+        },
+      ],
+    },
+    {
       code: `it('foo', () => {
         if('bar') {}
       })`,
       errors: [
         {
-          messageId: 'noIf',
+          data: { condition: 'if' },
+          messageId: 'noConditionalExpect',
         },
       ],
     },
@@ -189,7 +585,8 @@ ruleTester.run('no-if', rule, {
       })`,
       errors: [
         {
-          messageId: 'noIf',
+          data: { condition: 'if' },
+          messageId: 'noConditionalExpect',
         },
       ],
     },
@@ -199,7 +596,8 @@ ruleTester.run('no-if', rule, {
       })`,
       errors: [
         {
-          messageId: 'noIf',
+          data: { condition: 'if' },
+          messageId: 'noConditionalExpect',
         },
       ],
     },
@@ -209,7 +607,8 @@ ruleTester.run('no-if', rule, {
       })`,
       errors: [
         {
-          messageId: 'noIf',
+          data: { condition: 'if' },
+          messageId: 'noConditionalExpect',
         },
       ],
     },
@@ -219,7 +618,8 @@ ruleTester.run('no-if', rule, {
       })`,
       errors: [
         {
-          messageId: 'noIf',
+          data: { condition: 'if' },
+          messageId: 'noConditionalExpect',
         },
       ],
     },
@@ -229,7 +629,8 @@ ruleTester.run('no-if', rule, {
       })`,
       errors: [
         {
-          messageId: 'noIf',
+          data: { condition: 'if' },
+          messageId: 'noConditionalExpect',
         },
       ],
     },
@@ -239,7 +640,8 @@ ruleTester.run('no-if', rule, {
       })`,
       errors: [
         {
-          messageId: 'noIf',
+          data: { condition: 'if' },
+          messageId: 'noConditionalExpect',
         },
       ],
     },
@@ -249,7 +651,8 @@ ruleTester.run('no-if', rule, {
       })`,
       errors: [
         {
-          messageId: 'noIf',
+          data: { condition: 'if' },
+          messageId: 'noConditionalExpect',
         },
       ],
     },
@@ -259,7 +662,8 @@ ruleTester.run('no-if', rule, {
       })`,
       errors: [
         {
-          messageId: 'noIf',
+          data: { condition: 'if' },
+          messageId: 'noConditionalExpect',
         },
       ],
     },
@@ -269,7 +673,8 @@ ruleTester.run('no-if', rule, {
       })`,
       errors: [
         {
-          messageId: 'noIf',
+          data: { condition: 'if' },
+          messageId: 'noConditionalExpect',
         },
       ],
     },
@@ -279,7 +684,8 @@ ruleTester.run('no-if', rule, {
       })`,
       errors: [
         {
-          messageId: 'noIf',
+          data: { condition: 'if' },
+          messageId: 'noConditionalExpect',
         },
       ],
     },
@@ -289,7 +695,8 @@ ruleTester.run('no-if', rule, {
       })`,
       errors: [
         {
-          messageId: 'noIf',
+          data: { condition: 'if' },
+          messageId: 'noConditionalExpect',
         },
       ],
     },
@@ -301,7 +708,8 @@ ruleTester.run('no-if', rule, {
       })`,
       errors: [
         {
-          messageId: 'noIf',
+          data: { condition: 'if' },
+          messageId: 'noConditionalExpect',
         },
       ],
     },
@@ -309,7 +717,8 @@ ruleTester.run('no-if', rule, {
       code: `it('foo', myTest); function myTest() { if ('bar') {} }`,
       errors: [
         {
-          messageId: 'noIf',
+          data: { condition: 'if' },
+          messageId: 'noConditionalExpect',
         },
       ],
     },
@@ -325,13 +734,16 @@ ruleTester.run('no-if', rule, {
       })`,
       errors: [
         {
-          messageId: 'noIf',
+          data: { condition: 'if' },
+          messageId: 'noConditionalExpect',
         },
         {
-          messageId: 'noIf',
+          data: { condition: 'if' },
+          messageId: 'noConditionalExpect',
         },
         {
-          messageId: 'noIf',
+          data: { condition: 'if' },
+          messageId: 'noConditionalExpect',
         },
       ],
     },
@@ -343,45 +755,8 @@ ruleTester.run('no-if', rule, {
       `,
       errors: [
         {
-          messageId: 'noIf',
-        },
-      ],
-    },
-    {
-      code: `it('foo', () => {
-        const foo = bar ? foo : baz;
-      })
-      `,
-      errors: [
-        {
-          messageId: 'noConditional',
-        },
-      ],
-    },
-    {
-      code: `it('foo', () => {
-        const foo = bar ? foo : baz;
-      })
-      const foo = bar ? foo : baz;
-      `,
-      errors: [
-        {
-          messageId: 'noConditional',
-        },
-      ],
-    },
-    {
-      code: `it('foo', () => {
-        const foo = bar ? foo : baz;
-        const anotherFoo = anotherBar ? anotherFoo : anotherBaz;
-      })
-      `,
-      errors: [
-        {
-          messageId: 'noConditional',
-        },
-        {
-          messageId: 'noConditional',
+          data: { condition: 'if' },
+          messageId: 'noConditionalExpect',
         },
       ],
     },
@@ -407,7 +782,8 @@ ruleTester.run('no-if', rule, {
       `,
       errors: [
         {
-          messageId: 'noIf',
+          data: { condition: 'if' },
+          messageId: 'noConditionalExpect',
         },
       ],
     },
