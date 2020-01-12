@@ -37,8 +37,7 @@
     "typecheck": "tsc -p ."
   },
   "dependencies": {
-    "@typescript-eslint/experimental-utils": "^2.5.0",
-    "micromatch": "^4.0.2"
+    "@typescript-eslint/experimental-utils": "^2.5.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.4.4",

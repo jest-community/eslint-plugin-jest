@@ -28,66 +28,32 @@ ruleTester.run('expect-expect', rule, {
       options: [{ assertFunctionNames: ['expectSaga'] }],
     },
     {
-      code: `test('verifies expect method call', () => {
-        class Foo {
-          expect(k) {
-            return k;
-          }
-        }
-        new Foo().expect(123);
-      });`,
+      code: `test('verifies expect method call', () => new Foo().expect(123));`,
       options: [{ assertFunctionNames: ['Foo.expect'] }],
     },
     {
-      code: `test('verifies deep expect method call', () => {
-              class Foo {
-                expect(k) {
-                  return k;
-                }
-              }
-              let tester = {
-                  foo: function() {
-                      return new Foo()
-                  }
-              }
-              tester.foo().expect(123);
-            });`,
+      code: `test('verifies deep expect method call', () => tester.foo().expect(123));`,
       options: [{ assertFunctionNames: ['tester.foo.expect'] }],
     },
     {
-      code: `test('wildcard chained function', () => {
-                    class Foo {
-                      expect(k) {
-                        return k;
-                      }
-                    }
-                    let tester = {
-                        foo: function() {
-                            return new Foo()
-                        }
-                    }
-                    tester.foo().expect(123);
-                  });`,
+      code: `test('wildcard chained function', () => tester.foo().expect(123));`,
       options: [{ assertFunctionNames: ['tester.*.expect'] }],
     },
     {
-      code: `test('verifies recursive expect method call', () => {
-                    class Foo {
-                      expect(k) {
-                        return this;
-                      }
-                      bar() {
-                          return this;
-                      }
-                    }
-                    let tester = {
-                        foo: function() {
-                            return new Foo()
-                        }
-                    }
-                    tester.foo().bar().expect(456);
-                  });`,
+      code: `test('verifies recursive expect method call', () => tester.foo().bar().expect(456));`,
       options: [{ assertFunctionNames: ['tester.foo.bar.expect'] }],
+    },
+    {
+      code: `test('verifies recursive expect method call', () => tester.foo().bar().expectIt(456));`,
+      options: [{ assertFunctionNames: ['tester.**.expect*'] }],
+    },
+    {
+      code: `test('should pass', () => request.get().foo().expect(456));`,
+      options: [{ assertFunctionNames: ['request.**.expect'] }],
+    },
+    {
+      code: `test('should pass', () => request.get().foo().expect(456));`,
+      options: [{ assertFunctionNames: ['request.**.e*e*t'] }],
     },
     {
       code: [
@@ -153,6 +119,26 @@ ruleTester.run('expect-expect', rule, {
     {
       code: 'it("should also fail",() => expectSaga(mySaga).returns());',
       options: [{ assertFunctionNames: ['expect'] }],
+      errors: [
+        {
+          messageId: 'noAssertions',
+          type: AST_NODE_TYPES.CallExpression,
+        },
+      ],
+    },
+    {
+      code: `test('should fail', () => request.get().foo().expect(456));`,
+      options: [{ assertFunctionNames: ['request.*.expect'] }],
+      errors: [
+        {
+          messageId: 'noAssertions',
+          type: AST_NODE_TYPES.CallExpression,
+        },
+      ],
+    },
+    {
+      code: `test('should fail', () => request.get().foo().bar().expect(456));`,
+      options: [{ assertFunctionNames: ['tester.foo**.expect'] }],
       errors: [
         {
           messageId: 'noAssertions',
