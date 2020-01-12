@@ -1,3 +1,11 @@
+# [23.6.0](https://github.com/jest-community/eslint-plugin-jest/compare/v23.5.0...v23.6.0) (2020-01-12)
+
+### Features
+
+- **no-if:** support `switch` statements
+  ([#515](https://github.com/jest-community/eslint-plugin-jest/issues/515))
+  ([be4e49d](https://github.com/jest-community/eslint-plugin-jest/commit/be4e49dcecd64711e743f5e09d1ff24e4c6e1648))
+
 # [23.5.0](https://github.com/jest-community/eslint-plugin-jest/compare/v23.4.0...v23.5.0) (2020-01-12)
 
 ### Features
