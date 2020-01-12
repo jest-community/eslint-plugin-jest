@@ -28,6 +28,12 @@ const isTestArrowFunction = (node: TSESTree.ArrowFunctionExpression) =>
   node.parent.type === AST_NODE_TYPES.CallExpression &&
   testCaseNames.has(getNodeName(node.parent.callee));
 
+const conditionName = {
+  [AST_NODE_TYPES.ConditionalExpression]: 'conditional',
+  [AST_NODE_TYPES.SwitchStatement]: 'switch',
+  [AST_NODE_TYPES.IfStatement]: 'if',
+};
+
 export default createRule({
   name: __filename,
   meta: {
@@ -37,8 +43,7 @@ export default createRule({
       recommended: false,
     },
     messages: {
-      noIf: 'Tests should not contain if statements.',
-      noConditional: 'Tests should not contain conditional statements.',
+      noConditionalExpect: 'Test should not contain { condition } statements.',
     },
     schema: [],
     type: 'suggestion',
@@ -48,21 +53,20 @@ export default createRule({
     const stack: boolean[] = [];
 
     function validate(
-      node: TSESTree.ConditionalExpression | TSESTree.IfStatement,
+      node:
+        | TSESTree.ConditionalExpression
+        | TSESTree.SwitchStatement
+        | TSESTree.IfStatement,
     ) {
       const lastElementInStack = stack[stack.length - 1];
 
-      if (stack.length === 0 || lastElementInStack === false) {
+      if (stack.length === 0 || !lastElementInStack) {
         return;
       }
 
-      const messageId =
-        node.type === AST_NODE_TYPES.ConditionalExpression
-          ? 'noConditional'
-          : 'noIf';
-
       context.report({
-        messageId,
+        data: { condition: conditionName[node.type] },
+        messageId: 'noConditionalExpect',
         node,
       });
     }
@@ -86,6 +90,7 @@ export default createRule({
         stack.push(isTestArrowFunction(node));
       },
       IfStatement: validate,
+      SwitchStatement: validate,
       ConditionalExpression: validate,
       'CallExpression:exit'() {
         stack.pop();
