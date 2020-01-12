@@ -1,3 +1,14 @@
+# [23.5.0](https://github.com/jest-community/eslint-plugin-jest/compare/v23.4.0...v23.5.0) (2020-01-12)
+
+### Features
+
+- **expect-expect:** support glob patterns for assertFunctionNames
+  ([#509](https://github.com/jest-community/eslint-plugin-jest/issues/509))
+  ([295ca9a](https://github.com/jest-community/eslint-plugin-jest/commit/295ca9a6969c77fadaa1a42d76e89cae992520a6))
+- **valid-expect:** refactor `valid-expect` linting messages
+  ([#501](https://github.com/jest-community/eslint-plugin-jest/issues/501))
+  ([7338362](https://github.com/jest-community/eslint-plugin-jest/commit/7338362420eb4970f99be2016bb4ded5732797e3))
+
 # [23.4.0](https://github.com/jest-community/eslint-plugin-jest/compare/v23.3.0...v23.4.0) (2020-01-10)
 
 ### Features
