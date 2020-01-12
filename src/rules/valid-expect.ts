@@ -100,12 +100,10 @@ const promiseArrayExceptionKey = ({ start, end }: TSESTree.SourceLocation) =>
   `${start.line}:${start.column}-${end.line}:${end.column}`;
 
 type MessageIds =
-  | 'multipleArgs'
-  | 'noArgs'
-  | 'noAssertions'
-  | 'invalidProperty'
-  | 'propertyWithoutMatcher'
-  | 'matcherOnPropertyNotCalled'
+  | 'incorrectNumberOfArguments'
+  | 'modifierUnknown'
+  | 'matcherNotFound'
+  | 'matcherNotCalled'
   | 'asyncMustBeAwaited'
   | 'promisesWithAsyncAssertionsMustBeAwaited';
 
@@ -118,13 +116,10 @@ export default createRule<[{ alwaysAwait?: boolean }], MessageIds>({
       recommended: 'error',
     },
     messages: {
-      multipleArgs: 'More than one argument was passed to expect().',
-      noArgs: 'No arguments were passed to expect().',
-      noAssertions: 'No assertion was called on expect().',
-      invalidProperty:
-        '"{{ propertyName }}" is not a valid property of expect.',
-      propertyWithoutMatcher: '"{{ propertyName }}" needs to call a matcher.',
-      matcherOnPropertyNotCalled: '"{{ propertyName }}" was not called.',
+      incorrectNumberOfArguments: 'Expect takes one and only one argument.',
+      modifierUnknown: 'Expect has no modifier named "{{ modifierName }}".',
+      matcherNotFound: 'Expect must have a corresponding matcher call.',
+      matcherNotCalled: 'Matchers must be called to assert.',
       asyncMustBeAwaited: 'Async assertions must be awaited{{ orReturned }}.',
       promisesWithAsyncAssertionsMustBeAwaited:
         'Promises which return async assertions must be awaited{{ orReturned }}.',
@@ -169,37 +164,37 @@ export default createRule<[{ alwaysAwait?: boolean }], MessageIds>({
 
         const { expect, modifier, matcher } = parseExpectCall(node);
 
-        if (expect.arguments.length > 1) {
-          const secondArgumentLocStart = expect.arguments[1].loc.start;
-          const lastArgumentLocEnd =
-            expect.arguments[node.arguments.length - 1].loc.end;
+        if (expect.arguments.length !== 1) {
+          const expectLength = getAccessorValue(expect.callee).length;
+
+          let loc: TSESTree.SourceLocation = {
+            start: {
+              column: node.loc.start.column + expectLength,
+              line: node.loc.start.line,
+            },
+            end: {
+              column: node.loc.start.column + expectLength + 1,
+              line: node.loc.start.line,
+            },
+          };
+
+          if (expect.arguments.length !== 0) {
+            const { start } = expect.arguments[1].loc;
+            const { end } = expect.arguments[node.arguments.length - 1].loc;
+
+            loc = {
+              start,
+              end: {
+                column: end.column - 1,
+                line: end.line,
+              },
+            };
+          }
 
           context.report({
-            loc: {
-              end: {
-                column: lastArgumentLocEnd.column - 1,
-                line: lastArgumentLocEnd.line,
-              },
-              start: secondArgumentLocStart,
-            },
-            messageId: 'multipleArgs',
+            messageId: 'incorrectNumberOfArguments',
             node,
-          });
-        } else if (expect.arguments.length === 0) {
-          const expectLength = getAccessorValue(expect.callee).length;
-          context.report({
-            loc: {
-              end: {
-                column: node.loc.start.column + expectLength + 1,
-                line: node.loc.start.line,
-              },
-              start: {
-                column: node.loc.start.column + expectLength,
-                line: node.loc.start.line,
-              },
-            },
-            messageId: 'noArgs',
-            node,
+            loc,
           });
         }
 
@@ -207,8 +202,7 @@ export default createRule<[{ alwaysAwait?: boolean }], MessageIds>({
         if (!matcher) {
           if (modifier) {
             context.report({
-              data: { propertyName: modifier.name }, // todo: rename to 'modifierName'
-              messageId: 'propertyWithoutMatcher', // todo: rename to 'modifierWithoutMatcher'
+              messageId: 'matcherNotFound',
               node: modifier.node.property,
             });
           }
@@ -218,8 +212,8 @@ export default createRule<[{ alwaysAwait?: boolean }], MessageIds>({
 
         if (matcher.node.parent && isExpectMember(matcher.node.parent)) {
           context.report({
-            messageId: 'invalidProperty', // todo: rename to 'invalidModifier'
-            data: { propertyName: matcher.name }, // todo: rename to 'matcherName' (or modifierName?)
+            messageId: 'modifierUnknown',
+            data: { modifierName: matcher.name },
             node: matcher.node.property,
           });
 
@@ -228,8 +222,7 @@ export default createRule<[{ alwaysAwait?: boolean }], MessageIds>({
 
         if (!matcher.arguments) {
           context.report({
-            data: { propertyName: matcher.name }, // todo: rename to 'matcherName'
-            messageId: 'matcherOnPropertyNotCalled', // todo: rename to 'matcherNotCalled'
+            messageId: 'matcherNotCalled',
             node: matcher.node.property,
           });
         }
@@ -287,7 +280,7 @@ export default createRule<[{ alwaysAwait?: boolean }], MessageIds>({
       // nothing called on "expect()"
       'CallExpression:exit'(node: TSESTree.CallExpression) {
         if (isExpectCall(node) && isNoAssertionsParentNode(node.parent)) {
-          context.report({ messageId: 'noAssertions', node });
+          context.report({ messageId: 'matcherNotFound', node });
         }
       },
     };
