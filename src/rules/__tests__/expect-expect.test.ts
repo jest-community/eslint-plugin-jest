@@ -55,6 +55,22 @@ ruleTester.run('expect-expect', rule, {
       options: [{ assertFunctionNames: ['tester.foo.expect'] }],
     },
     {
+      code: `test('wildcard chained function', () => {
+                    class Foo {
+                      expect(k) {
+                        return k;
+                      }
+                    }
+                    let tester = {
+                        foo: function() {
+                            return new Foo()
+                        }
+                    }
+                    tester.foo().expect(123);
+                  });`,
+      options: [{ assertFunctionNames: ['tester.*.expect'] }],
+    },
+    {
       code: `test('verifies recursive expect method call', () => {
                     class Foo {
                       expect(k) {

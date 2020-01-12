@@ -42,7 +42,9 @@ it('should work with callbacks/async', () => {
 
 ### `assertFunctionNames`
 
-This array option whitelists the assertion function names to look for.
+This array option whitelists the assertion function names to look for. Function
+names can be a glob pattern like `request.*.expect` (see
+[micromatch](https://github.com/micromatch/micromatch) for syntax)
 
 Examples of **incorrect** code for the `{ "assertFunctionNames": ["expect"] }`
 option:
@@ -78,10 +80,10 @@ test('returns sum', () =>
 
 Examples of **correct** code for working with the HTTP assertions library
 [SuperTest](https://www.npmjs.com/package/supertest) with the
-`{ "assertFunctionNames": ["expect", "request.get.expect"] }` option:
+`{ "assertFunctionNames": ["expect", "request.*.expect"] }` option:
 
 ```js
-/* eslint jest/expect-expect: ["error", { "assertFunctionNames": ["expect", "request.get.expect"] }] */
+/* eslint jest/expect-expect: ["error", { "assertFunctionNames": ["expect", "request.*.expect"] }] */
 const request = require('supertest');
 const express = require('express');
 
