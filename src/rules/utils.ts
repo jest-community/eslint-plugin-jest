@@ -758,32 +758,3 @@ export const scopeHasLocalReference = (
     !references.unresolved.has(referenceName)
   );
 };
-
-/**
- * Checks if node names returned by getNodeName matches any of the given star patterns
- * Pattern examples:
- *   request.*.expect
- *   request.**.expect
- *   request.**.expect*
- */
-
-export function nodeNameMatch(
-  nodeName: string,
-  ...patterns: readonly string[]
-): boolean {
-  for (const p of patterns) {
-    if (
-      new RegExp(
-        `^${p
-          .split('.')
-          .map(x => {
-            if (x === '**') return '[a-zA-Z\\.]*';
-            return x.replace(/\*/g, '[a-zA-Z]*');
-          })
-          .join('\\.')}$`,
-      ).test(nodeName)
-    )
-      return true;
-  }
-  return false;
-}
