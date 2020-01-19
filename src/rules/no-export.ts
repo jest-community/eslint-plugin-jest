@@ -62,7 +62,7 @@ export default createRule({
           'name' in object &&
           object.name === 'module' &&
           property.type === AST_NODE_TYPES.Identifier &&
-          /^exports?$/.test(property.name)
+          /^exports?$/u.test(property.name)
         ) {
           exportNodes.push(node);
         }

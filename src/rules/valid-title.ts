@@ -121,8 +121,8 @@ export default createRule({
                 fixer.replaceTextRange(
                   argument.range,
                   stringValue
-                    .replace(/^([`'"]) +?/, '$1')
-                    .replace(/ +?([`'"])$/, '$1'),
+                    .replace(/^([`'"]) +?/u, '$1')
+                    .replace(/ +?([`'"])$/u, '$1'),
                 ),
               ];
             },
@@ -145,7 +145,7 @@ export default createRule({
               return [
                 fixer.replaceTextRange(
                   argument.range,
-                  stringValue.replace(/^([`'"]).+? /, '$1'),
+                  stringValue.replace(/^([`'"]).+? /u, '$1'),
                 ),
               ];
             },

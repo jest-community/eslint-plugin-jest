@@ -45,6 +45,7 @@ module.exports = {
       { VariableDeclarator: { array: true, object: true } },
     ],
     'sort-imports': ['error', { ignoreDeclarationSort: true }],
+    'require-unicode-regexp': 'error',
     // TS covers this
     'node/no-missing-import': 'off',
     'node/no-unsupported-features/es-syntax': 'off',
