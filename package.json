@@ -67,7 +67,7 @@
     "husky": "^3.0.9",
     "jest": "^24.9.0",
     "jest-runner-eslint": "^0.7.1",
-    "lint-staged": "^9.4.2",
+    "lint-staged": "^10.0.0",
     "prettier": "^1.19.1",
     "prettylint": "^1.0.0",
     "resolve-from": "^5.0.0",
