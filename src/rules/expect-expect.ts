@@ -33,7 +33,7 @@ function matchesAssertFunctionName(
           if (x === '**') return '[a-z\\.]*';
           return x.replace(/\*/g, '[a-z]*');
         })
-        .join('\\.')}$`,
+        .join('\\.')}(\\.|$)`,
       'ui',
     ).test(nodeName),
   );

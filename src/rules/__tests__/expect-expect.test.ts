@@ -125,6 +125,14 @@ ruleTester.run('wildcards', rule, {
       options: [{ assertFunctionNames: ['tester.*.expect'] }],
     },
     {
+      code: `test('should pass **', () => tester.foo().expect(123));`,
+      options: [{ assertFunctionNames: ['**'] }],
+    },
+    {
+      code: `test('should pass *', () => tester.foo().expect(123));`,
+      options: [{ assertFunctionNames: ['*'] }],
+    },
+    {
       code: `test('should pass', () => tester.foo().expect(123));`,
       options: [{ assertFunctionNames: ['tester.**'] }],
     },
