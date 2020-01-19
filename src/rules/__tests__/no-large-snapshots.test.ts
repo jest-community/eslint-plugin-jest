@@ -131,7 +131,7 @@ ruleTester.run('no-large-snapshots', rule, {
       options: [
         {
           whitelistedSnapshots: {
-            '/another-mock-component.jsx.snap': [/a big component \d+/],
+            '/another-mock-component.jsx.snap': [/a big component \d+/u],
           },
         },
       ],
@@ -152,7 +152,7 @@ ruleTester.run('no-large-snapshots', rule, {
       options: [
         {
           whitelistedSnapshots: {
-            '/mock-component.jsx.snap': [/a big component \d+/],
+            '/mock-component.jsx.snap': [/a big component \d+/u],
           },
         },
       ],
@@ -186,7 +186,7 @@ describe('no-large-snapshots', () => {
         options: [
           {
             whitelistedSnapshots: {
-              'mock-component.jsx.snap': [/a big component \d+/],
+              'mock-component.jsx.snap': [/a big component \d+/u],
             },
           },
         ],
