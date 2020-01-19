@@ -20,15 +20,13 @@ import {
   parseExpectCall,
 } from './utils';
 
-interface BooleanLiteral extends TSESTree.Literal {
-  value: boolean;
-}
-
-const isBooleanLiteral = (node: TSESTree.Node): node is BooleanLiteral =>
+const isBooleanLiteral = (
+  node: TSESTree.Node,
+): node is TSESTree.BooleanLiteral =>
   node.type === AST_NODE_TYPES.Literal && typeof node.value === 'boolean';
 
 type ParsedBooleanEqualityMatcherCall = ParsedEqualityMatcherCall<
-  MaybeTypeCast<BooleanLiteral>
+  MaybeTypeCast<TSESTree.BooleanLiteral>
 >;
 
 /**

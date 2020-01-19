@@ -17,7 +17,7 @@ const testFunctions = new Set<string>([
   ...validTestCaseNames,
 ]);
 
-interface ConcurrentExpression extends TSESTree.MemberExpression {
+interface ConcurrentExpression extends TSESTree.MemberExpressionComputedName {
   parent: TSESTree.MemberExpression;
 }
 

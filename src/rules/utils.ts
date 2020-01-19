@@ -53,7 +53,7 @@ export const followTypeAssertionChain = <
  * A `Literal` with a `value` of type `string`.
  */
 interface StringLiteral<Value extends string = string>
-  extends TSESTree.Literal {
+  extends TSESTree.StringLiteral {
   value: Value;
 }
 
@@ -145,7 +145,7 @@ export const getStringValue = <S extends string>(node: StringNode<S>): S =>
  * Represents a `MemberExpression` with a "known" `property`.
  */
 interface KnownMemberExpression<Name extends string = string>
-  extends TSESTree.MemberExpression {
+  extends TSESTree.MemberExpressionComputedName {
   property: AccessorNode<Name>;
 }
 

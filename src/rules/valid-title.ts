@@ -4,6 +4,7 @@ import {
 } from '@typescript-eslint/experimental-utils';
 import {
   DescribeAlias,
+  StringNode,
   TestCaseName,
   createRule,
   getJestFunctionArguments,
@@ -30,6 +31,11 @@ const doesBinaryExpressionContainStringNode = (
 
   return isStringNode(binaryExp.left);
 };
+
+const quoteStringValue = (node: StringNode): string =>
+  node.type === AST_NODE_TYPES.TemplateLiteral
+    ? `\`${node.quasis[0].value.raw}\``
+    : node.raw;
 
 export default createRule({
   name: __filename,
@@ -111,21 +117,14 @@ export default createRule({
           context.report({
             messageId: 'accidentalSpace',
             node: argument,
-            fix(fixer) {
-              const stringValue =
-                argument.type === AST_NODE_TYPES.TemplateLiteral
-                  ? `\`${argument.quasis[0].value.raw}\``
-                  : argument.raw;
-
-              return [
-                fixer.replaceTextRange(
-                  argument.range,
-                  stringValue
-                    .replace(/^([`'"]) +?/u, '$1')
-                    .replace(/ +?([`'"])$/u, '$1'),
-                ),
-              ];
-            },
+            fix: fixer => [
+              fixer.replaceTextRange(
+                argument.range,
+                quoteStringValue(argument)
+                  .replace(/^([`'"]) +?/u, '$1')
+                  .replace(/ +?([`'"])$/u, '$1'),
+              ),
+            ],
           });
         }
 
@@ -136,19 +135,12 @@ export default createRule({
           context.report({
             messageId: 'duplicatePrefix',
             node: argument,
-            fix(fixer) {
-              const stringValue =
-                argument.type === AST_NODE_TYPES.TemplateLiteral
-                  ? `\`${argument.quasis[0].value.raw}\``
-                  : argument.raw;
-
-              return [
-                fixer.replaceTextRange(
-                  argument.range,
-                  stringValue.replace(/^([`'"]).+? /u, '$1'),
-                ),
-              ];
-            },
+            fix: fixer => [
+              fixer.replaceTextRange(
+                argument.range,
+                quoteStringValue(argument).replace(/^([`'"]).+? /u, '$1'),
+              ),
+            ],
           });
         }
       },

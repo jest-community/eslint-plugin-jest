@@ -13,11 +13,7 @@ import {
   parseExpectCall,
 } from './utils';
 
-interface NullLiteral extends TSESTree.Literal {
-  value: null;
-}
-
-const isNullLiteral = (node: TSESTree.Node): node is NullLiteral =>
+const isNullLiteral = (node: TSESTree.Node): node is TSESTree.NullLiteral =>
   node.type === AST_NODE_TYPES.Literal && node.value === null;
 
 /**
@@ -30,7 +26,7 @@ const isNullLiteral = (node: TSESTree.Node): node is NullLiteral =>
  */
 const isNullEqualityMatcher = (
   matcher: ParsedExpectMatcher,
-): matcher is ParsedEqualityMatcherCall<MaybeTypeCast<NullLiteral>> =>
+): matcher is ParsedEqualityMatcherCall<MaybeTypeCast<TSESTree.NullLiteral>> =>
   isParsedEqualityMatcherCall(matcher) &&
   isNullLiteral(followTypeAssertionChain(matcher.arguments[0]));
 
