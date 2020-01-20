@@ -50,6 +50,7 @@ export default createRule({
       emptyTitle: '{{ jestFunctionName }} should not have an empty title',
       duplicatePrefix: 'should not have duplicate prefix',
       accidentalSpace: 'should not have leading or trailing spaces',
+      disallowedWord: '"{{ word }}" is not allowed.',
     },
     type: 'suggestion',
     schema: [
@@ -60,14 +61,24 @@ export default createRule({
             type: 'boolean',
             default: false,
           },
+          disallowedWords: {
+            type: 'array',
+            items: { type: 'string' },
+            default: [],
+          },
         },
         additionalProperties: false,
       },
     ],
     fixable: 'code',
   },
-  defaultOptions: [{ ignoreTypeOfDescribeName: false }],
-  create(context, [{ ignoreTypeOfDescribeName }]) {
+  defaultOptions: [{ ignoreTypeOfDescribeName: false, disallowedWords: [] }],
+  create(context, [{ ignoreTypeOfDescribeName, disallowedWords }]) {
+    const disallowedWordsRegexp = new RegExp(
+      `\\b(${disallowedWords.join('|')})\\b`,
+      'iu',
+    );
+
     return {
       CallExpression(node: TSESTree.CallExpression) {
         if (!(isDescribe(node) || isTestCase(node)) || !node.arguments.length) {
@@ -111,6 +122,20 @@ export default createRule({
           });
 
           return;
+        }
+
+        if (disallowedWords.length) {
+          const disallowedMatch = disallowedWordsRegexp.exec(title);
+
+          if (disallowedMatch) {
+            context.report({
+              data: { word: disallowedMatch[1] },
+              messageId: 'disallowedWord',
+              node: argument,
+            });
+
+            return;
+          }
         }
 
         if (title.trim().length !== title.length) {
