@@ -124,7 +124,7 @@ export default createRule({
           return;
         }
 
-        if (disallowedWords.length) {
+        if (disallowedWords.length > 0) {
           const disallowedMatch = disallowedWordsRegexp.exec(title);
 
           if (disallowedMatch) {
