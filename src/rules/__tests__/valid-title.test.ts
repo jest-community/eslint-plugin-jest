@@ -22,6 +22,18 @@ ruleTester.run('disallowedWords option', rule, {
   ],
   invalid: [
     {
+      code: 'test("the correct way to properly handle all things", () => {});',
+      options: [{ disallowedWords: ['correct', 'properly', 'all'] }],
+      errors: [
+        {
+          messageId: 'disallowedWord',
+          data: { word: 'correct' },
+          column: 6,
+          line: 1,
+        },
+      ],
+    },
+    {
       code: 'describe("the correct way to do things", function () {})',
       options: [{ disallowedWords: ['correct'] }],
       errors: [
