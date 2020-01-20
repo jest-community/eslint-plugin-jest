@@ -24,27 +24,62 @@ ruleTester.run('disallowedWords option', rule, {
     {
       code: 'describe("the correct way to do things", function () {})',
       options: [{ disallowedWords: ['correct'] }],
-      errors: [{ messageId: 'disallowedWord', column: 10, line: 1 }],
+      errors: [
+        {
+          messageId: 'disallowedWord',
+          data: { word: 'correct' },
+          column: 10,
+          line: 1,
+        },
+      ],
     },
     {
       code: 'it("has ALL the things", () => {})',
-      errors: [{ messageId: 'disallowedWord', column: 4, line: 1 }],
       options: [{ disallowedWords: ['all'] }],
+      errors: [
+        {
+          messageId: 'disallowedWord',
+          data: { word: 'ALL' },
+          column: 4,
+          line: 1,
+        },
+      ],
     },
     {
       code: 'xdescribe("every single one of them", function () {})',
       options: [{ disallowedWords: ['every'] }],
-      errors: [{ messageId: 'disallowedWord', column: 11, line: 1 }],
+      errors: [
+        {
+          messageId: 'disallowedWord',
+          data: { word: 'every' },
+          column: 11,
+          line: 1,
+        },
+      ],
     },
     {
       code: "describe('Very Descriptive Title Goes Here', function () {})",
       options: [{ disallowedWords: ['descriptive'] }],
-      errors: [{ messageId: 'disallowedWord', column: 10, line: 1 }],
+      errors: [
+        {
+          messageId: 'disallowedWord',
+          data: { word: 'Descriptive' },
+          column: 10,
+          line: 1,
+        },
+      ],
     },
     {
       code: 'test(`that the value is set properly`, function () {})',
       options: [{ disallowedWords: ['properly'] }],
-      errors: [{ messageId: 'disallowedWord', column: 6, line: 1 }],
+      errors: [
+        {
+          messageId: 'disallowedWord',
+          data: { word: 'properly' },
+          column: 6,
+          line: 1,
+        },
+      ],
     },
   ],
 });
