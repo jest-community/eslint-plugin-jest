@@ -13,6 +13,8 @@ import {
 
 interface RuleOptions {
   maxSize?: number;
+  inlineMaxSize?: number;
+  externalMaxSize?: number;
   whitelistedSnapshots?: Record<string, Array<string | RegExp>>;
 }
 
@@ -23,7 +25,10 @@ type RuleContext = TSESLint.RuleContext<MessageId, [RuleOptions]>;
 const reportOnViolation = (
   context: RuleContext,
   node: TSESTree.CallExpression | TSESTree.ExpressionStatement,
-  { maxSize: lineLimit = 50, whitelistedSnapshots = {} }: RuleOptions,
+  {
+    maxSize: lineLimit = 50,
+    whitelistedSnapshots = {},
+  }: Omit<RuleOptions, 'inlineMaxSize' | 'externalMaxSize'>,
 ) => {
   const startLine = node.loc.start.line;
   const endLine = node.loc.end.line;
@@ -71,6 +76,14 @@ const reportOnViolation = (
   }
 };
 
+const buildOptionsByMaxSizeAttributeName = (
+  options: RuleOptions,
+  attributeName: 'inlineMaxSize' | 'externalMaxSize',
+) => ({
+  ...options,
+  maxSize: options[attributeName] || options.maxSize,
+});
+
 export default createRule<[RuleOptions], MessageId>({
   name: __filename,
   meta: {
@@ -87,19 +100,45 @@ export default createRule<[RuleOptions], MessageId>({
     type: 'suggestion',
     schema: [
       {
-        type: 'object',
-        properties: {
-          maxSize: {
-            type: 'number',
+        anyOf: [
+          {
+            oneOf: [
+              {
+                type: 'object',
+                properties: {
+                  maxSize: {
+                    type: 'number',
+                  },
+                },
+                additionalProperties: false,
+              },
+              {
+                type: 'object',
+                properties: {
+                  externalMaxSize: {
+                    type: 'number',
+                  },
+                  inlineMaxSize: {
+                    type: 'number',
+                  },
+                },
+                additionalProperties: false,
+              },
+            ],
           },
-          whitelistedSnapshots: {
+          {
             type: 'object',
-            patternProperties: {
-              '.*': { type: 'array' },
+            properties: {
+              whitelistedSnapshots: {
+                type: 'object',
+                patternProperties: {
+                  '.*': { type: 'array' },
+                },
+              },
             },
+            additionalProperties: false,
           },
-        },
-        additionalProperties: false,
+        ],
       },
     ],
   },
@@ -108,7 +147,11 @@ export default createRule<[RuleOptions], MessageId>({
     if (context.getFilename().endsWith('.snap')) {
       return {
         ExpressionStatement(node) {
-          reportOnViolation(context, node, options);
+          reportOnViolation(
+            context,
+            node,
+            buildOptionsByMaxSizeAttributeName(options, 'externalMaxSize'),
+          );
         },
       };
     } else if (context.getFilename().endsWith('.js')) {
@@ -125,7 +168,11 @@ export default createRule<[RuleOptions], MessageId>({
                 'toThrowErrorMatchingInlineSnapshot',
               ))
           ) {
-            reportOnViolation(context, node, options);
+            reportOnViolation(
+              context,
+              node,
+              buildOptionsByMaxSizeAttributeName(options, 'inlineMaxSize'),
+            );
           }
         },
       };

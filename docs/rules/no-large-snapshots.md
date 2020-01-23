@@ -111,6 +111,22 @@ In an `eslintrc` file:
 ...
 ```
 
+Also, max number of lines allowed could be defined by snapshot type (Inline and
+External). Use `inlineMaxSize` for
+[Inline Snapshots](https://jestjs.io/docs/en/snapshot-testing#inline-snapshots)
+size and `externalMaxSize` for
+[External Snapshots](https://jestjs.io/docs/en/snapshot-testing#snapshot-testing-with-jest).
+
+In an `eslintrc` file:
+
+```json
+...
+  "rules": {
+    "jest/no-large-snapshots": ["warn", { "inlineMaxSize": 20, "externalMaxSize": 40 }]
+  }
+...
+```
+
 In addition there is an option for whitelisting large snapshot files. Since
 `//eslint` comments will be removed when a `.snap` file is updated, this option
 provides a way of whitelisting large snapshots. The list of whitelistedSnapshots
