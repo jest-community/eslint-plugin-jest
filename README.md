@@ -1,6 +1,3 @@
-[![Actions Status](https://github.com/jest-community/eslint-plugin-jest/workflows/Unit%20tests/badge.svg)](https://github.com/jest-community/eslint-plugin-jest/actions)
-[![Renovate badge](https://badges.renovateapi.com/github/jest-community/eslint-plugin-jest)](https://renovatebot.com/)
-
 <div align="center">
   <a href="https://eslint.org/">
     <img width="150" height="150" src="https://eslint.org/assets/img/logo.svg">
@@ -11,6 +8,9 @@
   <h1>eslint-plugin-jest</h1>
   <p>ESLint plugin for Jest</p>
 </div>
+
+[![Actions Status](https://github.com/jest-community/eslint-plugin-jest/workflows/Unit%20tests/badge.svg?branch=master)](https://github.com/jest-community/eslint-plugin-jest/actions)
+[![Renovate badge](https://badges.renovateapi.com/github/jest-community/eslint-plugin-jest)](https://renovatebot.com/)
 
 ## Installation
 
