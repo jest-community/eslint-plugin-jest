@@ -50,7 +50,7 @@ export default createRule({
       emptyTitle: '{{ jestFunctionName }} should not have an empty title',
       duplicatePrefix: 'should not have duplicate prefix',
       accidentalSpace: 'should not have leading or trailing spaces',
-      disallowedWord: '"{{ word }}" is not allowed.',
+      disallowedWord: '"{{ word }}" is not allowed in test titles.',
     },
     type: 'suggestion',
     schema: [
