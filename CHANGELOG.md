@@ -1,3 +1,17 @@
+# [23.7.0](https://github.com/jest-community/eslint-plugin-jest/compare/v23.6.0...v23.7.0) (2020-02-07)
+
+### Bug Fixes
+
+- **expect-expect:** use `u` flag in regex
+  ([#532](https://github.com/jest-community/eslint-plugin-jest/issues/532))
+  ([c12b725](https://github.com/jest-community/eslint-plugin-jest/commit/c12b7251ef1506073d268973b93c7fc9fbcf50af))
+
+### Features
+
+- **valid-title:** support `disallowedWords` option
+  ([#522](https://github.com/jest-community/eslint-plugin-jest/issues/522))
+  ([38bbe93](https://github.com/jest-community/eslint-plugin-jest/commit/38bbe93794ed456c6e9e5d7be848b2aeb55ce0ba))
+
 # [23.6.0](https://github.com/jest-community/eslint-plugin-jest/compare/v23.5.0...v23.6.0) (2020-01-12)
 
 ### Features
