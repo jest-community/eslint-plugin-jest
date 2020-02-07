@@ -43,8 +43,8 @@ it('should work with callbacks/async', () => {
 ### `assertFunctionNames`
 
 This array option whitelists the assertion function names to look for. Function
-names can be a glob pattern like `request.*.expect` (see
-[micromatch](https://github.com/micromatch/micromatch) for syntax)
+names can use wildcards like `request.*.expect`, `request.**.expect`,
+`request.*.expect*`
 
 Examples of **incorrect** code for the `{ "assertFunctionNames": ["expect"] }`
 option:

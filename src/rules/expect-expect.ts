@@ -7,13 +7,37 @@ import {
   AST_NODE_TYPES,
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
-import micromatch from 'micromatch';
 import {
   TestCaseName,
   createRule,
   getNodeName,
   getTestCallExpressionsFromDeclaredVariables,
 } from './utils';
+
+/**
+ * Checks if node names returned by getNodeName matches any of the given star patterns
+ * Pattern examples:
+ *   request.*.expect
+ *   request.**.expect
+ *   request.**.expect*
+ */
+function matchesAssertFunctionName(
+  nodeName: string,
+  patterns: readonly string[],
+): boolean {
+  return patterns.some(p =>
+    new RegExp(
+      `^${p
+        .split('.')
+        .map(x => {
+          if (x === '**') return '[a-z\\.]*';
+          return x.replace(/\*/g, '[a-z]*');
+        })
+        .join('\\.')}(\\.|$)`,
+      'ui',
+    ).test(nodeName),
+  );
+}
 
 export default createRule<
   [Partial<{ assertFunctionNames: readonly string[] }>],
@@ -75,7 +99,10 @@ export default createRule<
         const name = getNodeName(node.callee);
         if (name === TestCaseName.it || name === TestCaseName.test) {
           unchecked.push(node);
-        } else if (name && micromatch.isMatch(name, assertFunctionNames)) {
+        } else if (
+          name &&
+          matchesAssertFunctionName(name, assertFunctionNames)
+        ) {
           // Return early in case of nested `it` statements.
           checkCallExpressionUsed(context.getAncestors());
         }
