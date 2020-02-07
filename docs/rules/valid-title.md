@@ -45,7 +45,7 @@ xtest('foo', () => {});
 
 Titles for test blocks should always be a string literal or expression.
 
-This is also applied to describe blocks by default, but can be turned off via
+This is also applied to `describe` blocks by default, but can be turned off via
 the `ignoreTypeOfDescribeName` option:
 
 Examples of **incorrect** code for this rule:
@@ -87,7 +87,7 @@ describe(6, function() {});
 
 **duplicatePrefix**
 
-A describe/ test block should not start with duplicatePrefix
+A `describe` / `test` block should not start with `duplicatePrefix`
 
 Examples of **incorrect** code for this rule
 
@@ -117,7 +117,7 @@ describe('foo', () => {
 
 **accidentalSpace**
 
-A describe/ test block should not contain accidentalSpace
+A `describe` / `test` block should not contain accidentalSpace
 
 Examples of **incorrect** code for this rule
 
@@ -147,4 +147,46 @@ it('foo', () => {});
 describe('foo', () => {
   test('bar', () => {});
 });
+```
+
+## Options
+
+```ts
+interface {
+  ignoreTypeOfDescribeName?: boolean;
+  disallowedWords?: string[];
+}
+```
+
+#### `ignoreTypeOfDescribeName`
+
+Default: `false`
+
+When enabled, the type of the first argument to `describe` blocks won't be
+checked.
+
+#### `disallowedWords`
+
+Default: `[]`
+
+A string array of words that are not allowed to be used in test titles. Matching
+is not case-sensitive, and looks for complete words:
+
+Examples of **incorrect** code using `disallowedWords`:
+
+```js
+// with disallowedWords: ['correct', 'all', 'every', 'properly']
+describe('the correct way to do things', () => {});
+it('has ALL the things', () => {});
+xdescribe('every single one of them', () => {});
+test(`that the value is set properly`, () => {});
+```
+
+Examples of **correct** code when using `disallowedWords`:
+
+```js
+// with disallowedWords: ['correct', 'all', 'every', 'properly']
+it('correctly sets the value', () => {});
+test('that everything is as it should be', () => {});
+describe('the proper way to handle things', () => {});
 ```

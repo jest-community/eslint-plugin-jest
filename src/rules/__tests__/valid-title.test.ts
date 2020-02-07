@@ -9,6 +9,93 @@ const ruleTester = new TSESLint.RuleTester({
   },
 });
 
+ruleTester.run('disallowedWords option', rule, {
+  valid: [
+    'describe("the correct way to properly handle all the things", () => {});',
+    'test("that all is as it should be", () => {});',
+    {
+      code: 'it("correctly sets the value", () => {});',
+      options: [
+        { ignoreTypeOfDescribeName: false, disallowedWords: ['correct'] },
+      ],
+    },
+  ],
+  invalid: [
+    {
+      code: 'test("the correct way to properly handle all things", () => {});',
+      options: [{ disallowedWords: ['correct', 'properly', 'all'] }],
+      errors: [
+        {
+          messageId: 'disallowedWord',
+          data: { word: 'correct' },
+          column: 6,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: 'describe("the correct way to do things", function () {})',
+      options: [{ disallowedWords: ['correct'] }],
+      errors: [
+        {
+          messageId: 'disallowedWord',
+          data: { word: 'correct' },
+          column: 10,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: 'it("has ALL the things", () => {})',
+      options: [{ disallowedWords: ['all'] }],
+      errors: [
+        {
+          messageId: 'disallowedWord',
+          data: { word: 'ALL' },
+          column: 4,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: 'xdescribe("every single one of them", function () {})',
+      options: [{ disallowedWords: ['every'] }],
+      errors: [
+        {
+          messageId: 'disallowedWord',
+          data: { word: 'every' },
+          column: 11,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: "describe('Very Descriptive Title Goes Here', function () {})",
+      options: [{ disallowedWords: ['descriptive'] }],
+      errors: [
+        {
+          messageId: 'disallowedWord',
+          data: { word: 'Descriptive' },
+          column: 10,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: 'test(`that the value is set properly`, function () {})',
+      options: [{ disallowedWords: ['properly'] }],
+      errors: [
+        {
+          messageId: 'disallowedWord',
+          data: { word: 'properly' },
+          column: 6,
+          line: 1,
+        },
+      ],
+    },
+  ],
+});
+
 ruleTester.run('title-must-be-string', rule, {
   valid: [
     'it("is a string", () => {});',
@@ -31,7 +118,7 @@ ruleTester.run('title-must-be-string', rule, {
     },
     {
       code: 'xdescribe(skipFunction, () => {});',
-      options: [{ ignoreTypeOfDescribeName: true }],
+      options: [{ ignoreTypeOfDescribeName: true, disallowedWords: [] }],
     },
   ],
   invalid: [
