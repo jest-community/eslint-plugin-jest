@@ -178,7 +178,7 @@ Examples of **incorrect** code using `disallowedWords`:
 // with disallowedWords: ['correct', 'all', 'every', 'properly']
 describe('the correct way to do things', () => {});
 it('has ALL the things', () => {});
-xdescribe('every single one of them', () => {});
+describe('every single one of them', () => {});
 test(`that the value is set properly`, () => {});
 ```
 
