@@ -51,8 +51,17 @@ ruleTester.run('no-large-snapshots', rule, {
       code: generateExpectInlineSnapsCode(20, 'toMatchInlineSnapshot'),
       options: [
         {
-          externalMaxSize: 19,
+          maxSize: 19,
           inlineMaxSize: 21,
+        },
+      ],
+    },
+    {
+      filename: 'mock.jsx',
+      code: generateExpectInlineSnapsCode(60, 'toMatchInlineSnapshot'),
+      options: [
+        {
+          maxSize: 61,
         },
       ],
     },
@@ -78,7 +87,7 @@ ruleTester.run('no-large-snapshots', rule, {
       code: generateExportsSnapshotString(20),
       options: [
         {
-          externalMaxSize: 21,
+          maxSize: 21,
           inlineMaxSize: 19,
         },
       ],
@@ -114,7 +123,7 @@ ruleTester.run('no-large-snapshots', rule, {
         50,
         'toThrowErrorMatchingInlineSnapshot',
       ),
-      options: [{ externalMaxSize: 51, inlineMaxSize: 50 }],
+      options: [{ maxSize: 51, inlineMaxSize: 50 }],
       errors: [
         {
           messageId: 'tooLongSnapshots',
@@ -148,7 +157,7 @@ ruleTester.run('no-large-snapshots', rule, {
     {
       filename: '/mock-component.jsx.snap',
       code: generateExportsSnapshotString(100),
-      options: [{ externalMaxSize: 70, inlineMaxSize: 101 }],
+      options: [{ maxSize: 70, inlineMaxSize: 101 }],
       errors: [
         {
           messageId: 'tooLongSnapshots',
