@@ -593,6 +593,9 @@ export type JestFunctionCallExpression<
   | JestFunctionCallExpressionWithMemberExpressionCallee<FunctionName>
   | JestFunctionCallExpressionWithIdentifierCallee<FunctionName>;
 
+const joinNames = (a: string | null, b: string | null): string | null =>
+  a && b ? `${a}.${b}` : null;
+
 export function getNodeName(
   node:
     | JestFunctionMemberExpression<JestFunctionName>
@@ -600,10 +603,6 @@ export function getNodeName(
 ): string;
 export function getNodeName(node: TSESTree.Node): string | null;
 export function getNodeName(node: TSESTree.Node): string | null {
-  function joinNames(a?: string | null, b?: string | null): string | null {
-    return a && b ? `${a}.${b}` : null;
-  }
-
   if (isSupportedAccessor(node)) {
     return getAccessorValue(node);
   }
