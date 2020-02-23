@@ -1,3 +1,17 @@
+# [23.8.0](https://github.com/jest-community/eslint-plugin-jest/compare/v23.7.0...v23.8.0) (2020-02-23)
+
+### Bug Fixes
+
+- **valid-title:** ensure argument node is defined before accessing props
+  ([#538](https://github.com/jest-community/eslint-plugin-jest/issues/538))
+  ([7730f75](https://github.com/jest-community/eslint-plugin-jest/commit/7730f757561100559509b756fd362ca33b9ab1d4))
+
+### Features
+
+- **no-large-snapshots:** add setting to define maxSize by snapshot type
+  ([#524](https://github.com/jest-community/eslint-plugin-jest/issues/524))
+  ([0d77300](https://github.com/jest-community/eslint-plugin-jest/commit/0d77300e61adc7a5aa84f34ff4ccc164075d5f41))
+
 # [23.7.0](https://github.com/jest-community/eslint-plugin-jest/compare/v23.6.0...v23.7.0) (2020-02-07)
 
 ### Bug Fixes
