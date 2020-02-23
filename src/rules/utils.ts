@@ -567,13 +567,6 @@ interface JestFunctionMemberExpression<
   object: JestFunctionIdentifier<FunctionName>;
 }
 
-interface JestFunctionMemberExpression<
-  FunctionName extends JestFunctionName,
-  PropertyName extends JestPropertyName = JestPropertyName
-> extends KnownMemberExpression<PropertyName> {
-  object: JestFunctionIdentifier<FunctionName>;
-}
-
 interface JestFunctionCallExpressionWithMemberExpressionCallee<
   FunctionName extends JestFunctionName,
   PropertyName extends JestPropertyName = JestPropertyName
