@@ -271,6 +271,7 @@ ruleTester.run('no-empty-title', rule, {
     'test(`${foo}`, function () {})',
     'test.concurrent(`${foo}`, function () {})',
     "it('foo', function () {})",
+    'it.each([])()',
     "it.concurrent('foo', function () {})",
     "xdescribe('foo', function () {})",
     "xit('foo', function () {})",
