@@ -47,6 +47,25 @@ ruleTester.run('no-large-snapshots', rule, {
       code: generateExpectInlineSnapsCode(50, 'toMatchInlineSnapshot'),
     },
     {
+      filename: 'mock.jsx',
+      code: generateExpectInlineSnapsCode(20, 'toMatchInlineSnapshot'),
+      options: [
+        {
+          maxSize: 19,
+          inlineMaxSize: 21,
+        },
+      ],
+    },
+    {
+      filename: 'mock.jsx',
+      code: generateExpectInlineSnapsCode(60, 'toMatchInlineSnapshot'),
+      options: [
+        {
+          maxSize: 61,
+        },
+      ],
+    },
+    {
       // "should not report if node has fewer lines of code than limit"
       filename: '/mock-component.jsx.snap',
       code: generateExportsSnapshotString(20),
@@ -60,6 +79,16 @@ ruleTester.run('no-large-snapshots', rule, {
           whitelistedSnapshots: {
             '/mock-component.jsx.snap': ['a big component 1'],
           },
+        },
+      ],
+    },
+    {
+      filename: '/mock-component.jsx.snap',
+      code: generateExportsSnapshotString(20),
+      options: [
+        {
+          maxSize: 21,
+          inlineMaxSize: 19,
         },
       ],
     },
@@ -89,6 +118,20 @@ ruleTester.run('no-large-snapshots', rule, {
       ],
     },
     {
+      filename: 'mock.js',
+      code: generateExpectInlineSnapsCode(
+        50,
+        'toThrowErrorMatchingInlineSnapshot',
+      ),
+      options: [{ maxSize: 51, inlineMaxSize: 50 }],
+      errors: [
+        {
+          messageId: 'tooLongSnapshots',
+          data: { lineLimit: 50, lineCount: 51 },
+        },
+      ],
+    },
+    {
       // "should report if node has more than 50 lines of code, and no sizeThreshold option is passed"
       filename: '/mock-component.jsx.snap',
       code: generateExportsSnapshotString(52),
@@ -104,6 +147,17 @@ ruleTester.run('no-large-snapshots', rule, {
       filename: '/mock-component.jsx.snap',
       code: generateExportsSnapshotString(100),
       options: [{ maxSize: 70 }],
+      errors: [
+        {
+          messageId: 'tooLongSnapshots',
+          data: { lineLimit: 70, lineCount: 100 },
+        },
+      ],
+    },
+    {
+      filename: '/mock-component.jsx.snap',
+      code: generateExportsSnapshotString(100),
+      options: [{ maxSize: 70, inlineMaxSize: 101 }],
       errors: [
         {
           messageId: 'tooLongSnapshots',

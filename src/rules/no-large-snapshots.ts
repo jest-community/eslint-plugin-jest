@@ -13,6 +13,7 @@ import {
 
 interface RuleOptions {
   maxSize?: number;
+  inlineMaxSize?: number;
   whitelistedSnapshots?: Record<string, Array<string | RegExp>>;
 }
 
@@ -92,6 +93,9 @@ export default createRule<[RuleOptions], MessageId>({
           maxSize: {
             type: 'number',
           },
+          inlineMaxSize: {
+            type: 'number',
+          },
           whitelistedSnapshots: {
             type: 'object',
             patternProperties: {
@@ -125,7 +129,10 @@ export default createRule<[RuleOptions], MessageId>({
                 'toThrowErrorMatchingInlineSnapshot',
               ))
           ) {
-            reportOnViolation(context, node, options);
+            reportOnViolation(context, node, {
+              ...options,
+              maxSize: options.inlineMaxSize ?? options.maxSize,
+            });
           }
         },
       };
