@@ -81,11 +81,15 @@ export default createRule({
 
     return {
       CallExpression(node: TSESTree.CallExpression) {
-        if (!(isDescribe(node) || isTestCase(node)) || !node.arguments.length) {
+        if (!isDescribe(node) && !isTestCase(node)) {
           return;
         }
 
         const [argument] = getJestFunctionArguments(node);
+
+        if (!argument) {
+          return;
+        }
 
         if (!isStringNode(argument)) {
           if (
