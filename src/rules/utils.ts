@@ -586,6 +586,9 @@ export type JestFunctionCallExpression<
   | JestFunctionCallExpressionWithMemberExpressionCallee<FunctionName>
   | JestFunctionCallExpressionWithIdentifierCallee<FunctionName>;
 
+const joinNames = (a: string | null, b: string | null): string | null =>
+  a && b ? `${a}.${b}` : null;
+
 export function getNodeName(
   node:
     | JestFunctionMemberExpression<JestFunctionName>
@@ -593,22 +596,14 @@ export function getNodeName(
 ): string;
 export function getNodeName(node: TSESTree.Node): string | null;
 export function getNodeName(node: TSESTree.Node): string | null {
-  function joinNames(a?: string | null, b?: string | null): string | null {
-    return a && b ? `${a}.${b}` : null;
+  if (isSupportedAccessor(node)) {
+    return getAccessorValue(node);
   }
 
   switch (node.type) {
-    case AST_NODE_TYPES.Identifier:
-      return node.name;
-    case AST_NODE_TYPES.Literal:
-      return `${node.value}`;
-    case AST_NODE_TYPES.TemplateLiteral:
-      if (node.expressions.length === 0) return node.quasis[0].value.cooked;
-      break;
     case AST_NODE_TYPES.MemberExpression:
       return joinNames(getNodeName(node.object), getNodeName(node.property));
     case AST_NODE_TYPES.NewExpression:
-      return getNodeName(node.callee);
     case AST_NODE_TYPES.CallExpression:
       return getNodeName(node.callee);
   }
