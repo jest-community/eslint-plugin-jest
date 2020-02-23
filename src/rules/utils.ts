@@ -626,9 +626,9 @@ export const isHook = (
   HookName.hasOwnProperty(node.callee.name);
 
 export const getTestCallExpressionsFromDeclaredVariables = (
-  declaredVaiables: TSESLint.Scope.Variable[],
+  declaredVariables: TSESLint.Scope.Variable[],
 ): Array<JestFunctionCallExpression<TestCaseName>> => {
-  return declaredVaiables.reduce<
+  return declaredVariables.reduce<
     Array<JestFunctionCallExpression<TestCaseName>>
   >(
     (acc, { references }) =>
