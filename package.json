@@ -33,7 +33,7 @@
     "pretest": "yarn build",
     "test": "jest",
     "build": "babel --extensions .js,.ts src --out-dir lib --copy-files",
-    "postbuild": "rimraf lib/**/__tests__/**",
+    "postbuild": "rimraf lib/__tests__ lib/**/__tests__",
     "typecheck": "tsc -p ."
   },
   "dependencies": {
