@@ -1,3 +1,11 @@
+## [23.8.1](https://github.com/jest-community/eslint-plugin-jest/compare/v23.8.0...v23.8.1) (2020-02-29)
+
+### Bug Fixes
+
+- remove tests from published package
+  ([#541](https://github.com/jest-community/eslint-plugin-jest/issues/541))
+  ([099a150](https://github.com/jest-community/eslint-plugin-jest/commit/099a150b87fa693ccf1c512ee501aed1457ba656))
+
 # [23.8.0](https://github.com/jest-community/eslint-plugin-jest/compare/v23.7.0...v23.8.0) (2020-02-23)
 
 ### Bug Fixes
