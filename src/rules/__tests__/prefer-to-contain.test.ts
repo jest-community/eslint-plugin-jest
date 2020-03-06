@@ -5,6 +5,7 @@ const ruleTester = new TSESLint.RuleTester();
 
 ruleTester.run('prefer-to-contain', rule, {
   valid: [
+    'expect().toBe(false);',
     'expect(a).toContain(b);',
     "expect(a.name).toBe('b');",
     'expect(a).toBe(true);',

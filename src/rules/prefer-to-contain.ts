@@ -187,6 +187,7 @@ export default createRule({
 
         if (
           !matcher ||
+          !includesCall ||
           (modifier && modifier.name !== ModifierName.not) ||
           !isBooleanEqualityMatcher(matcher) ||
           !isFixableIncludesCallExpression(includesCall)
