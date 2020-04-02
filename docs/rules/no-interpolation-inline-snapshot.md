@@ -45,10 +45,6 @@ expect(something).toMatchInlineSnapshot(
 );
 ```
 
-\*Note that this rule will not trigger if the helper function is never used even
-thought the `expect` will not execute. Rely on a rule like no-unused-vars for
-this case.
-
 ## When Not To Use It
 
 Don't use this rule on non-jest test files.
