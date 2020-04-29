@@ -19,7 +19,7 @@ export default createRule({
       recommended: false,
     },
     messages: {
-      noReason: 'Add a reason why code should be ignored',
+      noReason: 'Add a reason why code coverage should be ignored',
     },
     schema: [],
     type: 'suggestion',

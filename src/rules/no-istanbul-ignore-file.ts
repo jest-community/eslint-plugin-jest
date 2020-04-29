@@ -11,7 +11,7 @@ export default createRule({
       recommended: false,
     },
     messages: {
-      istanbulIgnoreFile: 'Ignoring whole files is not allowed',
+      istanbulIgnoreFile: 'Ignoring coverage for whole files is not allowed',
     },
     schema: [],
     type: 'suggestion',
