@@ -16,7 +16,9 @@ ruleTester.run('no-istanbul-ignore-file', rule, {
     '/* istanbul ignore if: e2e */',
     '// istanbul ignore next: with comment',
     '// istanbul ignore function: with comment',
-    '// TODO: unify with Git implementation from Shipit (?)',
+    '// TODO: check istanbul is covering this properly',
+    "/* we can't make istanbul ignore file if we're not using istanbul to begin with! */",
+    "// ideally we should have istanbul ignore this, but we can't because reasons",
     '#!/usr/bin/env node',
   ],
 
@@ -26,7 +28,15 @@ ruleTester.run('no-istanbul-ignore-file', rule, {
       errors: [{ messageId: 'noReason', column: 1, line: 1 }],
     },
     {
-      code: '/* istanbul ignore function */',
+      code: '/*  istanbul  ignore  file  */',
+      errors: [{ messageId: 'noReason', column: 1, line: 1 }],
+    },
+    {
+      code: '/*\tistanbul\tignore\tfile\t*/',
+      errors: [{ messageId: 'noReason', column: 1, line: 1 }],
+    },
+    {
+      code: '/* istanbul ignore next */',
       errors: [{ messageId: 'noReason', column: 1, line: 1 }],
     },
     {

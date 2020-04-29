@@ -2,11 +2,11 @@ import { TSESTree } from '@typescript-eslint/experimental-utils';
 import { createRule } from './utils';
 
 function hasIgnore(comment: string): boolean {
-  return /istanbul ignore \w+/u.test(comment);
+  return /^\s*istanbul\s+ignore\s+(if|else|next|file)(?=\W|$)/u.test(comment);
 }
 
 function hasReason(comment: string): boolean {
-  return /istanbul ignore \w+: .*/u.test(comment);
+  return /^\s*istanbul\s+ignore\s+(if|else|next|file)\W+\w/u.test(comment);
 }
 
 export default createRule({
@@ -31,11 +31,7 @@ export default createRule({
     function checkNode(node: TSESTree.Comment) {
       const trimmedComment = node.value.trim();
 
-      if (!hasIgnore(trimmedComment)) {
-        return;
-      }
-
-      if (hasReason(trimmedComment)) {
+      if (!hasIgnore(trimmedComment) || hasReason(trimmedComment)) {
         return;
       }
 

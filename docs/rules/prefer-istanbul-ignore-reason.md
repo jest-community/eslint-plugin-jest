@@ -5,8 +5,8 @@ code is ignored.
 
 ## Rule Details
 
-The rule finds all comments including patter `istanbul ignore <word>` and raises
-a warning if it is missing a reason afterwards.
+The rule finds all comments matching the pattern `istanbul ignore <word>` and
+raises a warning if it is missing a reason afterwards.
 
 The following patterns are considered warnings:
 

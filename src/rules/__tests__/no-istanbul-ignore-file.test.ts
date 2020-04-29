@@ -16,7 +16,9 @@ ruleTester.run('no-istanbul-ignore-file', rule, {
     '/* istanbul ignore if */',
     '// istanbul ignore next: with comment',
     '// istanbul ignore function: with comment',
-    '// TODO: unify with Git implementation from Shipit (?)',
+    '// TODO: check istanbul is covering this properly',
+    "/* we can't make istanbul ignore file if we're not using istanbul to begin with! */",
+    "// ideally we should have istanbul ignore this, but we can't because reasons",
     '#!/usr/bin/env node',
   ],
 
