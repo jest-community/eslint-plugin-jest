@@ -9,7 +9,7 @@ export default createRule({
   meta: {
     docs: {
       category: 'Best Practices',
-      description: 'Warns on usage of deprecated functions',
+      description: 'Disallow use of deprecated functions',
       recommended: false,
     },
     messages: {
