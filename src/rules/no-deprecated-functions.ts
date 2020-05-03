@@ -28,6 +28,7 @@ export default createRule({
       'jest.addMatchers': 'expect.extend',
       'jest.resetModuleRegistry': 'jest.resetModules',
       'jest.runTimersToTime': 'jest.advanceTimersByTime',
+      'jest.genMockFromModule': 'jest.createMockFromModule',
     };
 
     return {

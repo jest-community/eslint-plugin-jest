@@ -39,3 +39,8 @@ removal in Jest 27.
 
 This function was renamed to `advanceTimersByTime` in Jest 22, and is scheduled
 for removal in Jest 27.
+
+### `jest.genMockFromModule`
+
+This function was renamed to `createMockFromModule` in Jest 26, and is scheduled
+for removal in a future version of Jest.

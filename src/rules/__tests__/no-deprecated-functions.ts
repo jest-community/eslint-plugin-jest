@@ -9,6 +9,7 @@ const ruleTester = new TSESLint.RuleTester();
   ['jest.addMatchers', 'expect.extend'],
   ['jest.resetModuleRegistry', 'jest.resetModules'],
   ['jest.runTimersToTime', 'jest.advanceTimersByTime'],
+  ['jest.genMockFromModule', 'jest.createMockFromModule'],
 ].forEach(([deprecation, replacement]) => {
   const [deprecatedName, deprecatedFunc] = deprecation.split('.');
   const [replacementName, replacementFunc] = replacement.split('.');
