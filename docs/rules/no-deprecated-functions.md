@@ -1,6 +1,6 @@
 # Warns on usage of deprecated functions (no-deprecated-functions)
 
-Over the years jest has accrued some debt in the form of functions that have
+Over the years Jest has accrued some debt in the form of functions that have
 either been renamed for clarity, or replaced with more powerful APIs.
 
 While typically these deprecated functions are kept in the codebase for a number
@@ -13,31 +13,29 @@ what to replace them with.
 
 This rule can also autofix a number of these deprecations for you.
 
-### `require.requireActual.` & `require.requireMock`
+### `require.requireActual` & `require.requireMock`
 
-These functions were removed in Jest 26.
+These functions were replaced in Jest 21 and removed in Jest 26.
 
-Originally in the early days of jest, the `requireActual`& `requireMock`
-functions were placed onto the `require` function.
+Originally, the `requireActual` & `requireMock` the `requireActual`&
+`requireMock` functions were placed onto the `require` function.
 
-These functions were later moved onto the `jest` global, and their use via
-`require` deprecated. Finally, the release of Jest 26 saw them removed from the
-`require` function all together.
-
-The PR implementing the removal can be found
-[here](https://github.com/facebook/jest/pull/9854).
+These functions were later moved onto the `jest` object in order to be easier
+for type checkers to handle, and their use via `require` deprecated. Finally,
+the release of Jest 26 saw them removed from the `require` function all
+together.
 
 ### `jest.addMatchers`
 
-This function has been replaced with `expect.extend`, and will ideally be
-removed in Jest 27.
+This function was replaced with `expect.extend` in Jest 17, and is scheduled for
+removal in Jest 27.
 
 ### `jest.resetModuleRegistry`
 
-This function has been renamed to `resetModules`, and will ideally be removed in
-Jest 27.
+This function was renamed to `resetModules` in Jest 15, and is scheduled for
+removal in Jest 27.
 
 ### `jest.runTimersToTime`
 
-This function has been renamed to `advanceTimersByTime`, and will ideally be
-removed in Jest 27.
+This function was renamed to `advanceTimersByTime` in Jest 22, and is scheduled
+for removal in Jest 27.
