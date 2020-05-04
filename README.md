@@ -115,6 +115,7 @@ installations requiring long-term consistency.
 | [lowercase-name][]             | Disallow capitalized test names                                   |                  | ![fixable-green][]  |
 | [no-alias-methods][]           | Disallow alias methods                                            | ![style][]       | ![fixable-green][]  |
 | [no-commented-out-tests][]     | Disallow commented out tests                                      | ![recommended][] |                     |
+| [no-deprecated-functions][]    | Disallow use of deprecated functions                              |                  | ![fixable-green][]  |
 | [no-disabled-tests][]          | Disallow disabled tests                                           | ![recommended][] |                     |
 | [no-duplicate-hooks][]         | Disallow duplicate hooks within a `describe` block                |                  |                     |
 | [no-expect-resolves][]         | Disallow using `expect().resolves`                                |                  |                     |
@@ -170,6 +171,7 @@ https://github.com/dangreenisrael/eslint-plugin-jest-formatting
 [lowercase-name]: docs/rules/lowercase-name.md
 [no-alias-methods]: docs/rules/no-alias-methods.md
 [no-commented-out-tests]: docs/rules/no-commented-out-tests.md
+[no-deprecated-functions]: docs/rules/no-deprecated-functions.md
 [no-disabled-tests]: docs/rules/no-disabled-tests.md
 [no-duplicate-hooks]: docs/rules/no-duplicate-hooks.md
 [no-expect-resolves]: docs/rules/no-expect-resolves.md
