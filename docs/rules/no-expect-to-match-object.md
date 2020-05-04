@@ -4,8 +4,8 @@ Jest allows you to to check that a JavaScript object matches a **subset** of the
 properties of an object using `expect().toMatchObject(object)`. Checking just a
 subset of an object might lead to not catching changes in an object in the
 tests, this rule bans `expect().toMatchObject` in favor of
-`expect().toStrictEqual` for a **deep** equality check or
-`expect().objectContaining` to consciously check the properties that are
+`expect().toStrictEqual` for a **deep** equality check using or
+`expect.objectContaining()` to consciously check the properties that are
 interesting.
 
 ## Rule details
@@ -32,9 +32,11 @@ test('some test', () => {
 });
 
 test('some test', () => {
-  expect({ a: 1, b: 2 }).objectContaining({
-    a: expect.any(Number),
-    b: expect.any(Number),
-  });
+  expect({ a: 1, b: 2 }).toStrictEqual(
+    expect.objectContaining({
+      a: 1,
+      b: expect.any(Number),
+    }),
+  );
 });
 ```

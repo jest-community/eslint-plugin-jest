@@ -339,7 +339,6 @@ export enum ModifierName {
 export enum EqualityMatcher {
   toBe = 'toBe',
   toEqual = 'toEqual',
-  toMatchObject = 'toMatchObject',
   toStrictEqual = 'toStrictEqual',
 }
 

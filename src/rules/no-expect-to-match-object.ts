@@ -1,10 +1,4 @@
-import {
-  EqualityMatcher,
-  createRule,
-  isExpectCall,
-  isParsedEqualityMatcherCall,
-  parseExpectCall,
-} from './utils';
+import { createRule, isExpectCall, parseExpectCall } from './utils';
 
 export default createRule({
   name: __filename,
@@ -15,8 +9,7 @@ export default createRule({
       recommended: false,
     },
     messages: {
-      useToStrictEqualOrObjectContaining:
-        'Use toStrictEqual() for a deep equality check or objectContaining() to check specific properties',
+      useToStrictEqual: 'Use toStrictEqual() for a deep equality check',
     },
     schema: [],
     type: 'suggestion',
@@ -31,12 +24,9 @@ export default createRule({
 
         const { matcher } = parseExpectCall(node);
 
-        if (
-          matcher &&
-          isParsedEqualityMatcherCall(matcher, EqualityMatcher.toMatchObject)
-        ) {
+        if (matcher?.name === 'toMatchObject') {
           context.report({
-            messageId: 'useToStrictEqualOrObjectContaining',
+            messageId: 'useToStrictEqual',
             node: matcher.node.property,
           });
         }
