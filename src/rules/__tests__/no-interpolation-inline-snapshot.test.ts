@@ -14,6 +14,11 @@ ruleTester.run('no-interpolation-inline-snapshot', rule, {
     'expect(something).toMatchInlineSnapshot();',
     'expect(something).toMatchInlineSnapshot(`No interpolation`);',
     'expect(something).toMatchInlineSnapshot({}, `No interpolation`);',
+    'expect(something);',
+    'expect(something).not;',
+    'expect.toHaveAssertions();',
+    'myObjectWants.toMatchInlineSnapshot({}, `${interpolated}`);',
+    'toMatchInlineSnapshot({}, `${interpolated}`);',
   ],
   invalid: [
     {
@@ -27,11 +32,32 @@ ruleTester.run('no-interpolation-inline-snapshot', rule, {
       ],
     },
     {
+      code: 'expect(something).not.toMatchInlineSnapshot(`${interpolated}`);',
+      errors: [
+        {
+          endColumn: 62,
+          column: 45,
+          messageId: 'noInterpolation',
+        },
+      ],
+    },
+    {
       code: 'expect(something).toMatchInlineSnapshot({}, `${interpolated}`);',
       errors: [
         {
           endColumn: 62,
           column: 45,
+          messageId: 'noInterpolation',
+        },
+      ],
+    },
+    {
+      code:
+        'expect(something).not.toMatchInlineSnapshot({}, `${interpolated}`);',
+      errors: [
+        {
+          endColumn: 66,
+          column: 49,
           messageId: 'noInterpolation',
         },
       ],
