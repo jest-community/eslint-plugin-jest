@@ -34,7 +34,8 @@
     "test": "jest",
     "build": "babel --extensions .js,.ts src --out-dir lib --copy-files",
     "postbuild": "rimraf lib/__tests__ lib/**/__tests__",
-    "typecheck": "tsc -p ."
+    "typecheck": "tsc -p .",
+    "tools:generate-rules-table": "ts-node -T tools/generate-rules-table"
   },
   "dependencies": {
     "@typescript-eslint/experimental-utils": "^2.5.0"
@@ -72,6 +73,7 @@
     "resolve-from": "^5.0.0",
     "rimraf": "^3.0.0",
     "semantic-release": "^15.13.28",
+    "ts-node": "^8.10.1",
     "typescript": "^3.5.3"
   },
   "prettier": {

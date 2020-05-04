@@ -71,9 +71,15 @@ module.exports = {
       globals,
     },
     {
-      files: ['src/**/*', 'dangerfile.ts'],
+      files: ['src/**/*', 'dangerfile.ts', 'tools/*'],
       parserOptions: {
         sourceType: 'module',
+      },
+    },
+    {
+      files: ['tools/*'],
+      rules: {
+        'node/shebang': 'off',
       },
     },
     {

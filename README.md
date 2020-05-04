@@ -125,6 +125,8 @@ installations requiring long-term consistency.
 
 ## Rules
 
+<!-- begin rules list -->
+
 | Rule                           | Description                                                       | Configurations   | Fixable             |
 | ------------------------------ | ----------------------------------------------------------------- | ---------------- | ------------------- |
 | [consistent-test-it][]         | Enforce consistent test or it keyword                             |                  | ![fixable-green][]  |
@@ -168,6 +170,8 @@ installations requiring long-term consistency.
 | [valid-expect-in-promise][]    | Enforce having return statement when testing with promises        | ![recommended][] |                     |
 | [valid-expect][]               | Enforce valid `expect()` usage                                    | ![recommended][] |                     |
 | [valid-title][]                | Enforce valid titles for jest blocks                              |                  |                     |
+
+<!-- end rules list -->
 
 ## Credit
 
