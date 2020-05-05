@@ -18,6 +18,22 @@ describe('rules', () => {
     });
   });
 
+  it('should have a corresponding test for each rule', () => {
+    ruleNames.forEach(rule => {
+      const testPath = resolve(
+        __dirname,
+        '../rules/__tests__/',
+        `${rule}.test.ts`,
+      );
+
+      if (!existsSync(testPath)) {
+        throw new Error(
+          `Could not find test file for rule "${rule}" in path "${testPath}"`,
+        );
+      }
+    });
+  });
+
   it('should have the correct amount of rules', () => {
     const { length } = ruleNames;
     if (length !== numberOfRules) {
