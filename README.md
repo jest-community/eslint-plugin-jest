@@ -56,6 +56,23 @@ You can also whitelist the environment variables provided by Jest by doing:
 }
 ```
 
+The behaviour of some rules (specifically `no-deprecated-functions`) change
+depending on the version of `jest` being used.
+
+This setting is detected automatically based off the version of the `jest`
+package installed in `node_modules`, but it can also be provided explicitly if
+desired:
+
+```json
+{
+  "settings": {
+    "jest": {
+      "version": 26
+    }
+  }
+}
+```
+
 ## Shareable configurations
 
 ### Recommended

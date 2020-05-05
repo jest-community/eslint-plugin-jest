@@ -9,9 +9,19 @@ of majors, eventually they are removed completely.
 ## Rule details
 
 This rule warns about calls to deprecated functions, and provides details on
-what to replace them with.
+what to replace them with, based on the version of Jest that is installed.
 
 This rule can also autofix a number of these deprecations for you.
+
+### `jest.resetModuleRegistry`
+
+This function was renamed to `resetModules` in Jest 15, and is scheduled for
+removal in Jest 27.
+
+### `jest.addMatchers`
+
+This function was replaced with `expect.extend` in Jest 17, and is scheduled for
+removal in Jest 27.
 
 ### `require.requireActual` & `require.requireMock`
 
@@ -24,16 +34,6 @@ These functions were later moved onto the `jest` object in order to be easier
 for type checkers to handle, and their use via `require` deprecated. Finally,
 the release of Jest 26 saw them removed from the `require` function all
 together.
-
-### `jest.addMatchers`
-
-This function was replaced with `expect.extend` in Jest 17, and is scheduled for
-removal in Jest 27.
-
-### `jest.resetModuleRegistry`
-
-This function was renamed to `resetModules` in Jest 15, and is scheduled for
-removal in Jest 27.
 
 ### `jest.runTimersToTime`
 

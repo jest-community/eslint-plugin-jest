@@ -46,6 +46,7 @@
     "@babel/preset-typescript": "^7.3.3",
     "@commitlint/cli": "^8.2.0",
     "@commitlint/config-conventional": "^8.2.0",
+    "@schemastore/package": "^0.0.5",
     "@semantic-release/changelog": "^3.0.5",
     "@semantic-release/git": "^7.0.17",
     "@types/eslint": "^6.1.3",
