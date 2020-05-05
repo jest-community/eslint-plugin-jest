@@ -3,7 +3,10 @@ import * as os from 'os';
 import * as path from 'path';
 import { JSONSchemaForNPMPackageJsonFiles } from '@schemastore/package';
 import { TSESLint } from '@typescript-eslint/experimental-utils';
-import rule, { JestVersion } from '../no-deprecated-functions';
+import rule, {
+  JestVersion,
+  _clearCachedJestVersion,
+} from '../no-deprecated-functions';
 
 const ruleTester = new TSESLint.RuleTester();
 
@@ -89,142 +92,174 @@ const generateInvalidCases = (
   ];
 };
 
-// a few sanity checks before doing our massive loop
-ruleTester.run('no-deprecated-functions', rule, {
-  valid: [
-    'jest',
-    'require("fs")',
-    ...generateValidCases(14, 'jest.resetModuleRegistry'),
-    ...generateValidCases(17, 'require.requireActual'),
-    ...generateValidCases(25, 'jest.genMockFromModule'),
-  ],
-  invalid: [
-    ...generateInvalidCases(
-      21,
-      'jest.resetModuleRegistry',
-      'jest.resetModules',
-    ),
-    ...generateInvalidCases(24, 'jest.addMatchers', 'expect.extend'),
-    ...generateInvalidCases(
-      26,
-      'jest.genMockFromModule',
-      'jest.createMockFromModule',
-    ),
-  ],
-});
+describe('the jest version cache', () => {
+  beforeEach(async () => process.chdir(await setupFakeProjectDirectory(17)));
 
-describe.each<JestVersion>([
-  14,
-  15,
-  16,
-  17,
-  18,
-  19,
-  20,
-  21,
-  22,
-  23,
-  24,
-  25,
-  26,
-  27,
-])('when using jest version %i', jestVersion => {
-  beforeEach(async () =>
-    process.chdir(await setupFakeProjectDirectory(jestVersion)),
-  );
+  // change the jest version *after* each test case
+  afterEach(async () => {
+    const jestPackageJson: JSONSchemaForNPMPackageJsonFiles = {
+      name: 'jest',
+      version: '24.0.0',
+    };
 
-  const allowedFunctions: string[] = [];
-  const deprecations = ([
-    [15, 'jest.resetModuleRegistry', 'jest.resetModules'],
-    [17, 'jest.addMatchers', 'expect.extend'],
-    [21, 'require.requireMock', 'jest.requireMock'],
-    [21, 'require.requireActual', 'jest.requireActual'],
-    [22, 'jest.runTimersToTime', 'jest.advanceTimersByTime'],
-    [26, 'jest.genMockFromModule', 'jest.createMockFromModule'],
-  ] as const).filter(deprecation => {
-    if (deprecation[0] > jestVersion) {
-      allowedFunctions.push(deprecation[1]);
+    const tempDir = process.cwd();
 
-      return false;
-    }
-
-    return true;
+    await fs.writeFileSync(
+      path.join(tempDir, 'node_modules', 'jest', 'package.json'),
+      JSON.stringify(jestPackageJson),
+    );
   });
 
-  ruleTester.run('explict jest version', rule, {
+  ruleTester.run('no-deprecated-functions', rule, {
     valid: [
-      'jest',
-      'require("fs")',
-      ...allowedFunctions
-        .map(func => generateValidCases(jestVersion, func))
-        .reduce((acc, arr) => acc.concat(arr), []),
+      'require("fs")', // this will cause jest version to be read & cached
+      'jest.requireActual()', // deprecated after jest 17
     ],
-    invalid: deprecations
-      .map(([, deprecation, replacement]) =>
-        generateInvalidCases(jestVersion, deprecation, replacement),
-      )
-      .reduce((acc, arr) => acc.concat(arr), []),
-  });
-
-  ruleTester.run('detected jest version', rule, {
-    valid: [
-      'jest',
-      'require("fs")',
-      ...allowedFunctions
-        .map(func => generateValidCases(undefined, func))
-        .reduce((acc, arr) => acc.concat(arr), []),
-    ],
-    invalid: deprecations
-      .map(([, deprecation, replacement]) =>
-        generateInvalidCases(undefined, deprecation, replacement),
-      )
-      .reduce((acc, arr) => acc.concat(arr), []),
+    invalid: [],
   });
 });
 
-describe('when no jest version is provided', () => {
-  describe('when the jest package.json is missing the version property', () => {
-    beforeEach(async () => {
-      const tempDir = await setupFakeProjectDirectory(1);
+// contains the cache-clearing beforeEach so we can test the cache too
+describe('the rule', () => {
+  beforeEach(() => _clearCachedJestVersion());
 
-      await fs.writeFileSync(
-        path.join(tempDir, 'node_modules', 'jest', 'package.json'),
-        JSON.stringify({}),
-      );
+  // a few sanity checks before doing our massive loop
+  ruleTester.run('no-deprecated-functions', rule, {
+    valid: [
+      'jest',
+      'require("fs")',
+      ...generateValidCases(14, 'jest.resetModuleRegistry'),
+      ...generateValidCases(17, 'require.requireActual'),
+      ...generateValidCases(25, 'jest.genMockFromModule'),
+    ],
+    invalid: [
+      ...generateInvalidCases(
+        21,
+        'jest.resetModuleRegistry',
+        'jest.resetModules',
+      ),
+      ...generateInvalidCases(24, 'jest.addMatchers', 'expect.extend'),
+      ...generateInvalidCases(
+        26,
+        'jest.genMockFromModule',
+        'jest.createMockFromModule',
+      ),
+    ],
+  });
 
-      process.chdir(tempDir);
+  describe.each<JestVersion>([
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+  ])('when using jest version %i', jestVersion => {
+    beforeEach(async () =>
+      process.chdir(await setupFakeProjectDirectory(jestVersion)),
+    );
+
+    const allowedFunctions: string[] = [];
+    const deprecations = ([
+      [15, 'jest.resetModuleRegistry', 'jest.resetModules'],
+      [17, 'jest.addMatchers', 'expect.extend'],
+      [21, 'require.requireMock', 'jest.requireMock'],
+      [21, 'require.requireActual', 'jest.requireActual'],
+      [22, 'jest.runTimersToTime', 'jest.advanceTimersByTime'],
+      [26, 'jest.genMockFromModule', 'jest.createMockFromModule'],
+    ] as const).filter(deprecation => {
+      if (deprecation[0] > jestVersion) {
+        allowedFunctions.push(deprecation[1]);
+
+        return false;
+      }
+
+      return true;
     });
 
-    it('requires the version to be set explicitly', () => {
-      expect(() => {
-        const linter = new TSESLint.Linter();
+    ruleTester.run('explict jest version', rule, {
+      valid: [
+        'jest',
+        'require("fs")',
+        ...allowedFunctions
+          .map(func => generateValidCases(jestVersion, func))
+          .reduce((acc, arr) => acc.concat(arr), []),
+      ],
+      invalid: deprecations
+        .map(([, deprecation, replacement]) =>
+          generateInvalidCases(jestVersion, deprecation, replacement),
+        )
+        .reduce((acc, arr) => acc.concat(arr), []),
+    });
 
-        linter.defineRule('no-deprecated-functions', rule);
-
-        linter.verify('jest.resetModuleRegistry()', {
-          rules: { 'no-deprecated-functions': 'error' },
-        });
-      }).toThrow(
-        'Unable to detect Jest version - please ensure jest package is installed, or otherwise set version explicitly',
-      );
+    ruleTester.run('detected jest version', rule, {
+      valid: [
+        'jest',
+        'require("fs")',
+        ...allowedFunctions
+          .map(func => generateValidCases(undefined, func))
+          .reduce((acc, arr) => acc.concat(arr), []),
+      ],
+      invalid: deprecations
+        .map(([, deprecation, replacement]) =>
+          generateInvalidCases(undefined, deprecation, replacement),
+        )
+        .reduce((acc, arr) => acc.concat(arr), []),
     });
   });
 
-  describe('when the jest package.json is not found', () => {
-    beforeEach(async () => process.chdir(await makeTempDir()));
+  describe('when no jest version is provided', () => {
+    describe('when the jest package.json is missing the version property', () => {
+      beforeEach(async () => {
+        const tempDir = await setupFakeProjectDirectory(1);
 
-    it('requires the version to be set explicitly', () => {
-      expect(() => {
-        const linter = new TSESLint.Linter();
+        await fs.writeFileSync(
+          path.join(tempDir, 'node_modules', 'jest', 'package.json'),
+          JSON.stringify({}),
+        );
 
-        linter.defineRule('no-deprecated-functions', rule);
+        process.chdir(tempDir);
+      });
 
-        linter.verify('jest.resetModuleRegistry()', {
-          rules: { 'no-deprecated-functions': 'error' },
-        });
-      }).toThrow(
-        'Unable to detect Jest version - please ensure jest package is installed, or otherwise set version explicitly',
-      );
+      it('requires the version to be set explicitly', () => {
+        expect(() => {
+          const linter = new TSESLint.Linter();
+
+          linter.defineRule('no-deprecated-functions', rule);
+
+          linter.verify('jest.resetModuleRegistry()', {
+            rules: { 'no-deprecated-functions': 'error' },
+          });
+        }).toThrow(
+          'Unable to detect Jest version - please ensure jest package is installed, or otherwise set version explicitly',
+        );
+      });
+    });
+
+    describe('when the jest package.json is not found', () => {
+      beforeEach(async () => process.chdir(await makeTempDir()));
+
+      it('requires the version to be set explicitly', () => {
+        expect(() => {
+          const linter = new TSESLint.Linter();
+
+          linter.defineRule('no-deprecated-functions', rule);
+
+          linter.verify('jest.resetModuleRegistry()', {
+            rules: { 'no-deprecated-functions': 'error' },
+          });
+        }).toThrow(
+          'Unable to detect Jest version - please ensure jest package is installed, or otherwise set version explicitly',
+        );
+      });
     });
   });
 });

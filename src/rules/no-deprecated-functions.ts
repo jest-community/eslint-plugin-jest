@@ -30,7 +30,16 @@ interface EslintPluginJestSettings {
   version: JestVersion;
 }
 
+let cachedJestVersion: JestVersion | null = null;
+
+/** @internal */
+export const _clearCachedJestVersion = () => (cachedJestVersion = null);
+
 const detectJestVersion = (): JestVersion => {
+  if (cachedJestVersion) {
+    return cachedJestVersion;
+  }
+
   try {
     const jestPath = require.resolve('jest/package.json', {
       paths: [process.cwd()],
@@ -42,7 +51,7 @@ const detectJestVersion = (): JestVersion => {
     if (jestPackageJson.version) {
       const [majorVersion] = jestPackageJson.version.split('.');
 
-      return parseInt(majorVersion);
+      return (cachedJestVersion = parseInt(majorVersion, 10));
     }
   } catch {}
 
