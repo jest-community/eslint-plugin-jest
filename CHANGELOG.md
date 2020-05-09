@@ -1,3 +1,10 @@
+# [23.10.0](https://github.com/jest-community/eslint-plugin-jest/compare/v23.9.0...v23.10.0) (2020-05-09)
+
+
+### Features
+
+* **no-deprecated-functions:** support jest `version` setting ([#564](https://github.com/jest-community/eslint-plugin-jest/issues/564)) ([05f20b8](https://github.com/jest-community/eslint-plugin-jest/commit/05f20b80ecd42b8d1f1f18ca19d4bc9cba45e22e))
+
 # [23.9.0](https://github.com/jest-community/eslint-plugin-jest/compare/v23.8.2...v23.9.0) (2020-05-04)
 
 
