@@ -132,7 +132,7 @@
     "eslint": ">=5"
   },
   "engines": {
-    "node": ">=8"
+    "node": ">=10"
   },
   "release": {
     "plugins": [
