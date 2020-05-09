@@ -3,6 +3,7 @@
     "target": "es2015",
     "module": "commonjs",
     "moduleResolution": "node",
+    "lib": ["es2018"],
     "noEmit": true,
     "noImplicitReturns": true,
     "strict": true,
