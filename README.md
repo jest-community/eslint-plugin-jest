@@ -147,6 +147,7 @@ installations requiring long-term consistency.
 | [no-jest-import](docs/rules/no-jest-import.md)                         | Disallow importing Jest                                         | ![recommended][] |              |
 | [no-large-snapshots](docs/rules/no-large-snapshots.md)                 | disallow large snapshots                                        |                  |              |
 | [no-mocks-import](docs/rules/no-mocks-import.md)                       | Disallow manually importing from **mocks**                      | ![recommended][] |              |
+| [no-restricted-matchers](docs/rules/no-restricted-matchers.md)         | Disallow specific matchers & modifiers                          |                  |              |
 | [no-standalone-expect](docs/rules/no-standalone-expect.md)             | Prevents expects that are outside of an it or test block.       | ![recommended][] |              |
 | [no-test-callback](docs/rules/no-test-callback.md)                     | Avoid using a callback in asynchronous tests                    | ![recommended][] | ![fixable][] |
 | [no-test-prefixes](docs/rules/no-test-prefixes.md)                     | Use `.only` and `.skip` over `f` and `x`                        | ![recommended][] | ![fixable][] |
