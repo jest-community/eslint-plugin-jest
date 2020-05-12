@@ -74,6 +74,7 @@
     "typescript": "^3.5.3"
   },
   "prettier": {
+    "arrowParens": "avoid",
     "proseWrap": "always",
     "singleQuote": true,
     "trailingComma": "all"

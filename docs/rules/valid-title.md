@@ -55,7 +55,7 @@ it(123, () => {});
 describe(String(/.+/), () => {});
 describe(myFunction, () => {});
 xdescribe(myFunction, () => {});
-describe(6, function() {});
+describe(6, function () {});
 ```
 
 Examples of **correct** code for this rule:
@@ -82,7 +82,7 @@ fdescribe('is a string', () => {});
 describe(String(/.+/), () => {});
 describe(myFunction, () => {});
 xdescribe(myFunction, () => {});
-describe(6, function() {});
+describe(6, function () {});
 ```
 
 **duplicatePrefix**
