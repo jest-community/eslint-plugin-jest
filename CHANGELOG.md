@@ -1,3 +1,10 @@
+# [23.11.0](https://github.com/jest-community/eslint-plugin-jest/compare/v23.10.0...v23.11.0) (2020-05-12)
+
+
+### Features
+
+* create `no-restricted-matchers` rule ([#575](https://github.com/jest-community/eslint-plugin-jest/issues/575)) ([ac926e7](https://github.com/jest-community/eslint-plugin-jest/commit/ac926e779958240506ee506047c9a5364bb70aea))
+
 # [23.10.0](https://github.com/jest-community/eslint-plugin-jest/compare/v23.9.0...v23.10.0) (2020-05-09)
 
 
