@@ -55,7 +55,7 @@ test('myFunction()', done => {
   // ...
 });
 
-test('myFunction()', function(done) {
+test('myFunction()', function (done) {
   // ...
 });
 ```

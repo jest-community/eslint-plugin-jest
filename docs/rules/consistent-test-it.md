@@ -59,12 +59,12 @@ test.only('foo'); // invalid
 /*eslint jest/consistent-test-it: ["error", {"fn": "it", "withinDescribe": "test"}]*/
 
 it('foo'); // valid
-describe('foo', function() {
+describe('foo', function () {
   test('bar'); // valid
 });
 
 test('foo'); // invalid
-describe('foo', function() {
+describe('foo', function () {
   it('bar'); // invalid
 });
 ```
@@ -78,12 +78,12 @@ nested within `describe` to use `it`.
 /*eslint jest/consistent-test-it: ["error"]*/
 
 test('foo'); // valid
-describe('foo', function() {
+describe('foo', function () {
   it('bar'); // valid
 });
 
 it('foo'); // invalid
-describe('foo', function() {
+describe('foo', function () {
   test('bar'); // invalid
 });
 ```
