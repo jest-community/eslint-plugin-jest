@@ -118,10 +118,7 @@ const details: RuleDetails[] = Object.keys(config.configs.all.rules)
 details.forEach(({ name, description }) => {
   const pathToDoc = path.join(pathTo.docs, 'rules', `${name}.md`);
 
-  const contents = fs
-    .readFileSync(pathToDoc)
-    .toString()
-    .split('\n');
+  const contents = fs.readFileSync(pathToDoc).toString().split('\n');
 
   contents[0] = `# ${description} (\`${name}\`)`;
 
