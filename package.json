@@ -79,14 +79,8 @@
     "trailingComma": "all"
   },
   "lint-staged": {
-    "*.{js,ts}": [
-      "eslint --fix",
-      "git add"
-    ],
-    "*.{md,json}": [
-      "prettier --write",
-      "git add"
-    ]
+    "*.{js,ts}": "eslint --fix",
+    "*.{md,json}": "prettier --write"
   },
   "jest": {
     "coverageThreshold": {
