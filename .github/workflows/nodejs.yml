@@ -44,6 +44,7 @@ jobs:
         run: yarn test --coverage
         env:
           CI: true
+      - uses: codecov/codecov-action@v1
   test-os:
     name: Test on ${{ matrix.os }} using Node.js LTS
     strategy:
