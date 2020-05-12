@@ -28,7 +28,8 @@
   "scripts": {
     "prepare": "yarn build && yarn postbuild",
     "lint": "eslint . --ignore-pattern '!.eslintrc.js' --ext js,ts",
-    "prettylint": "prettier --check docs/**/*.md README.md package.json",
+    "prettier:check": "prettier --check docs/**/*.md README.md package.json renovate.json",
+    "prettier:write": "prettier --write docs/**/*.md README.md package.json renovate.json",
     "prepublishOnly": "yarn build",
     "pretest": "yarn build",
     "test": "jest",
