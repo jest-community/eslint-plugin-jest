@@ -6,8 +6,7 @@ export default createRule({
   meta: {
     type: 'problem',
     docs: {
-      description:
-        "The `jest` object is automatically in scope within every test file. The methods in the `jest` object help create mocks and let you control Jest's overall behavior. It is therefore completely unnecessary to import in `jest`, as Jest doesn't export anything in the first place.",
+      description: 'Disallow importing Jest',
       category: 'Best Practices',
       recommended: 'error',
     },

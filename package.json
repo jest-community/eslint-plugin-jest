@@ -2,39 +2,89 @@
   "name": "eslint-plugin-jest",
   "version": "23.10.0",
   "description": "Eslint rules for Jest",
-  "repository": "jest-community/eslint-plugin-jest",
-  "license": "MIT",
   "keywords": [
     "eslint",
     "eslintplugin",
     "eslint-plugin"
   ],
+  "repository": "jest-community/eslint-plugin-jest",
+  "license": "MIT",
   "author": {
     "name": "Jonathan Kim",
     "email": "hello@jkimbo.com",
     "url": "jkimbo.com"
   },
+  "main": "lib/",
   "files": [
     "docs/",
     "lib/"
   ],
-  "main": "lib/",
-  "engines": {
-    "node": ">=8"
-  },
-  "peerDependencies": {
-    "eslint": ">=5"
-  },
   "scripts": {
-    "prepare": "yarn build && yarn postbuild",
-    "lint": "eslint . --ignore-pattern '!.eslintrc.js' --ext js,ts",
-    "prettylint": "prettylint docs/**/*.md README.md package.json",
-    "prepublishOnly": "yarn build",
-    "pretest": "yarn build",
-    "test": "jest",
     "build": "babel --extensions .js,.ts src --out-dir lib --copy-files",
     "postbuild": "rimraf lib/__tests__ lib/**/__tests__",
+    "lint": "eslint . --ignore-pattern '!.eslintrc.js' --ext js,ts",
+    "prepare": "yarn build && yarn postbuild",
+    "prepublishOnly": "yarn build",
+    "prettylint": "prettylint docs/**/*.md README.md package.json",
+    "pretest": "yarn build",
+    "test": "jest",
+    "tools:generate-rules-table": "ts-node -T tools/generate-rules-table",
     "typecheck": "tsc -p ."
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "commit-msg": "commitlint -e $HUSKY_GIT_PARAMS"
+    }
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
+  "lint-staged": {
+    "*.{js,ts}": [
+      "eslint --fix",
+      "git add"
+    ],
+    "*.{md,json}": [
+      "prettier --write",
+      "git add"
+    ]
+  },
+  "prettier": {
+    "proseWrap": "always",
+    "singleQuote": true,
+    "trailingComma": "all"
+  },
+  "jest": {
+    "coverageThreshold": {
+      "global": {
+        "branches": 100,
+        "functions": 100,
+        "lines": 100,
+        "statements": 100
+      }
+    },
+    "projects": [
+      {
+        "displayName": "test",
+        "testEnvironment": "node",
+        "testPathIgnorePatterns": [
+          "<rootDir>/lib/.*"
+        ]
+      },
+      {
+        "displayName": "lint",
+        "runner": "jest-runner-eslint",
+        "testMatch": [
+          "<rootDir>/**/*.{js,ts}"
+        ],
+        "testPathIgnorePatterns": [
+          "<rootDir>/lib/.*"
+        ]
+      }
+    ]
   },
   "dependencies": {
     "@typescript-eslint/experimental-utils": "^2.5.0"
@@ -72,62 +122,14 @@
     "resolve-from": "^5.0.0",
     "rimraf": "^3.0.0",
     "semantic-release": "^15.13.28",
+    "ts-node": "^8.10.1",
     "typescript": "^3.5.3"
   },
-  "prettier": {
-    "proseWrap": "always",
-    "singleQuote": true,
-    "trailingComma": "all"
+  "peerDependencies": {
+    "eslint": ">=5"
   },
-  "lint-staged": {
-    "*.{js,ts}": [
-      "eslint --fix",
-      "git add"
-    ],
-    "*.{md,json}": [
-      "prettier --write",
-      "git add"
-    ]
-  },
-  "jest": {
-    "coverageThreshold": {
-      "global": {
-        "branches": 100,
-        "functions": 100,
-        "lines": 100,
-        "statements": 100
-      }
-    },
-    "projects": [
-      {
-        "displayName": "test",
-        "testEnvironment": "node",
-        "testPathIgnorePatterns": [
-          "<rootDir>/lib/.*"
-        ]
-      },
-      {
-        "displayName": "lint",
-        "runner": "jest-runner-eslint",
-        "testMatch": [
-          "<rootDir>/**/*.{js,ts}"
-        ],
-        "testPathIgnorePatterns": [
-          "<rootDir>/lib/.*"
-        ]
-      }
-    ]
-  },
-  "commitlint": {
-    "extends": [
-      "@commitlint/config-conventional"
-    ]
-  },
-  "husky": {
-    "hooks": {
-      "commit-msg": "commitlint -e $HUSKY_GIT_PARAMS",
-      "pre-commit": "lint-staged"
-    }
+  "engines": {
+    "node": ">=8"
   },
   "release": {
     "plugins": [

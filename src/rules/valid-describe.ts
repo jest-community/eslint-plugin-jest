@@ -28,8 +28,7 @@ export default createRule({
     type: 'problem',
     docs: {
       category: 'Possible Errors',
-      description:
-        'Using an improper `describe()` callback function can lead to unexpected test errors.',
+      description: 'Enforce valid `describe()` callback',
       recommended: 'warn',
     },
     messages: {
