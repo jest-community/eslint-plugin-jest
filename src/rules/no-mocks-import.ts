@@ -16,8 +16,7 @@ export default createRule({
     type: 'problem',
     docs: {
       category: 'Best Practices',
-      description:
-        'When using `jest.mock`, your tests (just like the code being tested) should import from `./x`, not `./__mocks__/x`. Not following this rule can lead to confusion, because you will have multiple instances of the mocked module',
+      description: 'Disallow manually importing from __mocks__ ',
       recommended: 'error',
     },
     messages: {

@@ -69,8 +69,7 @@ export default createRule<
   meta: {
     type: 'suggestion',
     docs: {
-      description:
-        'Enforce `it`, `test` and `describe` to have descriptions that begin with a lowercase letter. This provides more readable test failures.',
+      description: 'Enforce lowercase test names',
       category: 'Best Practices',
       recommended: false,
     },
