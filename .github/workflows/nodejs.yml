@@ -18,7 +18,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version: [8.x, 10.x, 12.x, 13.x]
+        node-version: [8.x, 10.x, 12.x, 13.x, 14.x]
         eslint-version: [5, 6, 7]
         exclude:
           # eslint@7 doesn't support node@8
