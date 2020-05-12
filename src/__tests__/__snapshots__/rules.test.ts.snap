@@ -28,6 +28,7 @@ Object {
       "jest/no-jest-import": "error",
       "jest/no-large-snapshots": "error",
       "jest/no-mocks-import": "error",
+      "jest/no-restricted-matchers": "error",
       "jest/no-standalone-expect": "error",
       "jest/no-test-callback": "error",
       "jest/no-test-prefixes": "error",
