@@ -15,7 +15,7 @@ Examples of **incorrect** code for this rule:
 ```js
 export function myHelper() {}
 
-module.exports = function() {};
+module.exports = function () {};
 
 module.exports = {
   something: 'that should be moved to a non-test file',
