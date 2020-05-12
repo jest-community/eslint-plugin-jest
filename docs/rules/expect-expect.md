@@ -56,9 +56,7 @@ import { expectSaga } from 'redux-saga-test-plan';
 import { addSaga } from '../src/sagas';
 
 test('returns sum', () => {
-  expectSaga(addSaga, 1, 1)
-    .returns(2)
-    .run();
+  expectSaga(addSaga, 1, 1).returns(2).run();
 });
 ```
 
@@ -72,9 +70,7 @@ import { expectSaga } from 'redux-saga-test-plan';
 import { addSaga } from '../src/sagas';
 
 test('returns sum', () => {
-  expectSaga(addSaga, 1, 1)
-    .returns(2)
-    .run();
+  expectSaga(addSaga, 1, 1).returns(2).run();
 });
 ```
 
@@ -100,12 +96,9 @@ const express = require('express');
 
 const app = express();
 
-describe('GET /user', function() {
-  it('responds with json', function(done) {
-    request(app)
-      .get('/user')
-      .expect('Content-Type', /json/)
-      .expect(200, done);
+describe('GET /user', function () {
+  it('responds with json', function (done) {
+    request(app).get('/user').expect('Content-Type', /json/).expect(200, done);
   });
 });
 ```

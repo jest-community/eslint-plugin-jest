@@ -73,7 +73,7 @@ ruleTester.run('no-standalone-expect', rule, {
           t('testing', () => expect(true));
         });
       `,
-      options: [{ additionalTestBlockFunctions: undefined }],
+      options: [{ additionalTestBlockFunctions: [] }],
       errors: [{ endColumn: 42, column: 30, messageId: 'unexpectedExpect' }],
     },
     {
