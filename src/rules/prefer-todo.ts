@@ -37,9 +37,7 @@ function createTodoFixer(
   node: JestFunctionCallExpression<TestCaseName>,
   fixer: TSESLint.RuleFixer,
 ) {
-  const testName = getNodeName(node.callee)
-    .split('.')
-    .shift();
+  const testName = getNodeName(node.callee).split('.').shift();
   return fixer.replaceText(node.callee, `${testName}.todo`);
 }
 
