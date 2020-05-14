@@ -115,29 +115,24 @@ export default createRule<[RuleOptions], MessageId>({
           reportOnViolation(context, node, options);
         },
       };
-    } else if (context.getFilename().endsWith('.js')) {
-      return {
-        CallExpression(node) {
-          if (
-            'property' in node.callee &&
-            (isSupportedAccessor(
-              node.callee.property,
-              'toMatchInlineSnapshot',
-            ) ||
-              isSupportedAccessor(
-                node.callee.property,
-                'toThrowErrorMatchingInlineSnapshot',
-              ))
-          ) {
-            reportOnViolation(context, node, {
-              ...options,
-              maxSize: options.inlineMaxSize ?? options.maxSize,
-            });
-          }
-        },
-      };
     }
 
-    return {};
+    return {
+      CallExpression(node) {
+        if (
+          'property' in node.callee &&
+          (isSupportedAccessor(node.callee.property, 'toMatchInlineSnapshot') ||
+            isSupportedAccessor(
+              node.callee.property,
+              'toThrowErrorMatchingInlineSnapshot',
+            ))
+        ) {
+          reportOnViolation(context, node, {
+            ...options,
+            maxSize: options.inlineMaxSize ?? options.maxSize,
+          });
+        }
+      },
+    };
   },
 });

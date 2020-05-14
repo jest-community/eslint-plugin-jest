@@ -42,11 +42,6 @@ ruleTester.run('no-large-snapshots', rule, {
       ),
     },
     {
-      // "it should return an empty object for non snapshot files"
-      filename: 'mock.jsx',
-      code: generateExpectInlineSnapsCode(50, 'toMatchInlineSnapshot'),
-    },
-    {
       filename: 'mock.jsx',
       code: generateExpectInlineSnapsCode(20, 'toMatchInlineSnapshot'),
       options: [
