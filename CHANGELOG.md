@@ -1,3 +1,10 @@
+# [23.13.0](https://github.com/jest-community/eslint-plugin-jest/compare/v23.12.0...v23.13.0) (2020-05-16)
+
+
+### Features
+
+* **valid-expect:** support `minArgs` & `maxArgs` options ([#584](https://github.com/jest-community/eslint-plugin-jest/issues/584)) ([9e0e2fa](https://github.com/jest-community/eslint-plugin-jest/commit/9e0e2fa966b43c1099d11b2424acb1590c241c03))
+
 # [23.12.0](https://github.com/jest-community/eslint-plugin-jest/compare/v23.11.0...v23.12.0) (2020-05-16)
 
 
