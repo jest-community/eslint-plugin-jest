@@ -13,6 +13,8 @@ export default createRule({
       description: 'Disallow expect.resolves',
       recommended: false,
     },
+    deprecated: true,
+    replacedBy: ['no-restricted-matchers'],
     messages: {
       expectResolves: 'Use `expect(await promise)` instead.',
     },
