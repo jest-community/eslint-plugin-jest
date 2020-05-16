@@ -73,6 +73,18 @@ ruleTester.run('valid-expect', rule, {
       return expect(functionReturningAPromise()).resolves.toEqual(1).then(() => expect(Promise.resolve(2)).resolves.toBe(1));
     });`,
     },
+    {
+      code: 'expect(1).toBe(2);',
+      options: [{ maxArgs: 2 }],
+    },
+    {
+      code: 'expect(1, "1 !== 2").toBe(2);',
+      options: [{ maxArgs: 2 }],
+    },
+    {
+      code: 'expect(1, "1 !== 2").toBe(2);',
+      options: [{ maxArgs: 2, minArgs: 2 }],
+    },
   ],
   invalid: [
     /*
@@ -98,21 +110,143 @@ ruleTester.run('valid-expect', rule, {
     'test("valid-expect", async () => { await expect(Promise.reject(2)).not.resolves.toBeDefined().then(() => { expect(someMock).toHaveBeenCalledTimes(1); }); });',
      */
     {
+      code: 'expect().toBe(2);',
+      options: [{ minArgs: undefined, maxArgs: undefined }],
+      errors: [
+        {
+          messageId: 'notEnoughArgs',
+          data: {
+            s: '',
+            amount: 1,
+          },
+        },
+      ],
+    },
+
+    {
       code: 'expect().toBe(true);',
       errors: [
-        { endColumn: 8, column: 7, messageId: 'incorrectNumberOfArguments' },
+        {
+          endColumn: 8,
+          column: 7,
+          messageId: 'notEnoughArgs',
+          data: {
+            s: '',
+            amount: 1,
+          },
+        },
       ],
     },
     {
       code: 'expect().toEqual("something");',
       errors: [
-        { endColumn: 8, column: 7, messageId: 'incorrectNumberOfArguments' },
+        {
+          endColumn: 8,
+          column: 7,
+          messageId: 'notEnoughArgs',
+          data: {
+            s: '',
+            amount: 1,
+          },
+        },
       ],
     },
     {
       code: 'expect("something", "else").toEqual("something");',
       errors: [
-        { endColumn: 26, column: 21, messageId: 'incorrectNumberOfArguments' },
+        {
+          endColumn: 26,
+          column: 21,
+          messageId: 'tooManyArgs',
+          data: {
+            s: '',
+            amount: 1,
+          },
+        },
+      ],
+    },
+    {
+      code: 'expect("something", "else", "entirely").toEqual("something");',
+      options: [{ maxArgs: 2 }],
+      errors: [
+        {
+          endColumn: 38,
+          column: 29,
+          messageId: 'tooManyArgs',
+          data: {
+            s: 's',
+            amount: 2,
+          },
+        },
+      ],
+    },
+    {
+      code: 'expect("something", "else", "entirely").toEqual("something");',
+      options: [{ maxArgs: 2, minArgs: 2 }],
+      errors: [
+        {
+          endColumn: 38,
+          column: 29,
+          messageId: 'tooManyArgs',
+          data: {
+            s: 's',
+            amount: 2,
+          },
+        },
+      ],
+    },
+    {
+      code: 'expect("something", "else", "entirely").toEqual("something");',
+      options: [{ maxArgs: 2, minArgs: 1 }],
+      errors: [
+        {
+          endColumn: 38,
+          column: 29,
+          messageId: 'tooManyArgs',
+          data: {
+            s: 's',
+            amount: 2,
+          },
+        },
+      ],
+    },
+    {
+      code: 'expect("something").toEqual("something");',
+      options: [{ minArgs: 2 }],
+      errors: [
+        {
+          endColumn: 8,
+          column: 7,
+          messageId: 'notEnoughArgs',
+          data: {
+            s: 's',
+            amount: 2,
+          },
+        },
+      ],
+    },
+    {
+      code: 'expect("something", "else").toEqual("something");',
+      options: [{ maxArgs: 1, minArgs: 3 }],
+      errors: [
+        {
+          endColumn: 8,
+          column: 7,
+          messageId: 'notEnoughArgs',
+          data: {
+            s: 's',
+            amount: 3,
+          },
+        },
+        {
+          endColumn: 26,
+          column: 21,
+          messageId: 'tooManyArgs',
+          data: {
+            s: '',
+            amount: 1,
+          },
+        },
       ],
     },
     {
@@ -123,7 +257,15 @@ ruleTester.run('valid-expect', rule, {
       code: 'expect();',
       errors: [
         { endColumn: 9, column: 1, messageId: 'matcherNotFound' },
-        { endColumn: 8, column: 7, messageId: 'incorrectNumberOfArguments' },
+        {
+          endColumn: 8,
+          column: 7,
+          messageId: 'notEnoughArgs',
+          data: {
+            s: '',
+            amount: 1,
+          },
+        },
       ],
     },
     {
