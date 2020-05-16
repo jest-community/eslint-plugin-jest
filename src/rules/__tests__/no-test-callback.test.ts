@@ -1,4 +1,5 @@
 import { TSESLint } from '@typescript-eslint/experimental-utils';
+import dedent from 'dedent';
 import resolveFrom from 'resolve-from';
 import rule from '../no-test-callback';
 
@@ -30,37 +31,127 @@ ruleTester.run('no-test-callback', rule, {
     },
     {
       code: 'test("something", done => {done();})',
-      errors: [{ messageId: 'illegalTestCallback', line: 1, column: 19 }],
-      output:
-        'test("something", () => {return new Promise(done => {done();})})',
+      errors: [
+        {
+          messageId: 'illegalTestCallback',
+          line: 1,
+          column: 19,
+          suggestions: [
+            {
+              messageId: 'suggestWrappingInPromise',
+              data: { callback: 'done' },
+              output:
+                'test("something", () => {return new Promise(done => {done();})})',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: 'test("something", finished => {finished();})',
+      errors: [
+        {
+          messageId: 'illegalTestCallback',
+          line: 1,
+          column: 19,
+          suggestions: [
+            {
+              messageId: 'suggestWrappingInPromise',
+              data: { callback: 'finished' },
+              output:
+                'test("something", () => {return new Promise(finished => {finished();})})',
+            },
+          ],
+        },
+      ],
     },
     {
       code: 'test("something", (done) => {done();})',
-      errors: [{ messageId: 'illegalTestCallback', line: 1, column: 20 }],
-      output:
-        'test("something", () => {return new Promise((done) => {done();})})',
+      errors: [
+        {
+          messageId: 'illegalTestCallback',
+          line: 1,
+          column: 20,
+          suggestions: [
+            {
+              messageId: 'suggestWrappingInPromise',
+              data: { callback: 'done' },
+              output:
+                'test("something", () => {return new Promise((done) => {done();})})',
+            },
+          ],
+        },
+      ],
     },
     {
       code: 'test("something", done => done())',
-      errors: [{ messageId: 'illegalTestCallback', line: 1, column: 19 }],
-      output: 'test("something", () => new Promise(done => done()))',
+      errors: [
+        {
+          messageId: 'illegalTestCallback',
+          line: 1,
+          column: 19,
+          suggestions: [
+            {
+              messageId: 'suggestWrappingInPromise',
+              data: { callback: 'done' },
+              output: 'test("something", () => new Promise(done => done()))',
+            },
+          ],
+        },
+      ],
     },
     {
       code: 'test("something", (done) => done())',
-      errors: [{ messageId: 'illegalTestCallback', line: 1, column: 20 }],
-      output: 'test("something", () => new Promise((done) => done()))',
+      errors: [
+        {
+          messageId: 'illegalTestCallback',
+          line: 1,
+          column: 20,
+          suggestions: [
+            {
+              messageId: 'suggestWrappingInPromise',
+              data: { callback: 'done' },
+              output: 'test("something", () => new Promise((done) => done()))',
+            },
+          ],
+        },
+      ],
     },
     {
       code: 'test("something", function(done) {done();})',
-      errors: [{ messageId: 'illegalTestCallback', line: 1, column: 28 }],
-      output:
-        'test("something", function() {return new Promise((done) => {done();})})',
+      errors: [
+        {
+          messageId: 'illegalTestCallback',
+          line: 1,
+          column: 28,
+          suggestions: [
+            {
+              messageId: 'suggestWrappingInPromise',
+              data: { callback: 'done' },
+              output:
+                'test("something", function() {return new Promise((done) => {done();})})',
+            },
+          ],
+        },
+      ],
     },
     {
       code: 'test("something", function (done) {done();})',
-      errors: [{ messageId: 'illegalTestCallback', line: 1, column: 29 }],
-      output:
-        'test("something", function () {return new Promise((done) => {done();})})',
+      errors: [
+        {
+          messageId: 'illegalTestCallback',
+          line: 1,
+          column: 29,
+          suggestions: [
+            {
+              messageId: 'suggestWrappingInPromise',
+              data: { callback: 'done' },
+              output:
+                'test("something", function () {return new Promise((done) => {done();})})',
+            },
+          ],
+        },
+      ],
     },
     {
       code: 'test("something", async done => {done();})',
@@ -75,27 +166,39 @@ ruleTester.run('no-test-callback', rule, {
       errors: [{ messageId: 'useAwaitInsteadOfCallback', line: 1, column: 35 }],
     },
     {
-      code: `
-      test('my test', async (done) => {
-        await myAsyncTask();
-        expect(true).toBe(false);
-        done();
-      });
+      code: dedent`
+        test('my test', async (done) => {
+          await myAsyncTask();
+          expect(true).toBe(false);
+          done();
+        });
       `,
-      errors: [{ messageId: 'useAwaitInsteadOfCallback', line: 2, column: 30 }],
+      errors: [{ messageId: 'useAwaitInsteadOfCallback', line: 1, column: 24 }],
     },
     {
-      code: `
-      test('something', (done) => {
-        done();
-      });
+      code: dedent`
+        test('something', (done) => {
+          done();
+        });
       `,
-      errors: [{ messageId: 'illegalTestCallback', line: 2, column: 26 }],
-      output: `
-      test('something', () => {return new Promise((done) => {
-        done();
-      })});
-      `,
+      errors: [
+        {
+          messageId: 'illegalTestCallback',
+          line: 1,
+          column: 20,
+          suggestions: [
+            {
+              messageId: 'suggestWrappingInPromise',
+              data: { callback: 'done' },
+              output: dedent`
+                test('something', () => {return new Promise((done) => {
+                  done();
+                })});
+              `,
+            },
+          ],
+        },
+      ],
     },
   ],
 });
