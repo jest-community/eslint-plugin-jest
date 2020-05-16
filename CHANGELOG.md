@@ -1,3 +1,12 @@
+# [23.12.0](https://github.com/jest-community/eslint-plugin-jest/compare/v23.11.0...v23.12.0) (2020-05-16)
+
+
+### Features
+
+* deprecate `no-expect-resolves` rule ([b6a22e5](https://github.com/jest-community/eslint-plugin-jest/commit/b6a22e5aa98abcb57aac217c6d4583d0a3388e7b))
+* deprecate `no-truthy-falsy` rule ([a67d92d](https://github.com/jest-community/eslint-plugin-jest/commit/a67d92d2834568122f24bf3d8455999166da95ea))
+* deprecate `prefer-inline-snapshots` rule ([1360e9b](https://github.com/jest-community/eslint-plugin-jest/commit/1360e9b0e840f4f778a9d251371c943919f84600))
+
 # [23.11.0](https://github.com/jest-community/eslint-plugin-jest/compare/v23.10.0...v23.11.0) (2020-05-12)
 
 
