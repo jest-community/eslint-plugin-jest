@@ -151,7 +151,6 @@ installations requiring long-term consistency.
 | [no-test-callback](docs/rules/no-test-callback.md)                     | Avoid using a callback in asynchronous tests                    | ![recommended][] | ![fixable][] |
 | [no-test-prefixes](docs/rules/no-test-prefixes.md)                     | Use `.only` and `.skip` over `f` and `x`                        | ![recommended][] | ![fixable][] |
 | [no-test-return-statement](docs/rules/no-test-return-statement.md)     | Disallow explicitly returning from tests                        |                  |              |
-| [no-truthy-falsy](docs/rules/no-truthy-falsy.md)                       | Disallow using `toBeTruthy()` & `toBeFalsy()`                   |                  |              |
 | [no-try-expect](docs/rules/no-try-expect.md)                           | Prefer using toThrow for exception tests                        | ![recommended][] |              |
 | [prefer-called-with](docs/rules/prefer-called-with.md)                 | Suggest using `toBeCalledWith()` OR `toHaveBeenCalledWith()`    |                  |              |
 | [prefer-expect-assertions](docs/rules/prefer-expect-assertions.md)     | Suggest using `expect.assertions()` OR `expect.hasAssertions()` |                  |              |
