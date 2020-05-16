@@ -12,8 +12,19 @@ ruleTester.run('prefer-strict-equal', rule, {
   invalid: [
     {
       code: 'expect(something).toEqual(somethingElse);',
-      errors: [{ messageId: 'useToStrictEqual', column: 19, line: 1 }],
-      output: 'expect(something).toStrictEqual(somethingElse);',
+      errors: [
+        {
+          messageId: 'useToStrictEqual',
+          column: 19,
+          line: 1,
+          suggestions: [
+            {
+              messageId: 'suggestReplaceWithStrictEqual',
+              output: 'expect(something).toStrictEqual(somethingElse);',
+            },
+          ],
+        },
+      ],
     },
   ],
 });
