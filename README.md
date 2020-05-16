@@ -137,7 +137,6 @@ installations requiring long-term consistency.
 | [no-deprecated-functions](docs/rules/no-deprecated-functions.md)       | Disallow use of deprecated functions                            |                  | ![fixable][] |
 | [no-disabled-tests](docs/rules/no-disabled-tests.md)                   | Disallow disabled tests                                         | ![recommended][] |              |
 | [no-duplicate-hooks](docs/rules/no-duplicate-hooks.md)                 | Disallow duplicate setup and teardown hooks                     |                  |              |
-| [no-expect-resolves](docs/rules/no-expect-resolves.md)                 | Disallow expect.resolves                                        |                  |              |
 | [no-export](docs/rules/no-export.md)                                   | Prevent exporting from test files                               | ![recommended][] |              |
 | [no-focused-tests](docs/rules/no-focused-tests.md)                     | Disallow focused tests                                          | ![recommended][] | ![fixable][] |
 | [no-hooks](docs/rules/no-hooks.md)                                     | Disallow setup and teardown hooks                               |                  |              |
