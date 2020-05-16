@@ -34,6 +34,15 @@ export default createRule({
 
         const [argument] = callback.params;
 
+        if (argument.type !== AST_NODE_TYPES.Identifier) {
+          context.report({
+            node: argument,
+            messageId: 'illegalTestCallback',
+          });
+
+          return;
+        }
+
         if (callback.async) {
           context.report({
             node: argument,

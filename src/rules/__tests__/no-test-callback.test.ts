@@ -19,6 +19,16 @@ ruleTester.run('no-test-callback', rule, {
   ],
   invalid: [
     {
+      code: 'test("something", (...args) => {args[0]();})',
+      errors: [
+        {
+          messageId: 'illegalTestCallback',
+          line: 1,
+          column: 20,
+        },
+      ],
+    },
+    {
       code: 'test("something", done => {done();})',
       errors: [{ messageId: 'illegalTestCallback', line: 1, column: 19 }],
       output:
