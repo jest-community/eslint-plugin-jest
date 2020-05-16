@@ -9,6 +9,8 @@ export default createRule({
       description: 'Suggest using inline snapshots',
       recommended: false,
     },
+    deprecated: true,
+    replacedBy: ['no-restricted-matchers'],
     messages: {
       toMatch: 'Use toMatchInlineSnapshot() instead',
       toMatchError: 'Use toThrowErrorMatchingInlineSnapshot() instead',

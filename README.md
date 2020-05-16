@@ -155,7 +155,6 @@ installations requiring long-term consistency.
 | [prefer-called-with](docs/rules/prefer-called-with.md)                 | Suggest using `toBeCalledWith()` OR `toHaveBeenCalledWith()`    |                  |              |
 | [prefer-expect-assertions](docs/rules/prefer-expect-assertions.md)     | Suggest using `expect.assertions()` OR `expect.hasAssertions()` |                  |              |
 | [prefer-hooks-on-top](docs/rules/prefer-hooks-on-top.md)               | Suggest to have all hooks at top level                          |                  |              |
-| [prefer-inline-snapshots](docs/rules/prefer-inline-snapshots.md)       | Suggest using inline snapshots                                  |                  | ![fixable][] |
 | [prefer-spy-on](docs/rules/prefer-spy-on.md)                           | Suggest using `jest.spyOn()`                                    |                  | ![fixable][] |
 | [prefer-strict-equal](docs/rules/prefer-strict-equal.md)               | Suggest using toStrictEqual()                                   |                  | ![fixable][] |
 | [prefer-to-be-null](docs/rules/prefer-to-be-null.md)                   | Suggest using `toBeNull()`                                      | ![style][]       | ![fixable][] |
