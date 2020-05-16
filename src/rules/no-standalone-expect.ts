@@ -6,6 +6,7 @@ import {
   DescribeAlias,
   TestCaseName,
   createRule,
+  getNodeName,
   isDescribe,
   isExpectCall,
   isFunction,
@@ -58,7 +59,10 @@ type callStackEntry =
   | 'arrowFunc'
   | 'template';
 
-export default createRule({
+export default createRule<
+  [{ additionalTestBlockFunctions: string[] }],
+  'unexpectedExpect'
+>({
   name: __filename,
   meta: {
     docs: {
@@ -70,11 +74,26 @@ export default createRule({
       unexpectedExpect: 'Expect must be inside of a test block.',
     },
     type: 'suggestion',
-    schema: [],
+    schema: [
+      {
+        properties: {
+          additionalTestBlockFunctions: {
+            type: 'array',
+            items: { type: 'string' },
+          },
+        },
+        additionalProperties: false,
+      },
+    ],
   },
-  defaultOptions: [],
-  create(context) {
+  defaultOptions: [{ additionalTestBlockFunctions: [] }],
+  create(context, [{ additionalTestBlockFunctions = [] }]) {
     const callStack: callStackEntry[] = [];
+
+    const isCustomTestBlockFunction = (
+      node: TSESTree.CallExpression,
+    ): boolean =>
+      additionalTestBlockFunctions.includes(getNodeName(node) || '');
 
     return {
       CallExpression(node) {
@@ -87,7 +106,7 @@ export default createRule({
 
           return;
         }
-        if (isTestCase(node)) {
+        if (isTestCase(node) || isCustomTestBlockFunction(node)) {
           callStack.push(TestCaseName.test);
         }
         if (node.callee.type === AST_NODE_TYPES.TaggedTemplateExpression) {
@@ -98,7 +117,7 @@ export default createRule({
         const top = callStack[callStack.length - 1];
 
         if (
-          (((isTestCase(node) &&
+          ((((isTestCase(node) || isCustomTestBlockFunction(node)) &&
             node.callee.type !== AST_NODE_TYPES.MemberExpression) ||
             isEach(node)) &&
             top === TestCaseName.test) ||
