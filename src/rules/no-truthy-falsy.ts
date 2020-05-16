@@ -9,6 +9,8 @@ export default createRule({
       description: 'Disallow using `toBeTruthy()` & `toBeFalsy()`',
       recommended: false,
     },
+    deprecated: true,
+    replacedBy: ['no-restricted-matchers'],
     messages: {
       avoidMatcher: 'Avoid {{ matcherName }}',
     },
