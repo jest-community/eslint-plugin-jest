@@ -43,7 +43,8 @@ export default createRule({
       recommended: false,
     },
     messages: {
-      noConditionalExpect: 'Test should not contain { condition } statements.',
+      noConditionalExpect:
+        'Test should not contain {{ condition }} statements.',
     },
     schema: [],
     type: 'suggestion',
