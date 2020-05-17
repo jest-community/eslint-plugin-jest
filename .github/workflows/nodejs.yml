@@ -41,11 +41,12 @@ jobs:
       - name: run typecheck
         run: yarn typecheck
       - name: run tests
-        run: yarn test --coverage
+        # only collect coverage on eslint versions that support the suggestions api
+        run: yarn test --coverage ${{ matrix.eslint-version >= 6 }}
         env:
           CI: true
       - uses: codecov/codecov-action@v1
-        if: always()
+        if: ${{ matrix.eslint-version >= 6 }}
   test-os:
     name: Test on ${{ matrix.os }} using Node.js LTS
     strategy:
