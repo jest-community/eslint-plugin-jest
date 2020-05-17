@@ -7,7 +7,7 @@ const ruleTester = new TSESLint.RuleTester({
   parserOptions: { ecmaVersion: 2015 },
 });
 
-ruleTester.run('no-test-prefixes', rule, {
+ruleTester.run('no-test-return-statement', rule, {
   valid: [
     'it("noop", function () {});',
     'test("noop", () => {});',
