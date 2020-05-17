@@ -1,3 +1,10 @@
+## [23.13.1](https://github.com/jest-community/eslint-plugin-jest/compare/v23.13.0...v23.13.1) (2020-05-17)
+
+
+### Bug Fixes
+
+* **no-if:** use correct syntax for placeholder substitution in message ([6d1eda8](https://github.com/jest-community/eslint-plugin-jest/commit/6d1eda89ac48c93c2675dcf24a92574a20b2edb9))
+
 # [23.13.0](https://github.com/jest-community/eslint-plugin-jest/compare/v23.12.0...v23.13.0) (2020-05-16)
 
 
