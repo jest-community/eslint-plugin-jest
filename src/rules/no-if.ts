@@ -43,8 +43,7 @@ export default createRule({
       recommended: false,
     },
     messages: {
-      noConditionalExpect:
-        'Test should not contain {{ condition }} statements.',
+      conditionalInTest: 'Test should not contain {{ condition }} statements.',
     },
     schema: [],
     type: 'suggestion',
@@ -67,7 +66,7 @@ export default createRule({
 
       context.report({
         data: { condition: conditionName[node.type] },
-        messageId: 'noConditionalExpect',
+        messageId: 'conditionalInTest',
         node,
       });
     }
