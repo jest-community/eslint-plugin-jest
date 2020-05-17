@@ -14,6 +14,8 @@ export default createRule({
       category: 'Best Practices',
       recommended: false,
     },
+    deprecated: true,
+    replacedBy: ['no-conditional-expect'],
     messages: {
       noTryExpect: [
         'Tests should use Jest‘s exception helpers.',
