@@ -8,6 +8,7 @@ export default createRule({
       category: 'Best Practices',
       description: 'Avoid using a callback in asynchronous tests',
       recommended: false,
+      suggestion: true,
     },
     messages: {
       illegalTestCallback: 'Illegal usage of test callback',
@@ -15,7 +16,6 @@ export default createRule({
       useAwaitInsteadOfCallback:
         'Use await instead of callback in async functions',
     },
-    fixable: 'code',
     schema: [],
     type: 'suggestion',
   },
