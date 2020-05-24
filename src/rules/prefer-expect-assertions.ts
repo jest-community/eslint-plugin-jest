@@ -69,6 +69,7 @@ export default createRule<[], MessageIds>({
       description:
         'Suggest using `expect.assertions()` OR `expect.hasAssertions()`',
       recommended: false,
+      suggestion: true,
     },
     messages: {
       hasAssertionsTakesNoArguments:

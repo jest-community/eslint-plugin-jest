@@ -3,6 +3,13 @@ import { join, parse } from 'path';
 import globals from './globals.json';
 import * as snapshotProcessor from './processors/snapshot-processor';
 
+// can be removed once we've on v3: https://github.com/typescript-eslint/typescript-eslint/issues/2060
+declare module '@typescript-eslint/experimental-utils/dist/ts-eslint/Rule' {
+  export interface RuleMetaDataDocs {
+    suggestion?: boolean;
+  }
+}
+
 // copied from https://github.com/babel/babel/blob/d8da63c929f2d28c401571e2a43166678c555bc4/packages/babel-helpers/src/helpers.js#L602-L606
 /* istanbul ignore next */
 const interopRequireDefault = (obj: any): { default: any } =>
