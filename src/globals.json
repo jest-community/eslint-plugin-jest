@@ -5,7 +5,6 @@
   "beforeEach": false,
   "describe": false,
   "expect": false,
-  "fail": false,
   "fit": false,
   "it": false,
   "jest": false,
