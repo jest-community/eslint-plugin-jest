@@ -9,7 +9,6 @@
   "fit": false,
   "it": false,
   "jest": false,
-  "require": false,
   "test": false,
   "xdescribe": false,
   "xit": false,
