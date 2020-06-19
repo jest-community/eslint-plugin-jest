@@ -162,6 +162,7 @@ installations requiring long-term consistency.
 | [prefer-to-contain](docs/rules/prefer-to-contain.md)                   | Suggest using `toContain()`                                     | ![style][]       | ![fixable][] |
 | [prefer-to-have-length](docs/rules/prefer-to-have-length.md)           | Suggest using `toHaveLength()`                                  | ![style][]       | ![fixable][] |
 | [prefer-todo](docs/rules/prefer-todo.md)                               | Suggest using `test.todo`                                       |                  | ![fixable][] |
+| [require-hashtag-title](docs/rules/require-hashtag-title.md)           | Enforce the usage of hashtag on the test cases title            |                  |              |
 | [require-to-throw-message](docs/rules/require-to-throw-message.md)     | Require a message for `toThrow()`                               |                  |              |
 | [require-top-level-describe](docs/rules/require-top-level-describe.md) | Prevents test cases and hooks to be outside of a describe block |                  |              |
 | [valid-describe](docs/rules/valid-describe.md)                         | Enforce valid `describe()` callback                             | ![recommended][] |              |

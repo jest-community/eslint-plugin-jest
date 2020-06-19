@@ -12,8 +12,7 @@ export default createRule({
   meta: {
     docs: {
       category: 'Best Practices',
-      description:
-        'Enforce the usage of hashtag (#something) on the test cases title',
+      description: 'Enforce the usage of hashtag on the test cases title',
       recommended: false,
     },
     messages: {
@@ -38,8 +37,8 @@ export default createRule({
   defaultOptions: [{ allowedHashtags: [] }],
   create(context, [{ allowedHashtags }]) {
     const words = `(${allowedHashtags.join('|')})`;
-    const checkAllowedHashtagsRegex = new RegExp(`.*#${words}\\s`, 'ui');
-    const checkHashtagsRegex = new RegExp(`.*#\\w+`, 'ui');
+    const checkAllowedHashtagsRegex = new RegExp(`.*#${words}(\\s|$)`, 'ui');
+    const checkHashtagsRegex = new RegExp(`.*#(\\w+)`, 'ui');
 
     return {
       CallExpression(node: TSESTree.CallExpression) {
@@ -66,7 +65,6 @@ export default createRule({
 
         const matches = checkHashtagsRegex.exec(title);
         if (matches) {
-          console.log(matches[0], matches[1]);
           if (allowedHashtags.length === 0) {
             return;
           }

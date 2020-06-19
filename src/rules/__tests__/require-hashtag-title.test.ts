@@ -20,6 +20,7 @@ ruleTester.run('require-hashtag-title', rule, {
     'it("#test in the beginning", function () {})',
     'it("in the end #test", function () {})',
     'it("in the #test middle", function () {})',
+    'it("many #different #tags", function () {})',
   ],
   invalid: [
     {
@@ -72,3 +73,143 @@ ruleTester.run('require-hashtag-title', rule, {
     },
   ],
 });
+
+ruleTester.run(
+  'require-hashtag-title with allowedHashtags=["unit", "smoke"]',
+  rule,
+  {
+    valid: [
+      {
+        code: 'randomFunction()',
+        options: [{ allowedHashtags: ['unit', 'smoke'] }],
+      },
+      { code: 'foo.bar()', options: [{ allowedHashtags: ['unit', 'smoke'] }] },
+      { code: 'it()', options: [{ allowedHashtags: ['unit', 'smoke'] }] },
+      {
+        code: 'it(42, function () {})',
+        options: [{ allowedHashtags: ['unit', 'smoke'] }],
+      },
+      {
+        code: 'it("#unit")',
+        options: [{ allowedHashtags: ['unit', 'smoke'] }],
+      },
+      {
+        code: 'it("#unit #smoke")',
+        options: [{ allowedHashtags: ['unit', 'smoke'] }],
+      },
+      {
+        code: 'it("#unit in the beginning", function () {})',
+        options: [{ allowedHashtags: ['unit', 'smoke'] }],
+      },
+      {
+        code: 'it("in the end #smoke", function () {})',
+        options: [{ allowedHashtags: ['unit', 'smoke'] }],
+      },
+      {
+        code: 'it("in the #unit middle", function () {})',
+        options: [{ allowedHashtags: ['unit', 'smoke'] }],
+      },
+      {
+        code: 'it("uppet cased tag #Unit #SMOKE", function () {})',
+        options: [{ allowedHashtags: ['unit', 'smoke'] }],
+      },
+    ],
+    invalid: [
+      {
+        code: 'it("no tag at all", function () {})',
+        errors: [
+          {
+            messageId: 'noTagFound',
+          },
+        ],
+        options: [{ allowedHashtags: ['unit', 'smoke'] }],
+      },
+      {
+        code: 'it("", function () {})',
+        errors: [
+          {
+            messageId: 'noTagFound',
+          },
+        ],
+        options: [{ allowedHashtags: ['unit', 'smoke'] }],
+      },
+      {
+        code: 'it("# wrong tag", function () {})',
+        errors: [
+          {
+            messageId: 'noTagFound',
+          },
+        ],
+        options: [{ allowedHashtags: ['unit', 'smoke'] }],
+      },
+      {
+        code: 'it("wrong tag again #", function () {})',
+        errors: [
+          {
+            messageId: 'noTagFound',
+          },
+        ],
+        options: [{ allowedHashtags: ['unit', 'smoke'] }],
+      },
+      {
+        code: 'it("wrong # tag", function () {})',
+        errors: [
+          {
+            messageId: 'noTagFound',
+          },
+        ],
+        options: [{ allowedHashtags: ['unit', 'smoke'] }],
+      },
+      {
+        code: 'it("#", function () {})',
+        errors: [
+          {
+            messageId: 'noTagFound',
+          },
+        ],
+        options: [{ allowedHashtags: ['unit', 'smoke'] }],
+      },
+      {
+        code: 'it("#another tag", function () {})',
+        errors: [
+          {
+            messageId: 'disallowedTag',
+            data: { tag: 'another' },
+          },
+        ],
+        options: [{ allowedHashtags: ['unit', 'smoke'] }],
+      },
+      {
+        code: 'it("another #different tag", function () {})',
+        errors: [
+          {
+            messageId: 'disallowedTag',
+            data: { tag: 'different' },
+          },
+        ],
+        options: [{ allowedHashtags: ['unit', 'smoke'] }],
+      },
+      {
+        code: 'it("another different #tag", function () {})',
+        errors: [
+          {
+            messageId: 'disallowedTag',
+            data: { tag: 'tag' },
+          },
+        ],
+        options: [{ allowedHashtags: ['unit', 'smoke'] }],
+      },
+
+      {
+        code: 'it("one #wrong and one #ok", function () {})',
+        errors: [
+          {
+            messageId: 'disallowedTag',
+            data: { tag: 'wrong' },
+          },
+        ],
+        options: [{ allowedHashtags: ['ok'] }],
+      },
+    ],
+  },
+);
