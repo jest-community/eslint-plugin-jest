@@ -53,6 +53,7 @@ const reportOnViolation = (
 
     if (whitelistedSnapshotsInFile) {
       const snapshotName = getAccessorValue(node.expression.left.property);
+
       isWhitelisted = whitelistedSnapshotsInFile.some(name => {
         if (name instanceof RegExp) {
           return name.test(snapshotName);

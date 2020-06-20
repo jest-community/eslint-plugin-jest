@@ -26,6 +26,7 @@ export default createRule({
         }
 
         const { matcher } = parseExpectCall(node);
+
         if (!matcher || !['toBeTruthy', 'toBeFalsy'].includes(matcher.name)) {
           return;
         }

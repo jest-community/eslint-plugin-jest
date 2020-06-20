@@ -36,6 +36,7 @@ describe('rules', () => {
 
   it('should have the correct amount of rules', () => {
     const { length } = ruleNames;
+
     if (length !== numberOfRules) {
       throw new Error(
         `There should be exactly ${numberOfRules} rules, but there are ${length}. If you've added a new rule, please update this number.`,
@@ -65,6 +66,7 @@ describe('rules', () => {
     allConfigRules.forEach(rule => {
       const ruleNamePrefix = 'jest/';
       const ruleName = rule.slice(ruleNamePrefix.length);
+
       expect(rule.startsWith(ruleNamePrefix)).toBe(true);
       expect(ruleNames).toContain(ruleName);
       // eslint-disable-next-line @typescript-eslint/no-require-imports

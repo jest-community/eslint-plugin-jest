@@ -11,6 +11,7 @@ const REPO_URL = 'https://github.com/jest-community/eslint-plugin-jest';
 
 export const createRule = ESLintUtils.RuleCreator(name => {
   const ruleName = parsePath(name).name;
+
   return `${REPO_URL}/blob/v${version}/docs/rules/${ruleName}.md`;
 });
 
@@ -496,6 +497,7 @@ export const parseExpectCall = <ExpectNode extends ExpectCall>(
   }
 
   const parsedMember = parseExpectMember(expect.parent);
+
   if (!shouldBeParsedExpectModifier(parsedMember)) {
     expectation.matcher = reparseAsMatcher(parsedMember);
 
@@ -738,6 +740,7 @@ export const scopeHasLocalReference = (
   referenceName: string,
 ) => {
   const references = collectReferences(scope);
+
   return (
     // referenceName was found as a local variable or function declaration.
     references.locals.has(referenceName) ||

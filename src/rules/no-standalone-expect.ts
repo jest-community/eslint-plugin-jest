@@ -29,6 +29,7 @@ const getBlockType = (
   }
   if (isFunction(func) && func.parent) {
     const expr = func.parent;
+
     // arrowfunction or function expr
     if (expr.type === AST_NODE_TYPES.VariableDeclarator) {
       return 'function';
@@ -38,6 +39,7 @@ const getBlockType = (
       return DescribeAlias.describe;
     }
   }
+
   return null;
 };
 
@@ -78,9 +80,11 @@ export default createRule({
       CallExpression(node) {
         if (isExpectCall(node)) {
           const parent = callStack[callStack.length - 1];
+
           if (!parent || parent === DescribeAlias.describe) {
             context.report({ node, messageId: 'unexpectedExpect' });
           }
+
           return;
         }
         if (isTestCase(node)) {
@@ -92,6 +96,7 @@ export default createRule({
       },
       'CallExpression:exit'(node: TSESTree.CallExpression) {
         const top = callStack[callStack.length - 1];
+
         if (
           (((isTestCase(node) &&
             node.callee.type !== AST_NODE_TYPES.MemberExpression) ||
@@ -105,12 +110,14 @@ export default createRule({
       },
       BlockStatement(stmt) {
         const blockType = getBlockType(stmt);
+
         if (blockType) {
           callStack.push(blockType);
         }
       },
       'BlockStatement:exit'(stmt: TSESTree.BlockStatement) {
         const blockType = getBlockType(stmt);
+
         if (blockType && blockType === callStack[callStack.length - 1]) {
           callStack.pop();
         }

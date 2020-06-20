@@ -82,6 +82,7 @@ export default createRule({
         }
 
         const testFuncFirstLine = getFunctionFirstLine(testFuncBody);
+
         if (!isExpectAssertionsOrHasAssertionsCall(testFuncFirstLine)) {
           context.report({ messageId: 'haveExpectAssertions', node });
         }

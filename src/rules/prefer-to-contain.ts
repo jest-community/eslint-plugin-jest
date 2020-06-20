@@ -153,6 +153,7 @@ const getCommonFixes = (
     openParenthesis,
   ];
 };
+
 // expect(array.includes(<value>)[not.]{toBe,toEqual}(<boolean>)
 export default createRule({
   name: __filename,
@@ -232,6 +233,7 @@ export default createRule({
                 sourceCode.getText(containArg),
               ),
             );
+
             return fixArr;
           },
           messageId: 'useToContain',

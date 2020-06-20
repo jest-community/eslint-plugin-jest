@@ -45,6 +45,7 @@ export default createRule({
         }
 
         const alias = matcher.name;
+
         if (alias in methodNames) {
           const canonical = methodNames[alias];
 

@@ -273,6 +273,7 @@ export default createRule<
         const targetNode = getParentIfThenified(parentNode);
         const finalNode =
           findPromiseCallExpressionNode(targetNode) || targetNode;
+
         if (
           finalNode.parent &&
           // If node is not awaited or returned

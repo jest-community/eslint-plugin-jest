@@ -72,6 +72,7 @@ export default createRule({
           isCallToFocusedTestFunction(callee.object)
         ) {
           context.report({ messageId: 'focusedTest', node: callee.object });
+
           return;
         }
 
@@ -83,11 +84,13 @@ export default createRule({
             messageId: 'focusedTest',
             node: callee.object.property,
           });
+
           return;
         }
 
         if (isCallToTestOnlyFunction(callee)) {
           context.report({ messageId: 'focusedTest', node: callee.property });
+
           return;
         }
       }
