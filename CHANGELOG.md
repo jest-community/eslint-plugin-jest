@@ -1,3 +1,17 @@
+# [23.14.0](https://github.com/jest-community/eslint-plugin-jest/compare/v23.13.2...v23.14.0) (2020-06-20)
+
+
+### Bug Fixes
+
+* **no-test-callback:** check argument is an identifier ([f70612d](https://github.com/jest-community/eslint-plugin-jest/commit/f70612d8b414575725a5831ed9dfad1eaf1e6548))
+* **no-test-callback:** provide suggestion instead of autofix ([782d8fa](https://github.com/jest-community/eslint-plugin-jest/commit/782d8fa00149143f453e7cb066f90c017e2d3f61))
+* **prefer-strict-equal:** provide suggestion instead of autofix ([2eaed2b](https://github.com/jest-community/eslint-plugin-jest/commit/2eaed2bf30c72b03ee205910887f8aab304047a5))
+
+
+### Features
+
+* **prefer-expect-assertions:** provide suggestions ([bad88a0](https://github.com/jest-community/eslint-plugin-jest/commit/bad88a006135258e8da18902a84bdb52a9bb9fa7))
+
 ## [23.13.2](https://github.com/jest-community/eslint-plugin-jest/compare/v23.13.1...v23.13.2) (2020-05-26)
 
 
