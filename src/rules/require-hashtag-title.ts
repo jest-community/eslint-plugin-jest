@@ -66,6 +66,7 @@ export default createRule({
         }
 
         const [argument] = getJestFunctionArguments(node);
+
         if (!argument) {
           return;
         }
@@ -75,6 +76,7 @@ export default createRule({
         }
 
         const title = getStringValue(argument);
+
         if (checkHashtagsRegex.test(title)) {
           if (sanitized.length > 0) {
             checkHashtagsRegex.lastIndex = 0;
