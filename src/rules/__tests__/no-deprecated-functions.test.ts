@@ -10,6 +10,11 @@ import rule, {
 
 const ruleTester = new TSESLint.RuleTester();
 
+// pin the original cwd so that we can restore it after each test
+const projectDir = process.cwd();
+
+afterEach(() => process.chdir(projectDir));
+
 /**
  * Makes a new temp directory, prefixed with `eslint-plugin-jest-`
  *
