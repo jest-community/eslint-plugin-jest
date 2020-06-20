@@ -2,15 +2,19 @@
 
 import * as fs from 'fs';
 import * as path from 'path';
-import ESLint from 'eslint';
+import { TSESLint } from '@typescript-eslint/experimental-utils';
 import prettier from 'prettier';
 import config from '../src/index';
+
+type FixType = 'fixable' | 'suggest';
 
 interface RuleDetails {
   name: string;
   description: string;
-  fixable: boolean;
+  fixable: FixType | false;
 }
+
+type RuleModule = TSESLint.RuleModule<string, unknown[]>;
 
 const staticElements = {
   listHeaderRow: ['Rule', 'Description', 'Configurations', 'Fixable'],
@@ -33,7 +37,7 @@ const buildRuleRow = (rule: RuleDetails): string[] => [
   `[${rule.name}](docs/rules/${rule.name}.md)`,
   rule.description,
   getConfigurationColumnValueForRule(rule),
-  rule.fixable ? '![fixable][]' : '',
+  rule.fixable ? `![${rule.fixable}][]` : '',
 ];
 
 const generateRulesListMarkdown = (details: RuleDetails[]): string =>
@@ -77,24 +81,28 @@ const importDefault = (moduleName: string) =>
   // eslint-disable-next-line @typescript-eslint/no-require-imports
   interopRequireDefault(require(moduleName)).default;
 
-const requireJestRule = (name: string): ESLint.Rule.RuleModule =>
+const requireJestRule = (name: string): RuleModule =>
   importDefault(
     `../src/rules/${name}`,
     // path.join('..', 'src', 'rules', name),
-  ) as ESLint.Rule.RuleModule;
+  ) as RuleModule;
 
 const details: RuleDetails[] = Object.keys(config.configs.all.rules)
   .map(name => name.split('/')[1])
   .map(name => [name, requireJestRule(name)] as const)
   .filter(
-    (nameAndRule): nameAndRule is [string, Required<ESLint.Rule.RuleModule>] =>
+    (nameAndRule): nameAndRule is [string, Required<RuleModule>] =>
       !!nameAndRule[1].meta && !nameAndRule[1].meta.deprecated,
   )
   .map(
     ([name, rule]): RuleDetails => ({
       name,
       description: rule.meta.docs?.description ?? '',
-      fixable: !!rule.meta.fixable,
+      fixable: rule.meta.fixable
+        ? 'fixable'
+        : rule.meta.docs?.suggestion
+        ? 'suggest'
+        : false,
     }),
   );
 
