@@ -43,7 +43,6 @@ const reportOnViolation = (
   let isWhitelisted = false;
 
   if (
-    whitelistedSnapshots &&
     node.type === AST_NODE_TYPES.ExpressionStatement &&
     'left' in node.expression &&
     isExpectMember(node.expression.left)

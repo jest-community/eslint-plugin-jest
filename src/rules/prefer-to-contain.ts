@@ -207,7 +207,7 @@ export default createRule({
               fileName,
             ).map(target => fixer.remove(target));
 
-            if (modifier && modifier.name === ModifierName.not) {
+            if (modifier) {
               return getNegationFixes(
                 includesCall,
                 modifier,

@@ -24,7 +24,6 @@ interface ConcurrentExpression extends TSESTree.MemberExpressionComputedName {
 const isConcurrentExpression = (
   expression: TSESTree.MemberExpression,
 ): expression is ConcurrentExpression =>
-  expression.type === AST_NODE_TYPES.MemberExpression &&
   isSupportedAccessor(expression.property, TestCaseProperty.concurrent) &&
   !!expression.parent &&
   expression.parent.type === AST_NODE_TYPES.MemberExpression;

@@ -188,8 +188,7 @@ export interface CallExpressionWithSingleArgument<
  */
 export const hasOnlyOneArgument = (
   call: TSESTree.CallExpression,
-): call is CallExpressionWithSingleArgument =>
-  call.arguments && call.arguments.length === 1;
+): call is CallExpressionWithSingleArgument => call.arguments.length === 1;
 
 /**
  * An `Identifier` with a known `name` value - i.e `expect`.

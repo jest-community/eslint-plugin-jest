@@ -35,9 +35,6 @@ const isExpectAssertionsOrHasAssertionsCall = (expression: TSESTree.Node) => {
   );
 };
 
-const getFunctionFirstLine = (functionBody: [TSESTree.ExpressionStatement]) =>
-  functionBody[0] && functionBody[0].expression;
-
 const isFirstLineExprStmt = (
   functionBody: TSESTree.Statement[],
 ): functionBody is [TSESTree.ExpressionStatement] =>
@@ -81,7 +78,7 @@ export default createRule({
           return;
         }
 
-        const testFuncFirstLine = getFunctionFirstLine(testFuncBody);
+        const testFuncFirstLine = testFuncBody[0].expression;
 
         if (!isExpectAssertionsOrHasAssertionsCall(testFuncFirstLine)) {
           context.report({ messageId: 'haveExpectAssertions', node });

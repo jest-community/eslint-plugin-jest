@@ -26,7 +26,6 @@ import {
  */
 const getPromiseCallExpressionNode = (node: TSESTree.Node) => {
   if (
-    node &&
     node.type === AST_NODE_TYPES.ArrayExpression &&
     node.parent &&
     node.parent.type === AST_NODE_TYPES.CallExpression
