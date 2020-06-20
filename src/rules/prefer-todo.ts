@@ -40,6 +40,7 @@ function createTodoFixer(
   const testName = getNodeName(node.callee)
     .split('.')
     .shift();
+
   return fixer.replaceText(node.callee, `${testName}.todo`);
 }
 

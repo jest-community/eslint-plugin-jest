@@ -67,6 +67,7 @@ export default createRule({
               context.report({ node, messageId: 'illegalPending' });
               break;
           }
+
           return;
         }
 
@@ -92,6 +93,7 @@ export default createRule({
                 replacement: `expect.${functionName}`,
               },
             });
+
             return;
           }
 
@@ -104,6 +106,7 @@ export default createRule({
                 replacement: 'expect.extend',
               },
             });
+
             return;
           }
 
@@ -116,6 +119,7 @@ export default createRule({
                 replacement: 'jest.fn',
               },
             });
+
             return;
           }
 
@@ -141,6 +145,7 @@ export default createRule({
                   node,
                   messageId: 'illegalJasmine',
                 });
+
                 return;
               }
             }

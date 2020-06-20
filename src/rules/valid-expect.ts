@@ -26,7 +26,6 @@ import {
  */
 const getPromiseCallExpressionNode = (node: TSESTree.Node) => {
   if (
-    node &&
     node.type === AST_NODE_TYPES.ArrayExpression &&
     node.parent &&
     node.parent.type === AST_NODE_TYPES.CallExpression
@@ -273,6 +272,7 @@ export default createRule<
         const targetNode = getParentIfThenified(parentNode);
         const finalNode =
           findPromiseCallExpressionNode(targetNode) || targetNode;
+
         if (
           finalNode.parent &&
           // If node is not awaited or returned

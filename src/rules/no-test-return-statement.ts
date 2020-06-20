@@ -20,6 +20,7 @@ const getBody = (args: TSESTree.Expression[]) => {
   ) {
     return secondArg.body.body;
   }
+
   return [];
 };
 
@@ -46,6 +47,7 @@ export default createRule({
         const returnStmt = body.find(
           t => t.type === AST_NODE_TYPES.ReturnStatement,
         );
+
         if (!returnStmt) return;
 
         context.report({ messageId: 'noReturnValue', node: returnStmt });
@@ -55,11 +57,13 @@ export default createRule({
         const testCallExpressions = getTestCallExpressionsFromDeclaredVariables(
           declaredVariables,
         );
+
         if (testCallExpressions.length === 0) return;
 
         const returnStmt = node.body.body.find(
           t => t.type === AST_NODE_TYPES.ReturnStatement,
         );
+
         if (!returnStmt) return;
 
         context.report({ messageId: 'noReturnValue', node: returnStmt });
