@@ -43,6 +43,7 @@ const jestFunctionName = (
   allowedPrefixes: readonly string[],
 ) => {
   const description = getStringValue(node.arguments[0]);
+
   if (allowedPrefixes.some(name => description.startsWith(name))) {
     return null;
   }

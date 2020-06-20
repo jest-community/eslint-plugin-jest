@@ -28,7 +28,7 @@ export default createRule({
   create(context) {
     return {
       ImportDeclaration(node: TSESTree.ImportDeclaration) {
-        if (node.source && isMockImportLiteral(node.source)) {
+        if (isMockImportLiteral(node.source)) {
           context.report({ node, messageId: 'noManualImport' });
         }
       },

@@ -36,13 +36,16 @@ export default createRule({
   defaultOptions: [],
   create(context) {
     const contexts = [newDescribeContext()];
+
     return {
       CallExpression(node) {
         const currentLayer = contexts[contexts.length - 1];
+
         if (isDescribe(node)) {
           contexts.push(newDescribeContext());
         }
         const [argument] = node.arguments;
+
         if (!argument || !isStringNode(argument)) {
           return;
         }

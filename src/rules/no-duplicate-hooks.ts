@@ -24,6 +24,7 @@ export default createRule({
   defaultOptions: [],
   create(context) {
     const hookContexts = [newHookContext()];
+
     return {
       CallExpression(node) {
         if (isDescribe(node)) {
@@ -32,6 +33,7 @@ export default createRule({
 
         if (isHook(node)) {
           const currentLayer = hookContexts[hookContexts.length - 1];
+
           currentLayer[node.callee.name] += 1;
           if (currentLayer[node.callee.name] > 1) {
             context.report({

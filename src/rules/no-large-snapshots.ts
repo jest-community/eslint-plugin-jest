@@ -43,7 +43,6 @@ const reportOnViolation = (
   let isWhitelisted = false;
 
   if (
-    whitelistedSnapshots &&
     node.type === AST_NODE_TYPES.ExpressionStatement &&
     'left' in node.expression &&
     isExpectMember(node.expression.left)
@@ -53,6 +52,7 @@ const reportOnViolation = (
 
     if (whitelistedSnapshotsInFile) {
       const snapshotName = getAccessorValue(node.expression.left.property);
+
       isWhitelisted = whitelistedSnapshotsInFile.some(name => {
         if (name instanceof RegExp) {
           return name.test(snapshotName);

@@ -109,6 +109,7 @@
     "eslint": "^5.1.0 || ^6.0.0",
     "eslint-config-prettier": "^6.5.0",
     "eslint-plugin-eslint-comments": "^3.1.2",
+    "eslint-plugin-eslint-config": "^1.0.2",
     "eslint-plugin-eslint-plugin": "^2.0.0",
     "eslint-plugin-import": "^2.20.2",
     "eslint-plugin-node": "^11.0.0",

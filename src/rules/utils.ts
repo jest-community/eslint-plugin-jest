@@ -11,6 +11,7 @@ const REPO_URL = 'https://github.com/jest-community/eslint-plugin-jest';
 
 export const createRule = ESLintUtils.RuleCreator(name => {
   const ruleName = parsePath(name).name;
+
   return `${REPO_URL}/blob/v${version}/docs/rules/${ruleName}.md`;
 });
 
@@ -64,11 +65,11 @@ interface StringLiteral<Value extends string = string>
  * the `value` will be compared to that of the `StringLiteral`.
  *
  * @param {Node} node
- * @param {V?} value
+ * @param {V} [value]
  *
  * @return {node is StringLiteral<V>}
  *
- * @template {V}.
+ * @template V
  */
 const isStringLiteral = <V extends string>(
   node: TSESTree.Node,
@@ -92,7 +93,7 @@ interface TemplateLiteral<Value extends string = string>
  * the `value` will be compared to that of the `TemplateLiteral`.
  *
  * @param {Node} node
- * @param {V?} value
+ * @param {V} [value]
  *
  * @return {node is TemplateLiteral<V>}
  *
@@ -114,7 +115,7 @@ export type StringNode<S extends string = string> =
  * Checks if the given `node` is a {@link StringNode}.
  *
  * @param {Node} node
- * @param {V?} specifics
+ * @param {V} [specifics]
  *
  * @return {node is StringNode}
  *
@@ -187,8 +188,7 @@ export interface CallExpressionWithSingleArgument<
  */
 export const hasOnlyOneArgument = (
   call: TSESTree.CallExpression,
-): call is CallExpressionWithSingleArgument =>
-  call.arguments && call.arguments.length === 1;
+): call is CallExpressionWithSingleArgument => call.arguments.length === 1;
 
 /**
  * An `Identifier` with a known `name` value - i.e `expect`.
@@ -204,7 +204,7 @@ interface KnownIdentifier<Name extends string> extends TSESTree.Identifier {
  * the `name` will be compared to that of the `identifier`.
  *
  * @param {Node} node
- * @param {V?} name
+ * @param {V} [name]
  *
  * @return {node is KnownIdentifier<Name>}
  *
@@ -233,7 +233,7 @@ const isIdentifier = <V extends string>(
  * The property that holds the value is not always called `name`.
  *
  * @param {Node} node
- * @param {V?} value
+ * @param {V} [value]
  *
  * @return {node is AccessorNode<V>}
  *
@@ -496,6 +496,7 @@ export const parseExpectCall = <ExpectNode extends ExpectCall>(
   }
 
   const parsedMember = parseExpectMember(expect.parent);
+
   if (!shouldBeParsedExpectModifier(parsedMember)) {
     expectation.matcher = reparseAsMatcher(parsedMember);
 
@@ -738,6 +739,7 @@ export const scopeHasLocalReference = (
   referenceName: string,
 ) => {
   const references = collectReferences(scope);
+
   return (
     // referenceName was found as a local variable or function declaration.
     references.locals.has(referenceName) ||

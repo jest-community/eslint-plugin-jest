@@ -68,6 +68,7 @@ const isPromiseReturnedLater = (
   testFunctionBody: TSESTree.Statement[],
 ) => {
   let promiseName;
+
   if (
     node.type === AST_NODE_TYPES.ExpressionStatement &&
     node.expression.type === AST_NODE_TYPES.CallExpression &&
@@ -182,6 +183,7 @@ export default createRule<unknown[], MessageIds>({
           return;
         }
         const testFunction = findTestFunction(node);
+
         if (testFunction && !isHavingAsyncCallBackParam(testFunction)) {
           const { body } = testFunction;
 
