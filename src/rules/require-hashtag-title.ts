@@ -7,6 +7,24 @@ import {
   isTestCase,
 } from './utils';
 
+const getAllTags = (title: string, regex: RegExp): string[] => {
+  const tags: string[] = [];
+  let match = regex.exec(title);
+
+  while (match) {
+    const tag = match[0]
+      .trim()
+      .toLowerCase()
+      .replace('#', '');
+
+    tags.push(tag);
+
+    match = regex.exec(title);
+  }
+
+  return tags;
+};
+
 export default createRule({
   name: __filename,
   meta: {
@@ -36,9 +54,10 @@ export default createRule({
   },
   defaultOptions: [{ allowedHashtags: [] }],
   create(context, [{ allowedHashtags }]) {
-    const words = `(${allowedHashtags.join('|')})`;
-    const checkAllowedHashtagsRegex = new RegExp(`.*#${words}(\\s|$)`, 'ui');
-    const checkHashtagsRegex = new RegExp(`.*#(\\w+)`, 'ui');
+    const sanitized = allowedHashtags
+      .filter((s: string) => /^\w+/iu.test(s))
+      .map((s: string) => s.toLowerCase().trim());
+    const checkHashtagsRegex = /(?:\s|^)#[A-Za-z0-9-._]+(?:\s|$)/giu;
 
     return {
       CallExpression(node: TSESTree.CallExpression) {
@@ -56,30 +75,29 @@ export default createRule({
         }
 
         const title = getStringValue(argument);
-        if (
-          allowedHashtags.length > 0 &&
-          checkAllowedHashtagsRegex.test(title)
-        ) {
-          return;
-        }
+        if (checkHashtagsRegex.test(title)) {
+          if (sanitized.length > 0) {
+            checkHashtagsRegex.lastIndex = 0;
+            const tags = getAllTags(title, checkHashtagsRegex);
 
-        const matches = checkHashtagsRegex.exec(title);
-        if (matches) {
-          if (allowedHashtags.length === 0) {
-            return;
+            for (const tag of tags) {
+              if (!sanitized.includes(tag)) {
+                context.report({
+                  messageId: 'disallowedTag',
+                  data: {
+                    tag,
+                  },
+                  node: argument,
+                  loc: argument.loc,
+                });
+              }
+            }
           }
-
-          context.report({
-            messageId: 'disallowedTag',
-            data: {
-              tag: matches[1],
-            },
-            node: argument,
-          });
         } else {
           context.report({
             messageId: 'noTagFound',
             node: argument,
+            loc: argument.loc,
           });
         }
       },

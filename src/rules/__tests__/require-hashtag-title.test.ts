@@ -110,8 +110,13 @@ ruleTester.run(
         options: [{ allowedHashtags: ['unit', 'smoke'] }],
       },
       {
-        code: 'it("uppet cased tag #Unit #SMOKE", function () {})',
+        code: 'it("upper cased tag #Unit #SMOKE", function () {})',
         options: [{ allowedHashtags: ['unit', 'smoke'] }],
+      },
+      {
+        code:
+          'it("should return the correct value #unit #happy-path", function () {})',
+        options: [{ allowedHashtags: ['unit', 'happy-path', 'smoke'] }],
       },
     ],
     invalid: [
