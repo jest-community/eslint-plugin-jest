@@ -37,17 +37,45 @@ const quoteStringValue = (node: StringNode): string =>
     ? `\`${node.quasis[0].value.raw}\``
     : node.raw;
 
+const compileMatcherPatterns = (
+  matchers: Partial<Record<MatcherGroups, string>> | string,
+): Record<MatcherGroups, RegExp | null> & Record<string, RegExp | null> => {
+  if (typeof matchers === 'string') {
+    const matcher = new RegExp(matchers, 'u');
+
+    return {
+      describe: matcher,
+      test: matcher,
+      it: matcher,
+    };
+  }
+
+  return {
+    describe: matchers.describe ? new RegExp(matchers.describe, 'u') : null,
+    test: matchers.test ? new RegExp(matchers.test, 'u') : null,
+    it: matchers.it ? new RegExp(matchers.it, 'u') : null,
+  };
+};
+
+type MatcherGroups = 'describe' | 'test' | 'it';
+
+interface Options {
+  ignoreTypeOfDescribeName?: boolean;
+  disallowedWords?: string[];
+  mustNotMatch?: Partial<Record<MatcherGroups, string>> | string;
+  mustMatch?: Partial<Record<MatcherGroups, string>> | string;
+}
+
 type MessageIds =
   | 'titleMustBeString'
   | 'emptyTitle'
   | 'duplicatePrefix'
   | 'accidentalSpace'
-  | 'disallowedWord';
+  | 'disallowedWord'
+  | 'mustNotMatch'
+  | 'mustMatch';
 
-export default createRule<
-  [{ ignoreTypeOfDescribeName?: boolean; disallowedWords?: string[] }],
-  MessageIds
->({
+export default createRule<[Options], MessageIds>({
   name: __filename,
   meta: {
     docs: {
@@ -61,6 +89,8 @@ export default createRule<
       duplicatePrefix: 'should not have duplicate prefix',
       accidentalSpace: 'should not have leading or trailing spaces',
       disallowedWord: '"{{ word }}" is not allowed in test titles.',
+      mustNotMatch: '{{ jestFunctionName }} should not match {{ pattern }}',
+      mustMatch: '{{ jestFunctionName }} should match {{ pattern }}',
     },
     type: 'suggestion',
     schema: [
@@ -75,6 +105,34 @@ export default createRule<
             type: 'array',
             items: { type: 'string' },
           },
+          mustNotMatch: {
+            oneOf: [
+              { type: 'string' },
+              {
+                type: 'object',
+                properties: {
+                  describe: { type: 'string' },
+                  test: { type: 'string' },
+                  it: { type: 'string' },
+                },
+                additionalProperties: false,
+              },
+            ],
+          },
+          mustMatch: {
+            oneOf: [
+              { type: 'string' },
+              {
+                type: 'object',
+                properties: {
+                  describe: { type: 'string' },
+                  test: { type: 'string' },
+                  it: { type: 'string' },
+                },
+                additionalProperties: false,
+              },
+            ],
+          },
         },
         additionalProperties: false,
       },
@@ -82,11 +140,24 @@ export default createRule<
     fixable: 'code',
   },
   defaultOptions: [{ ignoreTypeOfDescribeName: false, disallowedWords: [] }],
-  create(context, [{ ignoreTypeOfDescribeName, disallowedWords = [] }]) {
+  create(
+    context,
+    [
+      {
+        ignoreTypeOfDescribeName,
+        disallowedWords = [],
+        mustNotMatch,
+        mustMatch,
+      },
+    ],
+  ) {
     const disallowedWordsRegexp = new RegExp(
       `\\b(${disallowedWords.join('|')})\\b`,
       'iu',
     );
+
+    const mustNotMatchPatterns = compileMatcherPatterns(mustNotMatch ?? {});
+    const mustMatchPatterns = compileMatcherPatterns(mustMatch ?? {});
 
     return {
       CallExpression(node: TSESTree.CallExpression) {
@@ -180,6 +251,36 @@ export default createRule<
               ),
             ],
           });
+        }
+
+        const [jestFunctionName] = nodeName.split('.');
+
+        const mustNotMatchPattern = mustNotMatchPatterns[jestFunctionName];
+
+        if (mustNotMatchPattern) {
+          if (mustNotMatchPattern.test(title)) {
+            context.report({
+              messageId: 'mustNotMatch',
+              node: argument,
+              data: { jestFunctionName, pattern: mustNotMatchPattern },
+            });
+
+            return;
+          }
+        }
+
+        const mustMatchPattern = mustMatchPatterns[jestFunctionName];
+
+        if (mustMatchPattern) {
+          if (!mustMatchPattern.test(title)) {
+            context.report({
+              messageId: 'mustMatch',
+              node: argument,
+              data: { jestFunctionName, pattern: mustMatchPattern },
+            });
+
+            return;
+          }
         }
       },
     };
