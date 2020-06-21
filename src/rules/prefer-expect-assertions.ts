@@ -150,19 +150,21 @@ export default createRule<[], MessageIds>({
         }
 
         if (!hasOnlyOneArgument(testFuncFirstLine)) {
-          const report: TSESLint.ReportDescriptor<MessageIds> = {
-            messageId: 'assertionsRequiresOneArgument',
-            loc: testFuncFirstLine.callee.property.loc,
-          };
+          let { loc } = testFuncFirstLine.callee.property;
+          const suggest: TSESLint.ReportSuggestionArray<MessageIds> = [];
 
           if (testFuncFirstLine.arguments.length) {
-            report.loc = testFuncFirstLine.arguments[1].loc;
-            report.suggest = [
+            loc = testFuncFirstLine.arguments[1].loc;
+            suggest.push(
               suggestRemovingExtraArguments(testFuncFirstLine.arguments, 1),
-            ];
+            );
           }
 
-          context.report(report);
+          context.report({
+            messageId: 'assertionsRequiresOneArgument',
+            suggest,
+            loc,
+          });
 
           return;
         }
