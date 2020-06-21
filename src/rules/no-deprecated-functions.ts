@@ -124,6 +124,7 @@ export default createRule({
           },
           node,
           fix(fixer) {
+            // eslint-disable-next-line prefer-const
             let [name, func] = replacement.split('.');
 
             if (callee.property.type === AST_NODE_TYPES.Literal) {

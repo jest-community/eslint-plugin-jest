@@ -37,7 +37,17 @@ const quoteStringValue = (node: StringNode): string =>
     ? `\`${node.quasis[0].value.raw}\``
     : node.raw;
 
-export default createRule({
+type MessageIds =
+  | 'titleMustBeString'
+  | 'emptyTitle'
+  | 'duplicatePrefix'
+  | 'accidentalSpace'
+  | 'disallowedWord';
+
+export default createRule<
+  [{ ignoreTypeOfDescribeName?: boolean; disallowedWords?: string[] }],
+  MessageIds
+>({
   name: __filename,
   meta: {
     docs: {
@@ -64,7 +74,6 @@ export default createRule({
           disallowedWords: {
             type: 'array',
             items: { type: 'string' },
-            default: [],
           },
         },
         additionalProperties: false,
@@ -73,7 +82,7 @@ export default createRule({
     fixable: 'code',
   },
   defaultOptions: [{ ignoreTypeOfDescribeName: false, disallowedWords: [] }],
-  create(context, [{ ignoreTypeOfDescribeName, disallowedWords }]) {
+  create(context, [{ ignoreTypeOfDescribeName, disallowedWords = [] }]) {
     const disallowedWordsRegexp = new RegExp(
       `\\b(${disallowedWords.join('|')})\\b`,
       'iu',
