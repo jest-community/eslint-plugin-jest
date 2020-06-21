@@ -19,6 +19,10 @@ ruleTester.run('disallowedWords option', rule, {
         { ignoreTypeOfDescribeName: false, disallowedWords: ['correct'] },
       ],
     },
+    {
+      code: 'it("correctly sets the value", () => {});',
+      options: [{ disallowedWords: undefined }],
+    },
   ],
   invalid: [
     {
