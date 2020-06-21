@@ -1,3 +1,11 @@
+# [23.16.0](https://github.com/jest-community/eslint-plugin-jest/compare/v23.15.0...v23.16.0) (2020-06-21)
+
+
+### Features
+
+* create `no-conditional-expect` rule ([aba53e4](https://github.com/jest-community/eslint-plugin-jest/commit/aba53e4061f3b636ab0c0270e183c355c6f301e0))
+* deprecate `no-try-expect` in favor of `no-conditional-expect` ([6d07cad](https://github.com/jest-community/eslint-plugin-jest/commit/6d07cadd5f78ed7a64a86792931d49d3cd943d69))
+
 # [23.15.0](https://github.com/jest-community/eslint-plugin-jest/compare/v23.14.0...v23.15.0) (2020-06-21)
 
 
