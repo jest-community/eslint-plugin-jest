@@ -23,10 +23,8 @@
     "build": "babel --extensions .js,.ts src --out-dir lib --copy-files",
     "postbuild": "rimraf lib/__tests__ lib/**/__tests__",
     "lint": "eslint . --ignore-pattern '!.eslintrc.js' --ext js,ts",
-    "prepare": "yarn build && yarn postbuild",
-    "prepublishOnly": "yarn build",
+    "prepack": "yarn build",
     "prettylint": "prettylint docs/**/*.md README.md package.json",
-    "pretest": "yarn build",
     "test": "jest",
     "tools:generate-rules-table": "ts-node -T tools/generate-rules-table",
     "typecheck": "tsc -p ."
