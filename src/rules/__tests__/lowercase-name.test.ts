@@ -271,6 +271,22 @@ ruleTester.run('lowercase-name with ignoreTopLevelDescribe', rule, {
       `,
       options: [{ ignoreTopLevelDescribe: true }],
     },
+    {
+      code: dedent`
+        describe('Strings', () => {
+          it('are strings', () => {
+            expect('abc').toBe('abc');
+          });
+        });
+        
+        describe('Booleans', () => {
+          it('are booleans', () => {
+            expect(true).toBe(true);
+          });
+        });
+      `,
+      options: [{ ignoreTopLevelDescribe: true }],
+    },
   ],
   invalid: [
     {

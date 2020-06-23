@@ -158,6 +158,11 @@ export default createRule<
           });
         }
       },
+      'CallExpression:exit'(node: TSESTree.CallExpression) {
+        if (isDescribe(node)) {
+          numberOfDescribeBlocks--;
+        }
+      },
     };
   },
 });
