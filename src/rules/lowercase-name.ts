@@ -62,6 +62,7 @@ export default createRule<
     Partial<{
       ignore: readonly IgnorableFunctionExpressions[];
       allowedPrefixes: readonly string[];
+      ignoreTopLevelDescribe: boolean;
     }>,
   ],
   'unexpectedLowercase'
@@ -98,18 +99,38 @@ export default createRule<
             items: { type: 'string' },
             additionalItems: false,
           },
+          ignoreTopLevelDescribe: {
+            type: 'boolean',
+            default: false,
+          },
         },
         additionalProperties: false,
       },
     ],
   } as const,
-  defaultOptions: [{ ignore: [], allowedPrefixes: [] }],
-  create(context, [{ ignore = [], allowedPrefixes = [] }]) {
+  defaultOptions: [
+    { ignore: [], allowedPrefixes: [], ignoreTopLevelDescribe: false },
+  ],
+  create(
+    context,
+    [{ ignore = [], allowedPrefixes = [], ignoreTopLevelDescribe }],
+  ) {
+    let numberOfDescribeBlocks = 0;
+
     return {
       CallExpression(node: TSESTree.CallExpression) {
         if (!isJestFunctionWithLiteralArg(node)) {
           return;
         }
+
+        if (isDescribe(node)) {
+          numberOfDescribeBlocks++;
+
+          if (ignoreTopLevelDescribe && numberOfDescribeBlocks === 1) {
+            return;
+          }
+        }
+
         const erroneousMethod = jestFunctionName(node, allowedPrefixes);
 
         if (erroneousMethod && !ignore.includes(node.callee.name)) {
