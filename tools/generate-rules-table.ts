@@ -14,7 +14,9 @@ interface RuleDetails {
   fixable: FixType | false;
 }
 
-type RuleModule = TSESLint.RuleModule<string, unknown[]>;
+type RuleModule = TSESLint.RuleModule<string, unknown[]> & {
+  meta: Required<Pick<TSESLint.RuleMetaData<string>, 'docs'>>;
+};
 
 const staticElements = {
   listHeaderRow: ['Rule', 'Description', 'Configurations', 'Fixable'],
@@ -97,10 +99,10 @@ const details: RuleDetails[] = Object.keys(config.configs.all.rules)
   .map(
     ([name, rule]): RuleDetails => ({
       name,
-      description: rule.meta.docs?.description ?? '',
+      description: rule.meta.docs.description,
       fixable: rule.meta.fixable
         ? 'fixable'
-        : rule.meta.docs?.suggestion
+        : rule.meta.docs.suggestion
         ? 'suggest'
         : false,
     }),

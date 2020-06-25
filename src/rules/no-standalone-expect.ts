@@ -66,7 +66,7 @@ export default createRule<
     docs: {
       category: 'Best Practices',
       description: 'Prevents expects that are outside of an it or test block.',
-      recommended: false,
+      recommended: 'error',
     },
     messages: {
       unexpectedExpect: 'Expect must be inside of a test block.',

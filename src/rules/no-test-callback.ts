@@ -7,7 +7,7 @@ export default createRule({
     docs: {
       category: 'Best Practices',
       description: 'Avoid using a callback in asynchronous tests',
-      recommended: false,
+      recommended: 'error',
       suggestion: true,
     },
     messages: {

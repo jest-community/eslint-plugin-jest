@@ -29,7 +29,7 @@ export default createRule({
     docs: {
       category: 'Possible Errors',
       description: 'Enforce valid `describe()` callback',
-      recommended: 'warn',
+      recommended: 'error',
     },
     messages: {
       nameAndCallback: 'Describe requires name and callback arguments',
