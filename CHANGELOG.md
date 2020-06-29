@@ -1,9 +1,111 @@
-# [23.9.0](https://github.com/jest-community/eslint-plugin-jest/compare/v23.8.2...v23.9.0) (2020-05-04)
+## [23.17.1](https://github.com/jest-community/eslint-plugin-jest/compare/v23.17.0...v23.17.1) (2020-06-23)
 
+### Bug Fixes
+
+- **lowercase-name:** ignore all top level describes when option is true
+  ([#614](https://github.com/jest-community/eslint-plugin-jest/issues/614))
+  ([624018a](https://github.com/jest-community/eslint-plugin-jest/commit/624018aa181e7c0ce87457a4f9c212c7891987a8)),
+  closes [#613](https://github.com/jest-community/eslint-plugin-jest/issues/613)
+
+# [23.17.0](https://github.com/jest-community/eslint-plugin-jest/compare/v23.16.0...v23.17.0) (2020-06-23)
 
 ### Features
 
-* create `no-deprecated-functions` ([#560](https://github.com/jest-community/eslint-plugin-jest/issues/560)) ([55d0504](https://github.com/jest-community/eslint-plugin-jest/commit/55d0504cadc945b770d7c3b6d3cab425c9b76d0f))
+- **lowercase-name:** support `ignoreTopLevelDescribe` option
+  ([#611](https://github.com/jest-community/eslint-plugin-jest/issues/611))
+  ([36fdcc5](https://github.com/jest-community/eslint-plugin-jest/commit/36fdcc553ca40bc2ca2e9ca7e04f8e9e4a315274)),
+  closes [#247](https://github.com/jest-community/eslint-plugin-jest/issues/247)
+
+# [23.16.0](https://github.com/jest-community/eslint-plugin-jest/compare/v23.15.0...v23.16.0) (2020-06-21)
+
+### Features
+
+- create `no-conditional-expect` rule
+  ([aba53e4](https://github.com/jest-community/eslint-plugin-jest/commit/aba53e4061f3b636ab0c0270e183c355c6f301e0))
+- deprecate `no-try-expect` in favor of `no-conditional-expect`
+  ([6d07cad](https://github.com/jest-community/eslint-plugin-jest/commit/6d07cadd5f78ed7a64a86792931d49d3cd943d69))
+
+# [23.15.0](https://github.com/jest-community/eslint-plugin-jest/compare/v23.14.0...v23.15.0) (2020-06-21)
+
+### Features
+
+- **no-standalone-expect:** support `additionalTestBlockFunctions`
+  ([#585](https://github.com/jest-community/eslint-plugin-jest/issues/585))
+  ([ed220b2](https://github.com/jest-community/eslint-plugin-jest/commit/ed220b2c515f2e97ce639dd1474c18a7f594c06c))
+
+# [23.14.0](https://github.com/jest-community/eslint-plugin-jest/compare/v23.13.2...v23.14.0) (2020-06-20)
+
+### Bug Fixes
+
+- **no-test-callback:** check argument is an identifier
+  ([f70612d](https://github.com/jest-community/eslint-plugin-jest/commit/f70612d8b414575725a5831ed9dfad1eaf1e6548))
+- **no-test-callback:** provide suggestion instead of autofix
+  ([782d8fa](https://github.com/jest-community/eslint-plugin-jest/commit/782d8fa00149143f453e7cb066f90c017e2d3f61))
+- **prefer-strict-equal:** provide suggestion instead of autofix
+  ([2eaed2b](https://github.com/jest-community/eslint-plugin-jest/commit/2eaed2bf30c72b03ee205910887f8aab304047a5))
+
+### Features
+
+- **prefer-expect-assertions:** provide suggestions
+  ([bad88a0](https://github.com/jest-community/eslint-plugin-jest/commit/bad88a006135258e8da18902a84bdb52a9bb9fa7))
+
+## [23.13.2](https://github.com/jest-community/eslint-plugin-jest/compare/v23.13.1...v23.13.2) (2020-05-26)
+
+### Bug Fixes
+
+- add `fail` to globals
+  ([#595](https://github.com/jest-community/eslint-plugin-jest/issues/595))
+  ([aadc5ec](https://github.com/jest-community/eslint-plugin-jest/commit/aadc5ec5610ec024eac4b0aa6077cc012a0ba98e))
+
+## [23.13.1](https://github.com/jest-community/eslint-plugin-jest/compare/v23.13.0...v23.13.1) (2020-05-17)
+
+### Bug Fixes
+
+- **no-if:** use correct syntax for placeholder substitution in message
+  ([6d1eda8](https://github.com/jest-community/eslint-plugin-jest/commit/6d1eda89ac48c93c2675dcf24a92574a20b2edb9))
+
+# [23.13.0](https://github.com/jest-community/eslint-plugin-jest/compare/v23.12.0...v23.13.0) (2020-05-16)
+
+### Features
+
+- **valid-expect:** support `minArgs` & `maxArgs` options
+  ([#584](https://github.com/jest-community/eslint-plugin-jest/issues/584))
+  ([9e0e2fa](https://github.com/jest-community/eslint-plugin-jest/commit/9e0e2fa966b43c1099d11b2424acb1590c241c03))
+
+# [23.12.0](https://github.com/jest-community/eslint-plugin-jest/compare/v23.11.0...v23.12.0) (2020-05-16)
+
+### Features
+
+- deprecate `no-expect-resolves` rule
+  ([b6a22e5](https://github.com/jest-community/eslint-plugin-jest/commit/b6a22e5aa98abcb57aac217c6d4583d0a3388e7b))
+- deprecate `no-truthy-falsy` rule
+  ([a67d92d](https://github.com/jest-community/eslint-plugin-jest/commit/a67d92d2834568122f24bf3d8455999166da95ea))
+- deprecate `prefer-inline-snapshots` rule
+  ([1360e9b](https://github.com/jest-community/eslint-plugin-jest/commit/1360e9b0e840f4f778a9d251371c943919f84600))
+
+# [23.11.0](https://github.com/jest-community/eslint-plugin-jest/compare/v23.10.0...v23.11.0) (2020-05-12)
+
+### Features
+
+- create `no-restricted-matchers` rule
+  ([#575](https://github.com/jest-community/eslint-plugin-jest/issues/575))
+  ([ac926e7](https://github.com/jest-community/eslint-plugin-jest/commit/ac926e779958240506ee506047c9a5364bb70aea))
+
+# [23.10.0](https://github.com/jest-community/eslint-plugin-jest/compare/v23.9.0...v23.10.0) (2020-05-09)
+
+### Features
+
+- **no-deprecated-functions:** support jest `version` setting
+  ([#564](https://github.com/jest-community/eslint-plugin-jest/issues/564))
+  ([05f20b8](https://github.com/jest-community/eslint-plugin-jest/commit/05f20b80ecd42b8d1f1f18ca19d4bc9cba45e22e))
+
+# [23.9.0](https://github.com/jest-community/eslint-plugin-jest/compare/v23.8.2...v23.9.0) (2020-05-04)
+
+### Features
+
+- create `no-deprecated-functions`
+  ([#560](https://github.com/jest-community/eslint-plugin-jest/issues/560))
+  ([55d0504](https://github.com/jest-community/eslint-plugin-jest/commit/55d0504cadc945b770d7c3b6d3cab425c9b76d0f))
 
 ## [23.8.2](https://github.com/jest-community/eslint-plugin-jest/compare/v23.8.1...v23.8.2) (2020-03-06)
 

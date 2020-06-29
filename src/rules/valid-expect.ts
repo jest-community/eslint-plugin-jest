@@ -26,7 +26,6 @@ import {
  */
 const getPromiseCallExpressionNode = (node: TSESTree.Node) => {
   if (
-    node &&
     node.type === AST_NODE_TYPES.ArrayExpression &&
     node.parent &&
     node.parent.type === AST_NODE_TYPES.CallExpression
@@ -100,14 +99,18 @@ const promiseArrayExceptionKey = ({ start, end }: TSESTree.SourceLocation) =>
   `${start.line}:${start.column}-${end.line}:${end.column}`;
 
 type MessageIds =
-  | 'incorrectNumberOfArguments'
+  | 'tooManyArgs'
+  | 'notEnoughArgs'
   | 'modifierUnknown'
   | 'matcherNotFound'
   | 'matcherNotCalled'
   | 'asyncMustBeAwaited'
   | 'promisesWithAsyncAssertionsMustBeAwaited';
 
-export default createRule<[{ alwaysAwait?: boolean }], MessageIds>({
+export default createRule<
+  [{ alwaysAwait?: boolean; minArgs?: number; maxArgs?: number }],
+  MessageIds
+>({
   name: __filename,
   meta: {
     docs: {
@@ -116,7 +119,8 @@ export default createRule<[{ alwaysAwait?: boolean }], MessageIds>({
       recommended: 'error',
     },
     messages: {
-      incorrectNumberOfArguments: 'Expect takes one and only one argument.',
+      tooManyArgs: 'Expect takes at most {{ amount }} argument{{ s }}.',
+      notEnoughArgs: 'Expect requires at least {{ amount }} argument{{ s }}.',
       modifierUnknown: 'Expect has no modifier named "{{ modifierName }}".',
       matcherNotFound: 'Expect must have a corresponding matcher call.',
       matcherNotCalled: 'Matchers must be called to assert.',
@@ -133,13 +137,21 @@ export default createRule<[{ alwaysAwait?: boolean }], MessageIds>({
             type: 'boolean',
             default: false,
           },
+          minArgs: {
+            type: 'number',
+            minimum: 1,
+          },
+          maxArgs: {
+            type: 'number',
+            minimum: 1,
+          },
         },
         additionalProperties: false,
       },
     ],
   },
-  defaultOptions: [{ alwaysAwait: false }],
-  create(context, [{ alwaysAwait }]) {
+  defaultOptions: [{ alwaysAwait: false, minArgs: 1, maxArgs: 1 }],
+  create(context, [{ alwaysAwait, minArgs = 1, maxArgs = 1 }]) {
     // Context state
     const arrayExceptions = new Set<string>();
 
@@ -164,10 +176,10 @@ export default createRule<[{ alwaysAwait?: boolean }], MessageIds>({
 
         const { expect, modifier, matcher } = parseExpectCall(node);
 
-        if (expect.arguments.length !== 1) {
+        if (expect.arguments.length < minArgs) {
           const expectLength = getAccessorValue(expect.callee).length;
 
-          let loc: TSESTree.SourceLocation = {
+          const loc: TSESTree.SourceLocation = {
             start: {
               column: node.loc.start.column + expectLength,
               line: node.loc.start.line,
@@ -178,21 +190,29 @@ export default createRule<[{ alwaysAwait?: boolean }], MessageIds>({
             },
           };
 
-          if (expect.arguments.length !== 0) {
-            const { start } = expect.arguments[1].loc;
-            const { end } = expect.arguments[node.arguments.length - 1].loc;
+          context.report({
+            messageId: 'notEnoughArgs',
+            data: { amount: minArgs, s: minArgs === 1 ? '' : 's' },
+            node,
+            loc,
+          });
+        }
 
-            loc = {
-              start,
-              end: {
-                column: end.column - 1,
-                line: end.line,
-              },
-            };
-          }
+        if (expect.arguments.length > maxArgs) {
+          const { start } = expect.arguments[maxArgs].loc;
+          const { end } = expect.arguments[node.arguments.length - 1].loc;
+
+          const loc = {
+            start,
+            end: {
+              column: end.column - 1,
+              line: end.line,
+            },
+          };
 
           context.report({
-            messageId: 'incorrectNumberOfArguments',
+            messageId: 'tooManyArgs',
+            data: { amount: maxArgs, s: maxArgs === 1 ? '' : 's' },
             node,
             loc,
           });
@@ -252,6 +272,7 @@ export default createRule<[{ alwaysAwait?: boolean }], MessageIds>({
         const targetNode = getParentIfThenified(parentNode);
         const finalNode =
           findPromiseCallExpressionNode(targetNode) || targetNode;
+
         if (
           finalNode.parent &&
           // If node is not awaited or returned

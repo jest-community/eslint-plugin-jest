@@ -31,6 +31,7 @@ function matchesAssertFunctionName(
         .split('.')
         .map(x => {
           if (x === '**') return '[a-z\\.]*';
+
           return x.replace(/\*/gu, '[a-z]*');
         })
         .join('\\.')}(\\.|$)`,
@@ -97,6 +98,7 @@ export default createRule<
     return {
       CallExpression(node) {
         const name = getNodeName(node.callee);
+
         if (name === TestCaseName.it || name === TestCaseName.test) {
           unchecked.push(node);
         } else if (

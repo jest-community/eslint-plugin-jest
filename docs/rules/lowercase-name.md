@@ -1,4 +1,4 @@
-# Enforce lowercase test names (lowercase-name)
+# Enforce lowercase test names (`lowercase-name`)
 
 ## Rule details
 
@@ -85,4 +85,22 @@ Example of **correct** code for the `{ "allowedPrefixes": ["GET"] }` option:
 /* eslint jest/lowercase-name: ["error", { "allowedPrefixes": ["GET"] }] */
 
 describe('GET /live');
+```
+
+### `ignoreTopLevelDescribe`
+
+This option can be set to allow only the top-level `describe` blocks to have a
+title starting with an upper-case letter.
+
+Example of **correct** code for the `{ "ignoreTopLevelDescribe": true }` option:
+
+```js
+/* eslint jest/lowercase-name: ["error", { "ignoreTopLevelDescribe": true }] */
+describe('MyClass', () => {
+  describe('#myMethod', () => {
+    it('does things', () => {
+      //
+    });
+  });
+});
 ```

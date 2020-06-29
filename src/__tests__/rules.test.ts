@@ -3,7 +3,7 @@ import { resolve } from 'path';
 import plugin from '../';
 
 const ruleNames = Object.keys(plugin.rules);
-const numberOfRules = 42;
+const numberOfRules = 44;
 
 describe('rules', () => {
   it('should have a corresponding doc for each rule', () => {
@@ -18,8 +18,25 @@ describe('rules', () => {
     });
   });
 
+  it('should have a corresponding test for each rule', () => {
+    ruleNames.forEach(rule => {
+      const testPath = resolve(
+        __dirname,
+        '../rules/__tests__/',
+        `${rule}.test.ts`,
+      );
+
+      if (!existsSync(testPath)) {
+        throw new Error(
+          `Could not find test file for rule "${rule}" in path "${testPath}"`,
+        );
+      }
+    });
+  });
+
   it('should have the correct amount of rules', () => {
     const { length } = ruleNames;
+
     if (length !== numberOfRules) {
       throw new Error(
         `There should be exactly ${numberOfRules} rules, but there are ${length}. If you've added a new rule, please update this number.`,
@@ -49,6 +66,7 @@ describe('rules', () => {
     allConfigRules.forEach(rule => {
       const ruleNamePrefix = 'jest/';
       const ruleName = rule.slice(ruleNamePrefix.length);
+
       expect(rule.startsWith(ruleNamePrefix)).toBe(true);
       expect(ruleNames).toContain(ruleName);
       // eslint-disable-next-line @typescript-eslint/no-require-imports

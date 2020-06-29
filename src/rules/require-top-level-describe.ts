@@ -20,21 +20,25 @@ export default createRule({
   defaultOptions: [],
   create(context) {
     let numberOfDescribeBlocks = 0;
+
     return {
       CallExpression(node) {
         if (isDescribe(node)) {
           numberOfDescribeBlocks++;
+
           return;
         }
 
         if (numberOfDescribeBlocks === 0) {
           if (isTestCase(node)) {
             context.report({ node, messageId: 'unexpectedTestCase' });
+
             return;
           }
 
           if (isHook(node)) {
             context.report({ node, messageId: 'unexpectedHook' });
+
             return;
           }
         }

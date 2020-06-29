@@ -34,8 +34,86 @@ ruleTester.run('no-standalone-expect', rule, {
     'it.only("an only", value => { expect(value).toBe(true); });',
     'it.concurrent("an concurrent", value => { expect(value).toBe(true); });',
     'describe.each([1, true])("trues", value => { it("an it", () => expect(value).toBe(true) ); });',
+    {
+      code: `
+        describe('scenario', () => {
+          const t = Math.random() ? it.only : it;
+          t('testing', () => expect(true));
+        });
+      `,
+      options: [{ additionalTestBlockFunctions: ['t'] }],
+    },
+    {
+      code: `
+        each([
+          [1, 1, 2],
+          [1, 2, 3],
+          [2, 1, 3],
+        ]).test('returns the result of adding %d to %d', (a, b, expected) => {
+          expect(a + b).toBe(expected);
+        });
+      `,
+      options: [{ additionalTestBlockFunctions: ['each.test'] }],
+    },
   ],
   invalid: [
+    {
+      code: `
+        describe('scenario', () => {
+          const t = Math.random() ? it.only : it;
+          t('testing', () => expect(true));
+        });
+      `,
+      errors: [{ endColumn: 42, column: 30, messageId: 'unexpectedExpect' }],
+    },
+    {
+      code: `
+        describe('scenario', () => {
+          const t = Math.random() ? it.only : it;
+          t('testing', () => expect(true));
+        });
+      `,
+      options: [{ additionalTestBlockFunctions: undefined }],
+      errors: [{ endColumn: 42, column: 30, messageId: 'unexpectedExpect' }],
+    },
+    {
+      code: `
+        each([
+          [1, 1, 2],
+          [1, 2, 3],
+          [2, 1, 3],
+        ]).test('returns the result of adding %d to %d', (a, b, expected) => {
+          expect(a + b).toBe(expected);
+        });
+      `,
+      errors: [{ endColumn: 24, column: 11, messageId: 'unexpectedExpect' }],
+    },
+    {
+      code: `
+        each([
+          [1, 1, 2],
+          [1, 2, 3],
+          [2, 1, 3],
+        ]).test('returns the result of adding %d to %d', (a, b, expected) => {
+          expect(a + b).toBe(expected);
+        });
+      `,
+      options: [{ additionalTestBlockFunctions: ['each'] }],
+      errors: [{ endColumn: 24, column: 11, messageId: 'unexpectedExpect' }],
+    },
+    {
+      code: `
+        each([
+          [1, 1, 2],
+          [1, 2, 3],
+          [2, 1, 3],
+        ]).test('returns the result of adding %d to %d', (a, b, expected) => {
+          expect(a + b).toBe(expected);
+        });
+      `,
+      options: [{ additionalTestBlockFunctions: ['test'] }],
+      errors: [{ endColumn: 24, column: 11, messageId: 'unexpectedExpect' }],
+    },
     {
       code: 'describe("a test", () => { expect(1).toBe(1); });',
       errors: [{ endColumn: 37, column: 28, messageId: 'unexpectedExpect' }],

@@ -1,4 +1,25 @@
-# Suggest using inline snapshots (prefer-inline-snapshots)
+# Suggest using inline snapshots (`prefer-inline-snapshots`)
+
+## Deprecated
+
+This rule has been deprecated in favor of
+[`no-restricted-matchers`](no-restricted-matchers.md) with the following config:
+
+```json
+{
+  "rules": {
+    "jest/no-restricted-matchers": [
+      "error",
+      {
+        "toThrowErrorMatchingSnapshot": "Use `toThrowErrorMatchingInlineSnapshot()` instead",
+        "toMatchSnapshot": "Use `toMatchInlineSnapshot()` instead"
+      }
+    ]
+  }
+}
+```
+
+---
 
 In order to make snapshot tests more managable and reviewable
 `toMatchInlineSnapshot()` and `toThrowErrorMatchingInlineSnapshot` should be

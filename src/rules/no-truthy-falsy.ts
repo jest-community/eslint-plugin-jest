@@ -9,6 +9,8 @@ export default createRule({
       description: 'Disallow using `toBeTruthy()` & `toBeFalsy()`',
       recommended: false,
     },
+    deprecated: true,
+    replacedBy: ['no-restricted-matchers'],
     messages: {
       avoidMatcher: 'Avoid {{ matcherName }}',
     },
@@ -24,6 +26,7 @@ export default createRule({
         }
 
         const { matcher } = parseExpectCall(node);
+
         if (!matcher || !['toBeTruthy', 'toBeFalsy'].includes(matcher.name)) {
           return;
         }

@@ -9,7 +9,7 @@ const ruleTester = new TSESLint.RuleTester({
   },
 });
 
-ruleTester.run('no-standalone-hook', rule, {
+ruleTester.run('require-top-level-describe', rule, {
   valid: [
     'describe("test suite", () => { test("my test") });',
     'describe("test suite", () => { it("my test") });',

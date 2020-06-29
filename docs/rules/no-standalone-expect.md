@@ -1,4 +1,4 @@
-# No standalone expect in a describe block (no-standalone-expect)
+# No standalone expect in a describe block (`no-standalone-expect`)
 
 Prevents `expect` statements outside of a `test` or `it` block. An `expect`
 within a helper function (but outside of a `test` or `it` block) will not
@@ -63,6 +63,36 @@ describe('a test', () => {
 \*Note that this rule will not trigger if the helper function is never used even
 thought the `expect` will not execute. Rely on a rule like no-unused-vars for
 this case.
+
+### Options
+
+#### `additionalTestBlockFunctions`
+
+This array can be used to specify the names of functions that should also be
+treated as test blocks:
+
+```json
+{
+  "rules": {
+    "jest/no-standalone-expect": [
+      "error",
+      { "additionalTestBlockFunctions": ["each.test"] }
+    ]
+  }
+}
+```
+
+The following is _correct_ when using the above configuration:
+
+```js
+each([
+  [1, 1, 2],
+  [1, 2, 3],
+  [2, 1, 3],
+]).test('returns the result of adding %d to %d', (a, b, expected) => {
+  expect(a + b).toBe(expected);
+});
+```
 
 ## When Not To Use It
 

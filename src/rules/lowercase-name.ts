@@ -43,6 +43,7 @@ const jestFunctionName = (
   allowedPrefixes: readonly string[],
 ) => {
   const description = getStringValue(node.arguments[0]);
+
   if (allowedPrefixes.some(name => description.startsWith(name))) {
     return null;
   }
@@ -61,6 +62,7 @@ export default createRule<
     Partial<{
       ignore: readonly IgnorableFunctionExpressions[];
       allowedPrefixes: readonly string[];
+      ignoreTopLevelDescribe: boolean;
     }>,
   ],
   'unexpectedLowercase'
@@ -69,8 +71,7 @@ export default createRule<
   meta: {
     type: 'suggestion',
     docs: {
-      description:
-        'Enforce `it`, `test` and `describe` to have descriptions that begin with a lowercase letter. This provides more readable test failures.',
+      description: 'Enforce lowercase test names',
       category: 'Best Practices',
       recommended: false,
     },
@@ -98,18 +99,38 @@ export default createRule<
             items: { type: 'string' },
             additionalItems: false,
           },
+          ignoreTopLevelDescribe: {
+            type: 'boolean',
+            default: false,
+          },
         },
         additionalProperties: false,
       },
     ],
   } as const,
-  defaultOptions: [{ ignore: [], allowedPrefixes: [] }],
-  create(context, [{ ignore = [], allowedPrefixes = [] }]) {
+  defaultOptions: [
+    { ignore: [], allowedPrefixes: [], ignoreTopLevelDescribe: false },
+  ],
+  create(
+    context,
+    [{ ignore = [], allowedPrefixes = [], ignoreTopLevelDescribe }],
+  ) {
+    let numberOfDescribeBlocks = 0;
+
     return {
       CallExpression(node: TSESTree.CallExpression) {
         if (!isJestFunctionWithLiteralArg(node)) {
           return;
         }
+
+        if (isDescribe(node)) {
+          numberOfDescribeBlocks++;
+
+          if (ignoreTopLevelDescribe && numberOfDescribeBlocks === 1) {
+            return;
+          }
+        }
+
         const erroneousMethod = jestFunctionName(node, allowedPrefixes);
 
         if (erroneousMethod && !ignore.includes(node.callee.name)) {
@@ -135,6 +156,11 @@ export default createRule<
               ];
             },
           });
+        }
+      },
+      'CallExpression:exit'(node: TSESTree.CallExpression) {
+        if (isDescribe(node)) {
+          numberOfDescribeBlocks--;
         }
       },
     };

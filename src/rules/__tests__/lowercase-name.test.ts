@@ -1,4 +1,5 @@
 import { TSESLint } from '@typescript-eslint/experimental-utils';
+import dedent from 'dedent';
 import resolveFrom from 'resolve-from';
 import rule from '../lowercase-name';
 import { DescribeAlias, TestCaseName } from '../utils';
@@ -250,4 +251,132 @@ ruleTester.run('lowercase-name with allowedPrefixes', rule, {
     },
   ],
   invalid: [],
+});
+
+ruleTester.run('lowercase-name with ignoreTopLevelDescribe', rule, {
+  valid: [
+    {
+      code: 'describe("MyClass", () => {});',
+      options: [{ ignoreTopLevelDescribe: true }],
+    },
+    {
+      code: dedent`
+        describe('MyClass', () => {
+          describe('#myMethod', () => {
+            it('does things', () => {
+              //
+            });
+          });
+        });
+      `,
+      options: [{ ignoreTopLevelDescribe: true }],
+    },
+    {
+      code: dedent`
+        describe('Strings', () => {
+          it('are strings', () => {
+            expect('abc').toBe('abc');
+          });
+        });
+        
+        describe('Booleans', () => {
+          it('are booleans', () => {
+            expect(true).toBe(true);
+          });
+        });
+      `,
+      options: [{ ignoreTopLevelDescribe: true }],
+    },
+  ],
+  invalid: [
+    {
+      code: 'it("Works!", () => {});',
+      options: [{ ignoreTopLevelDescribe: true }],
+      output: 'it("works!", () => {});',
+      errors: [
+        {
+          messageId: 'unexpectedLowercase',
+          data: { method: TestCaseName.it },
+          column: 4,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        describe('MyClass', () => {
+          describe('MyMethod', () => {
+            it('Does things', () => {
+              //
+            });
+          });
+        });
+      `,
+      options: [{ ignoreTopLevelDescribe: true }],
+      output: dedent`
+        describe('MyClass', () => {
+          describe('myMethod', () => {
+            it('does things', () => {
+              //
+            });
+          });
+        });
+      `,
+      errors: [
+        {
+          messageId: 'unexpectedLowercase',
+          data: { method: DescribeAlias.describe },
+          column: 12,
+          line: 2,
+        },
+        {
+          messageId: 'unexpectedLowercase',
+          data: { method: TestCaseName.it },
+          column: 8,
+          line: 3,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        describe('MyClass', () => {
+          describe('MyMethod', () => {
+            it('Does things', () => {
+              //
+            });
+          });
+        });
+      `,
+      options: [{ ignoreTopLevelDescribe: false }],
+      output: dedent`
+        describe('myClass', () => {
+          describe('myMethod', () => {
+            it('does things', () => {
+              //
+            });
+          });
+        });
+      `,
+      errors: [
+        {
+          messageId: 'unexpectedLowercase',
+          data: { method: DescribeAlias.describe },
+          column: 10,
+          line: 1,
+        },
+        {
+          messageId: 'unexpectedLowercase',
+          data: { method: DescribeAlias.describe },
+          column: 12,
+          line: 2,
+        },
+        {
+          messageId: 'unexpectedLowercase',
+          data: { method: TestCaseName.it },
+          column: 8,
+          line: 3,
+        },
+      ],
+    },
+  ],
 });

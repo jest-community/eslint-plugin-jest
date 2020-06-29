@@ -17,6 +17,7 @@ export default createRule({
   defaultOptions: [],
   create(context) {
     const hooksContext = [false];
+
     return {
       CallExpression(node) {
         if (!isHook(node) && isTestCase(node)) {

@@ -8,13 +8,14 @@ export default createRule({
       category: 'Best Practices',
       description: 'Avoid using a callback in asynchronous tests',
       recommended: false,
+      suggestion: true,
     },
     messages: {
       illegalTestCallback: 'Illegal usage of test callback',
+      suggestWrappingInPromise: 'Wrap in `new Promise({{ callback }} => ...`',
       useAwaitInsteadOfCallback:
         'Use await instead of callback in async functions',
     },
-    fixable: 'code',
     schema: [],
     type: 'suggestion',
   },
@@ -34,6 +35,15 @@ export default createRule({
 
         const [argument] = callback.params;
 
+        if (argument.type !== AST_NODE_TYPES.Identifier) {
+          context.report({
+            node: argument,
+            messageId: 'illegalTestCallback',
+          });
+
+          return;
+        }
+
         if (callback.async) {
           context.report({
             node: argument,
@@ -46,71 +56,76 @@ export default createRule({
         context.report({
           node: argument,
           messageId: 'illegalTestCallback',
-          fix(fixer) {
-            const { body } = callback;
+          suggest: [
+            {
+              messageId: 'suggestWrappingInPromise',
+              data: { callback: argument.name },
+              fix(fixer) {
+                const { body } = callback;
 
-            /* istanbul ignore if https://github.com/typescript-eslint/typescript-eslint/issues/734 */
-            if (!body) {
-              throw new Error(
-                `Unexpected null when attempting to fix ${context.getFilename()} - please file a github issue at https://github.com/jest-community/eslint-plugin-jest`,
-              );
-            }
+                /* istanbul ignore if https://github.com/typescript-eslint/typescript-eslint/issues/734 */
+                if (!body) {
+                  throw new Error(
+                    `Unexpected null when attempting to fix ${context.getFilename()} - please file a github issue at https://github.com/jest-community/eslint-plugin-jest`,
+                  );
+                }
 
-            const sourceCode = context.getSourceCode();
-            const firstBodyToken = sourceCode.getFirstToken(body);
-            const lastBodyToken = sourceCode.getLastToken(body);
-            const tokenBeforeArgument = sourceCode.getTokenBefore(argument);
-            const tokenAfterArgument = sourceCode.getTokenAfter(argument);
+                const sourceCode = context.getSourceCode();
+                const firstBodyToken = sourceCode.getFirstToken(body);
+                const lastBodyToken = sourceCode.getLastToken(body);
+                const tokenBeforeArgument = sourceCode.getTokenBefore(argument);
+                const tokenAfterArgument = sourceCode.getTokenAfter(argument);
 
-            /* istanbul ignore if */
-            if (
-              !('name' in argument) ||
-              !firstBodyToken ||
-              !lastBodyToken ||
-              !tokenBeforeArgument ||
-              !tokenAfterArgument
-            ) {
-              throw new Error(
-                `Unexpected null when attempting to fix ${context.getFilename()} - please file a github issue at https://github.com/jest-community/eslint-plugin-jest`,
-              );
-            }
+                /* istanbul ignore if */
+                if (
+                  !firstBodyToken ||
+                  !lastBodyToken ||
+                  !tokenBeforeArgument ||
+                  !tokenAfterArgument
+                ) {
+                  throw new Error(
+                    `Unexpected null when attempting to fix ${context.getFilename()} - please file a github issue at https://github.com/jest-community/eslint-plugin-jest`,
+                  );
+                }
 
-            const argumentInParens =
-              tokenBeforeArgument.value === '(' &&
-              tokenAfterArgument.value === ')';
+                const argumentInParens =
+                  tokenBeforeArgument.value === '(' &&
+                  tokenAfterArgument.value === ')';
 
-            let argumentFix = fixer.replaceText(argument, '()');
+                let argumentFix = fixer.replaceText(argument, '()');
 
-            if (argumentInParens) {
-              argumentFix = fixer.remove(argument);
-            }
+                if (argumentInParens) {
+                  argumentFix = fixer.remove(argument);
+                }
 
-            let newCallback = argument.name;
+                let newCallback = argument.name;
 
-            if (argumentInParens) {
-              newCallback = `(${newCallback})`;
-            }
+                if (argumentInParens) {
+                  newCallback = `(${newCallback})`;
+                }
 
-            let beforeReplacement = `new Promise(${newCallback} => `;
-            let afterReplacement = ')';
-            let replaceBefore = true;
+                let beforeReplacement = `new Promise(${newCallback} => `;
+                let afterReplacement = ')';
+                let replaceBefore = true;
 
-            if (body.type === AST_NODE_TYPES.BlockStatement) {
-              const keyword = 'return';
+                if (body.type === AST_NODE_TYPES.BlockStatement) {
+                  const keyword = 'return';
 
-              beforeReplacement = `${keyword} ${beforeReplacement}{`;
-              afterReplacement += '}';
-              replaceBefore = false;
-            }
+                  beforeReplacement = `${keyword} ${beforeReplacement}{`;
+                  afterReplacement += '}';
+                  replaceBefore = false;
+                }
 
-            return [
-              argumentFix,
-              replaceBefore
-                ? fixer.insertTextBefore(firstBodyToken, beforeReplacement)
-                : fixer.insertTextAfter(firstBodyToken, beforeReplacement),
-              fixer.insertTextAfter(lastBodyToken, afterReplacement),
-            ];
-          },
+                return [
+                  argumentFix,
+                  replaceBefore
+                    ? fixer.insertTextBefore(firstBodyToken, beforeReplacement)
+                    : fixer.insertTextAfter(firstBodyToken, beforeReplacement),
+                  fixer.insertTextAfter(lastBodyToken, afterReplacement),
+                ];
+              },
+            },
+          ],
         });
       },
     };

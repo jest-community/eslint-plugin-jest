@@ -12,8 +12,7 @@ export default createRule({
   meta: {
     docs: {
       category: 'Best Practices',
-      description:
-        "This rule raises a warning about commented out tests. It's similar to no-disabled-tests rule.",
+      description: 'Disallow commented out tests',
       recommended: false,
     },
     messages: {

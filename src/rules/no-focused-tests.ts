@@ -24,7 +24,6 @@ interface ConcurrentExpression extends TSESTree.MemberExpressionComputedName {
 const isConcurrentExpression = (
   expression: TSESTree.MemberExpression,
 ): expression is ConcurrentExpression =>
-  expression.type === AST_NODE_TYPES.MemberExpression &&
   isSupportedAccessor(expression.property, TestCaseProperty.concurrent) &&
   !!expression.parent &&
   expression.parent.type === AST_NODE_TYPES.MemberExpression;
@@ -72,6 +71,7 @@ export default createRule({
           isCallToFocusedTestFunction(callee.object)
         ) {
           context.report({ messageId: 'focusedTest', node: callee.object });
+
           return;
         }
 
@@ -83,11 +83,13 @@ export default createRule({
             messageId: 'focusedTest',
             node: callee.object.property,
           });
+
           return;
         }
 
         if (isCallToTestOnlyFunction(callee)) {
           context.report({ messageId: 'focusedTest', node: callee.property });
+
           return;
         }
       }

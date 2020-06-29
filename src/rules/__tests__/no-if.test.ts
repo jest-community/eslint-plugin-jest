@@ -31,7 +31,7 @@ ruleTester.run('conditional expressions', rule, {
       errors: [
         {
           data: { condition: 'conditional' },
-          messageId: 'noConditionalExpect',
+          messageId: 'conditionalInTest',
         },
       ],
     },
@@ -44,7 +44,7 @@ ruleTester.run('conditional expressions', rule, {
       errors: [
         {
           data: { condition: 'conditional' },
-          messageId: 'noConditionalExpect',
+          messageId: 'conditionalInTest',
         },
       ],
     },
@@ -57,11 +57,11 @@ ruleTester.run('conditional expressions', rule, {
       errors: [
         {
           data: { condition: 'conditional' },
-          messageId: 'noConditionalExpect',
+          messageId: 'conditionalInTest',
         },
         {
           data: { condition: 'conditional' },
-          messageId: 'noConditionalExpect',
+          messageId: 'conditionalInTest',
         },
       ],
     },
@@ -187,7 +187,7 @@ ruleTester.run('switch statements', rule, {
       errors: [
         {
           data: { condition: 'switch' },
-          messageId: 'noConditionalExpect',
+          messageId: 'conditionalInTest',
         },
       ],
     },
@@ -198,7 +198,7 @@ ruleTester.run('switch statements', rule, {
       errors: [
         {
           data: { condition: 'switch' },
-          messageId: 'noConditionalExpect',
+          messageId: 'conditionalInTest',
         },
       ],
     },
@@ -209,7 +209,7 @@ ruleTester.run('switch statements', rule, {
       errors: [
         {
           data: { condition: 'switch' },
-          messageId: 'noConditionalExpect',
+          messageId: 'conditionalInTest',
         },
       ],
     },
@@ -220,7 +220,7 @@ ruleTester.run('switch statements', rule, {
       errors: [
         {
           data: { condition: 'switch' },
-          messageId: 'noConditionalExpect',
+          messageId: 'conditionalInTest',
         },
       ],
     },
@@ -231,7 +231,7 @@ ruleTester.run('switch statements', rule, {
       errors: [
         {
           data: { condition: 'switch' },
-          messageId: 'noConditionalExpect',
+          messageId: 'conditionalInTest',
         },
       ],
     },
@@ -242,7 +242,7 @@ ruleTester.run('switch statements', rule, {
       errors: [
         {
           data: { condition: 'switch' },
-          messageId: 'noConditionalExpect',
+          messageId: 'conditionalInTest',
         },
       ],
     },
@@ -253,7 +253,7 @@ ruleTester.run('switch statements', rule, {
       errors: [
         {
           data: { condition: 'switch' },
-          messageId: 'noConditionalExpect',
+          messageId: 'conditionalInTest',
         },
       ],
     },
@@ -264,7 +264,7 @@ ruleTester.run('switch statements', rule, {
       errors: [
         {
           data: { condition: 'switch' },
-          messageId: 'noConditionalExpect',
+          messageId: 'conditionalInTest',
         },
       ],
     },
@@ -275,7 +275,7 @@ ruleTester.run('switch statements', rule, {
       errors: [
         {
           data: { condition: 'switch' },
-          messageId: 'noConditionalExpect',
+          messageId: 'conditionalInTest',
         },
       ],
     },
@@ -286,7 +286,7 @@ ruleTester.run('switch statements', rule, {
       errors: [
         {
           data: { condition: 'switch' },
-          messageId: 'noConditionalExpect',
+          messageId: 'conditionalInTest',
         },
       ],
     },
@@ -297,7 +297,7 @@ ruleTester.run('switch statements', rule, {
       errors: [
         {
           data: { condition: 'switch' },
-          messageId: 'noConditionalExpect',
+          messageId: 'conditionalInTest',
         },
       ],
     },
@@ -308,7 +308,7 @@ ruleTester.run('switch statements', rule, {
       errors: [
         {
           data: { condition: 'switch' },
-          messageId: 'noConditionalExpect',
+          messageId: 'conditionalInTest',
         },
       ],
     },
@@ -319,7 +319,7 @@ ruleTester.run('switch statements', rule, {
       errors: [
         {
           data: { condition: 'switch' },
-          messageId: 'noConditionalExpect',
+          messageId: 'conditionalInTest',
         },
       ],
     },
@@ -332,7 +332,7 @@ ruleTester.run('switch statements', rule, {
       errors: [
         {
           data: { condition: 'switch' },
-          messageId: 'noConditionalExpect',
+          messageId: 'conditionalInTest',
         },
       ],
     },
@@ -341,7 +341,7 @@ ruleTester.run('switch statements', rule, {
       errors: [
         {
           data: { condition: 'switch' },
-          messageId: 'noConditionalExpect',
+          messageId: 'conditionalInTest',
         },
       ],
     },
@@ -358,15 +358,15 @@ ruleTester.run('switch statements', rule, {
       errors: [
         {
           data: { condition: 'switch' },
-          messageId: 'noConditionalExpect',
+          messageId: 'conditionalInTest',
         },
         {
           data: { condition: 'switch' },
-          messageId: 'noConditionalExpect',
+          messageId: 'conditionalInTest',
         },
         {
           data: { condition: 'switch' },
-          messageId: 'noConditionalExpect',
+          messageId: 'conditionalInTest',
         },
       ],
     },
@@ -379,7 +379,7 @@ ruleTester.run('switch statements', rule, {
       errors: [
         {
           data: { condition: 'switch' },
-          messageId: 'noConditionalExpect',
+          messageId: 'conditionalInTest',
         },
       ],
     },
@@ -408,7 +408,7 @@ ruleTester.run('switch statements', rule, {
       errors: [
         {
           data: { condition: 'switch' },
-          messageId: 'noConditionalExpect',
+          messageId: 'conditionalInTest',
         },
       ],
     },
@@ -553,29 +553,13 @@ ruleTester.run('if statements', rule, {
   ],
   invalid: [
     {
-      code: `
-      it('foo', () => {
-        switch (true) {
-          case true: {
-          }
-        }
-      })
-      `,
-      errors: [
-        {
-          data: { condition: 'if' },
-          messageId: 'noConditionalExpect',
-        },
-      ],
-    },
-    {
       code: `it('foo', () => {
         if('bar') {}
       })`,
       errors: [
         {
           data: { condition: 'if' },
-          messageId: 'noConditionalExpect',
+          messageId: 'conditionalInTest',
         },
       ],
     },
@@ -586,7 +570,7 @@ ruleTester.run('if statements', rule, {
       errors: [
         {
           data: { condition: 'if' },
-          messageId: 'noConditionalExpect',
+          messageId: 'conditionalInTest',
         },
       ],
     },
@@ -597,7 +581,7 @@ ruleTester.run('if statements', rule, {
       errors: [
         {
           data: { condition: 'if' },
-          messageId: 'noConditionalExpect',
+          messageId: 'conditionalInTest',
         },
       ],
     },
@@ -608,7 +592,7 @@ ruleTester.run('if statements', rule, {
       errors: [
         {
           data: { condition: 'if' },
-          messageId: 'noConditionalExpect',
+          messageId: 'conditionalInTest',
         },
       ],
     },
@@ -619,7 +603,7 @@ ruleTester.run('if statements', rule, {
       errors: [
         {
           data: { condition: 'if' },
-          messageId: 'noConditionalExpect',
+          messageId: 'conditionalInTest',
         },
       ],
     },
@@ -630,7 +614,7 @@ ruleTester.run('if statements', rule, {
       errors: [
         {
           data: { condition: 'if' },
-          messageId: 'noConditionalExpect',
+          messageId: 'conditionalInTest',
         },
       ],
     },
@@ -641,7 +625,7 @@ ruleTester.run('if statements', rule, {
       errors: [
         {
           data: { condition: 'if' },
-          messageId: 'noConditionalExpect',
+          messageId: 'conditionalInTest',
         },
       ],
     },
@@ -652,7 +636,7 @@ ruleTester.run('if statements', rule, {
       errors: [
         {
           data: { condition: 'if' },
-          messageId: 'noConditionalExpect',
+          messageId: 'conditionalInTest',
         },
       ],
     },
@@ -663,7 +647,7 @@ ruleTester.run('if statements', rule, {
       errors: [
         {
           data: { condition: 'if' },
-          messageId: 'noConditionalExpect',
+          messageId: 'conditionalInTest',
         },
       ],
     },
@@ -674,7 +658,7 @@ ruleTester.run('if statements', rule, {
       errors: [
         {
           data: { condition: 'if' },
-          messageId: 'noConditionalExpect',
+          messageId: 'conditionalInTest',
         },
       ],
     },
@@ -685,7 +669,7 @@ ruleTester.run('if statements', rule, {
       errors: [
         {
           data: { condition: 'if' },
-          messageId: 'noConditionalExpect',
+          messageId: 'conditionalInTest',
         },
       ],
     },
@@ -696,7 +680,7 @@ ruleTester.run('if statements', rule, {
       errors: [
         {
           data: { condition: 'if' },
-          messageId: 'noConditionalExpect',
+          messageId: 'conditionalInTest',
         },
       ],
     },
@@ -709,7 +693,7 @@ ruleTester.run('if statements', rule, {
       errors: [
         {
           data: { condition: 'if' },
-          messageId: 'noConditionalExpect',
+          messageId: 'conditionalInTest',
         },
       ],
     },
@@ -718,7 +702,7 @@ ruleTester.run('if statements', rule, {
       errors: [
         {
           data: { condition: 'if' },
-          messageId: 'noConditionalExpect',
+          messageId: 'conditionalInTest',
         },
       ],
     },
@@ -735,15 +719,15 @@ ruleTester.run('if statements', rule, {
       errors: [
         {
           data: { condition: 'if' },
-          messageId: 'noConditionalExpect',
+          messageId: 'conditionalInTest',
         },
         {
           data: { condition: 'if' },
-          messageId: 'noConditionalExpect',
+          messageId: 'conditionalInTest',
         },
         {
           data: { condition: 'if' },
-          messageId: 'noConditionalExpect',
+          messageId: 'conditionalInTest',
         },
       ],
     },
@@ -756,7 +740,7 @@ ruleTester.run('if statements', rule, {
       errors: [
         {
           data: { condition: 'if' },
-          messageId: 'noConditionalExpect',
+          messageId: 'conditionalInTest',
         },
       ],
     },
@@ -783,7 +767,7 @@ ruleTester.run('if statements', rule, {
       errors: [
         {
           data: { condition: 'if' },
-          messageId: 'noConditionalExpect',
+          messageId: 'conditionalInTest',
         },
       ],
     },

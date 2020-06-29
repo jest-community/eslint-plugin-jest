@@ -6,6 +6,7 @@ import {
   DescribeAlias,
   TestCaseName,
   createRule,
+  getNodeName,
   isDescribe,
   isExpectCall,
   isFunction,
@@ -13,9 +14,9 @@ import {
 } from './utils';
 
 const getBlockType = (
-  stmt: TSESTree.BlockStatement,
-): 'function' | DescribeAlias.describe | null => {
-  const func = stmt.parent;
+  statement: TSESTree.BlockStatement,
+): 'function' | 'describe' | null => {
+  const func = statement.parent;
 
   /* istanbul ignore if */
   if (!func) {
@@ -23,21 +24,26 @@ const getBlockType = (
       `Unexpected BlockStatement. No parent defined. - please file a github issue at https://github.com/jest-community/eslint-plugin-jest`,
     );
   }
+
   // functionDeclaration: function func() {}
   if (func.type === AST_NODE_TYPES.FunctionDeclaration) {
     return 'function';
   }
+
   if (isFunction(func) && func.parent) {
     const expr = func.parent;
-    // arrowfunction or function expr
+
+    // arrow function or function expr
     if (expr.type === AST_NODE_TYPES.VariableDeclarator) {
       return 'function';
     }
+
     // if it's not a variable, it will be callExpr, we only care about describe
     if (expr.type === AST_NODE_TYPES.CallExpression && isDescribe(expr)) {
-      return DescribeAlias.describe;
+      return 'describe';
     }
   }
+
   return null;
 };
 
@@ -49,14 +55,12 @@ const isEach = (node: TSESTree.CallExpression): boolean =>
   node.callee.callee.object.type === AST_NODE_TYPES.Identifier &&
   TestCaseName.hasOwnProperty(node.callee.callee.object.name);
 
-type callStackEntry =
-  | TestCaseName.test
-  | 'function'
-  | DescribeAlias.describe
-  | 'arrowFunc'
-  | 'template';
+type BlockType = 'test' | 'function' | 'describe' | 'arrow' | 'template';
 
-export default createRule({
+export default createRule<
+  [{ additionalTestBlockFunctions: string[] }],
+  'unexpectedExpect'
+>({
   name: __filename,
   meta: {
     docs: {
@@ -68,60 +72,85 @@ export default createRule({
       unexpectedExpect: 'Expect must be inside of a test block.',
     },
     type: 'suggestion',
-    schema: [],
+    schema: [
+      {
+        properties: {
+          additionalTestBlockFunctions: {
+            type: 'array',
+            items: { type: 'string' },
+          },
+        },
+        additionalProperties: false,
+      },
+    ],
   },
-  defaultOptions: [],
-  create(context) {
-    const callStack: callStackEntry[] = [];
+  defaultOptions: [{ additionalTestBlockFunctions: [] }],
+  create(context, [{ additionalTestBlockFunctions = [] }]) {
+    const callStack: BlockType[] = [];
+
+    const isCustomTestBlockFunction = (
+      node: TSESTree.CallExpression,
+    ): boolean =>
+      additionalTestBlockFunctions.includes(getNodeName(node) || '');
+
+    const isTestBlock = (node: TSESTree.CallExpression): boolean =>
+      isTestCase(node) || isCustomTestBlockFunction(node);
 
     return {
       CallExpression(node) {
         if (isExpectCall(node)) {
           const parent = callStack[callStack.length - 1];
+
           if (!parent || parent === DescribeAlias.describe) {
             context.report({ node, messageId: 'unexpectedExpect' });
           }
+
           return;
         }
-        if (isTestCase(node)) {
-          callStack.push(TestCaseName.test);
+
+        if (isTestBlock(node)) {
+          callStack.push('test');
         }
+
         if (node.callee.type === AST_NODE_TYPES.TaggedTemplateExpression) {
           callStack.push('template');
         }
       },
       'CallExpression:exit'(node: TSESTree.CallExpression) {
         const top = callStack[callStack.length - 1];
+
         if (
-          (((isTestCase(node) &&
-            node.callee.type !== AST_NODE_TYPES.MemberExpression) ||
-            isEach(node)) &&
-            top === TestCaseName.test) ||
-          (node.callee.type === AST_NODE_TYPES.TaggedTemplateExpression &&
-            top === 'template')
+          (top === 'test' &&
+            (isEach(node) ||
+              (isTestBlock(node) &&
+                node.callee.type !== AST_NODE_TYPES.MemberExpression))) ||
+          (top === 'template' &&
+            node.callee.type === AST_NODE_TYPES.TaggedTemplateExpression)
         ) {
           callStack.pop();
         }
       },
-      BlockStatement(stmt) {
-        const blockType = getBlockType(stmt);
+
+      BlockStatement(statement) {
+        const blockType = getBlockType(statement);
+
         if (blockType) {
           callStack.push(blockType);
         }
       },
-      'BlockStatement:exit'(stmt: TSESTree.BlockStatement) {
-        const blockType = getBlockType(stmt);
-        if (blockType && blockType === callStack[callStack.length - 1]) {
+      'BlockStatement:exit'(statement: TSESTree.BlockStatement) {
+        if (callStack[callStack.length - 1] === getBlockType(statement)) {
           callStack.pop();
         }
       },
+
       ArrowFunctionExpression(node) {
-        if (node.parent && node.parent.type !== AST_NODE_TYPES.CallExpression) {
-          callStack.push('arrowFunc');
+        if (node.parent?.type !== AST_NODE_TYPES.CallExpression) {
+          callStack.push('arrow');
         }
       },
       'ArrowFunctionExpression:exit'() {
-        if (callStack[callStack.length - 1] === 'arrowFunc') {
+        if (callStack[callStack.length - 1] === 'arrow') {
           callStack.pop();
         }
       },

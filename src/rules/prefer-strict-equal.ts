@@ -13,11 +13,12 @@ export default createRule({
       category: 'Best Practices',
       description: 'Suggest using toStrictEqual()',
       recommended: false,
+      suggestion: true,
     },
     messages: {
-      useToStrictEqual: 'Use toStrictEqual() instead',
+      useToStrictEqual: 'Use `toStrictEqual()` instead',
+      suggestReplaceWithStrictEqual: 'Replace with `toStrictEqual()`',
     },
-    fixable: 'code',
     type: 'suggestion',
     schema: [],
   },
@@ -36,14 +37,19 @@ export default createRule({
           isParsedEqualityMatcherCall(matcher, EqualityMatcher.toEqual)
         ) {
           context.report({
-            fix: fixer => [
-              fixer.replaceText(
-                matcher.node.property,
-                EqualityMatcher.toStrictEqual,
-              ),
-            ],
             messageId: 'useToStrictEqual',
             node: matcher.node.property,
+            suggest: [
+              {
+                messageId: 'suggestReplaceWithStrictEqual',
+                fix: fixer => [
+                  fixer.replaceText(
+                    matcher.node.property,
+                    EqualityMatcher.toStrictEqual,
+                  ),
+                ],
+              },
+            ],
           });
         }
       },
