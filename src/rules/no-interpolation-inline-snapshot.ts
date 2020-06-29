@@ -27,7 +27,8 @@ export default createRule({
         const { matcher } = parseExpectCall(node);
 
         if (
-          matcher?.name !== 'toMatchInlineSnapshot' ||
+          (matcher?.name !== 'toMatchInlineSnapshot' &&
+            matcher?.name !== 'toThrowErrorMatchingInlineSnapshot') ||
           matcher?.arguments === null
         ) {
           return;
