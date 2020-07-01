@@ -24,6 +24,10 @@ expect(something).toMatchInlineSnapshot(
     property: ${interpolated}
   }`,
 );
+
+expect(errorThrowingFunction).toThrowErrorMatchingInlineSnapshot(
+  `${interpolated}`,
+);
 ```
 
 Examples of **correct** code for this rule:
@@ -42,6 +46,12 @@ expect(something).toMatchInlineSnapshot(
   `Object {
     property: Any<Date>
   }`,
+);
+
+expect(errorThrowingFunction).toThrowErrorMatchingInlineSnapshot();
+
+expect(errorThrowingFunction).toThrowErrorMatchingInlineSnapshot(
+  `Error Message`,
 );
 ```
 
