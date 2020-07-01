@@ -5,7 +5,8 @@ Prevents the use of string interpolations in snapshots.
 ## Rule Details
 
 Interpolation prevents snapshots from being updated. Instead, properties should
-be overloaded with a matcher by using [property matchers](https://jestjs.io/docs/en/snapshot-testing#property-matchers).
+be overloaded with a matcher by using
+[property matchers](https://jestjs.io/docs/en/snapshot-testing#property-matchers).
 
 Examples of **incorrect** code for this rule:
 
