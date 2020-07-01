@@ -27,25 +27,25 @@ export default createRule({
         const { matcher } = parseExpectCall(node);
 
         if (
-          (matcher?.name !== 'toMatchInlineSnapshot' &&
-            matcher?.name !== 'toThrowErrorMatchingInlineSnapshot') ||
-          matcher?.arguments === null
+          matcher &&
+          [
+            'toMatchInlineSnapshot',
+            'toThrowErrorMatchingInlineSnapshot',
+          ].includes(matcher.name)
         ) {
-          return;
+          // Check all since the optional 'propertyMatchers' argument might be present
+          matcher.arguments?.forEach(argument => {
+            if (
+              argument.type === AST_NODE_TYPES.TemplateLiteral &&
+              argument.expressions.length > 0
+            ) {
+              context.report({
+                messageId: 'noInterpolation',
+                node: argument,
+              });
+            }
+          });
         }
-
-        // Check all since the optional 'propertyMatchers' argument might be present
-        matcher.arguments.forEach(argument => {
-          if (
-            argument.type === AST_NODE_TYPES.TemplateLiteral &&
-            argument.expressions.length > 0
-          ) {
-            context.report({
-              messageId: 'noInterpolation',
-              node: argument,
-            });
-          }
-        });
       },
     };
   },
