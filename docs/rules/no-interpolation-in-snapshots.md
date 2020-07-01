@@ -1,4 +1,4 @@
-# Disallow string interpolation inside inline snapshots (`no-interpolation-inline-snapshot`)
+# Disallow string interpolation inside inline snapshots (`no-interpolation-in-snapshots`)
 
 Prevents the use of string interpolations in snapshots.
 

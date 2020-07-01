@@ -1,6 +1,6 @@
 import { TSESLint } from '@typescript-eslint/experimental-utils';
 import resolveFrom from 'resolve-from';
-import rule from '../no-interpolation-inline-snapshot';
+import rule from '../no-interpolation-in-snapshots';
 
 const ruleTester = new TSESLint.RuleTester({
   parser: resolveFrom(require.resolve('eslint'), 'espree'),
@@ -9,7 +9,7 @@ const ruleTester = new TSESLint.RuleTester({
   },
 });
 
-ruleTester.run('no-interpolation-inline-snapshot', rule, {
+ruleTester.run('no-interpolation-in-snapshots', rule, {
   valid: [
     'expect(something).toMatchInlineSnapshot();',
     'expect(something).toMatchInlineSnapshot(`No interpolation`);',
