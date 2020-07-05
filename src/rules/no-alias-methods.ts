@@ -6,7 +6,7 @@ export default createRule({
     docs: {
       category: 'Best Practices',
       description: 'Disallow alias methods',
-      recommended: 'warn',
+      recommended: false,
     },
     messages: {
       replaceAlias: `Replace {{ alias }}() with its canonical name of {{ canonical }}()`,

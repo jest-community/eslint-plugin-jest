@@ -10,7 +10,7 @@ export default createRule({
     docs: {
       category: 'Best Practices',
       description: 'Prevent exporting from test files',
-      recommended: false,
+      recommended: 'error',
     },
     messages: {
       unexpectedExport: `Do not export from a test file.`,

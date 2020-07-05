@@ -12,7 +12,7 @@ export default createRule({
     docs: {
       category: 'Best Practices',
       description: 'Disallow Jasmine globals',
-      recommended: 'error',
+      recommended: 'warn',
     },
     messages: {
       illegalGlobal:

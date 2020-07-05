@@ -6,7 +6,7 @@ export default createRule({
     docs: {
       category: 'Best Practices',
       description: 'Disallow disabled tests',
-      recommended: false,
+      recommended: 'warn',
     },
     messages: {
       missingFunction: 'Test is missing function argument',
