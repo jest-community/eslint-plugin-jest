@@ -11,6 +11,7 @@ const ruleTester = new TSESLint.RuleTester({
 
 ruleTester.run('no-interpolation-in-snapshots', rule, {
   valid: [
+    'expect("something").toEqual("else");',
     'expect(something).toMatchInlineSnapshot();',
     'expect(something).toMatchInlineSnapshot(`No interpolation`);',
     'expect(something).toMatchInlineSnapshot({}, `No interpolation`);',
