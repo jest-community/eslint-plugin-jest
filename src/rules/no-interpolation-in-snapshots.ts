@@ -6,7 +6,7 @@ export default createRule({
   meta: {
     docs: {
       category: 'Best Practices',
-      description: 'Disallow string interpolation inside inline snapshots.',
+      description: 'Disallow string interpolation inside inline snapshots',
       recommended: false,
     },
     messages: {
@@ -14,7 +14,7 @@ export default createRule({
         'Do not use string interpolation inside of inline snapshots',
     },
     schema: [],
-    type: 'suggestion',
+    type: 'problem',
   },
   defaultOptions: [],
   create(context) {
@@ -26,8 +26,11 @@ export default createRule({
 
         const { matcher } = parseExpectCall(node);
 
+        if (!matcher) {
+          return;
+        }
+
         if (
-          matcher &&
           [
             'toMatchInlineSnapshot',
             'toThrowErrorMatchingInlineSnapshot',
