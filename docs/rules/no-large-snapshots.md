@@ -106,11 +106,11 @@ snapshot:
 In an `eslintrc` file:
 
 ```json
-...
+{
   "rules": {
     "jest/no-large-snapshots": ["warn", { "maxSize": 12, "inlineMaxSize": 6 }]
   }
-...
+}
 ```
 
 Max number of lines allowed could be defined by snapshot type (Inline and
