@@ -12,18 +12,18 @@ This rule gives you control over the usage of these keywords in your codebase.
 
 This rule can be configured as follows
 
-```js
+```json5
 {
-    type: 'object',
-    properties: {
-        fn: {
-            enum: ['it', 'test'],
-        },
-        withinDescribe: {
-            enum: ['it', 'test'],
-        },
+  type: 'object',
+  properties: {
+    fn: {
+      enum: ['it', 'test'],
     },
-    additionalProperties: false,
+    withinDescribe: {
+      enum: ['it', 'test'],
+    },
+  },
+  additionalProperties: false,
 }
 ```
 

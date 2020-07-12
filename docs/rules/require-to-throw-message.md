@@ -15,23 +15,27 @@ an error message.
 The following patterns are considered warnings:
 
 ```js
-expect(() => a()).toThrow();
+test('all the things', async () => {
+  expect(() => a()).toThrow();
 
-expect(() => a()).toThrowError();
+  expect(() => a()).toThrowError();
 
-await expect(a()).rejects.toThrow();
+  await expect(a()).rejects.toThrow();
 
-await expect(a()).rejects.toThrowError();
+  await expect(a()).rejects.toThrowError();
+});
 ```
 
 The following patterns are not considered warnings:
 
 ```js
-expect(() => a()).toThrow('a');
+test('all the things', async () => {
+  expect(() => a()).toThrow('a');
 
-expect(() => a()).toThrowError('a');
+  expect(() => a()).toThrowError('a');
 
-await expect(a()).rejects.toThrow('a');
+  await expect(a()).rejects.toThrow('a');
 
-await expect(a()).rejects.toThrowError('a');
+  await expect(a()).rejects.toThrowError('a');
+});
 ```
