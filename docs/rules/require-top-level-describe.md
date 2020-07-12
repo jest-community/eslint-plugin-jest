@@ -2,8 +2,8 @@
 
 Jest allows you to organise your test files the way you want it. However, the
 more your codebase grows, the more it becomes hard to navigate in your test
-files. This rule makes sure that you provide at least a top-level describe block
-in your test file.
+files. This rule makes sure you provide at least a top-level `describe` block in
+your test file.
 
 ## Rule Details
 
