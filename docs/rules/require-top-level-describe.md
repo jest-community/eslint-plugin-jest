@@ -9,7 +9,7 @@ in your test file.
 
 This rule triggers a warning if a test case (`test` and `it`) or a hook
 (`beforeAll`, `beforeEach`, `afterEach`, `afterAll`) is not located in a
-top-level describe block.
+top-level `describe` block.
 
 The following patterns are considered warnings:
 
