@@ -71,7 +71,7 @@ describe('foo', function() {
 
 ### Default configuration
 
-The default configuration forces top level test to use `test` and all tests
+The default configuration forces all top-level tests to use `test` and all tests
 nested within `describe` to use `it`.
 
 ```js
