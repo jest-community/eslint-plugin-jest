@@ -42,9 +42,9 @@ it('should work with callbacks/async', () => {
 
 ### `assertFunctionNames`
 
-This array option whitelists the assertion function names to look for. Function
-names can use wildcards like `request.*.expect`, `request.**.expect`,
-`request.*.expect*`
+This array option specifies the names of functions that should be considered to
+be asserting functions. Function names can use wildcards i.e `request.*.expect`,
+`request.**.expect`, `request.*.expect*`
 
 Examples of **incorrect** code for the `{ "assertFunctionNames": ["expect"] }`
 option:

@@ -46,7 +46,8 @@ Then configure the rules you want to use under the rules section.
 }
 ```
 
-You can also whitelist the environment variables provided by Jest by doing:
+You can also tell ESLint about the environment variables provided by Jest by
+doing:
 
 ```json
 {
