@@ -26,7 +26,7 @@
     "prepack": "yarn build",
     "prettylint": "prettylint docs/**/*.md README.md package.json",
     "test": "jest",
-    "tools:generate-rules-table": "ts-node -T tools/generate-rules-table",
+    "tools:regenerate-docs": "ts-node -T tools/regenerate-docs",
     "typecheck": "tsc -p ."
   },
   "husky": {
