@@ -3,8 +3,18 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import { TSESLint } from '@typescript-eslint/experimental-utils';
-import prettier from 'prettier';
+import prettier, { Options } from 'prettier';
+import { prettier as prettierRC } from '../package.json';
 import config from '../src/index';
+
+const pathTo = {
+  readme: path.resolve(__dirname, '../README.md'),
+  rules: path.resolve(__dirname, '../src/rules'),
+  docs: path.resolve(__dirname, '../docs'),
+};
+
+const format = (str: string): string =>
+  prettier.format(str, { ...(prettierRC as Options), parser: 'markdown' });
 
 type FixType = 'fixable' | 'suggest';
 
@@ -84,10 +94,7 @@ const importDefault = (moduleName: string) =>
   interopRequireDefault(require(moduleName)).default;
 
 const requireJestRule = (name: string): RuleModule =>
-  importDefault(
-    `../src/rules/${name}`,
-    // path.join('..', 'src', 'rules', name),
-  ) as RuleModule;
+  importDefault(path.join(pathTo.rules, name)) as RuleModule;
 
 const details: RuleDetails[] = Object.keys(config.configs.all.rules)
   .map(name => name.split('/')[1])
@@ -108,10 +115,21 @@ const details: RuleDetails[] = Object.keys(config.configs.all.rules)
     }),
   );
 
-let readme = fs.readFileSync(path.resolve(__dirname, '../README.md'), 'utf8');
+details.forEach(({ name, description }) => {
+  const pathToDoc = path.join(pathTo.docs, 'rules', `${name}.md`);
+
+  const contents = fs
+    .readFileSync(pathToDoc)
+    .toString()
+    .split('\n');
+
+  contents[0] = `# ${description} (\`${name}\`)`;
+
+  fs.writeFileSync(pathToDoc, format(contents.join('\n')));
+});
+
+let readme = fs.readFileSync(pathTo.readme, 'utf8');
 
 readme = updateRulesList(details, readme);
 
-readme = prettier.format(readme, { parser: 'markdown' });
-
-fs.writeFileSync(path.resolve(__dirname, '../README.md'), readme, 'utf8');
+fs.writeFileSync(pathTo.readme, format(readme), 'utf8');
