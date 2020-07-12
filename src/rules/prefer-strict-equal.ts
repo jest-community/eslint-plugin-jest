@@ -11,7 +11,7 @@ export default createRule({
   meta: {
     docs: {
       category: 'Best Practices',
-      description: 'Suggest using toStrictEqual()',
+      description: 'Suggest using `toStrictEqual()`',
       recommended: false,
       suggestion: true,
     },

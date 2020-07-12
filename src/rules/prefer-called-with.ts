@@ -6,7 +6,7 @@ export default createRule({
     docs: {
       category: 'Best Practices',
       description:
-        'Suggest using `toBeCalledWith()` OR `toHaveBeenCalledWith()`',
+        'Suggest using `toBeCalledWith()` or `toHaveBeenCalledWith()`',
       recommended: false,
     },
     messages: {

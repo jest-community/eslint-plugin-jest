@@ -7,7 +7,7 @@ export default createRule({
     docs: {
       category: 'Best Practices',
       description:
-        'Prevents test cases and hooks to be outside of a describe block',
+        'Require test cases and hooks to be inside a `describe` block',
       recommended: false,
     },
     messages: {
