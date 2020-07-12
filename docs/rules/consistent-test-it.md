@@ -33,7 +33,7 @@ Decides whether to use `test` or `it`.
 
 #### withinDescribe
 
-Decides whether to use `test` or `it` within a describe scope.
+Decides whether to use `test` or `it` within a `describe` scope.
 
 ```js
 /*eslint jest/consistent-test-it: ["error", {"fn": "test"}]*/
@@ -72,7 +72,7 @@ describe('foo', function() {
 ### Default configuration
 
 The default configuration forces top level test to use `test` and all tests
-nested within describe to use `it`.
+nested within `describe` to use `it`.
 
 ```js
 /*eslint jest/consistent-test-it: ["error"]*/
