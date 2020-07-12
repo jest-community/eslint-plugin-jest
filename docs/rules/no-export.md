@@ -1,4 +1,4 @@
-# Prevent exporting from test files (`no-export`)
+# Disallow using `exports` in files containing tests (`no-export`)
 
 Prevents exports from test files. If a file has at least 1 test in it, then this
 rule will prevent exports.
