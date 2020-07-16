@@ -78,6 +78,17 @@ test('returns sum', () =>
 );
 ```
 
+Since the string is compiled into aa regular expression, you'll need to escape
+special characters such as `$` with a double backslash:
+
+```js
+/* eslint jest/expect-expect: ["error", { "assertFunctionNames": ["expect\\$"] }] */
+
+it('is money-like', () => {
+  expect$(1.0);
+});
+```
+
 Examples of **correct** code for working with the HTTP assertions library
 [SuperTest](https://www.npmjs.com/package/supertest) with the
 `{ "assertFunctionNames": ["expect", "request.*.expect"] }` option:

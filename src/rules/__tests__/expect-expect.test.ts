@@ -28,6 +28,10 @@ ruleTester.run('expect-expect', rule, {
       options: [{ assertFunctionNames: ['expectSaga'] }],
     },
     {
+      code: "test('verifies expect method call', () => expect$(123));",
+      options: [{ assertFunctionNames: ['expect\\$'] }],
+    },
+    {
       code: `test('verifies expect method call', () => new Foo().expect(123));`,
       options: [{ assertFunctionNames: ['Foo.expect'] }],
     },
