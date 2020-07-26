@@ -1,3 +1,10 @@
+## [23.18.1](https://github.com/jest-community/eslint-plugin-jest/compare/v23.18.0...v23.18.1) (2020-07-26)
+
+
+### Bug Fixes
+
+* **no-large-snapshots:** actually compare allowed name strings to name ([#625](https://github.com/jest-community/eslint-plugin-jest/issues/625)) ([622a08c](https://github.com/jest-community/eslint-plugin-jest/commit/622a08c86a37aa9490af20b488bd23246b8be752))
+
 # [23.18.0](https://github.com/jest-community/eslint-plugin-jest/compare/v23.17.1...v23.18.0) (2020-07-05)
 
 
