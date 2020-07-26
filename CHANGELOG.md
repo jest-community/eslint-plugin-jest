@@ -1,3 +1,10 @@
+## [23.18.2](https://github.com/jest-community/eslint-plugin-jest/compare/v23.18.1...v23.18.2) (2020-07-26)
+
+
+### Bug Fixes
+
+* **no-if:** report conditionals in call expressions ([4cfcf08](https://github.com/jest-community/eslint-plugin-jest/commit/4cfcf080893fbe89689bd4b283bb2f3ad09b19ff)), closes [#557](https://github.com/jest-community/eslint-plugin-jest/issues/557)
+
 ## [23.18.1](https://github.com/jest-community/eslint-plugin-jest/compare/v23.18.0...v23.18.1) (2020-07-26)
 
 
