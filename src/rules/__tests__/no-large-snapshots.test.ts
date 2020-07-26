@@ -217,6 +217,27 @@ ruleTester.run('no-large-snapshots', rule, {
         },
       ],
     },
+    {
+      // "should not report whitelisted large snapshots based on regexp"
+      filename: '/mock-component.jsx.snap',
+      code: [
+        generateExportsSnapshotString(58, 'a big component w/ text'),
+        generateExportsSnapshotString(58, 'a big component 2'),
+      ].join('\n\n'),
+      options: [
+        {
+          whitelistedSnapshots: {
+            '/mock-component.jsx.snap': ['a big component 2'],
+          },
+        },
+      ],
+      errors: [
+        {
+          messageId: 'tooLongSnapshots',
+          data: { lineLimit: 50, lineCount: 58 },
+        },
+      ],
+    },
   ],
 });
 
