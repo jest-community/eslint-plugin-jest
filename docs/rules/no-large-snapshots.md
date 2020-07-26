@@ -122,8 +122,8 @@ If only `maxSize` is provided on options, the value of `maxSize` will be used to
 both snapshot types (Inline and External).
 
 Since `eslint-disable` comments are not preserved by Jest when updating
-snapshots, you can use the `whitelistedSnapshots` option to have specific
-snapshots allowed regardless of their size.
+snapshots, you can use the `allowedSnapshots` option to have specific snapshots
+allowed regardless of their size.
 
 This option takes a map, with the key being the absolute filepath to a snapshot
 file, and the value an array of values made up of strings and regular
@@ -141,7 +141,7 @@ module.exports = {
     'jest/no-large-snapshots': [
       'error',
       {
-        whitelistedSnapshots: {
+        allowedSnapshots: {
           '/path/to/file.js.snap': ['snapshot name 1', /a big snapshot \d+/],
         },
       },
@@ -161,7 +161,7 @@ module.exports = {
     'jest/no-large-snapshots': [
       'error',
       {
-        whitelistedSnapshots: {
+        allowedSnapshots: {
           [path.resolve('test/__snapshots__/get.js.snap')]: ['full request'],
           [path.resolve('test/__snapshots__/put.js.snap')]: ['full request'],
         },

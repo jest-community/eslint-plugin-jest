@@ -1,12 +1,6 @@
-import {
-  AST_NODE_TYPES,
-  TSESLint,
-  TSESTree,
-} from '@typescript-eslint/experimental-utils';
+import { TSESLint } from '@typescript-eslint/experimental-utils';
 import resolveFrom from 'resolve-from';
 import rule from '../no-large-snapshots';
-
-const noLargeSnapshots = rule.create.bind(rule);
 
 const ruleTester = new TSESLint.RuleTester({
   parser: resolveFrom(require.resolve('eslint'), 'espree'),
@@ -71,12 +65,12 @@ ruleTester.run('no-large-snapshots', rule, {
       code: generateExportsSnapshotString(20),
     },
     {
-      // "it should not report whitelisted large snapshots"
+      // "it should not report snapshots that are allowed to be large"
       filename: '/mock-component.jsx.snap',
       code: generateExportsSnapshotString(58),
       options: [
         {
-          whitelistedSnapshots: {
+          allowedSnapshots: {
             '/mock-component.jsx.snap': ['a big component 1'],
           },
         },
@@ -178,14 +172,34 @@ ruleTester.run('no-large-snapshots', rule, {
       ],
     },
     {
-      // "it should report if file is not whitelisted"
+      // "it should report if file is not allowed"
       filename: '/mock-component.jsx.snap',
-      // code: generateExportsSnapshotString(58),
       code: generateExportsSnapshotString(58),
       options: [
         {
-          whitelistedSnapshots: {
+          allowedSnapshots: {
             '/another-mock-component.jsx.snap': [/a big component \d+/u],
+          },
+        },
+      ],
+      errors: [
+        {
+          messageId: 'tooLongSnapshots',
+          data: { lineLimit: 50, lineCount: 58 },
+        },
+      ],
+    },
+    {
+      // "should not report allowed large snapshots based on regexp"
+      filename: '/mock-component.jsx.snap',
+      code: [
+        generateExportsSnapshotString(58, 'a big component w/ text'),
+        generateExportsSnapshotString(58, 'a big component 2'),
+      ].join('\n\n'),
+      options: [
+        {
+          allowedSnapshots: {
+            '/mock-component.jsx.snap': [/a big component \d+/u],
           },
         },
       ],
@@ -218,7 +232,26 @@ ruleTester.run('no-large-snapshots', rule, {
       ],
     },
     {
-      // "should not report whitelisted large snapshots based on regexp"
+      filename: '/mock-component.jsx.snap',
+      code: [
+        generateExportsSnapshotString(58, 'a big component w/ text'),
+        generateExportsSnapshotString(58, 'a big component 2'),
+      ].join('\n\n'),
+      options: [
+        {
+          allowedSnapshots: {
+            '/mock-component.jsx.snap': ['a big component 2'],
+          },
+        },
+      ],
+      errors: [
+        {
+          messageId: 'tooLongSnapshots',
+          data: { lineLimit: 50, lineCount: 58 },
+        },
+      ],
+    },
+    {
       filename: '/mock-component.jsx.snap',
       code: [
         generateExportsSnapshotString(58, 'a big component w/ text'),
@@ -242,47 +275,31 @@ ruleTester.run('no-large-snapshots', rule, {
 });
 
 describe('no-large-snapshots', () => {
-  const buildBaseNode = <Type extends AST_NODE_TYPES>(
-    type: Type,
-  ): TSESTree.BaseNode & { type: Type } => ({
-    type,
-    range: [0, 1],
-    loc: {
-      start: { line: 1, column: 0 },
-      end: { line: 1, column: 1 },
-    },
-  });
-
-  describe('when "whitelistedSnapshots" option contains relative paths', () => {
+  describe('when "allowedSnapshots" option contains relative paths', () => {
     it('should throw an exception', () => {
-      const { ExpressionStatement = () => {} } = noLargeSnapshots({
-        id: 'my-id',
-        getFilename: () => '/mock-component.jsx.snap',
-        options: [
+      expect(() => {
+        const linter = new TSESLint.Linter();
+
+        linter.defineRule('no-large-snapshots', rule);
+
+        linter.verify(
+          'console.log()',
           {
-            whitelistedSnapshots: {
-              'mock-component.jsx.snap': [/a big component \d+/u],
+            rules: {
+              'no-large-snapshots': [
+                'error',
+                {
+                  allowedSnapshots: {
+                    'mock-component.jsx.snap': [/a big component \d+/u],
+                  },
+                },
+              ],
             },
           },
-        ],
-        parserOptions: {},
-        parserPath: '',
-        settings: {},
-        getAncestors: () => [],
-        getDeclaredVariables: () => [],
-        getScope: jest.fn(),
-        getSourceCode: jest.fn(),
-        markVariableAsUsed: () => false,
-        report: jest.fn(),
-      });
-
-      expect(() =>
-        ExpressionStatement({
-          ...buildBaseNode(AST_NODE_TYPES.ExpressionStatement),
-          expression: buildBaseNode(AST_NODE_TYPES.JSXClosingFragment),
-        }),
-      ).toThrow(
-        'All paths for whitelistedSnapshots must be absolute. You can use JS config and `path.resolve`',
+          'mock-component.jsx.snap',
+        );
+      }).toThrow(
+        'All paths for allowedSnapshots must be absolute. You can use JS config and `path.resolve`',
       );
     });
   });
