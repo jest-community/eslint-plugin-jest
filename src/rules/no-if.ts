@@ -73,7 +73,9 @@ export default createRule({
 
     return {
       CallExpression(node) {
-        stack.push(isTestCase(node));
+        if (isTestCase(node)) {
+          stack.push(true);
+        }
       },
       FunctionExpression() {
         stack.push(false);
