@@ -36,6 +36,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Danger
-        uses: danger/danger-js@10.2.1
+        uses: danger/danger-js@10.3.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
