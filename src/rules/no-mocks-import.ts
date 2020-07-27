@@ -16,11 +16,11 @@ export default createRule({
     type: 'problem',
     docs: {
       category: 'Best Practices',
-      description: 'Disallow manually importing from __mocks__ ',
+      description: 'Disallow manually importing from `__mocks__`',
       recommended: 'error',
     },
     messages: {
-      noManualImport: `Mocks should not be manually imported from a ${mocksDirName} directory. Instead use jest.mock and import from the original module path.`,
+      noManualImport: `Mocks should not be manually imported from a ${mocksDirName} directory. Instead use \`jest.mock\` and import from the original module path.`,
     },
     schema: [],
   },

@@ -1,4 +1,5 @@
 import { TSESLint } from '@typescript-eslint/experimental-utils';
+import dedent from 'dedent';
 import resolveFrom from 'resolve-from';
 import rule from '../valid-title';
 
@@ -93,6 +94,222 @@ ruleTester.run('disallowedWords option', rule, {
           messageId: 'disallowedWord',
           data: { word: 'properly' },
           column: 6,
+          line: 1,
+        },
+      ],
+    },
+  ],
+});
+
+ruleTester.run('mustMatch & mustNotMatch options', rule, {
+  valid: [
+    'describe("the correct way to properly handle all the things", () => {});',
+    'test("that all is as it should be", () => {});',
+    {
+      code: 'it("correctly sets the value", () => {});',
+      options: [{ mustMatch: undefined }],
+    },
+    {
+      code: 'it("correctly sets the value", () => {});',
+      options: [{ mustMatch: / /u.source }],
+    },
+    {
+      code: 'it("correctly sets the value #unit", () => {});',
+      options: [{ mustMatch: /#(?:unit|integration|e2e)/u.source }],
+    },
+    {
+      code: 'it("correctly sets the value", () => {});',
+      options: [{ mustMatch: /^[^#]+$|(?:#(?:unit|e2e))/u.source }],
+    },
+    {
+      code: 'it("correctly sets the value", () => {});',
+      options: [{ mustMatch: { test: /#(?:unit|integration|e2e)/u.source } }],
+    },
+    {
+      code: dedent`
+        describe('things to test', () => {
+          describe('unit tests #unit', () => {
+            it('is true', () => {
+              expect(true).toBe(true);
+            });
+          });
+
+          describe('e2e tests #e2e', () => {
+            it('is another test #jest4life', () => {});
+          });
+        });
+      `,
+      options: [{ mustMatch: { test: /^[^#]+$|(?:#(?:unit|e2e))/u.source } }],
+    },
+  ],
+  invalid: [
+    {
+      code: dedent`
+        describe('things to test', () => {
+          describe('unit tests #unit', () => {
+            it('is true', () => {
+              expect(true).toBe(true);
+            });
+          });
+
+          describe('e2e tests #e4e', () => {
+            it('is another test #e2e #jest4life', () => {});
+          });
+        });
+      `,
+      options: [
+        {
+          mustNotMatch: /(?:#(?!unit|e2e))\w+/u.source,
+          mustMatch: /^[^#]+$|(?:#(?:unit|e2e))/u.source,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'mustNotMatch',
+          data: {
+            jestFunctionName: 'describe',
+            pattern: /(?:#(?!unit|e2e))\w+/u,
+          },
+          column: 12,
+          line: 8,
+        },
+        {
+          messageId: 'mustNotMatch',
+          data: {
+            jestFunctionName: 'it',
+            pattern: /(?:#(?!unit|e2e))\w+/u,
+          },
+          column: 8,
+          line: 9,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        describe('things to test', () => {
+          describe('unit tests #unit', () => {
+            it('is true', () => {
+              expect(true).toBe(true);
+            });
+          });
+
+          describe('e2e tests #e4e', () => {
+            it('is another test #e2e #jest4life', () => {});
+          });
+        });
+      `,
+      options: [
+        {
+          mustNotMatch: { describe: /(?:#(?!unit|e2e))\w+/u.source },
+          mustMatch: { describe: /^[^#]+$|(?:#(?:unit|e2e))/u.source },
+        },
+      ],
+      errors: [
+        {
+          messageId: 'mustNotMatch',
+          data: {
+            jestFunctionName: 'describe',
+            pattern: /(?:#(?!unit|e2e))\w+/u,
+          },
+          column: 12,
+          line: 8,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        describe('things to test', () => {
+          describe('unit tests #unit', () => {
+            it('is true', () => {
+              expect(true).toBe(true);
+            });
+          });
+
+          describe('e2e tests #e4e', () => {
+            it('is another test #e2e #jest4life', () => {});
+          });
+        });
+      `,
+      options: [
+        {
+          mustNotMatch: { describe: /(?:#(?!unit|e2e))\w+/u.source },
+          mustMatch: { it: /^[^#]+$|(?:#(?:unit|e2e))/u.source },
+        },
+      ],
+      errors: [
+        {
+          messageId: 'mustNotMatch',
+          data: {
+            jestFunctionName: 'describe',
+            pattern: /(?:#(?!unit|e2e))\w+/u,
+          },
+          column: 12,
+          line: 8,
+        },
+      ],
+    },
+    {
+      code: 'test("the correct way to properly handle all things", () => {});',
+      options: [{ mustMatch: /#(?:unit|integration|e2e)/u.source }],
+      errors: [
+        {
+          messageId: 'mustMatch',
+          data: {
+            jestFunctionName: 'test',
+            pattern: /#(?:unit|integration|e2e)/u,
+          },
+          column: 6,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: 'describe("the test", () => {});',
+      options: [
+        { mustMatch: { describe: /#(?:unit|integration|e2e)/u.source } },
+      ],
+      errors: [
+        {
+          messageId: 'mustMatch',
+          data: {
+            jestFunctionName: 'describe',
+            pattern: /#(?:unit|integration|e2e)/u,
+          },
+          column: 10,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: 'xdescribe("the test", () => {});',
+      options: [
+        { mustMatch: { describe: /#(?:unit|integration|e2e)/u.source } },
+      ],
+      errors: [
+        {
+          messageId: 'mustMatch',
+          data: {
+            jestFunctionName: 'describe',
+            pattern: /#(?:unit|integration|e2e)/u,
+          },
+          column: 11,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: 'describe.skip("the test", () => {});',
+      options: [
+        { mustMatch: { describe: /#(?:unit|integration|e2e)/u.source } },
+      ],
+      errors: [
+        {
+          messageId: 'mustMatch',
+          data: {
+            jestFunctionName: 'describe',
+            pattern: /#(?:unit|integration|e2e)/u,
+          },
+          column: 15,
           line: 1,
         },
       ],

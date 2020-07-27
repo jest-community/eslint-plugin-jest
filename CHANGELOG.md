@@ -1,3 +1,24 @@
+## [23.18.2](https://github.com/jest-community/eslint-plugin-jest/compare/v23.18.1...v23.18.2) (2020-07-26)
+
+
+### Bug Fixes
+
+* **no-if:** report conditionals in call expressions ([4cfcf08](https://github.com/jest-community/eslint-plugin-jest/commit/4cfcf080893fbe89689bd4b283bb2f3ad09b19ff)), closes [#557](https://github.com/jest-community/eslint-plugin-jest/issues/557)
+
+## [23.18.1](https://github.com/jest-community/eslint-plugin-jest/compare/v23.18.0...v23.18.1) (2020-07-26)
+
+
+### Bug Fixes
+
+* **no-large-snapshots:** actually compare allowed name strings to name ([#625](https://github.com/jest-community/eslint-plugin-jest/issues/625)) ([622a08c](https://github.com/jest-community/eslint-plugin-jest/commit/622a08c86a37aa9490af20b488bd23246b8be752))
+
+# [23.18.0](https://github.com/jest-community/eslint-plugin-jest/compare/v23.17.1...v23.18.0) (2020-07-05)
+
+
+### Features
+
+* **valid-title:** support `mustMatch` & `mustNotMatch` options ([#608](https://github.com/jest-community/eslint-plugin-jest/issues/608)) ([4c7207e](https://github.com/jest-community/eslint-plugin-jest/commit/4c7207ebbb274f7b584225ad65ffb96a4328240e)), closes [#233](https://github.com/jest-community/eslint-plugin-jest/issues/233)
+
 ## [23.17.1](https://github.com/jest-community/eslint-plugin-jest/compare/v23.17.0...v23.17.1) (2020-06-23)
 
 

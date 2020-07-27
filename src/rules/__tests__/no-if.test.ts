@@ -25,6 +25,18 @@ ruleTester.run('conditional expressions', rule, {
   invalid: [
     {
       code: `it('foo', () => {
+        expect(bar ? foo : baz).toBe(boo);
+      })
+      `,
+      errors: [
+        {
+          data: { condition: 'conditional' },
+          messageId: 'conditionalInTest',
+        },
+      ],
+    },
+    {
+      code: `it('foo', () => {
         const foo = bar ? foo : baz;
       })
       `,

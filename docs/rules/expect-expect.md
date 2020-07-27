@@ -42,9 +42,9 @@ it('should work with callbacks/async', () => {
 
 ### `assertFunctionNames`
 
-This array option whitelists the assertion function names to look for. Function
-names can use wildcards like `request.*.expect`, `request.**.expect`,
-`request.*.expect*`
+This array option specifies the names of functions that should be considered to
+be asserting functions. Function names can use wildcards i.e `request.*.expect`,
+`request.**.expect`, `request.*.expect*`
 
 Examples of **incorrect** code for the `{ "assertFunctionNames": ["expect"] }`
 option:
@@ -55,11 +55,11 @@ option:
 import { expectSaga } from 'redux-saga-test-plan';
 import { addSaga } from '../src/sagas';
 
-test('returns sum', () =>
+test('returns sum', () => {
   expectSaga(addSaga, 1, 1)
     .returns(2)
     .run();
-);
+});
 ```
 
 Examples of **correct** code for the
@@ -71,11 +71,22 @@ Examples of **correct** code for the
 import { expectSaga } from 'redux-saga-test-plan';
 import { addSaga } from '../src/sagas';
 
-test('returns sum', () =>
+test('returns sum', () => {
   expectSaga(addSaga, 1, 1)
     .returns(2)
     .run();
-);
+});
+```
+
+Since the string is compiled into aa regular expression, you'll need to escape
+special characters such as `$` with a double backslash:
+
+```js
+/* eslint jest/expect-expect: ["error", { "assertFunctionNames": ["expect\\$"] }] */
+
+it('is money-like', () => {
+  expect$(1.0);
+});
 ```
 
 Examples of **correct** code for working with the HTTP assertions library

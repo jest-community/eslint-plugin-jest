@@ -5,7 +5,7 @@ export default createRule({
   meta: {
     docs: {
       category: 'Best Practices',
-      description: 'Suggest to have all hooks at top level',
+      description: 'Suggest having hooks before any test cases',
       recommended: false,
     },
     messages: {

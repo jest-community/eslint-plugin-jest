@@ -9,8 +9,8 @@ export default createRule({
   meta: {
     docs: {
       category: 'Best Practices',
-      description: 'Prevent exporting from test files',
-      recommended: false,
+      description: 'Disallow using `exports` in files containing tests',
+      recommended: 'error',
     },
     messages: {
       unexpectedExport: `Do not export from a test file.`,

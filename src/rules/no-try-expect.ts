@@ -12,7 +12,7 @@ export default createRule({
     docs: {
       description: 'Prefer using toThrow for exception tests',
       category: 'Best Practices',
-      recommended: false,
+      recommended: 'error',
     },
     deprecated: true,
     replacedBy: ['no-conditional-expect'],

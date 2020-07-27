@@ -58,7 +58,7 @@ const reportOnViolation = (
           return name.test(snapshotName);
         }
 
-        return snapshotName;
+        return snapshotName === name;
       });
     }
   }
