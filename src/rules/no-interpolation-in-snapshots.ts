@@ -6,12 +6,11 @@ export default createRule({
   meta: {
     docs: {
       category: 'Best Practices',
-      description: 'Disallow string interpolation inside inline snapshots',
+      description: 'Disallow string interpolation inside snapshots',
       recommended: false,
     },
     messages: {
-      noInterpolation:
-        'Do not use string interpolation inside of inline snapshots',
+      noInterpolation: 'Do not use string interpolation inside of snapshots',
     },
     schema: [],
     type: 'problem',
