@@ -1,3 +1,10 @@
+# [23.19.0](https://github.com/jest-community/eslint-plugin-jest/compare/v23.18.2...v23.19.0) (2020-07-27)
+
+
+### Features
+
+* create `no-interpolation-in-snapshots` rule ([#553](https://github.com/jest-community/eslint-plugin-jest/issues/553)) ([8d2c17c](https://github.com/jest-community/eslint-plugin-jest/commit/8d2c17c449841465630bea5269de677455ef9a8d))
+
 ## [23.18.2](https://github.com/jest-community/eslint-plugin-jest/compare/v23.18.1...v23.18.2) (2020-07-26)
 
 
