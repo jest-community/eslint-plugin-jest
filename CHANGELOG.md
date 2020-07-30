@@ -1,3 +1,10 @@
+# [23.20.0](https://github.com/jest-community/eslint-plugin-jest/compare/v23.19.0...v23.20.0) (2020-07-30)
+
+
+### Features
+
+* **no-large-snapshots:** deprecate `whitelistedSnapshots` for new name ([#632](https://github.com/jest-community/eslint-plugin-jest/issues/632)) ([706f5c2](https://github.com/jest-community/eslint-plugin-jest/commit/706f5c2bc54797f0f32178fab1d194d9a4309f70))
+
 # [23.19.0](https://github.com/jest-community/eslint-plugin-jest/compare/v23.18.2...v23.19.0) (2020-07-27)
 
 
