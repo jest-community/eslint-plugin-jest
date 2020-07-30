@@ -66,7 +66,7 @@ export default createRule({
     docs: {
       category: 'Best Practices',
       description: 'Disallow use of deprecated functions',
-      recommended: false,
+      recommended: 'error',
     },
     messages: {
       deprecatedFunction:
