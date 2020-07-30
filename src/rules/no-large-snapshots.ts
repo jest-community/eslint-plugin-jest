@@ -14,6 +14,7 @@ import {
 interface RuleOptions {
   maxSize?: number;
   inlineMaxSize?: number;
+  allowedSnapshots?: Record<string, Array<string | RegExp>>;
   whitelistedSnapshots?: Record<string, Array<string | RegExp>>;
 }
 
@@ -24,23 +25,25 @@ type RuleContext = TSESLint.RuleContext<MessageId, [RuleOptions]>;
 const reportOnViolation = (
   context: RuleContext,
   node: TSESTree.CallExpression | TSESTree.ExpressionStatement,
-  { maxSize: lineLimit = 50, whitelistedSnapshots = {} }: RuleOptions,
+  {
+    maxSize: lineLimit = 50,
+    whitelistedSnapshots = {},
+    allowedSnapshots = whitelistedSnapshots,
+  }: RuleOptions,
 ) => {
   const startLine = node.loc.start.line;
   const endLine = node.loc.end.line;
   const lineCount = endLine - startLine;
 
-  const allPathsAreAbsolute = Object.keys(whitelistedSnapshots).every(
-    isAbsolute,
-  );
+  const allPathsAreAbsolute = Object.keys(allowedSnapshots).every(isAbsolute);
 
   if (!allPathsAreAbsolute) {
     throw new Error(
-      'All paths for whitelistedSnapshots must be absolute. You can use JS config and `path.resolve`',
+      'All paths for allowedSnapshots must be absolute. You can use JS config and `path.resolve`',
     );
   }
 
-  let isWhitelisted = false;
+  let isAllowed = false;
 
   if (
     node.type === AST_NODE_TYPES.ExpressionStatement &&
@@ -48,12 +51,12 @@ const reportOnViolation = (
     isExpectMember(node.expression.left)
   ) {
     const fileName = context.getFilename();
-    const whitelistedSnapshotsInFile = whitelistedSnapshots[fileName];
+    const allowedSnapshotsInFile = allowedSnapshots[fileName];
 
-    if (whitelistedSnapshotsInFile) {
+    if (allowedSnapshotsInFile) {
       const snapshotName = getAccessorValue(node.expression.left.property);
 
-      isWhitelisted = whitelistedSnapshotsInFile.some(name => {
+      isAllowed = allowedSnapshotsInFile.some(name => {
         if (name instanceof RegExp) {
           return name.test(snapshotName);
         }
@@ -63,7 +66,7 @@ const reportOnViolation = (
     }
   }
 
-  if (!isWhitelisted && lineCount > lineLimit) {
+  if (!isAllowed && lineCount > lineLimit) {
     context.report({
       messageId: lineLimit === 0 ? 'noSnapshot' : 'tooLongSnapshots',
       data: { lineLimit, lineCount },
@@ -96,6 +99,10 @@ export default createRule<[RuleOptions], MessageId>({
           inlineMaxSize: {
             type: 'number',
           },
+          allowedSnapshots: {
+            type: 'object',
+            additionalProperties: { type: 'array' },
+          },
           whitelistedSnapshots: {
             type: 'object',
             patternProperties: {
@@ -109,6 +116,12 @@ export default createRule<[RuleOptions], MessageId>({
   },
   defaultOptions: [{}],
   create(context, [options]) {
+    if ('whitelistedSnapshots' in options) {
+      console.warn(
+        'jest/no-large-snapshots: the "whitelistedSnapshots" option has been renamed to "allowedSnapshots"',
+      );
+    }
+
     if (context.getFilename().endsWith('.snap')) {
       return {
         ExpressionStatement(node) {
