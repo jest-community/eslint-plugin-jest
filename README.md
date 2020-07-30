@@ -169,7 +169,7 @@ installations requiring long-term consistency.
 | [valid-describe](docs/rules/valid-describe.md)                               | Enforce valid `describe()` callback                             | ![recommended][] |              |
 | [valid-expect](docs/rules/valid-expect.md)                                   | Enforce valid `expect()` usage                                  | ![recommended][] |              |
 | [valid-expect-in-promise](docs/rules/valid-expect-in-promise.md)             | Enforce having return statement when testing with promises      | ![recommended][] |              |
-| [valid-title](docs/rules/valid-title.md)                                     | Enforce valid titles                                            |                  | ![fixable][] |
+| [valid-title](docs/rules/valid-title.md)                                     | Enforce valid titles                                            | ![recommended][] | ![fixable][] |
 
 <!-- end rules list -->
 
