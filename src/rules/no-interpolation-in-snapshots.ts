@@ -7,7 +7,7 @@ export default createRule({
     docs: {
       category: 'Best Practices',
       description: 'Disallow string interpolation inside snapshots',
-      recommended: false,
+      recommended: 'error',
     },
     messages: {
       noInterpolation: 'Do not use string interpolation inside of snapshots',
