@@ -24,8 +24,8 @@
     "postbuild": "rimraf lib/__tests__ lib/**/__tests__",
     "lint": "eslint . --ignore-pattern '!.eslintrc.js' --ext js,ts",
     "prepack": "yarn build",
-    "prettier:check": "prettier --check docs/**/*.md README.md package.json tsconfig.json src/globals.json",
-    "prettier:write": "prettier --write docs/**/*.md README.md package.json tsconfig.json src/globals.json",
+    "prettier:check": "prettier --check docs/**/*.md README.md .github/** package.json tsconfig.json src/globals.json",
+    "prettier:write": "prettier --write docs/**/*.md README.md .github/** package.json tsconfig.json src/globals.json",
     "test": "jest",
     "tools:regenerate-docs": "ts-node -T tools/regenerate-docs",
     "typecheck": "tsc -p ."
