@@ -24,7 +24,8 @@
     "postbuild": "rimraf lib/__tests__ lib/**/__tests__",
     "lint": "eslint . --ignore-pattern '!.eslintrc.js' --ext js,ts",
     "prepack": "yarn build",
-    "prettylint": "prettylint docs/**/*.md README.md package.json",
+    "prettier:check": "prettier --check docs/**/*.md README.md package.json tsconfig.json src/globals.json",
+    "prettier:write": "prettier --write docs/**/*.md README.md package.json tsconfig.json src/globals.json",
     "test": "jest",
     "tools:regenerate-docs": "ts-node -T tools/regenerate-docs",
     "typecheck": "tsc -p ."
@@ -121,7 +122,6 @@
     "jest-runner-eslint": "^0.10.0",
     "lint-staged": "^9.4.2",
     "prettier": "^1.19.1",
-    "prettylint": "^1.0.0",
     "resolve-from": "^5.0.0",
     "rimraf": "^3.0.0",
     "semantic-release": "^15.13.28",
