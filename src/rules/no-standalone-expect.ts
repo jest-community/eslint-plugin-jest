@@ -58,7 +58,7 @@ const isEach = (node: TSESTree.CallExpression): boolean =>
 type BlockType = 'test' | 'function' | 'describe' | 'arrow' | 'template';
 
 export default createRule<
-  [{ additionalTestBlockFunctions: string[] }],
+  [{ additionalTestBlockFunctions?: string[] }],
   'unexpectedExpect'
 >({
   name: __filename,
