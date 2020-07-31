@@ -15,7 +15,6 @@ const getBody = (args: TSESTree.Expression[]) => {
   if (
     secondArg &&
     isFunction(secondArg) &&
-    secondArg.body &&
     secondArg.body.type === AST_NODE_TYPES.BlockStatement
   ) {
     return secondArg.body.body;
