@@ -92,10 +92,7 @@ export default createRule({
           });
         }
 
-        if (
-          callback.body &&
-          callback.body.type === AST_NODE_TYPES.BlockStatement
-        ) {
+        if (callback.body.type === AST_NODE_TYPES.BlockStatement) {
           callback.body.body.forEach(node => {
             if (node.type === AST_NODE_TYPES.ReturnStatement) {
               context.report({
