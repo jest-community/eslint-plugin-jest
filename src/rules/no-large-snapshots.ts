@@ -15,7 +15,6 @@ interface RuleOptions {
   maxSize?: number;
   inlineMaxSize?: number;
   allowedSnapshots?: Record<string, Array<string | RegExp>>;
-  whitelistedSnapshots?: Record<string, Array<string | RegExp>>;
 }
 
 type MessageId = 'noSnapshot' | 'tooLongSnapshots';
@@ -25,11 +24,7 @@ type RuleContext = TSESLint.RuleContext<MessageId, [RuleOptions]>;
 const reportOnViolation = (
   context: RuleContext,
   node: TSESTree.CallExpression | TSESTree.ExpressionStatement,
-  {
-    maxSize: lineLimit = 50,
-    whitelistedSnapshots = {},
-    allowedSnapshots = whitelistedSnapshots,
-  }: RuleOptions,
+  { maxSize: lineLimit = 50, allowedSnapshots = {} }: RuleOptions,
 ) => {
   const startLine = node.loc.start.line;
   const endLine = node.loc.end.line;
@@ -103,12 +98,6 @@ export default createRule<[RuleOptions], MessageId>({
             type: 'object',
             additionalProperties: { type: 'array' },
           },
-          whitelistedSnapshots: {
-            type: 'object',
-            patternProperties: {
-              '.*': { type: 'array' },
-            },
-          },
         },
         additionalProperties: false,
       },
@@ -116,12 +105,6 @@ export default createRule<[RuleOptions], MessageId>({
   },
   defaultOptions: [{}],
   create(context, [options]) {
-    if ('whitelistedSnapshots' in options) {
-      console.warn(
-        'jest/no-large-snapshots: the "whitelistedSnapshots" option has been renamed to "allowedSnapshots"',
-      );
-    }
-
     if (context.getFilename().endsWith('.snap')) {
       return {
         ExpressionStatement(node) {
