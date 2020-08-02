@@ -135,7 +135,7 @@ installations requiring long-term consistency.
 | [lowercase-name](docs/rules/lowercase-name.md)                               | Enforce lowercase test names                                    |                  | ![fixable][] |
 | [no-alias-methods](docs/rules/no-alias-methods.md)                           | Disallow alias methods                                          | ![style][]       | ![fixable][] |
 | [no-commented-out-tests](docs/rules/no-commented-out-tests.md)               | Disallow commented out tests                                    | ![recommended][] |              |
-| [no-conditional-expect](docs/rules/no-conditional-expect.md)                 | Prevent calling `expect` conditionally                          |                  |              |
+| [no-conditional-expect](docs/rules/no-conditional-expect.md)                 | Prevent calling `expect` conditionally                          | ![recommended][] |              |
 | [no-deprecated-functions](docs/rules/no-deprecated-functions.md)             | Disallow use of deprecated functions                            | ![recommended][] | ![fixable][] |
 | [no-disabled-tests](docs/rules/no-disabled-tests.md)                         | Disallow disabled tests                                         | ![recommended][] |              |
 | [no-duplicate-hooks](docs/rules/no-duplicate-hooks.md)                       | Disallow duplicate setup and teardown hooks                     |                  |              |
