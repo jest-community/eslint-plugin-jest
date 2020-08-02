@@ -325,7 +325,7 @@ export type ParsedEqualityMatcherCall<
   Argument extends TSESTree.Expression = TSESTree.Expression,
   Matcher extends EqualityMatcher = EqualityMatcher
 > = Omit<ParsedExpectMatcher<Matcher>, 'arguments'> & {
-  // todo: probs should also type node parent as CallExpression
+  parent: TSESTree.CallExpression;
   arguments: [Argument];
 };
 
