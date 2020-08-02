@@ -250,9 +250,8 @@ export default createRule<
         const parentNode = matcher.node.parent;
 
         if (
+          !parentNode?.parent ||
           !modifier ||
-          !parentNode ||
-          !parentNode.parent ||
           modifier.name === ModifierName.not
         ) {
           return;
@@ -262,7 +261,7 @@ export default createRule<
          * for the array object, not for each individual assertion.
          */
         const isParentArrayExpression =
-          parentNode.parent.type === AST_NODE_TYPES.ArrayExpression;
+          parentNode.parent?.type === AST_NODE_TYPES.ArrayExpression;
         const orReturned = alwaysAwait ? '' : ' or returned';
         /**
          * An async assertion can be chained with `then` or `catch` statements.

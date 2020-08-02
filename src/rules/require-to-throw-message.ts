@@ -30,9 +30,7 @@ export default createRule({
         const { matcher, modifier } = parseExpectCall(node);
 
         if (
-          matcher &&
-          matcher.arguments &&
-          matcher.arguments.length === 0 &&
+          matcher?.arguments?.length === 0 &&
           ['toThrow', 'toThrowError'].includes(matcher.name) &&
           (!modifier ||
             !(modifier.name === ModifierName.not || modifier.negation))
