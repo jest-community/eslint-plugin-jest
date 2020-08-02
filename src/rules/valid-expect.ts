@@ -230,7 +230,7 @@ export default createRule<
           return;
         }
 
-        if (matcher.node.parent && isExpectMember(matcher.node.parent)) {
+        if (isExpectMember(matcher.node.parent)) {
           context.report({
             messageId: 'modifierUnknown',
             data: { modifierName: matcher.name },
@@ -249,11 +249,7 @@ export default createRule<
 
         const parentNode = matcher.node.parent;
 
-        if (
-          !parentNode?.parent ||
-          !modifier ||
-          modifier.name === ModifierName.not
-        ) {
+        if (!modifier || modifier.name === ModifierName.not) {
           return;
         }
         /**
