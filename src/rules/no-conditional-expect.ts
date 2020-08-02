@@ -12,7 +12,7 @@ export default createRule({
     docs: {
       description: 'Prevent calling `expect` conditionally',
       category: 'Best Practices',
-      recommended: false,
+      recommended: 'error',
     },
     messages: {
       conditionalExpect: 'Avoid calling `expect` conditionally`',
