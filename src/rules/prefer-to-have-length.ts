@@ -40,8 +40,7 @@ export default createRule({
         if (
           !matcher ||
           !isParsedEqualityMatcherCall(matcher) ||
-          !argument ||
-          argument.type !== AST_NODE_TYPES.MemberExpression ||
+          argument?.type !== AST_NODE_TYPES.MemberExpression ||
           !isSupportedAccessor(argument.property, 'length') ||
           argument.property.type !== AST_NODE_TYPES.Identifier
         ) {

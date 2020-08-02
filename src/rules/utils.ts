@@ -300,11 +300,10 @@ interface ParsedExpectMember<
  * Represents a `MemberExpression` that comes after an `ExpectCall`.
  */
 interface ExpectMember<
-  PropertyName extends ExpectPropertyName = ExpectPropertyName,
-  Parent extends TSESTree.Node | undefined = TSESTree.Node | undefined
+  PropertyName extends ExpectPropertyName = ExpectPropertyName
 > extends KnownMemberExpression<PropertyName> {
   object: ExpectCall | ExpectMember;
-  parent: Parent;
+  parent: TSESTree.Node;
 }
 
 export const isExpectMember = <
@@ -326,7 +325,7 @@ export type ParsedEqualityMatcherCall<
   Argument extends TSESTree.Expression = TSESTree.Expression,
   Matcher extends EqualityMatcher = EqualityMatcher
 > = Omit<ParsedExpectMatcher<Matcher>, 'arguments'> & {
-  // todo: probs should also type node parent as CallExpression
+  parent: TSESTree.CallExpression;
   arguments: [Argument];
 };
 
