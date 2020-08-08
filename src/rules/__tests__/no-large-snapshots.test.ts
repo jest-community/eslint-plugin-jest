@@ -24,6 +24,9 @@ const generateExpectInlineSnapsCode = (
 
 ruleTester.run('no-large-snapshots', rule, {
   valid: [
+    'expect(something)',
+    'expect(something).toBe(1)',
+    'expect(something).toMatchInlineSnapshot',
     {
       filename: 'mock.js',
       code: generateExpectInlineSnapsCode(2, 'toMatchInlineSnapshot'),
@@ -34,11 +37,6 @@ ruleTester.run('no-large-snapshots', rule, {
         2,
         'toThrowErrorMatchingInlineSnapshot',
       ),
-    },
-    {
-      // "it should return an empty object for non snapshot files"
-      filename: 'mock.jsx',
-      code: generateExpectInlineSnapsCode(50, 'toMatchInlineSnapshot'),
     },
     {
       filename: 'mock.jsx',
@@ -118,6 +116,17 @@ ruleTester.run('no-large-snapshots', rule, {
         'toThrowErrorMatchingInlineSnapshot',
       ),
       options: [{ maxSize: 51, inlineMaxSize: 50 }],
+      errors: [
+        {
+          messageId: 'tooLongSnapshots',
+          data: { lineLimit: 50, lineCount: 51 },
+        },
+      ],
+    },
+    {
+      // "it should return an empty object for non snapshot files"
+      filename: 'mock.jsx',
+      code: generateExpectInlineSnapsCode(50, 'toMatchInlineSnapshot'),
       errors: [
         {
           messageId: 'tooLongSnapshots',

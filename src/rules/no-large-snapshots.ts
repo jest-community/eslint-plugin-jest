@@ -7,8 +7,9 @@ import {
 import {
   createRule,
   getAccessorValue,
+  isExpectCall,
   isExpectMember,
-  isSupportedAccessor,
+  parseExpectCall,
 } from './utils';
 
 interface RuleOptions {
@@ -111,29 +112,32 @@ export default createRule<[RuleOptions], MessageId>({
           reportOnViolation(context, node, options);
         },
       };
-    } else if (context.getFilename().endsWith('.js')) {
-      return {
-        CallExpression(node) {
-          if (
-            'property' in node.callee &&
-            (isSupportedAccessor(
-              node.callee.property,
-              'toMatchInlineSnapshot',
-            ) ||
-              isSupportedAccessor(
-                node.callee.property,
-                'toThrowErrorMatchingInlineSnapshot',
-              ))
-          ) {
-            reportOnViolation(context, node, {
-              ...options,
-              maxSize: options.inlineMaxSize ?? options.maxSize,
-            });
-          }
-        },
-      };
     }
 
-    return {};
+    return {
+      CallExpression(node) {
+        if (!isExpectCall(node)) {
+          return;
+        }
+
+        const { matcher } = parseExpectCall(node);
+
+        if (matcher?.node.parent?.type !== AST_NODE_TYPES.CallExpression) {
+          return;
+        }
+
+        if (
+          [
+            'toMatchInlineSnapshot',
+            'toThrowErrorMatchingInlineSnapshot',
+          ].includes(matcher.name)
+        ) {
+          reportOnViolation(context, matcher.node.parent, {
+            ...options,
+            maxSize: options.inlineMaxSize ?? options.maxSize,
+          });
+        }
+      },
+    };
   },
 });
