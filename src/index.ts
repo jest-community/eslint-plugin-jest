@@ -53,9 +53,12 @@ const allRules = Object.keys(rules).reduce<
 >((rules, key) => ({ ...rules, [`jest/${key}`]: 'error' }), {});
 
 const createConfig = (rules: Record<string, TSESLint.Linter.RuleLevel>) => ({
-  plugins: ['jest'],
-  env: { 'jest/globals': true },
-  rules,
+  overrides: [
+    files: ["**/__tests__/**/*.[jt]s?(x)", "**/?(*.)+(spec|test).[tj]s?(x)"],
+    plugins: ['jest'],
+    env: { 'jest/globals': true },
+    rules,
+  ],
 });
 
 export = {
