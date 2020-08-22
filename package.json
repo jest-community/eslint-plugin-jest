@@ -88,7 +88,7 @@
     ]
   },
   "dependencies": {
-    "@typescript-eslint/experimental-utils": "^2.5.0"
+    "@typescript-eslint/experimental-utils": "^4.0.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.4.4",
@@ -104,8 +104,8 @@
     "@types/jest": "^25.1.0",
     "@types/node": "^12.6.6",
     "@types/prettier": "^1.19.0",
-    "@typescript-eslint/eslint-plugin": "^2.5.0",
-    "@typescript-eslint/parser": "^2.5.0",
+    "@typescript-eslint/eslint-plugin": "^4.0.1",
+    "@typescript-eslint/parser": "^4.0.1",
     "babel-jest": "^25.2.0",
     "babel-plugin-replace-ts-export-assignment": "^0.0.2",
     "dedent": "^0.7.0",
