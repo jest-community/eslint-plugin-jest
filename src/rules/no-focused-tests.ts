@@ -30,6 +30,7 @@ const isConcurrentExpression = (
 
 const matchesTestFunction = (object: TSESTree.LeftHandSideExpression) =>
   'name' in object &&
+  typeof object.name === 'string' &&
   (object.name in TestCaseName || object.name in DescribeAlias);
 
 const isCallToFocusedTestFunction = (object: TSESTree.Identifier) =>
