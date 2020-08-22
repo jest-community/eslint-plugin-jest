@@ -23,12 +23,13 @@ export default createRule({
   meta: {
     docs: {
       category: 'Best Practices',
-      description: 'Avoid using a callback in asynchronous tests',
+      description: 'Avoid using a callback in asynchronous tests and hooks',
       recommended: 'error',
       suggestion: true,
     },
     messages: {
-      illegalTestCallback: 'Illegal usage of test callback',
+      noDoneCallback:
+        'Return a Promise instead of relying on callback parameter',
       suggestWrappingInPromise: 'Wrap in `new Promise({{ callback }} => ...`',
       useAwaitInsteadOfCallback:
         'Use await instead of callback in async functions',
@@ -55,7 +56,7 @@ export default createRule({
         if (argument.type !== AST_NODE_TYPES.Identifier) {
           context.report({
             node: argument,
-            messageId: 'illegalTestCallback',
+            messageId: 'noDoneCallback',
           });
 
           return;
@@ -72,7 +73,7 @@ export default createRule({
 
         context.report({
           node: argument,
-          messageId: 'illegalTestCallback',
+          messageId: 'noDoneCallback',
           suggest: [
             {
               messageId: 'suggestWrappingInPromise',

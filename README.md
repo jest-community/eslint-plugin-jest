@@ -151,7 +151,7 @@ installations requiring long-term consistency.
 | [no-mocks-import](docs/rules/no-mocks-import.md)                             | Disallow manually importing from `__mocks__`                    | ![recommended][] |              |
 | [no-restricted-matchers](docs/rules/no-restricted-matchers.md)               | Disallow specific matchers & modifiers                          |                  |              |
 | [no-standalone-expect](docs/rules/no-standalone-expect.md)                   | Disallow using `expect` outside of `it` or `test` blocks        | ![recommended][] |              |
-| [no-test-callback](docs/rules/no-test-callback.md)                           | Avoid using a callback in asynchronous tests                    | ![recommended][] | ![suggest][] |
+| [no-test-callback](docs/rules/no-test-callback.md)                           | Avoid using a callback in asynchronous tests and hooks          | ![recommended][] | ![suggest][] |
 | [no-test-prefixes](docs/rules/no-test-prefixes.md)                           | Use `.only` and `.skip` over `f` and `x`                        | ![recommended][] | ![fixable][] |
 | [no-test-return-statement](docs/rules/no-test-return-statement.md)           | Disallow explicitly returning from tests                        |                  |              |
 | [prefer-called-with](docs/rules/prefer-called-with.md)                       | Suggest using `toBeCalledWith()` or `toHaveBeenCalledWith()`    |                  |              |

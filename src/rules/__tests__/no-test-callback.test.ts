@@ -28,7 +28,7 @@ ruleTester.run('no-test-callback', rule, {
       code: 'test("something", (...args) => {args[0]();})',
       errors: [
         {
-          messageId: 'illegalTestCallback',
+          messageId: 'noDoneCallback',
           line: 1,
           column: 20,
         },
@@ -38,7 +38,7 @@ ruleTester.run('no-test-callback', rule, {
       code: 'test("something", done => {done();})',
       errors: [
         {
-          messageId: 'illegalTestCallback',
+          messageId: 'noDoneCallback',
           line: 1,
           column: 19,
           suggestions: [
@@ -56,7 +56,7 @@ ruleTester.run('no-test-callback', rule, {
       code: 'test("something", finished => {finished();})',
       errors: [
         {
-          messageId: 'illegalTestCallback',
+          messageId: 'noDoneCallback',
           line: 1,
           column: 19,
           suggestions: [
@@ -74,7 +74,7 @@ ruleTester.run('no-test-callback', rule, {
       code: 'test("something", (done) => {done();})',
       errors: [
         {
-          messageId: 'illegalTestCallback',
+          messageId: 'noDoneCallback',
           line: 1,
           column: 20,
           suggestions: [
@@ -92,7 +92,7 @@ ruleTester.run('no-test-callback', rule, {
       code: 'test("something", done => done())',
       errors: [
         {
-          messageId: 'illegalTestCallback',
+          messageId: 'noDoneCallback',
           line: 1,
           column: 19,
           suggestions: [
@@ -109,7 +109,7 @@ ruleTester.run('no-test-callback', rule, {
       code: 'test("something", (done) => done())',
       errors: [
         {
-          messageId: 'illegalTestCallback',
+          messageId: 'noDoneCallback',
           line: 1,
           column: 20,
           suggestions: [
@@ -126,7 +126,7 @@ ruleTester.run('no-test-callback', rule, {
       code: 'test("something", function(done) {done();})',
       errors: [
         {
-          messageId: 'illegalTestCallback',
+          messageId: 'noDoneCallback',
           line: 1,
           column: 28,
           suggestions: [
@@ -144,7 +144,7 @@ ruleTester.run('no-test-callback', rule, {
       code: 'test("something", function (done) {done();})',
       errors: [
         {
-          messageId: 'illegalTestCallback',
+          messageId: 'noDoneCallback',
           line: 1,
           column: 29,
           suggestions: [
@@ -188,7 +188,7 @@ ruleTester.run('no-test-callback', rule, {
       `,
       errors: [
         {
-          messageId: 'illegalTestCallback',
+          messageId: 'noDoneCallback',
           line: 1,
           column: 20,
           suggestions: [
@@ -209,7 +209,7 @@ ruleTester.run('no-test-callback', rule, {
       code: 'afterEach((...args) => {args[0]();})',
       errors: [
         {
-          messageId: 'illegalTestCallback',
+          messageId: 'noDoneCallback',
           line: 1,
           column: 12,
         },
@@ -219,7 +219,7 @@ ruleTester.run('no-test-callback', rule, {
       code: 'beforeAll(done => {done();})',
       errors: [
         {
-          messageId: 'illegalTestCallback',
+          messageId: 'noDoneCallback',
           line: 1,
           column: 11,
           suggestions: [
@@ -237,7 +237,7 @@ ruleTester.run('no-test-callback', rule, {
       code: 'beforeAll(finished => {finished();})',
       errors: [
         {
-          messageId: 'illegalTestCallback',
+          messageId: 'noDoneCallback',
           line: 1,
           column: 11,
           suggestions: [
@@ -255,7 +255,7 @@ ruleTester.run('no-test-callback', rule, {
       code: 'beforeEach((done) => {done();})',
       errors: [
         {
-          messageId: 'illegalTestCallback',
+          messageId: 'noDoneCallback',
           line: 1,
           column: 13,
           suggestions: [
@@ -273,7 +273,7 @@ ruleTester.run('no-test-callback', rule, {
       code: 'afterAll(done => done())',
       errors: [
         {
-          messageId: 'illegalTestCallback',
+          messageId: 'noDoneCallback',
           line: 1,
           column: 10,
           suggestions: [
@@ -290,7 +290,7 @@ ruleTester.run('no-test-callback', rule, {
       code: 'afterEach((done) => done())',
       errors: [
         {
-          messageId: 'illegalTestCallback',
+          messageId: 'noDoneCallback',
           line: 1,
           column: 12,
           suggestions: [
@@ -307,7 +307,7 @@ ruleTester.run('no-test-callback', rule, {
       code: 'beforeAll(function(done) {done();})',
       errors: [
         {
-          messageId: 'illegalTestCallback',
+          messageId: 'noDoneCallback',
           line: 1,
           column: 20,
           suggestions: [
@@ -325,7 +325,7 @@ ruleTester.run('no-test-callback', rule, {
       code: 'afterEach(function (done) {done();})',
       errors: [
         {
-          messageId: 'illegalTestCallback',
+          messageId: 'noDoneCallback',
           line: 1,
           column: 21,
           suggestions: [
@@ -368,7 +368,7 @@ ruleTester.run('no-test-callback', rule, {
       `,
       errors: [
         {
-          messageId: 'illegalTestCallback',
+          messageId: 'noDoneCallback',
           line: 1,
           column: 13,
           suggestions: [
