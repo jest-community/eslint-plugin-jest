@@ -1,7 +1,7 @@
 import { TSESLint } from '@typescript-eslint/experimental-utils';
 import dedent from 'dedent';
 import resolveFrom from 'resolve-from';
-import rule from '../no-test-callback';
+import rule from '../no-done-callback';
 
 const ruleTester = new TSESLint.RuleTester({
   parser: resolveFrom(require.resolve('eslint'), 'espree'),
@@ -10,7 +10,7 @@ const ruleTester = new TSESLint.RuleTester({
   },
 });
 
-ruleTester.run('no-test-callback', rule, {
+ruleTester.run('no-done-callback', rule, {
   valid: [
     'test("something", () => {})',
     'test("something", async () => {})',
