@@ -138,6 +138,7 @@ installations requiring long-term consistency.
 | [no-conditional-expect](docs/rules/no-conditional-expect.md)                 | Prevent calling `expect` conditionally                          | ![recommended][] |              |
 | [no-deprecated-functions](docs/rules/no-deprecated-functions.md)             | Disallow use of deprecated functions                            | ![recommended][] | ![fixable][] |
 | [no-disabled-tests](docs/rules/no-disabled-tests.md)                         | Disallow disabled tests                                         | ![recommended][] |              |
+| [no-done-callback](docs/rules/no-done-callback.md)                           | Avoid using a callback in asynchronous tests                    | ![recommended][] | ![suggest][] |
 | [no-duplicate-hooks](docs/rules/no-duplicate-hooks.md)                       | Disallow duplicate setup and teardown hooks                     |                  |              |
 | [no-export](docs/rules/no-export.md)                                         | Disallow using `exports` in files containing tests              | ![recommended][] |              |
 | [no-focused-tests](docs/rules/no-focused-tests.md)                           | Disallow focused tests                                          | ![recommended][] | ![fixable][] |
@@ -151,7 +152,6 @@ installations requiring long-term consistency.
 | [no-mocks-import](docs/rules/no-mocks-import.md)                             | Disallow manually importing from `__mocks__`                    | ![recommended][] |              |
 | [no-restricted-matchers](docs/rules/no-restricted-matchers.md)               | Disallow specific matchers & modifiers                          |                  |              |
 | [no-standalone-expect](docs/rules/no-standalone-expect.md)                   | Disallow using `expect` outside of `it` or `test` blocks        | ![recommended][] |              |
-| [no-test-callback](docs/rules/no-test-callback.md)                           | Avoid using a callback in asynchronous tests                    | ![recommended][] | ![suggest][] |
 | [no-test-prefixes](docs/rules/no-test-prefixes.md)                           | Use `.only` and `.skip` over `f` and `x`                        | ![recommended][] | ![fixable][] |
 | [no-test-return-statement](docs/rules/no-test-return-statement.md)           | Disallow explicitly returning from tests                        |                  |              |
 | [prefer-called-with](docs/rules/prefer-called-with.md)                       | Suggest using `toBeCalledWith()` or `toHaveBeenCalledWith()`    |                  |              |
