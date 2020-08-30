@@ -63,7 +63,7 @@ ruleTester.run('expect-expect', rule, {
       errors: [
         {
           messageId: 'noAssertions',
-          type: AST_NODE_TYPES.CallExpression,
+          type: AST_NODE_TYPES.Identifier,
         },
       ],
     },
@@ -72,7 +72,7 @@ ruleTester.run('expect-expect', rule, {
       errors: [
         {
           messageId: 'noAssertions',
-          type: AST_NODE_TYPES.CallExpression,
+          type: AST_NODE_TYPES.Identifier,
         },
       ],
     },
@@ -81,7 +81,7 @@ ruleTester.run('expect-expect', rule, {
       errors: [
         {
           messageId: 'noAssertions',
-          type: AST_NODE_TYPES.CallExpression,
+          type: AST_NODE_TYPES.Identifier,
         },
       ],
     },
@@ -90,7 +90,7 @@ ruleTester.run('expect-expect', rule, {
       errors: [
         {
           messageId: 'noAssertions',
-          type: AST_NODE_TYPES.CallExpression,
+          type: AST_NODE_TYPES.Identifier,
         },
       ],
     },
@@ -100,7 +100,7 @@ ruleTester.run('expect-expect', rule, {
       errors: [
         {
           messageId: 'noAssertions',
-          type: AST_NODE_TYPES.CallExpression,
+          type: AST_NODE_TYPES.Identifier,
         },
       ],
     },
@@ -110,7 +110,7 @@ ruleTester.run('expect-expect', rule, {
       errors: [
         {
           messageId: 'noAssertions',
-          type: AST_NODE_TYPES.CallExpression,
+          type: AST_NODE_TYPES.Identifier,
         },
       ],
     },
@@ -164,7 +164,7 @@ ruleTester.run('wildcards', rule, {
       errors: [
         {
           messageId: 'noAssertions',
-          type: AST_NODE_TYPES.CallExpression,
+          type: AST_NODE_TYPES.Identifier,
         },
       ],
     },
@@ -174,7 +174,7 @@ ruleTester.run('wildcards', rule, {
       errors: [
         {
           messageId: 'noAssertions',
-          type: AST_NODE_TYPES.CallExpression,
+          type: AST_NODE_TYPES.Identifier,
         },
       ],
     },
@@ -184,7 +184,7 @@ ruleTester.run('wildcards', rule, {
       errors: [
         {
           messageId: 'noAssertions',
-          type: AST_NODE_TYPES.CallExpression,
+          type: AST_NODE_TYPES.Identifier,
         },
       ],
     },
@@ -194,7 +194,7 @@ ruleTester.run('wildcards', rule, {
       errors: [
         {
           messageId: 'noAssertions',
-          type: AST_NODE_TYPES.CallExpression,
+          type: AST_NODE_TYPES.Identifier,
         },
       ],
     },
@@ -204,7 +204,7 @@ ruleTester.run('wildcards', rule, {
       errors: [
         {
           messageId: 'noAssertions',
-          type: AST_NODE_TYPES.CallExpression,
+          type: AST_NODE_TYPES.Identifier,
         },
       ],
     },

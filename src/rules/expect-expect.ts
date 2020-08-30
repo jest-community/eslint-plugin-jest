@@ -111,7 +111,7 @@ export default createRule<
       },
       'Program:exit'() {
         unchecked.forEach(node =>
-          context.report({ messageId: 'noAssertions', node }),
+          context.report({ messageId: 'noAssertions', node: node.callee }),
         );
       },
     };
