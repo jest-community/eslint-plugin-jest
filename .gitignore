@@ -3,3 +3,9 @@ node_modules/
 coverage/
 lib/
 *.log
+.yarn/*
+!.yarn/releases
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions
+.pnp.*
