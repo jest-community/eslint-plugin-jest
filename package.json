@@ -20,12 +20,11 @@
     "lib/"
   ],
   "scripts": {
-    "build": "babel --extensions .js,.ts src --out-dir lib --copy-files",
-    "postbuild": "rimraf lib/__tests__ lib/**/__tests__",
+    "build": "babel --extensions .js,.ts src --out-dir lib --copy-files && rimraf lib/__tests__ 'lib/**/__tests__'",
     "lint": "eslint . --ignore-pattern '!.eslintrc.js' --ext js,ts",
-    "prepack": "yarn build",
-    "prettier:check": "prettier --check docs/**/*.md README.md .github/** package.json tsconfig.json src/globals.json",
-    "prettier:write": "prettier --write docs/**/*.md README.md .github/** package.json tsconfig.json src/globals.json",
+    "prepack": "rimraf lib && yarn build",
+    "prettier:check": "prettier --check 'docs/**/*.md' README.md '.github/**' package.json tsconfig.json src/globals.json .yarnrc.yml",
+    "prettier:write": "prettier --write 'docs/**/*.md' README.md '.github/**' package.json tsconfig.json src/globals.json .yarnrc.yml",
     "test": "jest",
     "tools:regenerate-docs": "ts-node -T tools/regenerate-docs",
     "typecheck": "tsc -p ."
@@ -43,7 +42,7 @@
   },
   "lint-staged": {
     "*.{js,ts}": "eslint --fix",
-    "*.{md,json}": "prettier --write"
+    "*.{md,json,yml}": "prettier --write"
   },
   "prettier": {
     "arrowParens": "avoid",
