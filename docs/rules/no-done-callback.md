@@ -1,56 +1,66 @@
-# Avoid using a callback in asynchronous tests (`no-done-callback`)
+# Avoid using a callback in asynchronous tests and hooks (`no-done-callback`)
 
-Jest allows you to pass a callback to test definitions, typically called `done`,
-that is later invoked to indicate that the asynchronous test is complete.
+When calling asynchronous code in hooks and tests, `jest` needs to know when the
+asynchronous work is complete to progress the current run.
 
-However, that means that if your test throws (e.g. because of a failing
-assertion), `done` will never be called unless you manually use `try-catch`.
-
-```js
-test('some test', done => {
-  expect(false).toBe(true);
-  done();
-});
-```
-
-The test above will time out instead of failing the assertions, since `done` is
-never called.
-
-Correct way of doing the same thing is to wrap it in `try-catch`.
+Originally the most common pattern to archive this was to use callbacks:
 
 ```js
-test('some test', done => {
-  try {
-    expect(false).toBe(true);
-    done();
-  } catch (e) {
-    done(e);
+test('the data is peanut butter', done => {
+  function callback(data) {
+    try {
+      expect(data).toBe('peanut butter');
+      done();
+    } catch (error) {
+      done(error);
+    }
   }
+
+  fetchData(callback);
 });
 ```
 
-However, Jest supports a second way of having asynchronous tests - using
-promises.
+This can be very error prone however, as it requires careful understanding of
+how assertions work in tests or otherwise tests won't behave as expected.
+
+For example, if the `try/catch` was left out of the above code, the test would
+timeout rather than fail. Even with the `try/catch`, forgetting to pass the
+caught error to `done` will result in `jest` believing the test has passed.
+
+A more straightforward way to handle asynchronous code is to use Promises:
 
 ```js
-test('some test', () => {
-  return new Promise(done => {
-    expect(false).toBe(true);
-    done();
+test('the data is peanut butter', () => {
+  return fetchData().then(data => {
+    expect(data).toBe('peanut butter');
   });
 });
 ```
 
-Even though `done` is never called here, the Promise will still reject, and Jest
-will report the assertion error correctly.
+When a test or hook returns a promise, `jest` waits for that promise to resolve,
+as well as automatically failing should the promise reject.
+
+If your environment supports `async/await`, this becomes even simpler:
+
+```js
+test('the data is peanut butter', async () => {
+  const data = await fetchData();
+  expect(data).toBe('peanut butter');
+});
+```
 
 ## Rule details
 
-This rule triggers a warning if you have a `done` callback in your test.
+This rule checks the function parameter of hooks & tests for use of the `done`
+argument, suggesting you return a promise instead.
 
 The following patterns are considered warnings:
 
 ```js
+beforeEach(done => {
+  // ...
+});
+
 test('myFunction()', done => {
   // ...
 });
@@ -63,6 +73,10 @@ test('myFunction()', function (done) {
 The following patterns are not considered warnings:
 
 ```js
+beforeEach(async () => {
+  await setupUsTheBomb();
+});
+
 test('myFunction()', () => {
   expect(myFunction()).toBeTruthy();
 });

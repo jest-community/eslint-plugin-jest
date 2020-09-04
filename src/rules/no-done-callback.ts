@@ -1,17 +1,35 @@
-import { AST_NODE_TYPES } from '@typescript-eslint/experimental-utils';
-import { createRule, isFunction, isTestCase } from './utils';
+import {
+  AST_NODE_TYPES,
+  TSESTree,
+} from '@typescript-eslint/experimental-utils';
+import { createRule, isFunction, isHook, isTestCase } from './utils';
+
+const findCallbackArg = (
+  node: TSESTree.CallExpression,
+): TSESTree.CallExpression['arguments'][0] | null => {
+  if (isHook(node) && node.arguments.length >= 1) {
+    return node.arguments[0];
+  }
+
+  if (isTestCase(node) && node.arguments.length >= 2) {
+    return node.arguments[1];
+  }
+
+  return null;
+};
 
 export default createRule({
   name: __filename,
   meta: {
     docs: {
       category: 'Best Practices',
-      description: 'Avoid using a callback in asynchronous tests',
+      description: 'Avoid using a callback in asynchronous tests and hooks',
       recommended: 'error',
       suggestion: true,
     },
     messages: {
-      illegalTestCallback: 'Illegal usage of test callback',
+      noDoneCallback:
+        'Return a Promise instead of relying on callback parameter',
       suggestWrappingInPromise: 'Wrap in `new Promise({{ callback }} => ...`',
       useAwaitInsteadOfCallback:
         'Use await instead of callback in async functions',
@@ -23,13 +41,13 @@ export default createRule({
   create(context) {
     return {
       CallExpression(node) {
-        if (!isTestCase(node) || node.arguments.length !== 2) {
-          return;
-        }
+        const callback = findCallbackArg(node);
 
-        const [, callback] = node.arguments;
-
-        if (!isFunction(callback) || callback.params.length !== 1) {
+        if (
+          !callback ||
+          !isFunction(callback) ||
+          callback.params.length !== 1
+        ) {
           return;
         }
 
@@ -38,7 +56,7 @@ export default createRule({
         if (argument.type !== AST_NODE_TYPES.Identifier) {
           context.report({
             node: argument,
-            messageId: 'illegalTestCallback',
+            messageId: 'noDoneCallback',
           });
 
           return;
@@ -55,7 +73,7 @@ export default createRule({
 
         context.report({
           node: argument,
-          messageId: 'illegalTestCallback',
+          messageId: 'noDoneCallback',
           suggest: [
             {
               messageId: 'suggestWrappingInPromise',

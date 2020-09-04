@@ -138,7 +138,7 @@ installations requiring long-term consistency.
 | [no-conditional-expect](docs/rules/no-conditional-expect.md)                 | Prevent calling `expect` conditionally                          | ![recommended][] |              |
 | [no-deprecated-functions](docs/rules/no-deprecated-functions.md)             | Disallow use of deprecated functions                            | ![recommended][] | ![fixable][] |
 | [no-disabled-tests](docs/rules/no-disabled-tests.md)                         | Disallow disabled tests                                         | ![recommended][] |              |
-| [no-done-callback](docs/rules/no-done-callback.md)                           | Avoid using a callback in asynchronous tests                    | ![recommended][] | ![suggest][] |
+| [no-done-callback](docs/rules/no-done-callback.md)                           | Avoid using a callback in asynchronous tests and hooks          | ![recommended][] | ![suggest][] |
 | [no-duplicate-hooks](docs/rules/no-duplicate-hooks.md)                       | Disallow duplicate setup and teardown hooks                     |                  |              |
 | [no-export](docs/rules/no-export.md)                                         | Disallow using `exports` in files containing tests              | ![recommended][] |              |
 | [no-focused-tests](docs/rules/no-focused-tests.md)                           | Disallow focused tests                                          | ![recommended][] | ![fixable][] |
