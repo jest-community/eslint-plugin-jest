@@ -35,7 +35,7 @@ let cachedJestVersion: JestVersion | null = null;
 /** @internal */
 export const _clearCachedJestVersion = () => (cachedJestVersion = null);
 
-const detectJestVersion = (): JestVersion => {
+const detectJestVersion = (): JestVersion | null => {
   if (cachedJestVersion) {
     return cachedJestVersion;
   }
@@ -55,9 +55,7 @@ const detectJestVersion = (): JestVersion => {
     }
   } catch {}
 
-  throw new Error(
-    'Unable to detect Jest version - please ensure jest package is installed, or otherwise set version explicitly',
-  );
+  return (cachedJestVersion = null);
 };
 
 export default createRule({
@@ -81,6 +79,8 @@ export default createRule({
     const jestVersion =
       (context.settings as ContextSettings)?.jest?.version ||
       detectJestVersion();
+
+    if (jestVersion === null) return {};
 
     const deprecations: Record<string, string> = {
       ...(jestVersion >= 15 && {

@@ -190,7 +190,7 @@ describe('the rule', () => {
       return true;
     });
 
-    ruleTester.run('explict jest version', rule, {
+    ruleTester.run('explicit jest version', rule, {
       valid: [
         'jest',
         'require("fs")',
@@ -234,7 +234,7 @@ describe('the rule', () => {
         process.chdir(tempDir);
       });
 
-      it('requires the version to be set explicitly', () => {
+      it('does not require the version to be set explicitly', () => {
         expect(() => {
           const linter = new TSESLint.Linter();
 
@@ -243,16 +243,14 @@ describe('the rule', () => {
           linter.verify('jest.resetModuleRegistry()', {
             rules: { 'no-deprecated-functions': 'error' },
           });
-        }).toThrow(
-          'Unable to detect Jest version - please ensure jest package is installed, or otherwise set version explicitly',
-        );
+        }).not.toThrow();
       });
     });
 
     describe('when the jest package.json is not found', () => {
       beforeEach(async () => process.chdir(await makeTempDir()));
 
-      it('requires the version to be set explicitly', () => {
+      it('does not require the version to be set explicitly', () => {
         expect(() => {
           const linter = new TSESLint.Linter();
 
@@ -261,9 +259,7 @@ describe('the rule', () => {
           linter.verify('jest.resetModuleRegistry()', {
             rules: { 'no-deprecated-functions': 'error' },
           });
-        }).toThrow(
-          'Unable to detect Jest version - please ensure jest package is installed, or otherwise set version explicitly',
-        );
+        }).not.toThrow();
       });
     });
   });
