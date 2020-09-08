@@ -2,8 +2,11 @@ import { existsSync } from 'fs';
 import { resolve } from 'path';
 import plugin from '../';
 
-const ruleNames = Object.keys(plugin.rules);
 const numberOfRules = 44;
+const ruleNames = Object.keys(plugin.rules);
+const deprecatedRules = Object.entries(plugin.rules)
+  .filter(([, rule]) => rule.meta.deprecated)
+  .map(([name]) => name);
 
 describe('rules', () => {
   it('should have a corresponding doc for each rule', () => {
@@ -54,7 +57,7 @@ describe('rules', () => {
       'style',
     ]);
     expect(Object.keys(recommendedConfigs.all.rules)).toHaveLength(
-      ruleNames.length,
+      ruleNames.length - deprecatedRules.length,
     );
     const allConfigRules = Object.values(recommendedConfigs)
       .map(config => Object.keys(config.rules))
