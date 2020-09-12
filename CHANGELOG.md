@@ -1,3 +1,10 @@
+## [24.0.1](https://github.com/jest-community/eslint-plugin-jest/compare/v24.0.0...v24.0.1) (2020-09-12)
+
+
+### Bug Fixes
+
+* don't include deprecated rules in `all` config ([#664](https://github.com/jest-community/eslint-plugin-jest/issues/664)) ([f636021](https://github.com/jest-community/eslint-plugin-jest/commit/f636021c16215a713845c699858a2978211df49d)), closes [#663](https://github.com/jest-community/eslint-plugin-jest/issues/663)
+
 # [24.0.0](https://github.com/jest-community/eslint-plugin-jest/compare/v23.20.0...v24.0.0) (2020-09-04)
 
 
