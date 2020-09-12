@@ -48,9 +48,15 @@ const recommendedRules = Object.entries(rules)
     {},
   );
 
-const allRules = Object.keys(rules).reduce<
-  Record<string, TSESLint.Linter.RuleLevel>
->((rules, key) => ({ ...rules, [`jest/${key}`]: 'error' }), {});
+const allRules = Object.entries(rules)
+  .filter(([, rule]) => !rule.meta.deprecated)
+  .reduce(
+    (acc, [name]) => ({
+      ...acc,
+      [`jest/${name}`]: 'error',
+    }),
+    {},
+  );
 
 const createConfig = (rules: Record<string, TSESLint.Linter.RuleLevel>) => ({
   plugins: ['jest'],
