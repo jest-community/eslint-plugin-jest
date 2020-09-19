@@ -23,7 +23,9 @@ const testCaseNames = new Set<string | null>([
   'fit.concurrent',
 ]);
 
-const isTestArrowFunction = (node: TSESTree.ArrowFunctionExpression) =>
+const isTestFunctionExpression = (
+  node: TSESTree.ArrowFunctionExpression | TSESTree.FunctionExpression,
+) =>
   node.parent !== undefined &&
   node.parent.type === AST_NODE_TYPES.CallExpression &&
   testCaseNames.has(getNodeName(node.parent.callee));
@@ -77,8 +79,8 @@ export default createRule({
           stack.push(true);
         }
       },
-      FunctionExpression() {
-        stack.push(false);
+      FunctionExpression(node) {
+        stack.push(isTestFunctionExpression(node));
       },
       FunctionDeclaration(node) {
         const declaredVariables = context.getDeclaredVariables(node);
@@ -89,7 +91,7 @@ export default createRule({
         stack.push(testCallExpressions.length > 0);
       },
       ArrowFunctionExpression(node) {
-        stack.push(isTestArrowFunction(node));
+        stack.push(isTestFunctionExpression(node));
       },
       IfStatement: validate,
       SwitchStatement: validate,
