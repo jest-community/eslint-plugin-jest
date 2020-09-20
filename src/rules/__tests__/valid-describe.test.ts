@@ -1,4 +1,5 @@
 import { TSESLint } from '@typescript-eslint/experimental-utils';
+import dedent from 'dedent';
 import resolveFrom from 'resolve-from';
 import rule from '../valid-describe';
 
@@ -24,30 +25,30 @@ ruleTester.run('valid-describe', rule, {
     'fdescribe("foo", () => {})',
     'describe.only("foo", () => {})',
     'describe.skip("foo", () => {})',
-    `
-    describe('foo', () => {
-      it('bar', () => {
-        return Promise.resolve(42).then(value => {
-          expect(value).toBe(42)
+    dedent`
+      describe('foo', () => {
+        it('bar', () => {
+          return Promise.resolve(42).then(value => {
+            expect(value).toBe(42)
+          })
         })
       })
-    })
     `,
-    `
-    describe('foo', () => {
-      it('bar', async () => {
-        expect(await Promise.resolve(42)).toBe(42)
+    dedent`
+      describe('foo', () => {
+        it('bar', async () => {
+          expect(await Promise.resolve(42)).toBe(42)
+        })
       })
-    })
     `,
-    `
-    describe('foo', () =>
-      test('bar', () => {})
-    )
+    dedent`
+      describe('foo', () =>
+        test('bar', () => {})
+      )
     `,
-    `
-    if (hasOwnProperty(obj, key)) {
-    }
+    dedent`
+      if (hasOwnProperty(obj, key)) {
+      }
     `,
   ],
   invalid: [
@@ -114,72 +115,72 @@ ruleTester.run('valid-describe', rule, {
       errors: [{ messageId: 'noAsyncDescribeCallback', line: 1, column: 22 }],
     },
     {
-      code: `
-      describe('sample case', () => {
-        it('works', () => {
-          expect(true).toEqual(true);
-        });
-        describe('async', async () => {
-          await new Promise(setImmediate);
-          it('breaks', () => {
-            throw new Error('Fail');
+      code: dedent`
+        describe('sample case', () => {
+          it('works', () => {
+            expect(true).toEqual(true);
+          });
+          describe('async', async () => {
+            await new Promise(setImmediate);
+            it('breaks', () => {
+              throw new Error('Fail');
+            });
           });
         });
-      });
       `,
-      errors: [{ messageId: 'noAsyncDescribeCallback', line: 6, column: 27 }],
+      errors: [{ messageId: 'noAsyncDescribeCallback', line: 5, column: 21 }],
     },
     {
-      code: `
-      describe('foo', function () {
-        return Promise.resolve().then(() => {
-          it('breaks', () => {
-            throw new Error('Fail')
-          })
-        })
-      })
-      `,
-      errors: [{ messageId: 'unexpectedReturnInDescribe', line: 3, column: 9 }],
-    },
-    {
-      code: `
-      describe('foo', () => {
-        return Promise.resolve().then(() => {
-          it('breaks', () => {
-            throw new Error('Fail')
-          })
-        })
-        describe('nested', () => {
+      code: dedent`
+        describe('foo', function () {
           return Promise.resolve().then(() => {
             it('breaks', () => {
               throw new Error('Fail')
             })
           })
         })
-      })
+      `,
+      errors: [{ messageId: 'unexpectedReturnInDescribe', line: 2, column: 3 }],
+    },
+    {
+      code: dedent`
+        describe('foo', () => {
+          return Promise.resolve().then(() => {
+            it('breaks', () => {
+              throw new Error('Fail')
+            })
+          })
+          describe('nested', () => {
+            return Promise.resolve().then(() => {
+              it('breaks', () => {
+                throw new Error('Fail')
+              })
+            })
+          })
+        })
       `,
       errors: [
-        { messageId: 'unexpectedReturnInDescribe', line: 3, column: 9 },
-        { messageId: 'unexpectedReturnInDescribe', line: 9, column: 11 },
+        { messageId: 'unexpectedReturnInDescribe', line: 2, column: 3 },
+        { messageId: 'unexpectedReturnInDescribe', line: 8, column: 5 },
       ],
     },
     {
-      code: `
-      describe('foo', async () => {
-        await something()
-        it('does something')
-        describe('nested', () => {
-          return Promise.resolve().then(() => {
-            it('breaks', () => {
-              throw new Error('Fail')
+      code: dedent`
+        describe('foo', async () => {
+          await something()
+          it('does something')
+          describe('nested', () => {
+            return Promise.resolve().then(() => {
+              it('breaks', () => {
+                throw new Error('Fail')
+              })
             })
           })
         })
-      })
       `,
       errors: [
-        { messageId: 'noAsyncDescribeCallback', line: 2, column: 23 },
-        { messageId: 'unexpectedReturnInDescribe', line: 6, column: 11 },
+        { messageId: 'noAsyncDescribeCallback', line: 1, column: 17 },
+        { messageId: 'unexpectedReturnInDescribe', line: 5, column: 5 },
       ],
     },
     {
