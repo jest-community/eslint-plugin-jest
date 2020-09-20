@@ -1,3 +1,10 @@
+## [24.0.2](https://github.com/jest-community/eslint-plugin-jest/compare/v24.0.1...v24.0.2) (2020-09-20)
+
+
+### Bug Fixes
+
+* **no-if:** check both types of function expression ([#672](https://github.com/jest-community/eslint-plugin-jest/issues/672)) ([d462d50](https://github.com/jest-community/eslint-plugin-jest/commit/d462d50aed84ad4dc536a1f47bb7af6abd3dbe92)), closes [#670](https://github.com/jest-community/eslint-plugin-jest/issues/670)
+
 ## [24.0.1](https://github.com/jest-community/eslint-plugin-jest/compare/v24.0.0...v24.0.1) (2020-09-12)
 
 
