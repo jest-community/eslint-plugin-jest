@@ -13,15 +13,20 @@ const ruleTester = new TSESLint.RuleTester({
 ruleTester.run('conditional expressions', rule, {
   valid: [
     'const x = y ? 1 : 0',
-    {
-      code: dedent`
-        it('foo', () => {
-          const foo = function(bar) {
-            return foo ? bar : null;
-          };
-        });
-      `,
-    },
+    dedent`
+      it('foo', () => {
+        const foo = function (bar) {
+          return foo ? bar : null;
+        };
+      });
+    `,
+    dedent`
+      it('foo', function () {
+        const foo = function (bar) {
+          return foo ? bar : null;
+        };
+      });
+    `,
   ],
   invalid: [
     {
@@ -343,6 +348,19 @@ ruleTester.run('switch statements', rule, {
     },
     {
       code: dedent`
+        xtest('foo', function () {
+          switch('bar') {}
+        })
+      `,
+      errors: [
+        {
+          data: { condition: 'switch' },
+          messageId: 'conditionalInTest',
+        },
+      ],
+    },
+    {
+      code: dedent`
         describe('foo', () => {
           it('bar', () => {
         
@@ -576,6 +594,19 @@ ruleTester.run('if statements', rule, {
     {
       code: dedent`
         it.skip('foo', () => {
+          if('bar') {}
+        })
+      `,
+      errors: [
+        {
+          data: { condition: 'if' },
+          messageId: 'conditionalInTest',
+        },
+      ],
+    },
+    {
+      code: dedent`
+        it.skip('foo', function () {
           if('bar') {}
         })
       `,
