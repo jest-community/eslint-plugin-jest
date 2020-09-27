@@ -23,6 +23,7 @@ ruleTester.run('no-alias-methods', rule, {
   invalid: [
     {
       code: 'expect(a).toBeCalled()',
+      output: 'expect(a).toHaveBeenCalled()',
       errors: [
         {
           messageId: 'replaceAlias',
@@ -34,10 +35,10 @@ ruleTester.run('no-alias-methods', rule, {
           line: 1,
         },
       ],
-      output: 'expect(a).toHaveBeenCalled()',
     },
     {
       code: 'expect(a).toBeCalledTimes()',
+      output: 'expect(a).toHaveBeenCalledTimes()',
       errors: [
         {
           messageId: 'replaceAlias',
@@ -49,10 +50,10 @@ ruleTester.run('no-alias-methods', rule, {
           line: 1,
         },
       ],
-      output: 'expect(a).toHaveBeenCalledTimes()',
     },
     {
       code: 'expect(a).toBeCalledWith()',
+      output: 'expect(a).toHaveBeenCalledWith()',
       errors: [
         {
           messageId: 'replaceAlias',
@@ -64,10 +65,10 @@ ruleTester.run('no-alias-methods', rule, {
           line: 1,
         },
       ],
-      output: 'expect(a).toHaveBeenCalledWith()',
     },
     {
       code: 'expect(a).lastCalledWith()',
+      output: 'expect(a).toHaveBeenLastCalledWith()',
       errors: [
         {
           messageId: 'replaceAlias',
@@ -79,10 +80,10 @@ ruleTester.run('no-alias-methods', rule, {
           line: 1,
         },
       ],
-      output: 'expect(a).toHaveBeenLastCalledWith()',
     },
     {
       code: 'expect(a).nthCalledWith()',
+      output: 'expect(a).toHaveBeenNthCalledWith()',
       errors: [
         {
           messageId: 'replaceAlias',
@@ -94,10 +95,10 @@ ruleTester.run('no-alias-methods', rule, {
           line: 1,
         },
       ],
-      output: 'expect(a).toHaveBeenNthCalledWith()',
     },
     {
       code: 'expect(a).toReturn()',
+      output: 'expect(a).toHaveReturned()',
       errors: [
         {
           messageId: 'replaceAlias',
@@ -109,10 +110,10 @@ ruleTester.run('no-alias-methods', rule, {
           line: 1,
         },
       ],
-      output: 'expect(a).toHaveReturned()',
     },
     {
       code: 'expect(a).toReturnTimes()',
+      output: 'expect(a).toHaveReturnedTimes()',
       errors: [
         {
           messageId: 'replaceAlias',
@@ -124,10 +125,10 @@ ruleTester.run('no-alias-methods', rule, {
           line: 1,
         },
       ],
-      output: 'expect(a).toHaveReturnedTimes()',
     },
     {
       code: 'expect(a).toReturnWith()',
+      output: 'expect(a).toHaveReturnedWith()',
       errors: [
         {
           messageId: 'replaceAlias',
@@ -139,10 +140,10 @@ ruleTester.run('no-alias-methods', rule, {
           line: 1,
         },
       ],
-      output: 'expect(a).toHaveReturnedWith()',
     },
     {
       code: 'expect(a).lastReturnedWith()',
+      output: 'expect(a).toHaveLastReturnedWith()',
       errors: [
         {
           messageId: 'replaceAlias',
@@ -154,10 +155,10 @@ ruleTester.run('no-alias-methods', rule, {
           line: 1,
         },
       ],
-      output: 'expect(a).toHaveLastReturnedWith()',
     },
     {
       code: 'expect(a).nthReturnedWith()',
+      output: 'expect(a).toHaveNthReturnedWith()',
       errors: [
         {
           messageId: 'replaceAlias',
@@ -169,10 +170,10 @@ ruleTester.run('no-alias-methods', rule, {
           line: 1,
         },
       ],
-      output: 'expect(a).toHaveNthReturnedWith()',
     },
     {
       code: 'expect(a).toThrowError()',
+      output: 'expect(a).toThrow()',
       errors: [
         {
           messageId: 'replaceAlias',
@@ -184,10 +185,10 @@ ruleTester.run('no-alias-methods', rule, {
           line: 1,
         },
       ],
-      output: 'expect(a).toThrow()',
     },
     {
       code: 'expect(a).resolves.toThrowError()',
+      output: 'expect(a).resolves.toThrow()',
       errors: [
         {
           messageId: 'replaceAlias',
@@ -199,10 +200,10 @@ ruleTester.run('no-alias-methods', rule, {
           line: 1,
         },
       ],
-      output: 'expect(a).resolves.toThrow()',
     },
     {
       code: 'expect(a).rejects.toThrowError()',
+      output: 'expect(a).rejects.toThrow()',
       errors: [
         {
           messageId: 'replaceAlias',
@@ -214,10 +215,10 @@ ruleTester.run('no-alias-methods', rule, {
           line: 1,
         },
       ],
-      output: 'expect(a).rejects.toThrow()',
     },
     {
       code: 'expect(a).not.toThrowError()',
+      output: 'expect(a).not.toThrow()',
       errors: [
         {
           messageId: 'replaceAlias',
@@ -229,7 +230,6 @@ ruleTester.run('no-alias-methods', rule, {
           line: 1,
         },
       ],
-      output: 'expect(a).not.toThrow()',
     },
   ],
 });

@@ -28,18 +28,17 @@ ruleTester.run('no-large-snapshots', rule, {
     'expect(something).toBe(1)',
     'expect(something).toMatchInlineSnapshot',
     {
-      filename: 'mock.js',
       code: generateExpectInlineSnapsCode(2, 'toMatchInlineSnapshot'),
+      filename: 'mock.js',
     },
     {
-      filename: 'mock.js',
       code: generateExpectInlineSnapsCode(
         2,
         'toThrowErrorMatchingInlineSnapshot',
       ),
+      filename: 'mock.js',
     },
     {
-      filename: 'mock.jsx',
       code: generateExpectInlineSnapsCode(20, 'toMatchInlineSnapshot'),
       options: [
         {
@@ -47,24 +46,24 @@ ruleTester.run('no-large-snapshots', rule, {
           inlineMaxSize: 21,
         },
       ],
+      filename: 'mock.jsx',
     },
     {
-      filename: 'mock.jsx',
       code: generateExpectInlineSnapsCode(60, 'toMatchInlineSnapshot'),
       options: [
         {
           maxSize: 61,
         },
       ],
+      filename: 'mock.jsx',
     },
     {
       // "should not report if node has fewer lines of code than limit"
-      filename: '/mock-component.jsx.snap',
       code: generateExportsSnapshotString(20),
+      filename: '/mock-component.jsx.snap',
     },
     {
       // "it should not report snapshots that are allowed to be large"
-      filename: '/mock-component.jsx.snap',
       code: generateExportsSnapshotString(58),
       options: [
         {
@@ -73,9 +72,9 @@ ruleTester.run('no-large-snapshots', rule, {
           },
         },
       ],
+      filename: '/mock-component.jsx.snap',
     },
     {
-      filename: '/mock-component.jsx.snap',
       code: generateExportsSnapshotString(20),
       options: [
         {
@@ -83,11 +82,11 @@ ruleTester.run('no-large-snapshots', rule, {
           inlineMaxSize: 19,
         },
       ],
+      filename: '/mock-component.jsx.snap',
     },
   ],
   invalid: [
     {
-      filename: 'mock.js',
       code: generateExpectInlineSnapsCode(50, 'toMatchInlineSnapshot'),
       errors: [
         {
@@ -95,9 +94,9 @@ ruleTester.run('no-large-snapshots', rule, {
           data: { lineLimit: 50, lineCount: 51 },
         },
       ],
+      filename: 'mock.js',
     },
     {
-      filename: 'mock.js',
       code: generateExpectInlineSnapsCode(
         50,
         'toThrowErrorMatchingInlineSnapshot',
@@ -108,9 +107,9 @@ ruleTester.run('no-large-snapshots', rule, {
           data: { lineLimit: 50, lineCount: 51 },
         },
       ],
+      filename: 'mock.js',
     },
     {
-      filename: 'mock.js',
       code: generateExpectInlineSnapsCode(
         50,
         'toThrowErrorMatchingInlineSnapshot',
@@ -122,10 +121,10 @@ ruleTester.run('no-large-snapshots', rule, {
           data: { lineLimit: 50, lineCount: 51 },
         },
       ],
+      filename: 'mock.js',
     },
     {
       // "it should return an empty object for non snapshot files"
-      filename: 'mock.jsx',
       code: generateExpectInlineSnapsCode(50, 'toMatchInlineSnapshot'),
       errors: [
         {
@@ -133,10 +132,10 @@ ruleTester.run('no-large-snapshots', rule, {
           data: { lineLimit: 50, lineCount: 51 },
         },
       ],
+      filename: 'mock.jsx',
     },
     {
       // "should report if node has more than 50 lines of code, and no sizeThreshold option is passed"
-      filename: '/mock-component.jsx.snap',
       code: generateExportsSnapshotString(52),
       errors: [
         {
@@ -144,10 +143,10 @@ ruleTester.run('no-large-snapshots', rule, {
           data: { lineLimit: 50, lineCount: 52 },
         },
       ],
+      filename: '/mock-component.jsx.snap',
     },
     {
       // "should report if node has more lines of code than number given in sizeThreshold option"
-      filename: '/mock-component.jsx.snap',
       code: generateExportsSnapshotString(100),
       options: [{ maxSize: 70 }],
       errors: [
@@ -156,9 +155,9 @@ ruleTester.run('no-large-snapshots', rule, {
           data: { lineLimit: 70, lineCount: 100 },
         },
       ],
+      filename: '/mock-component.jsx.snap',
     },
     {
-      filename: '/mock-component.jsx.snap',
       code: generateExportsSnapshotString(100),
       options: [{ maxSize: 70, inlineMaxSize: 101 }],
       errors: [
@@ -167,10 +166,10 @@ ruleTester.run('no-large-snapshots', rule, {
           data: { lineLimit: 70, lineCount: 100 },
         },
       ],
+      filename: '/mock-component.jsx.snap',
     },
     {
       // "should report if maxSize is zero"
-      filename: '/mock-component.jsx.snap',
       code: generateExportsSnapshotString(1),
       options: [{ maxSize: 0 }],
       errors: [
@@ -179,10 +178,10 @@ ruleTester.run('no-large-snapshots', rule, {
           data: { lineLimit: 0, lineCount: 1 },
         },
       ],
+      filename: '/mock-component.jsx.snap',
     },
     {
       // "it should report if file is not allowed"
-      filename: '/mock-component.jsx.snap',
       code: generateExportsSnapshotString(58),
       options: [
         {
@@ -197,10 +196,10 @@ ruleTester.run('no-large-snapshots', rule, {
           data: { lineLimit: 50, lineCount: 58 },
         },
       ],
+      filename: '/mock-component.jsx.snap',
     },
     {
       // "should not report allowed large snapshots based on regexp"
-      filename: '/mock-component.jsx.snap',
       code: [
         generateExportsSnapshotString(58, 'a big component w/ text'),
         generateExportsSnapshotString(58, 'a big component 2'),
@@ -218,9 +217,9 @@ ruleTester.run('no-large-snapshots', rule, {
           data: { lineLimit: 50, lineCount: 58 },
         },
       ],
+      filename: '/mock-component.jsx.snap',
     },
     {
-      filename: '/mock-component.jsx.snap',
       code: [
         generateExportsSnapshotString(58, 'a big component w/ text'),
         generateExportsSnapshotString(58, 'a big component 2'),
@@ -238,6 +237,7 @@ ruleTester.run('no-large-snapshots', rule, {
           data: { lineLimit: 50, lineCount: 58 },
         },
       ],
+      filename: '/mock-component.jsx.snap',
     },
   ],
 });

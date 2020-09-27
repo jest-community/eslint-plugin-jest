@@ -291,8 +291,8 @@ ruleTester.run('lowercase-name with ignoreTopLevelDescribe', rule, {
   invalid: [
     {
       code: 'it("Works!", () => {});',
-      options: [{ ignoreTopLevelDescribe: true }],
       output: 'it("works!", () => {});',
+      options: [{ ignoreTopLevelDescribe: true }],
       errors: [
         {
           messageId: 'unexpectedLowercase',
@@ -312,7 +312,6 @@ ruleTester.run('lowercase-name with ignoreTopLevelDescribe', rule, {
           });
         });
       `,
-      options: [{ ignoreTopLevelDescribe: true }],
       output: dedent`
         describe('MyClass', () => {
           describe('myMethod', () => {
@@ -322,6 +321,7 @@ ruleTester.run('lowercase-name with ignoreTopLevelDescribe', rule, {
           });
         });
       `,
+      options: [{ ignoreTopLevelDescribe: true }],
       errors: [
         {
           messageId: 'unexpectedLowercase',
@@ -347,7 +347,6 @@ ruleTester.run('lowercase-name with ignoreTopLevelDescribe', rule, {
           });
         });
       `,
-      options: [{ ignoreTopLevelDescribe: false }],
       output: dedent`
         describe('myClass', () => {
           describe('myMethod', () => {
@@ -357,6 +356,7 @@ ruleTester.run('lowercase-name with ignoreTopLevelDescribe', rule, {
           });
         });
       `,
+      options: [{ ignoreTopLevelDescribe: false }],
       errors: [
         {
           messageId: 'unexpectedLowercase',

@@ -21,33 +21,33 @@ ruleTester.run('prefer-to-be-undefined', rule, {
   invalid: [
     {
       code: 'expect(undefined).toBe(undefined);',
-      errors: [{ messageId: 'useToBeUndefined', column: 19, line: 1 }],
       output: 'expect(undefined).toBeUndefined();',
+      errors: [{ messageId: 'useToBeUndefined', column: 19, line: 1 }],
     },
     {
       code: 'expect(undefined).toEqual(undefined);',
-      errors: [{ messageId: 'useToBeUndefined', column: 19, line: 1 }],
       output: 'expect(undefined).toBeUndefined();',
+      errors: [{ messageId: 'useToBeUndefined', column: 19, line: 1 }],
     },
     {
       code: 'expect(undefined).toStrictEqual(undefined);',
-      errors: [{ messageId: 'useToBeUndefined', column: 19, line: 1 }],
       output: 'expect(undefined).toBeUndefined();',
+      errors: [{ messageId: 'useToBeUndefined', column: 19, line: 1 }],
     },
     {
       code: 'expect("a string").not.toBe(undefined);',
-      errors: [{ messageId: 'useToBeUndefined', column: 24, line: 1 }],
       output: 'expect("a string").not.toBeUndefined();',
+      errors: [{ messageId: 'useToBeUndefined', column: 24, line: 1 }],
     },
     {
       code: 'expect("a string").not.toEqual(undefined);',
-      errors: [{ messageId: 'useToBeUndefined', column: 24, line: 1 }],
       output: 'expect("a string").not.toBeUndefined();',
+      errors: [{ messageId: 'useToBeUndefined', column: 24, line: 1 }],
     },
     {
       code: 'expect("a string").not.toStrictEqual(undefined);',
-      errors: [{ messageId: 'useToBeUndefined', column: 24, line: 1 }],
       output: 'expect("a string").not.toBeUndefined();',
+      errors: [{ messageId: 'useToBeUndefined', column: 24, line: 1 }],
     },
   ],
 });
@@ -61,13 +61,13 @@ new TSESLint.RuleTester({
   invalid: [
     {
       code: 'expect(undefined).toBe(undefined as unknown as string as any);',
-      errors: [{ messageId: 'useToBeUndefined', column: 19, line: 1 }],
       output: 'expect(undefined).toBeUndefined();',
+      errors: [{ messageId: 'useToBeUndefined', column: 19, line: 1 }],
     },
     {
       code: 'expect("a string").not.toEqual(undefined as number);',
-      errors: [{ messageId: 'useToBeUndefined', column: 24, line: 1 }],
       output: 'expect("a string").not.toBeUndefined();',
+      errors: [{ messageId: 'useToBeUndefined', column: 24, line: 1 }],
     },
   ],
 });

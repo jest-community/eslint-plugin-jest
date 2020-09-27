@@ -36,6 +36,7 @@ module.exports = {
     '@typescript-eslint/ban-types': 'error',
     '@typescript-eslint/no-unused-vars': 'error',
     'eslint-comments/no-unused-disable': 'error',
+    'eslint-plugin/test-case-property-ordering': 'error',
     'no-else-return': 'error',
     'no-negated-condition': 'error',
     eqeqeq: ['error', 'smart'],

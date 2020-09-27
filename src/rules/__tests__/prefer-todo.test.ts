@@ -29,33 +29,33 @@ ruleTester.run('prefer-todo', rule, {
   invalid: [
     {
       code: `test("i need to write this test");`,
-      errors: [{ messageId: 'unimplementedTest' }],
       output: 'test.todo("i need to write this test");',
+      errors: [{ messageId: 'unimplementedTest' }],
     },
     {
       code: 'test(`i need to write this test`);',
-      errors: [{ messageId: 'unimplementedTest' }],
       output: 'test.todo(`i need to write this test`);',
+      errors: [{ messageId: 'unimplementedTest' }],
     },
     {
       code: 'it("foo", function () {})',
-      errors: [{ messageId: 'emptyTest' }],
       output: 'it.todo("foo")',
+      errors: [{ messageId: 'emptyTest' }],
     },
     {
       code: 'it("foo", () => {})',
-      errors: [{ messageId: 'emptyTest' }],
       output: 'it.todo("foo")',
+      errors: [{ messageId: 'emptyTest' }],
     },
     {
       code: `test.skip("i need to write this test", () => {});`,
-      errors: [{ messageId: 'emptyTest' }],
       output: 'test.todo("i need to write this test");',
+      errors: [{ messageId: 'emptyTest' }],
     },
     {
       code: `test.skip("i need to write this test", function() {});`,
-      errors: [{ messageId: 'emptyTest' }],
       output: 'test.todo("i need to write this test");',
+      errors: [{ messageId: 'emptyTest' }],
     },
   ],
 });

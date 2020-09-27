@@ -651,118 +651,118 @@ ruleTester.run('no-accidental-space', rule, {
   invalid: [
     {
       code: 'describe(" foo", function () {})',
-      errors: [{ messageId: 'accidentalSpace', column: 10, line: 1 }],
       output: 'describe("foo", function () {})',
+      errors: [{ messageId: 'accidentalSpace', column: 10, line: 1 }],
     },
     {
       code: 'describe(" foo foe fum", function () {})',
-      errors: [{ messageId: 'accidentalSpace', column: 10, line: 1 }],
       output: 'describe("foo foe fum", function () {})',
+      errors: [{ messageId: 'accidentalSpace', column: 10, line: 1 }],
     },
     {
       code: 'describe("foo foe fum ", function () {})',
-      errors: [{ messageId: 'accidentalSpace', column: 10, line: 1 }],
       output: 'describe("foo foe fum", function () {})',
+      errors: [{ messageId: 'accidentalSpace', column: 10, line: 1 }],
     },
     {
       code: 'fdescribe(" foo", function () {})',
-      errors: [{ messageId: 'accidentalSpace', column: 11, line: 1 }],
       output: 'fdescribe("foo", function () {})',
+      errors: [{ messageId: 'accidentalSpace', column: 11, line: 1 }],
     },
     {
       code: "fdescribe(' foo', function () {})",
-      errors: [{ messageId: 'accidentalSpace', column: 11, line: 1 }],
       output: "fdescribe('foo', function () {})",
+      errors: [{ messageId: 'accidentalSpace', column: 11, line: 1 }],
     },
     {
       code: 'xdescribe(" foo", function () {})',
-      errors: [{ messageId: 'accidentalSpace', column: 11, line: 1 }],
       output: 'xdescribe("foo", function () {})',
+      errors: [{ messageId: 'accidentalSpace', column: 11, line: 1 }],
     },
     {
       code: 'it(" foo", function () {})',
-      errors: [{ messageId: 'accidentalSpace', column: 4, line: 1 }],
       output: 'it("foo", function () {})',
+      errors: [{ messageId: 'accidentalSpace', column: 4, line: 1 }],
     },
     {
       code: 'it.concurrent(" foo", function () {})',
-      errors: [{ messageId: 'accidentalSpace', column: 15, line: 1 }],
       output: 'it.concurrent("foo", function () {})',
+      errors: [{ messageId: 'accidentalSpace', column: 15, line: 1 }],
     },
     {
       code: 'fit(" foo", function () {})',
-      errors: [{ messageId: 'accidentalSpace', column: 5, line: 1 }],
       output: 'fit("foo", function () {})',
+      errors: [{ messageId: 'accidentalSpace', column: 5, line: 1 }],
     },
     {
       code: 'fit.concurrent(" foo", function () {})',
-      errors: [{ messageId: 'accidentalSpace', column: 16, line: 1 }],
       output: 'fit.concurrent("foo", function () {})',
+      errors: [{ messageId: 'accidentalSpace', column: 16, line: 1 }],
     },
     {
       code: 'fit("foo ", function () {})',
-      errors: [{ messageId: 'accidentalSpace', column: 5, line: 1 }],
       output: 'fit("foo", function () {})',
+      errors: [{ messageId: 'accidentalSpace', column: 5, line: 1 }],
     },
     {
       code: 'fit.concurrent("foo ", function () {})',
-      errors: [{ messageId: 'accidentalSpace', column: 16, line: 1 }],
       output: 'fit.concurrent("foo", function () {})',
+      errors: [{ messageId: 'accidentalSpace', column: 16, line: 1 }],
     },
     {
       code: 'xit(" foo", function () {})',
-      errors: [{ messageId: 'accidentalSpace', column: 5, line: 1 }],
       output: 'xit("foo", function () {})',
+      errors: [{ messageId: 'accidentalSpace', column: 5, line: 1 }],
     },
     {
       code: 'test(" foo", function () {})',
-      errors: [{ messageId: 'accidentalSpace', column: 6, line: 1 }],
       output: 'test("foo", function () {})',
+      errors: [{ messageId: 'accidentalSpace', column: 6, line: 1 }],
     },
     {
       code: 'test.concurrent(" foo", function () {})',
-      errors: [{ messageId: 'accidentalSpace', column: 17, line: 1 }],
       output: 'test.concurrent("foo", function () {})',
+      errors: [{ messageId: 'accidentalSpace', column: 17, line: 1 }],
     },
     {
       code: 'test(` foo`, function () {})',
-      errors: [{ messageId: 'accidentalSpace', column: 6, line: 1 }],
       output: 'test(`foo`, function () {})',
+      errors: [{ messageId: 'accidentalSpace', column: 6, line: 1 }],
     },
     {
       code: 'test.concurrent(` foo`, function () {})',
-      errors: [{ messageId: 'accidentalSpace', column: 17, line: 1 }],
       output: 'test.concurrent(`foo`, function () {})',
+      errors: [{ messageId: 'accidentalSpace', column: 17, line: 1 }],
     },
     {
       code: 'test(` foo bar bang`, function () {})',
-      errors: [{ messageId: 'accidentalSpace', column: 6, line: 1 }],
       output: 'test(`foo bar bang`, function () {})',
+      errors: [{ messageId: 'accidentalSpace', column: 6, line: 1 }],
     },
     {
       code: 'test.concurrent(` foo bar bang`, function () {})',
-      errors: [{ messageId: 'accidentalSpace', column: 17, line: 1 }],
       output: 'test.concurrent(`foo bar bang`, function () {})',
+      errors: [{ messageId: 'accidentalSpace', column: 17, line: 1 }],
     },
     {
       code: 'test(` foo bar bang  `, function () {})',
-      errors: [{ messageId: 'accidentalSpace', column: 6, line: 1 }],
       output: 'test(`foo bar bang`, function () {})',
+      errors: [{ messageId: 'accidentalSpace', column: 6, line: 1 }],
     },
     {
       code: 'test.concurrent(` foo bar bang  `, function () {})',
-      errors: [{ messageId: 'accidentalSpace', column: 17, line: 1 }],
       output: 'test.concurrent(`foo bar bang`, function () {})',
+      errors: [{ messageId: 'accidentalSpace', column: 17, line: 1 }],
     },
     {
       code: 'xtest(" foo", function () {})',
-      errors: [{ messageId: 'accidentalSpace', column: 7, line: 1 }],
       output: 'xtest("foo", function () {})',
+      errors: [{ messageId: 'accidentalSpace', column: 7, line: 1 }],
     },
     {
       code: 'xtest(" foo  ", function () {})',
-      errors: [{ messageId: 'accidentalSpace', column: 7, line: 1 }],
       output: 'xtest("foo", function () {})',
+      errors: [{ messageId: 'accidentalSpace', column: 7, line: 1 }],
     },
     {
       code: `
@@ -770,12 +770,12 @@ ruleTester.run('no-accidental-space', rule, {
         it('bar', () => {})
       })
       `,
-      errors: [{ messageId: 'accidentalSpace', column: 16, line: 2 }],
       output: `
       describe('foo', () => {
         it('bar', () => {})
       })
       `,
+      errors: [{ messageId: 'accidentalSpace', column: 16, line: 2 }],
     },
     {
       code: `
@@ -783,12 +783,12 @@ ruleTester.run('no-accidental-space', rule, {
         it(' bar', () => {})
       })
       `,
-      errors: [{ messageId: 'accidentalSpace', column: 12, line: 3 }],
       output: `
       describe('foo', () => {
         it('bar', () => {})
       })
       `,
+      errors: [{ messageId: 'accidentalSpace', column: 12, line: 3 }],
     },
   ],
 });
@@ -803,28 +803,28 @@ ruleTester.run('no-duplicate-prefix ft describe', rule, {
   invalid: [
     {
       code: 'describe("describe foo", function () {})',
-      errors: [{ messageId: 'duplicatePrefix', column: 10, line: 1 }],
       output: 'describe("foo", function () {})',
+      errors: [{ messageId: 'duplicatePrefix', column: 10, line: 1 }],
     },
     {
       code: 'fdescribe("describe foo", function () {})',
-      errors: [{ messageId: 'duplicatePrefix', column: 11, line: 1 }],
       output: 'fdescribe("foo", function () {})',
+      errors: [{ messageId: 'duplicatePrefix', column: 11, line: 1 }],
     },
     {
       code: 'xdescribe("describe foo", function () {})',
-      errors: [{ messageId: 'duplicatePrefix', column: 11, line: 1 }],
       output: 'xdescribe("foo", function () {})',
+      errors: [{ messageId: 'duplicatePrefix', column: 11, line: 1 }],
     },
     {
       code: "describe('describe foo', function () {})",
-      errors: [{ messageId: 'duplicatePrefix', column: 10, line: 1 }],
       output: "describe('foo', function () {})",
+      errors: [{ messageId: 'duplicatePrefix', column: 10, line: 1 }],
     },
     {
       code: 'fdescribe(`describe foo`, function () {})',
-      errors: [{ messageId: 'duplicatePrefix', column: 11, line: 1 }],
       output: 'fdescribe(`foo`, function () {})',
+      errors: [{ messageId: 'duplicatePrefix', column: 11, line: 1 }],
     },
   ],
 });
@@ -841,23 +841,23 @@ ruleTester.run('no-duplicate-prefix ft test', rule, {
   invalid: [
     {
       code: 'test("test foo", function () {})',
-      errors: [{ messageId: 'duplicatePrefix', column: 6, line: 1 }],
       output: 'test("foo", function () {})',
+      errors: [{ messageId: 'duplicatePrefix', column: 6, line: 1 }],
     },
     {
       code: 'xtest("test foo", function () {})',
-      errors: [{ messageId: 'duplicatePrefix', column: 7, line: 1 }],
       output: 'xtest("foo", function () {})',
+      errors: [{ messageId: 'duplicatePrefix', column: 7, line: 1 }],
     },
     {
       code: 'test(`test foo`, function () {})',
-      errors: [{ messageId: 'duplicatePrefix', column: 6, line: 1 }],
       output: 'test(`foo`, function () {})',
+      errors: [{ messageId: 'duplicatePrefix', column: 6, line: 1 }],
     },
     {
       code: 'test(`test foo test`, function () {})',
-      errors: [{ messageId: 'duplicatePrefix', column: 6, line: 1 }],
       output: 'test(`foo test`, function () {})',
+      errors: [{ messageId: 'duplicatePrefix', column: 6, line: 1 }],
     },
   ],
 });
@@ -873,23 +873,23 @@ ruleTester.run('no-duplicate-prefix ft it', rule, {
   invalid: [
     {
       code: 'it("it foo", function () {})',
-      errors: [{ messageId: 'duplicatePrefix', column: 4, line: 1 }],
       output: 'it("foo", function () {})',
+      errors: [{ messageId: 'duplicatePrefix', column: 4, line: 1 }],
     },
     {
       code: 'fit("it foo", function () {})',
-      errors: [{ messageId: 'duplicatePrefix', column: 5, line: 1 }],
       output: 'fit("foo", function () {})',
+      errors: [{ messageId: 'duplicatePrefix', column: 5, line: 1 }],
     },
     {
       code: 'xit("it foo", function () {})',
-      errors: [{ messageId: 'duplicatePrefix', column: 5, line: 1 }],
       output: 'xit("foo", function () {})',
+      errors: [{ messageId: 'duplicatePrefix', column: 5, line: 1 }],
     },
     {
       code: 'it("it foos it correctly", function () {})',
-      errors: [{ messageId: 'duplicatePrefix', column: 4, line: 1 }],
       output: 'it("foos it correctly", function () {})',
+      errors: [{ messageId: 'duplicatePrefix', column: 4, line: 1 }],
     },
   ],
 });
@@ -914,12 +914,12 @@ ruleTester.run('no-duplicate-prefix ft nested', rule, {
         it('bar', () => {})
       })
       `,
-      errors: [{ messageId: 'duplicatePrefix', column: 16, line: 2 }],
       output: `
       describe('foo', () => {
         it('bar', () => {})
       })
       `,
+      errors: [{ messageId: 'duplicatePrefix', column: 16, line: 2 }],
     },
     {
       code: `
@@ -927,12 +927,12 @@ ruleTester.run('no-duplicate-prefix ft nested', rule, {
         it('describes things correctly', () => {})
       })
       `,
-      errors: [{ messageId: 'duplicatePrefix', column: 16, line: 2 }],
       output: `
       describe('foo', () => {
         it('describes things correctly', () => {})
       })
       `,
+      errors: [{ messageId: 'duplicatePrefix', column: 16, line: 2 }],
     },
     {
       code: `
@@ -940,12 +940,12 @@ ruleTester.run('no-duplicate-prefix ft nested', rule, {
         it('it bar', () => {})
       })
       `,
-      errors: [{ messageId: 'duplicatePrefix', column: 12, line: 3 }],
       output: `
       describe('foo', () => {
         it('bar', () => {})
       })
       `,
+      errors: [{ messageId: 'duplicatePrefix', column: 12, line: 3 }],
     },
   ],
 });

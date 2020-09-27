@@ -40,6 +40,7 @@ ruleTester.run('consistent-test-it with fn=test', rule, {
   invalid: [
     {
       code: 'it("foo")',
+      output: 'test("foo")',
       options: [{ fn: TestCaseName.test }],
       errors: [
         {
@@ -50,10 +51,10 @@ ruleTester.run('consistent-test-it with fn=test', rule, {
           },
         },
       ],
-      output: 'test("foo")',
     },
     {
       code: 'xit("foo")',
+      output: 'xtest("foo")',
       options: [{ fn: TestCaseName.test }],
       errors: [
         {
@@ -64,10 +65,10 @@ ruleTester.run('consistent-test-it with fn=test', rule, {
           },
         },
       ],
-      output: 'xtest("foo")',
     },
     {
       code: 'fit("foo")',
+      output: 'test.only("foo")',
       options: [{ fn: TestCaseName.test }],
       errors: [
         {
@@ -78,10 +79,10 @@ ruleTester.run('consistent-test-it with fn=test', rule, {
           },
         },
       ],
-      output: 'test.only("foo")',
     },
     {
       code: 'it.skip("foo")',
+      output: 'test.skip("foo")',
       options: [{ fn: TestCaseName.test }],
       errors: [
         {
@@ -92,10 +93,10 @@ ruleTester.run('consistent-test-it with fn=test', rule, {
           },
         },
       ],
-      output: 'test.skip("foo")',
     },
     {
       code: 'it.concurrent("foo")',
+      output: 'test.concurrent("foo")',
       options: [{ fn: TestCaseName.test }],
       errors: [
         {
@@ -106,10 +107,10 @@ ruleTester.run('consistent-test-it with fn=test', rule, {
           },
         },
       ],
-      output: 'test.concurrent("foo")',
     },
     {
       code: 'it.only("foo")',
+      output: 'test.only("foo")',
       options: [{ fn: TestCaseName.test }],
       errors: [
         {
@@ -120,10 +121,10 @@ ruleTester.run('consistent-test-it with fn=test', rule, {
           },
         },
       ],
-      output: 'test.only("foo")',
     },
     {
       code: 'describe("suite", () => { it("foo") })',
+      output: 'describe("suite", () => { test("foo") })',
       options: [{ fn: TestCaseName.test }],
       errors: [
         {
@@ -134,7 +135,6 @@ ruleTester.run('consistent-test-it with fn=test', rule, {
           },
         },
       ],
-      output: 'describe("suite", () => { test("foo") })',
     },
   ],
 });
@@ -173,6 +173,7 @@ ruleTester.run('consistent-test-it with fn=it', rule, {
   invalid: [
     {
       code: 'test("foo")',
+      output: 'it("foo")',
       options: [{ fn: TestCaseName.it }],
       errors: [
         {
@@ -183,10 +184,10 @@ ruleTester.run('consistent-test-it with fn=it', rule, {
           },
         },
       ],
-      output: 'it("foo")',
     },
     {
       code: 'xtest("foo")',
+      output: 'xit("foo")',
       options: [{ fn: TestCaseName.it }],
       errors: [
         {
@@ -197,10 +198,10 @@ ruleTester.run('consistent-test-it with fn=it', rule, {
           },
         },
       ],
-      output: 'xit("foo")',
     },
     {
       code: 'test.skip("foo")',
+      output: 'it.skip("foo")',
       options: [{ fn: TestCaseName.it }],
       errors: [
         {
@@ -211,10 +212,10 @@ ruleTester.run('consistent-test-it with fn=it', rule, {
           },
         },
       ],
-      output: 'it.skip("foo")',
     },
     {
       code: 'test.concurrent("foo")',
+      output: 'it.concurrent("foo")',
       options: [{ fn: TestCaseName.it }],
       errors: [
         {
@@ -225,10 +226,10 @@ ruleTester.run('consistent-test-it with fn=it', rule, {
           },
         },
       ],
-      output: 'it.concurrent("foo")',
     },
     {
       code: 'test.only("foo")',
+      output: 'it.only("foo")',
       options: [{ fn: TestCaseName.it }],
       errors: [
         {
@@ -239,10 +240,10 @@ ruleTester.run('consistent-test-it with fn=it', rule, {
           },
         },
       ],
-      output: 'it.only("foo")',
     },
     {
       code: 'describe("suite", () => { test("foo") })',
+      output: 'describe("suite", () => { it("foo") })',
       options: [{ fn: TestCaseName.it }],
       errors: [
         {
@@ -253,7 +254,6 @@ ruleTester.run('consistent-test-it with fn=it', rule, {
           },
         },
       ],
-      output: 'describe("suite", () => { it("foo") })',
     },
   ],
 });
@@ -288,6 +288,7 @@ ruleTester.run('consistent-test-it with fn=test and withinDescribe=it ', rule, {
   invalid: [
     {
       code: 'describe("suite", () => { test("foo") })',
+      output: 'describe("suite", () => { it("foo") })',
       options: [{ fn: TestCaseName.test, withinDescribe: TestCaseName.it }],
       errors: [
         {
@@ -298,10 +299,10 @@ ruleTester.run('consistent-test-it with fn=test and withinDescribe=it ', rule, {
           },
         },
       ],
-      output: 'describe("suite", () => { it("foo") })',
     },
     {
       code: 'describe("suite", () => { test.only("foo") })',
+      output: 'describe("suite", () => { it.only("foo") })',
       options: [{ fn: TestCaseName.test, withinDescribe: TestCaseName.it }],
       errors: [
         {
@@ -312,10 +313,10 @@ ruleTester.run('consistent-test-it with fn=test and withinDescribe=it ', rule, {
           },
         },
       ],
-      output: 'describe("suite", () => { it.only("foo") })',
     },
     {
       code: 'describe("suite", () => { xtest("foo") })',
+      output: 'describe("suite", () => { xit("foo") })',
       options: [{ fn: TestCaseName.test, withinDescribe: TestCaseName.it }],
       errors: [
         {
@@ -326,10 +327,10 @@ ruleTester.run('consistent-test-it with fn=test and withinDescribe=it ', rule, {
           },
         },
       ],
-      output: 'describe("suite", () => { xit("foo") })',
     },
     {
       code: 'describe("suite", () => { test.skip("foo") })',
+      output: 'describe("suite", () => { it.skip("foo") })',
       options: [{ fn: TestCaseName.test, withinDescribe: TestCaseName.it }],
       errors: [
         {
@@ -340,10 +341,10 @@ ruleTester.run('consistent-test-it with fn=test and withinDescribe=it ', rule, {
           },
         },
       ],
-      output: 'describe("suite", () => { it.skip("foo") })',
     },
     {
       code: 'describe("suite", () => { test.concurrent("foo") })',
+      output: 'describe("suite", () => { it.concurrent("foo") })',
       options: [{ fn: TestCaseName.test, withinDescribe: TestCaseName.it }],
       errors: [
         {
@@ -354,7 +355,6 @@ ruleTester.run('consistent-test-it with fn=test and withinDescribe=it ', rule, {
           },
         },
       ],
-      output: 'describe("suite", () => { it.concurrent("foo") })',
     },
   ],
 });
@@ -389,6 +389,7 @@ ruleTester.run('consistent-test-it with fn=it and withinDescribe=test ', rule, {
   invalid: [
     {
       code: 'describe("suite", () => { it("foo") })',
+      output: 'describe("suite", () => { test("foo") })',
       options: [{ fn: TestCaseName.it, withinDescribe: TestCaseName.test }],
       errors: [
         {
@@ -399,10 +400,10 @@ ruleTester.run('consistent-test-it with fn=it and withinDescribe=test ', rule, {
           },
         },
       ],
-      output: 'describe("suite", () => { test("foo") })',
     },
     {
       code: 'describe("suite", () => { it.only("foo") })',
+      output: 'describe("suite", () => { test.only("foo") })',
       options: [{ fn: TestCaseName.it, withinDescribe: TestCaseName.test }],
       errors: [
         {
@@ -413,10 +414,10 @@ ruleTester.run('consistent-test-it with fn=it and withinDescribe=test ', rule, {
           },
         },
       ],
-      output: 'describe("suite", () => { test.only("foo") })',
     },
     {
       code: 'describe("suite", () => { xit("foo") })',
+      output: 'describe("suite", () => { xtest("foo") })',
       options: [{ fn: TestCaseName.it, withinDescribe: TestCaseName.test }],
       errors: [
         {
@@ -427,10 +428,10 @@ ruleTester.run('consistent-test-it with fn=it and withinDescribe=test ', rule, {
           },
         },
       ],
-      output: 'describe("suite", () => { xtest("foo") })',
     },
     {
       code: 'describe("suite", () => { it.skip("foo") })',
+      output: 'describe("suite", () => { test.skip("foo") })',
       options: [{ fn: TestCaseName.it, withinDescribe: TestCaseName.test }],
       errors: [
         {
@@ -441,10 +442,10 @@ ruleTester.run('consistent-test-it with fn=it and withinDescribe=test ', rule, {
           },
         },
       ],
-      output: 'describe("suite", () => { test.skip("foo") })',
     },
     {
       code: 'describe("suite", () => { it.concurrent("foo") })',
+      output: 'describe("suite", () => { test.concurrent("foo") })',
       options: [{ fn: TestCaseName.it, withinDescribe: TestCaseName.test }],
       errors: [
         {
@@ -455,7 +456,6 @@ ruleTester.run('consistent-test-it with fn=it and withinDescribe=test ', rule, {
           },
         },
       ],
-      output: 'describe("suite", () => { test.concurrent("foo") })',
     },
   ],
 });
@@ -477,6 +477,7 @@ ruleTester.run(
     invalid: [
       {
         code: 'describe("suite", () => { it("foo") })',
+        output: 'describe("suite", () => { test("foo") })',
         options: [{ fn: TestCaseName.test, withinDescribe: TestCaseName.test }],
         errors: [
           {
@@ -487,10 +488,10 @@ ruleTester.run(
             },
           },
         ],
-        output: 'describe("suite", () => { test("foo") })',
       },
       {
         code: 'it("foo")',
+        output: 'test("foo")',
         options: [{ fn: TestCaseName.test, withinDescribe: TestCaseName.test }],
         errors: [
           {
@@ -501,7 +502,6 @@ ruleTester.run(
             },
           },
         ],
-        output: 'test("foo")',
       },
     ],
   },
@@ -521,6 +521,7 @@ ruleTester.run('consistent-test-it with fn=it and withinDescribe=it ', rule, {
   invalid: [
     {
       code: 'describe("suite", () => { test("foo") })',
+      output: 'describe("suite", () => { it("foo") })',
       options: [{ fn: TestCaseName.it, withinDescribe: TestCaseName.it }],
       errors: [
         {
@@ -531,10 +532,10 @@ ruleTester.run('consistent-test-it with fn=it and withinDescribe=it ', rule, {
           },
         },
       ],
-      output: 'describe("suite", () => { it("foo") })',
     },
     {
       code: 'test("foo")',
+      output: 'it("foo")',
       options: [{ fn: TestCaseName.it, withinDescribe: TestCaseName.it }],
       errors: [
         {
@@ -545,7 +546,6 @@ ruleTester.run('consistent-test-it with fn=it and withinDescribe=it ', rule, {
           },
         },
       ],
-      output: 'it("foo")',
     },
   ],
 });
@@ -559,6 +559,7 @@ ruleTester.run('consistent-test-it defaults without config object', rule, {
   invalid: [
     {
       code: 'describe("suite", () => { test("foo") })',
+      output: 'describe("suite", () => { it("foo") })',
       errors: [
         {
           messageId: 'consistentMethodWithinDescribe',
@@ -568,7 +569,6 @@ ruleTester.run('consistent-test-it defaults without config object', rule, {
           },
         },
       ],
-      output: 'describe("suite", () => { it("foo") })',
     },
   ],
 });
@@ -587,6 +587,7 @@ ruleTester.run('consistent-test-it with withinDescribe=it', rule, {
   invalid: [
     {
       code: 'it("foo")',
+      output: 'test("foo")',
       options: [{ withinDescribe: TestCaseName.it }],
       errors: [
         {
@@ -597,10 +598,10 @@ ruleTester.run('consistent-test-it with withinDescribe=it', rule, {
           },
         },
       ],
-      output: 'test("foo")',
     },
     {
       code: 'describe("suite", () => { test("foo") })',
+      output: 'describe("suite", () => { it("foo") })',
       options: [{ withinDescribe: TestCaseName.it }],
       errors: [
         {
@@ -611,7 +612,6 @@ ruleTester.run('consistent-test-it with withinDescribe=it', rule, {
           },
         },
       ],
-      output: 'describe("suite", () => { it("foo") })',
     },
   ],
 });
@@ -630,6 +630,7 @@ ruleTester.run('consistent-test-it with withinDescribe=test', rule, {
   invalid: [
     {
       code: 'it("foo")',
+      output: 'test("foo")',
       options: [{ withinDescribe: TestCaseName.test }],
       errors: [
         {
@@ -640,10 +641,10 @@ ruleTester.run('consistent-test-it with withinDescribe=test', rule, {
           },
         },
       ],
-      output: 'test("foo")',
     },
     {
       code: 'describe("suite", () => { it("foo") })',
+      output: 'describe("suite", () => { test("foo") })',
       options: [{ withinDescribe: TestCaseName.test }],
       errors: [
         {
@@ -654,7 +655,6 @@ ruleTester.run('consistent-test-it with withinDescribe=test', rule, {
           },
         },
       ],
-      output: 'describe("suite", () => { test("foo") })',
     },
   ],
 });
