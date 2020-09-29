@@ -6,7 +6,7 @@ import rule from '../prefer-expect-assertions';
 const ruleTester = new TSESLint.RuleTester({
   parser: resolveFrom(require.resolve('eslint'), 'espree'),
   parserOptions: {
-    ecmaVersion: 2015,
+    ecmaVersion: 2017,
   },
 });
 
@@ -205,6 +205,21 @@ ruleTester.run('prefer-expect-assertions', rule, {
         },
       ],
     },
+    {
+      code: dedent`
+        it("it1", async function() {
+          expect(someValue).toBe(true);
+        })
+      `,
+      options: [{ onlyFunctionsWithAsyncKeyword: true }],
+      errors: [
+        {
+          messageId: 'haveExpectAssertions',
+          column: 1,
+          line: 1,
+        },
+      ],
+    },
   ],
 
   valid: [
@@ -223,5 +238,27 @@ ruleTester.run('prefer-expect-assertions', rule, {
     'test("it1")',
     'itHappensToStartWithIt("foo", function() {})',
     'testSomething("bar", function() {})',
+    'it(async () => {expect.assertions(0);})',
+    {
+      code: dedent`
+        it("it1", async () => {
+          expect.assertions(1);
+          expect(someValue).toBe(true)
+        })
+      `,
+      options: [{ onlyFunctionsWithAsyncKeyword: true }],
+    },
+    {
+      code: dedent`
+        it("it1", function() {
+          expect(someValue).toBe(true)
+        })
+      `,
+      options: [{ onlyFunctionsWithAsyncKeyword: true }],
+    },
+    {
+      code: 'it("it1", () => {})',
+      options: [{ onlyFunctionsWithAsyncKeyword: true }],
+    },
   ],
 });

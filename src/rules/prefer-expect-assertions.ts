@@ -46,6 +46,9 @@ interface PreferExpectAssertionsCallExpression extends TSESTree.CallExpression {
     TSESTree.ArrowFunctionExpression & { body: TSESTree.BlockStatement },
   ];
 }
+interface RuleOptions {
+  onlyFunctionsWithAsyncKeyword?: boolean;
+}
 
 type MessageIds =
   | 'hasAssertionsTakesNoArguments'
@@ -61,7 +64,7 @@ const suggestions: Array<[MessageIds, string]> = [
   ['suggestAddingAssertions', 'expect.assertions();'],
 ];
 
-export default createRule<[], MessageIds>({
+export default createRule<[RuleOptions], MessageIds>({
   name: __filename,
   meta: {
     docs: {
@@ -85,14 +88,28 @@ export default createRule<[], MessageIds>({
       suggestRemovingExtraArguments: 'Remove extra arguments',
     },
     type: 'suggestion',
-    schema: [],
+    schema: [
+      {
+        type: 'object',
+        properties: {
+          onlyFunctionsWithAsyncKeyword: {
+            type: 'boolean',
+          },
+        },
+        additionalProperties: false,
+      },
+    ],
   },
-  defaultOptions: [],
-  create(context) {
+  defaultOptions: [{ onlyFunctionsWithAsyncKeyword: false }],
+  create(context, [options]) {
     return {
       'CallExpression[callee.name=/^(it|test)$/][arguments.1.body.body]'(
         node: PreferExpectAssertionsCallExpression,
       ) {
+        if (options.onlyFunctionsWithAsyncKeyword && !node.arguments[1].async) {
+          return;
+        }
+
         const testFuncBody = node.arguments[1].body.body;
 
         if (!isFirstLineExprStmt(testFuncBody)) {
