@@ -19,7 +19,7 @@ jobs:
           key: ubuntu-latest-node-12.x-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ubuntu-latest-node-12.x-yarn-
-      - uses: actions/setup-node@v2.1.1
+      - uses: actions/setup-node@v2.1.2
         with:
           node-version: 12.x
       - name: install
