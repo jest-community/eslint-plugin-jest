@@ -1,4 +1,5 @@
 import { TSESLint } from '@typescript-eslint/experimental-utils';
+import dedent from 'dedent';
 import resolveFrom from 'resolve-from';
 import rule from '../prefer-hooks-on-top';
 
@@ -11,36 +12,36 @@ const ruleTester = new TSESLint.RuleTester({
 
 ruleTester.run('basic describe block', rule, {
   valid: [
-    `describe("foo", () => {
-        beforeEach(() => {
-        });
+    dedent`
+      describe('foo', () => {
+        beforeEach(() => {});
         someSetupFn();
-        afterEach(() => {
+        afterEach(() => {});
+        test('bar', () => {
+          someFn();
         });
-        test("bar", () => {
-          some_fn();
-        });
-      });`,
+      });
+    `,
   ],
   invalid: [
     {
-      code: `describe("foo", () => {
-          beforeEach(() => {
+      code: dedent`
+        describe('foo', () => {
+          beforeEach(() => {});
+          test('bar', () => {
+            someFn();
           });
-          test("bar", () => {
-            some_fn();
+          beforeAll(() => {});
+          test('bar', () => {
+            someFn();
           });
-          beforeAll(() => {
-          });
-          test("bar", () => {
-            some_fn();
-          });
-        });`,
+        });
+      `,
       errors: [
         {
           messageId: 'noHookOnTop',
-          column: 11,
-          line: 7,
+          column: 3,
+          line: 6,
         },
       ],
     },
@@ -49,80 +50,73 @@ ruleTester.run('basic describe block', rule, {
 
 ruleTester.run('multiple describe blocks', rule, {
   valid: [
-    `describe.skip("foo", () => {
-        beforeEach(() => {
-        });
-        beforeAll(() => {
-        });
-        test("bar", () => {
-          some_fn();
+    dedent`
+      describe.skip('foo', () => {
+        beforeEach(() => {});
+        beforeAll(() => {});
+        test('bar', () => {
+          someFn();
         });
       });
-      describe("foo", () => {
-        beforeEach(() => {
+      describe('foo', () => {
+        beforeEach(() => {});
+        test('bar', () => {
+          someFn();
         });
-        test("bar", () => {
-          some_fn();
-        });
-      });`,
+      });
+    `,
   ],
 
   invalid: [
     {
-      code: `describe.skip("foo", () => {
-          beforeEach(() => {
+      code: dedent`
+        describe.skip('foo', () => {
+          beforeEach(() => {});
+          test('bar', () => {
+            someFn();
           });
-          test("bar", () => {
-            some_fn();
-          });
-          beforeAll(() => {
-          });
-          test("bar", () => {
-            some_fn();
-          });
-        });
-        describe("foo", () => {
-          beforeEach(() => {
-          });
-          beforeEach(() => {
-          });
-          beforeAll(() => {
-          });
-          test("bar", () => {
-            some_fn();
+          beforeAll(() => {});
+          test('bar', () => {
+            someFn();
           });
         });
-        describe("foo", () => {
-          test("bar", () => {
-            some_fn();
+        describe('foo', () => {
+          beforeEach(() => {});
+          beforeEach(() => {});
+          beforeAll(() => {});
+          test('bar', () => {
+            someFn();
           });
-          beforeEach(() => {
+        });
+        describe('foo', () => {
+          test('bar', () => {
+            someFn();
           });
-          beforeEach(() => {
-          });
-          beforeAll(() => {
-          });
-        });`,
+          beforeEach(() => {});
+          beforeEach(() => {});
+          beforeAll(() => {});
+        });
+      `,
       errors: [
         {
           messageId: 'noHookOnTop',
-          column: 11,
-          line: 7,
+          column: 3,
+          line: 6,
         },
         {
           messageId: 'noHookOnTop',
-          column: 11,
-          line: 28,
+          column: 3,
+          line: 23,
         },
         {
           messageId: 'noHookOnTop',
-          column: 11,
-          line: 30,
+          column: 3,
+          line: 24,
         },
         {
           messageId: 'noHookOnTop',
-          column: 11,
-          line: 32,
+          column: 3,
+          line: 25,
         },
       ],
     },
@@ -131,58 +125,56 @@ ruleTester.run('multiple describe blocks', rule, {
 
 ruleTester.run('nested describe blocks', rule, {
   valid: [
-    `describe("foo", () => {
-        beforeEach(() => {
+    dedent`
+      describe('foo', () => {
+        beforeEach(() => {});
+        test('bar', () => {
+          someFn();
         });
-        test("bar", () => {
-          some_fn();
-        });
-        describe("inner_foo" , () => {
-          beforeEach(() => {
+        describe('inner_foo', () => {
+          beforeEach(() => {});
+          test('inner bar', () => {
+            someFn();
           });
-          test("inner bar", () => {
-            some_fn();
-          });
         });
-      });`,
+      });
+    `,
   ],
 
   invalid: [
     {
-      code: `describe("foo", () => {
-          beforeAll(() => {
+      code: dedent`
+        describe('foo', () => {
+          beforeAll(() => {});
+          test('bar', () => {
+            someFn();
           });
-          test("bar", () => {
-            some_fn();
-          });
-          describe("inner_foo" , () => {
-            beforeEach(() => {
+          describe('inner_foo', () => {
+            beforeEach(() => {});
+            test('inner bar', () => {
+              someFn();
             });
-            test("inner bar", () => {
-              some_fn();
+            test('inner bar', () => {
+              someFn();
             });
-            test("inner bar", () => {
-              some_fn();
-            });
-            beforeAll(() => {
-            });
-            afterAll(() => {
-            });
-            test("inner bar", () => {
-              some_fn();
+            beforeAll(() => {});
+            afterAll(() => {});
+            test('inner bar', () => {
+              someFn();
             });
           });
-        });`,
+        });
+      `,
       errors: [
         {
           messageId: 'noHookOnTop',
-          column: 13,
-          line: 16,
+          column: 5,
+          line: 14,
         },
         {
           messageId: 'noHookOnTop',
-          column: 13,
-          line: 18,
+          column: 5,
+          line: 15,
         },
       ],
     },
