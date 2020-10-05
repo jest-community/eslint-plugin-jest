@@ -74,7 +74,6 @@ module.exports = {
       { blankLine: 'any', prev: 'directive', next: 'directive' },
     ],
 
-    // todo: pulled from v3 of @typescript-eslint's eslint-recommended config
     'prefer-spread': 'error',
     'prefer-rest-params': 'error',
     'prefer-const': ['error', { destructuring: 'all' }],
