@@ -1,4 +1,5 @@
 import { TSESLint } from '@typescript-eslint/experimental-utils';
+import dedent from 'dedent';
 import resolveFrom from 'resolve-from';
 import rule from '../prefer-todo';
 
@@ -20,7 +21,7 @@ ruleTester.run('prefer-todo', rule, {
     'test("foo", 1)',
     'test("stub", () => expect(1).toBe(1));',
     'test.concurrent("stub", () => expect(1).toBe(1));',
-    `
+    dedent`
       supportsDone && params.length < test.length
         ? done => test(...params, done)
         : () => test(...params);
