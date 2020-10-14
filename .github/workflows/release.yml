@@ -8,6 +8,7 @@ on:
 
 jobs:
   release:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     name: release
     runs-on: ubuntu-latest
     steps:
