@@ -51,8 +51,8 @@ ruleTester.run('no-jasmine-globals', rule, {
     },
     {
       code: 'jasmine.DEFAULT_TIMEOUT_INTERVAL = 5000;',
-      errors: [{ messageId: 'illegalJasmine', column: 1, line: 1 }],
       output: 'jest.setTimeout(5000);',
+      errors: [{ messageId: 'illegalJasmine', column: 1, line: 1 }],
     },
     {
       code: 'jasmine.DEFAULT_TIMEOUT_INTERVAL = function() {}',
@@ -82,6 +82,7 @@ ruleTester.run('no-jasmine-globals', rule, {
     },
     {
       code: 'jasmine.any()',
+      output: 'expect.any()',
       errors: [
         {
           messageId: 'illegalMethod',
@@ -90,10 +91,10 @@ ruleTester.run('no-jasmine-globals', rule, {
           line: 1,
         },
       ],
-      output: 'expect.any()',
     },
     {
       code: 'jasmine.anything()',
+      output: 'expect.anything()',
       errors: [
         {
           messageId: 'illegalMethod',
@@ -102,10 +103,10 @@ ruleTester.run('no-jasmine-globals', rule, {
           line: 1,
         },
       ],
-      output: 'expect.anything()',
     },
     {
       code: 'jasmine.arrayContaining()',
+      output: 'expect.arrayContaining()',
       errors: [
         {
           messageId: 'illegalMethod',
@@ -117,10 +118,10 @@ ruleTester.run('no-jasmine-globals', rule, {
           line: 1,
         },
       ],
-      output: 'expect.arrayContaining()',
     },
     {
       code: 'jasmine.objectContaining()',
+      output: 'expect.objectContaining()',
       errors: [
         {
           messageId: 'illegalMethod',
@@ -132,10 +133,10 @@ ruleTester.run('no-jasmine-globals', rule, {
           line: 1,
         },
       ],
-      output: 'expect.objectContaining()',
     },
     {
       code: 'jasmine.stringMatching()',
+      output: 'expect.stringMatching()',
       errors: [
         {
           messageId: 'illegalMethod',
@@ -147,7 +148,6 @@ ruleTester.run('no-jasmine-globals', rule, {
           line: 1,
         },
       ],
-      output: 'expect.stringMatching()',
     },
     {
       code: 'jasmine.getEnv()',

@@ -26,6 +26,7 @@ ruleTester.run('no-test-prefixes', rule, {
   invalid: [
     {
       code: 'fdescribe("foo", function () {})',
+      output: 'describe.only("foo", function () {})',
       errors: [
         {
           messageId: 'usePreferredName',
@@ -34,10 +35,10 @@ ruleTester.run('no-test-prefixes', rule, {
           line: 1,
         },
       ],
-      output: 'describe.only("foo", function () {})',
     },
     {
       code: 'fit("foo", function () {})',
+      output: 'it.only("foo", function () {})',
       errors: [
         {
           messageId: 'usePreferredName',
@@ -46,10 +47,10 @@ ruleTester.run('no-test-prefixes', rule, {
           line: 1,
         },
       ],
-      output: 'it.only("foo", function () {})',
     },
     {
       code: 'fit.concurrent("foo", function () {})',
+      output: 'it.concurrent.only("foo", function () {})',
       errors: [
         {
           messageId: 'usePreferredName',
@@ -58,10 +59,10 @@ ruleTester.run('no-test-prefixes', rule, {
           line: 1,
         },
       ],
-      output: 'it.concurrent.only("foo", function () {})',
     },
     {
       code: 'xdescribe("foo", function () {})',
+      output: 'describe.skip("foo", function () {})',
       errors: [
         {
           messageId: 'usePreferredName',
@@ -70,10 +71,10 @@ ruleTester.run('no-test-prefixes', rule, {
           line: 1,
         },
       ],
-      output: 'describe.skip("foo", function () {})',
     },
     {
       code: 'xit("foo", function () {})',
+      output: 'it.skip("foo", function () {})',
       errors: [
         {
           messageId: 'usePreferredName',
@@ -82,10 +83,10 @@ ruleTester.run('no-test-prefixes', rule, {
           line: 1,
         },
       ],
-      output: 'it.skip("foo", function () {})',
     },
     {
       code: 'xtest("foo", function () {})',
+      output: 'test.skip("foo", function () {})',
       errors: [
         {
           messageId: 'usePreferredName',
@@ -94,7 +95,6 @@ ruleTester.run('no-test-prefixes', rule, {
           line: 1,
         },
       ],
-      output: 'test.skip("foo", function () {})',
     },
   ],
 });

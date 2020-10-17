@@ -23,33 +23,33 @@ ruleTester.run('prefer-to-be-null', rule, {
   invalid: [
     {
       code: 'expect(null).toBe(null);',
-      errors: [{ messageId: 'useToBeNull', column: 14, line: 1 }],
       output: 'expect(null).toBeNull();',
+      errors: [{ messageId: 'useToBeNull', column: 14, line: 1 }],
     },
     {
       code: 'expect(null).toEqual(null);',
-      errors: [{ messageId: 'useToBeNull', column: 14, line: 1 }],
       output: 'expect(null).toBeNull();',
+      errors: [{ messageId: 'useToBeNull', column: 14, line: 1 }],
     },
     {
       code: 'expect(null).toStrictEqual(null);',
-      errors: [{ messageId: 'useToBeNull', column: 14, line: 1 }],
       output: 'expect(null).toBeNull();',
+      errors: [{ messageId: 'useToBeNull', column: 14, line: 1 }],
     },
     {
       code: 'expect("a string").not.toBe(null);',
-      errors: [{ messageId: 'useToBeNull', column: 24, line: 1 }],
       output: 'expect("a string").not.toBeNull();',
+      errors: [{ messageId: 'useToBeNull', column: 24, line: 1 }],
     },
     {
       code: 'expect("a string").not.toEqual(null);',
-      errors: [{ messageId: 'useToBeNull', column: 24, line: 1 }],
       output: 'expect("a string").not.toBeNull();',
+      errors: [{ messageId: 'useToBeNull', column: 24, line: 1 }],
     },
     {
       code: 'expect("a string").not.toStrictEqual(null);',
-      errors: [{ messageId: 'useToBeNull', column: 24, line: 1 }],
       output: 'expect("a string").not.toBeNull();',
+      errors: [{ messageId: 'useToBeNull', column: 24, line: 1 }],
     },
   ],
 });
@@ -63,13 +63,13 @@ new TSESLint.RuleTester({
   invalid: [
     {
       code: 'expect(null).toBe(null as unknown as string as unknown as any);',
-      errors: [{ messageId: 'useToBeNull', column: 14, line: 1 }],
       output: 'expect(null).toBeNull();',
+      errors: [{ messageId: 'useToBeNull', column: 14, line: 1 }],
     },
     {
       code: 'expect("a string").not.toEqual(null as number);',
-      errors: [{ messageId: 'useToBeNull', column: 24, line: 1 }],
       output: 'expect("a string").not.toBeNull();',
+      errors: [{ messageId: 'useToBeNull', column: 24, line: 1 }],
     },
   ],
 });

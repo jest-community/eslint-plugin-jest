@@ -36,6 +36,7 @@ module.exports = {
     '@typescript-eslint/ban-types': 'error',
     '@typescript-eslint/no-unused-vars': 'error',
     'eslint-comments/no-unused-disable': 'error',
+    'eslint-plugin/test-case-property-ordering': 'error',
     'no-else-return': 'error',
     'no-negated-condition': 'error',
     eqeqeq: ['error', 'smart'],
@@ -73,7 +74,6 @@ module.exports = {
       { blankLine: 'any', prev: 'directive', next: 'directive' },
     ],
 
-    // todo: pulled from v3 of @typescript-eslint's eslint-recommended config
     'prefer-spread': 'error',
     'prefer-rest-params': 'error',
     'prefer-const': ['error', { destructuring: 'all' }],
