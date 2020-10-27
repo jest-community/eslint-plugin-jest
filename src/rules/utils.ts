@@ -580,10 +580,16 @@ export interface JestFunctionCallExpressionWithIdentifierCallee<
   callee: JestFunctionIdentifier<FunctionName>;
 }
 
+export interface JestFunctionCallTaggedTemplateExpression
+  extends TSESTree.CallExpression {
+  callee: TSESTree.TaggedTemplateExpression;
+}
+
 export type JestFunctionCallExpression<
   FunctionName extends JestFunctionName = JestFunctionName
 > =
   | JestFunctionCallExpressionWithMemberExpressionCallee<FunctionName>
+  | JestFunctionCallTaggedTemplateExpression
   | JestFunctionCallExpressionWithIdentifierCallee<FunctionName>;
 
 const joinNames = (a: string | null, b: string | null): string | null =>
@@ -592,6 +598,7 @@ const joinNames = (a: string | null, b: string | null): string | null =>
 export function getNodeName(
   node:
     | JestFunctionMemberExpression<JestFunctionName>
+    | TSESTree.TaggedTemplateExpression
     | JestFunctionIdentifier<JestFunctionName>,
 ): string;
 export function getNodeName(node: TSESTree.Node): string | null;
@@ -653,6 +660,11 @@ export const isTestCase = (
 ): node is JestFunctionCallExpression<TestCaseName> =>
   (node.callee.type === AST_NODE_TYPES.Identifier &&
     TestCaseName.hasOwnProperty(node.callee.name)) ||
+  // e.g. it.each``()
+  (node.callee.type === AST_NODE_TYPES.TaggedTemplateExpression &&
+    node.callee.tag.type === AST_NODE_TYPES.MemberExpression &&
+    isSupportedAccessor(node.callee.tag.property, TestCaseProperty.each)) ||
+  // e.g. it.concurrent.{skip,only}
   (node.callee.type === AST_NODE_TYPES.MemberExpression &&
     node.callee.property.type === AST_NODE_TYPES.Identifier &&
     TestCaseProperty.hasOwnProperty(node.callee.property.name) &&
