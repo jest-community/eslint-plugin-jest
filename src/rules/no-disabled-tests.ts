@@ -39,6 +39,9 @@ export default createRule({
       CallExpression(node) {
         const functionName = getNodeName(node.callee);
 
+        // prevent duplicate warnings for it.each()()
+        if (node.callee.type === 'CallExpression') return;
+
         switch (functionName) {
           case 'describe.skip':
             context.report({ messageId: 'skippedTestSuite', node });
@@ -48,6 +51,10 @@ export default createRule({
           case 'it.concurrent.skip':
           case 'test.skip':
           case 'test.concurrent.skip':
+          case 'it.skip.each':
+          case 'test.skip.each':
+          case 'xit.each':
+          case 'xtest.each':
             context.report({ messageId: 'skippedTest', node });
             break;
         }

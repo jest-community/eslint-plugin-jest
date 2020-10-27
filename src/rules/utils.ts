@@ -601,6 +601,8 @@ export function getNodeName(node: TSESTree.Node): string | null {
   }
 
   switch (node.type) {
+    case AST_NODE_TYPES.TaggedTemplateExpression:
+      return getNodeName(node.tag);
     case AST_NODE_TYPES.MemberExpression:
       return joinNames(getNodeName(node.object), getNodeName(node.property));
     case AST_NODE_TYPES.NewExpression:
