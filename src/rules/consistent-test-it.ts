@@ -82,6 +82,11 @@ export default createRule<
           describeNestingLevel++;
         }
 
+        const funcNode =
+          node.callee.type === AST_NODE_TYPES.TaggedTemplateExpression
+            ? node.callee.tag
+            : node.callee;
+
         if (
           isTestCase(node) &&
           describeNestingLevel === 0 &&
@@ -93,7 +98,7 @@ export default createRule<
             messageId: 'consistentMethod',
             node: node.callee,
             data: { testKeyword, oppositeTestKeyword },
-            fix: buildFixer(node.callee, nodeName, testKeyword),
+            fix: buildFixer(funcNode, nodeName, testKeyword),
           });
         }
 
@@ -110,7 +115,7 @@ export default createRule<
             messageId: 'consistentMethodWithinDescribe',
             node: node.callee,
             data: { testKeywordWithinDescribe, oppositeTestKeyword },
-            fix: buildFixer(node.callee, nodeName, testKeywordWithinDescribe),
+            fix: buildFixer(funcNode, nodeName, testKeywordWithinDescribe),
           });
         }
       },
