@@ -580,7 +580,7 @@ export interface JestFunctionCallExpressionWithIdentifierCallee<
   callee: JestFunctionIdentifier<FunctionName>;
 }
 
-export interface JestFunctionCallTaggedTemplateExpression
+interface JestFunctionCallExpressionWithTaggedTemplateCallee
   extends TSESTree.CallExpression {
   callee: TSESTree.TaggedTemplateExpression;
 }
@@ -589,7 +589,7 @@ export type JestFunctionCallExpression<
   FunctionName extends JestFunctionName = JestFunctionName
 > =
   | JestFunctionCallExpressionWithMemberExpressionCallee<FunctionName>
-  | JestFunctionCallTaggedTemplateExpression
+  | JestFunctionCallExpressionWithTaggedTemplateCallee
   | JestFunctionCallExpressionWithIdentifierCallee<FunctionName>;
 
 const joinNames = (a: string | null, b: string | null): string | null =>
@@ -598,8 +598,8 @@ const joinNames = (a: string | null, b: string | null): string | null =>
 export function getNodeName(
   node:
     | JestFunctionMemberExpression<JestFunctionName>
-    | TSESTree.TaggedTemplateExpression
-    | JestFunctionIdentifier<JestFunctionName>,
+    | JestFunctionIdentifier<JestFunctionName>
+    | TSESTree.TaggedTemplateExpression,
 ): string;
 export function getNodeName(node: TSESTree.Node): string | null;
 export function getNodeName(node: TSESTree.Node): string | null {
