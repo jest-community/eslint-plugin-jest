@@ -14,7 +14,9 @@ const findCallbackArg = (
   node: TSESTree.CallExpression,
   isJestEach: boolean,
 ): TSESTree.CallExpression['arguments'][0] | null => {
-  if (isJestEach) return node.arguments[1];
+  if (isJestEach) {
+    return node.arguments[1];
+  }
 
   if (isHook(node) && node.arguments.length >= 1) {
     return node.arguments[0];
@@ -54,7 +56,7 @@ export default createRule({
         const isJestEach = !!getNodeName(node.callee)?.endsWith('.each');
 
         const callback = findCallbackArg(node, isJestEach);
-        const callbackArgIndex = +isJestEach;
+        const callbackArgIndex = Number(isJestEach);
 
         if (
           !callback ||
