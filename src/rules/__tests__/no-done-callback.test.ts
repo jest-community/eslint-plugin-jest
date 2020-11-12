@@ -18,6 +18,7 @@ ruleTester.run('no-done-callback', rule, {
     'test.each``("something", ({ a, b }) => {})',
     'test.each()("something", ({ a, b }) => {})',
     'it.each()("something", ({ a, b }) => {})',
+    'it.each([])("something", (a, b) => {})',
     'it.each``("something", ({ a, b }) => {})',
     'test("something", async function () {})',
     'test("something", someArg)',
