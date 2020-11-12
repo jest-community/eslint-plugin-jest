@@ -58,10 +58,6 @@ ruleTester.run('no-standalone-expect', rule, {
   ],
   invalid: [
     {
-      code: "(() => {})('testing', () => expect(true))",
-      errors: [{ endColumn: 41, column: 29, messageId: 'unexpectedExpect' }],
-    },
-    {
       code: `
         describe('scenario', () => {
           const t = Math.random() ? it.only : it;
