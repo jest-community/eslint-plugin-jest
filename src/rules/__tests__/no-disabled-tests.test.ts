@@ -16,6 +16,7 @@ ruleTester.run('no-disabled-tests', rule, {
     'it("foo", function () {})',
     'describe.only("foo", function () {})',
     'it.only("foo", function () {})',
+    'it.each("foo", () => {})',
     'it.concurrent("foo", function () {})',
     'test("foo", function () {})',
     'test.only("foo", function () {})',

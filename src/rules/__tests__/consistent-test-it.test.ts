@@ -33,6 +33,14 @@ ruleTester.run('consistent-test-it with fn=test', rule, {
       options: [{ fn: TestCaseName.test }],
     },
     {
+      code: 'test.each([])("foo")',
+      options: [{ fn: TestCaseName.test }],
+    },
+    {
+      code: 'test.each``("foo")',
+      options: [{ fn: TestCaseName.test }],
+    },
+    {
       code: 'describe("suite", () => { test("foo") })',
       options: [{ fn: TestCaseName.test }],
     },
@@ -163,6 +171,14 @@ ruleTester.run('consistent-test-it with fn=it', rule, {
     },
     {
       code: 'it.concurrent("foo")',
+      options: [{ fn: TestCaseName.it }],
+    },
+    {
+      code: 'it.each([])("foo")',
+      options: [{ fn: TestCaseName.it }],
+    },
+    {
+      code: 'it.each``("foo")',
       options: [{ fn: TestCaseName.it }],
     },
     {

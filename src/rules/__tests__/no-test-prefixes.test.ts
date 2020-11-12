@@ -12,8 +12,18 @@ ruleTester.run('no-test-prefixes', rule, {
     'test.concurrent("foo", function () {})',
     'describe.only("foo", function () {})',
     'it.only("foo", function () {})',
+    'it.each()("foo", function () {})',
+    {
+      code: 'it.each``("foo", function () {})',
+      parserOptions: { ecmaVersion: 6 },
+    },
     'it.concurrent.only("foo", function () {})',
     'test.only("foo", function () {})',
+    'test.each()("foo", function () {})',
+    {
+      code: 'test.each``("foo", function () {})',
+      parserOptions: { ecmaVersion: 6 },
+    },
     'test.concurrent.only("foo", function () {})',
     'describe.skip("foo", function () {})',
     'it.skip("foo", function () {})',
