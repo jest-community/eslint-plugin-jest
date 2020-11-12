@@ -15,6 +15,10 @@ ruleTester.run('no-done-callback', rule, {
     'test("something", () => {})',
     'test("something", async () => {})',
     'test("something", function() {})',
+    'test.each``("something", ({ a, b }) => {})',
+    'test.each()("something", ({ a, b }) => {})',
+    'it.each()("something", ({ a, b }) => {})',
+    'it.each``("something", ({ a, b }) => {})',
     'test("something", async function () {})',
     'test("something", someArg)',
     'beforeEach(() => {})',
@@ -382,6 +386,46 @@ ruleTester.run('no-done-callback', rule, {
               `,
             },
           ],
+        },
+      ],
+    },
+    {
+      code: 'test.each``("something", ({ a, b }, done) => { done(); })',
+      errors: [
+        {
+          messageId: 'noDoneCallback',
+          line: 1,
+          column: 37,
+        },
+      ],
+    },
+    {
+      code: 'test.each()("something", ({ a, b }, done) => { done(); })',
+      errors: [
+        {
+          messageId: 'noDoneCallback',
+          line: 1,
+          column: 37,
+        },
+      ],
+    },
+    {
+      code: 'it.each``("something", ({ a, b }, done) => { done(); })',
+      errors: [
+        {
+          messageId: 'noDoneCallback',
+          line: 1,
+          column: 35,
+        },
+      ],
+    },
+    {
+      code: 'it.each()("something", ({ a, b }, done) => { done(); })',
+      errors: [
+        {
+          messageId: 'noDoneCallback',
+          line: 1,
+          column: 35,
         },
       ],
     },
