@@ -131,6 +131,20 @@ ruleTester.run('consistent-test-it with fn=test', rule, {
       ],
     },
     {
+      code: 'it.each([])("foo")',
+      output: 'test.each([])("foo")',
+      options: [{ fn: TestCaseName.test }],
+      errors: [
+        {
+          messageId: 'consistentMethod',
+          data: {
+            testKeyword: TestCaseName.test,
+            oppositeTestKeyword: TestCaseName.it,
+          },
+        },
+      ],
+    },
+    {
       code: 'describe("suite", () => { it("foo") })',
       output: 'describe("suite", () => { test("foo") })',
       options: [{ fn: TestCaseName.test }],
@@ -246,6 +260,20 @@ ruleTester.run('consistent-test-it with fn=it', rule, {
     {
       code: 'test.only("foo")',
       output: 'it.only("foo")',
+      options: [{ fn: TestCaseName.it }],
+      errors: [
+        {
+          messageId: 'consistentMethod',
+          data: {
+            testKeyword: TestCaseName.it,
+            oppositeTestKeyword: TestCaseName.test,
+          },
+        },
+      ],
+    },
+    {
+      code: 'test.each([])("foo")',
+      output: 'it.each([])("foo")',
       options: [{ fn: TestCaseName.it }],
       errors: [
         {
