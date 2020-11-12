@@ -1,4 +1,3 @@
-import { AST_NODE_TYPES } from '@typescript-eslint/experimental-utils';
 import { createRule, getNodeName, isDescribe, isTestCase } from './utils';
 
 export default createRule({
@@ -28,17 +27,12 @@ export default createRule({
 
         if (!preferredNodeName) return;
 
-        const funcNode =
-          node.callee.type === AST_NODE_TYPES.TaggedTemplateExpression
-            ? node.callee.tag
-            : node.callee;
-
         context.report({
           messageId: 'usePreferredName',
           node: node.callee,
           data: { preferredNodeName },
           fix(fixer) {
-            return [fixer.replaceText(funcNode, preferredNodeName)];
+            return [fixer.replaceText(node.callee, preferredNodeName)];
           },
         });
       },
@@ -49,14 +43,12 @@ export default createRule({
 function getPreferredNodeName(nodeName: string) {
   const firstChar = nodeName.charAt(0);
 
-  const suffix = nodeName.endsWith('.each') ? '.each' : '';
-
   if (firstChar === 'f') {
-    return `${nodeName.slice(1).replace('.each', '')}.only${suffix}`;
+    return `${nodeName.slice(1)}.only`;
   }
 
   if (firstChar === 'x') {
-    return `${nodeName.slice(1).replace('.each', '')}.skip${suffix}`;
+    return `${nodeName.slice(1)}.skip`;
   }
 
   return null;

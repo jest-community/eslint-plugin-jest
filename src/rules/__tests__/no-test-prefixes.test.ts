@@ -106,55 +106,5 @@ ruleTester.run('no-test-prefixes', rule, {
         },
       ],
     },
-    {
-      code: 'xit.each``("foo", function () {})',
-      output: 'it.skip.each``("foo", function () {})',
-      parserOptions: { ecmaVersion: 6 },
-      errors: [
-        {
-          messageId: 'usePreferredName',
-          data: { preferredNodeName: 'it.skip.each' },
-          column: 1,
-          line: 1,
-        },
-      ],
-    },
-    {
-      code: 'xtest.each``("foo", function () {})',
-      output: 'test.skip.each``("foo", function () {})',
-      parserOptions: { ecmaVersion: 6 },
-      errors: [
-        {
-          messageId: 'usePreferredName',
-          data: { preferredNodeName: 'test.skip.each' },
-          column: 1,
-          line: 1,
-        },
-      ],
-    },
-    {
-      code: 'xit.each([])("foo", function () {})',
-      output: 'it.skip.each([])("foo", function () {})',
-      errors: [
-        {
-          messageId: 'usePreferredName',
-          data: { preferredNodeName: 'it.skip.each' },
-          column: 1,
-          line: 1,
-        },
-      ],
-    },
-    {
-      code: 'xtest.each([])("foo", function () {})',
-      output: 'test.skip.each([])("foo", function () {})',
-      errors: [
-        {
-          messageId: 'usePreferredName',
-          data: { preferredNodeName: 'test.skip.each' },
-          column: 1,
-          line: 1,
-        },
-      ],
-    },
   ],
 });

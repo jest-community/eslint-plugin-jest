@@ -580,16 +580,10 @@ export interface JestFunctionCallExpressionWithIdentifierCallee<
   callee: JestFunctionIdentifier<FunctionName>;
 }
 
-interface JestFunctionCallExpressionWithTaggedTemplateCallee
-  extends TSESTree.CallExpression {
-  callee: TSESTree.TaggedTemplateExpression;
-}
-
 export type JestFunctionCallExpression<
   FunctionName extends JestFunctionName = JestFunctionName
 > =
   | JestFunctionCallExpressionWithMemberExpressionCallee<FunctionName>
-  | JestFunctionCallExpressionWithTaggedTemplateCallee
   | JestFunctionCallExpressionWithIdentifierCallee<FunctionName>;
 
 const joinNames = (a: string | null, b: string | null): string | null =>
@@ -598,8 +592,7 @@ const joinNames = (a: string | null, b: string | null): string | null =>
 export function getNodeName(
   node:
     | JestFunctionMemberExpression<JestFunctionName>
-    | JestFunctionIdentifier<JestFunctionName>
-    | TSESTree.TaggedTemplateExpression,
+    | JestFunctionIdentifier<JestFunctionName>,
 ): string;
 export function getNodeName(node: TSESTree.Node): string | null;
 export function getNodeName(node: TSESTree.Node): string | null {
@@ -608,8 +601,6 @@ export function getNodeName(node: TSESTree.Node): string | null {
   }
 
   switch (node.type) {
-    case AST_NODE_TYPES.TaggedTemplateExpression:
-      return getNodeName(node.tag);
     case AST_NODE_TYPES.MemberExpression:
       return joinNames(getNodeName(node.object), getNodeName(node.property));
     case AST_NODE_TYPES.NewExpression:
@@ -660,11 +651,6 @@ export const isTestCase = (
 ): node is JestFunctionCallExpression<TestCaseName> =>
   (node.callee.type === AST_NODE_TYPES.Identifier &&
     TestCaseName.hasOwnProperty(node.callee.name)) ||
-  // e.g. it.each``()
-  (node.callee.type === AST_NODE_TYPES.TaggedTemplateExpression &&
-    node.callee.tag.type === AST_NODE_TYPES.MemberExpression &&
-    isSupportedAccessor(node.callee.tag.property, TestCaseProperty.each)) ||
-  // e.g. it.concurrent.{skip,only}
   (node.callee.type === AST_NODE_TYPES.MemberExpression &&
     node.callee.property.type === AST_NODE_TYPES.Identifier &&
     TestCaseProperty.hasOwnProperty(node.callee.property.name) &&
