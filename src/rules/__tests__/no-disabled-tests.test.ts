@@ -16,6 +16,7 @@ ruleTester.run('no-disabled-tests', rule, {
     'it("foo", function () {})',
     'describe.only("foo", function () {})',
     'it.only("foo", function () {})',
+    'it.each("foo", () => {})',
     'it.concurrent("foo", function () {})',
     'test("foo", function () {})',
     'test.only("foo", function () {})',
@@ -88,6 +89,22 @@ ruleTester.run('no-disabled-tests', rule, {
       errors: [{ messageId: 'skippedTest', column: 1, line: 1 }],
     },
     {
+      code: 'it.skip.each``("foo", function () {})',
+      errors: [{ messageId: 'skippedTest', column: 1, line: 1 }],
+    },
+    {
+      code: 'test.skip.each``("foo", function () {})',
+      errors: [{ messageId: 'skippedTest', column: 1, line: 1 }],
+    },
+    {
+      code: 'it.skip.each([])("foo", function () {})',
+      errors: [{ messageId: 'skippedTest', column: 1, line: 1 }],
+    },
+    {
+      code: 'test.skip.each([])("foo", function () {})',
+      errors: [{ messageId: 'skippedTest', column: 1, line: 1 }],
+    },
+    {
       code: 'test.concurrent.skip("foo", function () {})',
       errors: [{ messageId: 'skippedTest', column: 1, line: 1 }],
     },
@@ -106,6 +123,22 @@ ruleTester.run('no-disabled-tests', rule, {
     {
       code: 'xtest("foo", function () {})',
       errors: [{ messageId: 'disabledTest', column: 1, line: 1 }],
+    },
+    {
+      code: 'xit.each``("foo", function () {})',
+      errors: [{ messageId: 'skippedTest', column: 1, line: 1 }],
+    },
+    {
+      code: 'xtest.each``("foo", function () {})',
+      errors: [{ messageId: 'skippedTest', column: 1, line: 1 }],
+    },
+    {
+      code: 'xit.each([])("foo", function () {})',
+      errors: [{ messageId: 'skippedTest', column: 1, line: 1 }],
+    },
+    {
+      code: 'xtest.each([])("foo", function () {})',
+      errors: [{ messageId: 'skippedTest', column: 1, line: 1 }],
     },
     {
       code: 'it("has title but no callback")',

@@ -12,8 +12,18 @@ ruleTester.run('no-test-prefixes', rule, {
     'test.concurrent("foo", function () {})',
     'describe.only("foo", function () {})',
     'it.only("foo", function () {})',
+    'it.each()("foo", function () {})',
+    {
+      code: 'it.each``("foo", function () {})',
+      parserOptions: { ecmaVersion: 6 },
+    },
     'it.concurrent.only("foo", function () {})',
     'test.only("foo", function () {})',
+    'test.each()("foo", function () {})',
+    {
+      code: 'test.each``("foo", function () {})',
+      parserOptions: { ecmaVersion: 6 },
+    },
     'test.concurrent.only("foo", function () {})',
     'describe.skip("foo", function () {})',
     'it.skip("foo", function () {})',
@@ -91,6 +101,56 @@ ruleTester.run('no-test-prefixes', rule, {
         {
           messageId: 'usePreferredName',
           data: { preferredNodeName: 'test.skip' },
+          column: 1,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: 'xit.each``("foo", function () {})',
+      output: 'it.skip.each``("foo", function () {})',
+      parserOptions: { ecmaVersion: 6 },
+      errors: [
+        {
+          messageId: 'usePreferredName',
+          data: { preferredNodeName: 'it.skip.each' },
+          column: 1,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: 'xtest.each``("foo", function () {})',
+      output: 'test.skip.each``("foo", function () {})',
+      parserOptions: { ecmaVersion: 6 },
+      errors: [
+        {
+          messageId: 'usePreferredName',
+          data: { preferredNodeName: 'test.skip.each' },
+          column: 1,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: 'xit.each([])("foo", function () {})',
+      output: 'it.skip.each([])("foo", function () {})',
+      errors: [
+        {
+          messageId: 'usePreferredName',
+          data: { preferredNodeName: 'it.skip.each' },
+          column: 1,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: 'xtest.each([])("foo", function () {})',
+      output: 'test.skip.each([])("foo", function () {})',
+      errors: [
+        {
+          messageId: 'usePreferredName',
+          data: { preferredNodeName: 'test.skip.each' },
           column: 1,
           line: 1,
         },
