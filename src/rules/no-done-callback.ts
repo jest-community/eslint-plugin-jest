@@ -53,7 +53,7 @@ export default createRule({
     return {
       CallExpression(node) {
         // done is the second argument for it.each, not the first
-        const isJestEach = !!getNodeName(node.callee)?.endsWith('.each');
+        const isJestEach = getNodeName(node.callee)?.endsWith('.each') ?? false;
 
         const callback = findCallbackArg(node, isJestEach);
         const callbackArgIndex = Number(isJestEach);
