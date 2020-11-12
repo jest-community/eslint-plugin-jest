@@ -1,3 +1,10 @@
+## [24.1.3](https://github.com/jest-community/eslint-plugin-jest/compare/v24.1.2...v24.1.3) (2020-11-12)
+
+
+### Bug Fixes
+
+* revert change causing regressions for test.each ([#713](https://github.com/jest-community/eslint-plugin-jest/issues/713)) ([7c8d75a](https://github.com/jest-community/eslint-plugin-jest/commit/7c8d75a4fcbd2c6ce005cf4f57d676c7c44ce0b2)), closes [#710](https://github.com/jest-community/eslint-plugin-jest/issues/710) [#711](https://github.com/jest-community/eslint-plugin-jest/issues/711)
+
 ## [24.1.2](https://github.com/jest-community/eslint-plugin-jest/compare/v24.1.1...v24.1.2) (2020-11-12)
 
 
