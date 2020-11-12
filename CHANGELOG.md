@@ -1,3 +1,10 @@
+## [24.1.2](https://github.com/jest-community/eslint-plugin-jest/compare/v24.1.1...v24.1.2) (2020-11-12)
+
+
+### Bug Fixes
+
+* **no-done-callback:** fix regression with it.each ([#708](https://github.com/jest-community/eslint-plugin-jest/issues/708)) ([2f032f8](https://github.com/jest-community/eslint-plugin-jest/commit/2f032f8d890e3717359d099b1e93e0cc6b52996a))
+
 ## [24.1.1](https://github.com/jest-community/eslint-plugin-jest/compare/v24.1.0...v24.1.1) (2020-11-12)
 
 
