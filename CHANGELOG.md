@@ -1,3 +1,10 @@
+## [24.1.1](https://github.com/jest-community/eslint-plugin-jest/compare/v24.1.0...v24.1.1) (2020-11-12)
+
+
+### Bug Fixes
+
+* improve support for it.each involving tagged template literals ([#701](https://github.com/jest-community/eslint-plugin-jest/issues/701)) ([2341814](https://github.com/jest-community/eslint-plugin-jest/commit/2341814060b38c55728c0b456d7b432f1e0e1a11))
+
 # [24.1.0](https://github.com/jest-community/eslint-plugin-jest/compare/v24.0.2...v24.1.0) (2020-10-05)
 
 
