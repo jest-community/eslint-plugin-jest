@@ -2,11 +2,22 @@ import {
   AST_NODE_TYPES,
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
-import { createRule, isFunction, isHook, isTestCase } from './utils';
+import {
+  createRule,
+  getNodeName,
+  isFunction,
+  isHook,
+  isTestCase,
+} from './utils';
 
 const findCallbackArg = (
   node: TSESTree.CallExpression,
+  isJestEach: boolean,
 ): TSESTree.CallExpression['arguments'][0] | null => {
+  if (isJestEach) {
+    return node.arguments[1];
+  }
+
   if (isHook(node) && node.arguments.length >= 1) {
     return node.arguments[0];
   }
@@ -41,17 +52,31 @@ export default createRule({
   create(context) {
     return {
       CallExpression(node) {
-        const callback = findCallbackArg(node);
+        // done is the second argument for it.each, not the first
+        const isJestEach = getNodeName(node.callee)?.endsWith('.each') ?? false;
+
+        if (
+          isJestEach &&
+          node.callee.type !== AST_NODE_TYPES.TaggedTemplateExpression
+        ) {
+          // isJestEach but not a TaggedTemplateExpression, so this must be
+          // the `jest.each([])()` syntax which this rule doesn't support due
+          // to its complexity (see jest-community/eslint-plugin-jest#710)
+          return;
+        }
+
+        const callback = findCallbackArg(node, isJestEach);
+        const callbackArgIndex = Number(isJestEach);
 
         if (
           !callback ||
           !isFunction(callback) ||
-          callback.params.length !== 1
+          callback.params.length !== 1 + callbackArgIndex
         ) {
           return;
         }
 
-        const [argument] = callback.params;
+        const argument = callback.params[callbackArgIndex];
 
         if (argument.type !== AST_NODE_TYPES.Identifier) {
           context.report({
