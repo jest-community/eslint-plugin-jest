@@ -10,7 +10,6 @@
 </div>
 
 [![Actions Status](https://github.com/jest-community/eslint-plugin-jest/workflows/Unit%20tests/badge.svg?branch=master)](https://github.com/jest-community/eslint-plugin-jest/actions)
-[![Renovate badge](https://badges.renovateapi.com/github/jest-community/eslint-plugin-jest)](https://renovatebot.com/)
 
 ## Installation
 
