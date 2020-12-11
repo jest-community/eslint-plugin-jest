@@ -40,7 +40,9 @@ export default createRule({
         const functionName = getNodeName(node.callee);
 
         // prevent duplicate warnings for it.each()()
-        if (node.callee.type === 'CallExpression') return;
+        if (node.callee.type === 'CallExpression') {
+          return;
+        }
 
         switch (functionName) {
           case 'describe.skip':
