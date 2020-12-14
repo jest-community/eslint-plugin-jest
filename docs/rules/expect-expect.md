@@ -43,8 +43,8 @@ it('should work with callbacks/async', () => {
 ### `assertFunctionNames`
 
 This array option specifies the names of functions that should be considered to
-be asserting functions. Function names can use wildcards i.e `request.*.expect`,
-`request.**.expect`, `request.*.expect*`
+be asserting functions. Function names can use wildcards e.g. `request.*.expect`,
+`request.**.expect`, `request.*.expect*`.
 
 Examples of **incorrect** code for the `{ "assertFunctionNames": ["expect"] }`
 option:
@@ -74,7 +74,7 @@ test('returns sum', () => {
 });
 ```
 
-Since the string is compiled into aa regular expression, you'll need to escape
+Since the string is compiled into a regular expression, you'll need to escape
 special characters such as `$` with a double backslash:
 
 ```js
