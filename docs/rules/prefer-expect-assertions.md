@@ -22,7 +22,7 @@ test('my test', () => {
 
 ```js
 test('my test', () => {
-  expect.assertions('1');
+  expect.assertions(1);
   expect(someThing()).toEqual('foo');
 });
 ```
@@ -33,7 +33,7 @@ The following patterns are considered warnings:
 
 ```js
 test('my test', () => {
-  expect.assertions('1');
+  expect.assertions(1);
   expect(someThing()).toEqual('foo');
 });
 
