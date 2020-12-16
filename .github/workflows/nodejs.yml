@@ -34,7 +34,7 @@ jobs:
           restore-keys: |
             ubuntu-latest-node-12.x-yarn-
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v2.1.2
+        uses: actions/setup-node@v2.1.4
         with:
           node-version: ${{ matrix.node-version }}
       - name: install with eslint v${{matrix.eslint-version }}
@@ -71,7 +71,7 @@ jobs:
           key: ${{ runner.os }}-node-14.x-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-node-14.x-yarn-
-      - uses: actions/setup-node@v2.1.2
+      - uses: actions/setup-node@v2.1.4
         with:
           node-version: 14.x
       - name: install
