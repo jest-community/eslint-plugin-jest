@@ -21,9 +21,7 @@ type IgnorableFunctionExpressions =
   | TestCaseName.test
   | DescribeAlias.describe;
 
-type CallExpressionWithCorrectCalleeAndArguments = JestFunctionCallExpressionWithIdentifierCallee<
-  IgnorableFunctionExpressions
-> &
+type CallExpressionWithCorrectCalleeAndArguments = JestFunctionCallExpressionWithIdentifierCallee<IgnorableFunctionExpressions> &
   CallExpressionWithSingleArgument<StringNode>;
 
 const hasStringAsFirstArgument = (
