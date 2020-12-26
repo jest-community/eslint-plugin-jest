@@ -1,4 +1,5 @@
 import { TSESLint } from '@typescript-eslint/experimental-utils';
+import dedent from 'dedent';
 import resolveFrom from 'resolve-from';
 import rule from '../no-standalone-expect';
 
@@ -23,19 +24,19 @@ ruleTester.run('no-standalone-expect', rule, {
     '{}',
     'it.each([1, true])("trues", value => { expect(value).toBe(true); });',
     'it.each([1, true])("trues", value => { expect(value).toBe(true); }); it("an it", () => { expect(1).toBe(1) });',
-    `
-    it.each\`
-      num   | value
-      \${1} | \${true}
-    \`('trues', ({ value }) => {
-      expect(value).toBe(true);
-    });
+    dedent`
+      it.each\`
+        num   | value
+        \${1} | \${true}
+      \`('trues', ({ value }) => {
+        expect(value).toBe(true);
+      });
     `,
     'it.only("an only", value => { expect(value).toBe(true); });',
     'it.concurrent("an concurrent", value => { expect(value).toBe(true); });',
     'describe.each([1, true])("trues", value => { it("an it", () => expect(value).toBe(true) ); });',
     {
-      code: `
+      code: dedent`
         describe('scenario', () => {
           const t = Math.random() ? it.only : it;
           t('testing', () => expect(true));
@@ -44,7 +45,7 @@ ruleTester.run('no-standalone-expect', rule, {
       options: [{ additionalTestBlockFunctions: ['t'] }],
     },
     {
-      code: `
+      code: dedent`
         each([
           [1, 1, 2],
           [1, 2, 3],
@@ -62,26 +63,26 @@ ruleTester.run('no-standalone-expect', rule, {
       errors: [{ endColumn: 41, column: 29, messageId: 'unexpectedExpect' }],
     },
     {
-      code: `
+      code: dedent`
         describe('scenario', () => {
           const t = Math.random() ? it.only : it;
           t('testing', () => expect(true));
         });
       `,
-      errors: [{ endColumn: 42, column: 30, messageId: 'unexpectedExpect' }],
+      errors: [{ endColumn: 34, column: 22, messageId: 'unexpectedExpect' }],
     },
     {
-      code: `
+      code: dedent`
         describe('scenario', () => {
           const t = Math.random() ? it.only : it;
           t('testing', () => expect(true));
         });
       `,
       options: [{ additionalTestBlockFunctions: undefined }],
-      errors: [{ endColumn: 42, column: 30, messageId: 'unexpectedExpect' }],
+      errors: [{ endColumn: 34, column: 22, messageId: 'unexpectedExpect' }],
     },
     {
-      code: `
+      code: dedent`
         each([
           [1, 1, 2],
           [1, 2, 3],
@@ -90,10 +91,10 @@ ruleTester.run('no-standalone-expect', rule, {
           expect(a + b).toBe(expected);
         });
       `,
-      errors: [{ endColumn: 24, column: 11, messageId: 'unexpectedExpect' }],
+      errors: [{ endColumn: 16, column: 3, messageId: 'unexpectedExpect' }],
     },
     {
-      code: `
+      code: dedent`
         each([
           [1, 1, 2],
           [1, 2, 3],
@@ -103,10 +104,10 @@ ruleTester.run('no-standalone-expect', rule, {
         });
       `,
       options: [{ additionalTestBlockFunctions: ['each'] }],
-      errors: [{ endColumn: 24, column: 11, messageId: 'unexpectedExpect' }],
+      errors: [{ endColumn: 16, column: 3, messageId: 'unexpectedExpect' }],
     },
     {
-      code: `
+      code: dedent`
         each([
           [1, 1, 2],
           [1, 2, 3],
@@ -116,7 +117,7 @@ ruleTester.run('no-standalone-expect', rule, {
         });
       `,
       options: [{ additionalTestBlockFunctions: ['test'] }],
-      errors: [{ endColumn: 24, column: 11, messageId: 'unexpectedExpect' }],
+      errors: [{ endColumn: 16, column: 3, messageId: 'unexpectedExpect' }],
     },
     {
       code: 'describe("a test", () => { expect(1).toBe(1); });',

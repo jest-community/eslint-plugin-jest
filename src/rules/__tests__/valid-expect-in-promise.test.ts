@@ -1,4 +1,5 @@
 import { TSESLint } from '@typescript-eslint/experimental-utils';
+import dedent from 'dedent';
 import resolveFrom from 'resolve-from';
 import rule from '../valid-expect-in-promise';
 
@@ -11,7 +12,7 @@ const ruleTester = new TSESLint.RuleTester({
 
 ruleTester.run('valid-expect-in-promise', rule, {
   valid: [
-    `
+    dedent`
       it('it1', () => new Promise((done) => {
         test()
           .then(() => {
@@ -20,42 +21,42 @@ ruleTester.run('valid-expect-in-promise', rule, {
           });
       }));
     `,
-    `
+    dedent`
       it('it1', () => {
         return somePromise.then(() => {
           expect(someThing).toEqual(true);
         });
       });
     `,
-    `
+    dedent`
       it('it1', function() {
         return somePromise.catch(function() {
           expect(someThing).toEqual(true);
         });
       });
     `,
-    `
+    dedent`
       it('it1', function() {
         return somePromise.then(function() {
           doSomeThingButNotExpect();
         });
       });
     `,
-    `
+    dedent`
       it('it1', function() {
         return getSomeThing().getPromise().then(function() {
           expect(someThing).toEqual(true);
         });
       });
     `,
-    `
+    dedent`
       it('it1', function() {
         return Promise.resolve().then(function() {
           expect(someThing).toEqual(true);
         });
       });
     `,
-    `
+    dedent`
       it('it1', function () {
         return Promise.resolve().then(function () {
           /*fulfillment*/
@@ -66,7 +67,7 @@ ruleTester.run('valid-expect-in-promise', rule, {
         });
       });
     `,
-    `
+    dedent`
       it('it1', function () {
         return Promise.resolve().then(function () {
           /*fulfillment*/
@@ -76,70 +77,71 @@ ruleTester.run('valid-expect-in-promise', rule, {
         });
       });
     `,
-    `
+    dedent`
       it('it1', function () {
         return somePromise.then()
       });
     `,
-    `
+    dedent`
       it('it1', async () => {
         await Promise.resolve().then(function () {
           expect(someThing).toEqual(true)
         });
       });
     `,
-    `
+    dedent`
       it('it1', async () => {
         await somePromise.then(() => {
           expect(someThing).toEqual(true)
         });
       });
     `,
-    `
+    dedent`
       it('it1', async () => {
         await getSomeThing().getPromise().then(function () {
           expect(someThing).toEqual(true)
         });
       });
     `,
-    `
+    dedent`
       it('it1', () => {
         return somePromise.then(() => {
-            expect(someThing).toEqual(true);
-          })
-          .then(() => {
-            expect(someThing).toEqual(true);
-          })
+          expect(someThing).toEqual(true);
+        })
+        .then(() => {
+          expect(someThing).toEqual(true);
+        })
       });
     `,
-    `
+    dedent`
       it('it1', () => {
         return somePromise.then(() => {
-            expect(someThing).toEqual(true);
-          })
-          .catch(() => {
-            expect(someThing).toEqual(false);
-          })
+          expect(someThing).toEqual(true);
+        })
+        .catch(() => {
+          expect(someThing).toEqual(false);
+        })
       });
     `,
-    `
-     test('later return', () => {
-       const promise = something().then(value => {
-         expect(value).toBe('red');
-       });
-
-       return promise;
-     });
+    dedent`
+      test('later return', () => {
+        const promise = something().then(value => {
+          expect(value).toBe('red');
+        });
+        
+        return promise;
+      });
     `,
-    `
-     it('shorthand arrow', () =>
-       something().then(value => {
-         expect(() => {
-           value();
-         }).toThrow();
-       }));
+    dedent`
+      it('shorthand arrow', () =>
+        something().then(value => {
+          expect(() => {
+            value();
+          }).toThrow();
+        })
+      );
     `,
-    `
+    dedent`
       it('promise test', () => {
         const somePromise = getThatPromise();
         somePromise.then((data) => {
@@ -149,7 +151,7 @@ ruleTester.run('valid-expect-in-promise', rule, {
         return somePromise;
       });
     `,
-    `
+    dedent`
       test('promise test', function () {
         let somePromise = getThatPromise();
         somePromise.then((data) => {
@@ -159,7 +161,7 @@ ruleTester.run('valid-expect-in-promise', rule, {
         return somePromise;
       });
     `,
-    `
+    dedent`
       it('crawls for files based on patterns', () => {
         const promise = nodeCrawl({}).then(data => {
           expect(childProcess.spawn).lastCalledWith('find');
@@ -167,38 +169,46 @@ ruleTester.run('valid-expect-in-promise', rule, {
         return promise;
       });
     `,
-    `
-      it('test function',
+    dedent`
+      it(
+        'test function',
         () => {
-          return Builder.getPromiseBuilder().get().build()
+          return Builder
+            .getPromiseBuilder()
+            .get().build()
             .then((data) => {
               expect(data).toEqual('Hi');
             });
-      });
+        }
+      );
     `,
-    `
-      notATestFunction('not a test function',
+    dedent`
+      notATestFunction(
+        'not a test function',
         () => {
-          Builder.getPromiseBuilder().get().build()
+          Builder
+            .getPromiseBuilder()
+            .get()
+            .build()
             .then((data) => {
               expect(data).toEqual('Hi');
             });
-      });
+        }
+      );
     `,
-    `
+    dedent`
       it("it1", () => somePromise.then(() => {
         expect(someThing).toEqual(true)
       }))
     `,
-    ` it("it1", () => somePromise.then(() => expect(someThing).toEqual(true)))`,
-
-    `
+    'it("it1", () => somePromise.then(() => expect(someThing).toEqual(true)))',
+    dedent`
       it('promise test with done', (done) => {
         const promise = getPromise();
         promise.then(() => expect(someThing).toEqual(true));
       });
     `,
-    `
+    dedent`
       it('name of done param does not matter', (nameDoesNotMatter) => {
         const promise = getPromise();
         promise.then(() => expect(someThing).toEqual(true));
@@ -207,14 +217,14 @@ ruleTester.run('valid-expect-in-promise', rule, {
   ],
   invalid: [
     {
-      code: `
-         it('it1', () => {
-           somePromise.then(() => {
-             expect(someThing).toEqual(true);
-           });
-         });
+      code: dedent`
+        it('it1', () => {
+          somePromise.then(() => {
+            expect(someThing).toEqual(true);
+          });
+        });
       `,
-      errors: [{ column: 12, endColumn: 15, messageId: 'returnPromise' }],
+      errors: [{ column: 3, endColumn: 6, messageId: 'returnPromise' }],
     },
     // {
     //   code: `
@@ -227,49 +237,47 @@ ruleTester.run('valid-expect-in-promise', rule, {
     //   errors: [{ column: 12, endColumn: 15, messageId: 'returnPromise' }],
     // },
     {
-      code: `
+      code: dedent`
         it('it1', function() {
-            getSomeThing().getPromise().then(function() {
-              expect(someThing).toEqual(true);
-            });
+          getSomeThing().getPromise().then(function() {
+            expect(someThing).toEqual(true);
+          });
         });
       `,
-      errors: [{ column: 13, endColumn: 16, messageId: 'returnPromise' }],
+      errors: [{ column: 3, endColumn: 6, messageId: 'returnPromise' }],
     },
     {
-      code: `
+      code: dedent`
         it('it1', function() {
-            Promise.resolve().then(function() {
-              expect(someThing).toEqual(true);
-            });
+          Promise.resolve().then(function() {
+            expect(someThing).toEqual(true);
           });
+        });
       `,
-      errors: [{ column: 13, endColumn: 16, messageId: 'returnPromise' }],
+      errors: [{ column: 3, endColumn: 6, messageId: 'returnPromise' }],
     },
     {
-      code: `
+      code: dedent`
         it('it1', function() {
-            somePromise.catch(function() {
-              expect(someThing).toEqual(true)
-            })
-          }
-        )
+          somePromise.catch(function() {
+            expect(someThing).toEqual(true)
+          })
+        })
       `,
-      errors: [{ column: 13, endColumn: 15, messageId: 'returnPromise' }],
+      errors: [{ column: 3, endColumn: 5, messageId: 'returnPromise' }],
     },
     {
-      code: `
+      code: dedent`
         it('it1', function() {
-            somePromise.then(function() {
-              expect(someThing).toEqual(true)
-            })
-          }
-        )
+          somePromise.then(function() {
+            expect(someThing).toEqual(true)
+          })
+        })
       `,
-      errors: [{ column: 13, endColumn: 15, messageId: 'returnPromise' }],
+      errors: [{ column: 3, endColumn: 5, messageId: 'returnPromise' }],
     },
     {
-      code: `
+      code: dedent`
         it('it1', function () {
           Promise.resolve().then(/*fulfillment*/ function () {
             expect(someThing).toEqual(true);
@@ -278,10 +286,10 @@ ruleTester.run('valid-expect-in-promise', rule, {
           })
         })
       `,
-      errors: [{ column: 11, endColumn: 13, messageId: 'returnPromise' }],
+      errors: [{ column: 3, endColumn: 5, messageId: 'returnPromise' }],
     },
     {
-      code: `
+      code: dedent`
         it('it1', function () {
           Promise.resolve().then(/*fulfillment*/ function () {
           }, /*rejection*/ function () {
@@ -289,37 +297,37 @@ ruleTester.run('valid-expect-in-promise', rule, {
           })
         });
       `,
-      errors: [{ column: 11, endColumn: 13, messageId: 'returnPromise' }],
+      errors: [{ column: 3, endColumn: 5, messageId: 'returnPromise' }],
     },
     {
-      code: `
+      code: dedent`
         it('test function', () => {
           Builder.getPromiseBuilder().get().build().then((data) => expect(data).toEqual('Hi'));
         });
       `,
-      errors: [{ column: 11, endColumn: 96, messageId: 'returnPromise' }],
+      errors: [{ column: 3, endColumn: 88, messageId: 'returnPromise' }],
     },
     {
-      code: `
+      code: dedent`
         it('it1', () => {
-            somePromise.then(() => {
-              doSomeOperation();
-              expect(someThing).toEqual(true);
-            })
-          });
+          somePromise.then(() => {
+            doSomeOperation();
+            expect(someThing).toEqual(true);
+          })
+        });
       `,
-      errors: [{ column: 13, endColumn: 15, messageId: 'returnPromise' }],
+      errors: [{ column: 3, endColumn: 5, messageId: 'returnPromise' }],
     },
     {
-      code: `
-         test('invalid return', () => {
-           const promise = something().then(value => {
-             const foo = "foo";
-             return expect(value).toBe('red');
-           });
-         });
+      code: dedent`
+        test('invalid return', () => {
+          const promise = something().then(value => {
+            const foo = "foo";
+            return expect(value).toBe('red');
+          });
+        });
       `,
-      errors: [{ column: 18, endColumn: 14, messageId: 'returnPromise' }],
+      errors: [{ column: 9, endColumn: 5, messageId: 'returnPromise' }],
     },
   ],
 });

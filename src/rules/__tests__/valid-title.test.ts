@@ -511,11 +511,15 @@ ruleTester.run('no-empty-title', rule, {
       ],
     },
     {
-      code: ["describe('foo', () => {", "it('', () => {})", '})'].join('\n'),
+      code: dedent`
+        describe('foo', () => {
+          it('', () => {});
+        });
+      `,
       errors: [
         {
           messageId: 'emptyTitle',
-          column: 1,
+          column: 3,
           line: 2,
           data: { jestFunctionName: 'test' },
         },
@@ -642,10 +646,10 @@ ruleTester.run('no-accidental-space', rule, {
     'xtest("foo", function () {})',
     'xtest(`foo`, function () {})',
     'someFn("foo", function () {})',
-    `
-    describe('foo', () => {
-      it('bar', () => {})
-    })
+    dedent`
+      describe('foo', () => {
+        it('bar', () => {})
+      })
     `,
   ],
   invalid: [
@@ -765,30 +769,30 @@ ruleTester.run('no-accidental-space', rule, {
       errors: [{ messageId: 'accidentalSpace', column: 7, line: 1 }],
     },
     {
-      code: `
-      describe(' foo', () => {
-        it('bar', () => {})
-      })
+      code: dedent`
+        describe(' foo', () => {
+          it('bar', () => {})
+        })
       `,
-      output: `
-      describe('foo', () => {
-        it('bar', () => {})
-      })
+      output: dedent`
+        describe('foo', () => {
+          it('bar', () => {})
+        })
       `,
-      errors: [{ messageId: 'accidentalSpace', column: 16, line: 2 }],
+      errors: [{ messageId: 'accidentalSpace', column: 10, line: 1 }],
     },
     {
-      code: `
-      describe('foo', () => {
-        it(' bar', () => {})
-      })
+      code: dedent`
+        describe('foo', () => {
+          it(' bar', () => {})
+        })
       `,
-      output: `
-      describe('foo', () => {
-        it('bar', () => {})
-      })
+      output: dedent`
+        describe('foo', () => {
+          it('bar', () => {})
+        })
       `,
-      errors: [{ messageId: 'accidentalSpace', column: 12, line: 3 }],
+      errors: [{ messageId: 'accidentalSpace', column: 6, line: 2 }],
     },
   ],
 });
@@ -896,56 +900,56 @@ ruleTester.run('no-duplicate-prefix ft it', rule, {
 
 ruleTester.run('no-duplicate-prefix ft nested', rule, {
   valid: [
-    `
-    describe('foo', () => {
-      it('bar', () => {})
-    })
+    dedent`
+      describe('foo', () => {
+        it('bar', () => {})
+      })
     `,
-    `
-    describe('foo', () => {
-      it('describes things correctly', () => {})
-    })
+    dedent`
+      describe('foo', () => {
+        it('describes things correctly', () => {})
+      })
     `,
   ],
   invalid: [
     {
-      code: `
-      describe('describe foo', () => {
-        it('bar', () => {})
-      })
+      code: dedent`
+        describe('describe foo', () => {
+          it('bar', () => {})
+        })
       `,
-      output: `
-      describe('foo', () => {
-        it('bar', () => {})
-      })
+      output: dedent`
+        describe('foo', () => {
+          it('bar', () => {})
+        })
       `,
-      errors: [{ messageId: 'duplicatePrefix', column: 16, line: 2 }],
+      errors: [{ messageId: 'duplicatePrefix', column: 10, line: 1 }],
     },
     {
-      code: `
-      describe('describe foo', () => {
-        it('describes things correctly', () => {})
-      })
+      code: dedent`
+        describe('describe foo', () => {
+          it('describes things correctly', () => {})
+        })
       `,
-      output: `
-      describe('foo', () => {
-        it('describes things correctly', () => {})
-      })
+      output: dedent`
+        describe('foo', () => {
+          it('describes things correctly', () => {})
+        })
       `,
-      errors: [{ messageId: 'duplicatePrefix', column: 16, line: 2 }],
+      errors: [{ messageId: 'duplicatePrefix', column: 10, line: 1 }],
     },
     {
-      code: `
-      describe('foo', () => {
-        it('it bar', () => {})
-      })
+      code: dedent`
+        describe('foo', () => {
+          it('it bar', () => {})
+        })
       `,
-      output: `
-      describe('foo', () => {
-        it('bar', () => {})
-      })
+      output: dedent`
+        describe('foo', () => {
+          it('bar', () => {})
+        })
       `,
-      errors: [{ messageId: 'duplicatePrefix', column: 12, line: 3 }],
+      errors: [{ messageId: 'duplicatePrefix', column: 6, line: 2 }],
     },
   ],
 });
