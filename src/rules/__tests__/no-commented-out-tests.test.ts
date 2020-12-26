@@ -1,4 +1,5 @@
 import { TSESLint } from '@typescript-eslint/experimental-utils';
+import dedent from 'dedent';
 import resolveFrom from 'resolve-from';
 import rule from '../no-commented-out-tests';
 
@@ -30,35 +31,35 @@ ruleTester.run('no-commented-out-tests', rule, {
     '// latest(dates)',
     '// TODO: unify with Git implementation from Shipit (?)',
     '#!/usr/bin/env node',
-    [
-      'import { pending } from "actions"',
-      '',
-      'test("foo", () => {',
-      '  expect(pending()).toEqual({})',
-      '})',
-    ].join('\n'),
-    [
-      'const { pending } = require("actions")',
-      '',
-      'test("foo", () => {',
-      '  expect(pending()).toEqual({})',
-      '})',
-    ].join('\n'),
-    [
-      'test("foo", () => {',
-      '  const pending = getPending()',
-      '  expect(pending()).toEqual({})',
-      '})',
-    ].join('\n'),
-    [
-      'test("foo", () => {',
-      '  expect(pending()).toEqual({})',
-      '})',
-      '',
-      'function pending() {',
-      '  return {}',
-      '}',
-    ].join('\n'),
+    dedent`
+      import { pending } from "actions"
+
+      test("foo", () => {
+        expect(pending()).toEqual({})
+      })
+    `,
+    dedent`
+      const { pending } = require("actions")
+
+      test("foo", () => {
+        expect(pending()).toEqual({})
+      })
+    `,
+    dedent`
+      test("foo", () => {
+        const pending = getPending()
+        expect(pending()).toEqual({})
+      })
+    `,
+    dedent`
+      test("foo", () => {
+        expect(pending()).toEqual({})
+      })
+
+      function pending() {
+        return {}
+      }
+    `,
   ],
 
   invalid: [
@@ -119,17 +120,21 @@ ruleTester.run('no-commented-out-tests', rule, {
       errors: [{ messageId: 'commentedTests', column: 1, line: 1 }],
     },
     {
-      code: `// test(
-             //   "foo", function () {}
-             // )`,
+      code: dedent`
+        // test(
+        //   "foo", function () {}
+        // )
+      `,
       errors: [{ messageId: 'commentedTests', column: 1, line: 1 }],
     },
     {
-      code: `/* test
-              (
-                "foo", function () {}
-              )
-              */`,
+      code: dedent`
+        /* test
+          (
+            "foo", function () {}
+          )
+        */
+      `,
       errors: [{ messageId: 'commentedTests', column: 1, line: 1 }],
     },
     {
@@ -153,13 +158,14 @@ ruleTester.run('no-commented-out-tests', rule, {
       errors: [{ messageId: 'commentedTests', column: 1, line: 1 }],
     },
     {
-      code: `
-      foo()
-      /*
-      describe("has title but no callback", () => {})
-      */
-      bar()`,
-      errors: [{ messageId: 'commentedTests', column: 7, line: 3 }],
+      code: dedent`
+        foo()
+        /*
+          describe("has title but no callback", () => {})
+        */
+        bar()
+      `,
+      errors: [{ messageId: 'commentedTests', column: 1, line: 2 }],
     },
   ],
 });

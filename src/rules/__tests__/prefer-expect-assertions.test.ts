@@ -11,6 +11,43 @@ const ruleTester = new TSESLint.RuleTester({
 });
 
 ruleTester.run('prefer-expect-assertions', rule, {
+  valid: [
+    'test("it1", () => {expect.assertions(0);})',
+    'test("it1", function() {expect.assertions(0);})',
+    'test("it1", function() {expect.hasAssertions();})',
+    'it("it1", function() {expect.assertions(0);})',
+    dedent`
+      it("it1", function() {
+        expect.assertions(1);
+        expect(someValue).toBe(true)
+      })
+    `,
+    'test("it1")',
+    'itHappensToStartWithIt("foo", function() {})',
+    'testSomething("bar", function() {})',
+    'it(async () => {expect.assertions(0);})',
+    {
+      code: dedent`
+        it("it1", async () => {
+          expect.assertions(1);
+          expect(someValue).toBe(true)
+        })
+      `,
+      options: [{ onlyFunctionsWithAsyncKeyword: true }],
+    },
+    {
+      code: dedent`
+        it("it1", function() {
+          expect(someValue).toBe(true)
+        })
+      `,
+      options: [{ onlyFunctionsWithAsyncKeyword: true }],
+    },
+    {
+      code: 'it("it1", () => {})',
+      options: [{ onlyFunctionsWithAsyncKeyword: true }],
+    },
+  ],
   invalid: [
     {
       code: 'it("it1", () => {})',
@@ -219,46 +256,6 @@ ruleTester.run('prefer-expect-assertions', rule, {
           line: 1,
         },
       ],
-    },
-  ],
-
-  valid: [
-    {
-      code: 'test("it1", () => {expect.assertions(0);})',
-    },
-    'test("it1", function() {expect.assertions(0);})',
-    'test("it1", function() {expect.hasAssertions();})',
-    'it("it1", function() {expect.assertions(0);})',
-    `
-      it("it1", function() {
-        expect.assertions(1);
-        expect(someValue).toBe(true)
-      })
-    `,
-    'test("it1")',
-    'itHappensToStartWithIt("foo", function() {})',
-    'testSomething("bar", function() {})',
-    'it(async () => {expect.assertions(0);})',
-    {
-      code: dedent`
-        it("it1", async () => {
-          expect.assertions(1);
-          expect(someValue).toBe(true)
-        })
-      `,
-      options: [{ onlyFunctionsWithAsyncKeyword: true }],
-    },
-    {
-      code: dedent`
-        it("it1", function() {
-          expect(someValue).toBe(true)
-        })
-      `,
-      options: [{ onlyFunctionsWithAsyncKeyword: true }],
-    },
-    {
-      code: 'it("it1", () => {})',
-      options: [{ onlyFunctionsWithAsyncKeyword: true }],
     },
   ],
 });

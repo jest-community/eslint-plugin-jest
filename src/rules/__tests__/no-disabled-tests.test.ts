@@ -1,4 +1,5 @@
 import { TSESLint } from '@typescript-eslint/experimental-utils';
+import dedent from 'dedent';
 import resolveFrom from 'resolve-from';
 import rule from '../no-disabled-tests';
 
@@ -28,35 +29,35 @@ ruleTester.run('no-disabled-tests', rule, {
     '(a || b).f()',
     'itHappensToStartWithIt()',
     'testSomething()',
-    [
-      'import { pending } from "actions"',
-      '',
-      'test("foo", () => {',
-      '  expect(pending()).toEqual({})',
-      '})',
-    ].join('\n'),
-    [
-      'const { pending } = require("actions")',
-      '',
-      'test("foo", () => {',
-      '  expect(pending()).toEqual({})',
-      '})',
-    ].join('\n'),
-    [
-      'test("foo", () => {',
-      '  const pending = getPending()',
-      '  expect(pending()).toEqual({})',
-      '})',
-    ].join('\n'),
-    [
-      'test("foo", () => {',
-      '  expect(pending()).toEqual({})',
-      '})',
-      '',
-      'function pending() {',
-      '  return {}',
-      '}',
-    ].join('\n'),
+    dedent`
+      import { pending } from "actions"
+
+      test("foo", () => {
+        expect(pending()).toEqual({})
+      })
+    `,
+    dedent`
+      const { pending } = require("actions")
+
+      test("foo", () => {
+        expect(pending()).toEqual({})
+      })
+    `,
+    dedent`
+      test("foo", () => {
+        const pending = getPending()
+        expect(pending()).toEqual({})
+      })
+    `,
+    dedent`
+      test("foo", () => {
+        expect(pending()).toEqual({})
+      })
+
+      function pending() {
+        return {}
+      }
+    `,
   ],
 
   invalid: [

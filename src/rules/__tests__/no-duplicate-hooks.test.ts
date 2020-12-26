@@ -1,4 +1,5 @@
 import { TSESLint } from '@typescript-eslint/experimental-utils';
+import dedent from 'dedent';
 import resolveFrom from 'resolve-from';
 import rule from '../no-duplicate-hooks';
 
@@ -11,202 +12,179 @@ const ruleTester = new TSESLint.RuleTester({
 
 ruleTester.run('basic describe block', rule, {
   valid: [
-    [
-      'describe("foo", () => {',
-      '  beforeEach(() => {',
-      '  }),',
-      '  test("bar", () => {',
-      '    some_fn();',
-      '  })',
-      '})',
-    ].join('\n'),
-    [
-      'beforeEach(() => {',
-      '}),',
-      'test("bar", () => {',
-      '  some_fn();',
-      '})',
-    ].join('\n'),
-    [
-      'describe("foo", () => {',
-      '  beforeAll(() => {',
-      '  }),',
-      '  beforeEach(() => {',
-      '  }),',
-      '  afterEach(() => {',
-      '  }),',
-      '  afterAll(() => {',
-      '  }),',
-      '  test("bar", () => {',
-      '    some_fn();',
-      '  })',
-      '})',
-    ].join('\n'),
+    dedent`
+      describe("foo", () => {
+        beforeEach(() => {})
+        test("bar", () => {
+          someFn();
+        })
+      })
+    `,
+    dedent`
+      beforeEach(() => {})
+      test("bar", () => {
+        someFn();
+      })
+    `,
+    dedent`
+      describe("foo", () => {
+        beforeAll(() => {}),
+        beforeEach(() => {})
+        afterEach(() => {})
+        afterAll(() => {})
+
+        test("bar", () => {
+          someFn();
+        })
+      })
+    `,
   ],
 
   invalid: [
     {
-      code: [
-        'describe("foo", () => {',
-        '  beforeEach(() => {',
-        '  }),',
-        '  beforeEach(() => {',
-        '  }),',
-        '  test("bar", () => {',
-        '    some_fn();',
-        '  })',
-        '})',
-      ].join('\n'),
+      code: dedent`
+        describe("foo", () => {
+          beforeEach(() => {}),
+          beforeEach(() => {}),
+          test("bar", () => {
+            someFn();
+          })
+        })
+      `,
       errors: [
         {
           messageId: 'noDuplicateHook',
           data: { hook: 'beforeEach' },
           column: 3,
-          line: 4,
-        },
-      ],
-    },
-    {
-      code: [
-        'describe.skip("foo", () => {',
-        '  beforeEach(() => {',
-        '  }),',
-        '  beforeAll(() => {',
-        '  }),',
-        '  beforeAll(() => {',
-        '  }),',
-        '  test("bar", () => {',
-        '    some_fn();',
-        '  })',
-        '})',
-      ].join('\n'),
-      errors: [
-        {
-          messageId: 'noDuplicateHook',
-          data: { hook: 'beforeAll' },
-          column: 3,
-          line: 6,
-        },
-      ],
-    },
-    {
-      code: [
-        'describe.skip("foo", () => {',
-        '  afterEach(() => {',
-        '  }),',
-        '  afterEach(() => {',
-        '  }),',
-        '  test("bar", () => {',
-        '    some_fn();',
-        '  })',
-        '})',
-      ].join('\n'),
-      errors: [
-        {
-          messageId: 'noDuplicateHook',
-          data: { hook: 'afterEach' },
-          column: 3,
-          line: 4,
-        },
-      ],
-    },
-    {
-      code: [
-        'describe.skip("foo", () => {',
-        '  afterAll(() => {',
-        '  }),',
-        '  afterAll(() => {',
-        '  }),',
-        '  test("bar", () => {',
-        '    some_fn();',
-        '  })',
-        '})',
-      ].join('\n'),
-      errors: [
-        {
-          messageId: 'noDuplicateHook',
-          data: { hook: 'afterAll' },
-          column: 3,
-          line: 4,
-        },
-      ],
-    },
-    {
-      code: [
-        'afterAll(() => {',
-        '}),',
-        'afterAll(() => {',
-        '}),',
-        'test("bar", () => {',
-        '  some_fn();',
-        '})',
-      ].join('\n'),
-      errors: [
-        {
-          messageId: 'noDuplicateHook',
-          data: { hook: 'afterAll' },
-          column: 1,
           line: 3,
         },
       ],
     },
     {
-      code: [
-        'describe("foo", () => {',
-        '  beforeEach(() => {',
-        '  }),',
-        '  beforeEach(() => {',
-        '  }),',
-        '  beforeEach(() => {',
-        '  }),',
-        '  test("bar", () => {',
-        '    some_fn();',
-        '  })',
-        '})',
-      ].join('\n'),
+      code: dedent`
+        describe.skip("foo", () => {
+          beforeEach(() => {}),
+          beforeAll(() => {}),
+          beforeAll(() => {}),
+          test("bar", () => {
+            someFn();
+          })
+        })
+      `,
       errors: [
         {
           messageId: 'noDuplicateHook',
-          data: { hook: 'beforeEach' },
+          data: { hook: 'beforeAll' },
           column: 3,
           line: 4,
-        },
-        {
-          messageId: 'noDuplicateHook',
-          data: { hook: 'beforeEach' },
-          column: 3,
-          line: 6,
         },
       ],
     },
     {
-      code: [
-        'describe.skip("foo", () => {',
-        '  afterAll(() => {',
-        '  }),',
-        '  afterAll(() => {',
-        '  }),',
-        '  beforeAll(() => {',
-        '  }),',
-        '  beforeAll(() => {',
-        '  }),',
-        '  test("bar", () => {',
-        '    some_fn();',
-        '  })',
-        '})',
-      ].join('\n'),
+      code: dedent`
+        describe.skip("foo", () => {
+          afterEach(() => {}),
+          afterEach(() => {}),
+          test("bar", () => {
+            someFn();
+          })
+        })
+      `,
+      errors: [
+        {
+          messageId: 'noDuplicateHook',
+          data: { hook: 'afterEach' },
+          column: 3,
+          line: 3,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        describe.skip("foo", () => {
+          afterAll(() => {}),
+          afterAll(() => {}),
+          test("bar", () => {
+            someFn();
+          })
+        })
+      `,
       errors: [
         {
           messageId: 'noDuplicateHook',
           data: { hook: 'afterAll' },
           column: 3,
+          line: 3,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        afterAll(() => {}),
+        afterAll(() => {}),
+        test("bar", () => {
+          someFn();
+        })
+      `,
+      errors: [
+        {
+          messageId: 'noDuplicateHook',
+          data: { hook: 'afterAll' },
+          column: 1,
+          line: 2,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        describe("foo", () => {
+          beforeEach(() => {}),
+          beforeEach(() => {}),
+          beforeEach(() => {}),
+          test("bar", () => {
+            someFn();
+          })
+        })
+      `,
+      errors: [
+        {
+          messageId: 'noDuplicateHook',
+          data: { hook: 'beforeEach' },
+          column: 3,
+          line: 3,
+        },
+        {
+          messageId: 'noDuplicateHook',
+          data: { hook: 'beforeEach' },
+          column: 3,
           line: 4,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        describe.skip("foo", () => {
+          afterAll(() => {}),
+          afterAll(() => {}),
+          beforeAll(() => {}),
+          beforeAll(() => {}),
+          test("bar", () => {
+            someFn();
+          })
+        })
+      `,
+      errors: [
+        {
+          messageId: 'noDuplicateHook',
+          data: { hook: 'afterAll' },
+          column: 3,
+          line: 3,
         },
         {
           messageId: 'noDuplicateHook',
           data: { hook: 'beforeAll' },
           column: 3,
-          line: 8,
+          line: 5,
         },
       ],
     },
@@ -215,58 +193,49 @@ ruleTester.run('basic describe block', rule, {
 
 ruleTester.run('multiple describe blocks', rule, {
   valid: [
-    [
-      'describe.skip("foo", () => {',
-      '  beforeEach(() => {',
-      '  }),',
-      '  beforeAll(() => {',
-      '  }),',
-      '  test("bar", () => {',
-      '    some_fn();',
-      '  })',
-      '})',
-      'describe("foo", () => {',
-      '  beforeEach(() => {',
-      '  }),',
-      '  beforeAll(() => {',
-      '  }),',
-      '  test("bar", () => {',
-      '    some_fn();',
-      '  })',
-      '})',
-    ].join('\n'),
+    dedent`
+      describe.skip("foo", () => {
+        beforeEach(() => {}),
+        beforeAll(() => {}),
+        test("bar", () => {
+          someFn();
+        })
+      })
+      describe("foo", () => {
+        beforeEach(() => {}),
+        beforeAll(() => {}),
+        test("bar", () => {
+          someFn();
+        })
+      })
+    `,
   ],
 
   invalid: [
     {
-      code: [
-        'describe.skip("foo", () => {',
-        '  beforeEach(() => {',
-        '  }),',
-        '  beforeAll(() => {',
-        '  }),',
-        '  test("bar", () => {',
-        '    some_fn();',
-        '  })',
-        '})',
-        'describe("foo", () => {',
-        '  beforeEach(() => {',
-        '  }),',
-        '  beforeEach(() => {',
-        '  }),',
-        '  beforeAll(() => {',
-        '  }),',
-        '  test("bar", () => {',
-        '    some_fn();',
-        '  })',
-        '})',
-      ].join('\n'),
+      code: dedent`
+        describe.skip("foo", () => {
+          beforeEach(() => {}),
+          beforeAll(() => {}),
+          test("bar", () => {
+            someFn();
+          })
+        })
+        describe("foo", () => {
+          beforeEach(() => {}),
+          beforeEach(() => {}),
+          beforeAll(() => {}),
+          test("bar", () => {
+            someFn();
+          })
+        })
+      `,
       errors: [
         {
           messageId: 'noDuplicateHook',
           data: { hook: 'beforeEach' },
           column: 3,
-          line: 13,
+          line: 10,
         },
       ],
     },
@@ -275,50 +244,45 @@ ruleTester.run('multiple describe blocks', rule, {
 
 ruleTester.run('nested describe blocks', rule, {
   valid: [
-    [
-      'describe("foo", () => {',
-      '  beforeEach(() => {',
-      '  }),',
-      '  test("bar", () => {',
-      '    some_fn();',
-      '  })',
-      '  describe("inner_foo", () => {',
-      '    beforeEach(() => {',
-      '    })',
-      '    test("inner bar", () => {',
-      '      some_fn();',
-      '    })',
-      '  })',
-      '})',
-    ].join('\n'),
+    dedent`
+      describe("foo", () => {
+        beforeEach(() => {}),
+        test("bar", () => {
+          someFn();
+        })
+        describe("inner_foo", () => {
+          beforeEach(() => {})
+          test("inner bar", () => {
+            someFn();
+          })
+        })
+      })
+    `,
   ],
 
   invalid: [
     {
-      code: [
-        'describe("foo", () => {',
-        '  beforeAll(() => {',
-        '  }),',
-        '  test("bar", () => {',
-        '    some_fn();',
-        '  })',
-        '  describe("inner_foo", () => {',
-        '    beforeEach(() => {',
-        '    })',
-        '    beforeEach(() => {',
-        '    })',
-        '    test("inner bar", () => {',
-        '      some_fn();',
-        '    })',
-        '  })',
-        '})',
-      ].join('\n'),
+      code: dedent`
+        describe("foo", () => {
+          beforeAll(() => {}),
+          test("bar", () => {
+            someFn();
+          })
+          describe("inner_foo", () => {
+            beforeEach(() => {})
+            beforeEach(() => {})
+            test("inner bar", () => {
+              someFn();
+            })
+          })
+        })
+      `,
       errors: [
         {
           messageId: 'noDuplicateHook',
           data: { hook: 'beforeEach' },
           column: 5,
-          line: 10,
+          line: 8,
         },
       ],
     },
