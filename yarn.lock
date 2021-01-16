@@ -2196,7 +2196,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/experimental-utils@npm:4.13.0, @typescript-eslint/experimental-utils@npm:^4.0.1":
+"@typescript-eslint/experimental-utils@npm:4.13.0, @typescript-eslint/experimental-utils@npm:^4.0.1, @typescript-eslint/experimental-utils@npm:^4.11.1":
   version: 4.13.0
   resolution: "@typescript-eslint/experimental-utils@npm:4.13.0"
   dependencies:
@@ -2209,20 +2209,6 @@ __metadata:
   peerDependencies:
     eslint: "*"
   checksum: 63eee348ddc77bca7547be8a3b8759e4bcff30cf8a04e27a224bf8221d68ad8e4e1634fdd0aebdff7dc29d32a82dfa6ee70ec03d7d69d3c7128ae221f2711d1a
-  languageName: node
-  linkType: hard
-
-"@typescript-eslint/experimental-utils@npm:^2.5.0":
-  version: 2.34.0
-  resolution: "@typescript-eslint/experimental-utils@npm:2.34.0"
-  dependencies:
-    "@types/json-schema": ^7.0.3
-    "@typescript-eslint/typescript-estree": 2.34.0
-    eslint-scope: ^5.0.0
-    eslint-utils: ^2.0.0
-  peerDependencies:
-    eslint: "*"
-  checksum: 53cbbcfe67ddc53b4bc23f78b3726b0c2de5ea04ee849ca8b619f1fcad16f644d9d72bb3ea9a08aabfc605ea4a9769fe1b81931af09ce2223ec49de749cde2d4
   languageName: node
   linkType: hard
 
@@ -2257,24 +2243,6 @@ __metadata:
   version: 4.13.0
   resolution: "@typescript-eslint/types@npm:4.13.0"
   checksum: ed2e27ad1f7d0db28d13d3a5fe900b7638981689fea1b5556de4fcd87729f73cfe2e3792005cf4e05ba4c405f2abe9bc55c076354d4ac3f9576ded65c1b4ddf5
-  languageName: node
-  linkType: hard
-
-"@typescript-eslint/typescript-estree@npm:2.34.0":
-  version: 2.34.0
-  resolution: "@typescript-eslint/typescript-estree@npm:2.34.0"
-  dependencies:
-    debug: ^4.1.1
-    eslint-visitor-keys: ^1.1.0
-    glob: ^7.1.6
-    is-glob: ^4.0.1
-    lodash: ^4.17.15
-    semver: ^7.3.2
-    tsutils: ^3.17.1
-  peerDependenciesMeta:
-    typescript:
-      optional: true
-  checksum: 77d1a758dfd4a2813fb51d6102aa79d7eccb006c66db8cff49a10706c8cf64cae6b256b8ec6694058c1c333775e1dbc6ca7501769138fc89165b9c10f8201e40
   languageName: node
   linkType: hard
 
@@ -4467,15 +4435,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-eslint-config@npm:^1.0.2":
-  version: 1.0.4
-  resolution: "eslint-plugin-eslint-config@npm:1.0.4"
+"eslint-plugin-eslint-config@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "eslint-plugin-eslint-config@npm:2.0.0"
   dependencies:
-    "@typescript-eslint/experimental-utils": ^2.5.0
+    "@typescript-eslint/experimental-utils": ^4.11.1
     require-relative: ^0.8.7
   peerDependencies:
     eslint: ">=5"
-  checksum: e39618c0c66a70a15e126924229ab716ba476749e47192c755dcfd0e3c5fc7d9064312a048870fb3c0a5491587316b16b7d42f3f906adcb90b5f88c3ff14a70a
+  checksum: 49c880e60e6781902de2871213145616cdf18f9d6c9dba356d8bfdfa1fb41689c3ed09879cbf344abc433ef97bf1f919779f21a1345913738ee7a707aeb0058d
   languageName: node
   linkType: hard
 
@@ -4537,7 +4505,7 @@ __metadata:
     eslint: ^5.1.0 || ^6.0.0 || ^7.0.0
     eslint-config-prettier: ^6.5.0
     eslint-plugin-eslint-comments: ^3.1.2
-    eslint-plugin-eslint-config: ^1.0.2
+    eslint-plugin-eslint-config: ^2.0.0
     eslint-plugin-eslint-plugin: ^2.0.0
     eslint-plugin-import: ^2.20.2
     eslint-plugin-node: ^11.0.0
