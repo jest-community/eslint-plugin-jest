@@ -16,8 +16,8 @@ ruleTester.run('require-top-level-describe', rule, {
     'describe("test suite", () => { it("my test") });',
     dedent`
       describe("test suite", () => {
-        beforeEach("a", () => {}); 
-        describe("b", () => {}); 
+        beforeEach("a", () => {});
+        describe("b", () => {});
         test("c", () => {})
       });
     `,
@@ -33,6 +33,33 @@ ruleTester.run('require-top-level-describe', rule, {
       });
     `,
     'foo()',
+    'describe.each([1, true])("trues", value => { it("an it", () => expect(value).toBe(true) ); });',
+    dedent`
+      describe('%s', () => {
+        it('is fine', () => {
+          //
+        });
+      });
+
+      describe.each('world')('%s', () => {
+        it.each([1, 2, 3])('%n', () => {
+          //
+        });
+      });
+    `,
+    dedent`
+      describe.each('hello')('%s', () => {
+        it('is fine', () => {
+          //
+        });
+      });
+
+      describe.each('world')('%s', () => {
+        it.each([1, 2, 3])('%n', () => {
+          //
+        });
+      });
+    `,
   ],
   invalid: [
     {
@@ -61,6 +88,10 @@ ruleTester.run('require-top-level-describe', rule, {
         afterAll("my test", () => {})
       `,
       errors: [{ messageId: 'unexpectedHook' }],
+    },
+    {
+      code: "it.each([1, 2, 3])('%n', () => {});",
+      errors: [{ messageId: 'unexpectedTestCase' }],
     },
   ],
 });
