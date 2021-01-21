@@ -672,16 +672,18 @@ export const isDescribe = (
     DescribeProperty.hasOwnProperty(node.callee.property.name));
 
 /**
- * Checks if the given `describe` is a call to `describe.each`.
+ * Checks if the given node` is a call to `<describe|test|it>.each(...)`.
+ * If `true`, the code must look like `<method>.each(...)`.
  *
- * @param {JestFunctionCallExpression<DescribeAlias>} node
- * @return {node is JestFunctionCallExpression<DescribeAlias, DescribeProperty.each>}
+ * @param {JestFunctionCallExpression<DescribeAlias | TestCaseName>} node
+ *
+ * @return {node is JestFunctionCallExpressionWithMemberExpressionCallee<DescribeAlias | TestCaseName, DescribeProperty.each | TestCaseProperty.each>}
  */
-export const isDescribeEach = (
-  node: JestFunctionCallExpression<DescribeAlias>,
+export const isEachCall = (
+  node: JestFunctionCallExpression<DescribeAlias | TestCaseName>,
 ): node is JestFunctionCallExpressionWithMemberExpressionCallee<
-  DescribeAlias,
-  DescribeProperty.each
+  DescribeAlias | TestCaseName,
+  DescribeProperty.each | TestCaseProperty.each
 > =>
   node.callee.type === AST_NODE_TYPES.MemberExpression &&
   isSupportedAccessor(node.callee.property, DescribeProperty.each);
