@@ -1740,10 +1740,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@octokit/openapi-types@npm:^3.3.0":
-  version: 3.3.0
-  resolution: "@octokit/openapi-types@npm:3.3.0"
-  checksum: d787ef625f71951f6553da62afe06ee59a2c7e77d43feec687d580fa19963b2804707ec751419cf3ca8fe41d1c739a43344dd84275aec06501a17e9b7e731829
+"@octokit/openapi-types@npm:^3.4.1":
+  version: 3.4.1
+  resolution: "@octokit/openapi-types@npm:3.4.1"
+  checksum: c39cca94b44849252d71e45185065353632b802033ef7ce39b8aed139fefd3987ab544ea782d6d67782088123b8040c5d37b7a1dbe89962ff869d4f83188986d
   languageName: node
   linkType: hard
 
@@ -1819,12 +1819,12 @@ __metadata:
   linkType: hard
 
 "@octokit/types@npm:^6.0.3, @octokit/types@npm:^6.5.0, @octokit/types@npm:^6.6.0":
-  version: 6.6.0
-  resolution: "@octokit/types@npm:6.6.0"
+  version: 6.7.0
+  resolution: "@octokit/types@npm:6.7.0"
   dependencies:
-    "@octokit/openapi-types": ^3.3.0
+    "@octokit/openapi-types": ^3.4.1
     "@types/node": ">= 8"
-  checksum: c7d1464ab5aaeeba4b75fac382930dd94188f589247b69a8ace3b8c18cf85f0fd3cb30bec3d1f52a4df4abc7074617d5b8b372f91a537e7e99590a11aa7092c2
+  checksum: 20c0203c199727836bf1b311169547059af1a1a9868844c3a8ef107d8090cdf20a45f200e00db05af60c2491b84b09cb66b9cf82ec63c1bcbe6ec412d42f2ad5
   languageName: node
   linkType: hard
 
@@ -2166,11 +2166,11 @@ __metadata:
   linkType: hard
 
 "@types/yargs@npm:^15.0.0":
-  version: 15.0.12
-  resolution: "@types/yargs@npm:15.0.12"
+  version: 15.0.13
+  resolution: "@types/yargs@npm:15.0.13"
   dependencies:
     "@types/yargs-parser": "*"
-  checksum: b67cf9e8f25865a6d6e72196fe7f47c6f328d2b7a54ed9fa0e60f9693abb332fec1a826f90310804f231bca28a2f71367956b3be2fdba2d4bf316f0394d84f4d
+  checksum: fa1a5b0a07dbbff1657a27d1191d586632412d170321000f6f417f279547a8c191d7058dbf4d4187c188a5a1aeb2473ddb25fe316b206fccdfe1de6fad976619
   languageName: node
   linkType: hard
 
@@ -2844,9 +2844,9 @@ __metadata:
   linkType: hard
 
 "before-after-hook@npm:^2.1.0":
-  version: 2.1.0
-  resolution: "before-after-hook@npm:2.1.0"
-  checksum: 4df7ef0992ef7c5d8689a50bba12349789ab6da12203cd92c78dd5eb22e725694fd3602cff15ab85285a744c5d6106f3fbdc203f0cb6262cd3bebe42a763c3fd
+  version: 2.1.1
+  resolution: "before-after-hook@npm:2.1.1"
+  checksum: 07b84cf850593a22e8d333e2ff3fe9af8d6f6cb661b2a81a88fcd25afc8360413f513d5b7d76dfe877f8d5fe3fa8f8c533d26961955b335b4977ba73692b32e5
   languageName: node
   linkType: hard
 
@@ -2952,17 +2952,17 @@ __metadata:
   linkType: hard
 
 "browserslist@npm:^4.14.5, browserslist@npm:^4.16.1":
-  version: 4.16.1
-  resolution: "browserslist@npm:4.16.1"
+  version: 4.16.3
+  resolution: "browserslist@npm:4.16.3"
   dependencies:
-    caniuse-lite: ^1.0.30001173
+    caniuse-lite: ^1.0.30001181
     colorette: ^1.2.1
-    electron-to-chromium: ^1.3.634
+    electron-to-chromium: ^1.3.649
     escalade: ^3.1.1
-    node-releases: ^1.1.69
+    node-releases: ^1.1.70
   bin:
     browserslist: cli.js
-  checksum: 56f51464c3a3bd9b2aeb75ded1dc3fce5ad91bd6d84187aba812a78ba66b69bc97c2de25a1b7409daac3c0049e979bf0faa6cca4aacce0abcaf3107c250ce3fb
+  checksum: dfab0d3c3d9a3517cf3f8a274bc4e8245f3a02c1a5ae2a0e01498273d363952d11ee09fdce3b0ce551f6cab9d619ed2d9facf7b6471c9190df949a5ad39665c5
   languageName: node
   linkType: hard
 
@@ -3099,10 +3099,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"caniuse-lite@npm:^1.0.30001173":
-  version: 1.0.30001180
-  resolution: "caniuse-lite@npm:1.0.30001180"
-  checksum: 2381f138385e1a1c02e9fca6aea6edc948c64a2ef520c41458e088a40fc2114f318235ae61e930e485c185281d081d5898883dda966d1b861afb455f7d9f6d16
+"caniuse-lite@npm:^1.0.30001181":
+  version: 1.0.30001181
+  resolution: "caniuse-lite@npm:1.0.30001181"
+  checksum: 8428500f49de802e4aa18baba05d2408840a2cdcbe595335bfafc834c9fb759dfc2e3ba9ff552efc74d862c5d1a62c243f20641a06a8eedc3d083a29dd5c7e0e
   languageName: node
   linkType: hard
 
@@ -4203,10 +4203,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"electron-to-chromium@npm:^1.3.634":
-  version: 1.3.647
-  resolution: "electron-to-chromium@npm:1.3.647"
-  checksum: 001df5635a787bd15aa8eb29e84485efbc5b250665b96b825573d4a7a2a2e83812ee80aaa1cb56ef3ca025afb65f5bf01c42bba86b5b47891e1ef97497975570
+"electron-to-chromium@npm:^1.3.649":
+  version: 1.3.649
+  resolution: "electron-to-chromium@npm:1.3.649"
+  checksum: e92a5432d033804319fe93f01de5533bdf05142ccf291b89843c33cd436e994553783007cc4405bac1fe4ee39000e549c857828cb66c37dc1a4e7addb324641d
   languageName: node
   linkType: hard
 
@@ -4603,8 +4603,8 @@ __metadata:
   linkType: hard
 
 "eslint@npm:^5.1.0 || ^6.0.0 || ^7.0.0":
-  version: 7.18.0
-  resolution: "eslint@npm:7.18.0"
+  version: 7.19.0
+  resolution: "eslint@npm:7.19.0"
   dependencies:
     "@babel/code-frame": ^7.0.0
     "@eslint/eslintrc": ^0.3.0
@@ -4645,7 +4645,7 @@ __metadata:
     v8-compile-cache: ^2.0.3
   bin:
     eslint: bin/eslint.js
-  checksum: 5c6f6ca0eb6c3738a0d14d3441a23f045ef9e7f73aaba4848aea0877c5fd50ec42937ccdaf53fb9107694f5700a9989bca55334b7b17e5d3be2f6e69a42241fa
+  checksum: 0461e8b2b53c9097995efe131f659e2df77deda1daf79d7673654e2cbdac90bd2a412758b0ee0db48d29bf58f4b4d99170a70e17df1345782f0c8fa511bb0734
   languageName: node
   linkType: hard
 
@@ -5638,11 +5638,11 @@ __metadata:
   linkType: hard
 
 "hosted-git-info@npm:^3.0.0, hosted-git-info@npm:^3.0.6":
-  version: 3.0.7
-  resolution: "hosted-git-info@npm:3.0.7"
+  version: 3.0.8
+  resolution: "hosted-git-info@npm:3.0.8"
   dependencies:
     lru-cache: ^6.0.0
-  checksum: 010f06d5a6ac76d9b4b258e3719fc7cd9cc9beea51478afd7db0648f6a6019d8410aef560e09bae6bfc4ba572aa4ed52e62a0a8ae0267c645519e852b9087f42
+  checksum: 686512459ccb7e7eac7833fc4e8e35a0533c0dda5f516025f276ecb620b316010b853c785439ac63702e044ab56b2485cf7e1b088c1f9a46675b9496f7a45683
   languageName: node
   linkType: hard
 
@@ -6001,9 +6001,9 @@ __metadata:
   linkType: hard
 
 "is-callable@npm:^1.1.4, is-callable@npm:^1.2.2":
-  version: 1.2.2
-  resolution: "is-callable@npm:1.2.2"
-  checksum: c35d37cc46c997d6417d7254733c8a3b1146f18121197c5600f601c56fb27abd1b372b0b9c41ea9a69d30556a2a0fd85e396da8eb8bc4af2e5ad8c5232fcd433
+  version: 1.2.3
+  resolution: "is-callable@npm:1.2.3"
+  checksum: 8180a1c4e227e204e199ff355c4f24a80f74536898e16716583aa6a09167f2cceecc188cea750a2f3ae3b163577691595ae8d22bf7bb94b4bbb9fbdfea1bc5c3
   languageName: node
   linkType: hard
 
@@ -7423,8 +7423,8 @@ __metadata:
   linkType: hard
 
 "listr2@npm:^3.2.2":
-  version: 3.3.0
-  resolution: "listr2@npm:3.3.0"
+  version: 3.3.1
+  resolution: "listr2@npm:3.3.1"
   dependencies:
     chalk: ^4.1.0
     cli-truncate: ^2.1.0
@@ -7437,7 +7437,7 @@ __metadata:
     wrap-ansi: ^7.0.0
   peerDependencies:
     enquirer: ">= 2.3.0 < 3"
-  checksum: 3af0a81f612c43f4266e6b94ef849c5da988126d3cd52267a412f99b68bb827968365434b8c0810a14a86877bec4af3c2e1240ea5734e1d3e5e82f20386763a1
+  checksum: 60ef68412e510155420ea911c455a8c5425c4004037cdbb1c5f82171104f4c3d597f34b1b137655a6614b3c748cfbe46e1d2b55507847a4a790aea2ef1cb42c5
   languageName: node
   linkType: hard
 
@@ -8289,7 +8289,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"node-releases@npm:^1.1.69":
+"node-releases@npm:^1.1.70":
   version: 1.1.70
   resolution: "node-releases@npm:1.1.70"
   checksum: 18e2b4b871614247633a7f246ec04f6eebcb0353c0514c38b5d814be6d067301c4b1b0e7cb53407b36034e79fbc589f77a1acafdaf292abc46a4f65b4b7af2e6
@@ -9827,13 +9827,13 @@ __metadata:
   linkType: hard
 
 "regjsparser@npm:^0.6.4":
-  version: 0.6.6
-  resolution: "regjsparser@npm:0.6.6"
+  version: 0.6.7
+  resolution: "regjsparser@npm:0.6.7"
   dependencies:
     jsesc: ~0.5.0
   bin:
     regjsparser: bin/parser
-  checksum: 3d04357a7a29e3d3f04845aca75822cc5b050acd55f23fa10742a4533962198d051ed451e4e1dcdb01037d6806feec8c340438750f4d5135debb8884769a3a50
+  checksum: 9f8f0f68f340a9d92fb3de5f5377c2dff326577b91f21ac965830b091760f709f01d69b636f6433fb0c152f3b341052b00d629926db5d67d4d275855ca11ce1e
   languageName: node
   linkType: hard
 
@@ -11403,11 +11403,11 @@ typescript@^4.0.0:
   linkType: hard
 
 "uglify-js@npm:^3.1.4":
-  version: 3.12.5
-  resolution: "uglify-js@npm:3.12.5"
+  version: 3.12.6
+  resolution: "uglify-js@npm:3.12.6"
   bin:
     uglifyjs: bin/uglifyjs
-  checksum: 2fc4505cac030cca913592d05f3078f97cad64b66dcaf0b6e2969915e6bda4796ab3d42a785ba6043e3b30082c4aa3e10f9ac159efa803607f6d7289c2f3d4a4
+  checksum: 927da22ceab91917c174887ff93649f989ead58f9afbb8bc66aa8277ec269cf41e4d7037da76c397af56a4f01d8fc3e8293bfdcad33816bf5b8df99433dac247
   languageName: node
   linkType: hard
 
