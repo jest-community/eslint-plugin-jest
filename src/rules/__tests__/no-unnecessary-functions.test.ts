@@ -18,6 +18,10 @@ ruleTester.run('no-unnecessary-functions', rule, {
     },
     {
       code:
+        'beforeEach(() => { jest.resetModules(); jest.clearAllMocks(); jest.resetAllMocks(); jest.restoreAllMocks(); })',
+    },
+    {
+      code:
         'beforeEach(() => { jest.clearAllMocks(); jest.resetAllMocks(); jest.restoreAllMocks(); })',
       options: [{ reportFunctionNames: ['resetModules'] }],
     },
