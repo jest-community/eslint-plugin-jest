@@ -110,7 +110,7 @@
     "eslint-plugin-import": "^2.20.2",
     "eslint-plugin-node": "^11.0.0",
     "eslint-plugin-prettier": "^3.0.0",
-    "husky": "^4.2.5",
+    "husky": "^5.0.0",
     "jest": "^26.0.1",
     "jest-runner-eslint": "^0.10.0",
     "lint-staged": "^10.2.2",
