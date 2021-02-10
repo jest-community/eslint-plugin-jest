@@ -93,7 +93,9 @@ Examples of **incorrect** code for this rule
 
 ```js
 test('test foo', () => {});
+test('it foo', () => {});
 it('it foo', () => {});
+it('test foo', () => {});
 
 describe('foo', () => {
   test('test bar', () => {});

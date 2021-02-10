@@ -863,6 +863,26 @@ ruleTester.run('no-duplicate-prefix ft test', rule, {
       output: 'test(`foo test`, function () {})',
       errors: [{ messageId: 'duplicatePrefix', column: 6, line: 1 }],
     },
+    {
+      code: 'test("it foo", function () {})',
+      output: 'test("foo", function () {})',
+      errors: [{ messageId: 'duplicatePrefix', column: 6, line: 1 }],
+    },
+    {
+      code: 'xtest("it foo", function () {})',
+      output: 'xtest("foo", function () {})',
+      errors: [{ messageId: 'duplicatePrefix', column: 7, line: 1 }],
+    },
+    {
+      code: 'test(`it foo`, function () {})',
+      output: 'test(`foo`, function () {})',
+      errors: [{ messageId: 'duplicatePrefix', column: 6, line: 1 }],
+    },
+    {
+      code: 'test(`it foo test`, function () {})',
+      output: 'test(`foo test`, function () {})',
+      errors: [{ messageId: 'duplicatePrefix', column: 6, line: 1 }],
+    },
   ],
 });
 
@@ -892,6 +912,26 @@ ruleTester.run('no-duplicate-prefix ft it', rule, {
     },
     {
       code: 'it("it foos it correctly", function () {})',
+      output: 'it("foos it correctly", function () {})',
+      errors: [{ messageId: 'duplicatePrefix', column: 4, line: 1 }],
+    },
+    {
+      code: 'it("test foo", function () {})',
+      output: 'it("foo", function () {})',
+      errors: [{ messageId: 'duplicatePrefix', column: 4, line: 1 }],
+    },
+    {
+      code: 'fit("test foo", function () {})',
+      output: 'fit("foo", function () {})',
+      errors: [{ messageId: 'duplicatePrefix', column: 5, line: 1 }],
+    },
+    {
+      code: 'xit("test foo", function () {})',
+      output: 'xit("foo", function () {})',
+      errors: [{ messageId: 'duplicatePrefix', column: 5, line: 1 }],
+    },
+    {
+      code: 'it("test foos it correctly", function () {})',
       output: 'it("foos it correctly", function () {})',
       errors: [{ messageId: 'duplicatePrefix', column: 4, line: 1 }],
     },

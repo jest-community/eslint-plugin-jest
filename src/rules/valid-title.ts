@@ -239,8 +239,14 @@ export default createRule<[Options], MessageIds>({
 
         const nodeName = trimFXprefix(getNodeName(node.callee));
         const [firstWord] = title.split(' ');
+        const lowerCaseFirstWord = firstWord.toLowerCase();
 
-        if (firstWord.toLowerCase() === nodeName) {
+        if (
+          (nodeName === 'describe' && lowerCaseFirstWord === nodeName) ||
+          [nodeName, lowerCaseFirstWord].every(word =>
+            ['test', 'it'].includes(word),
+          )
+        ) {
           context.report({
             messageId: 'duplicatePrefix',
             node: argument,
