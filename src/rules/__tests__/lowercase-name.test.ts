@@ -13,6 +13,7 @@ const ruleTester = new TSESLint.RuleTester({
 
 ruleTester.run('lowercase-name', rule, {
   valid: [
+    'it.each()',
     'randomFunction()',
     'foo.bar()',
     'it()',
@@ -174,6 +175,30 @@ ruleTester.run('lowercase-name', rule, {
           messageId: 'unexpectedLowercase',
           data: { method: DescribeAlias.describe },
           column: 10,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: "it.each(['green', 'black'])('Should return %', () => {})",
+      output: "it.each(['green', 'black'])('should return %', () => {})",
+      errors: [
+        {
+          messageId: 'unexpectedLowercase',
+          data: { method: TestCaseName.it },
+          column: 9,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: "describe.each(['green', 'black'])('Should return %', () => {})",
+      output: "describe.each(['green', 'black'])('should return %', () => {})",
+      errors: [
+        {
+          messageId: 'unexpectedLowercase',
+          data: { method: DescribeAlias.describe },
+          column: 15,
           line: 1,
         },
       ],
