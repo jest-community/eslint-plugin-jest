@@ -172,4 +172,3 @@ safely disable this rule.
 ## Further Reading
 
 - [Jest docs - Setup and Teardown](https://facebook.github.io/jest/docs/en/setup-teardown.html)
-- [@jamiebuilds Twitter thread](https://twitter.com/jamiebuilds/status/954906997169664000)
