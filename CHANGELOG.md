@@ -1,3 +1,11 @@
+## [24.1.4](https://github.com/jest-community/eslint-plugin-jest/compare/v24.1.3...v24.1.4) (2021-02-16)
+
+
+### Bug Fixes
+
+* **lowercase-name:** support `.each` methods ([#746](https://github.com/jest-community/eslint-plugin-jest/issues/746)) ([3d847b2](https://github.com/jest-community/eslint-plugin-jest/commit/3d847b2164425a2afb754569dbfff52411c95610))
+* **require-top-level-describe:** handle `describe.each` properly ([#745](https://github.com/jest-community/eslint-plugin-jest/issues/745)) ([677be45](https://github.com/jest-community/eslint-plugin-jest/commit/677be4558a3954e364b0c4150678a4d3fd832337))
+
 ## [24.1.3](https://github.com/jest-community/eslint-plugin-jest/compare/v24.1.2...v24.1.3) (2020-11-12)
 
 
