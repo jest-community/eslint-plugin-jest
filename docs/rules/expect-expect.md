@@ -74,7 +74,7 @@ test('returns sum', () => {
 });
 ```
 
-Since the string is compiled into aa regular expression, you'll need to escape
+Since the string is compiled into a regular expression, you'll need to escape
 special characters such as `$` with a double backslash:
 
 ```js
