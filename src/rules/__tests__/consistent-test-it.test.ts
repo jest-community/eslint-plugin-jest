@@ -678,7 +678,7 @@ ruleTester.run('consistent-test-it with withinDescribe=test', rule, {
       options: [{ withinDescribe: TestCaseName.test }],
       errors: [
         {
-          messageId: 'consisMethod',
+          messageId: 'consistentMethod',
           data: {
             testKeyword: TestCaseName.test,
             oppositeTestKeyword: TestCaseName.it,
