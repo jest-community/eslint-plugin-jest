@@ -1,4 +1,4 @@
-name: Unit tests
+name: Unit tests & Release
 
 on:
   push:
@@ -11,10 +11,40 @@ on:
       - next
 
 jobs:
+  prepare-yarn-cache:
+    name: Prepare yarn cache
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-node@v2.1.4
+        with:
+          node-version: 14.x
+
+      - name: Get yarn cache
+        id: yarn-cache
+        run: echo "::set-output name=dir::$(yarn config get cacheFolder)"
+
+      - uses: actions/cache@v2.1.4
+        with:
+          path: ${{ steps.yarn-cache.outputs.dir }}
+          key: yarn2-${{ hashFiles('yarn.lock') }}
+          restore-keys: |
+            yarn2-
+      - name: Validate cache
+        env:
+          # Use PnP and disable postinstall scripts as this just needs to
+          # populate the cache for the other jobs
+          YARN_NODE_LINKER: pnp
+          YARN_ENABLE_SCRIPTS: false
+        run: yarn --immutable
+
   test-node:
     name:
       # prettier-ignore
       Test on Node.js v${{ matrix.node-version }} and eslint v${{matrix.eslint-version }}
+    needs: prepare-yarn-cache
     strategy:
       fail-fast: false
       matrix:
@@ -32,9 +62,9 @@ jobs:
       - uses: actions/cache@v2
         with:
           path: ${{ steps.yarn-cache.outputs.dir }}
-          key: ubuntu-latest-node-12.x-yarn-${{ hashFiles('**/yarn.lock') }}
+          key: yarn2-${{ hashFiles('yarn.lock') }}
           restore-keys: |
-            ubuntu-latest-node-12.x-yarn-
+            yarn2-
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v2.1.4
         with:
@@ -56,6 +86,7 @@ jobs:
         if: ${{ matrix.eslint-version >= 6 }}
   test-os:
     name: Test on ${{ matrix.os }} using Node.js LTS
+    needs: prepare-yarn-cache
     strategy:
       fail-fast: false
       matrix:
@@ -70,9 +101,9 @@ jobs:
       - uses: actions/cache@v2
         with:
           path: ${{ steps.yarn-cache.outputs.dir }}
-          key: ${{ runner.os }}-node-14.x-yarn-${{ hashFiles('**/yarn.lock') }}
+          key: yarn2-${{ hashFiles('yarn.lock') }}
           restore-keys: |
-            ${{ runner.os }}-node-14.x-yarn-
+            yarn2-
       - uses: actions/setup-node@v2.1.4
         with:
           node-version: 14.x
@@ -86,3 +117,30 @@ jobs:
         run: yarn test --coverage
         env:
           CI: true
+  release:
+    if:
+      ${{ github.event_name == 'push' && github.event.ref == 'refs/heads/master'
+      }}
+    name: Release new version
+    needs: [test-node, test-os]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Get yarn cache
+        id: yarn-cache
+        run: echo "::set-output name=dir::$(yarn config get cacheFolder)"
+      - uses: actions/cache@v2
+        with:
+          path: ${{ steps.yarn-cache.outputs.dir }}
+          key: yarn2-${{ hashFiles('yarn.lock') }}
+          restore-keys: |
+            yarn2-
+      - uses: actions/setup-node@v2.1.4
+        with:
+          node-version: 14.x
+      - name: install
+        run: yarn
+      - run: yarn semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
