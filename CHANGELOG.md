@@ -1,3 +1,10 @@
+## [24.1.5](https://github.com/jest-community/eslint-plugin-jest/compare/v24.1.4...v24.1.5) (2021-02-17)
+
+
+### Bug Fixes
+
+* **require-top-level-describe:** import function that actually exists ([#763](https://github.com/jest-community/eslint-plugin-jest/issues/763)) ([d10dc07](https://github.com/jest-community/eslint-plugin-jest/commit/d10dc07d9dc933fe9584b3e13704001527896859))
+
 ## [24.1.4](https://github.com/jest-community/eslint-plugin-jest/compare/v24.1.3...v24.1.4) (2021-02-16)
 
 
