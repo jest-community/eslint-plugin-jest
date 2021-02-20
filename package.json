@@ -62,7 +62,8 @@
         "displayName": "test",
         "testEnvironment": "node",
         "testPathIgnorePatterns": [
-          "<rootDir>/lib/.*"
+          "<rootDir>/lib/.*",
+          "<rootDir>/src/rules/__tests__/fixtures/*"
         ]
       },
       {

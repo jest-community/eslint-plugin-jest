@@ -168,6 +168,7 @@ installations requiring long-term consistency.
 | [prefer-todo](docs/rules/prefer-todo.md)                                     | Suggest using `test.todo`                                       |                  | ![fixable][] |
 | [require-to-throw-message](docs/rules/require-to-throw-message.md)           | Require a message for `toThrow()`                               |                  |              |
 | [require-top-level-describe](docs/rules/require-top-level-describe.md)       | Require test cases and hooks to be inside a `describe` block    |                  |              |
+| [unbound-method](docs/rules/unbound-method.md)                               | Enforces unbound methods are called with their expected scope   |                  |              |
 | [valid-describe](docs/rules/valid-describe.md)                               | Enforce valid `describe()` callback                             | ![recommended][] |              |
 | [valid-expect](docs/rules/valid-expect.md)                                   | Enforce valid `expect()` usage                                  | ![recommended][] |              |
 | [valid-expect-in-promise](docs/rules/valid-expect-in-promise.md)             | Enforce having return statement when testing with promises      | ![recommended][] |              |

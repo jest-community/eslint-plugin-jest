@@ -2,11 +2,49 @@ import {
   ASTUtils,
   AST_NODE_TYPES,
   ESLintUtils,
+  ParserServices,
+  TSESLint,
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
 import * as ts from 'typescript';
-import { createRule } from './utils';
+import { createRule, isExpectCall, parseExpectCall } from './utils';
 
+//------------------------------------------------------------------------------
+// eslint-plugin-jest extension
+//------------------------------------------------------------------------------
+
+const getParserServices = (
+  context: Readonly<TSESLint.RuleContext<MessageIds, Options>>,
+): ParserServices | null => {
+  try {
+    return ESLintUtils.getParserServices(context);
+  } catch {
+    return null;
+  }
+};
+
+const toThrowMatchers = [
+  'toThrow',
+  'toThrowError',
+  'toThrowErrorMatchingSnapshot',
+  'toThrowErrorMatchingInlineSnapshot',
+];
+
+const isJestExpectCall = (node: TSESTree.CallExpression) => {
+  if (!isExpectCall(node)) {
+    return false;
+  }
+
+  const { matcher } = parseExpectCall(node);
+
+  return !toThrowMatchers.includes(matcher?.name ?? '');
+};
+
+//------------------------------------------------------------------------------
+// Inlining of external dependencies
+//------------------------------------------------------------------------------
+
+/* istanbul ignore next */
 const tsutils = {
   hasModifier(
     modifiers: ts.ModifiersArray | undefined,
@@ -28,7 +66,6 @@ const tsutils = {
 
 const util = {
   createRule,
-  getParserServices: ESLintUtils.getParserServices,
   isIdentifier: ASTUtils.isIdentifier,
 };
 
@@ -108,6 +145,7 @@ const SUPPORTED_GLOBALS = [
   'Intl',
 ] as const;
 const nativelyBoundMembers = SUPPORTED_GLOBALS.map(namespace => {
+  /* istanbul ignore if */
   if (!(namespace in global)) {
     // node.js might not have namespaces like Intl depending on compilation options
     // https://nodejs.org/api/intl.html#intl_options_for_building_node_js
@@ -156,7 +194,7 @@ export default util.createRule<Options, MessageIds>({
       category: 'Best Practices',
       description:
         'Enforces unbound methods are called with their expected scope',
-      recommended: 'error',
+      recommended: false,
       requiresTypeChecking: true,
     },
     messages: {
@@ -182,14 +220,33 @@ export default util.createRule<Options, MessageIds>({
     },
   ],
   create(context, [{ ignoreStatic }]) {
-    const parserServices = util.getParserServices(context);
+    const parserServices = getParserServices(context);
+
+    if (!parserServices) {
+      return {};
+    }
+
     const checker = parserServices.program.getTypeChecker();
     const currentSourceFile = parserServices.program.getSourceFile(
       context.getFilename(),
     );
 
+    let inExpectCall = false;
+
     return {
+      CallExpression(node: TSESTree.CallExpression): void {
+        inExpectCall = isJestExpectCall(node);
+      },
+      'CallExpression:exit'(node: TSESTree.CallExpression): void {
+        if (inExpectCall && isJestExpectCall(node)) {
+          inExpectCall = false;
+        }
+      },
       MemberExpression(node: TSESTree.MemberExpression): void {
+        if (inExpectCall) {
+          return;
+        }
+
         if (isSafeUse(node)) {
           return;
         }
@@ -233,6 +290,7 @@ export default util.createRule<Options, MessageIds>({
             rightSymbol && isNotImported(rightSymbol, currentSourceFile);
 
           idNode.properties.forEach(property => {
+            /* istanbul ignore else */
             if (
               property.type === AST_NODE_TYPES.Property &&
               property.key.type === AST_NODE_TYPES.Identifier

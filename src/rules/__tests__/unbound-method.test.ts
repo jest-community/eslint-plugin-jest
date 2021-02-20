@@ -1,5 +1,6 @@
 import path from 'path';
 import { ESLintUtils, TSESLint } from '@typescript-eslint/experimental-utils';
+import dedent from 'dedent';
 import rule, { MessageIds, Options } from '../unbound-method';
 
 function getFixturesRootDir(): string {
@@ -15,6 +16,113 @@ const ruleTester = new ESLintUtils.RuleTester({
     tsconfigRootDir: rootPath,
     project: './tsconfig.json',
   },
+});
+
+const ConsoleClassAndVariableCode = dedent`
+  class Console {
+    log(str) {
+      process.stdout.write(str);
+    }
+  }
+
+  const console = new Console();
+`;
+
+const toThrowMatchers = [
+  'toThrow',
+  'toThrowError',
+  'toThrowErrorMatchingSnapshot',
+  'toThrowErrorMatchingInlineSnapshot',
+];
+
+const validTestCases: string[] = [
+  ...[
+    'expect(Console.prototype.log)',
+    'expect(Console.prototype.log).toHaveBeenCalledTimes(1);',
+    'expect(Console.prototype.log).not.toHaveBeenCalled();',
+    'expect(Console.prototype.log).toStrictEqual(somethingElse);',
+  ].map(code => [ConsoleClassAndVariableCode, code].join('\n')),
+  dedent`
+    expect(() => {
+      ${ConsoleClassAndVariableCode}
+
+      expect(Console.prototype.log).toHaveBeenCalledTimes(1);
+    }).not.toThrow();
+  `,
+  'expect(() => Promise.resolve().then(console.log)).not.toThrow();',
+  ...toThrowMatchers.map(matcher => `expect(console.log).not.${matcher}();`),
+  ...toThrowMatchers.map(matcher => `expect(console.log).${matcher}();`),
+];
+
+const invalidTestCases: Array<TSESLint.InvalidTestCase<MessageIds, Options>> = [
+  {
+    code: 'expect(Console.prototype.log).toHaveBeenCalledTimes',
+    errors: [
+      {
+        line: 1,
+        messageId: 'unbound',
+      },
+    ],
+  },
+  {
+    code: dedent`
+      expect(() => {
+        ${ConsoleClassAndVariableCode}
+
+        Promise.resolve().then(console.log);
+      }).not.toThrow();
+    `,
+    errors: [
+      {
+        line: 10,
+        messageId: 'unbound',
+      },
+    ],
+  },
+  // toThrow matchers call the expected value (which is expected to be a function)
+  ...toThrowMatchers.map(matcher => ({
+    code: dedent`
+      ${ConsoleClassAndVariableCode}
+
+      expect(console.log).${matcher}();
+    `,
+    errors: [
+      {
+        line: 9,
+        messageId: 'unbound' as const,
+      },
+    ],
+  })),
+  // toThrow matchers call the expected value (which is expected to be a function)
+  ...toThrowMatchers.map(matcher => ({
+    code: dedent`
+      ${ConsoleClassAndVariableCode}
+
+      expect(console.log).not.${matcher}();
+    `,
+    errors: [
+      {
+        line: 9,
+        messageId: 'unbound' as const,
+      },
+    ],
+  })),
+];
+
+ruleTester.run('unbound-method jest edition', rule, {
+  valid: validTestCases,
+  invalid: invalidTestCases,
+});
+
+new ESLintUtils.RuleTester({
+  parser: '@typescript-eslint/parser',
+  parserOptions: {
+    sourceType: 'module',
+    tsconfigRootDir: rootPath,
+  },
+}).run('unbound-method jest edition without type service', rule, {
+  valid: validTestCases.concat(invalidTestCases.map(({ code }) => code)),
+  invalid: [],
 });
 
 function addContainsMethodsClass(code: string): string {
