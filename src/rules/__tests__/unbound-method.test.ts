@@ -1,7 +1,7 @@
 import path from 'path';
 import { ESLintUtils, TSESLint } from '@typescript-eslint/experimental-utils';
 import dedent from 'dedent';
-import rule, { MessageIds, Options } from '../unbound-method';
+import type { MessageIds, Options } from '../unbound-method';
 
 function getFixturesRootDir(): string {
   return path.join(__dirname, 'fixtures');
@@ -109,20 +109,71 @@ const invalidTestCases: Array<TSESLint.InvalidTestCase<MessageIds, Options>> = [
   })),
 ];
 
-ruleTester.run('unbound-method jest edition', rule, {
-  valid: validTestCases,
-  invalid: invalidTestCases,
+const requireRule = (throwWhenRequiring: boolean) => {
+  jest.resetModuleRegistry();
+
+  TSESLintPluginRef.throwWhenRequiring = throwWhenRequiring;
+
+  // eslint-disable-next-line @typescript-eslint/no-require-imports,node/no-missing-require
+  return require('../unbound-method').default;
+};
+
+const TSESLintPluginRef: { throwWhenRequiring: boolean } = {
+  throwWhenRequiring: false,
+};
+
+jest.mock('@typescript-eslint/eslint-plugin', () => {
+  if (TSESLintPluginRef.throwWhenRequiring) {
+    throw new Error('oh noes!');
+  }
+
+  return jest.requireActual('@typescript-eslint/eslint-plugin');
 });
 
-new ESLintUtils.RuleTester({
-  parser: '@typescript-eslint/parser',
-  parserOptions: {
-    sourceType: 'module',
-    tsconfigRootDir: rootPath,
-  },
-}).run('unbound-method jest edition without type service', rule, {
-  valid: validTestCases.concat(invalidTestCases.map(({ code }) => code)),
-  invalid: [],
+describe('error handling', () => {
+  describe('when @typescript-eslint/eslint-plugin is not available', () => {
+    const ruleTester = new ESLintUtils.RuleTester({
+      parser: '@typescript-eslint/parser',
+      parserOptions: {
+        sourceType: 'module',
+        tsconfigRootDir: rootPath,
+        project: './tsconfig.json',
+      },
+    });
+
+    ruleTester.run(
+      'unbound-method jest edition without type service',
+      requireRule(true),
+      {
+        valid: validTestCases.concat(invalidTestCases.map(({ code }) => code)),
+        invalid: [],
+      },
+    );
+  });
+
+  describe('when "project" is not set', () => {
+    const ruleTester = new ESLintUtils.RuleTester({
+      parser: '@typescript-eslint/parser',
+      parserOptions: {
+        sourceType: 'module',
+        tsconfigRootDir: rootPath,
+      },
+    });
+
+    ruleTester.run(
+      'unbound-method jest edition without "project" property',
+      requireRule(false),
+      {
+        valid: validTestCases.concat(invalidTestCases.map(({ code }) => code)),
+        invalid: [],
+      },
+    );
+  });
+});
+
+ruleTester.run('unbound-method jest edition', requireRule(false), {
+  valid: validTestCases,
+  invalid: invalidTestCases,
 });
 
 function addContainsMethodsClass(code: string): string {
@@ -160,7 +211,7 @@ function addContainsMethodsClassInvalid(
   }));
 }
 
-ruleTester.run('unbound-method', rule, {
+ruleTester.run('unbound-method', requireRule(false), {
   valid: [
     'Promise.resolve().then(console.log);',
     "['1', '2', '3'].map(Number.parseInt);",
