@@ -20,7 +20,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - uses: actions/setup-node@v2.1.4
+      - uses: actions/setup-node@v2.1.5
         with:
           node-version: 14.x
 
@@ -68,7 +68,7 @@ jobs:
           restore-keys: |
             yarn2-
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v2.1.4
+        uses: actions/setup-node@v2.1.5
         with:
           node-version: ${{ matrix.node-version }}
       - name: install with eslint v${{matrix.eslint-version }}
@@ -106,7 +106,7 @@ jobs:
           key: yarn2-${{ hashFiles('yarn.lock') }}
           restore-keys: |
             yarn2-
-      - uses: actions/setup-node@v2.1.4
+      - uses: actions/setup-node@v2.1.5
         with:
           node-version: 14.x
       - name: install
@@ -137,7 +137,7 @@ jobs:
           key: yarn2-${{ hashFiles('yarn.lock') }}
           restore-keys: |
             yarn2-
-      - uses: actions/setup-node@v2.1.4
+      - uses: actions/setup-node@v2.1.5
         with:
           node-version: 14.x
       - name: install
@@ -168,7 +168,7 @@ jobs:
           key: yarn2-${{ hashFiles('yarn.lock') }}
           restore-keys: |
             yarn2-
-      - uses: actions/setup-node@v2.1.4
+      - uses: actions/setup-node@v2.1.5
         with:
           node-version: 14.x
       - name: install
