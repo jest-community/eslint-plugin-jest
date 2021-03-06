@@ -15,7 +15,11 @@ const isJestExpectCall = (node: TSESTree.CallExpression) => {
 
   const { matcher } = parseExpectCall(node);
 
-  return !toThrowMatchers.includes(matcher?.name ?? '');
+  if (!matcher) {
+    return false;
+  }
+
+  return !toThrowMatchers.includes(matcher.name);
 };
 
 const baseRule = (() => {
