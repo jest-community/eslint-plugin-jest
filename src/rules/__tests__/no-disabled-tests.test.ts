@@ -66,6 +66,14 @@ ruleTester.run('no-disabled-tests', rule, {
       errors: [{ messageId: 'skippedTestSuite', column: 1, line: 1 }],
     },
     {
+      code: 'describe.skip.each([1, 2, 3])("%s", (a, b) => {});',
+      errors: [{ messageId: 'skippedTestSuite', column: 1, line: 1 }],
+    },
+    {
+      code: 'xdescribe.each([1, 2, 3])("%s", (a, b) => {});',
+      errors: [{ messageId: 'skippedTestSuite', column: 1, line: 1 }],
+    },
+    {
       code: 'describe[`skip`]("foo", function () {})',
       errors: [{ messageId: 'skippedTestSuite', column: 1, line: 1 }],
     },
