@@ -9,7 +9,7 @@
   <p>ESLint plugin for Jest</p>
 </div>
 
-[![Actions Status](https://github.com/jest-community/eslint-plugin-jest/workflows/Unit%20tests/badge.svg?branch=master)](https://github.com/jest-community/eslint-plugin-jest/actions)
+[![Actions Status](https://github.com/jest-community/eslint-plugin-jest/workflows/Unit%20tests/badge.svg?branch=main)](https://github.com/jest-community/eslint-plugin-jest/actions)
 
 ## Installation
 

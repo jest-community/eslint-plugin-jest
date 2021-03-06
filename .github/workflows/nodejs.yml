@@ -3,12 +3,10 @@ name: Unit tests & Release
 on:
   push:
     branches:
-      - master
       - main
       - next
   pull_request:
     branches:
-      - master
       - main
       - next
 
@@ -153,7 +151,7 @@ jobs:
   release:
     if:
       # prettier-ignore
-      ${{ github.event_name == 'push' && github.event.ref == 'refs/heads/master' }}
+      ${{ github.event_name == 'push' && github.event.ref == 'refs/heads/main' }}
     name: Release new version
     needs: [test-node, test-os]
     runs-on: ubuntu-latest
