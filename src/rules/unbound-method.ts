@@ -27,8 +27,14 @@ const baseRule = (() => {
       MessageIds,
       Options
     >;
-  } catch (e) {
-    return null;
+  } catch (e: unknown) {
+    const error = e as { code: string };
+
+    if (error.code === 'MODULE_NOT_FOUND') {
+      return null;
+    }
+
+    throw error;
   }
 })();
 

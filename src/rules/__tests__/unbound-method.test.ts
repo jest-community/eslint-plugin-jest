@@ -124,13 +124,33 @@ const TSESLintPluginRef: { throwWhenRequiring: boolean } = {
 
 jest.mock('@typescript-eslint/eslint-plugin', () => {
   if (TSESLintPluginRef.throwWhenRequiring) {
-    throw new Error('oh noes!');
+    throw new (class extends Error {
+      public code;
+
+      constructor(message?: string) {
+        super(message);
+        this.code = 'MODULE_NOT_FOUND';
+      }
+    })();
   }
 
   return jest.requireActual('@typescript-eslint/eslint-plugin');
 });
 
 describe('error handling', () => {
+  describe('when an error is thrown accessing the base rule', () => {
+    it('re-throws the error', () => {
+      jest.mock('@typescript-eslint/eslint-plugin', () => {
+        throw new Error('oh noes!');
+      });
+
+      jest.resetModuleRegistry();
+
+      // eslint-disable-next-line @typescript-eslint/no-require-imports,node/no-missing-require
+      expect(() => require('../unbound-method').default).toThrow(/oh noes!/iu);
+    });
+  });
+
   describe('when @typescript-eslint/eslint-plugin is not available', () => {
     const ruleTester = new ESLintUtils.RuleTester({
       parser: '@typescript-eslint/parser',
