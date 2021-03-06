@@ -1,3 +1,11 @@
+## [24.1.7](https://github.com/jest-community/eslint-plugin-jest/compare/v24.1.6...v24.1.7) (2021-03-06)
+
+
+### Bug Fixes
+
+* **no-disabled-tests:** adjust selector to match only test functions ([#777](https://github.com/jest-community/eslint-plugin-jest/issues/777)) ([c916902](https://github.com/jest-community/eslint-plugin-jest/commit/c9169022c7e4b9c7bd5f09060152f7136ee18521))
+* **no-disabled-tests:** support `describe.skip.each` & `xdescribe.each` ([#778](https://github.com/jest-community/eslint-plugin-jest/issues/778)) ([6a32e87](https://github.com/jest-community/eslint-plugin-jest/commit/6a32e870c016474687e238944933a96bfe1ca01b))
+
 ## [24.1.6](https://github.com/jest-community/eslint-plugin-jest/compare/v24.1.5...v24.1.6) (2021-03-06)
 
 
