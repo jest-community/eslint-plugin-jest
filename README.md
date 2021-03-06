@@ -128,7 +128,7 @@ installations requiring long-term consistency.
 
 ## Rules
 
-<!-- begin rules list -->
+<!-- begin base rules list -->
 
 | Rule                                                                         | Description                                                     | Configurations   | Fixable      |
 | ---------------------------------------------------------------------------- | --------------------------------------------------------------- | ---------------- | ------------ |
@@ -168,13 +168,34 @@ installations requiring long-term consistency.
 | [prefer-todo](docs/rules/prefer-todo.md)                                     | Suggest using `test.todo`                                       |                  | ![fixable][] |
 | [require-to-throw-message](docs/rules/require-to-throw-message.md)           | Require a message for `toThrow()`                               |                  |              |
 | [require-top-level-describe](docs/rules/require-top-level-describe.md)       | Require test cases and hooks to be inside a `describe` block    |                  |              |
-| [unbound-method](docs/rules/unbound-method.md)                               | Enforces unbound methods are called with their expected scope   |                  |              |
 | [valid-describe](docs/rules/valid-describe.md)                               | Enforce valid `describe()` callback                             | ![recommended][] |              |
 | [valid-expect](docs/rules/valid-expect.md)                                   | Enforce valid `expect()` usage                                  | ![recommended][] |              |
 | [valid-expect-in-promise](docs/rules/valid-expect-in-promise.md)             | Enforce having return statement when testing with promises      | ![recommended][] |              |
 | [valid-title](docs/rules/valid-title.md)                                     | Enforce valid titles                                            | ![recommended][] | ![fixable][] |
 
-<!-- end rules list -->
+<!-- end base rules list -->
+
+## TypeScript Rules
+
+In addition to the above rules, this plugin also includes a few advanced rules
+that are powered by type-checking information provided by TypeScript.
+
+In order to use these rules, you must be using `@typescript-eslint/parser` &
+adjust your eslint config as outlined
+[here](https://github.com/typescript-eslint/typescript-eslint/blob/master/docs/getting-started/linting/TYPED_LINTING.md)
+
+Note that unlike the type-checking rules in `@typescript-eslint/eslint-plugin`,
+the rules here will fallback to doing nothing if type information is not
+available, meaning its safe to include them in shared configs that could be used
+on JavaScript and TypeScript projects.
+
+<!-- begin type rules list -->
+
+| Rule                                           | Description                                                   | Configurations | Fixable |
+| ---------------------------------------------- | ------------------------------------------------------------- | -------------- | ------- |
+| [unbound-method](docs/rules/unbound-method.md) | Enforces unbound methods are called with their expected scope |                |         |
+
+<!-- end type rules list -->
 
 ## Credit
 
