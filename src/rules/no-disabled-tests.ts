@@ -45,6 +45,8 @@ export default createRule({
         }
 
         switch (functionName) {
+          case 'describe.skip.each':
+          case 'xdescribe.each':
           case 'describe.skip':
             context.report({ messageId: 'skippedTestSuite', node });
             break;
