@@ -1,3 +1,10 @@
+## [24.1.6](https://github.com/jest-community/eslint-plugin-jest/compare/v24.1.5...v24.1.6) (2021-03-06)
+
+
+### Bug Fixes
+
+* proper support for it.each  ([#722](https://github.com/jest-community/eslint-plugin-jest/issues/722)) ([e1dc42d](https://github.com/jest-community/eslint-plugin-jest/commit/e1dc42d9f1ca59d59aca9be0a1473a1b1415e528))
+
 ## [24.1.5](https://github.com/jest-community/eslint-plugin-jest/compare/v24.1.4...v24.1.5) (2021-02-17)
 
 
