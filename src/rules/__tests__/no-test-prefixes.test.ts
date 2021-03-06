@@ -47,6 +47,18 @@ ruleTester.run('no-test-prefixes', rule, {
       ],
     },
     {
+      code: 'xdescribe.each([])("foo", function () {})',
+      output: 'describe.skip.each([])("foo", function () {})',
+      errors: [
+        {
+          messageId: 'usePreferredName',
+          data: { preferredNodeName: 'describe.skip.each' },
+          column: 1,
+          line: 1,
+        },
+      ],
+    },
+    {
       code: 'fit("foo", function () {})',
       output: 'it.only("foo", function () {})',
       errors: [
