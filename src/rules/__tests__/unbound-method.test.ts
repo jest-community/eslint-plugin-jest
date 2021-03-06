@@ -37,7 +37,6 @@ const toThrowMatchers = [
 
 const validTestCases: string[] = [
   ...[
-    'expect(Console.prototype.log)',
     'expect(Console.prototype.log).toHaveBeenCalledTimes(1);',
     'expect(Console.prototype.log).not.toHaveBeenCalled();',
     'expect(Console.prototype.log).toStrictEqual(somethingElse);',
@@ -55,6 +54,19 @@ const validTestCases: string[] = [
 ];
 
 const invalidTestCases: Array<TSESLint.InvalidTestCase<MessageIds, Options>> = [
+  {
+    code: dedent`
+      ${ConsoleClassAndVariableCode}
+
+      expect(Console.prototype.log)
+    `,
+    errors: [
+      {
+        line: 9,
+        messageId: 'unbound',
+      },
+    ],
+  },
   {
     code: 'expect(Console.prototype.log).toHaveBeenCalledTimes',
     errors: [
