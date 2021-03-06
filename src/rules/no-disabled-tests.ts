@@ -68,13 +68,13 @@ export default createRule({
       'CallExpression[callee.name="xdescribe"]'(node) {
         context.report({ messageId: 'disabledSuite', node });
       },
-      'CallExpression[callee.name=/^xit|xtest$/]'(node) {
+      'CallExpression[callee.name=/^(xit|xtest)$/]'(node) {
         context.report({ messageId: 'disabledTest', node });
       },
       'CallExpression[callee.name="describe"]:exit'() {
         suiteDepth--;
       },
-      'CallExpression[callee.name=/^it|test$/]:exit'() {
+      'CallExpression[callee.name=/^(it|test)$/]:exit'() {
         testDepth--;
       },
     };

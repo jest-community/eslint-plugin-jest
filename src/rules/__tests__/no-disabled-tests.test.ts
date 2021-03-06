@@ -29,6 +29,8 @@ ruleTester.run('no-disabled-tests', rule, {
     '(a || b).f()',
     'itHappensToStartWithIt()',
     'testSomething()',
+    'xitSomethingElse()',
+    'xitiViewMap()',
     dedent`
       import { pending } from "actions"
 
