@@ -7,4 +7,5 @@ module.exports = {
     '@babel/preset-typescript',
     ['@babel/preset-env', { targets: { node: 10 } }],
   ],
+  ignore: ['src/**/__tests__/fixtures/**'],
 };
