@@ -663,6 +663,8 @@ export const isTestCase = (
   // e.g. it.each``()
   (node.callee.type === AST_NODE_TYPES.TaggedTemplateExpression &&
     node.callee.tag.type === AST_NODE_TYPES.MemberExpression &&
+    node.callee.tag.object.type === AST_NODE_TYPES.Identifier &&
+    TestCaseName.hasOwnProperty(node.callee.tag.object.name) &&
     isSupportedAccessor(node.callee.tag.property, TestCaseProperty.each)) ||
   // e.g. it.concurrent.{skip,only}
   (node.callee.type === AST_NODE_TYPES.MemberExpression &&
@@ -683,7 +685,11 @@ export const isDescribe = (
     node.callee.object.type === AST_NODE_TYPES.Identifier &&
     DescribeAlias.hasOwnProperty(node.callee.object.name) &&
     node.callee.property.type === AST_NODE_TYPES.Identifier &&
-    DescribeProperty.hasOwnProperty(node.callee.property.name));
+    DescribeProperty.hasOwnProperty(node.callee.property.name)) ||
+  (node.callee.type === AST_NODE_TYPES.TaggedTemplateExpression &&
+    node.callee.tag.type === AST_NODE_TYPES.MemberExpression &&
+    node.callee.tag.object.type === AST_NODE_TYPES.Identifier &&
+    DescribeAlias.hasOwnProperty(node.callee.tag.object.name));
 
 /**
  * Checks if the given node` is a call to `<describe|test|it>.each(...)`.

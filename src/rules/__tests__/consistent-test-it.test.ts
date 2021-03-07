@@ -159,6 +159,20 @@ ruleTester.run('consistent-test-it with fn=test', rule, {
       ],
     },
     {
+      code: 'describe.each``("foo", () => { it.each``("bar") })',
+      output: 'describe.each``("foo", () => { test.each``("bar") })',
+      options: [{ fn: TestCaseName.test }],
+      errors: [
+        {
+          messageId: 'consistentMethodWithinDescribe',
+          data: {
+            testKeywordWithinDescribe: TestCaseName.test,
+            oppositeTestKeyword: TestCaseName.it,
+          },
+        },
+      ],
+    },
+    {
       code: 'describe("suite", () => { it("foo") })',
       output: 'describe("suite", () => { test("foo") })',
       options: [{ fn: TestCaseName.test }],
@@ -294,6 +308,20 @@ ruleTester.run('consistent-test-it with fn=it', rule, {
           messageId: 'consistentMethod',
           data: {
             testKeyword: TestCaseName.it,
+            oppositeTestKeyword: TestCaseName.test,
+          },
+        },
+      ],
+    },
+    {
+      code: 'describe.each``("foo", () => { test.each``("bar") })',
+      output: 'describe.each``("foo", () => { it.each``("bar") })',
+      options: [{ fn: TestCaseName.it }],
+      errors: [
+        {
+          messageId: 'consistentMethodWithinDescribe',
+          data: {
+            testKeywordWithinDescribe: TestCaseName.it,
             oppositeTestKeyword: TestCaseName.test,
           },
         },
