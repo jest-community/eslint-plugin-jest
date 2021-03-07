@@ -189,6 +189,9 @@ the rules here will fallback to doing nothing if type information is not
 available, meaning its safe to include them in shared configs that could be used
 on JavaScript and TypeScript projects.
 
+Also note that `unbound-method` depends on `@typescript-eslint/eslint-plugin`,
+as it extends the original `unbound-method` rule from that plugin.
+
 <!-- begin type rules list -->
 
 | Rule                                           | Description                                                   | Configurations | Fixable |

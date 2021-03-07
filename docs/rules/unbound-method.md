@@ -3,7 +3,8 @@
 ## Rule Details
 
 This rule extends the base [`@typescript-eslint/unbound-method`][original-rule]
-rule. It adds support for understanding when it's ok to pass an unbound method
+rule, meaning you must depend on `@typescript-eslint/eslint-plugin` for it to
+work. It adds support for understanding when it's ok to pass an unbound method
 to `expect` calls.
 
 See the [`@typescript-eslint` documentation][original-rule] for more details on
