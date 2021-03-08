@@ -50,11 +50,12 @@ export default createRule({
       category: 'Best Practices',
       description: 'Disallow focused tests',
       recommended: 'error',
+      suggestion: true,
     },
     messages: {
       focusedTest: 'Unexpected focused test.',
+      suggestRemoveFocus: 'Remove focus from test',
     },
-    fixable: 'code',
     schema: [],
     type: 'suggestion',
   },
@@ -71,7 +72,23 @@ export default createRule({
           callee.object.type === AST_NODE_TYPES.Identifier &&
           isCallToFocusedTestFunction(callee.object)
         ) {
-          context.report({ messageId: 'focusedTest', node: callee.object });
+          context.report({
+            messageId: 'focusedTest',
+            node: callee.object,
+            suggest: [
+              {
+                messageId: 'suggestRemoveFocus',
+                fix(fixer) {
+                  return [
+                    fixer.removeRange([
+                      callee.object.range[0],
+                      callee.object.range[0] + 1,
+                    ]),
+                  ];
+                },
+              },
+            ],
+          });
 
           return;
         }
@@ -80,16 +97,50 @@ export default createRule({
           callee.object.type === AST_NODE_TYPES.MemberExpression &&
           isCallToTestOnlyFunction(callee.object)
         ) {
+          const calleeObject: TSESTree.MemberExpression = callee.object;
+
           context.report({
             messageId: 'focusedTest',
-            node: callee.object.property,
+            node: calleeObject.property,
+            suggest: [
+              {
+                messageId: 'suggestRemoveFocus',
+                fix(fixer) {
+                  return [
+                    fixer.removeRange(
+                      calleeObject.property.type ===
+                        AST_NODE_TYPES.Identifier &&
+                        calleeObject.property.name === 'only'
+                        ? [calleeObject.object.range[1], calleeObject.range[1]]
+                        : [calleeObject.range[1], callee.range[1]],
+                    ),
+                  ];
+                },
+              },
+            ],
           });
 
           return;
         }
 
         if (isCallToTestOnlyFunction(callee)) {
-          context.report({ messageId: 'focusedTest', node: callee.property });
+          context.report({
+            messageId: 'focusedTest',
+            node: callee.property,
+            suggest: [
+              {
+                messageId: 'suggestRemoveFocus',
+                fix(fixer) {
+                  return [
+                    fixer.removeRange([
+                      callee.object.range[1],
+                      callee.range[1],
+                    ]),
+                  ];
+                },
+              },
+            ],
+          });
 
           return;
         }
@@ -99,7 +150,20 @@ export default createRule({
         callee.type === AST_NODE_TYPES.Identifier &&
         isCallToFocusedTestFunction(callee)
       ) {
-        context.report({ messageId: 'focusedTest', node: callee });
+        context.report({
+          messageId: 'focusedTest',
+          node: callee,
+          suggest: [
+            {
+              messageId: 'suggestRemoveFocus',
+              fix(fixer) {
+                return [
+                  fixer.removeRange([callee.range[0], callee.range[0] + 1]),
+                ];
+              },
+            },
+          ],
+        });
       }
     },
   }),
