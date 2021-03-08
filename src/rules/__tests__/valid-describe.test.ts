@@ -50,6 +50,13 @@ ruleTester.run('valid-describe', rule, {
       if (hasOwnProperty(obj, key)) {
       }
     `,
+    dedent`
+    describe.each\`
+    something | other
+    ${1} | ${2} |
+    \`
+    ("$something", ({ something, other }) => { });
+    `,
   ],
   invalid: [
     {

@@ -45,7 +45,10 @@ export default createRule({
   create(context) {
     return {
       CallExpression(node) {
-        if (!isDescribe(node)) {
+        if (
+          !isDescribe(node) ||
+          node.callee.type === AST_NODE_TYPES.TaggedTemplateExpression
+        ) {
           return;
         }
 
