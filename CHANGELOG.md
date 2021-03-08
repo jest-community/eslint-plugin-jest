@@ -1,3 +1,10 @@
+## [24.1.9](https://github.com/jest-community/eslint-plugin-jest/compare/v24.1.8...v24.1.9) (2021-03-08)
+
+
+### Bug Fixes
+
+* **valid-describe:** false positive with template describe.each ([#785](https://github.com/jest-community/eslint-plugin-jest/issues/785)) ([aa946a6](https://github.com/jest-community/eslint-plugin-jest/commit/aa946a6f7ae7106b78996587760d92ace33227ad))
+
 ## [24.1.8](https://github.com/jest-community/eslint-plugin-jest/compare/v24.1.7...v24.1.8) (2021-03-07)
 
 
