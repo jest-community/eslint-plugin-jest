@@ -31,79 +31,307 @@ ruleTester.run('no-focused-tests', rule, {
   invalid: [
     {
       code: 'describe.only()',
-      errors: [{ messageId: 'focusedTest', column: 10, line: 1 }],
+      errors: [
+        {
+          messageId: 'focusedTest',
+          column: 10,
+          line: 1,
+          suggestions: [
+            {
+              messageId: 'suggestRemoveFocus',
+              output: 'describe()',
+            },
+          ],
+        },
+      ],
     },
     {
       code: 'describe.only.each()',
-      errors: [{ messageId: 'focusedTest', column: 10, line: 1 }],
+      errors: [
+        {
+          messageId: 'focusedTest',
+          column: 10,
+          line: 1,
+          suggestions: [
+            {
+              messageId: 'suggestRemoveFocus',
+              output: 'describe.each()',
+            },
+          ],
+        },
+      ],
     },
     {
       code: 'describe.only.each`table`()',
-      errors: [{ messageId: 'focusedTest', column: 10, line: 1 }],
+      errors: [
+        {
+          messageId: 'focusedTest',
+          column: 10,
+          line: 1,
+          suggestions: [
+            {
+              messageId: 'suggestRemoveFocus',
+              output: 'describe.each`table`()',
+            },
+          ],
+        },
+      ],
     },
     {
       code: 'describe["only"]()',
-      errors: [{ messageId: 'focusedTest', column: 10, line: 1 }],
+      errors: [
+        {
+          messageId: 'focusedTest',
+          column: 10,
+          line: 1,
+          suggestions: [
+            {
+              messageId: 'suggestRemoveFocus',
+              output: 'describe()',
+            },
+          ],
+        },
+      ],
     },
     {
       code: 'it.only()',
-      errors: [{ messageId: 'focusedTest', column: 4, line: 1 }],
+      errors: [
+        {
+          messageId: 'focusedTest',
+          column: 4,
+          line: 1,
+          suggestions: [
+            {
+              messageId: 'suggestRemoveFocus',
+              output: 'it()',
+            },
+          ],
+        },
+      ],
     },
     {
       code: 'it.concurrent.only()',
-      errors: [{ messageId: 'focusedTest', column: 4, line: 1 }],
+      errors: [
+        {
+          messageId: 'focusedTest',
+          column: 4,
+          line: 1,
+          suggestions: [
+            {
+              messageId: 'suggestRemoveFocus',
+              output: 'it.concurrent()',
+            },
+          ],
+        },
+      ],
     },
     {
       code: 'it.only.each()',
-      errors: [{ messageId: 'focusedTest', column: 4, line: 1 }],
+      errors: [
+        {
+          messageId: 'focusedTest',
+          column: 4,
+          line: 1,
+          suggestions: [
+            {
+              messageId: 'suggestRemoveFocus',
+              output: 'it.each()',
+            },
+          ],
+        },
+      ],
     },
     {
       code: 'it.only.each`table`()',
-      errors: [{ messageId: 'focusedTest', column: 4, line: 1 }],
+      errors: [
+        {
+          messageId: 'focusedTest',
+          column: 4,
+          line: 1,
+          suggestions: [
+            {
+              messageId: 'suggestRemoveFocus',
+              output: 'it.each`table`()',
+            },
+          ],
+        },
+      ],
     },
     {
       code: 'it["only"]()',
-      errors: [{ messageId: 'focusedTest', column: 4, line: 1 }],
+      errors: [
+        {
+          messageId: 'focusedTest',
+          column: 4,
+          line: 1,
+          suggestions: [
+            {
+              messageId: 'suggestRemoveFocus',
+              output: 'it()',
+            },
+          ],
+        },
+      ],
     },
     {
       code: 'test.only()',
-      errors: [{ messageId: 'focusedTest', column: 6, line: 1 }],
+      errors: [
+        {
+          messageId: 'focusedTest',
+          column: 6,
+          line: 1,
+          suggestions: [
+            {
+              messageId: 'suggestRemoveFocus',
+              output: 'test()',
+            },
+          ],
+        },
+      ],
     },
     {
       code: 'test.concurrent.only()',
-      errors: [{ messageId: 'focusedTest', column: 6, line: 1 }],
+      errors: [
+        {
+          messageId: 'focusedTest',
+          column: 6,
+          line: 1,
+          suggestions: [
+            {
+              messageId: 'suggestRemoveFocus',
+              output: 'test.concurrent()',
+            },
+          ],
+        },
+      ],
     },
     {
       code: 'test.only.each()',
-      errors: [{ messageId: 'focusedTest', column: 6, line: 1 }],
+      errors: [
+        {
+          messageId: 'focusedTest',
+          column: 6,
+          line: 1,
+          suggestions: [
+            {
+              messageId: 'suggestRemoveFocus',
+              output: 'test.each()',
+            },
+          ],
+        },
+      ],
     },
     {
       code: 'test.only.each`table`()',
-      errors: [{ messageId: 'focusedTest', column: 6, line: 1 }],
+      errors: [
+        {
+          messageId: 'focusedTest',
+          column: 6,
+          line: 1,
+          suggestions: [
+            {
+              messageId: 'suggestRemoveFocus',
+              output: 'test.each`table`()',
+            },
+          ],
+        },
+      ],
     },
     {
       code: 'test["only"]()',
-      errors: [{ messageId: 'focusedTest', column: 6, line: 1 }],
+      errors: [
+        {
+          messageId: 'focusedTest',
+          column: 6,
+          line: 1,
+          suggestions: [
+            {
+              messageId: 'suggestRemoveFocus',
+              output: 'test()',
+            },
+          ],
+        },
+      ],
     },
     {
       code: 'fdescribe()',
-      errors: [{ messageId: 'focusedTest', column: 1, line: 1 }],
+      errors: [
+        {
+          messageId: 'focusedTest',
+          column: 1,
+          line: 1,
+          suggestions: [
+            {
+              messageId: 'suggestRemoveFocus',
+              output: 'describe()',
+            },
+          ],
+        },
+      ],
     },
     {
       code: 'fit()',
-      errors: [{ messageId: 'focusedTest', column: 1, line: 1 }],
+      errors: [
+        {
+          messageId: 'focusedTest',
+          column: 1,
+          line: 1,
+          suggestions: [
+            {
+              messageId: 'suggestRemoveFocus',
+              output: 'it()',
+            },
+          ],
+        },
+      ],
     },
     {
       code: 'fit.each()',
-      errors: [{ messageId: 'focusedTest', column: 1, line: 1 }],
+      errors: [
+        {
+          messageId: 'focusedTest',
+          column: 1,
+          line: 1,
+          suggestions: [
+            {
+              messageId: 'suggestRemoveFocus',
+              output: 'it.each()',
+            },
+          ],
+        },
+      ],
     },
     {
       code: 'fit.each`table`()',
-      errors: [{ messageId: 'focusedTest', column: 1, line: 1 }],
+      errors: [
+        {
+          messageId: 'focusedTest',
+          column: 1,
+          line: 1,
+          suggestions: [
+            {
+              messageId: 'suggestRemoveFocus',
+              output: 'it.each`table`()',
+            },
+          ],
+        },
+      ],
     },
     {
       code: 'ftest.each`table`()',
-      errors: [{ messageId: 'focusedTest', column: 1, line: 1 }],
+      errors: [
+        {
+          messageId: 'focusedTest',
+          column: 1,
+          line: 1,
+          suggestions: [
+            {
+              messageId: 'suggestRemoveFocus',
+              output: 'test.each`table`()',
+            },
+          ],
+        },
+      ],
     },
   ],
 });

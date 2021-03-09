@@ -143,7 +143,7 @@ installations requiring long-term consistency.
 | [no-done-callback](docs/rules/no-done-callback.md)                           | Avoid using a callback in asynchronous tests and hooks          | ![recommended][] | ![suggest][] |
 | [no-duplicate-hooks](docs/rules/no-duplicate-hooks.md)                       | Disallow duplicate setup and teardown hooks                     |                  |              |
 | [no-export](docs/rules/no-export.md)                                         | Disallow using `exports` in files containing tests              | ![recommended][] |              |
-| [no-focused-tests](docs/rules/no-focused-tests.md)                           | Disallow focused tests                                          | ![recommended][] | ![fixable][] |
+| [no-focused-tests](docs/rules/no-focused-tests.md)                           | Disallow focused tests                                          | ![recommended][] | ![suggest][] |
 | [no-hooks](docs/rules/no-hooks.md)                                           | Disallow setup and teardown hooks                               |                  |              |
 | [no-identical-title](docs/rules/no-identical-title.md)                       | Disallow identical titles                                       | ![recommended][] |              |
 | [no-if](docs/rules/no-if.md)                                                 | Disallow conditional logic                                      |                  |              |
