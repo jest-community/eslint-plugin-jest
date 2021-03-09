@@ -79,12 +79,10 @@ export default createRule({
               {
                 messageId: 'suggestRemoveFocus',
                 fix(fixer) {
-                  return [
-                    fixer.removeRange([
-                      callee.object.range[0],
-                      callee.object.range[0] + 1,
-                    ]),
-                  ];
+                  return fixer.removeRange([
+                    callee.object.range[0],
+                    callee.object.range[0] + 1,
+                  ]);
                 },
               },
             ],
@@ -136,12 +134,10 @@ export default createRule({
               {
                 messageId: 'suggestRemoveFocus',
                 fix(fixer) {
-                  return [
-                    fixer.removeRange([
-                      callee.object.range[1],
-                      callee.range[1],
-                    ]),
-                  ];
+                  return fixer.removeRange([
+                    callee.object.range[1],
+                    callee.range[1],
+                  ]);
                 },
               },
             ],
@@ -162,9 +158,10 @@ export default createRule({
             {
               messageId: 'suggestRemoveFocus',
               fix(fixer) {
-                return [
-                  fixer.removeRange([callee.range[0], callee.range[0] + 1]),
-                ];
+                return fixer.removeRange([
+                  callee.range[0],
+                  callee.range[0] + 1,
+                ]);
               },
             },
           ],
