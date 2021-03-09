@@ -1,3 +1,10 @@
+## [24.1.10](https://github.com/jest-community/eslint-plugin-jest/compare/v24.1.9...v24.1.10) (2021-03-09)
+
+
+### Bug Fixes
+
+* **no-identical-titles:** ignore .each template cases ([#788](https://github.com/jest-community/eslint-plugin-jest/issues/788)) ([d27a6e6](https://github.com/jest-community/eslint-plugin-jest/commit/d27a6e6e013c518a47b9f219edeb5e63d7a974f9))
+
 ## [24.1.9](https://github.com/jest-community/eslint-plugin-jest/compare/v24.1.8...v24.1.9) (2021-03-08)
 
 
