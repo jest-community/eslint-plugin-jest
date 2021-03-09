@@ -54,7 +54,7 @@ export default createRule({
     },
     messages: {
       focusedTest: 'Unexpected focused test.',
-      suggestRemoveFocus: 'Remove focus from test',
+      suggestRemoveFocus: 'Remove focus from test.',
     },
     schema: [],
     type: 'suggestion',
