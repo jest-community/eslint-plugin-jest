@@ -1,4 +1,5 @@
 import { TSESLint } from '@typescript-eslint/experimental-utils';
+import dedent from 'dedent';
 import resolveFrom from 'resolve-from';
 import rule from '../no-identical-title';
 
@@ -113,6 +114,17 @@ ruleTester.run('no-identical-title', rule, {
       'describe.content(`testing backticks with the same title`);',
       'describe.content(`testing backticks with the same title`);',
     ].join('\n'),
+    dedent`
+    describe.each\`
+      description
+      ${'b'}
+    \`("$description", () => {})
+
+    describe.each\`
+      description
+      ${'a'}
+    \`("$description", () => {})
+    `,
   ],
   invalid: [
     {
