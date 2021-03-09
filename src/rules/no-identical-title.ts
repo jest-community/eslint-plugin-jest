@@ -1,3 +1,4 @@
+import { AST_NODE_TYPES } from '@typescript-eslint/experimental-utils';
 import {
   createRule,
   getStringValue,
@@ -40,6 +41,10 @@ export default createRule({
     return {
       CallExpression(node) {
         const currentLayer = contexts[contexts.length - 1];
+
+        if (node.callee.type === AST_NODE_TYPES.TaggedTemplateExpression) {
+          return;
+        }
 
         if (isDescribe(node)) {
           contexts.push(newDescribeContext());
