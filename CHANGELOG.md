@@ -1,3 +1,10 @@
+# [24.2.0](https://github.com/jest-community/eslint-plugin-jest/compare/v24.1.10...v24.2.0) (2021-03-09)
+
+
+### Features
+
+* **no-focused-tests:** make fixable ([#787](https://github.com/jest-community/eslint-plugin-jest/issues/787)) ([040871a](https://github.com/jest-community/eslint-plugin-jest/commit/040871a866b7803e5c48b40715d48437d3906b0f))
+
 ## [24.1.10](https://github.com/jest-community/eslint-plugin-jest/compare/v24.1.9...v24.1.10) (2021-03-09)
 
 
