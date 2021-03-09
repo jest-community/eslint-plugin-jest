@@ -106,15 +106,20 @@ export default createRule({
               {
                 messageId: 'suggestRemoveFocus',
                 fix(fixer) {
-                  return [
-                    fixer.removeRange(
-                      calleeObject.property.type ===
-                        AST_NODE_TYPES.Identifier &&
-                        calleeObject.property.name === 'only'
-                        ? [calleeObject.object.range[1], calleeObject.range[1]]
-                        : [calleeObject.range[1], callee.range[1]],
-                    ),
-                  ];
+                  if (
+                    calleeObject.property.type === AST_NODE_TYPES.Identifier &&
+                    calleeObject.property.name === 'only'
+                  ) {
+                    return fixer.removeRange([
+                      calleeObject.object.range[1],
+                      calleeObject.range[1],
+                    ]);
+                  }
+
+                  return fixer.removeRange([
+                    calleeObject.range[1],
+                    callee.range[1],
+                  ]);
                 },
               },
             ],
