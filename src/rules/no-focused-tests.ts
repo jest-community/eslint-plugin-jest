@@ -68,20 +68,22 @@ export default createRule({
           : node.callee;
 
       if (callee.type === AST_NODE_TYPES.MemberExpression) {
+        const calleeObject = callee.object;
+
         if (
-          callee.object.type === AST_NODE_TYPES.Identifier &&
-          isCallToFocusedTestFunction(callee.object)
+          calleeObject.type === AST_NODE_TYPES.Identifier &&
+          isCallToFocusedTestFunction(calleeObject)
         ) {
           context.report({
             messageId: 'focusedTest',
-            node: callee.object,
+            node: calleeObject,
             suggest: [
               {
                 messageId: 'suggestRemoveFocus',
                 fix(fixer) {
                   return fixer.removeRange([
-                    callee.object.range[0],
-                    callee.object.range[0] + 1,
+                    calleeObject.range[0],
+                    calleeObject.range[0] + 1,
                   ]);
                 },
               },
@@ -92,11 +94,9 @@ export default createRule({
         }
 
         if (
-          callee.object.type === AST_NODE_TYPES.MemberExpression &&
-          isCallToTestOnlyFunction(callee.object)
+          calleeObject.type === AST_NODE_TYPES.MemberExpression &&
+          isCallToTestOnlyFunction(calleeObject)
         ) {
-          const calleeObject: TSESTree.MemberExpression = callee.object;
-
           context.report({
             messageId: 'focusedTest',
             node: calleeObject.property,
@@ -135,7 +135,7 @@ export default createRule({
                 messageId: 'suggestRemoveFocus',
                 fix(fixer) {
                   return fixer.removeRange([
-                    callee.object.range[1],
+                    calleeObject.range[1],
                     callee.range[1],
                   ]);
                 },
