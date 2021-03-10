@@ -1,3 +1,10 @@
+## [24.2.1](https://github.com/jest-community/eslint-plugin-jest/compare/v24.2.0...v24.2.1) (2021-03-10)
+
+
+### Bug Fixes
+
+* **no-identical-titles:** support nested describes ([#790](https://github.com/jest-community/eslint-plugin-jest/issues/790)) ([ce26621](https://github.com/jest-community/eslint-plugin-jest/commit/ce26621a06169fb6728d2d015645d31401de523f))
+
 # [24.2.0](https://github.com/jest-community/eslint-plugin-jest/compare/v24.1.10...v24.2.0) (2021-03-09)
 
 
