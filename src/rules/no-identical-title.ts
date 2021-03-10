@@ -42,13 +42,14 @@ export default createRule({
       CallExpression(node) {
         const currentLayer = contexts[contexts.length - 1];
 
+        if (isDescribe(node)) {
+          contexts.push(newDescribeContext());
+        }
+
         if (node.callee.type === AST_NODE_TYPES.TaggedTemplateExpression) {
           return;
         }
 
-        if (isDescribe(node)) {
-          contexts.push(newDescribeContext());
-        }
         const [argument] = node.arguments;
 
         if (!argument || !isStringNode(argument)) {
