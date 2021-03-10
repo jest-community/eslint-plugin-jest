@@ -125,6 +125,15 @@ ruleTester.run('no-identical-title', rule, {
       ${'a'}
     \`("$description", () => {})
     `,
+    dedent`
+    describe("top level", () => {
+      describe.each\`\`("nested each", () => {
+        describe.each\`\`("nested nested each", () => {})
+      })
+
+      describe("nested", () => {})
+    })
+    `,
   ],
   invalid: [
     {
