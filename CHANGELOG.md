@@ -1,3 +1,10 @@
+# [24.3.0](https://github.com/jest-community/eslint-plugin-jest/compare/v24.2.1...v24.3.0) (2021-03-13)
+
+
+### Features
+
+* **unbound-method:** create rule ([#765](https://github.com/jest-community/eslint-plugin-jest/issues/765)) ([b1f4ed3](https://github.com/jest-community/eslint-plugin-jest/commit/b1f4ed3f6bb0264fdefb5138ba913fa2bacc725c))
+
 ## [24.2.1](https://github.com/jest-community/eslint-plugin-jest/compare/v24.2.0...v24.2.1) (2021-03-10)
 
 
