@@ -114,7 +114,7 @@ ruleTester.run('no-focused-tests', rule, {
       errors: [
         {
           messageId: 'focusedTest',
-          column: 4,
+          column: 15,
           line: 1,
           suggestions: [
             {
@@ -194,7 +194,7 @@ ruleTester.run('no-focused-tests', rule, {
       errors: [
         {
           messageId: 'focusedTest',
-          column: 6,
+          column: 17,
           line: 1,
           suggestions: [
             {
