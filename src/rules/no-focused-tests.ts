@@ -99,7 +99,9 @@ export default createRule({
         ) {
           context.report({
             messageId: 'focusedTest',
-            node: calleeObject.property,
+            node: isConcurrentExpression(calleeObject)
+              ? callee.property
+              : calleeObject.property,
             suggest: [
               {
                 messageId: 'suggestRemoveFocus',
