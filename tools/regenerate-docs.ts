@@ -22,6 +22,7 @@ interface RuleDetails {
   name: string;
   description: string;
   fixable: FixType | false;
+  requiresTypeChecking: boolean;
 }
 
 type RuleModule = TSESLint.RuleModule<string, unknown[]> & {
@@ -63,9 +64,13 @@ const generateRulesListMarkdown = (details: RuleDetails[]): string =>
     .map(column => [...column, ' '].join('|'))
     .join('\n');
 
-const updateRulesList = (details: RuleDetails[], markdown: string): string => {
-  const listBeginMarker = `<!-- begin rules list -->`;
-  const listEndMarker = `<!-- end rules list -->`;
+const updateRulesList = (
+  listName: 'base' | 'type',
+  details: RuleDetails[],
+  markdown: string,
+): string => {
+  const listBeginMarker = `<!-- begin ${listName} rules list -->`;
+  const listEndMarker = `<!-- end ${listName} rules list -->`;
 
   const listStartIndex = markdown.indexOf(listBeginMarker);
   const listEndIndex = markdown.indexOf(listEndMarker);
@@ -112,6 +117,7 @@ const details: RuleDetails[] = Object.keys(config.configs.all.rules)
         : rule.meta.docs.suggestion
         ? 'suggest'
         : false,
+      requiresTypeChecking: rule.meta.docs.requiresTypeChecking ?? false,
     }),
   );
 
@@ -125,8 +131,18 @@ details.forEach(({ name, description }) => {
   fs.writeFileSync(pathToDoc, format(contents.join('\n')));
 });
 
+const [baseRules, typeRules] = details.reduce<[RuleDetails[], RuleDetails[]]>(
+  (groups, details) => {
+    groups[details.requiresTypeChecking ? 1 : 0].push(details);
+
+    return groups;
+  },
+  [[], []],
+);
+
 let readme = fs.readFileSync(pathTo.readme, 'utf8');
 
-readme = updateRulesList(details, readme);
+readme = updateRulesList('base', baseRules, readme);
+readme = updateRulesList('type', typeRules, readme);
 
 fs.writeFileSync(pathTo.readme, format(readme), 'utf8');

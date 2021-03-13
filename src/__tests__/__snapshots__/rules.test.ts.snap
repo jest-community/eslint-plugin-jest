@@ -46,6 +46,7 @@ Object {
       "jest/prefer-todo": "error",
       "jest/require-to-throw-message": "error",
       "jest/require-top-level-describe": "error",
+      "jest/unbound-method": "error",
       "jest/valid-describe": "error",
       "jest/valid-expect": "error",
       "jest/valid-expect-in-promise": "error",
