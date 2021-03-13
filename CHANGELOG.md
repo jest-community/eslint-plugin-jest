@@ -1,3 +1,10 @@
+## [24.3.1](https://github.com/jest-community/eslint-plugin-jest/compare/v24.3.0...v24.3.1) (2021-03-13)
+
+
+### Bug Fixes
+
+* **no-focused-tests:** report on `skip` instead of `concurrent` ([#791](https://github.com/jest-community/eslint-plugin-jest/issues/791)) ([2b65b49](https://github.com/jest-community/eslint-plugin-jest/commit/2b65b491cea2c956e4ba314a809915b9ec62933b))
+
 # [24.3.0](https://github.com/jest-community/eslint-plugin-jest/compare/v24.2.1...v24.3.0) (2021-03-13)
 
 
