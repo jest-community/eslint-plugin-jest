@@ -1,10 +1,10 @@
 import { TSESTree } from '@typescript-eslint/experimental-utils';
 import {
   createRule,
-  isDescribe,
+  isDescribeCall,
   isEachCall,
   isHook,
-  isTestCase,
+  isTestCaseCall,
 } from './utils';
 
 export default createRule({
@@ -29,14 +29,14 @@ export default createRule({
 
     return {
       CallExpression(node) {
-        if (isDescribe(node)) {
+        if (isDescribeCall(node)) {
           numberOfDescribeBlocks++;
 
           return;
         }
 
         if (numberOfDescribeBlocks === 0) {
-          if (isTestCase(node)) {
+          if (isTestCaseCall(node)) {
             context.report({ node, messageId: 'unexpectedTestCase' });
 
             return;
@@ -50,7 +50,7 @@ export default createRule({
         }
       },
       'CallExpression:exit'(node: TSESTree.CallExpression) {
-        if (isDescribe(node) && !isEachCall(node)) {
+        if (isDescribeCall(node) && !isEachCall(node)) {
           numberOfDescribeBlocks--;
         }
       },

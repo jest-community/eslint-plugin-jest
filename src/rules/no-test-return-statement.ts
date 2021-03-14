@@ -6,7 +6,7 @@ import {
   createRule,
   getTestCallExpressionsFromDeclaredVariables,
   isFunction,
-  isTestCase,
+  isTestCaseCall,
 } from './utils';
 
 const getBody = (args: TSESTree.Expression[]) => {
@@ -41,7 +41,7 @@ export default createRule({
   create(context) {
     return {
       CallExpression(node) {
-        if (!isTestCase(node)) return;
+        if (!isTestCaseCall(node)) return;
         const body = getBody(node.arguments);
         const returnStmt = body.find(
           t => t.type === AST_NODE_TYPES.ReturnStatement,

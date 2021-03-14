@@ -10,9 +10,9 @@ import {
   getJestFunctionArguments,
   getNodeName,
   getStringValue,
-  isDescribe,
+  isDescribeCall,
   isStringNode,
-  isTestCase,
+  isTestCaseCall,
 } from './utils';
 
 const trimFXprefix = (word: string) =>
@@ -161,7 +161,7 @@ export default createRule<[Options], MessageIds>({
 
     return {
       CallExpression(node: TSESTree.CallExpression) {
-        if (!isDescribe(node) && !isTestCase(node)) {
+        if (!isDescribeCall(node) && !isTestCaseCall(node)) {
           return;
         }
 
@@ -181,7 +181,7 @@ export default createRule<[Options], MessageIds>({
 
           if (
             argument.type !== AST_NODE_TYPES.TemplateLiteral &&
-            !(ignoreTypeOfDescribeName && isDescribe(node))
+            !(ignoreTypeOfDescribeName && isDescribeCall(node))
           ) {
             context.report({
               messageId: 'titleMustBeString',
@@ -198,7 +198,7 @@ export default createRule<[Options], MessageIds>({
           context.report({
             messageId: 'emptyTitle',
             data: {
-              jestFunctionName: isDescribe(node)
+              jestFunctionName: isDescribeCall(node)
                 ? DescribeAlias.describe
                 : TestCaseName.test,
             },

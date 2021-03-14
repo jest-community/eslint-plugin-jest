@@ -7,9 +7,9 @@ import {
   TestCaseName,
   createRule,
   getNodeName,
-  isDescribe,
+  isDescribeCall,
   isEachCall,
-  isTestCase,
+  isTestCaseCall,
 } from './utils';
 
 const buildFixer = (
@@ -79,7 +79,7 @@ export default createRule<
           return;
         }
 
-        if (isDescribe(node)) {
+        if (isDescribeCall(node)) {
           describeNestingLevel++;
         }
 
@@ -89,7 +89,7 @@ export default createRule<
             : node.callee;
 
         if (
-          isTestCase(node) &&
+          isTestCaseCall(node) &&
           describeNestingLevel === 0 &&
           !nodeName.includes(testKeyword)
         ) {
@@ -104,7 +104,7 @@ export default createRule<
         }
 
         if (
-          isTestCase(node) &&
+          isTestCaseCall(node) &&
           describeNestingLevel > 0 &&
           !nodeName.includes(testKeywordWithinDescribe)
         ) {
@@ -121,7 +121,7 @@ export default createRule<
         }
       },
       'CallExpression:exit'(node) {
-        if (isDescribe(node) && !isEachCall(node)) {
+        if (isDescribeCall(node) && !isEachCall(node)) {
           describeNestingLevel--;
         }
       },

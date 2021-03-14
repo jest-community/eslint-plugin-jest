@@ -7,10 +7,10 @@ import {
   TestCaseName,
   createRule,
   getNodeName,
-  isDescribe,
+  isDescribeCall,
   isExpectCall,
   isFunction,
-  isTestCase,
+  isTestCaseCall,
 } from './utils';
 
 const getBlockType = (
@@ -39,7 +39,7 @@ const getBlockType = (
     }
 
     // if it's not a variable, it will be callExpr, we only care about describe
-    if (expr.type === AST_NODE_TYPES.CallExpression && isDescribe(expr)) {
+    if (expr.type === AST_NODE_TYPES.CallExpression && isDescribeCall(expr)) {
       return 'describe';
     }
   }
@@ -94,7 +94,7 @@ export default createRule<
       additionalTestBlockFunctions.includes(getNodeName(node) || '');
 
     const isTestBlock = (node: TSESTree.CallExpression): boolean =>
-      isTestCase(node) || isCustomTestBlockFunction(node);
+      isTestCaseCall(node) || isCustomTestBlockFunction(node);
 
     return {
       CallExpression(node) {

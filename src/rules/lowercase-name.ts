@@ -10,10 +10,10 @@ import {
   TestCaseName,
   createRule,
   getStringValue,
-  isDescribe,
+  isDescribeCall,
   isEachCall,
   isStringNode,
-  isTestCase,
+  isTestCaseCall,
 } from './utils';
 
 type IgnorableFunctionExpressions =
@@ -29,7 +29,7 @@ const hasStringAsFirstArgument = (
 const findNodeNameAndArgument = (
   node: TSESTree.CallExpression,
 ): [name: string, firstArg: StringNode] | null => {
-  if (!(isTestCase(node) || isDescribe(node))) {
+  if (!(isTestCaseCall(node) || isDescribeCall(node))) {
     return null;
   }
 
@@ -116,7 +116,7 @@ export default createRule<
 
     return {
       CallExpression(node: TSESTree.CallExpression) {
-        if (isDescribe(node)) {
+        if (isDescribeCall(node)) {
           numberOfDescribeBlocks++;
 
           if (ignoreTopLevelDescribe && numberOfDescribeBlocks === 1) {
@@ -170,7 +170,7 @@ export default createRule<
         });
       },
       'CallExpression:exit'(node: TSESTree.CallExpression) {
-        if (isDescribe(node)) {
+        if (isDescribeCall(node)) {
           numberOfDescribeBlocks--;
         }
       },

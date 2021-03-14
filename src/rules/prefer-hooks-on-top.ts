@@ -1,4 +1,4 @@
-import { createRule, isHook, isTestCase } from './utils';
+import { createRule, isHook, isTestCaseCall } from './utils';
 
 export default createRule({
   name: __filename,
@@ -20,7 +20,7 @@ export default createRule({
 
     return {
       CallExpression(node) {
-        if (!isHook(node) && isTestCase(node)) {
+        if (!isHook(node) && isTestCaseCall(node)) {
           hooksContext[hooksContext.length - 1] = true;
         }
         if (hooksContext[hooksContext.length - 1] && isHook(node)) {

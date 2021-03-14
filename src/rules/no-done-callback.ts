@@ -7,7 +7,7 @@ import {
   getNodeName,
   isFunction,
   isHook,
-  isTestCase,
+  isTestCaseCall,
 } from './utils';
 
 const findCallbackArg = (
@@ -22,7 +22,7 @@ const findCallbackArg = (
     return node.arguments[0];
   }
 
-  if (isTestCase(node) && node.arguments.length >= 2) {
+  if (isTestCaseCall(node) && node.arguments.length >= 2) {
     return node.arguments[1];
   }
 

@@ -648,33 +648,120 @@ export const getTestCallExpressionsFromDeclaredVariables = (
             (node): node is JestFunctionCallExpression<TestCaseName> =>
               !!node &&
               node.type === AST_NODE_TYPES.CallExpression &&
-              isTestCase(node),
+              isTestCaseCall(node),
           ),
       ),
     [],
   );
 };
 
-export const isTestCase = (
+const isTestCaseName = (node: TSESTree.LeftHandSideExpression) =>
+  node.type === AST_NODE_TYPES.Identifier &&
+  TestCaseName.hasOwnProperty(node.name);
+
+const isTestCaseProperty = (
+  node: TSESTree.Expression,
+): node is AccessorNode<TestCaseProperty> =>
+  isSupportedAccessor(node) &&
+  TestCaseProperty.hasOwnProperty(getAccessorValue(node));
+
+/**
+ * Checks if the given `node` is a *call* to a test case function that would
+ * result in tests being run by `jest`.
+ *
+ * Note that `.each()` does not count as a call in this context, as it will not
+ * result in `jest` running any tests.
+ *
+ * @param {TSESTree.CallExpression} node
+ *
+ * @return {node is JestFunctionCallExpression<TestCaseName>}
+ */
+export const isTestCaseCall = (
   node: TSESTree.CallExpression,
-): node is JestFunctionCallExpression<TestCaseName> =>
-  (node.callee.type === AST_NODE_TYPES.Identifier &&
-    TestCaseName.hasOwnProperty(node.callee.name)) ||
-  // e.g. it.each``()
-  (node.callee.type === AST_NODE_TYPES.TaggedTemplateExpression &&
-    node.callee.tag.type === AST_NODE_TYPES.MemberExpression &&
-    node.callee.tag.object.type === AST_NODE_TYPES.Identifier &&
-    TestCaseName.hasOwnProperty(node.callee.tag.object.name) &&
-    isSupportedAccessor(node.callee.tag.property, TestCaseProperty.each)) ||
-  // e.g. it.concurrent.{skip,only}
-  (node.callee.type === AST_NODE_TYPES.MemberExpression &&
-    node.callee.property.type === AST_NODE_TYPES.Identifier &&
-    TestCaseProperty.hasOwnProperty(node.callee.property.name) &&
-    ((node.callee.object.type === AST_NODE_TYPES.Identifier &&
-      TestCaseName.hasOwnProperty(node.callee.object.name)) ||
-      (node.callee.object.type === AST_NODE_TYPES.MemberExpression &&
-        node.callee.object.object.type === AST_NODE_TYPES.Identifier &&
-        TestCaseName.hasOwnProperty(node.callee.object.object.name))));
+): node is JestFunctionCallExpression<TestCaseName> => {
+  if (isTestCaseName(node.callee)) {
+    return true;
+  }
+
+  const callee =
+    node.callee.type === AST_NODE_TYPES.TaggedTemplateExpression
+      ? node.callee.tag
+      : node.callee;
+
+  if (
+    callee.type === AST_NODE_TYPES.MemberExpression &&
+    isTestCaseProperty(callee.property)
+  ) {
+    // if we're an `each()`, ensure we're being called (i.e `.each()()`)
+    if (
+      node.callee.type !== AST_NODE_TYPES.TaggedTemplateExpression &&
+      node.parent?.type !== AST_NODE_TYPES.CallExpression &&
+      getAccessorValue(callee.property) === 'each'
+    ) {
+      return false;
+    }
+
+    return callee.object.type === AST_NODE_TYPES.MemberExpression
+      ? isTestCaseName(callee.object.object)
+      : isTestCaseName(callee.object);
+  }
+
+  return false;
+};
+
+const isDescribeAlias = (node: TSESTree.LeftHandSideExpression) =>
+  node.type === AST_NODE_TYPES.Identifier &&
+  DescribeAlias.hasOwnProperty(node.name);
+
+const isDescribeProperty = (
+  node: TSESTree.Expression,
+): node is AccessorNode<DescribeProperty> =>
+  isSupportedAccessor(node) &&
+  DescribeProperty.hasOwnProperty(getAccessorValue(node));
+
+/**
+ * Checks if the given `node` is a *call* to a `describe` function that would
+ * result in a `describe` block being created by `jest`.
+ *
+ * Note that `.each()` does not count as a call in this context, as it will not
+ * result in `jest` creating any `describe` blocks.
+ *
+ * @param {TSESTree.CallExpression} node
+ *
+ * @return {node is JestFunctionCallExpression<TestCaseName>}
+ */
+export const isDescribeCall = (
+  node: TSESTree.CallExpression,
+): node is JestFunctionCallExpression<DescribeAlias> => {
+  if (isDescribeAlias(node.callee)) {
+    return true;
+  }
+
+  const callee =
+    node.callee.type === AST_NODE_TYPES.TaggedTemplateExpression
+      ? node.callee.tag
+      : node.callee;
+
+  if (
+    callee.type === AST_NODE_TYPES.MemberExpression &&
+    isDescribeProperty(callee.property)
+  ) {
+    // if we're an `each()`, ensure we're being called (i.e `.each()()`)
+    if (
+      node.callee.type !== AST_NODE_TYPES.TaggedTemplateExpression &&
+      node.parent?.type !== AST_NODE_TYPES.CallExpression &&
+      getAccessorValue(callee.property) === 'each'
+    ) {
+      return false;
+    }
+
+    return callee.object.type === AST_NODE_TYPES.MemberExpression
+      ? isDescribeAlias(callee.object.object)
+      : isDescribeAlias(callee.object);
+  }
+
+  return false;
+};
 
 export const isDescribe = (
   node: TSESTree.CallExpression,

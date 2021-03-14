@@ -2,7 +2,7 @@ import {
   AST_NODE_TYPES,
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
-import { createRule, isTestCase } from './utils';
+import { createRule, isTestCaseCall } from './utils';
 
 export default createRule({
   name: __filename,
@@ -37,7 +37,7 @@ export default createRule({
       },
 
       CallExpression(node) {
-        if (isTestCase(node)) {
+        if (isTestCaseCall(node)) {
           hasTestCase = true;
         }
       },
