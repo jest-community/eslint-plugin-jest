@@ -1,4 +1,5 @@
 import { TSESLint } from '@typescript-eslint/experimental-utils';
+import dedent from 'dedent';
 import resolveFrom from 'resolve-from';
 import rule from '../consistent-test-it';
 import { TestCaseName } from '../utils';
@@ -168,6 +169,46 @@ ruleTester.run('consistent-test-it with fn=test', rule, {
           data: {
             testKeywordWithinDescribe: TestCaseName.test,
             oppositeTestKeyword: TestCaseName.it,
+          },
+        },
+      ],
+    },
+    {
+      code: 'describe.each``("foo", () => { test.each``("bar") })',
+      output: 'describe.each``("foo", () => { it.each``("bar") })',
+      options: [{ fn: TestCaseName.it }],
+      errors: [
+        {
+          messageId: 'consistentMethodWithinDescribe',
+          data: {
+            testKeywordWithinDescribe: TestCaseName.it,
+            oppositeTestKeyword: TestCaseName.test,
+          },
+        },
+      ],
+    },
+    {
+      code: dedent`
+        describe.each()("%s", () => {
+          test("is valid, but should not be", () => {});
+
+          it("is not valid, but should be", () => {});
+        });
+      `,
+      output: dedent`
+        describe.each()("%s", () => {
+          it("is valid, but should not be", () => {});
+
+          it("is not valid, but should be", () => {});
+        });
+      `,
+      options: [{ fn: TestCaseName.test, withinDescribe: TestCaseName.it }],
+      errors: [
+        {
+          messageId: 'consistentMethodWithinDescribe',
+          data: {
+            testKeywordWithinDescribe: TestCaseName.it,
+            oppositeTestKeyword: TestCaseName.test,
           },
         },
       ],
