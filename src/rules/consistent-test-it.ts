@@ -8,6 +8,7 @@ import {
   createRule,
   getNodeName,
   isDescribe,
+  isEachCall,
   isTestCase,
 } from './utils';
 
@@ -120,7 +121,7 @@ export default createRule<
         }
       },
       'CallExpression:exit'(node) {
-        if (isDescribe(node)) {
+        if (isDescribe(node) && !isEachCall(node)) {
           describeNestingLevel--;
         }
       },
