@@ -1,3 +1,10 @@
+## [24.3.2](https://github.com/jest-community/eslint-plugin-jest/compare/v24.3.1...v24.3.2) (2021-03-16)
+
+
+### Bug Fixes
+
+* **consistent-test-it:** properly handle `describe.each` ([#796](https://github.com/jest-community/eslint-plugin-jest/issues/796)) ([035bd30](https://github.com/jest-community/eslint-plugin-jest/commit/035bd30af43f1215e65bf1b26c2ef2e6d174d3c8)), closes [#795](https://github.com/jest-community/eslint-plugin-jest/issues/795)
+
 ## [24.3.1](https://github.com/jest-community/eslint-plugin-jest/compare/v24.3.0...v24.3.1) (2021-03-13)
 
 
