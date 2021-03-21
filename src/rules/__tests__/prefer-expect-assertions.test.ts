@@ -12,6 +12,7 @@ const ruleTester = new TSESLint.RuleTester({
 
 ruleTester.run('prefer-expect-assertions', rule, {
   valid: [
+    'test("nonsense", [])',
     'test("it1", () => {expect.assertions(0);})',
     'test("it1", function() {expect.assertions(0);})',
     'test("it1", function() {expect.hasAssertions();})',
@@ -254,6 +255,186 @@ ruleTester.run('prefer-expect-assertions', rule, {
           messageId: 'haveExpectAssertions',
           column: 1,
           line: 1,
+        },
+      ],
+    },
+  ],
+});
+
+ruleTester.run('.each support', rule, {
+  valid: [
+    'test.each()("is fine", () => { expect.assertions(0); })',
+    'test.each``("is fine", () => { expect.assertions(0); })',
+    'test.each()("is fine", () => { expect.hasAssertions(); })',
+    'test.each``("is fine", () => { expect.hasAssertions(); })',
+    'it.each()("is fine", () => { expect.assertions(0); })',
+    'it.each``("is fine", () => { expect.assertions(0); })',
+    'it.each()("is fine", () => { expect.hasAssertions(); })',
+    'it.each``("is fine", () => { expect.hasAssertions(); })',
+    {
+      code: 'test.each()("is fine", () => {})',
+      options: [{ onlyFunctionsWithAsyncKeyword: true }],
+    },
+    {
+      code: 'test.each``("is fine", () => {})',
+      options: [{ onlyFunctionsWithAsyncKeyword: true }],
+    },
+    {
+      code: 'it.each()("is fine", () => {})',
+      options: [{ onlyFunctionsWithAsyncKeyword: true }],
+    },
+    {
+      code: 'it.each``("is fine", () => {})',
+      options: [{ onlyFunctionsWithAsyncKeyword: true }],
+    },
+    dedent`
+      describe.each(['hello'])('%s', () => {
+        it('is fine', () => {
+          expect.assertions(0);
+        });
+      });
+    `,
+    dedent`
+      describe.each\`\`('%s', () => {
+        it('is fine', () => {
+          expect.assertions(0);
+        });
+      });
+    `,
+    dedent`
+      describe.each(['hello'])('%s', () => {
+        it('is fine', () => {
+          expect.hasAssertions();
+        });
+      });
+    `,
+    dedent`
+      describe.each\`\`('%s', () => {
+        it('is fine', () => {
+          expect.hasAssertions();
+        });
+      });
+    `,
+    dedent`
+      describe.each(['hello'])('%s', () => {
+        it.each()('is fine', () => {
+          expect.assertions(0);
+        });
+      });
+    `,
+    dedent`
+      describe.each\`\`('%s', () => {
+        it.each()('is fine', () => {
+          expect.assertions(0);
+        });
+      });
+    `,
+    dedent`
+      describe.each(['hello'])('%s', () => {
+        it.each()('is fine', () => {
+          expect.hasAssertions();
+        });
+      });
+    `,
+    dedent`
+      describe.each\`\`('%s', () => {
+        it.each()('is fine', () => {
+          expect.hasAssertions();
+        });
+      });
+    `,
+  ],
+  invalid: [
+    {
+      code: dedent`
+        test.each()("is not fine", () => {
+          expect(someValue).toBe(true);
+        });
+      `,
+      errors: [
+        {
+          messageId: 'haveExpectAssertions',
+          column: 1,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        describe.each()('something', () => {
+          it("is not fine", () => {
+            expect(someValue).toBe(true);
+          });
+        });
+      `,
+      errors: [
+        {
+          messageId: 'haveExpectAssertions',
+          column: 3,
+          line: 2,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        describe.each()('something', () => {
+          test.each()("is not fine", () => {
+            expect(someValue).toBe(true);
+          });
+        });
+      `,
+      errors: [
+        {
+          messageId: 'haveExpectAssertions',
+          column: 3,
+          line: 2,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        test.each()("is not fine", async () => {
+          expect(someValue).toBe(true);
+        });
+      `,
+      options: [{ onlyFunctionsWithAsyncKeyword: true }],
+      errors: [
+        {
+          messageId: 'haveExpectAssertions',
+          column: 1,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        it.each()("is not fine", async () => {
+          expect(someValue).toBe(true);
+        });
+      `,
+      options: [{ onlyFunctionsWithAsyncKeyword: true }],
+      errors: [
+        {
+          messageId: 'haveExpectAssertions',
+          column: 1,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        describe.each()('something', () => {
+          test.each()("is not fine", async () => {
+            expect(someValue).toBe(true);
+          });
+        });
+      `,
+      options: [{ onlyFunctionsWithAsyncKeyword: true }],
+      errors: [
+        {
+          messageId: 'haveExpectAssertions',
+          column: 3,
+          line: 2,
         },
       ],
     },

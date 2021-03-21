@@ -14,6 +14,7 @@ const ruleTester = new TSESLint.RuleTester({
 ruleTester.run('lowercase-name', rule, {
   valid: [
     'it.each()',
+    'it.each()(1)',
     'randomFunction()',
     'foo.bar()',
     'it()',
