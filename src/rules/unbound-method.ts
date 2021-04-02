@@ -58,7 +58,9 @@ interface Config {
 
 export type Options = [Config];
 
-export type MessageIds = 'unbound';
+export type MessageIds = 'unbound' | 'unboundWithoutThisAnnotation';
+
+const DEFAULT_MESSAGE = 'This rule requires `@typescript-eslint/eslint-plugin`';
 
 export default createRule<Options, MessageIds>({
   defaultOptions: [{ ignoreStatic: false }],
@@ -66,7 +68,8 @@ export default createRule<Options, MessageIds>({
   name: __filename,
   meta: {
     messages: {
-      unbound: 'This rule requires `@typescript-eslint/eslint-plugin`',
+      unbound: DEFAULT_MESSAGE,
+      unboundWithoutThisAnnotation: DEFAULT_MESSAGE,
     },
     schema: [],
     type: 'problem',
