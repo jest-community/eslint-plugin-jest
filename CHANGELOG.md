@@ -1,3 +1,11 @@
+## [24.3.3](https://github.com/jest-community/eslint-plugin-jest/compare/v24.3.2...v24.3.3) (2021-04-02)
+
+
+### Bug Fixes
+
+* **no-duplicate-hooks:** support `describe.each` ([#797](https://github.com/jest-community/eslint-plugin-jest/issues/797)) ([243cb4f](https://github.com/jest-community/eslint-plugin-jest/commit/243cb4f970e40aa195a3bffa0528dbdbfef7c4f5)), closes [#642](https://github.com/jest-community/eslint-plugin-jest/issues/642)
+* **prefer-expect-assertions:** support `.each` ([#798](https://github.com/jest-community/eslint-plugin-jest/issues/798)) ([f758243](https://github.com/jest-community/eslint-plugin-jest/commit/f75824359f2242f53997c59c238d83a59badeea3)), closes [#676](https://github.com/jest-community/eslint-plugin-jest/issues/676)
+
 ## [24.3.2](https://github.com/jest-community/eslint-plugin-jest/compare/v24.3.1...v24.3.2) (2021-03-16)
 
 
