@@ -35,8 +35,8 @@ const findNodeNameAndArgument = (
 
   if (isEachCall(node)) {
     if (
-      node.parent?.type === AST_NODE_TYPES.CallExpression &&
-      hasStringAsFirstArgument(node.parent)
+      node.parent.arguments.length > 0 &&
+      isStringNode(node.parent.arguments[0])
     ) {
       return [node.callee.object.name, node.parent.arguments[0]];
     }

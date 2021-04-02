@@ -8,7 +8,10 @@ import {
   createRule,
   getAccessorValue,
   hasOnlyOneArgument,
+  isEachCall,
+  isFunction,
   isSupportedAccessor,
+  isTestCase,
 } from './utils';
 
 const isExpectAssertionsOrHasAssertionsCall = (
@@ -40,12 +43,6 @@ const suggestRemovingExtraArguments = (
     ]),
 });
 
-interface PreferExpectAssertionsCallExpression extends TSESTree.CallExpression {
-  arguments: [
-    TSESTree.Expression,
-    TSESTree.ArrowFunctionExpression & { body: TSESTree.BlockStatement },
-  ];
-}
 interface RuleOptions {
   onlyFunctionsWithAsyncKeyword?: boolean;
 }
@@ -103,14 +100,28 @@ export default createRule<[RuleOptions], MessageIds>({
   defaultOptions: [{ onlyFunctionsWithAsyncKeyword: false }],
   create(context, [options]) {
     return {
-      'CallExpression[callee.name=/^(it|test)$/][arguments.1.body.body]'(
-        node: PreferExpectAssertionsCallExpression,
-      ) {
-        if (options.onlyFunctionsWithAsyncKeyword && !node.arguments[1].async) {
+      CallExpression(node: TSESTree.CallExpression) {
+        if (!isTestCase(node)) {
           return;
         }
 
-        const testFuncBody = node.arguments[1].body.body;
+        const args = isEachCall(node) ? node.parent.arguments : node.arguments;
+
+        if (args.length < 2) {
+          return;
+        }
+
+        const [, testFn] = args;
+
+        if (
+          !isFunction(testFn) ||
+          testFn.body.type !== AST_NODE_TYPES.BlockStatement ||
+          (options.onlyFunctionsWithAsyncKeyword && !testFn.async)
+        ) {
+          return;
+        }
+
+        const testFuncBody = testFn.body.body;
 
         if (!isFirstLineExprStmt(testFuncBody)) {
           context.report({
@@ -120,10 +131,7 @@ export default createRule<[RuleOptions], MessageIds>({
               messageId,
               fix: fixer =>
                 fixer.insertTextBeforeRange(
-                  [
-                    node.arguments[1].body.range[0] + 1,
-                    node.arguments[1].body.range[1],
-                  ],
+                  [testFn.body.range[0] + 1, testFn.body.range[1]],
                   text,
                 ),
             })),
