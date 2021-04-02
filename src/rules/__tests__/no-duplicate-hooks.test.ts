@@ -288,3 +288,170 @@ ruleTester.run('nested describe blocks', rule, {
     },
   ],
 });
+
+ruleTester.run('describe.each blocks', rule, {
+  valid: [
+    dedent`
+      describe.each(['hello'])('%s', () => {
+        beforeEach(() => {});
+
+        it('is fine', () => {});
+      });
+    `,
+    dedent`
+      describe('something', () => {
+        describe.each(['hello'])('%s', () => {
+          beforeEach(() => {});
+
+          it('is fine', () => {});
+        });
+
+        describe.each(['world'])('%s', () => {
+          beforeEach(() => {});
+
+          it('is fine', () => {});
+        });
+      });
+    `,
+    dedent`
+      describe.each\`\`('%s', () => {
+        beforeEach(() => {});
+
+        it('is fine', () => {});
+      });
+    `,
+    dedent`
+      describe('something', () => {
+        describe.each\`\`('%s', () => {
+          beforeEach(() => {});
+
+          it('is fine', () => {});
+        });
+
+        describe.each\`\`('%s', () => {
+          beforeEach(() => {});
+
+          it('is fine', () => {});
+        });
+      });
+    `,
+  ],
+  invalid: [
+    {
+      code: dedent`
+      describe.each(['hello'])('%s', () => {
+        beforeEach(() => {});
+        beforeEach(() => {});
+
+        it('is not fine', () => {});
+      });
+    `,
+      errors: [
+        {
+          messageId: 'noDuplicateHook',
+          data: { hook: 'beforeEach' },
+          column: 3,
+          line: 3,
+        },
+      ],
+    },
+    {
+      code: dedent`
+      describe('something', () => {
+        describe.each(['hello'])('%s', () => {
+          beforeEach(() => {});
+
+          it('is fine', () => {});
+        });
+
+        describe.each(['world'])('%s', () => {
+          beforeEach(() => {});
+          beforeEach(() => {});
+
+          it('is not fine', () => {});
+        });
+      });
+    `,
+      errors: [
+        {
+          messageId: 'noDuplicateHook',
+          data: { hook: 'beforeEach' },
+          column: 5,
+          line: 10,
+        },
+      ],
+    },
+    {
+      code: dedent`
+      describe('something', () => {
+        describe.each(['hello'])('%s', () => {
+          beforeEach(() => {});
+
+          it('is fine', () => {});
+        });
+
+        describe.each(['world'])('%s', () => {
+          describe('some more', () => {
+            beforeEach(() => {});
+            beforeEach(() => {});
+
+            it('is not fine', () => {});
+          });
+        });
+      });
+    `,
+      errors: [
+        {
+          messageId: 'noDuplicateHook',
+          data: { hook: 'beforeEach' },
+          column: 7,
+          line: 11,
+        },
+      ],
+    },
+    {
+      code: dedent`
+      describe.each\`\`('%s', () => {
+        beforeEach(() => {});
+        beforeEach(() => {});
+
+        it('is fine', () => {});
+      });
+    `,
+      errors: [
+        {
+          messageId: 'noDuplicateHook',
+          data: { hook: 'beforeEach' },
+          column: 3,
+          line: 3,
+        },
+      ],
+    },
+    {
+      code: dedent`
+      describe('something', () => {
+        describe.each\`\`('%s', () => {
+          beforeEach(() => {});
+
+          it('is fine', () => {});
+        });
+
+        describe.each\`\`('%s', () => {
+          beforeEach(() => {});
+          beforeEach(() => {});
+
+          it('is not fine', () => {});
+        });
+      });
+    `,
+      errors: [
+        {
+          messageId: 'noDuplicateHook',
+          data: { hook: 'beforeEach' },
+          column: 5,
+          line: 10,
+        },
+      ],
+    },
+  ],
+});
