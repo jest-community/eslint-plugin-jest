@@ -12,224 +12,233 @@ const ruleTester = new TSESLint.RuleTester({
 
 ruleTester.run('no-identical-title', rule, {
   valid: [
-    [
-      'describe("describe", function() {',
-      '   it("it", function() {});',
-      '});',
-    ].join('\n'),
-    ['describe();describe();'].join('\n'),
-    ['it();it();'].join('\n'),
-    [
-      'describe("describe1", function() {',
-      '   it("it1", function() {});',
-      '   it("it2", function() {});',
-      '});',
-    ].join('\n'),
-    ['it("it1", function() {});', 'it("it2", function() {});'].join('\n'),
-    [
-      'it.concurrent("it1", function() {});',
-      'it.concurrent("it2", function() {});',
-    ].join('\n'),
-    ['it.only("it1", function() {});', 'it("it2", function() {});'].join('\n'),
-    ['it.only("it1", function() {});', 'it.only("it2", function() {});'].join(
-      '\n',
-    ),
-    [
-      'it.concurrent.only("it1", function() {});',
-      'it.concurrent("it2", function() {});',
-    ].join('\n'),
-    [
-      'it.concurrent.only("it1", function() {});',
-      'it.concurrent.only("it2", function() {});',
-    ].join('\n'),
-    ['describe("title", function() {});', 'it("title", function() {});'].join(
-      '\n',
-    ),
-    [
-      'describe("describe1", function() {',
-      '   it("it1", function() {});',
-      '   describe("describe2", function() {',
-      '       it("it1", function() {});',
-      '   });',
-      '});',
-    ].join('\n'),
-    [
-      'describe("describe1", function() {',
-      '   describe("describe2", function() {',
-      '       it("it1", function() {});',
-      '   });',
-      '   it("it1", function() {});',
-      '});',
-    ].join('\n'),
-    [
-      'describe("describe1", function() {',
-      '   describe("describe2", function() {});',
-      '});',
-    ].join('\n'),
-    [
-      'describe("describe1", function() {',
-      '   describe("describe2", function() {});',
-      '});',
-      'describe("describe2", function() {});',
-    ].join('\n'),
-    [
-      'describe("describe1", function() {});',
-      'describe("describe2", function() {});',
-    ].join('\n'),
-    ['it("it" + n, function() {});', 'it("it" + n, function() {});'].join('\n'),
-    ['it(`it${n}`, function() {});', 'it(`it${n}`, function() {});'].join('\n'),
-    'it(`${n}`, function() {});',
-    [
-      'describe("title " + foo, function() {',
-      '    describe("describe1", function() {});',
-      '});',
-      'describe("describe1", function() {});',
-    ].join('\n'),
-    [
-      'describe("describe1", function() {',
-      '    describe("describe2", function() {});',
-      '    describe("title " + foo, function() {',
-      '        describe("describe2", function() {});',
-      '    });',
-      '});',
-    ].join('\n'),
-    [
-      'describe("describe", () => {',
-      '    it(`testing ${someVar} with the same title`, () => {});',
-      '    it(`testing ${someVar} with the same title`, () => {});',
-      '});',
-    ].join('\n'),
-    ['it(`it1`, () => {});', 'it(`it2`, () => {});'].join('\n'),
-    [
-      'describe(`describe1`, () => {});',
-      'describe(`describe2`, () => {});',
-    ].join('\n'),
-    [
-      'const test = { content: () => "foo" }',
-      'test.content(`testing backticks with the same title`);',
-      'test.content(`testing backticks with the same title`);',
-    ].join('\n'),
-    [
-      'const describe = { content: () => "foo" }',
-      'describe.content(`testing backticks with the same title`);',
-      'describe.content(`testing backticks with the same title`);',
-    ].join('\n'),
+    'it(); it();',
+    'describe(); describe();',
+    'describe("foo", () => {}); it("foo", () => {});',
     dedent`
-    describe.each\`
-      description
-      ${'b'}
-    \`("$description", () => {})
-
-    describe.each\`
-      description
-      ${'a'}
-    \`("$description", () => {})
+      describe("foo", () => {
+        it("works", () => {});
+      });
     `,
     dedent`
-    describe("top level", () => {
-      describe.each\`\`("nested each", () => {
-        describe.each\`\`("nested nested each", () => {})
-      })
+      it('one', () => {});
+      it('two', () => {});
+    `,
+    dedent`
+      describe('foo', () => {});
+      describe('foe', () => {});
+    `,
+    dedent`
+      it(\`one\`, () => {});
+      it(\`two\`, () => {});
+    `,
+    dedent`
+      describe(\`foo\`, () => {});
+      describe(\`foe\`, () => {});
+    `,
+    dedent`
+      describe('foo', () => {
+        test('this', () => {});
+        test('that', () => {});
+      });
+    `,
+    dedent`
+      test.concurrent('this', () => {});
+      test.concurrent('that', () => {});
+    `,
+    dedent`
+      test.concurrent('this', () => {});
+      test.only.concurrent('that', () => {});
+    `,
+    dedent`
+      test.only.concurrent('this', () => {});
+      test.concurrent('that', () => {});
+    `,
+    dedent`
+      test.only.concurrent('this', () => {});
+      test.only.concurrent('that', () => {});
+    `,
+    dedent`
+      test.concurrent.only('this', () => {});
+      test.concurrent.only('that', () => {});
+    `,
+    dedent`
+      describe('foo', () => {
+        it('works', () => {});
 
-      describe("nested", () => {})
-    })
+        describe('foe', () => {
+          it('works', () => {});
+        });
+      });
+    `,
+    dedent`
+      describe('foo', () => {
+        describe('foe', () => {
+          it('works', () => {});
+        });
+
+        it('works', () => {});
+      });
+    `,
+    "describe('foo', () => describe('foe', () => {}));",
+    dedent`
+      describe('foo', () => {
+        describe('foe', () => {});
+      });
+
+      describe('foe', () => {});
+    `,
+    'test("number" + n, function() {});',
+    'test("number" + n, function() {}); test("number" + n, function() {});',
+    'it(`${n}`, function() {});',
+    'it(`${n}`, function() {}); it(`${n}`, function() {});',
+    dedent`
+      describe('a class named ' + myClass.name, () => {
+        describe('#myMethod', () => {});
+      });
+
+      describe('something else', () => {});
+    `,
+    dedent`
+      describe('my class', () => {
+        describe('#myMethod', () => {});
+        describe('a class named ' + myClass.name, () => {});
+      });
+    `,
+    dedent`
+      describe("foo", () => {
+        it(\`ignores $\{someVar} with the same title\`, () => {});
+        it(\`ignores $\{someVar} with the same title\`, () => {});
+      });
+    `.replace(/\\\{/u, '{'),
+    dedent`
+      const test = { content: () => "foo" };
+      test.content(\`something that is not from jest\`, () => {});
+      test.content(\`something that is not from jest\`, () => {});
+    `,
+    dedent`
+      const describe = { content: () => "foo" };
+      describe.content(\`something that is not from jest\`, () => {});
+      describe.content(\`something that is not from jest\`, () => {});
+    `,
+    dedent`
+      describe.each\`
+        description
+        ${'b'}
+      \`('$description', () => {});
+
+      describe.each\`
+        description
+        ${'a'}
+      \`('$description', () => {});
+    `,
+    dedent`
+      describe('top level', () => {
+        describe.each\`\`('nested each', () => {
+          describe.each\`\`('nested nested each', () => {});
+        });
+
+        describe('nested', () => {});
+      });
     `,
   ],
   invalid: [
     {
-      code: [
-        'describe("describe1", function() {',
-        '   it("it1", function() {});',
-        '   it("it1", function() {});',
-        '});',
-      ].join('\n'),
-      errors: [{ messageId: 'multipleTestTitle', column: 7, line: 3 }],
+      code: dedent`
+        describe('foo', () => {
+          it('works', () => {});
+          it('works', () => {});
+        });
+      `,
+      errors: [{ messageId: 'multipleTestTitle', column: 6, line: 3 }],
     },
     {
-      code: ['it("it1", function() {});', 'it("it1", function() {});'].join(
-        '\n',
-      ),
+      code: dedent`
+        it('works', () => {});
+        it('works', () => {});
+      `,
       errors: [{ messageId: 'multipleTestTitle', column: 4, line: 2 }],
     },
     {
-      code: [
-        'it.concurrent("it1", function() {});',
-        'it.concurrent("it1", function() {});',
-      ].join('\n'),
-      errors: [{ messageId: 'multipleTestTitle', column: 15, line: 2 }],
+      code: dedent`
+        test.only('this', () => {});
+        test('this', () => {});
+      `,
+      errors: [{ messageId: 'multipleTestTitle', column: 6, line: 2 }],
     },
     {
-      code: [
-        'it.only("it1", function() {});',
-        'it("it1", function() {});',
-      ].join('\n'),
-      errors: [{ messageId: 'multipleTestTitle', column: 4, line: 2 }],
+      code: dedent`
+        xtest('this', () => {});
+        test('this', () => {});
+      `,
+      errors: [{ messageId: 'multipleTestTitle', column: 6, line: 2 }],
     },
     {
-      code: [
-        'it.concurrent.only("it1", function() {});',
-        'it.concurrent("it1", function() {});',
-      ].join('\n'),
-      errors: [{ messageId: 'multipleTestTitle', column: 15, line: 2 }],
+      code: dedent`
+        test.only('this', () => {});
+        test.only('this', () => {});
+      `,
+      errors: [{ messageId: 'multipleTestTitle', column: 11, line: 2 }],
     },
     {
-      code: ['fit("it1", function() {});', 'it("it1", function() {});'].join(
-        '\n',
-      ),
-      errors: [{ messageId: 'multipleTestTitle', column: 4, line: 2 }],
+      code: dedent`
+        test.concurrent('this', () => {});
+        test.concurrent('this', () => {});
+      `,
+      errors: [{ messageId: 'multipleTestTitle', column: 17, line: 2 }],
     },
     {
-      code: [
-        'it.only("it1", function() {});',
-        'it.only("it1", function() {});',
-      ].join('\n'),
-      errors: [{ messageId: 'multipleTestTitle', column: 9, line: 2 }],
+      code: dedent`
+        test.concurrent.only('this', () => {});
+        test.concurrent('this', () => {});
+      `,
+      errors: [{ messageId: 'multipleTestTitle', column: 17, line: 2 }],
     },
     {
-      code: [
-        'it.concurrent.only("it1", function() {});',
-        'it.concurrent.only("it1", function() {});',
-      ].join('\n'),
-      errors: [{ messageId: 'multipleTestTitle', column: 20, line: 2 }],
+      code: dedent`
+        test.concurrent.only('this', () => {});
+        test.concurrent.only('this', () => {});
+      `,
+      errors: [{ messageId: 'multipleTestTitle', column: 22, line: 2 }],
     },
     {
-      code: [
-        'describe("describe1", function() {});',
-        'describe("describe1", function() {});',
-      ].join('\n'),
+      code: dedent`
+        describe('foo', () => {});
+        describe('foo', () => {});
+      `,
       errors: [{ messageId: 'multipleDescribeTitle', column: 10, line: 2 }],
     },
     {
-      code: [
-        'describe("describe1", function() {});',
-        'xdescribe("describe1", function() {});',
-      ].join('\n'),
+      code: dedent`
+        describe('foo', () => {});
+        xdescribe('foo', () => {});
+      `,
       errors: [{ messageId: 'multipleDescribeTitle', column: 11, line: 2 }],
     },
     {
-      code: [
-        'fdescribe("describe1", function() {});',
-        'describe("describe1", function() {});',
-      ].join('\n'),
+      code: dedent`
+        fdescribe('foo', () => {});
+        describe('foo', () => {});
+      `,
       errors: [{ messageId: 'multipleDescribeTitle', column: 10, line: 2 }],
     },
     {
-      code: [
-        'describe("describe1", function() {',
-        '   describe("describe2", function() {});',
-        '});',
-        'describe("describe1", function() {});',
-      ].join('\n'),
+      code: dedent`
+        describe('foo', () => {
+          describe('foe', () => {});
+        });
+        describe('foo', () => {});
+      `,
       errors: [{ messageId: 'multipleDescribeTitle', column: 10, line: 4 }],
     },
     {
-      code: [
-        'describe("describe", () => {',
-        '    it(`testing backticks with the same title`, () => {});',
-        '    it(`testing backticks with the same title`, () => {});',
-        '});',
-      ].join('\n'),
-      errors: [{ messageId: 'multipleTestTitle', column: 8, line: 3 }],
+      code: dedent`
+        describe("foo", () => {
+          it(\`catches backticks with the same title\`, () => {});
+          it(\`catches backticks with the same title\`, () => {});
+        });
+      `,
+      errors: [{ messageId: 'multipleTestTitle', column: 6, line: 3 }],
     },
   ],
 });
