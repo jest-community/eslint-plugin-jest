@@ -814,6 +814,34 @@ ruleTester.run('if statements', rule, {
     },
     {
       code: dedent`
+        it.each\`\`('foo', () => {
+          callExpression()
+          if ('bar') {}
+        })
+      `,
+      errors: [
+        {
+          data: { condition: 'if' },
+          messageId: 'conditionalInTest',
+        },
+      ],
+    },
+    {
+      code: dedent`
+        it.only.each\`\`('foo', () => {
+          callExpression()
+          if ('bar') {}
+        })
+      `,
+      errors: [
+        {
+          data: { condition: 'if' },
+          messageId: 'conditionalInTest',
+        },
+      ],
+    },
+    {
+      code: dedent`
         describe('valid', () => {
           describe('still valid', () => {
             it('really still valid', () => {
