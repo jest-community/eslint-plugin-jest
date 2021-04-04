@@ -58,370 +58,210 @@ ruleTester.run('nonexistent methods', rule, {
   invalid: [],
 });
 
+const itMemberExpressions = [
+  'it["concurrent"]["skip"]',
+  'it["concurrent"].skip',
+  'it.concurrent["skip"]',
+  'it.concurrent.skip',
+
+  'it["concurrent"]["only"]',
+  'it["concurrent"].only',
+  'it.concurrent["only"]',
+  'it.concurrent.only',
+
+  'it["skip"]["each"]()',
+  'it["skip"].each()',
+  'it.skip["each"]()',
+  'it.skip.each()',
+
+  'it["skip"]["each"]``',
+  'it["skip"].each``',
+  'it.skip["each"]``',
+  'it.skip.each``',
+
+  'it["only"]["each"]()',
+  'it["only"].each()',
+  'it.only["each"]()',
+  'it.only.each()',
+
+  'it["only"]["each"]``',
+  'it["only"].each``',
+  'it.only["each"]``',
+  'it.only.each``',
+
+  'xit["each"]()',
+  'xit.each()',
+
+  'xit["each"]``',
+  'xit.each``',
+
+  'fit["each"]()',
+  'fit.each()',
+
+  'fit["each"]``',
+  'fit.each``',
+
+  'it["skip"]',
+  'it.skip',
+
+  'it["only"]',
+  'it.only',
+
+  'it["each"]()',
+  'it.each()',
+
+  'it["each"]``',
+  'it.each``',
+
+  'fit',
+  'xit',
+  'it',
+];
+
 ruleTester.run('it', rule, {
-  valid: [
-    'it["concurrent"]["skip"]',
-    'it["concurrent"].skip',
-    'it.concurrent["skip"]',
-    'it.concurrent.skip',
-
-    'it["concurrent"]["only"]',
-    'it["concurrent"].only',
-    'it.concurrent["only"]',
-    'it.concurrent.only',
-
-    'it["skip"]["each"]()',
-    'it["skip"].each()',
-    'it.skip["each"]()',
-    'it.skip.each()',
-
-    'it["skip"]["each"]``',
-    'it["skip"].each``',
-    'it.skip["each"]``',
-    'it.skip.each``',
-
-    'it["only"]["each"]()',
-    'it["only"].each()',
-    'it.only["each"]()',
-    'it.only.each()',
-
-    'it["only"]["each"]``',
-    'it["only"].each``',
-    'it.only["each"]``',
-    'it.only.each``',
-
-    'xit["each"]()',
-    'xit.each()',
-
-    'xit["each"]``',
-    'xit.each``',
-
-    'fit["each"]()',
-    'fit.each()',
-
-    'fit["each"]``',
-    'fit.each``',
-
-    'it["skip"]',
-    'it.skip',
-
-    'it["only"]',
-    'it.only',
-
-    'it["each"]()',
-    'it.each()',
-
-    'it["each"]``',
-    'it.each``',
-
-    'fit',
-    'xit',
-    'it',
-  ],
-  invalid: [
-    ...[
-      'it["concurrent"]["skip"]()',
-      'it["concurrent"].skip()',
-      'it.concurrent["skip"]()',
-      'it.concurrent.skip()',
-
-      'it["concurrent"]["only"]()',
-      'it["concurrent"].only()',
-      'it.concurrent["only"]()',
-      'it.concurrent.only()',
-
-      'it["skip"]["each"]()()',
-      'it["skip"].each()()',
-      'it.skip["each"]()()',
-      'it.skip.each()()',
-
-      'it["skip"]["each"]``()',
-      'it["skip"].each``()',
-      'it.skip["each"]``()',
-      'it.skip.each``()',
-
-      'it["only"]["each"]()()',
-      'it["only"].each()()',
-      'it.only["each"]()()',
-      'it.only.each()()',
-
-      'it["only"]["each"]``()',
-      'it["only"].each``()',
-
-      'it.only["each"]``()',
-      'it.only.each``()',
-
-      'xit["each"]()()',
-      'xit.each()()',
-
-      'xit["each"]``()',
-      'xit.each``()',
-
-      'fit["each"]()()',
-      'fit.each()()',
-
-      'fit["each"]``()',
-      'fit.each``()',
-
-      'it["skip"]()',
-      'it.skip()',
-
-      'it["only"]()',
-      'it.only()',
-
-      'it["each"]()()',
-      'it.each()()',
-
-      'it["each"]``()',
-      'it.each``()',
-
-      'fit()',
-      'xit()',
-      'it()',
-    ].map(code => ({
-      code,
-      errors: [
-        {
-          messageId: 'foundTestCaseCall' as const,
-          data: {},
-          column: 1,
-          line: 1,
-        },
-      ],
-    })),
-  ],
+  valid: itMemberExpressions,
+  invalid: itMemberExpressions.map(code => ({
+    code: `${code}('works', () => {})`,
+    errors: [
+      {
+        messageId: 'foundTestCaseCall' as const,
+        data: {},
+        column: 1,
+        line: 1,
+      },
+    ],
+  })),
 });
+
+const testMemberExpressions = [
+  'test["concurrent"]["skip"]',
+  'test["concurrent"].skip',
+  'test.concurrent["skip"]',
+  'test.concurrent.skip',
+
+  'test["concurrent"]["only"]',
+  'test["concurrent"].only',
+  'test.concurrent["only"]',
+  'test.concurrent.only',
+
+  'test["skip"]["each"]()',
+  'test["skip"].each()',
+  'test.skip["each"]()',
+  'test.skip.each()',
+
+  'test["skip"]["each"]``',
+  'test["skip"].each``',
+  'test.skip["each"]``',
+  'test.skip.each``',
+
+  'test["only"]["each"]()',
+  'test["only"].each()',
+  'test.only["each"]()',
+  'test.only.each()',
+
+  'test["only"]["each"]``',
+  'test["only"].each``',
+  'test.only["each"]``',
+  'test.only.each``',
+
+  'xtest["each"]()',
+  'xtest.each()',
+
+  'xtest["each"]``',
+  'xtest.each``',
+
+  'test["skip"]',
+  'test.skip',
+
+  'test["only"]',
+  'test.only',
+
+  'test["each"]()',
+  'test.each()',
+
+  'test["each"]``',
+  'test.each``',
+
+  'xtest',
+  'test',
+];
 
 ruleTester.run('test', rule, {
-  valid: [
-    'test["concurrent"]["skip"]',
-    'test["concurrent"].skip',
-    'test.concurrent["skip"]',
-    'test.concurrent.skip',
-
-    'test["concurrent"]["only"]',
-    'test["concurrent"].only',
-    'test.concurrent["only"]',
-    'test.concurrent.only',
-
-    'test["skip"]["each"]()',
-    'test["skip"].each()',
-    'test.skip["each"]()',
-    'test.skip.each()',
-
-    'test["skip"]["each"]``',
-    'test["skip"].each``',
-    'test.skip["each"]``',
-    'test.skip.each``',
-
-    'test["only"]["each"]()',
-    'test["only"].each()',
-    'test.only["each"]()',
-    'test.only.each()',
-
-    'test["only"]["each"]``',
-    'test["only"].each``',
-    'test.only["each"]``',
-    'test.only.each``',
-
-    'xtest["each"]()',
-    'xtest.each()',
-
-    'xtest["each"]``',
-    'xtest.each``',
-
-    'test["skip"]',
-    'test.skip',
-
-    'test["only"]',
-    'test.only',
-
-    'test["each"]()',
-    'test.each()',
-
-    'test["each"]``',
-    'test.each``',
-
-    'xtest',
-    'test',
-  ],
-  invalid: [
-    ...[
-      'test["concurrent"]["skip"]()',
-      'test["concurrent"].skip()',
-      'test.concurrent["skip"]()',
-      'test.concurrent.skip()',
-
-      'test["concurrent"]["only"]()',
-      'test["concurrent"].only()',
-      'test.concurrent["only"]()',
-      'test.concurrent.only()',
-
-      'test["skip"]["each"]()()',
-      'test["skip"].each()()',
-      'test.skip["each"]()()',
-      'test.skip.each()()',
-
-      'test["skip"]["each"]``()',
-      'test["skip"].each``()',
-      'test.skip["each"]``()',
-      'test.skip.each``()',
-
-      'test["only"]["each"]()()',
-      'test["only"].each()()',
-      'test.only["each"]()()',
-      'test.only.each()()',
-
-      'test["only"]["each"]``()',
-      'test["only"].each``()',
-
-      'test.only["each"]``()',
-      'test.only.each``()',
-
-      'xtest["each"]()()',
-      'xtest.each()()',
-
-      'xtest["each"]``()',
-      'xtest.each``()',
-
-      'test["skip"]()',
-      'test.skip()',
-
-      'test["only"]()',
-      'test.only()',
-
-      'test["each"]()()',
-      'test.each()()',
-
-      'test["each"]``()',
-      'test.each``()',
-
-      'xtest()',
-      'test()',
-    ].map(code => ({
-      code,
-      errors: [
-        {
-          messageId: 'foundTestCaseCall' as const,
-          data: {},
-          column: 1,
-          line: 1,
-        },
-      ],
-    })),
-  ],
+  valid: testMemberExpressions,
+  invalid: testMemberExpressions.map(code => ({
+    code: `${code}('works', () => {})`,
+    errors: [
+      {
+        messageId: 'foundTestCaseCall' as const,
+        data: {},
+        column: 1,
+        line: 1,
+      },
+    ],
+  })),
 });
 
+const describeMemberExpressions = [
+  'describe["skip"]["each"]()',
+  'describe["skip"].each()',
+  'describe.skip["each"]()',
+  'describe.skip.each()',
+
+  'describe["skip"]["each"]``',
+  'describe["skip"].each``',
+  'describe.skip["each"]``',
+  'describe.skip.each``',
+
+  'describe["only"]["each"]()',
+  'describe["only"].each()',
+  'describe.only["each"]()',
+  'describe.only.each()',
+
+  'describe["only"]["each"]``',
+  'describe["only"].each``',
+  'describe.only["each"]``',
+  'describe.only.each``',
+
+  'xdescribe["each"]()',
+  'xdescribe.each()',
+
+  'xdescribe["each"]``',
+  'xdescribe.each``',
+
+  'fdescribe["each"]()',
+  'fdescribe.each()',
+
+  'fdescribe["each"]``',
+  'fdescribe.each``',
+
+  'describe["skip"]',
+  'describe.skip',
+
+  'describe["only"]',
+  'describe.only',
+
+  'describe["each"]()',
+  'describe.each()',
+
+  'describe["each"]``',
+  'describe.each``',
+
+  'fdescribe',
+  'xdescribe',
+  'describe',
+];
+
 ruleTester.run('describe', rule, {
-  valid: [
-    'describe["skip"]["each"]()',
-    'describe["skip"].each()',
-    'describe.skip["each"]()',
-    'describe.skip.each()',
-
-    'describe["skip"]["each"]``',
-    'describe["skip"].each``',
-    'describe.skip["each"]``',
-    'describe.skip.each``',
-
-    'describe["only"]["each"]()',
-    'describe["only"].each()',
-    'describe.only["each"]()',
-    'describe.only.each()',
-
-    'describe["only"]["each"]``',
-    'describe["only"].each``',
-    'describe.only["each"]``',
-    'describe.only.each``',
-
-    'xdescribe["each"]()',
-    'xdescribe.each()',
-
-    'xdescribe["each"]``',
-    'xdescribe.each``',
-
-    'fdescribe["each"]()',
-    'fdescribe.each()',
-
-    'fdescribe["each"]``',
-    'fdescribe.each``',
-
-    'describe["skip"]',
-    'describe.skip',
-
-    'describe["only"]',
-    'describe.only',
-
-    'describe["each"]()',
-    'describe.each()',
-
-    'describe["each"]``',
-    'describe.each``',
-
-    'fdescribe',
-    'xdescribe',
-    'describe',
-  ],
-  invalid: [
-    ...[
-      'describe["skip"]["each"]()()',
-      'describe["skip"].each()()',
-      'describe.skip["each"]()()',
-      'describe.skip.each()()',
-
-      'describe["skip"]["each"]``()',
-      'describe["skip"].each``()',
-      'describe.skip["each"]``()',
-      'describe.skip.each``()',
-
-      'describe["only"]["each"]()()',
-      'describe["only"].each()()',
-      'describe.only["each"]()()',
-      'describe.only.each()()',
-
-      'describe["only"]["each"]``()',
-      'describe["only"].each``()',
-
-      'describe.only["each"]``()',
-      'describe.only.each``()',
-
-      'xdescribe["each"]()()',
-      'xdescribe.each()()',
-
-      'xdescribe["each"]``()',
-      'xdescribe.each``()',
-
-      'fdescribe["each"]()()',
-      'fdescribe.each()()',
-
-      'fdescribe["each"]``()',
-      'fdescribe.each``()',
-
-      'describe["skip"]()',
-      'describe.skip()',
-
-      'describe["only"]()',
-      'describe.only()',
-
-      'describe["each"]()()',
-      'describe.each()()',
-
-      'describe["each"]``()',
-      'describe.each``()',
-
-      'fdescribe()',
-      'xdescribe()',
-      'describe()',
-    ].map(code => ({
-      code,
-      errors: [
-        {
-          messageId: 'foundDescribeCall' as const,
-          data: {},
-          column: 1,
-          line: 1,
-        },
-      ],
-    })),
-  ],
+  valid: describeMemberExpressions,
+  invalid: describeMemberExpressions.map(code => ({
+    code: `${code}('works', () => {})`,
+    errors: [
+      {
+        messageId: 'foundDescribeCall' as const,
+        data: {},
+        column: 1,
+        line: 1,
+      },
+    ],
+  })),
 });
