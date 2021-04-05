@@ -18,8 +18,11 @@ const rule = createRule({
       recommended: false,
     },
     messages: {
-      foundDescribeCall: 'found a call to `describe`',
-      foundTestCaseCall: 'found a call to a test case',
+      details: [
+        'callType', //
+      ]
+        .map(data => `${data}: {{ ${data} }}`)
+        .join('\n'),
     },
     schema: [],
     type: 'problem',
@@ -27,14 +30,15 @@ const rule = createRule({
   defaultOptions: [],
   create: context => ({
     CallExpression(node) {
-      const messageId =
-        (isDescribeCall(node) && ('foundDescribeCall' as const)) ||
-        (isTestCaseCall(node) && ('foundTestCaseCall' as const));
+      const callType =
+        (isDescribeCall(node) && ('describe' as const)) ||
+        (isTestCaseCall(node) && ('test' as const));
 
-      if (messageId) {
+      if (callType) {
         context.report({
-          messageId,
+          messageId: 'details',
           node,
+          data: { callType },
         });
       }
     },
@@ -58,210 +62,207 @@ ruleTester.run('nonexistent methods', rule, {
   invalid: [],
 });
 
-const itMemberExpressions = [
-  'it["concurrent"]["skip"]',
-  'it["concurrent"].skip',
-  'it.concurrent["skip"]',
-  'it.concurrent.skip',
+/**
+ * Tests the AST utils against the given member expressions both
+ * as is and as call expressions.
+ *
+ * @param {string[]} memberExpressions
+ * @param {"describe" | "test"} callType
+ * @param {boolean} skip
+ */
+const testUtilsAgainst = (
+  memberExpressions: string[],
+  callType: 'describe' | 'test',
+  skip = false,
+) => {
+  if (skip) {
+    return;
+  }
 
-  'it["concurrent"]["only"]',
-  'it["concurrent"].only',
-  'it.concurrent["only"]',
-  'it.concurrent.only',
+  ruleTester.run('it', rule, {
+    valid: memberExpressions,
+    invalid: memberExpressions.map(code => ({
+      code: `${code}("works", () => {})`,
+      errors: [
+        {
+          messageId: 'details' as const,
+          data: { callType },
+          column: 1,
+          line: 1,
+        },
+      ],
+    })),
+  });
+};
 
-  'it["skip"]["each"]()',
-  'it["skip"].each()',
-  'it.skip["each"]()',
-  'it.skip.each()',
+testUtilsAgainst(
+  [
+    'it["concurrent"]["skip"]',
+    'it["concurrent"].skip',
+    'it.concurrent["skip"]',
+    'it.concurrent.skip',
 
-  'it["skip"]["each"]``',
-  'it["skip"].each``',
-  'it.skip["each"]``',
-  'it.skip.each``',
+    'it["concurrent"]["only"]',
+    'it["concurrent"].only',
+    'it.concurrent["only"]',
+    'it.concurrent.only',
 
-  'it["only"]["each"]()',
-  'it["only"].each()',
-  'it.only["each"]()',
-  'it.only.each()',
+    'it["skip"]["each"]()',
+    'it["skip"].each()',
+    'it.skip["each"]()',
+    'it.skip.each()',
 
-  'it["only"]["each"]``',
-  'it["only"].each``',
-  'it.only["each"]``',
-  'it.only.each``',
+    'it["skip"]["each"]``',
+    'it["skip"].each``',
+    'it.skip["each"]``',
+    'it.skip.each``',
 
-  'xit["each"]()',
-  'xit.each()',
+    'it["only"]["each"]()',
+    'it["only"].each()',
+    'it.only["each"]()',
+    'it.only.each()',
 
-  'xit["each"]``',
-  'xit.each``',
+    'it["only"]["each"]``',
+    'it["only"].each``',
+    'it.only["each"]``',
+    'it.only.each``',
 
-  'fit["each"]()',
-  'fit.each()',
+    'xit["each"]()',
+    'xit.each()',
 
-  'fit["each"]``',
-  'fit.each``',
+    'xit["each"]``',
+    'xit.each``',
 
-  'it["skip"]',
-  'it.skip',
+    'fit["each"]()',
+    'fit.each()',
 
-  'it["only"]',
-  'it.only',
+    'fit["each"]``',
+    'fit.each``',
 
-  'it["each"]()',
-  'it.each()',
+    'it["skip"]',
+    'it.skip',
 
-  'it["each"]``',
-  'it.each``',
+    'it["only"]',
+    'it.only',
 
-  'fit',
-  'xit',
-  'it',
-];
+    'it["each"]()',
+    'it.each()',
 
-ruleTester.run('it', rule, {
-  valid: itMemberExpressions,
-  invalid: itMemberExpressions.map(code => ({
-    code: `${code}('works', () => {})`,
-    errors: [
-      {
-        messageId: 'foundTestCaseCall' as const,
-        data: {},
-        column: 1,
-        line: 1,
-      },
-    ],
-  })),
-});
+    'it["each"]``',
+    'it.each``',
 
-const testMemberExpressions = [
-  'test["concurrent"]["skip"]',
-  'test["concurrent"].skip',
-  'test.concurrent["skip"]',
-  'test.concurrent.skip',
-
-  'test["concurrent"]["only"]',
-  'test["concurrent"].only',
-  'test.concurrent["only"]',
-  'test.concurrent.only',
-
-  'test["skip"]["each"]()',
-  'test["skip"].each()',
-  'test.skip["each"]()',
-  'test.skip.each()',
-
-  'test["skip"]["each"]``',
-  'test["skip"].each``',
-  'test.skip["each"]``',
-  'test.skip.each``',
-
-  'test["only"]["each"]()',
-  'test["only"].each()',
-  'test.only["each"]()',
-  'test.only.each()',
-
-  'test["only"]["each"]``',
-  'test["only"].each``',
-  'test.only["each"]``',
-  'test.only.each``',
-
-  'xtest["each"]()',
-  'xtest.each()',
-
-  'xtest["each"]``',
-  'xtest.each``',
-
-  'test["skip"]',
-  'test.skip',
-
-  'test["only"]',
-  'test.only',
-
-  'test["each"]()',
-  'test.each()',
-
-  'test["each"]``',
-  'test.each``',
-
-  'xtest',
+    'fit',
+    'xit',
+    'it',
+  ],
   'test',
-];
+);
 
-ruleTester.run('test', rule, {
-  valid: testMemberExpressions,
-  invalid: testMemberExpressions.map(code => ({
-    code: `${code}('works', () => {})`,
-    errors: [
-      {
-        messageId: 'foundTestCaseCall' as const,
-        data: {},
-        column: 1,
-        line: 1,
-      },
-    ],
-  })),
-});
+testUtilsAgainst(
+  [
+    'test["concurrent"]["skip"]',
+    'test["concurrent"].skip',
+    'test.concurrent["skip"]',
+    'test.concurrent.skip',
 
-const describeMemberExpressions = [
-  'describe["skip"]["each"]()',
-  'describe["skip"].each()',
-  'describe.skip["each"]()',
-  'describe.skip.each()',
+    'test["concurrent"]["only"]',
+    'test["concurrent"].only',
+    'test.concurrent["only"]',
+    'test.concurrent.only',
 
-  'describe["skip"]["each"]``',
-  'describe["skip"].each``',
-  'describe.skip["each"]``',
-  'describe.skip.each``',
+    'test["skip"]["each"]()',
+    'test["skip"].each()',
+    'test.skip["each"]()',
+    'test.skip.each()',
 
-  'describe["only"]["each"]()',
-  'describe["only"].each()',
-  'describe.only["each"]()',
-  'describe.only.each()',
+    'test["skip"]["each"]``',
+    'test["skip"].each``',
+    'test.skip["each"]``',
+    'test.skip.each``',
 
-  'describe["only"]["each"]``',
-  'describe["only"].each``',
-  'describe.only["each"]``',
-  'describe.only.each``',
+    'test["only"]["each"]()',
+    'test["only"].each()',
+    'test.only["each"]()',
+    'test.only.each()',
 
-  'xdescribe["each"]()',
-  'xdescribe.each()',
+    'test["only"]["each"]``',
+    'test["only"].each``',
+    'test.only["each"]``',
+    'test.only.each``',
 
-  'xdescribe["each"]``',
-  'xdescribe.each``',
+    'xtest["each"]()',
+    'xtest.each()',
 
-  'fdescribe["each"]()',
-  'fdescribe.each()',
+    'xtest["each"]``',
+    'xtest.each``',
 
-  'fdescribe["each"]``',
-  'fdescribe.each``',
+    'test["skip"]',
+    'test.skip',
 
-  'describe["skip"]',
-  'describe.skip',
+    'test["only"]',
+    'test.only',
 
-  'describe["only"]',
-  'describe.only',
+    'test["each"]()',
+    'test.each()',
 
-  'describe["each"]()',
-  'describe.each()',
+    'test["each"]``',
+    'test.each``',
 
-  'describe["each"]``',
-  'describe.each``',
+    'xtest',
+    'test',
+  ],
+  'test',
+);
 
-  'fdescribe',
-  'xdescribe',
+testUtilsAgainst(
+  [
+    'describe["skip"]["each"]()',
+    'describe["skip"].each()',
+    'describe.skip["each"]()',
+    'describe.skip.each()',
+
+    'describe["skip"]["each"]``',
+    'describe["skip"].each``',
+    'describe.skip["each"]``',
+    'describe.skip.each``',
+
+    'describe["only"]["each"]()',
+    'describe["only"].each()',
+    'describe.only["each"]()',
+    'describe.only.each()',
+
+    'describe["only"]["each"]``',
+    'describe["only"].each``',
+    'describe.only["each"]``',
+    'describe.only.each``',
+
+    'xdescribe["each"]()',
+    'xdescribe.each()',
+
+    'xdescribe["each"]``',
+    'xdescribe.each``',
+
+    'fdescribe["each"]()',
+    'fdescribe.each()',
+
+    'fdescribe["each"]``',
+    'fdescribe.each``',
+
+    'describe["skip"]',
+    'describe.skip',
+
+    'describe["only"]',
+    'describe.only',
+
+    'describe["each"]()',
+    'describe.each()',
+
+    'describe["each"]``',
+    'describe.each``',
+
+    'fdescribe',
+    'xdescribe',
+    'describe',
+  ],
   'describe',
-];
-
-ruleTester.run('describe', rule, {
-  valid: describeMemberExpressions,
-  invalid: describeMemberExpressions.map(code => ({
-    code: `${code}('works', () => {})`,
-    errors: [
-      {
-        messageId: 'foundDescribeCall' as const,
-        data: {},
-        column: 1,
-        line: 1,
-      },
-    ],
-  })),
-});
+);
