@@ -1,3 +1,10 @@
+## [24.3.4](https://github.com/jest-community/eslint-plugin-jest/compare/v24.3.3...v24.3.4) (2021-04-05)
+
+
+### Bug Fixes
+
+* support all variations of `describe`, `it`, & `test` ([#792](https://github.com/jest-community/eslint-plugin-jest/issues/792)) ([0968b55](https://github.com/jest-community/eslint-plugin-jest/commit/0968b557dd9cdb5cfcaf8a0d84e8a456825e6b25))
+
 ## [24.3.3](https://github.com/jest-community/eslint-plugin-jest/compare/v24.3.2...v24.3.3) (2021-04-02)
 
 
