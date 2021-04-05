@@ -1,5 +1,10 @@
 import { AST_NODE_TYPES } from '@typescript-eslint/experimental-utils';
-import { createRule, getNodeName, isDescribe, isTestCase } from './utils';
+import {
+  createRule,
+  getNodeName,
+  isDescribeCall,
+  isTestCaseCall,
+} from './utils';
 
 export default createRule({
   name: __filename,
@@ -22,7 +27,8 @@ export default createRule({
       CallExpression(node) {
         const nodeName = getNodeName(node.callee);
 
-        if (!nodeName || (!isDescribe(node) && !isTestCase(node))) return;
+        if (!nodeName || (!isDescribeCall(node) && !isTestCaseCall(node)))
+          return;
 
         const preferredNodeName = getPreferredNodeName(nodeName);
 

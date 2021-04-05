@@ -1,4 +1,5 @@
 import { TSESLint } from '@typescript-eslint/experimental-utils';
+import dedent from 'dedent';
 import resolveFrom from 'resolve-from';
 import rule from '../no-export';
 
@@ -23,7 +24,40 @@ ruleTester.run('no-export', rule, {
   invalid: [
     {
       code:
-        'export const myThing = "invalid";  test("a test", () => { expect(1).toBe(1);});',
+        'export const myThing = "invalid"; test("a test", () => { expect(1).toBe(1);});',
+      parserOptions: { sourceType: 'module' },
+      errors: [{ endColumn: 34, column: 1, messageId: 'unexpectedExport' }],
+    },
+    {
+      code: dedent`
+        export const myThing = 'invalid';
+
+        test.each()('my code', () => {
+          expect(1).toBe(1);
+        });
+      `,
+      parserOptions: { sourceType: 'module' },
+      errors: [{ endColumn: 34, column: 1, messageId: 'unexpectedExport' }],
+    },
+    {
+      code: dedent`
+        export const myThing = 'invalid';
+
+        test.each\`\`('my code', () => {
+          expect(1).toBe(1);
+        });
+      `,
+      parserOptions: { sourceType: 'module' },
+      errors: [{ endColumn: 34, column: 1, messageId: 'unexpectedExport' }],
+    },
+    {
+      code: dedent`
+        export const myThing = 'invalid';
+
+        test.only.each\`\`('my code', () => {
+          expect(1).toBe(1);
+        });
+      `,
       parserOptions: { sourceType: 'module' },
       errors: [{ endColumn: 34, column: 1, messageId: 'unexpectedExport' }],
     },

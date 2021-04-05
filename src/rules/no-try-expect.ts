@@ -3,7 +3,7 @@ import {
   createRule,
   getTestCallExpressionsFromDeclaredVariables,
   isExpectCall,
-  isTestCase,
+  isTestCaseCall,
 } from './utils';
 
 export default createRule({
@@ -37,7 +37,7 @@ export default createRule({
 
     return {
       CallExpression(node) {
-        if (isTestCase(node)) {
+        if (isTestCaseCall(node)) {
           isTest = true;
         } else if (isTest && isThrowExpectCall(node)) {
           context.report({
@@ -67,7 +67,7 @@ export default createRule({
         }
       },
       'CallExpression:exit'(node) {
-        if (isTestCase(node)) {
+        if (isTestCaseCall(node)) {
           isTest = false;
         }
       },

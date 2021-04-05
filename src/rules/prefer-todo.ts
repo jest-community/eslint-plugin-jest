@@ -11,7 +11,7 @@ import {
   hasOnlyOneArgument,
   isFunction,
   isStringNode,
-  isTestCase,
+  isTestCaseCall,
 } from './utils';
 
 function isEmptyFunction(node: TSESTree.Expression) {
@@ -36,7 +36,7 @@ function createTodoFixer(
 const isTargetedTestCase = (
   node: TSESTree.CallExpression,
 ): node is JestFunctionCallExpression<TestCaseName> =>
-  isTestCase(node) &&
+  isTestCaseCall(node) &&
   [TestCaseName.it, TestCaseName.test, 'it.skip', 'test.skip'].includes(
     getNodeName(node.callee),
   );

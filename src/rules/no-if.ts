@@ -7,7 +7,7 @@ import {
   createRule,
   getNodeName,
   getTestCallExpressionsFromDeclaredVariables,
-  isTestCase,
+  isTestCaseCall,
 } from './utils';
 
 const testCaseNames = new Set<string | null>([
@@ -75,7 +75,7 @@ export default createRule({
 
     return {
       CallExpression(node) {
-        if (isTestCase(node)) {
+        if (isTestCaseCall(node)) {
           stack.push(true);
         }
       },

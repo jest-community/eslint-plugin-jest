@@ -11,7 +11,7 @@ import {
   isEachCall,
   isFunction,
   isSupportedAccessor,
-  isTestCase,
+  isTestCaseCall,
 } from './utils';
 
 const isExpectAssertionsOrHasAssertionsCall = (
@@ -101,7 +101,7 @@ export default createRule<[RuleOptions], MessageIds>({
   create(context, [options]) {
     return {
       CallExpression(node: TSESTree.CallExpression) {
-        if (!isTestCase(node)) {
+        if (!isTestCaseCall(node)) {
           return;
         }
 

@@ -2,9 +2,9 @@ import { AST_NODE_TYPES } from '@typescript-eslint/experimental-utils';
 import {
   createRule,
   getStringValue,
-  isDescribe,
+  isDescribeCall,
   isStringNode,
-  isTestCase,
+  isTestCaseCall,
 } from './utils';
 
 interface DescribeContext {
@@ -42,7 +42,7 @@ export default createRule({
       CallExpression(node) {
         const currentLayer = contexts[contexts.length - 1];
 
-        if (isDescribe(node)) {
+        if (isDescribeCall(node)) {
           contexts.push(newDescribeContext());
         }
 
@@ -58,7 +58,7 @@ export default createRule({
 
         const title = getStringValue(argument);
 
-        if (isTestCase(node)) {
+        if (isTestCaseCall(node)) {
           if (currentLayer.testTitles.includes(title)) {
             context.report({
               messageId: 'multipleTestTitle',
@@ -68,7 +68,7 @@ export default createRule({
           currentLayer.testTitles.push(title);
         }
 
-        if (!isDescribe(node)) {
+        if (!isDescribeCall(node)) {
           return;
         }
         if (currentLayer.describeTitles.includes(title)) {
@@ -80,7 +80,7 @@ export default createRule({
         currentLayer.describeTitles.push(title);
       },
       'CallExpression:exit'(node) {
-        if (isDescribe(node)) {
+        if (isDescribeCall(node)) {
           contexts.pop();
         }
       },

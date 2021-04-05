@@ -214,6 +214,32 @@ ruleTester.run('consistent-test-it with fn=test', rule, {
       ],
     },
     {
+      code: dedent`
+        describe.only.each()("%s", () => {
+          test("is valid, but should not be", () => {});
+
+          it("is not valid, but should be", () => {});
+        });
+      `,
+      output: dedent`
+        describe.only.each()("%s", () => {
+          it("is valid, but should not be", () => {});
+
+          it("is not valid, but should be", () => {});
+        });
+      `,
+      options: [{ fn: TestCaseName.test, withinDescribe: TestCaseName.it }],
+      errors: [
+        {
+          messageId: 'consistentMethodWithinDescribe',
+          data: {
+            testKeywordWithinDescribe: TestCaseName.it,
+            oppositeTestKeyword: TestCaseName.test,
+          },
+        },
+      ],
+    },
+    {
       code: 'describe("suite", () => { it("foo") })',
       output: 'describe("suite", () => { test("foo") })',
       options: [{ fn: TestCaseName.test }],

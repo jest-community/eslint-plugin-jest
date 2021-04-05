@@ -52,6 +52,10 @@ ruleTester.run('lowercase-name', rule, {
     'describe(function () {})',
     'describe(``)',
     'describe("")',
+    dedent`
+      describe.each()(1);
+      describe.each()(2);
+    `,
     'describe(42)',
     {
       code: 'describe(42)',

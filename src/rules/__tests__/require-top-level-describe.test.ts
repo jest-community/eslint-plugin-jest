@@ -12,6 +12,7 @@ const ruleTester = new TSESLint.RuleTester({
 
 ruleTester.run('require-top-level-describe', rule, {
   valid: [
+    'it.each()',
     'describe("test suite", () => { test("my test") });',
     'describe("test suite", () => { it("my test") });',
     dedent`
@@ -90,7 +91,23 @@ ruleTester.run('require-top-level-describe', rule, {
       errors: [{ messageId: 'unexpectedHook' }],
     },
     {
+      code: "it.skip('test', () => {});",
+      errors: [{ messageId: 'unexpectedTestCase' }],
+    },
+    {
       code: "it.each([1, 2, 3])('%n', () => {});",
+      errors: [{ messageId: 'unexpectedTestCase' }],
+    },
+    {
+      code: "it.skip.each([1, 2, 3])('%n', () => {});",
+      errors: [{ messageId: 'unexpectedTestCase' }],
+    },
+    {
+      code: "it.skip.each``('%n', () => {});",
+      errors: [{ messageId: 'unexpectedTestCase' }],
+    },
+    {
+      code: "it.each``('%n', () => {});",
       errors: [{ messageId: 'unexpectedTestCase' }],
     },
   ],

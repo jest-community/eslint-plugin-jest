@@ -354,6 +354,26 @@ ruleTester.run('title-must-be-string', rule, {
       ],
     },
     {
+      code: 'it.skip.each([])(1, () => {});',
+      errors: [
+        {
+          messageId: 'titleMustBeString',
+          column: 18,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: 'it.skip.each``(1, () => {});',
+      errors: [
+        {
+          messageId: 'titleMustBeString',
+          column: 16,
+          line: 1,
+        },
+      ],
+    },
+    {
       code: 'it(123, () => {});',
       errors: [
         {
@@ -657,6 +677,16 @@ ruleTester.run('no-accidental-space', rule, {
       code: 'describe(" foo", function () {})',
       output: 'describe("foo", function () {})',
       errors: [{ messageId: 'accidentalSpace', column: 10, line: 1 }],
+    },
+    {
+      code: 'describe.each()(" foo", function () {})',
+      output: 'describe.each()("foo", function () {})',
+      errors: [{ messageId: 'accidentalSpace', column: 17, line: 1 }],
+    },
+    {
+      code: 'describe.only.each()(" foo", function () {})',
+      output: 'describe.only.each()("foo", function () {})',
+      errors: [{ messageId: 'accidentalSpace', column: 22, line: 1 }],
     },
     {
       code: 'describe(" foo foe fum", function () {})',

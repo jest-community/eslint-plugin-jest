@@ -54,6 +54,30 @@ ruleTester.run('no-test-return-statement', rule, {
     },
     {
       code: dedent`
+        it.skip("one", function () {
+          return expect(1).toBe(1);
+        });
+      `,
+      errors: [{ messageId: 'noReturnValue', column: 3, line: 2 }],
+    },
+    {
+      code: dedent`
+        it.each\`\`("one", function () {
+          return expect(1).toBe(1);
+        });
+      `,
+      errors: [{ messageId: 'noReturnValue', column: 3, line: 2 }],
+    },
+    {
+      code: dedent`
+        it.only.each\`\`("one", function () {
+          return expect(1).toBe(1);
+        });
+      `,
+      errors: [{ messageId: 'noReturnValue', column: 3, line: 2 }],
+    },
+    {
+      code: dedent`
         it("one", myTest);
         function myTest () {
           return expect(1).toBe(1);

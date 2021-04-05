@@ -3,7 +3,7 @@ import {
   createRule,
   getTestCallExpressionsFromDeclaredVariables,
   isExpectCall,
-  isTestCase,
+  isTestCaseCall,
 } from './utils';
 
 export default createRule({
@@ -40,7 +40,7 @@ export default createRule({
         }
       },
       CallExpression(node: TSESTree.CallExpression) {
-        if (isTestCase(node)) {
+        if (isTestCaseCall(node)) {
           inTestCase = true;
         }
 
@@ -52,7 +52,7 @@ export default createRule({
         }
       },
       'CallExpression:exit'(node) {
-        if (isTestCase(node)) {
+        if (isTestCaseCall(node)) {
           inTestCase = false;
         }
       },

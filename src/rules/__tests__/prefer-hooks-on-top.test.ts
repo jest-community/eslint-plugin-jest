@@ -45,6 +45,48 @@ ruleTester.run('basic describe block', rule, {
         },
       ],
     },
+    {
+      code: dedent`
+        describe('foo', () => {
+          beforeEach(() => {});
+          test.each\`\`('bar', () => {
+            someFn();
+          });
+          beforeAll(() => {});
+          test.only('bar', () => {
+            someFn();
+          });
+        });
+      `,
+      errors: [
+        {
+          messageId: 'noHookOnTop',
+          column: 3,
+          line: 6,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        describe('foo', () => {
+          beforeEach(() => {});
+          test.only.each\`\`('bar', () => {
+            someFn();
+          });
+          beforeAll(() => {});
+          test.only('bar', () => {
+            someFn();
+          });
+        });
+      `,
+      errors: [
+        {
+          messageId: 'noHookOnTop',
+          column: 3,
+          line: 6,
+        },
+      ],
+    },
   ],
 });
 
