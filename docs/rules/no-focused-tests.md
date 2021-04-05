@@ -12,7 +12,7 @@ whenever you are using the exclusivity feature.
 ## Rule Details
 
 This rule looks for every `describe.only`, `it.only`, `test.only`, `fdescribe`,
-`fit` and `ftest` occurrences within the source code. Of course there are some
+and `fit` occurrences within the source code. Of course there are some
 edge-cases which can’t be detected by this rule e.g.:
 
 ```js
@@ -31,11 +31,7 @@ test.only('foo', () => {});
 test['only']('bar', () => {});
 fdescribe('foo', () => {});
 fit('foo', () => {});
-ftest('bar', () => {});
 fit.each`
-  table
-`();
-ftest.each`
   table
 `();
 ```

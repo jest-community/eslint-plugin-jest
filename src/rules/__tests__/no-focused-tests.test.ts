@@ -317,21 +317,5 @@ ruleTester.run('no-focused-tests', rule, {
         },
       ],
     },
-    {
-      code: 'ftest.each`table`()',
-      errors: [
-        {
-          messageId: 'focusedTest',
-          column: 1,
-          line: 1,
-          suggestions: [
-            {
-              messageId: 'suggestRemoveFocus',
-              output: 'test.each`table`()',
-            },
-          ],
-        },
-      ],
-    },
   ],
 });
