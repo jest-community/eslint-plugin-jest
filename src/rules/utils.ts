@@ -262,7 +262,7 @@ export const getAccessorValue = <S extends string = string>(
     ? accessor.name
     : getStringValue(accessor);
 
-type AccessorNode<Specifics extends string = string> =
+export type AccessorNode<Specifics extends string = string> =
   | StringNode<Specifics>
   | KnownIdentifier<Specifics>;
 
@@ -609,7 +609,10 @@ type JestEachCallExpression<
 > = JestCalledEachCallExpression<TName> | JestTaggedEachCallExpression<TName>;
 
 export type JestFunctionCallExpression<
-  FunctionName extends Exclude<JestFunctionName, HookName>
+  FunctionName extends Exclude<JestFunctionName, HookName> = Exclude<
+    JestFunctionName,
+    HookName
+  >
 > =
   | JestEachCallExpression<FunctionName>
   | JestFunctionCallExpressionWithMemberExpressionCallee<FunctionName>

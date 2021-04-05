@@ -46,7 +46,7 @@ ruleTester.run('no-focused-tests', rule, {
       ],
     },
     {
-      code: 'describe.only.each()',
+      code: 'describe.only.each()()',
       errors: [
         {
           messageId: 'focusedTest',
@@ -55,7 +55,7 @@ ruleTester.run('no-focused-tests', rule, {
           suggestions: [
             {
               messageId: 'suggestRemoveFocus',
-              output: 'describe.each()',
+              output: 'describe.each()()',
             },
           ],
         },
@@ -126,7 +126,7 @@ ruleTester.run('no-focused-tests', rule, {
       ],
     },
     {
-      code: 'it.only.each()',
+      code: 'it.only.each()()',
       errors: [
         {
           messageId: 'focusedTest',
@@ -135,7 +135,7 @@ ruleTester.run('no-focused-tests', rule, {
           suggestions: [
             {
               messageId: 'suggestRemoveFocus',
-              output: 'it.each()',
+              output: 'it.each()()',
             },
           ],
         },
@@ -206,7 +206,7 @@ ruleTester.run('no-focused-tests', rule, {
       ],
     },
     {
-      code: 'test.only.each()',
+      code: 'test.only.each()()',
       errors: [
         {
           messageId: 'focusedTest',
@@ -215,7 +215,7 @@ ruleTester.run('no-focused-tests', rule, {
           suggestions: [
             {
               messageId: 'suggestRemoveFocus',
-              output: 'test.each()',
+              output: 'test.each()()',
             },
           ],
         },
@@ -286,7 +286,7 @@ ruleTester.run('no-focused-tests', rule, {
       ],
     },
     {
-      code: 'fit.each()',
+      code: 'fit.each()()',
       errors: [
         {
           messageId: 'focusedTest',
@@ -295,7 +295,7 @@ ruleTester.run('no-focused-tests', rule, {
           suggestions: [
             {
               messageId: 'suggestRemoveFocus',
-              output: 'it.each()',
+              output: 'it.each()()',
             },
           ],
         },
