@@ -4,7 +4,6 @@ import {
 } from '@typescript-eslint/experimental-utils';
 import {
   DescribeAlias,
-  TestCaseName,
   createRule,
   getNodeName,
   isDescribeCall,
@@ -46,14 +45,6 @@ const getBlockType = (
 
   return null;
 };
-
-const isEach = (node: TSESTree.CallExpression): boolean =>
-  node.callee.type === AST_NODE_TYPES.CallExpression &&
-  node.callee.callee.type === AST_NODE_TYPES.MemberExpression &&
-  node.callee.callee.property.type === AST_NODE_TYPES.Identifier &&
-  node.callee.callee.property.name === 'each' &&
-  node.callee.callee.object.type === AST_NODE_TYPES.Identifier &&
-  TestCaseName.hasOwnProperty(node.callee.callee.object.name);
 
 type BlockType = 'test' | 'function' | 'describe' | 'arrow' | 'template';
 
@@ -121,9 +112,8 @@ export default createRule<
 
         if (
           (top === 'test' &&
-            (isEach(node) ||
-              (isTestBlock(node) &&
-                node.callee.type !== AST_NODE_TYPES.MemberExpression))) ||
+            isTestBlock(node) &&
+            node.callee.type !== AST_NODE_TYPES.MemberExpression) ||
           (top === 'template' &&
             node.callee.type === AST_NODE_TYPES.TaggedTemplateExpression)
         ) {
