@@ -20,6 +20,7 @@ const rule = createRule({
     messages: {
       details: [
         'callType', //
+        'numOfArgs',
       ]
         .map(data => `${data}: {{ ${data} }}`)
         .join('\n'),
@@ -38,7 +39,10 @@ const rule = createRule({
         context.report({
           messageId: 'details',
           node,
-          data: { callType },
+          data: {
+            callType,
+            numOfArgs: node.arguments.length,
+          },
         });
       }
     },
@@ -86,7 +90,10 @@ const testUtilsAgainst = (
       errors: [
         {
           messageId: 'details' as const,
-          data: { callType },
+          data: {
+            callType,
+            numOfArgs: 2,
+          },
           column: 1,
           line: 1,
         },

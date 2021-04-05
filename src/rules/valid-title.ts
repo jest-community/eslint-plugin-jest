@@ -237,7 +237,7 @@ export default createRule<[Options], MessageIds>({
           });
         }
 
-        const nodeName = trimFXprefix(getNodeName(node.callee));
+        const nodeName = trimFXprefix(getNodeName(node));
         const [firstWord] = title.split(' ');
 
         if (firstWord.toLowerCase() === nodeName) {

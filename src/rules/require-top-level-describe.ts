@@ -1,11 +1,5 @@
 import { TSESTree } from '@typescript-eslint/experimental-utils';
-import {
-  createRule,
-  isDescribeCall,
-  isEachCall,
-  isHook,
-  isTestCaseCall,
-} from './utils';
+import { createRule, isDescribeCall, isHook, isTestCaseCall } from './utils';
 
 export default createRule({
   name: __filename,
@@ -50,7 +44,7 @@ export default createRule({
         }
       },
       'CallExpression:exit'(node: TSESTree.CallExpression) {
-        if (isDescribeCall(node) && !isEachCall(node)) {
+        if (isDescribeCall(node)) {
           numberOfDescribeBlocks--;
         }
       },

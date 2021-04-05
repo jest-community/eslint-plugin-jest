@@ -2,13 +2,7 @@ import {
   AST_NODE_TYPES,
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
-import {
-  createRule,
-  getJestFunctionArguments,
-  isDescribeCall,
-  isEachCall,
-  isFunction,
-} from './utils';
+import { createRule, isDescribeCall, isEachCall, isFunction } from './utils';
 
 const paramsLocation = (
   params: TSESTree.Expression[] | TSESTree.Parameter[],
@@ -45,28 +39,23 @@ export default createRule({
   create(context) {
     return {
       CallExpression(node) {
-        if (
-          !isDescribeCall(node) ||
-          node.callee.type === AST_NODE_TYPES.TaggedTemplateExpression
-        ) {
+        if (!isDescribeCall(node)) {
           return;
         }
 
-        const nodeArguments = getJestFunctionArguments(node);
-
-        if (nodeArguments.length < 1) {
+        if (node.arguments.length < 1) {
           return context.report({
             messageId: 'nameAndCallback',
             loc: node.loc,
           });
         }
 
-        const [, callback] = nodeArguments;
+        const [, callback] = node.arguments;
 
         if (!callback) {
           context.report({
             messageId: 'nameAndCallback',
-            loc: paramsLocation(nodeArguments),
+            loc: paramsLocation(node.arguments),
           });
 
           return;
@@ -75,7 +64,7 @@ export default createRule({
         if (!isFunction(callback)) {
           context.report({
             messageId: 'secondArgumentMustBeFunction',
-            loc: paramsLocation(nodeArguments),
+            loc: paramsLocation(node.arguments),
           });
 
           return;
