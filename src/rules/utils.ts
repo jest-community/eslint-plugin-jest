@@ -794,39 +794,6 @@ export const isDescribeCall = (
   return false;
 };
 
-/**
- * Checks if the given node` is a call to `<describe|test|it>.each(...)()`.
- * If `true`, the code must look like `<method>.each(...)()`.
- *
- * @param {JestFunctionCallExpression<DescribeAlias | TestCaseName>} node
- *
- * @return {node is JestFunctionCallExpressionWithMemberExpressionCallee<DescribeAlias | TestCaseName, DescribeProperty.each | TestCaseProperty.each> & {parent: TSESTree.CallExpression}}
- */
-export const isEachCall = (
-  node: JestFunctionCallExpression<DescribeAlias | TestCaseName>,
-): node is JestEachCallExpression<DescribeAlias | TestCaseName> =>
-  getNodeName(node).endsWith('each');
-
-/**
- * Gets the arguments of the given `JestFunctionCallExpression`.
- *
- * If the `node` is an `each` call, then the arguments of the actual suite
- * are returned, rather then the `each` array argument.
- *
- * @param {JestFunctionCallExpression<DescribeAlias | TestCaseName>} node
- *
- * @return {Expression[]}
- */
-export const getJestFunctionArguments = (
-  node: JestFunctionCallExpression<DescribeAlias | TestCaseName>,
-) =>
-  node.callee.type === AST_NODE_TYPES.MemberExpression &&
-  isSupportedAccessor(node.callee.property, DescribeProperty.each) &&
-  node.parent &&
-  node.parent.type === AST_NODE_TYPES.CallExpression
-    ? node.parent.arguments
-    : node.arguments;
-
 const collectReferences = (scope: TSESLint.Scope.Scope) => {
   const locals = new Set();
   const unresolved = new Set();

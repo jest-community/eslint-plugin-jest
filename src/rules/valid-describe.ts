@@ -2,7 +2,7 @@ import {
   AST_NODE_TYPES,
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
-import { createRule, isDescribeCall, isEachCall, isFunction } from './utils';
+import { createRule, getNodeName, isDescribeCall, isFunction } from './utils';
 
 const paramsLocation = (
   params: TSESTree.Expression[] | TSESTree.Parameter[],
@@ -77,7 +77,7 @@ export default createRule({
           });
         }
 
-        if (!isEachCall(node) && callback.params.length) {
+        if (!getNodeName(node).endsWith('each') && callback.params.length) {
           context.report({
             messageId: 'unexpectedDescribeArgument',
             loc: paramsLocation(callback.params),
