@@ -4539,12 +4539,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-eslint-plugin@npm:^2.0.0":
-  version: 2.3.0
-  resolution: "eslint-plugin-eslint-plugin@npm:2.3.0"
+"eslint-plugin-eslint-plugin@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "eslint-plugin-eslint-plugin@npm:3.0.0"
   peerDependencies:
-    eslint: ">=5.0.0"
-  checksum: f0eb87c8e1156f0fd1c842cc20e571e2ada85d9f8e70d9374cb44ef0f3c2ef1b499796e39af6438a8d9b23656afb761d9b65dde50ff81883003410e9b35cd5da
+    eslint: ^7.0.0
+  checksum: 18ac378fb7e18980371dc6dc85d2d188343fa0b88fb1d8dbf4989278568026b3a42119ec45ffa35ef5fe6d7553c1896c6cd3fbaa28a8df30252f5b6d2c6ae282
   languageName: node
   linkType: hard
 
@@ -4598,7 +4598,7 @@ __metadata:
     eslint-config-prettier: ^6.5.0
     eslint-plugin-eslint-comments: ^3.1.2
     eslint-plugin-eslint-config: ^2.0.0
-    eslint-plugin-eslint-plugin: ^2.0.0
+    eslint-plugin-eslint-plugin: ^3.0.0
     eslint-plugin-import: ^2.20.2
     eslint-plugin-node: ^11.0.0
     eslint-plugin-prettier: ^3.0.0
