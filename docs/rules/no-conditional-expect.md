@@ -3,6 +3,9 @@
 This rule prevents the use of `expect` in conditional blocks, such as `if`s &
 `catch`s.
 
+This includes using `expect` in callbacks to functions named `catch`, which are
+assumed to be promises.
+
 ## Rule Details
 
 Jest considered a test to have failed if it throws an error, rather than on if
@@ -37,6 +40,10 @@ it('baz', async () => {
     expect(err).toMatchObject({ code: 'MODULE_NOT_FOUND' });
   }
 });
+
+it('throws an error', async () => {
+  await foo().catch(error => expect(error).toBeInstanceOf(error));
+});
 ```
 
 The following patterns are not warnings:
@@ -66,5 +73,9 @@ it('validates the request', () => {
   } finally {
     expect(validRequest).toHaveBeenCalledWith(request);
   }
+});
+
+it('throws an error', async () => {
+  await expect(foo).rejects.toThrow(Error);
 });
 ```
