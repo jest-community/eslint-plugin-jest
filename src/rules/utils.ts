@@ -763,21 +763,6 @@ export const isDescribeCall = (
   return false;
 };
 
-export const isDescribe = (
-  node: TSESTree.CallExpression,
-): node is JestFunctionCallExpression<DescribeAlias> =>
-  (node.callee.type === AST_NODE_TYPES.Identifier &&
-    DescribeAlias.hasOwnProperty(node.callee.name)) ||
-  (node.callee.type === AST_NODE_TYPES.MemberExpression &&
-    node.callee.object.type === AST_NODE_TYPES.Identifier &&
-    DescribeAlias.hasOwnProperty(node.callee.object.name) &&
-    node.callee.property.type === AST_NODE_TYPES.Identifier &&
-    DescribeProperty.hasOwnProperty(node.callee.property.name)) ||
-  (node.callee.type === AST_NODE_TYPES.TaggedTemplateExpression &&
-    node.callee.tag.type === AST_NODE_TYPES.MemberExpression &&
-    node.callee.tag.object.type === AST_NODE_TYPES.Identifier &&
-    DescribeAlias.hasOwnProperty(node.callee.tag.object.name));
-
 /**
  * Checks if the given node` is a call to `<describe|test|it>.each(...)()`.
  * If `true`, the code must look like `<method>.each(...)()`.

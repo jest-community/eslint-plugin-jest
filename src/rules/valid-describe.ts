@@ -5,7 +5,7 @@ import {
 import {
   createRule,
   getJestFunctionArguments,
-  isDescribe,
+  isDescribeCall,
   isEachCall,
   isFunction,
 } from './utils';
@@ -46,7 +46,7 @@ export default createRule({
     return {
       CallExpression(node) {
         if (
-          !isDescribe(node) ||
+          !isDescribeCall(node) ||
           node.callee.type === AST_NODE_TYPES.TaggedTemplateExpression
         ) {
           return;
