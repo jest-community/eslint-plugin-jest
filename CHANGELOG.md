@@ -1,3 +1,10 @@
+## [24.3.5](https://github.com/jest-community/eslint-plugin-jest/compare/v24.3.4...v24.3.5) (2021-04-10)
+
+
+### Bug Fixes
+
+* **valid-describe:** support using `each` with modifiers ([#820](https://github.com/jest-community/eslint-plugin-jest/issues/820)) ([cbdbcef](https://github.com/jest-community/eslint-plugin-jest/commit/cbdbcef47984eb01509493bd5b2423f518a2663d))
+
 ## [24.3.4](https://github.com/jest-community/eslint-plugin-jest/compare/v24.3.3...v24.3.4) (2021-04-05)
 
 
