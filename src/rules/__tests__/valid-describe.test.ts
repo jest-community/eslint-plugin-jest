@@ -12,11 +12,6 @@ const ruleTester = new TSESLint.RuleTester({
 
 ruleTester.run('valid-describe', rule, {
   valid: [
-    'describe["each"]()()',
-    'describe["each"](() => {})()',
-    'describe["each"](() => {})("foo")',
-    'describe["each"]()(() => {})',
-    'describe["each"]("foo")(() => {})',
     'describe.each([1, 2, 3])("%s", (a, b) => {});',
     'describe("foo", function() {})',
     'describe("foo", () => {})',
@@ -51,16 +46,19 @@ ruleTester.run('valid-describe', rule, {
       }
     `,
     dedent`
-    describe.each\`
-    something | other
-    ${1} | ${2} |
-    \`
-    ("$something", ({ something, other }) => { });
+      describe.each\`
+        foo  | foe
+        ${1} | ${2}
+      \`('$something', ({ foo, foe }) => {});
     `,
   ],
   invalid: [
     {
       code: 'describe.each()()',
+      errors: [{ messageId: 'nameAndCallback', line: 1, column: 1 }],
+    },
+    {
+      code: 'describe["each"]()()',
       errors: [{ messageId: 'nameAndCallback', line: 1, column: 1 }],
     },
     {
@@ -76,8 +74,16 @@ ruleTester.run('valid-describe', rule, {
       errors: [{ messageId: 'nameAndCallback', line: 1, column: 17 }],
     },
     {
+      code: 'describe["each"]()(() => {})',
+      errors: [{ messageId: 'nameAndCallback', line: 1, column: 20 }],
+    },
+    {
       code: 'describe.each("foo")(() => {})',
       errors: [{ messageId: 'nameAndCallback', line: 1, column: 22 }],
+    },
+    {
+      code: 'describe.only.each("foo")(() => {})',
+      errors: [{ messageId: 'nameAndCallback', line: 1, column: 27 }],
     },
     {
       code: 'describe(() => {})',
