@@ -153,6 +153,14 @@ ruleTester.run('logical conditions', rule, {
     },
     {
       code: `
+        it.each()('foo', () => {
+          something || expect(something).toHaveBeenCalled();
+        })
+      `,
+      errors: [{ messageId: 'conditionalExpect' }],
+    },
+    {
+      code: `
         function getValue() {
           something || expect(something).toHaveBeenCalled(); 
         }
@@ -213,6 +221,14 @@ ruleTester.run('conditional conditions', rule, {
     {
       code: `
         it.each\`\`('foo', () => {
+          something ? noop() : expect(something).toHaveBeenCalled();
+        })
+      `,
+      errors: [{ messageId: 'conditionalExpect' }],
+    },
+    {
+      code: `
+        it.each()('foo', () => {
           something ? noop() : expect(something).toHaveBeenCalled();
         })
       `,
@@ -306,6 +322,19 @@ ruleTester.run('switch conditions', rule, {
     },
     {
       code: `
+        it.each()('foo', () => {
+          switch(something) {
+            case 'value':
+              expect(something).toHaveBeenCalled();
+            default:
+              break;
+          }
+        })
+      `,
+      errors: [{ messageId: 'conditionalExpect' }],
+    },
+    {
+      code: `
         function getValue() {
           switch(something) {
             case 'value':
@@ -375,6 +404,18 @@ ruleTester.run('if conditions', rule, {
     {
       code: `
         it.each\`\`('foo', () => {
+          if(!doSomething) {
+            // do nothing
+          } else {
+            expect(something).toHaveBeenCalled();
+          }
+        })
+      `,
+      errors: [{ messageId: 'conditionalExpect' }],
+    },
+    {
+      code: `
+        it.each()('foo', () => {
           if(!doSomething) {
             // do nothing
           } else {
@@ -493,7 +534,31 @@ ruleTester.run('catch conditions', rule, {
     },
     {
       code: `
+        it.each()('foo', () => {
+          try {
+  
+          } catch (err) {
+            expect(err).toMatch('Error');
+          }
+        })
+      `,
+      errors: [{ messageId: 'conditionalExpect' }],
+    },
+    {
+      code: `
         it.skip.each\`\`('foo', () => {
+          try {
+  
+          } catch (err) {
+            expect(err).toMatch('Error');
+          }
+        })
+      `,
+      errors: [{ messageId: 'conditionalExpect' }],
+    },
+    {
+      code: `
+        it.skip.each()('foo', () => {
           try {
   
           } catch (err) {
