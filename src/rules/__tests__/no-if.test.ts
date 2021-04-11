@@ -27,6 +27,13 @@ ruleTester.run('conditional expressions', rule, {
         };
       });
     `,
+    dedent`
+      it.each()('foo', function () {
+        const foo = function (bar) {
+          return foo ? bar : null;
+        };
+      });
+    `,
   ],
   invalid: [
     {
@@ -117,6 +124,11 @@ ruleTester.run('switch statements', rule, {
     `,
     dedent`
       describe.skip('foo', () => {
+        switch('bar') {}
+      })
+    `,
+    dedent`
+      describe.skip.each()('foo', () => {
         switch('bar') {}
       })
     `,
@@ -502,6 +514,13 @@ ruleTester.run('if statements', rule, {
       })
     `,
     dedent`
+      describe.each\`\`('foo', () => {
+        afterEach(() => {
+          if('bar') {}
+        });
+      })
+    `,
+    dedent`
       describe('foo', () => {
         beforeEach(() => {
           if('bar') {}
@@ -828,7 +847,35 @@ ruleTester.run('if statements', rule, {
     },
     {
       code: dedent`
+        it.each()('foo', () => {
+          callExpression()
+          if ('bar') {}
+        })
+      `,
+      errors: [
+        {
+          data: { condition: 'if' },
+          messageId: 'conditionalInTest',
+        },
+      ],
+    },
+    {
+      code: dedent`
         it.only.each\`\`('foo', () => {
+          callExpression()
+          if ('bar') {}
+        })
+      `,
+      errors: [
+        {
+          data: { condition: 'if' },
+          messageId: 'conditionalInTest',
+        },
+      ],
+    },
+    {
+      code: dedent`
+        it.only.each()('foo', () => {
           callExpression()
           if ('bar') {}
         })

@@ -77,6 +77,10 @@ export default createRule({
       CallExpression(node) {
         if (isTestCaseCall(node)) {
           stack.push(true);
+
+          if (getNodeName(node).endsWith('each')) {
+            stack.push(true);
+          }
         }
       },
       FunctionExpression(node) {
