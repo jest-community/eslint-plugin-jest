@@ -87,10 +87,10 @@ it('is money-like', () => {
 
 Examples of **correct** code for working with the HTTP assertions library
 [SuperTest](https://www.npmjs.com/package/supertest) with the
-`{ "assertFunctionNames": ["expect", "request.*.expect"] }` option:
+`{ "assertFunctionNames": ["expect", "request.**.expect"] }` option:
 
 ```js
-/* eslint jest/expect-expect: ["error", { "assertFunctionNames": ["expect", "request.*.expect"] }] */
+/* eslint jest/expect-expect: ["error", { "assertFunctionNames": ["expect", "request.**.expect"] }] */
 const request = require('supertest');
 const express = require('express');
 
