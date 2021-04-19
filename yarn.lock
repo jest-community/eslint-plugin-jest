@@ -10055,8 +10055,8 @@ __metadata:
   linkType: hard
 
 "table@npm:^6.0.4":
-  version: 6.1.0
-  resolution: "table@npm:6.1.0"
+  version: 6.2.0
+  resolution: "table@npm:6.2.0"
   dependencies:
     ajv: ^8.0.1
     is-boolean-object: ^1.1.0
@@ -10067,7 +10067,7 @@ __metadata:
     lodash.truncate: ^4.4.2
     slice-ansi: ^4.0.0
     string-width: ^4.2.0
-  checksum: 18d2dc857063e602730aeb1ed7216dcc2b491ce4ba8087c941b10ce2373c06398e94fef04b407168d6b8d8afc4134050fe3b3500aecfdaf602c5313929943a55
+  checksum: d7a19fbbaa6e6c156749d9fe67a68717e93c03f2a80779415054efe379242b463c2d60499e896fdeb5a943f3466d62e6e26e40de2b136951543a8ab2f63dc636
   languageName: node
   linkType: hard
 
