@@ -214,6 +214,13 @@ ensure consistency and readability in jest test suites.
 
 https://github.com/dangreenisrael/eslint-plugin-jest-formatting
 
+### eslint-plugin-istanbul
+
+A set of rules to enforce good practices for Istanbul, one of the code coverage
+tools used by Jest.
+
+https://github.com/istanbuljs/eslint-plugin-istanbul
+
 [recommended]: https://img.shields.io/badge/-recommended-lightgrey.svg
 [suggest]: https://img.shields.io/badge/-suggest-yellow.svg
 [fixable]: https://img.shields.io/badge/-fixable-green.svg
