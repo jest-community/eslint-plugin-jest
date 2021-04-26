@@ -74,6 +74,35 @@ ruleTester.run('valid-expect', rule, {
         return expect(functionReturningAPromise()).resolves.toEqual(1).then(() => expect(Promise.resolve(2)).resolves.toBe(1));
       });
     `,
+    dedent`
+      expect.extend({
+        toResolve(obj) {
+          return this.isNot
+            ? expect(obj).toBe(true)
+            : expect(obj).resolves.not.toThrow();
+        }
+      });
+    `,
+    dedent`
+      expect.extend({
+        toResolve(obj) {
+          return this.isNot
+            ? expect(obj).resolves.not.toThrow()
+            : expect(obj).toBe(true);
+        }
+      });
+    `,
+    dedent`
+      expect.extend({
+        toResolve(obj) {
+          return this.isNot
+            ? expect(obj).toBe(true)
+            : anotherCondition
+            ? expect(obj).resolves.not.toThrow()
+            : expect(obj).toBe(false)
+        }
+      });
+    `,
     {
       code: 'expect(1).toBe(2);',
       options: [{ maxArgs: 2 }],
@@ -364,6 +393,63 @@ ruleTester.run('valid-expect', rule, {
         {
           column: 1,
           endColumn: 50,
+          messageId: 'asyncMustBeAwaited',
+        },
+      ],
+    },
+
+    {
+      code: dedent`
+        expect.extend({
+          toResolve(obj) {
+            this.isNot
+              ? expect(obj).toBe(true)
+              : expect(obj).resolves.not.toThrow();
+          }
+        });
+      `,
+      errors: [
+        {
+          column: 9,
+          endColumn: 43,
+          messageId: 'asyncMustBeAwaited',
+        },
+      ],
+    },
+    {
+      code: dedent`
+        expect.extend({
+          toResolve(obj) {
+            this.isNot
+              ? expect(obj).resolves.not.toThrow()
+              : expect(obj).toBe(true);
+          }
+        });
+      `,
+      errors: [
+        {
+          column: 9,
+          endColumn: 43,
+          messageId: 'asyncMustBeAwaited',
+        },
+      ],
+    },
+    {
+      code: dedent`
+        expect.extend({
+          toResolve(obj) {
+            this.isNot
+              ? expect(obj).toBe(true)
+              : anotherCondition
+              ? expect(obj).resolves.not.toThrow()
+              : expect(obj).toBe(false)
+          }
+        });
+      `,
+      errors: [
+        {
+          column: 9,
+          endColumn: 43,
           messageId: 'asyncMustBeAwaited',
         },
       ],

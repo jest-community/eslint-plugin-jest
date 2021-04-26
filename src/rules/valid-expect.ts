@@ -80,14 +80,23 @@ const isAcceptableReturnNode = (
   node: TSESTree.Node,
   allowReturn: boolean,
 ): node is
+  | TSESTree.ConditionalExpression
   | TSESTree.ArrowFunctionExpression
   | TSESTree.AwaitExpression
-  | TSESTree.ReturnStatement =>
-  (allowReturn && node.type === AST_NODE_TYPES.ReturnStatement) ||
-  [
+  | TSESTree.ReturnStatement => {
+  if (allowReturn && node.type === AST_NODE_TYPES.ReturnStatement) {
+    return true;
+  }
+
+  if (node.type === AST_NODE_TYPES.ConditionalExpression && node.parent) {
+    return isAcceptableReturnNode(node.parent, allowReturn);
+  }
+
+  return [
     AST_NODE_TYPES.ArrowFunctionExpression,
     AST_NODE_TYPES.AwaitExpression,
   ].includes(node.type);
+};
 
 const isNoAssertionsParentNode = (node: TSESTree.Node): boolean =>
   node.type === AST_NODE_TYPES.ExpressionStatement ||
