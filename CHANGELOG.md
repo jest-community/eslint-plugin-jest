@@ -1,3 +1,12 @@
+## [24.3.6](https://github.com/jest-community/eslint-plugin-jest/compare/v24.3.5...v24.3.6) (2021-04-26)
+
+
+### Bug Fixes
+
+* **no-conditional-expect:** check for expects in `catch`s on promises ([#819](https://github.com/jest-community/eslint-plugin-jest/issues/819)) ([1fee973](https://github.com/jest-community/eslint-plugin-jest/commit/1fee973429a74c60b14eead6a335623b4349b5f2))
+* **valid-expect:** support async `expect` in ternary statements ([#833](https://github.com/jest-community/eslint-plugin-jest/issues/833)) ([7b7a396](https://github.com/jest-community/eslint-plugin-jest/commit/7b7a396e12c46d3087b467227887ed64854480c0))
+* improve handling of `.each` calls and with tagged literals ([#814](https://github.com/jest-community/eslint-plugin-jest/issues/814)) ([040c605](https://github.com/jest-community/eslint-plugin-jest/commit/040c605cf7929a00980b3fa58331cd78ac6274f6))
+
 ## [24.3.5](https://github.com/jest-community/eslint-plugin-jest/compare/v24.3.4...v24.3.5) (2021-04-10)
 
 
