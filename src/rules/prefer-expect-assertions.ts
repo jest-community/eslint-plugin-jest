@@ -8,7 +8,6 @@ import {
   createRule,
   getAccessorValue,
   hasOnlyOneArgument,
-  isEachCall,
   isFunction,
   isSupportedAccessor,
   isTestCaseCall,
@@ -105,13 +104,11 @@ export default createRule<[RuleOptions], MessageIds>({
           return;
         }
 
-        const args = isEachCall(node) ? node.parent.arguments : node.arguments;
-
-        if (args.length < 2) {
+        if (node.arguments.length < 2) {
           return;
         }
 
-        const [, testFn] = args;
+        const [, testFn] = node.arguments;
 
         if (
           !isFunction(testFn) ||

@@ -7,7 +7,6 @@ import {
   StringNode,
   TestCaseName,
   createRule,
-  getJestFunctionArguments,
   getNodeName,
   getStringValue,
   isDescribeCall,
@@ -165,7 +164,7 @@ export default createRule<[Options], MessageIds>({
           return;
         }
 
-        const [argument] = getJestFunctionArguments(node);
+        const [argument] = node.arguments;
 
         if (!argument) {
           return;
@@ -237,7 +236,7 @@ export default createRule<[Options], MessageIds>({
           });
         }
 
-        const nodeName = trimFXprefix(getNodeName(node.callee));
+        const nodeName = trimFXprefix(getNodeName(node));
         const [firstWord] = title.split(' ');
 
         if (firstWord.toLowerCase() === nodeName) {

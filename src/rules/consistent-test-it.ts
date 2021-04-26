@@ -8,7 +8,6 @@ import {
   createRule,
   getNodeName,
   isDescribeCall,
-  isEachCall,
   isTestCaseCall,
 } from './utils';
 
@@ -86,6 +85,8 @@ export default createRule<
         const funcNode =
           node.callee.type === AST_NODE_TYPES.TaggedTemplateExpression
             ? node.callee.tag
+            : node.callee.type === AST_NODE_TYPES.CallExpression
+            ? node.callee.callee
             : node.callee;
 
         if (
@@ -121,7 +122,7 @@ export default createRule<
         }
       },
       'CallExpression:exit'(node) {
-        if (isDescribeCall(node) && !isEachCall(node)) {
+        if (isDescribeCall(node)) {
           describeNestingLevel--;
         }
       },

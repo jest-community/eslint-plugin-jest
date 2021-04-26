@@ -37,6 +37,8 @@ export default createRule({
         const funcNode =
           node.callee.type === AST_NODE_TYPES.TaggedTemplateExpression
             ? node.callee.tag
+            : node.callee.type === AST_NODE_TYPES.CallExpression
+            ? node.callee.callee
             : node.callee;
 
         context.report({

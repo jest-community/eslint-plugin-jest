@@ -1,47 +1,38 @@
+import { AST_NODE_TYPES } from '@typescript-eslint/experimental-utils';
 import {
-  AST_NODE_TYPES,
-  TSESTree,
-} from '@typescript-eslint/experimental-utils';
-import {
-  DescribeAlias,
-  TestCaseName,
-  TestCaseProperty,
+  AccessorNode,
+  JestFunctionCallExpression,
   createRule,
+  getNodeName,
+  isDescribeCall,
   isSupportedAccessor,
+  isTestCaseCall,
 } from './utils';
 
-const validTestCaseNames = [TestCaseName.test, TestCaseName.it];
+const findOnlyNode = (
+  node: JestFunctionCallExpression,
+): AccessorNode<'only'> | null => {
+  const callee =
+    node.callee.type === AST_NODE_TYPES.TaggedTemplateExpression
+      ? node.callee.tag
+      : node.callee.type === AST_NODE_TYPES.CallExpression
+      ? node.callee.callee
+      : node.callee;
 
-const testFunctions = new Set<string>([
-  DescribeAlias.describe,
-  ...validTestCaseNames,
-]);
+  if (callee.type === AST_NODE_TYPES.MemberExpression) {
+    if (callee.object.type === AST_NODE_TYPES.MemberExpression) {
+      if (isSupportedAccessor(callee.object.property, 'only')) {
+        return callee.object.property;
+      }
+    }
 
-interface ConcurrentExpression extends TSESTree.MemberExpressionComputedName {
-  parent: TSESTree.MemberExpression;
-}
+    if (isSupportedAccessor(callee.property, 'only')) {
+      return callee.property;
+    }
+  }
 
-const isConcurrentExpression = (
-  expression: TSESTree.MemberExpression,
-): expression is ConcurrentExpression =>
-  isSupportedAccessor(expression.property, TestCaseProperty.concurrent) &&
-  !!expression.parent &&
-  expression.parent.type === AST_NODE_TYPES.MemberExpression;
-
-const matchesTestFunction = (object: TSESTree.LeftHandSideExpression) =>
-  'name' in object &&
-  typeof object.name === 'string' &&
-  (object.name in TestCaseName || object.name in DescribeAlias);
-
-const isCallToFocusedTestFunction = (object: TSESTree.Identifier) =>
-  object.name.startsWith('f') && testFunctions.has(object.name.substring(1));
-
-const isCallToTestOnlyFunction = (callee: TSESTree.MemberExpression) =>
-  matchesTestFunction(callee.object) &&
-  isSupportedAccessor(
-    isConcurrentExpression(callee) ? callee.parent.property : callee.property,
-    'only',
-  );
+  return null;
+};
 
 export default createRule({
   name: __filename,
@@ -62,113 +53,47 @@ export default createRule({
   defaultOptions: [],
   create: context => ({
     CallExpression(node) {
-      const callee =
-        node.callee.type === AST_NODE_TYPES.TaggedTemplateExpression
-          ? node.callee.tag
-          : node.callee;
-
-      if (callee.type === AST_NODE_TYPES.MemberExpression) {
-        const calleeObject = callee.object;
-
-        if (
-          calleeObject.type === AST_NODE_TYPES.Identifier &&
-          isCallToFocusedTestFunction(calleeObject)
-        ) {
-          context.report({
-            messageId: 'focusedTest',
-            node: calleeObject,
-            suggest: [
-              {
-                messageId: 'suggestRemoveFocus',
-                fix(fixer) {
-                  return fixer.removeRange([
-                    calleeObject.range[0],
-                    calleeObject.range[0] + 1,
-                  ]);
-                },
-              },
-            ],
-          });
-
-          return;
-        }
-
-        if (
-          calleeObject.type === AST_NODE_TYPES.MemberExpression &&
-          isCallToTestOnlyFunction(calleeObject)
-        ) {
-          context.report({
-            messageId: 'focusedTest',
-            node: isConcurrentExpression(calleeObject)
-              ? callee.property
-              : calleeObject.property,
-            suggest: [
-              {
-                messageId: 'suggestRemoveFocus',
-                fix(fixer) {
-                  if (
-                    calleeObject.property.type === AST_NODE_TYPES.Identifier &&
-                    calleeObject.property.name === 'only'
-                  ) {
-                    return fixer.removeRange([
-                      calleeObject.object.range[1],
-                      calleeObject.range[1],
-                    ]);
-                  }
-
-                  return fixer.removeRange([
-                    calleeObject.range[1],
-                    callee.range[1],
-                  ]);
-                },
-              },
-            ],
-          });
-
-          return;
-        }
-
-        if (isCallToTestOnlyFunction(callee)) {
-          context.report({
-            messageId: 'focusedTest',
-            node: callee.property,
-            suggest: [
-              {
-                messageId: 'suggestRemoveFocus',
-                fix(fixer) {
-                  return fixer.removeRange([
-                    calleeObject.range[1],
-                    callee.range[1],
-                  ]);
-                },
-              },
-            ],
-          });
-
-          return;
-        }
+      if (!isDescribeCall(node) && !isTestCaseCall(node)) {
+        return;
       }
 
-      if (
-        callee.type === AST_NODE_TYPES.Identifier &&
-        isCallToFocusedTestFunction(callee)
-      ) {
+      if (getNodeName(node).startsWith('f')) {
         context.report({
           messageId: 'focusedTest',
-          node: callee,
+          node,
           suggest: [
             {
               messageId: 'suggestRemoveFocus',
-              fix(fixer) {
-                return fixer.removeRange([
-                  callee.range[0],
-                  callee.range[0] + 1,
-                ]);
-              },
+              fix: fixer =>
+                fixer.removeRange([node.range[0], node.range[0] + 1]),
             },
           ],
         });
+
+        return;
       }
+
+      const onlyNode = findOnlyNode(node);
+
+      if (!onlyNode) {
+        return;
+      }
+
+      context.report({
+        messageId: 'focusedTest',
+        node: onlyNode,
+        suggest: [
+          {
+            messageId: 'suggestRemoveFocus',
+            fix: fixer =>
+              fixer.removeRange([
+                onlyNode.range[0] - 1,
+                onlyNode.range[1] +
+                  Number(onlyNode.type !== AST_NODE_TYPES.Identifier),
+              ]),
+          },
+        ],
+      });
     },
   }),
 });

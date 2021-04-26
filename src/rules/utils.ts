@@ -262,7 +262,7 @@ export const getAccessorValue = <S extends string = string>(
     ? accessor.name
     : getStringValue(accessor);
 
-type AccessorNode<Specifics extends string = string> =
+export type AccessorNode<Specifics extends string = string> =
   | StringNode<Specifics>
   | KnownIdentifier<Specifics>;
 
@@ -580,16 +580,42 @@ export interface JestFunctionCallExpressionWithIdentifierCallee<
   callee: JestFunctionIdentifier<FunctionName>;
 }
 
-interface JestFunctionCallExpressionWithTaggedTemplateCallee
-  extends TSESTree.CallExpression {
-  callee: TSESTree.TaggedTemplateExpression;
+interface JestEachMemberExpression<
+  TName extends Exclude<JestFunctionName, HookName>
+> extends KnownMemberExpression<'each'> {
+  object:
+    | KnownIdentifier<TName>
+    | (KnownMemberExpression & { object: KnownIdentifier<TName> });
 }
 
+export interface JestCalledEachCallExpression<
+  TName extends Exclude<JestFunctionName, HookName>
+> extends TSESTree.CallExpression {
+  callee: TSESTree.CallExpression & {
+    callee: JestEachMemberExpression<TName>;
+  };
+}
+
+export interface JestTaggedEachCallExpression<
+  TName extends Exclude<JestFunctionName, HookName>
+> extends TSESTree.CallExpression {
+  callee: TSESTree.TaggedTemplateExpression & {
+    tag: JestEachMemberExpression<TName>;
+  };
+}
+
+type JestEachCallExpression<
+  TName extends Exclude<JestFunctionName, HookName>
+> = JestCalledEachCallExpression<TName> | JestTaggedEachCallExpression<TName>;
+
 export type JestFunctionCallExpression<
-  FunctionName extends JestFunctionName = JestFunctionName
+  FunctionName extends Exclude<JestFunctionName, HookName> = Exclude<
+    JestFunctionName,
+    HookName
+  >
 > =
+  | JestEachCallExpression<FunctionName>
   | JestFunctionCallExpressionWithMemberExpressionCallee<FunctionName>
-  | JestFunctionCallExpressionWithTaggedTemplateCallee
   | JestFunctionCallExpressionWithIdentifierCallee<FunctionName>;
 
 const joinNames = (a: string | null, b: string | null): string | null =>
@@ -597,6 +623,7 @@ const joinNames = (a: string | null, b: string | null): string | null =>
 
 export function getNodeName(
   node:
+    | JestFunctionCallExpression<DescribeAlias | TestCaseName>
     | JestFunctionMemberExpression<JestFunctionName>
     | JestFunctionIdentifier<JestFunctionName>
     | TSESTree.TaggedTemplateExpression,
@@ -686,17 +713,19 @@ export const isTestCaseCall = (
   const callee =
     node.callee.type === AST_NODE_TYPES.TaggedTemplateExpression
       ? node.callee.tag
+      : node.callee.type === AST_NODE_TYPES.CallExpression
+      ? node.callee.callee
       : node.callee;
 
   if (
     callee.type === AST_NODE_TYPES.MemberExpression &&
     isTestCaseProperty(callee.property)
   ) {
-    // if we're an `each()`, ensure we're being called (i.e `.each()()`)
+    // if we're an `each()`, ensure we're the outer CallExpression (i.e `.each()()`)
     if (
+      getAccessorValue(callee.property) === 'each' &&
       node.callee.type !== AST_NODE_TYPES.TaggedTemplateExpression &&
-      node.parent?.type !== AST_NODE_TYPES.CallExpression &&
-      getAccessorValue(callee.property) === 'each'
+      node.callee.type !== AST_NODE_TYPES.CallExpression
     ) {
       return false;
     }
@@ -740,17 +769,19 @@ export const isDescribeCall = (
   const callee =
     node.callee.type === AST_NODE_TYPES.TaggedTemplateExpression
       ? node.callee.tag
+      : node.callee.type === AST_NODE_TYPES.CallExpression
+      ? node.callee.callee
       : node.callee;
 
   if (
     callee.type === AST_NODE_TYPES.MemberExpression &&
     isDescribeProperty(callee.property)
   ) {
-    // if we're an `each()`, ensure we're being called (i.e `.each()()`)
+    // if we're an `each()`, ensure we're the outer CallExpression (i.e `.each()()`)
     if (
+      getAccessorValue(callee.property) === 'each' &&
       node.callee.type !== AST_NODE_TYPES.TaggedTemplateExpression &&
-      node.parent?.type !== AST_NODE_TYPES.CallExpression &&
-      getAccessorValue(callee.property) === 'each'
+      node.callee.type !== AST_NODE_TYPES.CallExpression
     ) {
       return false;
     }
@@ -762,44 +793,6 @@ export const isDescribeCall = (
 
   return false;
 };
-
-/**
- * Checks if the given node` is a call to `<describe|test|it>.each(...)()`.
- * If `true`, the code must look like `<method>.each(...)()`.
- *
- * @param {JestFunctionCallExpression<DescribeAlias | TestCaseName>} node
- *
- * @return {node is JestFunctionCallExpressionWithMemberExpressionCallee<DescribeAlias | TestCaseName, DescribeProperty.each | TestCaseProperty.each> & {parent: TSESTree.CallExpression}}
- */
-export const isEachCall = (
-  node: JestFunctionCallExpression<DescribeAlias | TestCaseName>,
-): node is JestFunctionCallExpressionWithMemberExpressionCallee<
-  DescribeAlias | TestCaseName,
-  DescribeProperty.each | TestCaseProperty.each
-> & { parent: TSESTree.CallExpression } =>
-  node.parent?.type === AST_NODE_TYPES.CallExpression &&
-  node.callee.type === AST_NODE_TYPES.MemberExpression &&
-  isSupportedAccessor(node.callee.property, DescribeProperty.each);
-
-/**
- * Gets the arguments of the given `JestFunctionCallExpression`.
- *
- * If the `node` is an `each` call, then the arguments of the actual suite
- * are returned, rather then the `each` array argument.
- *
- * @param {JestFunctionCallExpression<DescribeAlias | TestCaseName>} node
- *
- * @return {Expression[]}
- */
-export const getJestFunctionArguments = (
-  node: JestFunctionCallExpression<DescribeAlias | TestCaseName>,
-) =>
-  node.callee.type === AST_NODE_TYPES.MemberExpression &&
-  isSupportedAccessor(node.callee.property, DescribeProperty.each) &&
-  node.parent &&
-  node.parent.type === AST_NODE_TYPES.CallExpression
-    ? node.parent.arguments
-    : node.arguments;
 
 const collectReferences = (scope: TSESLint.Scope.Scope) => {
   const locals = new Set();

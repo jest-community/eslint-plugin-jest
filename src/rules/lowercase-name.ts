@@ -1,17 +1,13 @@
-import {
-  AST_NODE_TYPES,
-  TSESLint,
-  TSESTree,
-} from '@typescript-eslint/experimental-utils';
+import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
 import {
   CallExpressionWithSingleArgument,
   DescribeAlias,
   StringNode,
   TestCaseName,
   createRule,
+  getNodeName,
   getStringValue,
   isDescribeCall,
-  isEachCall,
   isStringNode,
   isTestCaseCall,
 } from './utils';
@@ -33,25 +29,11 @@ const findNodeNameAndArgument = (
     return null;
   }
 
-  if (isEachCall(node)) {
-    if (
-      node.parent.arguments.length > 0 &&
-      isStringNode(node.parent.arguments[0])
-    ) {
-      return [node.callee.object.name, node.parent.arguments[0]];
-    }
-
+  if (!hasStringAsFirstArgument(node)) {
     return null;
   }
 
-  if (
-    node.callee.type !== AST_NODE_TYPES.Identifier ||
-    !hasStringAsFirstArgument(node)
-  ) {
-    return null;
-  }
-
-  return [node.callee.name, node.arguments[0]];
+  return [getNodeName(node).split('.')[0], node.arguments[0]];
 };
 
 export default createRule<

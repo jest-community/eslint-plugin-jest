@@ -28,7 +28,7 @@ function createTodoFixer(
   node: JestFunctionCallExpression<TestCaseName>,
   fixer: TSESLint.RuleFixer,
 ) {
-  const testName = getNodeName(node.callee).split('.').shift();
+  const testName = getNodeName(node).split('.').shift();
 
   return fixer.replaceText(node.callee, `${testName}.todo`);
 }
@@ -38,7 +38,7 @@ const isTargetedTestCase = (
 ): node is JestFunctionCallExpression<TestCaseName> =>
   isTestCaseCall(node) &&
   [TestCaseName.it, TestCaseName.test, 'it.skip', 'test.skip'].includes(
-    getNodeName(node.callee),
+    getNodeName(node),
   );
 
 export default createRule({

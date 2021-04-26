@@ -1,4 +1,4 @@
-import { createRule, isDescribeCall, isEachCall, isHook } from './utils';
+import { createRule, isDescribeCall, isHook } from './utils';
 
 const newHookContext = () => ({
   beforeAll: 0,
@@ -45,7 +45,7 @@ export default createRule({
         }
       },
       'CallExpression:exit'(node) {
-        if (isDescribeCall(node) && !isEachCall(node)) {
+        if (isDescribeCall(node)) {
           hookContexts.pop();
         }
       },
