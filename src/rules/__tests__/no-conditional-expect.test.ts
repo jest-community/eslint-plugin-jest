@@ -1,4 +1,5 @@
 import { TSESLint } from '@typescript-eslint/experimental-utils';
+import dedent from 'dedent';
 import resolveFrom from 'resolve-from';
 import rule from '../no-conditional-expect';
 
@@ -579,6 +580,111 @@ ruleTester.run('catch conditions', rule, {
         }
 
         it('foo', getValue);
+      `,
+      errors: [{ messageId: 'conditionalExpect' }],
+    },
+  ],
+});
+
+ruleTester.run('promises', rule, {
+  valid: [
+    `
+      it('works', async () => {
+        try {
+          await Promise.resolve().then(() => {
+            throw new Error('oh noes!');
+          });
+        } catch {
+          // ignore errors
+        } finally {
+          expect(something).toHaveBeenCalled();
+        }
+      });
+    `,
+    `
+      it('works', async () => {
+        await doSomething().catch(error => error);
+
+        expect(error).toBeInstanceOf(Error);
+      });
+    `,
+    `
+      it('works', async () => {
+        try {
+          await Promise.resolve().then(() => {
+            throw new Error('oh noes!');
+          });
+        } catch {
+          // ignore errors
+        }
+
+        expect(something).toHaveBeenCalled();
+      });
+    `,
+  ],
+  invalid: [
+    {
+      code: dedent`
+        it('works', async () => {
+          await Promise.resolve()
+            .then(() => { throw new Error('oh noes!'); })
+            .catch(error => expect(error).toBeInstanceOf(Error));
+        });
+      `,
+      errors: [{ messageId: 'conditionalExpect' }],
+    },
+    {
+      code: dedent`
+        it('works', async () => {
+          await Promise.resolve()
+            .then(() => { throw new Error('oh noes!'); })
+            .catch(error => expect(error).toBeInstanceOf(Error))
+            .then(() => { throw new Error('oh noes!'); })
+            .catch(error => expect(error).toBeInstanceOf(Error))
+            .then(() => { throw new Error('oh noes!'); })
+            .catch(error => expect(error).toBeInstanceOf(Error));
+        });
+      `,
+      errors: [{ messageId: 'conditionalExpect' }],
+    },
+    {
+      code: dedent`
+        it('works', async () => {
+          await Promise.resolve()
+            .catch(error => expect(error).toBeInstanceOf(Error))
+            .catch(error => expect(error).toBeInstanceOf(Error))
+            .catch(error => expect(error).toBeInstanceOf(Error));
+        });
+      `,
+      errors: [{ messageId: 'conditionalExpect' }],
+    },
+    {
+      code: dedent`
+        it('works', async () => {
+          await Promise.resolve()
+            .catch(error => expect(error).toBeInstanceOf(Error))
+            .then(() => { throw new Error('oh noes!'); })
+            .then(() => { throw new Error('oh noes!'); })
+            .then(() => { throw new Error('oh noes!'); });
+        });
+      `,
+      errors: [{ messageId: 'conditionalExpect' }],
+    },
+    {
+      code: dedent`
+        it('works', async () => {
+          await somePromise
+            .then(() => { throw new Error('oh noes!'); })
+            .catch(error => expect(error).toBeInstanceOf(Error));
+        });
+      `,
+      errors: [{ messageId: 'conditionalExpect' }],
+    },
+    {
+      code: dedent`
+        it('works', async () => {
+          await somePromise.catch(error => expect(error).toBeInstanceOf(Error));
+        });
       `,
       errors: [{ messageId: 'conditionalExpect' }],
     },
