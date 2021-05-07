@@ -112,7 +112,7 @@
     "is-ci": "^3.0.0",
     "jest": "^26.0.1",
     "jest-runner-eslint": "^0.10.0",
-    "lint-staged": "^10.2.2",
+    "lint-staged": "^11.0.0",
     "pinst": "^2.0.0",
     "prettier": "^2.0.5",
     "resolve-from": "^5.0.0",
