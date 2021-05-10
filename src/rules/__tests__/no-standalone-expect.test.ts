@@ -128,13 +128,11 @@ ruleTester.run('no-standalone-expect', rule, {
       errors: [{ endColumn: 35, column: 26, messageId: 'unexpectedExpect' }],
     },
     {
-      code:
-        'describe("a test", () => { const func = () => { expect(1).toBe(1); }; expect(1).toBe(1); });',
+      code: 'describe("a test", () => { const func = () => { expect(1).toBe(1); }; expect(1).toBe(1); });',
       errors: [{ endColumn: 80, column: 71, messageId: 'unexpectedExpect' }],
     },
     {
-      code:
-        'describe("a test", () => {  it(() => { expect(1).toBe(1); }); expect(1).toBe(1); });',
+      code: 'describe("a test", () => {  it(() => { expect(1).toBe(1); }); expect(1).toBe(1); });',
       errors: [{ endColumn: 72, column: 63, messageId: 'unexpectedExpect' }],
     },
     {
@@ -150,13 +148,11 @@ ruleTester.run('no-standalone-expect', rule, {
       errors: [{ endColumn: 11, column: 2, messageId: 'unexpectedExpect' }],
     },
     {
-      code:
-        'it.each([1, true])("trues", value => { expect(value).toBe(true); }); expect(1).toBe(1);',
+      code: 'it.each([1, true])("trues", value => { expect(value).toBe(true); }); expect(1).toBe(1);',
       errors: [{ endColumn: 79, column: 70, messageId: 'unexpectedExpect' }],
     },
     {
-      code:
-        'describe.each([1, true])("trues", value => { expect(value).toBe(true); });',
+      code: 'describe.each([1, true])("trues", value => { expect(value).toBe(true); });',
       errors: [{ endColumn: 59, column: 46, messageId: 'unexpectedExpect' }],
     },
   ],

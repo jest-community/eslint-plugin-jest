@@ -45,8 +45,9 @@ const detectJestVersion = (): JestVersion => {
       paths: [process.cwd()],
     });
 
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    const jestPackageJson = require(jestPath) as JSONSchemaForNPMPackageJsonFiles;
+    const jestPackageJson =
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
+      require(jestPath) as JSONSchemaForNPMPackageJsonFiles;
 
     if (jestPackageJson.version) {
       const [majorVersion] = jestPackageJson.version.split('.');

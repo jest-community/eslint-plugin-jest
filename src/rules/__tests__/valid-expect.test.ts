@@ -25,8 +25,7 @@ ruleTester.run('valid-expect', rule, {
     'test("valid-expect", function () { return Promise.resolve(expect(Promise.resolve(2)).resolves.not.toBeDefined()); });',
     'test("valid-expect", function () { return Promise.resolve(expect(Promise.resolve(2)).rejects.not.toBeDefined()); });',
     {
-      code:
-        'test("valid-expect", () => expect(Promise.resolve(2)).resolves.toBeDefined());',
+      code: 'test("valid-expect", () => expect(Promise.resolve(2)).resolves.toBeDefined());',
       options: [{ alwaysAwait: true }],
     },
     'test("valid-expect", () => expect(Promise.resolve(2)).resolves.toBeDefined());',
@@ -457,8 +456,7 @@ ruleTester.run('valid-expect', rule, {
 
     // expect().resolves
     {
-      code:
-        'test("valid-expect", () => { expect(Promise.resolve(2)).resolves.toBeDefined(); });',
+      code: 'test("valid-expect", () => { expect(Promise.resolve(2)).resolves.toBeDefined(); });',
       errors: [
         {
           column: 30,
@@ -470,8 +468,7 @@ ruleTester.run('valid-expect', rule, {
     },
     // expect().resolves.not
     {
-      code:
-        'test("valid-expect", () => { expect(Promise.resolve(2)).resolves.not.toBeDefined(); });',
+      code: 'test("valid-expect", () => { expect(Promise.resolve(2)).resolves.not.toBeDefined(); });',
       errors: [
         {
           column: 30,
@@ -483,8 +480,7 @@ ruleTester.run('valid-expect', rule, {
     },
     // expect().rejects
     {
-      code:
-        'test("valid-expect", () => { expect(Promise.resolve(2)).rejects.toBeDefined(); });',
+      code: 'test("valid-expect", () => { expect(Promise.resolve(2)).rejects.toBeDefined(); });',
       errors: [
         {
           column: 30,
@@ -496,8 +492,7 @@ ruleTester.run('valid-expect', rule, {
     },
     // expect().rejects.not
     {
-      code:
-        'test("valid-expect", () => { expect(Promise.resolve(2)).rejects.not.toBeDefined(); });',
+      code: 'test("valid-expect", () => { expect(Promise.resolve(2)).rejects.not.toBeDefined(); });',
       errors: [
         {
           column: 30,
@@ -509,8 +504,7 @@ ruleTester.run('valid-expect', rule, {
     },
     // usages in async function
     {
-      code:
-        'test("valid-expect", async () => { expect(Promise.resolve(2)).resolves.toBeDefined(); });',
+      code: 'test("valid-expect", async () => { expect(Promise.resolve(2)).resolves.toBeDefined(); });',
       errors: [
         {
           column: 36,
@@ -521,8 +515,7 @@ ruleTester.run('valid-expect', rule, {
       ],
     },
     {
-      code:
-        'test("valid-expect", async () => { expect(Promise.resolve(2)).resolves.not.toBeDefined(); });',
+      code: 'test("valid-expect", async () => { expect(Promise.resolve(2)).resolves.not.toBeDefined(); });',
       errors: [
         {
           column: 36,

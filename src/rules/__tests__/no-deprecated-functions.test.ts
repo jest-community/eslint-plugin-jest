@@ -153,34 +153,23 @@ describe('the rule', () => {
   });
 
   describe.each<JestVersion>([
-    14,
-    15,
-    16,
-    17,
-    18,
-    19,
-    20,
-    21,
-    22,
-    23,
-    24,
-    25,
-    26,
-    27,
+    14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27,
   ])('when using jest version %i', jestVersion => {
     beforeEach(async () =>
       process.chdir(await setupFakeProjectDirectory(jestVersion)),
     );
 
     const allowedFunctions: string[] = [];
-    const deprecations = ([
-      [15, 'jest.resetModuleRegistry', 'jest.resetModules'],
-      [17, 'jest.addMatchers', 'expect.extend'],
-      [21, 'require.requireMock', 'jest.requireMock'],
-      [21, 'require.requireActual', 'jest.requireActual'],
-      [22, 'jest.runTimersToTime', 'jest.advanceTimersByTime'],
-      [26, 'jest.genMockFromModule', 'jest.createMockFromModule'],
-    ] as const).filter(deprecation => {
+    const deprecations = (
+      [
+        [15, 'jest.resetModuleRegistry', 'jest.resetModules'],
+        [17, 'jest.addMatchers', 'expect.extend'],
+        [21, 'require.requireMock', 'jest.requireMock'],
+        [21, 'require.requireActual', 'jest.requireActual'],
+        [22, 'jest.runTimersToTime', 'jest.advanceTimersByTime'],
+        [26, 'jest.genMockFromModule', 'jest.createMockFromModule'],
+      ] as const
+    ).filter(deprecation => {
       if (deprecation[0] > jestVersion) {
         allowedFunctions.push(deprecation[1]);
 

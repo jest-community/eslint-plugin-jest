@@ -48,9 +48,8 @@ export default createRule({
       },
       FunctionDeclaration(node) {
         const declaredVariables = context.getDeclaredVariables(node);
-        const testCallExpressions = getTestCallExpressionsFromDeclaredVariables(
-          declaredVariables,
-        );
+        const testCallExpressions =
+          getTestCallExpressionsFromDeclaredVariables(declaredVariables);
 
         if (testCallExpressions.length > 0) {
           isTest = true;
@@ -73,9 +72,8 @@ export default createRule({
       },
       'FunctionDeclaration:exit'(node) {
         const declaredVariables = context.getDeclaredVariables(node);
-        const testCallExpressions = getTestCallExpressionsFromDeclaredVariables(
-          declaredVariables,
-        );
+        const testCallExpressions =
+          getTestCallExpressionsFromDeclaredVariables(declaredVariables);
 
         if (testCallExpressions.length > 0) {
           isTest = false;

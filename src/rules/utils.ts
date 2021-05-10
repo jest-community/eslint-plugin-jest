@@ -20,17 +20,17 @@ export type MaybeTypeCast<Expression extends TSESTree.Expression> =
   | Expression;
 
 type TSTypeCastExpression<
-  Expression extends TSESTree.Expression = TSESTree.Expression
+  Expression extends TSESTree.Expression = TSESTree.Expression,
 > = AsExpressionChain<Expression> | TypeAssertionChain<Expression>;
 
 interface AsExpressionChain<
-  Expression extends TSESTree.Expression = TSESTree.Expression
+  Expression extends TSESTree.Expression = TSESTree.Expression,
 > extends TSESTree.TSAsExpression {
   expression: AsExpressionChain<Expression> | Expression;
 }
 
 interface TypeAssertionChain<
-  Expression extends TSESTree.Expression = TSESTree.Expression
+  Expression extends TSESTree.Expression = TSESTree.Expression,
 > extends TSESTree.TSTypeAssertion {
   expression: TypeAssertionChain<Expression> | Expression;
 }
@@ -42,7 +42,7 @@ const isTypeCastExpression = <Expression extends TSESTree.Expression>(
   node.type === AST_NODE_TYPES.TSTypeAssertion;
 
 export const followTypeAssertionChain = <
-  Expression extends TSESTree.Expression
+  Expression extends TSESTree.Expression,
 >(
   expression: MaybeTypeCast<Expression>,
 ): Expression =>
@@ -174,7 +174,7 @@ export interface CalledKnownMemberExpression<Name extends string = string>
  * Represents a `CallExpression` with a single argument.
  */
 export interface CallExpressionWithSingleArgument<
-  Argument extends TSESTree.Expression = TSESTree.Expression
+  Argument extends TSESTree.Expression = TSESTree.Expression,
 > extends TSESTree.CallExpression {
   arguments: [Argument];
 }
@@ -290,7 +290,7 @@ export const isExpectCall = (node: TSESTree.Node): node is ExpectCall =>
 
 interface ParsedExpectMember<
   Name extends ExpectPropertyName = ExpectPropertyName,
-  Node extends ExpectMember<Name> = ExpectMember<Name>
+  Node extends ExpectMember<Name> = ExpectMember<Name>,
 > {
   name: Name;
   node: Node;
@@ -300,14 +300,14 @@ interface ParsedExpectMember<
  * Represents a `MemberExpression` that comes after an `ExpectCall`.
  */
 interface ExpectMember<
-  PropertyName extends ExpectPropertyName = ExpectPropertyName
+  PropertyName extends ExpectPropertyName = ExpectPropertyName,
 > extends KnownMemberExpression<PropertyName> {
   object: ExpectCall | ExpectMember;
   parent: TSESTree.Node;
 }
 
 export const isExpectMember = <
-  Name extends ExpectPropertyName = ExpectPropertyName
+  Name extends ExpectPropertyName = ExpectPropertyName,
 >(
   node: TSESTree.Node,
   name?: Name,
@@ -323,7 +323,7 @@ type ExpectPropertyName = ModifierName | MatcherName;
 
 export type ParsedEqualityMatcherCall<
   Argument extends TSESTree.Expression = TSESTree.Expression,
-  Matcher extends EqualityMatcher = EqualityMatcher
+  Matcher extends EqualityMatcher = EqualityMatcher,
 > = Omit<ParsedExpectMatcher<Matcher>, 'arguments'> & {
   parent: TSESTree.CallExpression;
   arguments: [Argument];
@@ -342,7 +342,7 @@ export enum EqualityMatcher {
 }
 
 export const isParsedEqualityMatcherCall = <
-  MatcherName extends EqualityMatcher = EqualityMatcher
+  MatcherName extends EqualityMatcher = EqualityMatcher,
 >(
   matcher: ParsedExpectMatcher,
   name?: MatcherName,
@@ -358,7 +358,7 @@ export const isParsedEqualityMatcherCall = <
  */
 export interface ParsedExpectMatcher<
   Matcher extends MatcherName = MatcherName,
-  Node extends ExpectMember<Matcher> = ExpectMember<Matcher>
+  Node extends ExpectMember<Matcher> = ExpectMember<Matcher>,
 > extends ParsedExpectMember<Matcher, Node> {
   /**
    * The arguments being passed to the matcher.
@@ -367,9 +367,8 @@ export interface ParsedExpectMatcher<
   arguments: TSESTree.CallExpression['arguments'] | null;
 }
 
-type BaseParsedModifier<
-  Modifier extends ModifierName = ModifierName
-> = ParsedExpectMember<Modifier>;
+type BaseParsedModifier<Modifier extends ModifierName = ModifierName> =
+  ParsedExpectMember<Modifier>;
 
 type NegatableModifierName = ModifierName.rejects | ModifierName.resolves;
 type NotNegatableModifierName = ModifierName.not;
@@ -378,7 +377,7 @@ type NotNegatableModifierName = ModifierName.not;
  * Represents a parsed modifier that can be followed by a `not` negation modifier.
  */
 interface NegatableParsedModifier<
-  Modifier extends NegatableModifierName = NegatableModifierName
+  Modifier extends NegatableModifierName = NegatableModifierName,
 > extends BaseParsedModifier<Modifier> {
   negation?: ExpectMember<ModifierName.not>;
 }
@@ -387,7 +386,7 @@ interface NegatableParsedModifier<
  * Represents a parsed modifier that cannot be followed by a `not` negation modifier.
  */
 export interface NotNegatableParsedModifier<
-  Modifier extends NotNegatableModifierName = NotNegatableModifierName
+  Modifier extends NotNegatableModifierName = NotNegatableModifierName,
 > extends BaseParsedModifier<Modifier> {
   negation?: never;
 }
@@ -502,9 +501,8 @@ export const parseExpectCall = <ExpectNode extends ExpectCall>(
     return expectation;
   }
 
-  const modifier = (expectation.modifier = reparseMemberAsModifier(
-    parsedMember,
-  ));
+  const modifier = (expectation.modifier =
+    reparseMemberAsModifier(parsedMember));
 
   const memberNode = modifier.negation || modifier.node;
 
@@ -562,26 +560,26 @@ interface JestFunctionIdentifier<FunctionName extends JestFunctionName>
 
 interface JestFunctionMemberExpression<
   FunctionName extends JestFunctionName,
-  PropertyName extends JestPropertyName = JestPropertyName
+  PropertyName extends JestPropertyName = JestPropertyName,
 > extends KnownMemberExpression<PropertyName> {
   object: JestFunctionIdentifier<FunctionName>;
 }
 
 interface JestFunctionCallExpressionWithMemberExpressionCallee<
   FunctionName extends JestFunctionName,
-  PropertyName extends JestPropertyName = JestPropertyName
+  PropertyName extends JestPropertyName = JestPropertyName,
 > extends TSESTree.CallExpression {
   callee: JestFunctionMemberExpression<FunctionName, PropertyName>;
 }
 
 export interface JestFunctionCallExpressionWithIdentifierCallee<
-  FunctionName extends JestFunctionName
+  FunctionName extends JestFunctionName,
 > extends TSESTree.CallExpression {
   callee: JestFunctionIdentifier<FunctionName>;
 }
 
 interface JestEachMemberExpression<
-  TName extends Exclude<JestFunctionName, HookName>
+  TName extends Exclude<JestFunctionName, HookName>,
 > extends KnownMemberExpression<'each'> {
   object:
     | KnownIdentifier<TName>
@@ -589,7 +587,7 @@ interface JestEachMemberExpression<
 }
 
 export interface JestCalledEachCallExpression<
-  TName extends Exclude<JestFunctionName, HookName>
+  TName extends Exclude<JestFunctionName, HookName>,
 > extends TSESTree.CallExpression {
   callee: TSESTree.CallExpression & {
     callee: JestEachMemberExpression<TName>;
@@ -597,22 +595,21 @@ export interface JestCalledEachCallExpression<
 }
 
 export interface JestTaggedEachCallExpression<
-  TName extends Exclude<JestFunctionName, HookName>
+  TName extends Exclude<JestFunctionName, HookName>,
 > extends TSESTree.CallExpression {
   callee: TSESTree.TaggedTemplateExpression & {
     tag: JestEachMemberExpression<TName>;
   };
 }
 
-type JestEachCallExpression<
-  TName extends Exclude<JestFunctionName, HookName>
-> = JestCalledEachCallExpression<TName> | JestTaggedEachCallExpression<TName>;
+type JestEachCallExpression<TName extends Exclude<JestFunctionName, HookName>> =
+  JestCalledEachCallExpression<TName> | JestTaggedEachCallExpression<TName>;
 
 export type JestFunctionCallExpression<
   FunctionName extends Exclude<JestFunctionName, HookName> = Exclude<
     JestFunctionName,
     HookName
-  >
+  >,
 > =
   | JestEachCallExpression<FunctionName>
   | JestFunctionCallExpressionWithMemberExpressionCallee<FunctionName>

@@ -43,9 +43,8 @@ export default createRule({
     return {
       FunctionDeclaration(node) {
         const declaredVariables = context.getDeclaredVariables(node);
-        const testCallExpressions = getTestCallExpressionsFromDeclaredVariables(
-          declaredVariables,
-        );
+        const testCallExpressions =
+          getTestCallExpressionsFromDeclaredVariables(declaredVariables);
 
         if (testCallExpressions.length > 0) {
           inTestCase = true;

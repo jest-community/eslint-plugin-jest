@@ -11,16 +11,21 @@ import {
   isTestCaseCall,
 } from './utils';
 
-const buildFixer = (
-  callee: TSESTree.LeftHandSideExpression,
-  nodeName: string,
-  preferredTestKeyword: TestCaseName.test | TestCaseName.it,
-) => (fixer: TSESLint.RuleFixer) => [
-  fixer.replaceText(
-    callee.type === AST_NODE_TYPES.MemberExpression ? callee.object : callee,
-    getPreferredNodeName(nodeName, preferredTestKeyword),
-  ),
-];
+const buildFixer =
+  (
+    callee: TSESTree.LeftHandSideExpression,
+    nodeName: string,
+    preferredTestKeyword: TestCaseName.test | TestCaseName.it,
+  ) =>
+  (fixer: TSESLint.RuleFixer) =>
+    [
+      fixer.replaceText(
+        callee.type === AST_NODE_TYPES.MemberExpression
+          ? callee.object
+          : callee,
+        getPreferredNodeName(nodeName, preferredTestKeyword),
+      ),
+    ];
 
 export default createRule<
   [

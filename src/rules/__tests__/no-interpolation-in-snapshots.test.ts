@@ -57,8 +57,7 @@ ruleTester.run('no-interpolation-in-snapshots', rule, {
       ],
     },
     {
-      code:
-        'expect(something).not.toMatchInlineSnapshot({}, `${interpolated}`);',
+      code: 'expect(something).not.toMatchInlineSnapshot({}, `${interpolated}`);',
       errors: [
         {
           endColumn: 66,
@@ -68,8 +67,7 @@ ruleTester.run('no-interpolation-in-snapshots', rule, {
       ],
     },
     {
-      code:
-        'expect(something).toThrowErrorMatchingInlineSnapshot(`${interpolated}`);',
+      code: 'expect(something).toThrowErrorMatchingInlineSnapshot(`${interpolated}`);',
       errors: [
         {
           endColumn: 71,
@@ -79,8 +77,7 @@ ruleTester.run('no-interpolation-in-snapshots', rule, {
       ],
     },
     {
-      code:
-        'expect(something).not.toThrowErrorMatchingInlineSnapshot(`${interpolated}`);',
+      code: 'expect(something).not.toThrowErrorMatchingInlineSnapshot(`${interpolated}`);',
       errors: [
         {
           endColumn: 75,

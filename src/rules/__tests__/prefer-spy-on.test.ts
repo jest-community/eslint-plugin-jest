@@ -87,8 +87,7 @@ ruleTester.run('prefer-spy-on', rule, {
       ],
     },
     {
-      code:
-        "obj.a.b = jest.fn(() => ({})).mockReturnValue('default').mockReturnValueOnce('first call'); test();",
+      code: "obj.a.b = jest.fn(() => ({})).mockReturnValue('default').mockReturnValueOnce('first call'); test();",
       output:
         "jest.spyOn(obj.a, 'b').mockImplementation(() => ({})).mockReturnValue('default').mockReturnValueOnce('first call'); test();",
       errors: [

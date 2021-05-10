@@ -88,9 +88,8 @@ export default createRule({
       },
       FunctionDeclaration(node) {
         const declaredVariables = context.getDeclaredVariables(node);
-        const testCallExpressions = getTestCallExpressionsFromDeclaredVariables(
-          declaredVariables,
-        );
+        const testCallExpressions =
+          getTestCallExpressionsFromDeclaredVariables(declaredVariables);
 
         stack.push(testCallExpressions.length > 0);
       },
