@@ -1,0 +1,5 @@
+# See https://git-scm.com/docs/git-blame#Documentation/git-blame.txt---ignore-revs-fileltfilegt
+# Run git config blame.ignoreRevsFile .git-blame-ignore-revs
+
+# prettier bumps
+fd946237c143f6cddb6ddb367a01ac2933f0b343
