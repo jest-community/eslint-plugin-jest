@@ -27,7 +27,7 @@ are not using TypeScript.
   overrides: [
     {
       files: ['test/**'],
-      extends: ['jest'],
+      plugins: ['jest'],
       rules: {
         // you should turn the original rule off *only* for test files
         '@typescript-eslint/unbound-method': 'off',
