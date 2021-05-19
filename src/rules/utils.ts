@@ -648,6 +648,16 @@ export type FunctionExpression =
   | TSESTree.ArrowFunctionExpression
   | TSESTree.FunctionExpression;
 
+export const isCallExpression = (
+  node: TSESTree.Node | undefined,
+): node is TSESTree.CallExpression => {
+  if (!node) {
+    return false;
+  }
+
+  return node.type === AST_NODE_TYPES.CallExpression;
+};
+
 export const isFunction = (node: TSESTree.Node): node is FunctionExpression =>
   node.type === AST_NODE_TYPES.FunctionExpression ||
   node.type === AST_NODE_TYPES.ArrowFunctionExpression;

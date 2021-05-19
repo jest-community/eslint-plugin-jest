@@ -135,6 +135,7 @@ installations requiring long-term consistency.
 | [consistent-test-it](docs/rules/consistent-test-it.md)                       | Have control over `test` and `it` usages                        |                  | ![fixable][] |
 | [expect-expect](docs/rules/expect-expect.md)                                 | Enforce assertion to be made in a test body                     | ![recommended][] |              |
 | [lowercase-name](docs/rules/lowercase-name.md)                               | Enforce lowercase test names                                    |                  | ![fixable][] |
+| [max-nested-describe](docs/rules/max-nested-describe.md)                     | Enforces a maximum depth to nested describe calls               |                  |              |
 | [no-alias-methods](docs/rules/no-alias-methods.md)                           | Disallow alias methods                                          | ![style][]       | ![fixable][] |
 | [no-commented-out-tests](docs/rules/no-commented-out-tests.md)               | Disallow commented out tests                                    | ![recommended][] |              |
 | [no-conditional-expect](docs/rules/no-conditional-expect.md)                 | Prevent calling `expect` conditionally                          | ![recommended][] |              |
