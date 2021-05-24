@@ -67,6 +67,14 @@ ruleTester.run('max-nested-describe', rule, {
     `,
       options: [{ max: 3 }],
     },
+    {
+      code: dedent`
+        it('something', async () => {
+          expect('something').toBe('something');
+        });
+    `,
+      options: [{ max: 0 }],
+    },
   ],
   invalid: [
     {
@@ -130,6 +138,17 @@ ruleTester.run('max-nested-describe', rule, {
         });
       `,
       errors: [{ messageId: 'exceededMaxDepth', line: 3, column: 5 }],
+    },
+    {
+      code: dedent`
+        describe('qux', () => {
+          it('should get something', () => {
+            expect(getSomething().toBe('Something'))
+          });
+        });
+      `,
+      options: [{ max: 0 }],
+      errors: [{ messageId: 'exceededMaxDepth', line: 1, column: 1 }],
     },
   ],
 });
