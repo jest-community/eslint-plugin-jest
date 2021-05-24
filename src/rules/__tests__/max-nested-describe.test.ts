@@ -29,7 +29,7 @@ ruleTester.run('max-nested-describe', rule, {
           });
         });
 
-        describe('qux', () => {
+        fdescribe('qux', () => {
           it('something', async () => {
             expect('something').toBe('something');
           });
@@ -45,7 +45,7 @@ ruleTester.run('max-nested-describe', rule, {
         });
       });
 
-      describe('foo', function() {
+      xdescribe('foo', function() {
         describe('bar', function() {
           it('something', async () => {
             expect('something').toBe('something');
@@ -55,15 +55,15 @@ ruleTester.run('max-nested-describe', rule, {
     `,
     {
       code: dedent`
-      describe('foo', () => {
-        describe('bar', () => {
-          describe('baz', () => {
-            it('something', async () => {
-              expect('something').toBe('something');
+        describe('foo', () => {
+          describe.only('bar', () => {
+            describe.skip('baz', () => {
+              it('something', async () => {
+                expect('something').toBe('something');
+              });
             });
           });
         });
-      });
     `,
       options: [{ max: 3 }],
     },
@@ -75,6 +75,19 @@ ruleTester.run('max-nested-describe', rule, {
     `,
       options: [{ max: 0 }],
     },
+    dedent`
+      describe('foo', () => {
+        describe.each(['hello', 'world'])("%s", (a) => {});
+      });
+    `,
+    dedent`
+      describe('foo', () => {
+        describe.each\`
+        foo  | bar
+        ${1} | ${2}
+        \`('$foo $bar', ({ foo, bar }) => {});
+      });
+    `,
   ],
   invalid: [
     {
@@ -121,8 +134,14 @@ ruleTester.run('max-nested-describe', rule, {
     },
     {
       code: dedent`
-        describe('foo', () => {
-          describe('bar', () => {
+        fdescribe('foo', () => {
+          describe.only('bar', () => {
+            describe.skip('baz', () => {
+              it('should get something', () => {
+                expect(getSomething().toBe('Something'))
+              });
+            });
+
             describe('baz', () => {
               it('should get something', () => {
                 expect(getSomething().toBe('Something'))
@@ -131,13 +150,16 @@ ruleTester.run('max-nested-describe', rule, {
           });
         });
 
-        describe('qux', () => {
+        xdescribe('qux', () => {
           it('should get something', () => {
             expect(getSomething().toBe('Something'))
           });
         });
       `,
-      errors: [{ messageId: 'exceededMaxDepth', line: 3, column: 5 }],
+      errors: [
+        { messageId: 'exceededMaxDepth', line: 3, column: 5 },
+        { messageId: 'exceededMaxDepth', line: 9, column: 5 },
+      ],
     },
     {
       code: dedent`
@@ -149,6 +171,27 @@ ruleTester.run('max-nested-describe', rule, {
       `,
       options: [{ max: 0 }],
       errors: [{ messageId: 'exceededMaxDepth', line: 1, column: 1 }],
+    },
+    {
+      code: dedent`
+        describe('foo', () => {
+          describe.each(['hello', 'world'])("%s", (a) => {});
+        });
+      `,
+      options: [{ max: 1 }],
+      errors: [{ messageId: 'exceededMaxDepth', line: 2, column: 3 }],
+    },
+    {
+      code: dedent`
+        describe('foo', () => {
+          describe.each\`
+          foo  | bar
+          ${1} | ${2}
+          \`('$foo $bar', ({ foo, bar }) => {});
+        });
+      `,
+      options: [{ max: 1 }],
+      errors: [{ messageId: 'exceededMaxDepth', line: 2, column: 3 }],
     },
   ],
 });
