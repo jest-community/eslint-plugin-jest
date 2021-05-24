@@ -1,5 +1,8 @@
-import { TSESTree } from '@typescript-eslint/experimental-utils';
-import { createRule, isCallExpression, isDescribeCall } from './utils';
+import {
+  AST_NODE_TYPES,
+  TSESTree,
+} from '@typescript-eslint/experimental-utils';
+import { createRule, isDescribeCall } from './utils';
 
 export default createRule({
   name: __filename,
@@ -36,7 +39,10 @@ export default createRule({
     ) {
       const { parent } = node;
 
-      if (!isCallExpression(parent) || !isDescribeCall(parent)) {
+      if (
+        parent?.type !== AST_NODE_TYPES.CallExpression ||
+        !isDescribeCall(parent)
+      ) {
         return;
       }
 
@@ -56,7 +62,10 @@ export default createRule({
     ) {
       const { parent } = node;
 
-      if (isCallExpression(parent) && isDescribeCall(parent)) {
+      if (
+        parent?.type === AST_NODE_TYPES.CallExpression &&
+        isDescribeCall(parent)
+      ) {
         describeCallbackStack.pop();
       }
     }
