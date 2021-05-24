@@ -97,7 +97,7 @@ ruleTester.run('max-nested-describe', rule, {
             describe('baz', function () {
               describe('qux', function () {
                 it('should get something', () => {
-                  expect(getSomething().toBe('Something'))
+                  expect(getSomething()).toBe('Something');
                 });
               })
             })
@@ -115,13 +115,13 @@ ruleTester.run('max-nested-describe', rule, {
           describe('bar', () => {
             describe('baz', () => {
               it('should get something', () => {
-                expect(getSomething().toBe('Something'))
+                expect(getSomething()).toBe('Something');
               });
             });
 
             describe('qux', function () {
               it('should get something', () => {
-                expect(getSomething().toBe('Something'))
+                expect(getSomething()).toBe('Something');
               });
             });
           })
@@ -138,13 +138,13 @@ ruleTester.run('max-nested-describe', rule, {
           describe.only('bar', () => {
             describe.skip('baz', () => {
               it('should get something', () => {
-                expect(getSomething().toBe('Something'))
+                expect(getSomething()).toBe('Something');
               });
             });
 
             describe('baz', () => {
               it('should get something', () => {
-                expect(getSomething().toBe('Something'))
+                expect(getSomething()).toBe('Something');
               });
             });
           });
@@ -152,7 +152,7 @@ ruleTester.run('max-nested-describe', rule, {
 
         xdescribe('qux', () => {
           it('should get something', () => {
-            expect(getSomething().toBe('Something'))
+            expect(getSomething()).toBe('Something');
           });
         });
       `,
@@ -165,7 +165,7 @@ ruleTester.run('max-nested-describe', rule, {
       code: dedent`
         describe('qux', () => {
           it('should get something', () => {
-            expect(getSomething().toBe('Something'))
+            expect(getSomething()).toBe('Something');
           });
         });
       `,
