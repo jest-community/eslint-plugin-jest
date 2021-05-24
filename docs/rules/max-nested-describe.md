@@ -17,7 +17,7 @@ describe('foo', () => {
   describe('bar', () => {
     describe('baz', () => {
       it('should get something', () => {
-        expect(getSomething().toBe('Something'));
+        expect(getSomething()).toBe('Something');
       });
     });
   });
@@ -27,7 +27,7 @@ describe('foo2', function () {
   describe('bar2', function () {
     describe('baz2', function () {
       it('should get something', () => {
-        expect(getSomething().toBe('Something'));
+        expect(getSomething()).toBe('Something');
       });
     });
   });
@@ -41,20 +41,20 @@ of `{ "max": 2 } `):
 describe('foo', () => {
   describe('bar', () => {
     it('should get something', () => {
-      expect(getSomething().toBe('Something'));
+      expect(getSomething()).toBe('Something');
     });
   });
 
   describe('qux', () => {
     it('should get something', () => {
-      expect(getSomething().toBe('Something'));
+      expect(getSomething()).toBe('Something');
     });
   });
 });
 
 describe('foo2', function () {
   it('should get something', () => {
-    expect(getSomething().toBe('Something'));
+    expect(getSomething()).toBe('Something');
   });
 });
 ```
@@ -66,7 +66,7 @@ describe('foo2', function () {
   "jest/max-nested-describe": [
     "error",
     {
-      "max": 3
+      "max": 2
     }
   ]
 }
@@ -86,7 +86,7 @@ describe('foo', () => {
   describe('bar', () => {
     describe('baz', () => {
       it('should get something', () => {
-        expect(getSomething().toBe('Something'))
+        expect(getSomething()).toBe('Something')
       });
     });
   });
@@ -96,13 +96,13 @@ describe('foo2', function()) {
   describe('bar2', function() {
     describe('baz2', function() {
       it('should get something', function() {
-        expect(getSomething().toBe('Something'))
+        expect(getSomething()).toBe('Something')
       });
     });
 
     describe('qux2', function() {
       it('should get something', function() {
-        expect(getSomething().toBe('Something'))
+        expect(getSomething()).toBe('Something')
       });
     });
   });
