@@ -16,22 +16,14 @@ export default createRule({
     type: 'suggestion',
     schema: [
       {
-        oneOf: [
-          {
+        type: 'object',
+        properties: {
+          max: {
             type: 'integer',
             minimum: 0,
           },
-          {
-            type: 'object',
-            properties: {
-              max: {
-                type: 'integer',
-                minimum: 0,
-              },
-            },
-            additionalProperties: false,
-          },
-        ],
+        },
+        additionalProperties: false,
       },
     ],
   },
