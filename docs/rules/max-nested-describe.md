@@ -86,7 +86,7 @@ describe('foo', () => {
   describe('bar', () => {
     describe('baz', () => {
       it('should get something', () => {
-        expect(getSomething()).toBe('Something')
+        expect(getSomething()).toBe('Something');
       });
     });
   });
@@ -96,13 +96,13 @@ describe('foo2', function()) {
   describe('bar2', function() {
     describe('baz2', function() {
       it('should get something', function() {
-        expect(getSomething()).toBe('Something')
+        expect(getSomething()).toBe('Something');
       });
     });
 
     describe('qux2', function() {
       it('should get something', function() {
-        expect(getSomething()).toBe('Something')
+        expect(getSomething()).toBe('Something');
       });
     });
   });
