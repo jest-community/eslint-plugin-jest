@@ -7,7 +7,9 @@ const mocksDirName = '__mocks__';
 const isMockPath = (path: string) =>
   path.split(posix.sep).includes(mocksDirName);
 
-const isMockImportLiteral = (expression: TSESTree.Expression): boolean =>
+const isMockImportLiteral = (
+  expression: TSESTree.CallExpressionArgument,
+): boolean =>
   isStringNode(expression) && isMockPath(getStringValue(expression));
 
 export default createRule({

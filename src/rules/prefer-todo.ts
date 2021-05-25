@@ -14,7 +14,7 @@ import {
   isTestCaseCall,
 } from './utils';
 
-function isEmptyFunction(node: TSESTree.Expression) {
+function isEmptyFunction(node: TSESTree.CallExpressionArgument) {
   if (!isFunction(node)) {
     return false;
   }

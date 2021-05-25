@@ -120,13 +120,8 @@ const isParentThenOrPromiseReturned = (
   node.type === AST_NODE_TYPES.ReturnStatement ||
   isPromiseReturnedLater(node, testFunctionBody);
 
-type PromiseCallbacks = [
-  TSESTree.Expression | undefined,
-  TSESTree.Expression | undefined,
-];
-
 const verifyExpectWithReturn = (
-  promiseCallbacks: PromiseCallbacks,
+  promiseCallbacks: Array<TSESTree.CallExpressionArgument | undefined>,
   node: CalledKnownMemberExpression<'then' | 'catch'>,
   context: RuleContext,
   testFunctionBody: TSESTree.Statement[],
@@ -187,14 +182,13 @@ export default createRule<unknown[], MessageIds>({
           }
 
           const testFunctionBody = body.body;
-          const [fulfillmentCallback, rejectionCallback] = node.arguments;
 
           // then block can have two args, fulfillment & rejection
           // then block can have one args, fulfillment
           // catch block can have one args, rejection
           // ref: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise
           verifyExpectWithReturn(
-            [fulfillmentCallback, rejectionCallback],
+            node.arguments.slice(0, 2),
             node.callee,
             context,
             testFunctionBody,

@@ -9,7 +9,7 @@ import {
   isTestCaseCall,
 } from './utils';
 
-const getBody = (args: TSESTree.Expression[]) => {
+const getBody = (args: TSESTree.CallExpressionArgument[]) => {
   const [, secondArg] = args;
 
   if (
