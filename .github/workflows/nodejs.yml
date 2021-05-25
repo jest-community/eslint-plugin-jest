@@ -40,6 +40,50 @@ jobs:
           YARN_ENABLE_SCRIPTS: false
         run: yarn --immutable
 
+  prettier:
+    needs: prepare-yarn-cache
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Get yarn cache
+        id: yarn-cache
+        run: echo "::set-output name=dir::$(yarn config get cacheFolder)"
+      - uses: actions/cache@v2
+        with:
+          path: ${{ steps.yarn-cache.outputs.dir }}
+          key: yarn2-${{ hashFiles('yarn.lock') }}
+          restore-keys: |
+            yarn2-
+      - uses: actions/setup-node@v2.1.5
+        with:
+          node-version: 14.x
+      - name: install
+        run: yarn
+      - name: run prettier
+        run: yarn prettier:check
+
+  typecheck:
+    needs: prepare-yarn-cache
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Get yarn cache
+        id: yarn-cache
+        run: echo "::set-output name=dir::$(yarn config get cacheFolder)"
+      - uses: actions/cache@v2
+        with:
+          path: ${{ steps.yarn-cache.outputs.dir }}
+          key: yarn2-${{ hashFiles('yarn.lock') }}
+          restore-keys: |
+            yarn2-
+      - uses: actions/setup-node@v2.1.5
+        with:
+          node-version: 14.x
+      - name: install
+        run: yarn
+      - name: run typecheck
+        run: yarn typecheck
+
   test-node:
     name:
       # prettier-ignore
@@ -54,8 +98,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
       - name: Get yarn cache
         id: yarn-cache
         run: echo "::set-output name=dir::$(yarn config get cacheFolder)"
@@ -73,10 +115,6 @@ jobs:
         run: |
           yarn
           yarn add --dev eslint@${{matrix.eslint-version }}
-      - name: run prettier
-        run: yarn prettier:check
-      - name: run typecheck
-        run: yarn typecheck
       - name: run tests
         # only collect coverage on eslint versions that support the suggestions api
         run: yarn test --coverage ${{ matrix.eslint-version >= 6 }}
@@ -109,10 +147,6 @@ jobs:
           node-version: 14.x
       - name: install
         run: yarn
-      - name: run prettier
-        run: yarn prettier:check
-      - name: run typecheck
-        run: yarn typecheck
       - name: run tests
         run: yarn test --coverage
         env:
@@ -124,8 +158,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
       - name: Get yarn cache
         id: yarn-cache
         run: echo "::set-output name=dir::$(yarn config get cacheFolder)"
@@ -153,7 +185,7 @@ jobs:
       # prettier-ignore
       ${{ github.event_name == 'push' && github.event.ref == 'refs/heads/main' }}
     name: Release new version
-    needs: [test-node, test-os]
+    needs: [prettier, typecheck, test-node, test-os]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
