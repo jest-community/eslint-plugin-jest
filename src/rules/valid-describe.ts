@@ -5,7 +5,7 @@ import {
 import { createRule, getNodeName, isDescribeCall, isFunction } from './utils';
 
 const paramsLocation = (
-  params: TSESTree.Expression[] | TSESTree.Parameter[],
+  params: TSESTree.CallExpressionArgument[] | TSESTree.Parameter[],
 ) => {
   const [first] = params;
   const last = params[params.length - 1];

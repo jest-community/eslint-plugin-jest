@@ -69,6 +69,14 @@ ruleTester.run('valid-expect-in-promise', rule, {
     `,
     dedent`
       it('it1', function () {
+        Promise.resolve().then(/*fulfillment*/ function () {
+        }, undefined, /*rejection*/ function () {
+          expect(someThing).toEqual(true)
+        })
+      });
+    `,
+    dedent`
+      it('it1', function () {
         return Promise.resolve().then(function () {
           /*fulfillment*/
         }, function () {
