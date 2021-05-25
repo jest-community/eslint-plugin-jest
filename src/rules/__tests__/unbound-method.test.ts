@@ -122,7 +122,7 @@ const invalidTestCases: Array<TSESLint.InvalidTestCase<MessageIds, Options>> = [
 ];
 
 const requireRule = (throwWhenRequiring: boolean) => {
-  jest.resetModuleRegistry();
+  jest.resetModules();
 
   TSESLintPluginRef.throwWhenRequiring = throwWhenRequiring;
 
@@ -156,7 +156,7 @@ describe('error handling', () => {
         throw new Error('oh noes!');
       });
 
-      jest.resetModuleRegistry();
+      jest.resetModules();
 
       // eslint-disable-next-line @typescript-eslint/no-require-imports,node/no-missing-require
       expect(() => require('../unbound-method').default).toThrow(/oh noes!/iu);
