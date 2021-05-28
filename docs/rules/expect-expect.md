@@ -34,7 +34,8 @@ it('should work with callbacks/async', () => {
   "jest/expect-expect": [
     "error",
     {
-      "assertFunctionNames": ["expect"]
+      "assertFunctionNames": ["expect"],
+      "additionalTestBlockFunctions": []
     }
   ]
 }
@@ -100,5 +101,45 @@ describe('GET /user', function () {
   it('responds with json', function (done) {
     request(app).get('/user').expect('Content-Type', /json/).expect(200, done);
   });
+});
+```
+
+### `additionalTestBlockFunctions`
+
+This array can be used to specify the names of functions that should also be
+treated as test blocks:
+
+```json
+{
+  "rules": {
+    "jest/expect-expect": [
+      "error",
+      { "additionalTestBlockFunctions": ["theoretically"] }
+    ]
+  }
+}
+```
+
+The following is _correct_ when using the above configuration:
+
+```js
+import theoretically from 'jest-theories';
+
+describe('NumberToLongString', () => {
+  const theories = [
+    { input: 100, expected: 'One hundred' },
+    { input: 1000, expected: 'One thousand' },
+    { input: 10000, expected: 'Ten thousand' },
+    { input: 100000, expected: 'One hundred thousand' },
+  ];
+
+  theoretically(
+    'the number {input} is correctly translated to string',
+    theories,
+    theory => {
+      const output = NumberToLongString(theory.input);
+      expect(output).toBe(theory.expected);
+    },
+  );
 });
 ```
