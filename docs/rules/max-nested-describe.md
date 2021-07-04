@@ -10,24 +10,36 @@ This rule enforces a maximum depth to nested `describe()` calls to improve code
 clarity in your tests.
 
 The following patterns are considered warnings (with the default option of
-`{ "max": 2 } `):
+`{ "max": 5 } `):
 
 ```js
 describe('foo', () => {
   describe('bar', () => {
     describe('baz', () => {
-      it('should get something', () => {
-        expect(getSomething()).toBe('Something');
+      describe('qux', () => {
+        describe('quxx', () => {
+          describe('too many', () => {
+            it('should get something', () => {
+              expect(getSomething()).toBe('Something');
+            });
+          });
+        });
       });
     });
   });
 });
 
-describe('foo2', function () {
-  describe('bar2', function () {
-    describe('baz2', function () {
-      it('should get something', () => {
-        expect(getSomething()).toBe('Something');
+describe('foo', function () {
+  describe('bar', function () {
+    describe('baz', function () {
+      describe('qux', function () {
+        describe('quxx', function () {
+          describe('too many', function () {
+            it('should get something', () => {
+              expect(getSomething()).toBe('Something');
+            });
+          });
+        });
       });
     });
   });
@@ -35,7 +47,7 @@ describe('foo2', function () {
 ```
 
 The following patterns are **not** considered warnings (with the default option
-of `{ "max": 2 } `):
+of `{ "max": 5 } `):
 
 ```js
 describe('foo', () => {
@@ -57,6 +69,20 @@ describe('foo2', function () {
     expect(getSomething()).toBe('Something');
   });
 });
+
+describe('foo', function () {
+  describe('bar', function () {
+    describe('baz', function () {
+      describe('qux', function () {
+        describe('this is the limit', function () {
+          it('should get something', () => {
+            expect(getSomething()).toBe('Something');
+          });
+        });
+      });
+    });
+  });
+});
 ```
 
 ## Options
@@ -66,7 +92,7 @@ describe('foo2', function () {
   "jest/max-nested-describe": [
     "error",
     {
-      "max": 2
+      "max": 5
     }
   ]
 }
@@ -76,34 +102,28 @@ describe('foo2', function () {
 
 Enforces a maximum depth for nested `describe()`.
 
-This has default value of `2`.
+This has a default value of `5`.
 
 Examples of patterns **not** considered warnings with options set to
-`{ "max": 3 }`:
+`{ "max": 2 }`:
 
 ```js
 describe('foo', () => {
   describe('bar', () => {
-    describe('baz', () => {
-      it('should get something', () => {
-        expect(getSomething()).toBe('Something');
-      });
+    it('should get something', () => {
+      expect(getSomething()).toBe('Something');
     });
   });
 });
 
 describe('foo2', function()) {
   describe('bar2', function() {
-    describe('baz2', function() {
-      it('should get something', function() {
-        expect(getSomething()).toBe('Something');
-      });
+    it('should get something', function() {
+      expect(getSomething()).toBe('Something');
     });
 
-    describe('qux2', function() {
-      it('should get something', function() {
-        expect(getSomething()).toBe('Something');
-      });
+    it('should get  else', function() {
+      expect(getSomething()).toBe('Something');
     });
   });
 });
