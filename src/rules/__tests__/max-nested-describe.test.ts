@@ -13,27 +13,39 @@ const ruleTester = new TSESLint.RuleTester({
 ruleTester.run('max-nested-describe', rule, {
   valid: [
     dedent`
-      describe('foo', () => {
-        describe('bar', () => {
-          it('hello', async () => {
-            expect('hello').toBe('hello');
-          });
-        });
+      describe('foo', function() {
+        describe('bar', function () {
+          describe('baz', function () {
+            describe('qux', function () {
+              describe('qux', function () {
+                it('should get something', () => {
+                  expect(getSomething()).toBe('Something');
+                });
+              })
+            })
+          })
+        })
       });
     `,
     dedent`
-      describe('foo', () => {
-        describe('bar', () => {
-          it('hello', async () => {
-            expect('hello').toBe('hello');
-          });
-        });
+      describe('foo', function() {
+        describe('bar', function () {
+          describe('baz', function () {
+            describe('qux', function () {
+              describe('qux', function () {
+                it('should get something', () => {
+                  expect(getSomething()).toBe('Something');
+                });
+              });
 
-        fdescribe('qux', () => {
-          it('something', async () => {
-            expect('something').toBe('something');
-          });
-        });
+              fdescribe('qux', () => {
+                it('something', async () => {
+                  expect('something').toBe('something');
+                });
+              });
+            })
+          })
+        })
       });
     `,
     dedent`
@@ -96,26 +108,39 @@ ruleTester.run('max-nested-describe', rule, {
           describe('bar', function () {
             describe('baz', function () {
               describe('qux', function () {
-                it('should get something', () => {
-                  expect(getSomething()).toBe('Something');
+                describe('quxx', function () {
+                  describe('over limit', function () {
+                    it('should get something', () => {
+                      expect(getSomething()).toBe('Something');
+                    });
+                  });
                 });
-              })
-            })
-          })
+              });
+            });
+          });
         });
       `,
-      errors: [
-        { messageId: 'exceededMaxDepth', line: 3, column: 5 },
-        { messageId: 'exceededMaxDepth', line: 4, column: 7 },
-      ],
+      errors: [{ messageId: 'exceededMaxDepth', line: 6, column: 11 }],
     },
     {
       code: dedent`
         describe('foo', () => {
           describe('bar', () => {
             describe('baz', () => {
-              it('should get something', () => {
-                expect(getSomething()).toBe('Something');
+              describe('baz1', () => {
+                describe('baz2', () => {
+                  describe('baz3', () => {
+                    it('should get something', () => {
+                      expect(getSomething()).toBe('Something');
+                    });
+                  });
+
+                  describe('baz4', () => {
+                    it('should get something', () => {
+                      expect(getSomething()).toBe('Something');
+                    });
+                  });
+                });
               });
             });
 
@@ -128,8 +153,8 @@ ruleTester.run('max-nested-describe', rule, {
         });
       `,
       errors: [
-        { messageId: 'exceededMaxDepth', line: 3, column: 5 },
-        { messageId: 'exceededMaxDepth', line: 9, column: 5 },
+        { messageId: 'exceededMaxDepth', line: 6, column: 11 },
+        { messageId: 'exceededMaxDepth', line: 12, column: 11 },
       ],
     },
     {
@@ -156,6 +181,7 @@ ruleTester.run('max-nested-describe', rule, {
           });
         });
       `,
+      options: [{ max: 2 }],
       errors: [
         { messageId: 'exceededMaxDepth', line: 3, column: 5 },
         { messageId: 'exceededMaxDepth', line: 9, column: 5 },
