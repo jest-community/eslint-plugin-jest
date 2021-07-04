@@ -30,7 +30,7 @@ export default createRule({
       },
     ],
   },
-  defaultOptions: [{ max: 2 }],
+  defaultOptions: [{ max: 5 }],
   create(context, [{ max }]) {
     const describeCallbackStack: number[] = [];
 
