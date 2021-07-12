@@ -18,20 +18,11 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - uses: actions/setup-node@v2.1.5
+      - uses: actions/setup-node@v2.2.0
         with:
           node-version: 14.x
+          cache: yarn
 
-      - name: Get yarn cache
-        id: yarn-cache
-        run: echo "::set-output name=dir::$(yarn config get cacheFolder)"
-
-      - uses: actions/cache@v2.1.6
-        with:
-          path: ${{ steps.yarn-cache.outputs.dir }}
-          key: yarn2-${{ hashFiles('yarn.lock') }}
-          restore-keys: |
-            yarn2-
       - name: Validate cache
         env:
           # Use PnP and disable postinstall scripts as this just needs to
@@ -45,18 +36,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Get yarn cache
-        id: yarn-cache
-        run: echo "::set-output name=dir::$(yarn config get cacheFolder)"
-      - uses: actions/cache@v2
-        with:
-          path: ${{ steps.yarn-cache.outputs.dir }}
-          key: yarn2-${{ hashFiles('yarn.lock') }}
-          restore-keys: |
-            yarn2-
-      - uses: actions/setup-node@v2.1.5
+      - uses: actions/setup-node@v2.2.0
         with:
           node-version: 14.x
+          cache: yarn
       - name: install
         run: yarn
       - name: run prettier
@@ -67,18 +50,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Get yarn cache
-        id: yarn-cache
-        run: echo "::set-output name=dir::$(yarn config get cacheFolder)"
-      - uses: actions/cache@v2
-        with:
-          path: ${{ steps.yarn-cache.outputs.dir }}
-          key: yarn2-${{ hashFiles('yarn.lock') }}
-          restore-keys: |
-            yarn2-
-      - uses: actions/setup-node@v2.1.5
+      - uses: actions/setup-node@v2.2.0
         with:
           node-version: 14.x
+          cache: yarn
       - name: install
         run: yarn
       - name: run typecheck
@@ -87,7 +62,7 @@ jobs:
   test-node:
     name:
       # prettier-ignore
-      Test on Node.js v${{ matrix.node-version }} and eslint v${{matrix.eslint-version }}
+      Test on Node.js v${{ matrix.node-version }} and eslint v${{ matrix.eslint-version }}
     needs: prepare-yarn-cache
     strategy:
       fail-fast: false
@@ -98,23 +73,15 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: Get yarn cache
-        id: yarn-cache
-        run: echo "::set-output name=dir::$(yarn config get cacheFolder)"
-      - uses: actions/cache@v2
-        with:
-          path: ${{ steps.yarn-cache.outputs.dir }}
-          key: yarn2-${{ hashFiles('yarn.lock') }}
-          restore-keys: |
-            yarn2-
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v2.1.5
+        uses: actions/setup-node@v2.2.0
         with:
           node-version: ${{ matrix.node-version }}
-      - name: install with eslint v${{matrix.eslint-version }}
+          cache: yarn
+      - name: install with eslint v${{ matrix.eslint-version }}
         run: |
           yarn
-          yarn add --dev eslint@${{matrix.eslint-version }}
+          yarn add --dev eslint@${{ matrix.eslint-version }}
       - name: run tests
         # only collect coverage on eslint versions that support the suggestions api
         run: yarn test --coverage ${{ matrix.eslint-version >= 6 }}
@@ -133,18 +100,10 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: Get yarn cache
-        id: yarn-cache
-        run: echo "::set-output name=dir::$(yarn config get cacheFolder)"
-      - uses: actions/cache@v2
-        with:
-          path: ${{ steps.yarn-cache.outputs.dir }}
-          key: yarn2-${{ hashFiles('yarn.lock') }}
-          restore-keys: |
-            yarn2-
-      - uses: actions/setup-node@v2.1.5
+      - uses: actions/setup-node@v2.2.0
         with:
           node-version: 14.x
+          cache: yarn
       - name: install
         run: yarn
       - name: run tests
@@ -158,18 +117,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Get yarn cache
-        id: yarn-cache
-        run: echo "::set-output name=dir::$(yarn config get cacheFolder)"
-      - uses: actions/cache@v2
-        with:
-          path: ${{ steps.yarn-cache.outputs.dir }}
-          key: yarn2-${{ hashFiles('yarn.lock') }}
-          restore-keys: |
-            yarn2-
-      - uses: actions/setup-node@v2.1.5
+      - uses: actions/setup-node@v2.2.0
         with:
           node-version: 14.x
+          cache: yarn
       - name: install
         run: yarn
       - name: regenerate docs
@@ -189,18 +140,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Get yarn cache
-        id: yarn-cache
-        run: echo "::set-output name=dir::$(yarn config get cacheFolder)"
-      - uses: actions/cache@v2
-        with:
-          path: ${{ steps.yarn-cache.outputs.dir }}
-          key: yarn2-${{ hashFiles('yarn.lock') }}
-          restore-keys: |
-            yarn2-
-      - uses: actions/setup-node@v2.1.5
+      - uses: actions/setup-node@v2.2.0
         with:
           node-version: 14.x
+          cache: yarn
       - name: install
         run: yarn
       - run: yarn semantic-release
