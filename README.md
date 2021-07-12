@@ -13,8 +13,8 @@
 
 ## Installation
 
-```
-$ yarn add --dev eslint eslint-plugin-jest
+```bash
+yarn add --dev eslint eslint-plugin-jest
 ```
 
 **Note:** If you installed ESLint globally then you must also install
