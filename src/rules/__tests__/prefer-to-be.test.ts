@@ -135,6 +135,53 @@ ruleTester.run('prefer-to-be: undefined', rule, {
   ],
 });
 
+ruleTester.run('prefer-to-be: NaN', rule, {
+  valid: [
+    'expect(NaN).toBeNaN();',
+    'expect(true).not.toBeNaN();',
+    'expect({}).toEqual({});',
+    'expect(something).toBe()',
+    'expect(something).toBe(somethingElse)',
+    'expect(something).toEqual(somethingElse)',
+    'expect(something).not.toBe(somethingElse)',
+    'expect(something).not.toEqual(somethingElse)',
+    'expect(undefined).toBe',
+    'expect("something");',
+  ],
+  invalid: [
+    {
+      code: 'expect(NaN).toBe(NaN);',
+      output: 'expect(NaN).toBeNaN();',
+      errors: [{ messageId: 'useToBeNaN', column: 13, line: 1 }],
+    },
+    {
+      code: 'expect(NaN).toEqual(NaN);',
+      output: 'expect(NaN).toBeNaN();',
+      errors: [{ messageId: 'useToBeNaN', column: 13, line: 1 }],
+    },
+    {
+      code: 'expect(NaN).toStrictEqual(NaN);',
+      output: 'expect(NaN).toBeNaN();',
+      errors: [{ messageId: 'useToBeNaN', column: 13, line: 1 }],
+    },
+    {
+      code: 'expect("a string").not.toBe(NaN);',
+      output: 'expect("a string").not.toBeNaN();',
+      errors: [{ messageId: 'useToBeNaN', column: 24, line: 1 }],
+    },
+    {
+      code: 'expect("a string").not.toEqual(NaN);',
+      output: 'expect("a string").not.toBeNaN();',
+      errors: [{ messageId: 'useToBeNaN', column: 24, line: 1 }],
+    },
+    {
+      code: 'expect("a string").not.toStrictEqual(NaN);',
+      output: 'expect("a string").not.toBeNaN();',
+      errors: [{ messageId: 'useToBeNaN', column: 24, line: 1 }],
+    },
+  ],
+});
+
 new TSESLint.RuleTester({
   parser: require.resolve('@typescript-eslint/parser'),
 }).run('prefer-to-be: typescript edition', rule, {

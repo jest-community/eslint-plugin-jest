@@ -54,6 +54,27 @@ const isUndefinedEqualityMatcher = (
   isParsedEqualityMatcherCall(matcher) &&
   isUndefinedIdentifier(followTypeAssertionChain(matcher.arguments[0]));
 
+interface NaNIdentifier extends TSESTree.Identifier {
+  name: 'NaN';
+}
+
+const isNaNIdentifier = (node: TSESTree.Node): node is NaNIdentifier =>
+  node.type === AST_NODE_TYPES.Identifier && node.name === 'NaN';
+
+/**
+ * Checks if the given `ParsedExpectMatcher` is a call to one of the equality matchers,
+ * with a `NaN` identifier as the sole argument.
+ *
+ * @param {ParsedExpectMatcher} matcher
+ *
+ * @return {matcher is ParsedEqualityMatcherCall<MaybeTypeCast<NaNIdentifier>>}
+ */
+const isNaNEqualityMatcher = (
+  matcher: ParsedExpectMatcher,
+): matcher is ParsedEqualityMatcherCall<NaNIdentifier> =>
+  isParsedEqualityMatcherCall(matcher) &&
+  isNaNIdentifier(followTypeAssertionChain(matcher.arguments[0]));
+
 const isPrimitiveLiteral = (matcher: ParsedExpectMatcher) =>
   isParsedEqualityMatcherCall(matcher) &&
   followTypeAssertionChain(matcher.arguments[0]).type ===
@@ -71,6 +92,7 @@ export default createRule({
       useToBe: 'Use `toBe` when expecting primitive literals',
       useToBeUndefined: 'Use `toBeUndefined` instead',
       useToBeNull: 'Use `toBeNull` instead',
+      useToBeNaN: 'Use `toBeNaN` instead',
     },
     fixable: 'code',
     type: 'suggestion',
@@ -110,6 +132,19 @@ export default createRule({
               fixer.remove(matcher.arguments[0]),
             ],
             messageId: 'useToBeUndefined',
+            node: matcher.node.property,
+          });
+
+          return;
+        }
+
+        if (isNaNEqualityMatcher(matcher)) {
+          context.report({
+            fix: fixer => [
+              fixer.replaceText(matcher.node.property, 'toBeNaN'),
+              fixer.remove(matcher.arguments[0]),
+            ],
+            messageId: 'useToBeNaN',
             node: matcher.node.property,
           });
 
