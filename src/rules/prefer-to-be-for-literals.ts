@@ -18,7 +18,7 @@ export default createRule({
   meta: {
     docs: {
       category: 'Best Practices',
-      description: 'Suggest using `tooBe()` for primitive literals',
+      description: 'Suggest using `toBe()` for primitive literals',
       recommended: false,
     },
     messages: {

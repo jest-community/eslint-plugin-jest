@@ -1,4 +1,4 @@
-# Suggest using `tooBe()` for primitive literals (`prefer-to-be-for-literals`)
+# Suggest using `toBe()` for primitive literals (`prefer-to-be-for-literals`)
 
 When asserting against primitive literals such as numbers and strings, the
 equality matchers all operate the same, but read slightly differently in code.
