@@ -13,6 +13,7 @@ export default createRule({
         'Prefer `await expect(...).resolves` over `expect(await ...)` syntax',
       recommended: false,
     },
+    fixable: 'code',
     messages: {
       expectResolves: 'Use `await expect(...).resolves instead.',
     },
@@ -22,14 +23,25 @@ export default createRule({
   defaultOptions: [],
   create: context => ({
     CallExpression(node: TSESTree.CallExpression) {
+      const [awaitNode] = node.arguments;
+
       if (
         isExpectCall(node) &&
-        node.arguments.length &&
-        node.arguments[0].type === AST_NODE_TYPES.AwaitExpression
+        awaitNode?.type === AST_NODE_TYPES.AwaitExpression
       ) {
         context.report({
           node: node.arguments[0],
           messageId: 'expectResolves',
+          fix(fixer) {
+            return [
+              fixer.insertTextBefore(node, 'await '),
+              fixer.removeRange([
+                awaitNode.range[0],
+                awaitNode.argument.range[0],
+              ]),
+              fixer.insertTextAfter(node, '.resolves'),
+            ];
+          },
         });
       }
     },

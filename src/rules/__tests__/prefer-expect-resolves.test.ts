@@ -37,6 +37,11 @@ ruleTester.run('prefer-expect-resolves', rule, {
           expect(await someValue()).toBe(true);
         });
       `,
+      output: dedent`
+        it('passes', async () => {
+          await expect(someValue()).resolves.toBe(true);
+        });
+      `,
       errors: [{ endColumn: 27, column: 10, messageId: 'expectResolves' }],
     },
     {
@@ -45,6 +50,13 @@ ruleTester.run('prefer-expect-resolves', rule, {
           const myPromise = Promise.resolve(true);
 
           expect(await myPromise).toBe(true);
+        });
+      `,
+      output: dedent`
+        it('is true', async () => {
+          const myPromise = Promise.resolve(true);
+
+          await expect(myPromise).resolves.toBe(true);
         });
       `,
       errors: [{ endColumn: 25, column: 10, messageId: 'expectResolves' }],
