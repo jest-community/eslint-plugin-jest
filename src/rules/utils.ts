@@ -210,7 +210,7 @@ interface KnownIdentifier<Name extends string> extends TSESTree.Identifier {
  *
  * @template V
  */
-const isIdentifier = <V extends string>(
+export const isIdentifier = <V extends string>(
   node: TSESTree.Node,
   name?: V,
 ): node is KnownIdentifier<V> =>
