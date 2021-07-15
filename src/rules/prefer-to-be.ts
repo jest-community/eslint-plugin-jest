@@ -1,6 +1,11 @@
-import { AST_NODE_TYPES } from '@typescript-eslint/experimental-utils';
+import {
+  AST_NODE_TYPES,
+  TSESTree,
+} from '@typescript-eslint/experimental-utils';
 import {
   EqualityMatcher,
+  MaybeTypeCast,
+  ParsedEqualityMatcherCall,
   ParsedExpectMatcher,
   createRule,
   followTypeAssertionChain,
@@ -8,6 +13,23 @@ import {
   isParsedEqualityMatcherCall,
   parseExpectCall,
 } from './utils';
+
+const isNullLiteral = (node: TSESTree.Node): node is TSESTree.NullLiteral =>
+  node.type === AST_NODE_TYPES.Literal && node.value === null;
+
+/**
+ * Checks if the given `ParsedExpectMatcher` is a call to one of the equality matchers,
+ * with a `null` literal as the sole argument.
+ *
+ * @param {ParsedExpectMatcher} matcher
+ *
+ * @return {matcher is ParsedEqualityMatcherCall<MaybeTypeCast<NullLiteral>>}
+ */
+const isNullEqualityMatcher = (
+  matcher: ParsedExpectMatcher,
+): matcher is ParsedEqualityMatcherCall<MaybeTypeCast<TSESTree.NullLiteral>> =>
+  isParsedEqualityMatcherCall(matcher) &&
+  isNullLiteral(followTypeAssertionChain(matcher.arguments[0]));
 
 const isPrimitiveLiteral = (matcher: ParsedExpectMatcher) =>
   isParsedEqualityMatcherCall(matcher) &&
@@ -24,6 +46,7 @@ export default createRule({
     },
     messages: {
       useToBe: 'Use `toBe` when expecting primitive literals',
+      useToBeNull: 'Use `toBeNull` instead',
     },
     fixable: 'code',
     type: 'suggestion',
@@ -39,8 +62,24 @@ export default createRule({
 
         const { matcher } = parseExpectCall(node);
 
+        if (!matcher || !isParsedEqualityMatcherCall(matcher)) {
+          return;
+        }
+
+        if (isNullEqualityMatcher(matcher)) {
+          context.report({
+            fix: fixer => [
+              fixer.replaceText(matcher.node.property, 'toBeNull'),
+              fixer.remove(matcher.arguments[0]),
+            ],
+            messageId: 'useToBeNull',
+            node: matcher.node.property,
+          });
+
+          return;
+        }
+
         if (
-          matcher &&
           isPrimitiveLiteral(matcher) &&
           !isParsedEqualityMatcherCall(matcher, EqualityMatcher.toBe)
         ) {

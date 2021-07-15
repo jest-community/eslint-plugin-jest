@@ -17,11 +17,6 @@ ruleTester.run('prefer-to-be', rule, {
   ],
   invalid: [
     {
-      code: 'expect(null).toEqual(null);',
-      output: 'expect(null).toBe(null);',
-      errors: [{ messageId: 'useToBe', column: 14, line: 1 }],
-    },
-    {
       code: 'expect(value).toEqual("my string");',
       output: 'expect(value).toBe("my string");',
       errors: [{ messageId: 'useToBe', column: 15, line: 1 }],
@@ -39,6 +34,59 @@ ruleTester.run('prefer-to-be', rule, {
   ],
 });
 
+ruleTester.run('prefer-to-be: null', rule, {
+  valid: [
+    'expect(null).toBeNull();',
+    'expect(null).not.toBeNull();',
+    'expect(null).toBe(1);',
+    'expect(obj).toStrictEqual([ x, 1 ]);',
+    'expect(obj).toStrictEqual({ x: 1 });',
+    'expect(obj).not.toStrictEqual({ x: 1 });',
+    'expect(value).toMatchSnapshot();',
+    "expect(catchError()).toStrictEqual({ message: 'oh noes!' })",
+    'expect("something");',
+    //
+    'expect(null).not.toEqual();',
+    'expect(null).toBe();',
+    'expect(null).toMatchSnapshot();',
+    'expect("a string").toMatchSnapshot(null);',
+    'expect("a string").not.toMatchSnapshot();',
+    'expect(null).toBe',
+  ],
+  invalid: [
+    {
+      code: 'expect(null).toBe(null);',
+      output: 'expect(null).toBeNull();',
+      errors: [{ messageId: 'useToBeNull', column: 14, line: 1 }],
+    },
+    {
+      code: 'expect(null).toEqual(null);',
+      output: 'expect(null).toBeNull();',
+      errors: [{ messageId: 'useToBeNull', column: 14, line: 1 }],
+    },
+    {
+      code: 'expect(null).toStrictEqual(null);',
+      output: 'expect(null).toBeNull();',
+      errors: [{ messageId: 'useToBeNull', column: 14, line: 1 }],
+    },
+    {
+      code: 'expect("a string").not.toBe(null);',
+      output: 'expect("a string").not.toBeNull();',
+      errors: [{ messageId: 'useToBeNull', column: 24, line: 1 }],
+    },
+    {
+      code: 'expect("a string").not.toEqual(null);',
+      output: 'expect("a string").not.toBeNull();',
+      errors: [{ messageId: 'useToBeNull', column: 24, line: 1 }],
+    },
+    {
+      code: 'expect("a string").not.toStrictEqual(null);',
+      output: 'expect("a string").not.toBeNull();',
+      errors: [{ messageId: 'useToBeNull', column: 24, line: 1 }],
+    },
+  ],
+});
+
 new TSESLint.RuleTester({
   parser: require.resolve('@typescript-eslint/parser'),
 }).run('prefer-to-be: typescript edition', rule, {
@@ -52,9 +100,19 @@ new TSESLint.RuleTester({
       errors: [{ messageId: 'useToBe', column: 14, line: 1 }],
     },
     {
-      code: 'expect("a string").not.toStrictEqual(null as number);',
-      output: 'expect("a string").not.toBe(null as number);',
+      code: 'expect("a string").not.toStrictEqual("string" as number);',
+      output: 'expect("a string").not.toBe("string" as number);',
       errors: [{ messageId: 'useToBe', column: 24, line: 1 }],
+    },
+    {
+      code: 'expect(null).toBe(null as unknown as string as unknown as any);',
+      output: 'expect(null).toBeNull();',
+      errors: [{ messageId: 'useToBeNull', column: 14, line: 1 }],
+    },
+    {
+      code: 'expect("a string").not.toEqual(null as number);',
+      output: 'expect("a string").not.toBeNull();',
+      errors: [{ messageId: 'useToBeNull', column: 24, line: 1 }],
     },
   ],
 });
