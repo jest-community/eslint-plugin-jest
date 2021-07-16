@@ -5,6 +5,7 @@ import {
 import {
   EqualityMatcher,
   MaybeTypeCast,
+  ModifierName,
   ParsedEqualityMatcherCall,
   createRule,
   followTypeAssertionChain,
@@ -70,6 +71,7 @@ export default createRule({
     messages: {
       useToBe: 'Use `toBe` when expecting primitive literals',
       useToBeUndefined: 'Use `toBeUndefined` instead',
+      useToBeDefined: 'Use `toBeDefined` instead',
       useToBeNull: 'Use `toBeNull` instead',
       useToBeNaN: 'Use `toBeNaN` instead',
     },
@@ -85,9 +87,36 @@ export default createRule({
           return;
         }
 
-        const { matcher } = parseExpectCall(node);
+        const { matcher, modifier } = parseExpectCall(node);
 
-        if (!matcher || !isParsedEqualityMatcherCall(matcher)) {
+        if (!matcher) {
+          return;
+        }
+
+        if (
+          modifier &&
+          (modifier.name === ModifierName.not || modifier.negation) &&
+          ['toBeUndefined', 'toBeDefined'].includes(matcher.name)
+        ) {
+          const modifierNode = modifier.negation || modifier.node;
+          const name = matcher.name === 'toBeDefined' ? 'Undefined' : 'Defined';
+
+          context.report({
+            fix: fixer => [
+              fixer.replaceText(matcher.node.property, `toBe${name}`),
+              fixer.removeRange([
+                modifierNode.property.range[0] - 1,
+                modifierNode.property.range[1],
+              ]),
+            ],
+            messageId: `useToBe${name}`,
+            node: matcher.node.property,
+          });
+
+          return;
+        }
+
+        if (!isParsedEqualityMatcherCall(matcher)) {
           return;
         }
 
@@ -105,12 +134,33 @@ export default createRule({
         }
 
         if (isUndefinedEqualityMatcher(matcher)) {
+          const name =
+            modifier &&
+            (modifier.name === ModifierName.not || modifier.negation)
+              ? 'Defined'
+              : 'Undefined';
+
           context.report({
-            fix: fixer => [
-              fixer.replaceText(matcher.node.property, 'toBeUndefined'),
-              fixer.remove(matcher.arguments[0]),
-            ],
-            messageId: 'useToBeUndefined',
+            fix(fixer) {
+              const fixes = [
+                fixer.replaceText(matcher.node.property, `toBe${name}`),
+                fixer.remove(matcher.arguments[0]),
+              ];
+
+              const modifierNode = modifier?.negation || modifier?.node;
+
+              if (modifierNode) {
+                fixes.push(
+                  fixer.removeRange([
+                    modifierNode.property.range[0] - 1,
+                    modifierNode.property.range[1],
+                  ]),
+                );
+              }
+
+              return fixes;
+            },
+            messageId: `useToBe${name}`,
             node: matcher.node.property,
           });
 
