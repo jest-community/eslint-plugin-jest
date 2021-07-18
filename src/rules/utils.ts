@@ -391,7 +391,7 @@ export interface NotNegatableParsedModifier<
   negation?: never;
 }
 
-type ParsedExpectModifier =
+export type ParsedExpectModifier =
   | NotNegatableParsedModifier
   | NegatableParsedModifier;
 

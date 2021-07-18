@@ -1,5 +1,6 @@
 import {
   AST_NODE_TYPES,
+  TSESLint,
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
 import {
@@ -7,6 +8,8 @@ import {
   MaybeTypeCast,
   ModifierName,
   ParsedEqualityMatcherCall,
+  ParsedExpectMatcher,
+  ParsedExpectModifier,
   createRule,
   followTypeAssertionChain,
   isExpectCall,
@@ -60,6 +63,49 @@ const getFirstArgument = (matcher: ParsedEqualityMatcherCall) => {
   return followTypeAssertionChain(matcher.arguments[0]);
 };
 
+type MessageId =
+  | 'useToBe'
+  | 'useToBeUndefined'
+  | 'useToBeDefined'
+  | 'useToBeNull'
+  | 'useToBeNaN';
+
+type ToBeWhat = MessageId extends `useToBe${infer M}` ? M : never;
+
+const reportPreferToBe = (
+  context: TSESLint.RuleContext<MessageId, unknown[]>,
+  whatToBe: ToBeWhat,
+  matcher: ParsedExpectMatcher,
+  modifier?: ParsedExpectModifier,
+) => {
+  const modifierNode = modifier?.negation || modifier?.node;
+
+  context.report({
+    messageId: `useToBe${whatToBe}`,
+    fix(fixer) {
+      const fixes = [
+        fixer.replaceText(matcher.node.property, `toBe${whatToBe}`),
+      ];
+
+      if (matcher.arguments?.length && whatToBe !== '') {
+        fixes.push(fixer.remove(matcher.arguments[0]));
+      }
+
+      if (modifierNode) {
+        fixes.push(
+          fixer.removeRange([
+            modifierNode.property.range[0] - 1,
+            modifierNode.property.range[1],
+          ]),
+        );
+      }
+
+      return fixes;
+    },
+    node: matcher.node.property,
+  });
+};
+
 export default createRule({
   name: __filename,
   meta: {
@@ -98,20 +144,12 @@ export default createRule({
           (modifier.name === ModifierName.not || modifier.negation) &&
           ['toBeUndefined', 'toBeDefined'].includes(matcher.name)
         ) {
-          const modifierNode = modifier.negation || modifier.node;
-          const name = matcher.name === 'toBeDefined' ? 'Undefined' : 'Defined';
-
-          context.report({
-            fix: fixer => [
-              fixer.replaceText(matcher.node.property, `toBe${name}`),
-              fixer.removeRange([
-                modifierNode.property.range[0] - 1,
-                modifierNode.property.range[1],
-              ]),
-            ],
-            messageId: `useToBe${name}`,
-            node: matcher.node.property,
-          });
+          reportPreferToBe(
+            context,
+            matcher.name === 'toBeDefined' ? 'Undefined' : 'Defined',
+            matcher,
+            modifier,
+          );
 
           return;
         }
@@ -121,14 +159,7 @@ export default createRule({
         }
 
         if (isNullEqualityMatcher(matcher)) {
-          context.report({
-            fix: fixer => [
-              fixer.replaceText(matcher.node.property, 'toBeNull'),
-              fixer.remove(matcher.arguments[0]),
-            ],
-            messageId: 'useToBeNull',
-            node: matcher.node.property,
-          });
+          reportPreferToBe(context, 'Null', matcher);
 
           return;
         }
@@ -140,42 +171,13 @@ export default createRule({
               ? 'Defined'
               : 'Undefined';
 
-          context.report({
-            fix(fixer) {
-              const fixes = [
-                fixer.replaceText(matcher.node.property, `toBe${name}`),
-                fixer.remove(matcher.arguments[0]),
-              ];
-
-              const modifierNode = modifier?.negation || modifier?.node;
-
-              if (modifierNode) {
-                fixes.push(
-                  fixer.removeRange([
-                    modifierNode.property.range[0] - 1,
-                    modifierNode.property.range[1],
-                  ]),
-                );
-              }
-
-              return fixes;
-            },
-            messageId: `useToBe${name}`,
-            node: matcher.node.property,
-          });
+          reportPreferToBe(context, name, matcher, modifier);
 
           return;
         }
 
         if (isNaNEqualityMatcher(matcher)) {
-          context.report({
-            fix: fixer => [
-              fixer.replaceText(matcher.node.property, 'toBeNaN'),
-              fixer.remove(matcher.arguments[0]),
-            ],
-            messageId: 'useToBeNaN',
-            node: matcher.node.property,
-          });
+          reportPreferToBe(context, 'NaN', matcher);
 
           return;
         }
@@ -184,11 +186,7 @@ export default createRule({
           isPrimitiveLiteral(matcher) &&
           !isParsedEqualityMatcherCall(matcher, EqualityMatcher.toBe)
         ) {
-          context.report({
-            fix: fixer => fixer.replaceText(matcher.node.property, 'toBe'),
-            messageId: 'useToBe',
-            node: matcher.node.property,
-          });
+          reportPreferToBe(context, '', matcher);
         }
       },
     };
