@@ -30,31 +30,10 @@ const isNullEqualityMatcher = (
 ): matcher is ParsedEqualityMatcherCall<MaybeTypeCast<TSESTree.NullLiteral>> =>
   isNullLiteral(getFirstArgument(matcher));
 
-interface UndefinedIdentifier extends TSESTree.Identifier {
-  name: 'undefined';
-}
-
-/**
- * Checks if the given `ParsedEqualityMatcherCall` is a call to one of the equality matchers,
- * with a `undefined` identifier as the sole argument.
- */
-const isUndefinedEqualityMatcher = (
+const isFirstArgumentIdentifier = (
   matcher: ParsedEqualityMatcherCall,
-): matcher is ParsedEqualityMatcherCall<UndefinedIdentifier> =>
-  isIdentifier(getFirstArgument(matcher), 'undefined');
-
-interface NaNIdentifier extends TSESTree.Identifier {
-  name: 'NaN';
-}
-
-/**
- * Checks if the given `ParsedEqualityMatcherCall` is a call to one of the equality matchers,
- * with a `NaN` identifier as the sole argument.
- */
-const isNaNEqualityMatcher = (
-  matcher: ParsedEqualityMatcherCall,
-): matcher is ParsedEqualityMatcherCall<NaNIdentifier> =>
-  isIdentifier(getFirstArgument(matcher), 'NaN');
+  name: string,
+) => isIdentifier(getFirstArgument(matcher), name);
 
 const isPrimitiveLiteral = (matcher: ParsedEqualityMatcherCall) =>
   getFirstArgument(matcher).type === AST_NODE_TYPES.Literal;
@@ -140,8 +119,7 @@ export default createRule({
         }
 
         if (
-          modifier &&
-          (modifier.name === ModifierName.not || modifier.negation) &&
+          (modifier?.name === ModifierName.not || modifier?.negation) &&
           ['toBeUndefined', 'toBeDefined'].includes(matcher.name)
         ) {
           reportPreferToBe(
@@ -164,10 +142,9 @@ export default createRule({
           return;
         }
 
-        if (isUndefinedEqualityMatcher(matcher)) {
+        if (isFirstArgumentIdentifier(matcher, 'undefined')) {
           const name =
-            modifier &&
-            (modifier.name === ModifierName.not || modifier.negation)
+            modifier?.name === ModifierName.not || modifier?.negation
               ? 'Defined'
               : 'Undefined';
 
@@ -176,7 +153,7 @@ export default createRule({
           return;
         }
 
-        if (isNaNEqualityMatcher(matcher)) {
+        if (isFirstArgumentIdentifier(matcher, 'NaN')) {
           reportPreferToBe(context, 'NaN', matcher);
 
           return;
@@ -184,7 +161,7 @@ export default createRule({
 
         if (
           isPrimitiveLiteral(matcher) &&
-          !isParsedEqualityMatcherCall(matcher, EqualityMatcher.toBe)
+          matcher.name !== EqualityMatcher.toBe
         ) {
           reportPreferToBe(context, '', matcher);
         }
