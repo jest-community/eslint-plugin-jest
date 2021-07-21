@@ -43,6 +43,12 @@ describe('myFunction', () => {
     });
   });
 });
+
+// Returning a value from a describe block is not allowed
+describe('myFunction', () =>
+  it('returns a truthy value', () => {
+    expect(myFunction()).toBeTruthy();
+  }));
 ```
 
 The following patterns are not considered warnings:
