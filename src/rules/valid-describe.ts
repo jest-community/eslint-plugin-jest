@@ -84,6 +84,13 @@ export default createRule({
           });
         }
 
+        if (callback.body.type === AST_NODE_TYPES.CallExpression) {
+          context.report({
+            messageId: 'unexpectedReturnInDescribe',
+            node: callback,
+          });
+        }
+
         if (callback.body.type === AST_NODE_TYPES.BlockStatement) {
           callback.body.body.forEach(node => {
             if (node.type === AST_NODE_TYPES.ReturnStatement) {

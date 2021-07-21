@@ -37,11 +37,6 @@ ruleTester.run('valid-describe', rule, {
       })
     `,
     dedent`
-      describe('foo', () =>
-        test('bar', () => {})
-      )
-    `,
-    dedent`
       if (hasOwnProperty(obj, key)) {
       }
     `,
@@ -194,6 +189,16 @@ ruleTester.run('valid-describe', rule, {
       errors: [
         { messageId: 'noAsyncDescribeCallback', line: 1, column: 17 },
         { messageId: 'unexpectedReturnInDescribe', line: 5, column: 5 },
+      ],
+    },
+    {
+      code: dedent`
+        describe('foo', () =>
+          test('bar', () => {})
+        )
+      `,
+      errors: [
+        { messageId: 'unexpectedReturnInDescribe', line: 1, column: 17 },
       ],
     },
     {
