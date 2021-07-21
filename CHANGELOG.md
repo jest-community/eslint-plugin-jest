@@ -1,3 +1,10 @@
+# [24.4.0](https://github.com/jest-community/eslint-plugin-jest/compare/v24.3.7...v24.4.0) (2021-07-21)
+
+
+### Features
+
+* create `max-nested-describe` rule ([#845](https://github.com/jest-community/eslint-plugin-jest/issues/845)) ([8067405](https://github.com/jest-community/eslint-plugin-jest/commit/8067405deb609cc1800bce596e929c1840d290ab))
+
 ## [24.3.7](https://github.com/jest-community/eslint-plugin-jest/compare/v24.3.6...v24.3.7) (2021-07-21)
 
 
