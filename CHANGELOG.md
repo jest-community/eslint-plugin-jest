@@ -1,3 +1,10 @@
+## [24.3.7](https://github.com/jest-community/eslint-plugin-jest/compare/v24.3.6...v24.3.7) (2021-07-21)
+
+
+### Bug Fixes
+
+* **valid-describe:** report on concise-body arrow functions ([#863](https://github.com/jest-community/eslint-plugin-jest/issues/863)) ([71c5299](https://github.com/jest-community/eslint-plugin-jest/commit/71c5299b14cac6d85ba8f8bd939461503a60468f))
+
 ## [24.3.6](https://github.com/jest-community/eslint-plugin-jest/compare/v24.3.5...v24.3.6) (2021-04-26)
 
 
