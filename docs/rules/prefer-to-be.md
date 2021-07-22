@@ -4,7 +4,9 @@ When asserting against primitive literals such as numbers and strings, the
 equality matchers all operate the same, but read slightly differently in code.
 
 This rule recommends using the `toBe` matcher in these situations, as it forms
-the most grammatically natural sentence.
+the most grammatically natural sentence. For `null`, `undefined`, and `NaN` this
+rule recommends using their specific `toBe` matchers, as they give better error
+messages as well.
 
 ## Rule details
 
@@ -27,4 +29,24 @@ expect(getMessage()).toBe('hello world');
 expect(loadMessage()).resolves.toBe('hello world');
 
 expect(catchError()).toStrictEqual({ message: 'oh noes!' });
+```
+
+For `null`, `undefined`, and `NaN`, this rule triggers a warning if `toBe` is
+used to assert against those literal values instead of their more specific
+`toBe` counterparts:
+
+```js
+expect(value).not.toBe(undefined);
+expect(getMessage()).toBe(null);
+expect(countMessages()).resolves.not.toBe(NaN);
+```
+
+The following pattern is not warning:
+
+```js
+expect(value).toBeDefined();
+expect(getMessage()).toBeNull();
+expect(countMessages()).resolves.not.toBeNaN();
+
+expect(catchError()).toStrictEqual({ message: undefined });
 ```
