@@ -11,7 +11,7 @@ messages as well.
 ## Rule details
 
 This rule triggers a warning if `toEqual()` or `toStrictEqual()` are used to
-assert a primitive literal value such as a string or a number.
+assert a primitive literal value such as numbers, strings, and booleans.
 
 The following patterns are considered warnings:
 
@@ -27,6 +27,7 @@ The following pattern is not warning:
 expect(value).not.toBe(5);
 expect(getMessage()).toBe('hello world');
 expect(loadMessage()).resolves.toBe('hello world');
+expect(didError).not.toBe(true);
 
 expect(catchError()).toStrictEqual({ message: 'oh noes!' });
 ```

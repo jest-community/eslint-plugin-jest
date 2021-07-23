@@ -27,8 +27,18 @@ ruleTester.run('prefer-to-be', rule, {
       errors: [{ messageId: 'useToBe', column: 15, line: 1 }],
     },
     {
+      code: 'expect(value).toStrictEqual(1);',
+      output: 'expect(value).toBe(1);',
+      errors: [{ messageId: 'useToBe', column: 15, line: 1 }],
+    },
+    {
       code: 'expect(loadMessage()).resolves.toStrictEqual("hello world");',
       output: 'expect(loadMessage()).resolves.toBe("hello world");',
+      errors: [{ messageId: 'useToBe', column: 32, line: 1 }],
+    },
+    {
+      code: 'expect(loadMessage()).resolves.toStrictEqual(false);',
+      output: 'expect(loadMessage()).resolves.toBe(false);',
       errors: [{ messageId: 'useToBe', column: 32, line: 1 }],
     },
   ],
