@@ -8,9 +8,9 @@ assumed to be promises.
 
 ## Rule Details
 
-Jest considered a test to have failed if it throws an error, rather than on if
-any particular function is called, meaning conditional calls to `expect` could
-result in tests silently being skipped.
+Jest only considers a test to have failed if it throws an error, meaning if
+calls to assertion functions like `expect` occur in conditional code such as a
+`catch` statement, tests can end up passing but not actually test anything.
 
 Additionally, conditionals tend to make tests more brittle and complex, as they
 increase the amount of mental thinking needed to understand what is actually
