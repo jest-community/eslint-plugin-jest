@@ -92,7 +92,6 @@ export default createRule({
   name: __filename,
   meta: {
     docs: {
-      category: 'Best Practices',
       description: 'Suggest using `toBe()` for primitive literals',
       recommended: false,
     },

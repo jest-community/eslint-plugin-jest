@@ -9,7 +9,6 @@ export default createRule({
   name: __filename,
   meta: {
     docs: {
-      category: 'Best Practices',
       description: 'Require a message for `toThrow()`',
       recommended: false,
     },

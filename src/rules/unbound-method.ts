@@ -75,7 +75,6 @@ export default createRule<Options, MessageIds>({
     type: 'problem',
     ...baseRule?.meta,
     docs: {
-      category: 'Best Practices',
       description:
         'Enforces unbound methods are called with their expected scope',
       requiresTypeChecking: true,

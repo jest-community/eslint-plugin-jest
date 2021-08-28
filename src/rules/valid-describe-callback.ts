@@ -21,7 +21,6 @@ export default createRule({
   meta: {
     type: 'problem',
     docs: {
-      category: 'Possible Errors',
       description: 'Enforce valid `describe()` callback',
       recommended: 'error',
     },

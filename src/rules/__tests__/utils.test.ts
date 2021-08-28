@@ -18,7 +18,6 @@ const rule = createRule({
   name: __filename,
   meta: {
     docs: {
-      category: 'Possible Errors',
       description: 'Fake rule for testing AST guards',
       recommended: false,
     },

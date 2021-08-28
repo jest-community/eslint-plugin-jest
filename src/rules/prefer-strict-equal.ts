@@ -10,7 +10,6 @@ export default createRule({
   name: __filename,
   meta: {
     docs: {
-      category: 'Best Practices',
       description: 'Suggest using `toStrictEqual()`',
       recommended: false,
       suggestion: true,
@@ -20,8 +19,8 @@ export default createRule({
       suggestReplaceWithStrictEqual: 'Replace with `toStrictEqual()`',
     },
     type: 'suggestion',
-    schema: [],
     hasSuggestions: true,
+    schema: [],
   },
   defaultOptions: [],
   create(context) {

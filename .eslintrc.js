@@ -1,5 +1,7 @@
 'use strict';
 
+const { version } = require('eslint/package.json');
+const semver = require('semver');
 const globals = require('./src/globals.json');
 
 module.exports = {
@@ -28,12 +30,18 @@ module.exports = {
     es6: true,
   },
   rules: {
+    // eslint-plugin-prettier removed ESLint v6 support
+    ...(semver.gte(version, '7.28.0') ? {} : { 'prettier/prettier': 'off' }),
     '@typescript-eslint/array-type': ['error', { default: 'array-simple' }],
     '@typescript-eslint/no-require-imports': 'error',
     '@typescript-eslint/ban-ts-comment': 'warn',
     '@typescript-eslint/ban-types': 'error',
     '@typescript-eslint/no-unused-vars': 'error',
     'eslint-comments/no-unused-disable': 'error',
+    'eslint-plugin/require-meta-fixable': [
+      'error',
+      { catchNoFixerButFixableProperty: true },
+    ],
     'eslint-plugin/test-case-property-ordering': 'error',
     'no-else-return': 'error',
     'no-negated-condition': 'error',

@@ -67,7 +67,6 @@ export default createRule<
     type: 'suggestion',
     docs: {
       description: 'Enforce lowercase test names',
-      category: 'Best Practices',
       recommended: false,
     },
     fixable: 'code',

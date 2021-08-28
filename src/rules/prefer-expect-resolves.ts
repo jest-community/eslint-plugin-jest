@@ -8,7 +8,6 @@ export default createRule({
   name: __filename,
   meta: {
     docs: {
-      category: 'Best Practices',
       description:
         'Prefer `await expect(...).resolves` over `expect(await ...)` syntax',
       recommended: false,

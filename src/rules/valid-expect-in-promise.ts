@@ -295,7 +295,6 @@ export default createRule({
   name: __filename,
   meta: {
     docs: {
-      category: 'Best Practices',
       description:
         'Ensure promises that have expectations in their chain are valid',
       recommended: 'error',

@@ -4,7 +4,6 @@ export default createRule({
   name: __filename,
   meta: {
     docs: {
-      category: 'Best Practices',
       description: 'Disallow alias methods',
       recommended: false,
     },
