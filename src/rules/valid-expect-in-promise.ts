@@ -151,7 +151,6 @@ export default createRule<unknown[], MessageIds>({
   name: __filename,
   meta: {
     docs: {
-      category: 'Best Practices',
       description: 'Enforce having return statement when testing with promises',
       recommended: 'error',
     },

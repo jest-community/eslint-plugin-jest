@@ -78,7 +78,6 @@ export default createRule<[Options], MessageIds>({
   name: __filename,
   meta: {
     docs: {
-      category: 'Best Practices',
       description: 'Enforce valid titles',
       recommended: 'error',
     },

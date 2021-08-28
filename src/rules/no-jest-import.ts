@@ -7,7 +7,6 @@ export default createRule({
     type: 'problem',
     docs: {
       description: 'Disallow importing Jest',
-      category: 'Best Practices',
       recommended: 'error',
     },
     messages: {

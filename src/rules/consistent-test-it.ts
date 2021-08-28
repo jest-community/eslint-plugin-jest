@@ -39,7 +39,6 @@ export default createRule<
   name: __filename,
   meta: {
     docs: {
-      category: 'Best Practices',
       description: 'Have control over `test` and `it` usages',
       recommended: false,
     },

@@ -5,7 +5,6 @@ export default createRule({
   name: __filename,
   meta: {
     docs: {
-      category: 'Best Practices',
       description: 'Suggest using inline snapshots',
       recommended: false,
     },

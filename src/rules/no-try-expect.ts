@@ -11,7 +11,6 @@ export default createRule({
   meta: {
     docs: {
       description: 'Prefer using toThrow for exception tests',
-      category: 'Best Practices',
       recommended: 'error',
     },
     deprecated: true,

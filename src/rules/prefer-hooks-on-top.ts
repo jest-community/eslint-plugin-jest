@@ -4,7 +4,6 @@ export default createRule({
   name: __filename,
   meta: {
     docs: {
-      category: 'Best Practices',
       description: 'Suggest having hooks before any test cases',
       recommended: false,
     },

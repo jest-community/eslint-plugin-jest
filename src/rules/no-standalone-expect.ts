@@ -55,7 +55,6 @@ export default createRule<
   name: __filename,
   meta: {
     docs: {
-      category: 'Best Practices',
       description: 'Disallow using `expect` outside of `it` or `test` blocks',
       recommended: 'error',
     },

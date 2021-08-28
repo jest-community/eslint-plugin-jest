@@ -18,9 +18,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - uses: actions/setup-node@v2.4.0
+      - uses: actions/setup-node@v2
         with:
-          node-version: 14.x
+          node-version: 16
           cache: yarn
 
       - name: Validate cache
@@ -36,9 +36,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2.4.0
+      - uses: actions/setup-node@v2
         with:
-          node-version: 14.x
+          node-version: 16
           cache: yarn
       - name: install
         run: yarn
@@ -50,9 +50,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2.4.0
+      - uses: actions/setup-node@v2
         with:
-          node-version: 14.x
+          node-version: 16
           cache: yarn
       - name: install
         run: yarn
@@ -67,14 +67,14 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version: [10.x, 12.x, 14.x, 15.x, 16.x]
-        eslint-version: [5, 6, 7]
+        node-version: [12, 14, 16]
+        eslint-version: [6, 7, '^8.0.0-0']
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v2.4.0
+        uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
           cache: yarn
@@ -84,11 +84,15 @@ jobs:
           yarn add --dev eslint@${{ matrix.eslint-version }}
       - name: run tests
         # only collect coverage on eslint versions that support the suggestions api
-        run: yarn test --coverage ${{ matrix.eslint-version >= 6 }}
+        run:
+          yarn test --coverage ${{ matrix.eslint-version >= 6 ||
+          matrix.eslint-version = '^8.0.0-0' }}
         env:
           CI: true
-      - uses: codecov/codecov-action@v2.0.2
-        if: ${{ matrix.eslint-version >= 6 }}
+      - uses: codecov/codecov-action@v2
+        if:
+          ${{ matrix.eslint-version >= 6 || matrix.eslint-version = '^8.0.0-0'
+          }}
   test-os:
     name: Test on ${{ matrix.os }} using Node.js LTS
     needs: prepare-yarn-cache
@@ -100,9 +104,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2.4.0
+      - uses: actions/setup-node@v2
         with:
-          node-version: 14.x
+          node-version: 16
           cache: yarn
       - name: install
         run: yarn
@@ -117,9 +121,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2.4.0
+      - uses: actions/setup-node@v2
         with:
-          node-version: 14.x
+          node-version: 16
           cache: yarn
       - name: install
         run: yarn
@@ -140,9 +144,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2.4.0
+      - uses: actions/setup-node@v2
         with:
-          node-version: 14.x
+          node-version: 16
           cache: yarn
       - name: install
         run: yarn

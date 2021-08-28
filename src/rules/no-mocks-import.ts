@@ -17,7 +17,6 @@ export default createRule({
   meta: {
     type: 'problem',
     docs: {
-      category: 'Best Practices',
       description: 'Disallow manually importing from `__mocks__`',
       recommended: 'error',
     },

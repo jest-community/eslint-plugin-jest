@@ -21,7 +21,6 @@ export default createRule({
   name: __filename,
   meta: {
     docs: {
-      category: 'Best Practices',
       description: 'Disallow identical titles',
       recommended: 'error',
     },
