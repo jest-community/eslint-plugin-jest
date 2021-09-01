@@ -4503,7 +4503,7 @@ __metadata:
     rimraf: ^3.0.0
     semantic-release: ^17.0.7
     ts-node: ^9.0.0
-    typescript: ^4.0.0
+    typescript: ~4.3.0
   peerDependencies:
     "@typescript-eslint/eslint-plugin": ">= 4"
     eslint: ">=5"
@@ -7491,12 +7491,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"marked@npm:^3.0.0":
-  version: 3.0.0
-  resolution: "marked@npm:3.0.0"
+"marked@npm:^2.0.0":
+  version: 2.1.3
+  resolution: "marked@npm:2.1.3"
   bin:
     marked: bin/marked
-  checksum: 24e49b706ea43c3d0db7e95ee7557ce23c74c31d55f400e155d3ac4cf13241fe9c2440ff0d485598632cbb44cbba0a71411548034a67bd70a24620d0b4e104f3
+  checksum: 9779b758ae413186be535109fe695be4fac23a671c6565b855606bb1ea70f796b580f10a9588a130e7b676a085916ef90c82982ef6a382a06b14864cbf802afb
   languageName: node
   linkType: hard
 
@@ -9361,9 +9361,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"semantic-release@npm:17.4.5, semantic-release@npm:^17.0.7":
-  version: 17.4.5
-  resolution: "semantic-release@npm:17.4.5"
+"semantic-release@npm:17.4.7, semantic-release@npm:^17.0.7":
+  version: 17.4.7
+  resolution: "semantic-release@npm:17.4.7"
   dependencies:
     "@semantic-release/commit-analyzer": ^8.0.0
     "@semantic-release/error": ^2.2.0
@@ -9382,7 +9382,7 @@ __metadata:
     hook-std: ^2.0.0
     hosted-git-info: ^4.0.0
     lodash: ^4.17.21
-    marked: ^3.0.0
+    marked: ^2.0.0
     marked-terminal: ^4.1.1
     micromatch: ^4.0.2
     p-each-series: ^2.1.0
@@ -9395,7 +9395,7 @@ __metadata:
     yargs: ^16.2.0
   bin:
     semantic-release: bin/semantic-release.js
-  checksum: 1361149a0ec02e261fe461c28cc26fe89151df92bc344f6dc3b87a8021bdb3d564ac2a7fc5efb947c6dfbe268d350505780184690413c314465bc147dcaa8b22
+  checksum: 347fa8e03f3621ff925fa59e18ac5ab2b393120fc33361528b0dc6d622753a9aaf38e59fd15a7ef15f25f0eb3b30615159132ad10494aa1c5c37f174e4eaba40
   languageName: node
   linkType: hard
 
@@ -10440,23 +10440,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-typescript@^4.0.0:
-  version: 4.3.5
-  resolution: "typescript@npm:4.3.5"
-  bin:
-    tsc: bin/tsc
-    tsserver: bin/tsserver
-  checksum: d9a8e78d72dd19896e6bfa73ab2a0fcea6eca2700d1d6e7c33f67a970af54a3e0fed8f715a8c4e6a0ff7fc0995067b394b2003518ab0aa84cd396377e54b760c
-  languageName: node
-  linkType: hard
-
-"typescript@patch:typescript@^4.0.0#builtin<compat/typescript>":
+"typescript@patch:typescript@~4.3.0#builtin<compat/typescript>":
   version: 4.3.5
   resolution: "typescript@patch:typescript@npm%3A4.3.5#builtin<compat/typescript>::version=4.3.5&hash=ddfc1b"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: 7f0b8343f71ecac18095be1476b398aca420ab60dc207cc1efe078f381eef5527b80a518297720257114cdbda65612f8839e4b63e85dc95e67ac5cbbade8bdf0
+  languageName: node
+  linkType: hard
+
+typescript@~4.3.0:
+  version: 4.3.5
+  resolution: "typescript@npm:4.3.5"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: d9a8e78d72dd19896e6bfa73ab2a0fcea6eca2700d1d6e7c33f67a970af54a3e0fed8f715a8c4e6a0ff7fc0995067b394b2003518ab0aa84cd396377e54b760c
   languageName: node
   linkType: hard
 
