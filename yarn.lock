@@ -4545,7 +4545,7 @@ __metadata:
     rimraf: ^3.0.0
     semantic-release: ^17.0.7
     ts-node: ^9.0.0
-    typescript: ~4.3.0
+    typescript: ^4.4.0
   peerDependencies:
     "@typescript-eslint/eslint-plugin": ">= 4"
     eslint: ">=5"
@@ -10496,23 +10496,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@~4.3.0#builtin<compat/typescript>":
-  version: 4.3.5
-  resolution: "typescript@patch:typescript@npm%3A4.3.5#builtin<compat/typescript>::version=4.3.5&hash=8133ad"
+typescript@^4.4.0:
+  version: 4.4.2
+  resolution: "typescript@npm:4.4.2"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 7e9040a3ee8b62c9f499fdaeeb2ea143c079e88fadeba562ce2f7ee878cf3eba9cf6097bf8a4ead0de4b35582f71a4866d9f475af9b064fde430d55d9fc6aaac
+  checksum: 66b18679eba14d5f813670a53a68b4f0513aeb9e6924f8bdef412b671a1bb837f5c662059d5876da15a6e3a62b115de2a4a9a70c0366a9076ede24fdf96f9dbd
   languageName: node
   linkType: hard
 
-typescript@~4.3.0:
-  version: 4.3.5
-  resolution: "typescript@npm:4.3.5"
+"typescript@patch:typescript@^4.4.0#builtin<compat/typescript>":
+  version: 4.4.2
+  resolution: "typescript@patch:typescript@npm%3A4.4.2#builtin<compat/typescript>::version=4.4.2&hash=8133ad"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: d9a8e78d72dd19896e6bfa73ab2a0fcea6eca2700d1d6e7c33f67a970af54a3e0fed8f715a8c4e6a0ff7fc0995067b394b2003518ab0aa84cd396377e54b760c
+  checksum: 31faec62a2b19fe56d46f45b495cbfcdefa8e49ac787dffc94621b210906799a5eef45ad5ec4f40ce4dab31c1f5b7cfdd43253a56de5451b10c5fa57adf7de3c
   languageName: node
   linkType: hard
 
