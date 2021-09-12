@@ -41,9 +41,7 @@ const detectJestVersion = (): JestVersion => {
   }
 
   try {
-    const jestPath = require.resolve('jest/package.json', {
-      paths: [process.cwd()],
-    });
+    const jestPath = require.resolve('jest/package.json');
 
     const jestPackageJson =
       // eslint-disable-next-line @typescript-eslint/no-require-imports
