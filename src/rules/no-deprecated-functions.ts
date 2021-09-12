@@ -1,3 +1,4 @@
+import path from 'path';
 import { JSONSchemaForNPMPackageJsonFiles } from '@schemastore/package';
 import {
   AST_NODE_TYPES,
@@ -40,9 +41,23 @@ const detectJestVersion = (): JestVersion => {
     return cachedJestVersion;
   }
 
+  const cwd = process.cwd();
+  const pathsToCheck = [cwd];
+  if (__dirname.includes(cwd)) {
+    let relPath = __dirname.replace(cwd, "");
+    while (relPath !== "") {
+      relPath = path
+        .resolve(relPath)
+        .split(`${path.sep}node_modules`)
+        .slice(0,-1)
+        .join(`${path.sep}node_modules`);
+      pathsToCheck.unshift(path.join(cwd, relPath));
+    }
+  }
+
   try {
     const jestPath = require.resolve('jest/package.json', {
-      paths: [process.cwd()],
+      paths: pathsToCheck
     });
 
     const jestPackageJson =
