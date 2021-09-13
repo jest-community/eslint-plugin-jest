@@ -1,3 +1,15 @@
+# [25.0.0-next.1](https://github.com/jest-community/eslint-plugin-jest/compare/v24.4.0...v25.0.0-next.1) (2021-09-13)
+
+
+### Bug Fixes
+
+* stop testing on Node 10 and 15 ([#891](https://github.com/jest-community/eslint-plugin-jest/issues/891)) ([bcd8d11](https://github.com/jest-community/eslint-plugin-jest/commit/bcd8d112fcd98a7652c767bd246d05101979239c))
+
+
+### BREAKING CHANGES
+
+* Drop support for Node 10 and 15
+
 # [24.4.0](https://github.com/jest-community/eslint-plugin-jest/compare/v24.3.7...v24.4.0) (2021-07-21)
 
 
