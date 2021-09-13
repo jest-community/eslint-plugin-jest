@@ -107,7 +107,7 @@
     "eslint-plugin-eslint-plugin": "^3.5.3",
     "eslint-plugin-import": "^2.20.2",
     "eslint-plugin-node": "^11.0.0",
-    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-prettier": "^3.4.1",
     "husky": "^7.0.2",
     "is-ci": "^3.0.0",
     "jest": "^27.0.0",
