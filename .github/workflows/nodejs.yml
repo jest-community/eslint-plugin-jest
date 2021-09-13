@@ -87,7 +87,7 @@ jobs:
         run: yarn test --coverage ${{ matrix.eslint-version >= 6 }}
         env:
           CI: true
-      - uses: codecov/codecov-action@v2.0.3
+      - uses: codecov/codecov-action@v2.1.0
         if: ${{ matrix.eslint-version >= 6 }}
   test-os:
     name: Test on ${{ matrix.os }} using Node.js LTS
