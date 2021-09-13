@@ -1,3 +1,15 @@
+# [25.0.0-next.2](https://github.com/jest-community/eslint-plugin-jest/compare/v25.0.0-next.1...v25.0.0-next.2) (2021-09-13)
+
+
+### Bug Fixes
+
+* stop testing ESLint 5 ([#893](https://github.com/jest-community/eslint-plugin-jest/issues/893)) ([47a0138](https://github.com/jest-community/eslint-plugin-jest/commit/47a0138856e6247cde00b17682e49865b8f5a1f6))
+
+
+### BREAKING CHANGES
+
+* Drop support for ESLint 5
+
 # [25.0.0-next.1](https://github.com/jest-community/eslint-plugin-jest/compare/v24.4.0...v25.0.0-next.1) (2021-09-13)
 
 
