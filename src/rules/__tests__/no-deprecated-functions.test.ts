@@ -132,12 +132,15 @@ describe('the rule', () => {
     });
   });
 
-  test.each(['mumbo jumbo', [], {}])('invalid version, %j', version => {
-    expect(() => {
-      // @ts-expect-error: subset of `context`
-      rule.create({ settings: { jest: { version } } });
-    }).toThrow(
-      'Jest version not provided through settings - see https://github.com/jest-community/eslint-plugin-jest/blob/main/docs/rules/no-deprecated-functions.md#jest-version',
-    );
-  });
+  test.each(['mumbo jumbo', [], {}, null, undefined, ''])(
+    'invalid version, %j',
+    version => {
+      expect(() => {
+        // @ts-expect-error: subset of `context`
+        rule.create({ settings: { jest: { version } } });
+      }).toThrow(
+        'Jest version not provided through settings - see https://github.com/jest-community/eslint-plugin-jest/blob/main/docs/rules/no-deprecated-functions.md#jest-version',
+      );
+    },
+  );
 });
