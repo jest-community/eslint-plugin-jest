@@ -6,6 +6,37 @@ either been renamed for clarity, or replaced with more powerful APIs.
 While typically these deprecated functions are kept in the codebase for a number
 of majors, eventually they are removed completely.
 
+## Jest version
+
+This rule requires configuration to tell it which version of Jest is running.
+You provide this through `eslint`'s
+["shared settings"](https://eslint.org/docs/user-guide/configuring/configuration-files#adding-shared-settings).
+
+Example:
+
+```json
+{
+  "settings": {
+    "jest": {
+      "version": 27
+    }
+  }
+}
+```
+
+To avoid hard-coding a number, you can also fetch it from the installed version
+of Jest if you use a JavaScript config file such as `.eslintrc.js`:
+
+```js
+module.exports = {
+  settings: {
+    jest: {
+      version: require('jest/package.json').version,
+    },
+  },
+};
+```
+
 ## Rule details
 
 This rule warns about calls to deprecated functions, and provides details on

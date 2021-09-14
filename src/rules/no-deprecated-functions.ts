@@ -1,4 +1,3 @@
-import { JSONSchemaForNPMPackageJsonFiles } from '@schemastore/package';
 import {
   AST_NODE_TYPES,
   TSESTree,
@@ -27,39 +26,8 @@ export type JestVersion =
   | number;
 
 interface EslintPluginJestSettings {
-  version: JestVersion;
+  version: JestVersion | string;
 }
-
-let cachedJestVersion: JestVersion | null = null;
-
-/** @internal */
-export const _clearCachedJestVersion = () => (cachedJestVersion = null);
-
-const detectJestVersion = (): JestVersion => {
-  if (cachedJestVersion) {
-    return cachedJestVersion;
-  }
-
-  try {
-    const jestPath = require.resolve('jest/package.json', {
-      paths: [process.cwd()],
-    });
-
-    const jestPackageJson =
-      // eslint-disable-next-line @typescript-eslint/no-require-imports
-      require(jestPath) as JSONSchemaForNPMPackageJsonFiles;
-
-    if (jestPackageJson.version) {
-      const [majorVersion] = jestPackageJson.version.split('.');
-
-      return (cachedJestVersion = parseInt(majorVersion, 10));
-    }
-  } catch {}
-
-  throw new Error(
-    'Unable to detect Jest version - please ensure jest package is installed, or otherwise set version explicitly',
-  );
-};
 
 export default createRule({
   name: __filename,
@@ -79,9 +47,23 @@ export default createRule({
   },
   defaultOptions: [],
   create(context) {
-    const jestVersion =
-      (context.settings as ContextSettings)?.jest?.version ||
-      detectJestVersion();
+    let jestVersion = (context.settings as ContextSettings)?.jest?.version;
+
+    if (typeof jestVersion === 'string') {
+      const [majorVersion] = jestVersion.split('.');
+
+      jestVersion = parseInt(majorVersion, 10);
+
+      if (Number.isNaN(jestVersion)) {
+        jestVersion = undefined;
+      }
+    }
+
+    if (typeof jestVersion !== 'number') {
+      throw new Error(
+        'Jest version not provided through settings - see https://github.com/jest-community/eslint-plugin-jest/blob/main/docs/rules/no-deprecated-functions.md#jest-version',
+      );
+    }
 
     const deprecations: Record<string, string> = {
       ...(jestVersion >= 15 && {
