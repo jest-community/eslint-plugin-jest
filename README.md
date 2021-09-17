@@ -60,20 +60,38 @@ This is included in all configs shared by this plugin, so can be omitted if
 extending them.
 
 The behaviour of some rules (specifically `no-deprecated-functions`) change
-depending on the version of `jest` being used.
+depending on the version of Jest being used.
 
-This setting is detected automatically based off the version of the `jest`
-package installed in `node_modules`, but it can also be provided explicitly if
-desired:
+By default, this plugin will attempt to determine the version of Jest
+automatically by looking for Jest in the `node_modules` of _the working directly
+that ESLint is being run from_.
+
+If you're working with a project structure that means Jest is not installed at
+the same directory level as where you run ESLint (such as if you're using a
+mono-repo structure but not hoisting dependencies to the root of the repo) you
+will need to provide the Jest version explicitly:
 
 ```json
 {
   "settings": {
     "jest": {
-      "version": 26
+      "version": 27
     }
   }
 }
+```
+
+To avoid hard-coding a number, you can also fetch it from the installed version
+of Jest if you use a JavaScript config file such as `.eslintrc.js`:
+
+```js
+module.exports = {
+  settings: {
+    jest: {
+      version: require('jest/package.json').version,
+    },
+  },
+};
 ```
 
 ## Shareable configurations
