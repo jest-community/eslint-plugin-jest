@@ -1,3 +1,10 @@
+## [24.4.2](https://github.com/jest-community/eslint-plugin-jest/compare/v24.4.1...v24.4.2) (2021-09-17)
+
+
+### Bug Fixes
+
+* use correct property `hasSuggestions` rather than `hasSuggestion` ([#899](https://github.com/jest-community/eslint-plugin-jest/issues/899)) ([dfd2368](https://github.com/jest-community/eslint-plugin-jest/commit/dfd2368d1cb1789b6a95a11be24c36868bb8a819))
+
 ## [24.4.1](https://github.com/jest-community/eslint-plugin-jest/compare/v24.4.0...v24.4.1) (2021-09-17)
 
 
