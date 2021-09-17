@@ -13,6 +13,11 @@ declare module '@typescript-eslint/experimental-utils/dist/ts-eslint/Rule' {
   export interface RuleMetaDataDocs {
     suggestion?: boolean;
   }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  export interface RuleMetaData<TMessageIds extends string> {
+    hasSuggestion?: boolean;
+  }
 }
 
 // copied from https://github.com/babel/babel/blob/d8da63c929f2d28c401571e2a43166678c555bc4/packages/babel-helpers/src/helpers.js#L602-L606
