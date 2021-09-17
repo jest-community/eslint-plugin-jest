@@ -1,3 +1,15 @@
+# [25.0.0-next.3](https://github.com/jest-community/eslint-plugin-jest/compare/v25.0.0-next.2...v25.0.0-next.3) (2021-09-17)
+
+
+### Features
+
+* remove deprecated rules ([#661](https://github.com/jest-community/eslint-plugin-jest/issues/661)) ([e8f16ec](https://github.com/jest-community/eslint-plugin-jest/commit/e8f16ec0e204a94a0e549cb9b415b3c6c8981aee))
+
+
+### BREAKING CHANGES
+
+* Removes rules `no-expect-resolves`, `no-truthy-falsy`, `no-try-expect`, and `prefer-inline-snapshots`
+
 # [25.0.0-next.2](https://github.com/jest-community/eslint-plugin-jest/compare/v25.0.0-next.1...v25.0.0-next.2) (2021-09-13)
 
 
