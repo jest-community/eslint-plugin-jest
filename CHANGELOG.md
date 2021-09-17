@@ -1,3 +1,10 @@
+## [24.4.1](https://github.com/jest-community/eslint-plugin-jest/compare/v24.4.0...v24.4.1) (2021-09-17)
+
+
+### Bug Fixes
+
+* mark rules that suggest fixes with `hasSuggestion` for ESLint v8 ([#898](https://github.com/jest-community/eslint-plugin-jest/issues/898)) ([ec0a21b](https://github.com/jest-community/eslint-plugin-jest/commit/ec0a21b0d98d043a9949138e495814e0935d5e31))
+
 # [24.4.0](https://github.com/jest-community/eslint-plugin-jest/compare/v24.3.7...v24.4.0) (2021-07-21)
 
 
