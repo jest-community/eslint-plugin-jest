@@ -21,7 +21,7 @@ export default createRule({
     },
     type: 'suggestion',
     schema: [],
-    hasSuggestion: true,
+    hasSuggestions: true,
   },
   defaultOptions: [],
   create(context) {

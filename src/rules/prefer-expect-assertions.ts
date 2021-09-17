@@ -84,7 +84,7 @@ export default createRule<[RuleOptions], MessageIds>({
       suggestRemovingExtraArguments: 'Remove extra arguments',
     },
     type: 'suggestion',
-    hasSuggestion: true,
+    hasSuggestions: true,
     schema: [
       {
         type: 'object',
