@@ -1,3 +1,11 @@
+# [25.0.0-next.4](https://github.com/jest-community/eslint-plugin-jest/compare/v25.0.0-next.3...v25.0.0-next.4) (2021-09-20)
+
+
+### Bug Fixes
+
+* mark rules that suggest fixes with `hasSuggestion` for ESLint v8 ([#898](https://github.com/jest-community/eslint-plugin-jest/issues/898)) ([ec0a21b](https://github.com/jest-community/eslint-plugin-jest/commit/ec0a21b0d98d043a9949138e495814e0935d5e31))
+* use correct property `hasSuggestions` rather than `hasSuggestion` ([#899](https://github.com/jest-community/eslint-plugin-jest/issues/899)) ([dfd2368](https://github.com/jest-community/eslint-plugin-jest/commit/dfd2368d1cb1789b6a95a11be24c36868bb8a819))
+
 # [25.0.0-next.3](https://github.com/jest-community/eslint-plugin-jest/compare/v25.0.0-next.2...v25.0.0-next.3) (2021-09-17)
 
 
