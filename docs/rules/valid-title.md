@@ -204,11 +204,11 @@ specific Jest test function groups (`describe`, `test`, and `it`).
 Examples of **incorrect** code when using `mustMatch`:
 
 ```js
-// with mustMatch: '$that'
+// with mustMatch: '^that'
 describe('the correct way to do things', () => {});
 fit('this there!', () => {});
 
-// with mustMatch: { test: '$that' }
+// with mustMatch: { test: '^that' }
 describe('the tests that will be run', () => {});
 test('the stuff works', () => {});
 xtest('errors that are thrown have messages', () => {});
@@ -217,11 +217,11 @@ xtest('errors that are thrown have messages', () => {});
 Examples of **correct** code when using `mustMatch`:
 
 ```js
-// with mustMatch: '$that'
+// with mustMatch: '^that'
 describe('that thing that needs to be done', () => {});
 fit('that this there!', () => {});
 
-// with mustMatch: { test: '$that' }
+// with mustMatch: { test: '^that' }
 describe('the tests that will be run', () => {});
 test('that the stuff works', () => {});
 xtest('that errors that thrown have messages', () => {});

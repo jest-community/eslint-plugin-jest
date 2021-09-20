@@ -114,7 +114,7 @@ const details: RuleDetails[] = Object.keys(config.configs.all.rules)
       description: rule.meta.docs.description,
       fixable: rule.meta.fixable
         ? 'fixable'
-        : rule.meta.docs.suggestion
+        : rule.meta.hasSuggestions
         ? 'suggest'
         : false,
       requiresTypeChecking: rule.meta.docs.requiresTypeChecking ?? false,

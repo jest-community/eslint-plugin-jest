@@ -8,10 +8,11 @@ type RuleModule = TSESLint.RuleModule<string, unknown[]> & {
   meta: Required<Pick<TSESLint.RuleMetaData<string>, 'docs'>>;
 };
 
-// can be removed once we've on v3: https://github.com/typescript-eslint/typescript-eslint/issues/2060
+// can be removed once we've on v5 of `@typescript-eslint/experimental-utils`
 declare module '@typescript-eslint/experimental-utils/dist/ts-eslint/Rule' {
-  export interface RuleMetaDataDocs {
-    suggestion?: boolean;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  export interface RuleMetaData<TMessageIds extends string> {
+    hasSuggestions?: boolean;
   }
 }
 

@@ -49,6 +49,7 @@ export default createRule({
     },
     schema: [],
     type: 'suggestion',
+    hasSuggestions: true,
   },
   defaultOptions: [],
   create: context => ({

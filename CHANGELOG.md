@@ -34,6 +34,20 @@
 
 * Drop support for Node 10 and 15
 
+## [24.4.2](https://github.com/jest-community/eslint-plugin-jest/compare/v24.4.1...v24.4.2) (2021-09-17)
+
+
+### Bug Fixes
+
+* use correct property `hasSuggestions` rather than `hasSuggestion` ([#899](https://github.com/jest-community/eslint-plugin-jest/issues/899)) ([dfd2368](https://github.com/jest-community/eslint-plugin-jest/commit/dfd2368d1cb1789b6a95a11be24c36868bb8a819))
+
+## [24.4.1](https://github.com/jest-community/eslint-plugin-jest/compare/v24.4.0...v24.4.1) (2021-09-17)
+
+
+### Bug Fixes
+
+* mark rules that suggest fixes with `hasSuggestion` for ESLint v8 ([#898](https://github.com/jest-community/eslint-plugin-jest/issues/898)) ([ec0a21b](https://github.com/jest-community/eslint-plugin-jest/commit/ec0a21b0d98d043a9949138e495814e0935d5e31))
+
 # [24.4.0](https://github.com/jest-community/eslint-plugin-jest/compare/v24.3.7...v24.4.0) (2021-07-21)
 
 
