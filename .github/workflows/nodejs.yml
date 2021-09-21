@@ -110,6 +110,8 @@ jobs:
         run: yarn test --coverage
         env:
           CI: true
+      - uses: codecov/codecov-action@v2
+        if: ${{ matrix.eslint-version >= 6 }}
 
   docs:
     if: ${{ github.event_name == 'pull_request' }}
