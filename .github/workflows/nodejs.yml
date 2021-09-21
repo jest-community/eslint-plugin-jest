@@ -18,7 +18,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - uses: actions/setup-node@v2.4.0
+      - uses: actions/setup-node@v2
         with:
           node-version: 14.x
           cache: yarn
@@ -36,7 +36,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2.4.0
+      - uses: actions/setup-node@v2
         with:
           node-version: 14.x
           cache: yarn
@@ -50,7 +50,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2.4.0
+      - uses: actions/setup-node@v2
         with:
           node-version: 14.x
           cache: yarn
@@ -74,7 +74,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v2.4.0
+        uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
           cache: yarn
@@ -86,7 +86,7 @@ jobs:
         run: yarn test --coverage
         env:
           CI: true
-      - uses: codecov/codecov-action@v2.1.0
+      - uses: codecov/codecov-action@v2
         if: always()
   test-os:
     name: Test on ${{ matrix.os }} using Node.js LTS
@@ -99,7 +99,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2.4.0
+      - uses: actions/setup-node@v2
         with:
           node-version: 14.x
           cache: yarn
@@ -109,6 +109,8 @@ jobs:
         run: yarn test --coverage
         env:
           CI: true
+      - uses: codecov/codecov-action@v2
+        if: always()
 
   docs:
     if: ${{ github.event_name == 'pull_request' }}
@@ -116,7 +118,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2.4.0
+      - uses: actions/setup-node@v2
         with:
           node-version: 14.x
           cache: yarn
@@ -139,7 +141,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2.4.0
+      - uses: actions/setup-node@v2
         with:
           node-version: 14.x
           cache: yarn
