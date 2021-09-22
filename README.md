@@ -59,7 +59,9 @@ doing:
 This is included in all configs shared by this plugin, so can be omitted if
 extending them.
 
-The behaviour of some rules (specifically `no-deprecated-functions`) change
+### Jest `version` setting
+
+The behaviour of some rules (specifically [`no-deprecated-functions`][]) change
 depending on the version of Jest being used.
 
 By default, this plugin will attempt to determine to locate Jest using
@@ -244,3 +246,4 @@ https://github.com/istanbuljs/eslint-plugin-istanbul
 [suggest]: https://img.shields.io/badge/-suggest-yellow.svg
 [fixable]: https://img.shields.io/badge/-fixable-green.svg
 [style]: https://img.shields.io/badge/-style-blue.svg
+[`no-deprecated-functions`]: docs/rules/no-deprecated-functions.md
