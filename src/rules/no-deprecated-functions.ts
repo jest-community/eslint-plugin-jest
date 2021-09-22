@@ -10,8 +10,18 @@ interface ContextSettings {
 }
 
 interface EslintPluginJestSettings {
-  version: JestVersion;
+  version: JestVersion | string;
 }
+
+const parseJestVersion = (rawVersion: number | string): JestVersion => {
+  if (typeof rawVersion === 'number') {
+    return rawVersion;
+  }
+
+  const [majorVersion] = rawVersion.split('.');
+
+  return parseInt(majorVersion, 10);
+};
 
 export default createRule({
   name: __filename,
@@ -31,9 +41,10 @@ export default createRule({
   },
   defaultOptions: [],
   create(context) {
-    const jestVersion =
+    const jestVersion = parseJestVersion(
       (context.settings as ContextSettings)?.jest?.version ||
-      detectJestVersion();
+        detectJestVersion(),
+    );
 
     const deprecations: Record<string, string> = {
       ...(jestVersion >= 15 && {

@@ -11,7 +11,7 @@ const detectJestVersionMock = detectJestVersion as jest.MockedFunction<
 const ruleTester = new TSESLint.RuleTester();
 
 const generateValidCases = (
-  jestVersion: JestVersion | undefined,
+  jestVersion: JestVersion | string | undefined,
   functionCall: string,
 ): Array<TSESLint.ValidTestCase<never>> => {
   const [name, func] = functionCall.split('.');
@@ -26,7 +26,7 @@ const generateValidCases = (
 };
 
 const generateInvalidCases = (
-  jestVersion: JestVersion | undefined,
+  jestVersion: JestVersion | string | undefined,
   deprecation: string,
   replacement: string,
 ): Array<TSESLint.InvalidTestCase<'deprecatedFunction', never>> => {
@@ -58,11 +58,13 @@ describe('the rule', () => {
   // a few sanity checks before doing our massive loop
   ruleTester.run('no-deprecated-functions', rule, {
     valid: [
-      'jest',
-      'require("fs")',
+      { settings: { jest: { version: 14 } }, code: 'jest' },
+      { settings: { jest: { version: 14 } }, code: 'require("fs")' },
       ...generateValidCases(14, 'jest.resetModuleRegistry'),
       ...generateValidCases(17, 'require.requireActual'),
       ...generateValidCases(25, 'jest.genMockFromModule'),
+      ...generateValidCases('25.1.1', 'jest.genMockFromModule'),
+      ...generateValidCases('17.2', 'require.requireActual'),
     ],
     invalid: [
       ...generateInvalidCases(
@@ -73,6 +75,11 @@ describe('the rule', () => {
       ...generateInvalidCases(24, 'jest.addMatchers', 'expect.extend'),
       ...generateInvalidCases(
         26,
+        'jest.genMockFromModule',
+        'jest.createMockFromModule',
+      ),
+      ...generateInvalidCases(
+        '26.0.0-next.11',
         'jest.genMockFromModule',
         'jest.createMockFromModule',
       ),
