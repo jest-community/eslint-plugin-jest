@@ -2098,17 +2098,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@semantic-release/changelog@npm:^5.0.1":
-  version: 5.0.1
-  resolution: "@semantic-release/changelog@npm:5.0.1"
+"@semantic-release/changelog@npm:^6.0.0":
+  version: 6.0.0
+  resolution: "@semantic-release/changelog@npm:6.0.0"
   dependencies:
     "@semantic-release/error": ^2.1.0
     aggregate-error: ^3.0.0
     fs-extra: ^9.0.0
     lodash: ^4.17.4
   peerDependencies:
-    semantic-release: ">=15.8.0 <18.0.0"
-  checksum: 9f4620e6f68f1fdfd9322c915d7abfad0d9abb0d1af57e221d7bef6f106423ae07548fb51c256a8ad2bbde72e36447e5610711336909094e8cb2d96fe489a655
+    semantic-release: ">=18.0.0"
+  checksum: 60fb2d8fe315b9e7bed381b7318032e2af07816ac190f67162e7dbb3dbe52cc9a3bae4fc81fed8aa02c78cd7644a28074753e406f4b516bf8bb287db3ba958c6
   languageName: node
   linkType: hard
 
@@ -4303,7 +4303,7 @@ __metadata:
     "@commitlint/cli": ^12.0.0
     "@commitlint/config-conventional": ^12.0.0
     "@schemastore/package": ^0.0.6
-    "@semantic-release/changelog": ^5.0.1
+    "@semantic-release/changelog": ^6.0.0
     "@semantic-release/git": ^10.0.0
     "@types/dedent": ^0.7.0
     "@types/jest": ^27.0.0
