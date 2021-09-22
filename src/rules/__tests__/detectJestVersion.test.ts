@@ -25,7 +25,7 @@ const runNodeScript = (cwd: string, script: string) => {
 };
 
 const runDetectJestVersion = (cwd: string) => {
-  const out = runNodeScript(
+  return runNodeScript(
     cwd,
     `
       try {
@@ -35,12 +35,6 @@ const runDetectJestVersion = (cwd: string) => {
       }
     `,
   );
-
-  console.log('status:', out.status);
-  console.log('stdout:', out.stdout);
-  console.log('stderr:', out.stderr);
-
-  return out;
 };
 
 /**
