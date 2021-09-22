@@ -76,11 +76,6 @@ const setupFakeProject = (structure: ProjectStructure): string => {
   return tempDir;
 };
 
-// pin the original cwd so that we can restore it after each test
-// const projectDir = process.cwd();
-
-// afterEach(() => process.chdir(projectDir));
-
 describe('detectJestVersion', () => {
   describe('basic tests', () => {
     const packageJsonFactory = jest.fn<JSONSchemaForNPMPackageJsonFiles, []>();
