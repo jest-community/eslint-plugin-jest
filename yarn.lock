@@ -3996,7 +3996,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dot-prop@npm:^5.1.0, dot-prop@npm:^5.3.0":
+"dot-prop@npm:^5.1.0":
   version: 5.3.0
   resolution: "dot-prop@npm:5.3.0"
   dependencies:
@@ -4326,7 +4326,7 @@ __metadata:
     husky: ^6.0.0
     is-ci: ^3.0.0
     jest: ^27.0.0
-    jest-runner-eslint: ^0.11.0
+    jest-runner-eslint: ^0.10.1
     lint-staged: ^10.2.2
     pinst: ^2.0.0
     prettier: ^2.0.5
@@ -6154,18 +6154,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jest-runner-eslint@npm:^0.11.0":
-  version: 0.11.0
-  resolution: "jest-runner-eslint@npm:0.11.0"
+"jest-runner-eslint@npm:^0.10.1":
+  version: 0.10.1
+  resolution: "jest-runner-eslint@npm:0.10.1"
   dependencies:
     chalk: ^3.0.0
     cosmiconfig: ^6.0.0
     create-jest-runner: ^0.6.0
-    dot-prop: ^5.3.0
   peerDependencies:
     eslint: ^6 || ^7
     jest: ^25.1 || ^26 || ^27
-  checksum: 7505166e5b81a0d5e444e022095bc16bd095409cfdb8ed42c95a71aadb30658f6ac21a0e88e9a09f94ec94fe02da096a864ec5b2c375192c39885df30dc83e68
+  checksum: 684394422206d382a3630035bc90b28e803871c3af66b386812bdc254afa7f25ee78e79b586fa797b57fe2f8a31812e2516d7ceb6bf47e693d8b98aa7a573b5f
   languageName: node
   linkType: hard
 

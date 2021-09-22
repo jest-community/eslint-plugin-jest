@@ -111,7 +111,7 @@
     "husky": "^6.0.0",
     "is-ci": "^3.0.0",
     "jest": "^27.0.0",
-    "jest-runner-eslint": "^0.11.0",
+    "jest-runner-eslint": "^0.10.1",
     "lint-staged": "^10.2.2",
     "pinst": "^2.0.0",
     "prettier": "^2.0.5",
