@@ -145,45 +145,21 @@ export default createRule<[Options], MessageIds>({
               },
               {
                 type: 'object',
-                properties: {
-                  describe: {
-                    oneOf: [
-                      { type: 'string' },
-                      {
-                        type: 'array',
-                        items: { type: 'string' },
-                        minItems: 1,
-                        maxItems: 2,
-                        additionalItems: false,
-                      },
-                    ],
-                  },
-                  test: {
-                    oneOf: [
-                      { type: 'string' },
-                      {
-                        type: 'array',
-                        items: { type: 'string' },
-                        minItems: 1,
-                        maxItems: 2,
-                        additionalItems: false,
-                      },
-                    ],
-                  },
-                  it: {
-                    oneOf: [
-                      { type: 'string' },
-                      {
-                        type: 'array',
-                        items: { type: 'string' },
-                        minItems: 1,
-                        maxItems: 2,
-                        additionalItems: false,
-                      },
-                    ],
-                  },
+                propertyNames: {
+                  enum: ['describe', 'test', 'it'],
                 },
-                additionalProperties: false,
+                additionalProperties: {
+                  oneOf: [
+                    { type: 'string' },
+                    {
+                      type: 'array',
+                      items: { type: 'string' },
+                      minItems: 1,
+                      maxItems: 2,
+                      additionalItems: false,
+                    },
+                  ],
+                },
               },
             ],
           },
@@ -199,45 +175,21 @@ export default createRule<[Options], MessageIds>({
               },
               {
                 type: 'object',
-                properties: {
-                  describe: {
-                    oneOf: [
-                      { type: 'string' },
-                      {
-                        type: 'array',
-                        items: { type: 'string' },
-                        minItems: 1,
-                        maxItems: 2,
-                        additionalItems: false,
-                      },
-                    ],
-                  },
-                  test: {
-                    oneOf: [
-                      { type: 'string' },
-                      {
-                        type: 'array',
-                        items: { type: 'string' },
-                        minItems: 1,
-                        maxItems: 2,
-                        additionalItems: false,
-                      },
-                    ],
-                  },
-                  it: {
-                    oneOf: [
-                      { type: 'string' },
-                      {
-                        type: 'array',
-                        items: { type: 'string' },
-                        minItems: 1,
-                        maxItems: 2,
-                        additionalItems: false,
-                      },
-                    ],
-                  },
+                propertyNames: {
+                  enum: ['describe', 'test', 'it'],
                 },
-                additionalProperties: false,
+                additionalProperties: {
+                  oneOf: [
+                    { type: 'string' },
+                    {
+                      type: 'array',
+                      items: { type: 'string' },
+                      minItems: 1,
+                      maxItems: 2,
+                      additionalItems: false,
+                    },
+                  ],
+                },
               },
             ],
           },
