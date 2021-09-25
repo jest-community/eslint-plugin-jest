@@ -232,6 +232,44 @@ ruleTester.run('mustMatch & mustNotMatch options', rule, {
       `,
       options: [
         {
+          mustNotMatch: {
+            describe: [
+              /(?:#(?!unit|e2e))\w+/u.source,
+              'Please include "#unit" or "#e2e" in describe titles',
+            ],
+          },
+          mustMatch: { describe: /^[^#]+$|(?:#(?:unit|e2e))/u.source },
+        },
+      ],
+      errors: [
+        {
+          messageId: 'mustNotMatchCustom',
+          data: {
+            jestFunctionName: 'describe',
+            pattern: /(?:#(?!unit|e2e))\w+/u,
+            message: 'Please include "#unit" or "#e2e" in describe titles',
+          },
+          column: 12,
+          line: 8,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        describe('things to test', () => {
+          describe('unit tests #unit', () => {
+            it('is true', () => {
+              expect(true).toBe(true);
+            });
+          });
+
+          describe('e2e tests #e4e', () => {
+            it('is another test #e2e #jest4life', () => {});
+          });
+        });
+      `,
+      options: [
+        {
           mustNotMatch: { describe: /(?:#(?!unit|e2e))\w+/u.source },
           mustMatch: { it: /^[^#]+$|(?:#(?:unit|e2e))/u.source },
         },
@@ -242,6 +280,59 @@ ruleTester.run('mustMatch & mustNotMatch options', rule, {
           data: {
             jestFunctionName: 'describe',
             pattern: /(?:#(?!unit|e2e))\w+/u,
+          },
+          column: 12,
+          line: 8,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        describe('things to test', () => {
+          describe('unit tests #unit', () => {
+            it('is true #jest4life', () => {
+              expect(true).toBe(true);
+            });
+          });
+
+          describe('e2e tests #e4e', () => {
+            it('is another test #e2e #jest4life', () => {});
+          });
+        });
+      `,
+      options: [
+        {
+          mustNotMatch: {
+            describe: [
+              /(?:#(?!unit|e2e))\w+/u.source,
+              'Please include "#unit" or "#e2e" in describe titles',
+            ],
+          },
+          mustMatch: {
+            it: [
+              /^[^#]+$|(?:#(?:unit|e2e))/u.source,
+              'Please include "#unit" or "#e2e" in it titles',
+            ],
+          },
+        },
+      ],
+      errors: [
+        {
+          messageId: 'mustMatchCustom',
+          data: {
+            jestFunctionName: 'it',
+            pattern: /^[^#]+$|(?:#(?:unit|e2e))/u,
+            message: 'Please include "#unit" or "#e2e" in it titles',
+          },
+          column: 8,
+          line: 3,
+        },
+        {
+          messageId: 'mustNotMatchCustom',
+          data: {
+            jestFunctionName: 'describe',
+            pattern: /(?:#(?!unit|e2e))\w+/u,
+            message: 'Please include "#unit" or "#e2e" in describe titles',
           },
           column: 12,
           line: 8,
