@@ -1,5 +1,6 @@
 import {
   AST_NODE_TYPES,
+  JSONSchema,
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
 import {
@@ -75,6 +76,14 @@ const compileMatcherPatterns = (
 type CompiledMatcherAndMessage = [matcher: RegExp, message?: string];
 type MatcherAndMessage = [matcher: string, message?: string];
 
+const MatcherAndMessageSchema: JSONSchema.JSONSchema7 = {
+  type: 'array',
+  items: { type: 'string' },
+  minItems: 1,
+  maxItems: 2,
+  additionalItems: false,
+} as const;
+
 type MatcherGroups = 'describe' | 'test' | 'it';
 
 interface Options {
@@ -138,29 +147,12 @@ export default createRule<[Options], MessageIds>({
           [/^must(?:Not)?Match$/u.source]: {
             oneOf: [
               { type: 'string' },
-              {
-                type: 'array',
-                items: { type: 'string' },
-                minItems: 1,
-                maxItems: 2,
-                additionalItems: false,
-              },
+              MatcherAndMessageSchema,
               {
                 type: 'object',
-                propertyNames: {
-                  enum: ['describe', 'test', 'it'],
-                },
+                propertyNames: { enum: ['describe', 'test', 'it'] },
                 additionalProperties: {
-                  oneOf: [
-                    { type: 'string' },
-                    {
-                      type: 'array',
-                      items: { type: 'string' },
-                      minItems: 1,
-                      maxItems: 2,
-                      additionalItems: false,
-                    },
-                  ],
+                  oneOf: [{ type: 'string' }, MatcherAndMessageSchema],
                 },
               },
             ],
