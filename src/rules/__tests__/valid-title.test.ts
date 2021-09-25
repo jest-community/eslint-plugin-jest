@@ -114,6 +114,10 @@ ruleTester.run('mustMatch & mustNotMatch options', rule, {
       options: [{ mustMatch: / /u.source }],
     },
     {
+      code: 'it("correctly sets the value", () => {});',
+      options: [{ mustMatch: [/ /u.source] }],
+    },
+    {
       code: 'it("correctly sets the value #unit", () => {});',
       options: [{ mustMatch: /#(?:unit|integration|e2e)/u.source }],
     },
@@ -249,7 +253,7 @@ ruleTester.run('mustMatch & mustNotMatch options', rule, {
       `,
       options: [
         {
-          mustNotMatch: { describe: /(?:#(?!unit|e2e))\w+/u.source },
+          mustNotMatch: { describe: [/(?:#(?!unit|e2e))\w+/u.source] },
           mustMatch: { describe: /^[^#]+$|(?:#(?:unit|e2e))/u.source },
         },
       ],
