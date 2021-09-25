@@ -198,8 +198,9 @@ describe('the proper way to handle things', () => {});
 Defaults: `{}`
 
 Allows enforcing that titles must match or must not match a given Regular
-Expression. An object can be provided to apply different Regular Expressions to
-specific Jest test function groups (`describe`, `test`, and `it`).
+Expression, with an optional message. An object can be provided to apply
+different Regular Expressions (with optional messages) to specific Jest test
+function groups (`describe`, `test`, and `it`).
 
 Examples of **incorrect** code when using `mustMatch`:
 
@@ -225,4 +226,31 @@ fit('that this there!', () => {});
 describe('the tests that will be run', () => {});
 test('that the stuff works', () => {});
 xtest('that errors that thrown have messages', () => {});
+```
+
+Optionally you can provide a custom message to show for a particular matcher by
+using a tuple at any level where you can provide a matcher:
+
+```js
+const prefixes = ['when', 'with', 'without', 'if', 'unless', 'for'];
+const prefixesList = prefixes.join('  - \n');
+
+module.exports = {
+  rules: {
+    'jest/valid-title': [
+      'error',
+      {
+        mustNotMatch: ['\\.$', 'Titles should not end with a full-stop'],
+        mustMatch: {
+          describe: [
+            new RegExp(`^(?:[A-Z]|\\b(${prefixes.join('|')})\\b`, 'u').source,
+            `Describe titles should either start with a capital letter or one of the following prefixes: ${prefixesList}`,
+          ],
+          test: [/[^A-Z]/u.source],
+          it: /[^A-Z]/u.source,
+        },
+      },
+    ],
+  },
+};
 ```
