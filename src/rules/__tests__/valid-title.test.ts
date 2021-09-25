@@ -107,7 +107,7 @@ ruleTester.run('mustMatch & mustNotMatch options', rule, {
     'test("that all is as it should be", () => {});',
     {
       code: 'it("correctly sets the value", () => {});',
-      options: [{ mustMatch: undefined }],
+      options: [{ mustMatch: {} }],
     },
     {
       code: 'it("correctly sets the value", () => {});',

@@ -133,37 +133,9 @@ export default createRule<[Options], MessageIds>({
             type: 'array',
             items: { type: 'string' },
           },
-          mustNotMatch: {
-            oneOf: [
-              { type: 'string' },
-              {
-                type: 'array',
-                items: { type: 'string' },
-                minItems: 1,
-                maxItems: 2,
-                additionalItems: false,
-              },
-              {
-                type: 'object',
-                propertyNames: {
-                  enum: ['describe', 'test', 'it'],
-                },
-                additionalProperties: {
-                  oneOf: [
-                    { type: 'string' },
-                    {
-                      type: 'array',
-                      items: { type: 'string' },
-                      minItems: 1,
-                      maxItems: 2,
-                      additionalItems: false,
-                    },
-                  ],
-                },
-              },
-            ],
-          },
-          mustMatch: {
+        },
+        patternProperties: {
+          [/^must(?:Not)?Match$/u.source]: {
             oneOf: [
               { type: 'string' },
               {
