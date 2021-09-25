@@ -116,16 +116,15 @@ describe('foo', () => {
   });
 });
 
-describe('foo2', function()) {
-  describe('bar2', function() {
-    it('should get something', function() {
+describe('foo2', function () {
+  describe('bar2', function () {
+    it('should get something', function () {
       expect(getSomething()).toBe('Something');
     });
 
-    it('should get  else', function() {
+    it('should get  else', function () {
       expect(getSomething()).toBe('Something');
     });
   });
 });
-
 ```
