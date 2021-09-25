@@ -3,7 +3,7 @@
 When calling asynchronous code in hooks and tests, `jest` needs to know when the
 asynchronous work is complete to progress the current run.
 
-Originally the most common pattern to archive this was to use callbacks:
+Originally the most common pattern to achieve this was to use callbacks:
 
 ```js
 test('the data is peanut butter', done => {
