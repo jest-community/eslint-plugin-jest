@@ -36,6 +36,13 @@ ruleTester.run('valid-expect-in-promise', rule, {
       });
     `,
     dedent`
+      xtest('it1', function() {
+        return somePromise.catch(function() {
+          expect(someThing).toEqual(true);
+        });
+      });
+    `,
+    dedent`
       it('it1', function() {
         return somePromise.then(function() {
           doSomeThingButNotExpect();
@@ -136,7 +143,16 @@ ruleTester.run('valid-expect-in-promise', rule, {
         const promise = something().then(value => {
           expect(value).toBe('red');
         });
-        
+
+        return promise;
+      });
+    `,
+    dedent`
+      test.only('later return', () => {
+        const promise = something().then(value => {
+          expect(value).toBe('red');
+        });
+
         return promise;
       });
     `,
@@ -276,6 +292,16 @@ ruleTester.run('valid-expect-in-promise', rule, {
     },
     {
       code: dedent`
+        xtest('it1', function() {
+          somePromise.catch(function() {
+            expect(someThing).toEqual(true)
+          })
+        })
+      `,
+      errors: [{ column: 3, endColumn: 5, messageId: 'returnPromise' }],
+    },
+    {
+      code: dedent`
         it('it1', function() {
           somePromise.then(function() {
             expect(someThing).toEqual(true)
@@ -336,6 +362,28 @@ ruleTester.run('valid-expect-in-promise', rule, {
         });
       `,
       errors: [{ column: 9, endColumn: 5, messageId: 'returnPromise' }],
+    },
+    {
+      code: dedent`
+        fit('it1', () => {
+          somePromise.then(() => {
+            doSomeOperation();
+            expect(someThing).toEqual(true);
+          })
+        });
+      `,
+      errors: [{ column: 3, endColumn: 5, messageId: 'returnPromise' }],
+    },
+    {
+      code: dedent`
+        it.skip('it1', () => {
+          somePromise.then(() => {
+            doSomeOperation();
+            expect(someThing).toEqual(true);
+          })
+        });
+      `,
+      errors: [{ column: 3, endColumn: 5, messageId: 'returnPromise' }],
     },
   ],
 });
