@@ -22,8 +22,24 @@ ruleTester.run('valid-expect-in-promise', rule, {
       }));
     `,
     dedent`
+      it('it1', () => new Promise((done) => {
+        test()
+          .finally(() => {
+            expect(someThing).toEqual(true);
+            done();
+          });
+      }));
+    `,
+    dedent`
       it('it1', () => {
         return somePromise.then(() => {
+          expect(someThing).toEqual(true);
+        });
+      });
+    `,
+    dedent`
+      it('it1', () => {
+        return somePromise.finally(() => {
           expect(someThing).toEqual(true);
         });
       });
@@ -234,6 +250,16 @@ ruleTester.run('valid-expect-in-promise', rule, {
       `,
       errors: [{ column: 3, endColumn: 6, messageId: 'returnPromise' }],
     },
+    {
+      code: dedent`
+        it('it1', () => {
+          somePromise.finally(() => {
+            expect(someThing).toEqual(true);
+          });
+        });
+      `,
+      errors: [{ column: 3, endColumn: 6, messageId: 'returnPromise' }],
+    },
     // {
     //   code: `
     //      it('it1', () => {
@@ -319,6 +345,17 @@ ruleTester.run('valid-expect-in-promise', rule, {
       code: dedent`
         it('it1', () => {
           somePromise.then(() => {
+            doSomeOperation();
+            expect(someThing).toEqual(true);
+          })
+        });
+      `,
+      errors: [{ column: 3, endColumn: 5, messageId: 'returnPromise' }],
+    },
+    {
+      code: dedent`
+        it('it1', () => {
+          somePromise.finally(() => {
             doSomeOperation();
             expect(someThing).toEqual(true);
           })

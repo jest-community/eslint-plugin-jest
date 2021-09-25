@@ -4,7 +4,6 @@ import {
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
 import {
-  CalledKnownMemberExpression,
   FunctionExpression,
   KnownCallExpression,
   TestCaseName,
@@ -18,15 +17,17 @@ import {
 type MessageIds = 'returnPromise';
 type RuleContext = TSESLint.RuleContext<MessageIds, unknown[]>;
 
-type ThenOrCatchCallExpression = KnownCallExpression<'then' | 'catch'>;
+type PromiseChainCallExpression = KnownCallExpression<
+  'then' | 'catch' | 'finally'
+>;
 
-const isThenOrCatchCall = (
+const isPromiseChainCall = (
   node: TSESTree.Node,
-): node is ThenOrCatchCallExpression =>
+): node is PromiseChainCallExpression =>
   node.type === AST_NODE_TYPES.CallExpression &&
   node.callee.type === AST_NODE_TYPES.MemberExpression &&
   isSupportedAccessor(node.callee.property) &&
-  ['then', 'catch'].includes(getAccessorValue(node.callee.property));
+  ['then', 'catch', 'finally'].includes(getAccessorValue(node.callee.property));
 
 const isExpectCallPresentInFunction = (body: TSESTree.Node) => {
   if (body.type === AST_NODE_TYPES.BlockStatement) {
@@ -122,7 +123,7 @@ const isParentThenOrPromiseReturned = (
 
 const verifyExpectWithReturn = (
   promiseCallbacks: Array<TSESTree.CallExpressionArgument | undefined>,
-  node: CalledKnownMemberExpression<'then' | 'catch'>,
+  node: PromiseChainCallExpression['callee'],
   context: RuleContext,
   testFunctionBody: TSESTree.Statement[],
 ) => {
@@ -167,7 +168,7 @@ export default createRule<unknown[], MessageIds>({
     return {
       CallExpression(node) {
         if (
-          !isThenOrCatchCall(node) ||
+          !isPromiseChainCall(node) ||
           (node.parent && node.parent.type === AST_NODE_TYPES.AwaitExpression)
         ) {
           return;
