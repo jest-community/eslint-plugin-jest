@@ -47,10 +47,13 @@ const compileMatcherPattern = (
 };
 
 const compileMatcherPatterns = (
-  matchers: Partial<Record<MatcherGroups, string | MatcherAndMessage>> | string,
+  matchers:
+    | Partial<Record<MatcherGroups, string | MatcherAndMessage>>
+    | MatcherAndMessage
+    | string,
 ): Record<MatcherGroups, CompiledMatcherAndMessage | null> &
   Record<string, CompiledMatcherAndMessage | null> => {
-  if (typeof matchers === 'string') {
+  if (typeof matchers === 'string' || Array.isArray(matchers)) {
     const compiledMatcher = compileMatcherPattern(matchers);
 
     return {
@@ -79,9 +82,11 @@ interface Options {
   disallowedWords?: string[];
   mustNotMatch?:
     | Partial<Record<MatcherGroups, string | MatcherAndMessage>>
+    | MatcherAndMessage
     | string;
   mustMatch?:
     | Partial<Record<MatcherGroups, string | MatcherAndMessage>>
+    | MatcherAndMessage
     | string;
 }
 
@@ -132,6 +137,13 @@ export default createRule<[Options], MessageIds>({
             oneOf: [
               { type: 'string' },
               {
+                type: 'array',
+                items: { type: 'string' },
+                minItems: 1,
+                maxItems: 2,
+                additionalItems: false,
+              },
+              {
                 type: 'object',
                 properties: {
                   describe: {
@@ -178,6 +190,13 @@ export default createRule<[Options], MessageIds>({
           mustMatch: {
             oneOf: [
               { type: 'string' },
+              {
+                type: 'array',
+                items: { type: 'string' },
+                minItems: 1,
+                maxItems: 2,
+                additionalItems: false,
+              },
               {
                 type: 'object',
                 properties: {
