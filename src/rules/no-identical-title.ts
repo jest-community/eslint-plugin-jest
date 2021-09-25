@@ -1,6 +1,6 @@
-import { AST_NODE_TYPES } from '@typescript-eslint/experimental-utils';
 import {
   createRule,
+  getNodeName,
   getStringValue,
   isDescribeCall,
   isStringNode,
@@ -46,7 +46,7 @@ export default createRule({
           contexts.push(newDescribeContext());
         }
 
-        if (node.callee.type === AST_NODE_TYPES.TaggedTemplateExpression) {
+        if (getNodeName(node.callee)?.endsWith('.each')) {
           return;
         }
 
