@@ -8,9 +8,9 @@ trigger this rule.
 
 This rule aims to eliminate `expect` statements that will not be executed. An
 `expect` inside of a `describe` block but outside of a `test` or `it` block or
-outside of a `describe` will not execute and therefore will trigger this rule.
-It is viable, however, to have an `expect` in a helper function that is called
-from within a `test` or `it` block so `expect` statements in a function will not
+outside a `describe` will not execute and therefore will trigger this rule. It
+is viable, however, to have an `expect` in a helper function that is called from
+within a `test` or `it` block so `expect` statements in a function will not
 trigger this rule.
 
 Statements like `expect.hasAssertions()` will NOT trigger this rule since these
