@@ -176,12 +176,16 @@ export default createRule<unknown[], MessageIds>({
           if (hasExpectCall) {
             const topNode = findTopOfBodyNode(node);
 
-            if (!topNode) {
+            if (
+              !topNode ||
+              topNode.type === AST_NODE_TYPES.ReturnStatement ||
+              (topNode.type === AST_NODE_TYPES.ExpressionStatement &&
+                topNode.expression.type === AST_NODE_TYPES.AwaitExpression)
+            ) {
               return;
             }
-            if (topNode.type !== AST_NODE_TYPES.ReturnStatement) {
-              reportReturnRequired(context, topNode);
-            }
+
+            reportReturnRequired(context, topNode);
           }
         }
       },

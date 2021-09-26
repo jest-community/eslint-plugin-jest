@@ -158,30 +158,27 @@ ruleTester.run('valid-expect-in-promise', rule, {
         return somePromise.then()
       });
     `,
-    // todo: async
-    // dedent`
-    //   it('it1', async () => {
-    //     await Promise.resolve().then(function () {
-    //       expect(someThing).toEqual(true)
-    //     });
-    //   });
-    // `,
-    // todo: async
-    // dedent`
-    //   it('it1', async () => {
-    //     await somePromise.then(() => {
-    //       expect(someThing).toEqual(true)
-    //     });
-    //   });
-    // `,
-    // todo: async
-    // dedent`
-    //   it('it1', async () => {
-    //     await getSomeThing().getPromise().then(function () {
-    //       expect(someThing).toEqual(true)
-    //     });
-    //   });
-    // `,
+    dedent`
+      it('it1', async () => {
+        await Promise.resolve().then(function () {
+          expect(someThing).toEqual(true)
+        });
+      });
+    `,
+    dedent`
+      it('it1', async () => {
+        await somePromise.then(() => {
+          expect(someThing).toEqual(true)
+        });
+      });
+    `,
+    dedent`
+      it('it1', async () => {
+        await getSomeThing().getPromise().then(function () {
+          expect(someThing).toEqual(true)
+        });
+      });
+    `,
     dedent`
       it('it1', () => {
         return somePromise.then(() => {
@@ -319,6 +316,15 @@ ruleTester.run('valid-expect-in-promise', rule, {
         promise.then(() => expect(someThing).toEqual(true));
       });
     `,
+    dedent`
+      test('valid-expect-in-promise', async () => {
+        const text = await fetch('url')
+            .then(res => res.text())
+            .then(text => text);
+
+        expect(text).toBe('text');
+      });
+    `,
   ],
   invalid: [
     {
@@ -445,10 +451,24 @@ ruleTester.run('valid-expect-in-promise', rule, {
     {
       code: dedent`
         it('test function', () => {
-          Builder.getPromiseBuilder().get().build().then((data) => expect(data).toEqual('Hi'));
+          Builder.getPromiseBuilder()
+            .get()
+            .build()
+            .then(data => expect(data).toEqual('Hi'));
         });
       `,
-      errors: [{ column: 3, endColumn: 88, messageId: 'returnPromise' }],
+      errors: [{ column: 3, endColumn: 47, messageId: 'returnPromise' }],
+    },
+    {
+      code: `
+        it('test function', async () => {
+          Builder.getPromiseBuilder()
+            .get()
+            .build()
+            .then(data => expect(data).toEqual('Hi'));
+        });
+      `,
+      errors: [{ column: 11, endColumn: 55, messageId: 'returnPromise' }],
     },
     {
       code: dedent`
