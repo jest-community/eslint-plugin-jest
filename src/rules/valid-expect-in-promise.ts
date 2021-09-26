@@ -7,7 +7,9 @@ import {
   KnownCallExpression,
   createRule,
   getAccessorValue,
+  getNodeName,
   isExpectCall,
+  isFunction,
   isSupportedAccessor,
   isTestCaseCall,
 } from './utils';
@@ -79,6 +81,41 @@ const findTopOfBodyNode = (
   return null;
 };
 
+const isTestCaseCallWithCallbackArg = (
+  node: TSESTree.CallExpression,
+): boolean => {
+  if (!isTestCaseCall(node)) {
+    return false;
+  }
+
+  const isJestEach = getNodeName(node).endsWith('.each');
+
+  if (
+    isJestEach &&
+    node.callee.type !== AST_NODE_TYPES.TaggedTemplateExpression
+  ) {
+    // isJestEach but not a TaggedTemplateExpression, so this must be
+    // the `jest.each([])()` syntax which this rule doesn't support due
+    // to its complexity (see jest-community/eslint-plugin-jest#710)
+    // so we return true to trigger bailout
+    return true;
+  }
+
+  if (isJestEach || node.arguments.length >= 2) {
+    const [, callback] = node.arguments;
+
+    const callbackArgIndex = Number(isJestEach);
+
+    return (
+      callback &&
+      isFunction(callback) &&
+      callback.params.length === 1 + callbackArgIndex
+    );
+  }
+
+  return false;
+};
+
 export default createRule<unknown[], MessageIds>({
   name: __filename,
   meta: {
@@ -96,11 +133,18 @@ export default createRule<unknown[], MessageIds>({
   },
   defaultOptions: [],
   create(context) {
+    let inTestCaseWithDoneCallback = false;
     let inPromiseChain = false;
     let hasExpectCall = false;
 
     return {
       CallExpression(node) {
+        if (isTestCaseCallWithCallbackArg(node)) {
+          inTestCaseWithDoneCallback = true;
+
+          return;
+        }
+
         if (isPromiseChainCall(node)) {
           inPromiseChain = true;
 
@@ -118,6 +162,14 @@ export default createRule<unknown[], MessageIds>({
         }
       },
       'CallExpression:exit'(node: TSESTree.CallExpression) {
+        if (inTestCaseWithDoneCallback) {
+          if (isTestCaseCall(node)) {
+            inTestCaseWithDoneCallback = false;
+          }
+
+          return;
+        }
+
         if (isPromiseChainCall(node)) {
           inPromiseChain = false;
 

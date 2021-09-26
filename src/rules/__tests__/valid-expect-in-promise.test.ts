@@ -12,16 +12,15 @@ const ruleTester = new TSESLint.RuleTester({
 
 ruleTester.run('valid-expect-in-promise', rule, {
   valid: [
-    // todo: done callback
-    // dedent`
-    //   it('it1', () => new Promise((done) => {
-    //     test()
-    //       .then(() => {
-    //         expect(someThing).toEqual(true);
-    //         done();
-    //       });
-    //   }));
-    // `,
+    dedent`
+      it('it1', () => new Promise((done) => {
+        test()
+          .then(() => {
+            expect(someThing).toEqual(true);
+            done();
+          });
+      }));
+    `,
     dedent`
       it('passes', () => {
         Promise.resolve().then(() => {
@@ -296,20 +295,30 @@ ruleTester.run('valid-expect-in-promise', rule, {
       }))
     `,
     'it("it1", () => somePromise.then(() => expect(someThing).toEqual(true)))',
-    // todo: done callback
-    // dedent`
-    //   it('promise test with done', (done) => {
-    //     const promise = getPromise();
-    //     promise.then(() => expect(someThing).toEqual(true));
-    //   });
-    // `,
-    // todo: done callback
-    // dedent`
-    //   it('name of done param does not matter', (nameDoesNotMatter) => {
-    //     const promise = getPromise();
-    //     promise.then(() => expect(someThing).toEqual(true));
-    //   });
-    // `,
+    dedent`
+      it('promise test with done', (done) => {
+        const promise = getPromise();
+        promise.then(() => expect(someThing).toEqual(true));
+      });
+    `,
+    dedent`
+      it('name of done param does not matter', (nameDoesNotMatter) => {
+        const promise = getPromise();
+        promise.then(() => expect(someThing).toEqual(true));
+      });
+    `,
+    dedent`
+      it.each([])('name of done param does not matter', (nameDoesNotMatter) => {
+        const promise = getPromise();
+        promise.then(() => expect(someThing).toEqual(true));
+      });
+    `,
+    dedent`
+      it.each\`\`('name of done param does not matter', ({}, nameDoesNotMatter) => {
+        const promise = getPromise();
+        promise.then(() => expect(someThing).toEqual(true));
+      });
+    `,
   ],
   invalid: [
     {
