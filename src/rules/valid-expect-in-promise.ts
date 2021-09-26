@@ -21,11 +21,28 @@ type PromiseChainCallExpression = KnownCallExpression<
 
 const isPromiseChainCall = (
   node: TSESTree.Node,
-): node is PromiseChainCallExpression =>
-  node.type === AST_NODE_TYPES.CallExpression &&
-  node.callee.type === AST_NODE_TYPES.MemberExpression &&
-  isSupportedAccessor(node.callee.property) &&
-  ['then', 'catch', 'finally'].includes(getAccessorValue(node.callee.property));
+): node is PromiseChainCallExpression => {
+  if (
+    node.type === AST_NODE_TYPES.CallExpression &&
+    node.callee.type === AST_NODE_TYPES.MemberExpression &&
+    isSupportedAccessor(node.callee.property)
+  ) {
+    // promise methods should have at least 1 argument
+    if (node.arguments.length === 0) {
+      return false;
+    }
+
+    switch (getAccessorValue(node.callee.property)) {
+      case 'then':
+        return node.arguments.length < 3;
+      case 'catch':
+      case 'finally':
+        return node.arguments.length < 2;
+    }
+  }
+
+  return false;
+};
 
 const reportReturnRequired = (context: RuleContext, node: TSESTree.Node) => {
   context.report({
