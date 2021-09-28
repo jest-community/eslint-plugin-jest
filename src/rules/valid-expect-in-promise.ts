@@ -6,12 +6,12 @@ import {
 import {
   FunctionExpression,
   KnownCallExpression,
-  TestCaseName,
   createRule,
   getAccessorValue,
   isExpectMember,
   isFunction,
   isSupportedAccessor,
+  isTestCaseCall,
 } from './utils';
 
 type MessageIds = 'returnPromise';
@@ -95,16 +95,13 @@ const isPromiseReturnedLater = (
   );
 };
 
-const isTestFunc = (node: TSESTree.Node) =>
-  node.type === AST_NODE_TYPES.CallExpression &&
-  isSupportedAccessor(node.callee) &&
-  ([TestCaseName.it, TestCaseName.test] as string[]).includes(
-    getAccessorValue(node.callee),
-  );
-
 const findTestFunction = (node: TSESTree.Node | undefined) => {
   while (node) {
-    if (isFunction(node) && node.parent && isTestFunc(node.parent)) {
+    if (
+      isFunction(node) &&
+      node.parent?.type === AST_NODE_TYPES.CallExpression &&
+      isTestCaseCall(node.parent)
+    ) {
       return node;
     }
 
