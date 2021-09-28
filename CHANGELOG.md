@@ -1,3 +1,11 @@
+## [24.4.3](https://github.com/jest-community/eslint-plugin-jest/compare/v24.4.2...v24.4.3) (2021-09-28)
+
+
+### Bug Fixes
+
+* **valid-expect-in-promise:** support `finally` ([#914](https://github.com/jest-community/eslint-plugin-jest/issues/914)) ([9c89855](https://github.com/jest-community/eslint-plugin-jest/commit/9c89855d23534272230afe6d9e665b8e11ef3075))
+* **valid-expect-in-promise:** support additional test functions ([#915](https://github.com/jest-community/eslint-plugin-jest/issues/915)) ([4798005](https://github.com/jest-community/eslint-plugin-jest/commit/47980058d8d1ff86ee69a376c4edd182d462d594))
+
 ## [24.4.2](https://github.com/jest-community/eslint-plugin-jest/compare/v24.4.1...v24.4.2) (2021-09-17)
 
 
