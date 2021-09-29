@@ -59,21 +59,41 @@ doing:
 This is included in all configs shared by this plugin, so can be omitted if
 extending them.
 
-The behaviour of some rules (specifically `no-deprecated-functions`) change
-depending on the version of `jest` being used.
+### Jest `version` setting
 
-This setting is detected automatically based off the version of the `jest`
-package installed in `node_modules`, but it can also be provided explicitly if
-desired:
+The behaviour of some rules (specifically [`no-deprecated-functions`][]) change
+depending on the version of Jest being used.
+
+By default, this plugin will attempt to determine to locate Jest using
+`require.resolve`, meaning it will start looking in the closest `node_modules`
+folder to the file being linted and work its way up.
+
+Since we cache the automatically determined version, if you're linting
+sub-folders that have different versions of Jest, you may find that the wrong
+version of Jest is considered when linting. You can work around this by
+providing the Jest version explicitly in nested ESLint configs:
 
 ```json
 {
   "settings": {
     "jest": {
-      "version": 26
+      "version": 27
     }
   }
 }
+```
+
+To avoid hard-coding a number, you can also fetch it from the installed version
+of Jest if you use a JavaScript config file such as `.eslintrc.js`:
+
+```js
+module.exports = {
+  settings: {
+    jest: {
+      version: require('jest/package.json').version,
+    },
+  },
+};
 ```
 
 ## Shareable configurations
@@ -226,3 +246,4 @@ https://github.com/istanbuljs/eslint-plugin-istanbul
 [suggest]: https://img.shields.io/badge/-suggest-yellow.svg
 [fixable]: https://img.shields.io/badge/-fixable-green.svg
 [style]: https://img.shields.io/badge/-style-blue.svg
+[`no-deprecated-functions`]: docs/rules/no-deprecated-functions.md

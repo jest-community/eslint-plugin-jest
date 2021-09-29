@@ -6,6 +6,11 @@ either been renamed for clarity, or replaced with more powerful APIs.
 While typically these deprecated functions are kept in the codebase for a number
 of majors, eventually they are removed completely.
 
+This rule requires knowing which version of Jest you're using - see
+[this section of the readme](../../README.md#jest-version-setting) for details
+on how that is obtained automatically and how you can explicitly provide a
+version if needed.
+
 ## Rule details
 
 This rule warns about calls to deprecated functions, and provides details on

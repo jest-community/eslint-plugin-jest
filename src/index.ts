@@ -26,7 +26,7 @@ const importDefault = (moduleName: string) =>
   interopRequireDefault(require(moduleName)).default;
 
 const rulesDir = join(__dirname, 'rules');
-const excludedFiles = ['__tests__', 'utils'];
+const excludedFiles = ['__tests__', 'detectJestVersion', 'utils'];
 
 const rules = readdirSync(rulesDir)
   .map(rule => parse(rule).name)
