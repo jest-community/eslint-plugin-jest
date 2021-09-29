@@ -59,21 +59,41 @@ doing:
 This is included in all configs shared by this plugin, so can be omitted if
 extending them.
 
-The behaviour of some rules (specifically `no-deprecated-functions`) change
-depending on the version of `jest` being used.
+### Jest `version` setting
 
-This setting is detected automatically based off the version of the `jest`
-package installed in `node_modules`, but it can also be provided explicitly if
-desired:
+The behaviour of some rules (specifically [`no-deprecated-functions`][]) change
+depending on the version of Jest being used.
+
+By default, this plugin will attempt to determine to locate Jest using
+`require.resolve`, meaning it will start looking in the closest `node_modules`
+folder to the file being linted and work its way up.
+
+Since we cache the automatically determined version, if you're linting
+sub-folders that have different versions of Jest, you may find that the wrong
+version of Jest is considered when linting. You can work around this by
+providing the Jest version explicitly in nested ESLint configs:
 
 ```json
 {
   "settings": {
     "jest": {
-      "version": 26
+      "version": 27
     }
   }
 }
+```
+
+To avoid hard-coding a number, you can also fetch it from the installed version
+of Jest if you use a JavaScript config file such as `.eslintrc.js`:
+
+```js
+module.exports = {
+  settings: {
+    jest: {
+      version: require('jest/package.json').version,
+    },
+  },
+};
 ```
 
 ## Shareable configurations
@@ -130,49 +150,51 @@ installations requiring long-term consistency.
 
 <!-- begin base rules list -->
 
-| Rule                                                                         | Description                                                     | Configurations   | Fixable      |
-| ---------------------------------------------------------------------------- | --------------------------------------------------------------- | ---------------- | ------------ |
-| [consistent-test-it](docs/rules/consistent-test-it.md)                       | Have control over `test` and `it` usages                        |                  | ![fixable][] |
-| [expect-expect](docs/rules/expect-expect.md)                                 | Enforce assertion to be made in a test body                     | ![recommended][] |              |
-| [lowercase-name](docs/rules/lowercase-name.md)                               | Enforce lowercase test names                                    |                  | ![fixable][] |
-| [max-nested-describe](docs/rules/max-nested-describe.md)                     | Enforces a maximum depth to nested describe calls               |                  |              |
-| [no-alias-methods](docs/rules/no-alias-methods.md)                           | Disallow alias methods                                          | ![style][]       | ![fixable][] |
-| [no-commented-out-tests](docs/rules/no-commented-out-tests.md)               | Disallow commented out tests                                    | ![recommended][] |              |
-| [no-conditional-expect](docs/rules/no-conditional-expect.md)                 | Prevent calling `expect` conditionally                          | ![recommended][] |              |
-| [no-deprecated-functions](docs/rules/no-deprecated-functions.md)             | Disallow use of deprecated functions                            | ![recommended][] | ![fixable][] |
-| [no-disabled-tests](docs/rules/no-disabled-tests.md)                         | Disallow disabled tests                                         | ![recommended][] |              |
-| [no-done-callback](docs/rules/no-done-callback.md)                           | Avoid using a callback in asynchronous tests and hooks          | ![recommended][] | ![suggest][] |
-| [no-duplicate-hooks](docs/rules/no-duplicate-hooks.md)                       | Disallow duplicate setup and teardown hooks                     |                  |              |
-| [no-export](docs/rules/no-export.md)                                         | Disallow using `exports` in files containing tests              | ![recommended][] |              |
-| [no-focused-tests](docs/rules/no-focused-tests.md)                           | Disallow focused tests                                          | ![recommended][] | ![suggest][] |
-| [no-hooks](docs/rules/no-hooks.md)                                           | Disallow setup and teardown hooks                               |                  |              |
-| [no-identical-title](docs/rules/no-identical-title.md)                       | Disallow identical titles                                       | ![recommended][] |              |
-| [no-if](docs/rules/no-if.md)                                                 | Disallow conditional logic                                      |                  |              |
-| [no-interpolation-in-snapshots](docs/rules/no-interpolation-in-snapshots.md) | Disallow string interpolation inside snapshots                  | ![recommended][] |              |
-| [no-jasmine-globals](docs/rules/no-jasmine-globals.md)                       | Disallow Jasmine globals                                        | ![recommended][] | ![fixable][] |
-| [no-jest-import](docs/rules/no-jest-import.md)                               | Disallow importing Jest                                         | ![recommended][] |              |
-| [no-large-snapshots](docs/rules/no-large-snapshots.md)                       | disallow large snapshots                                        |                  |              |
-| [no-mocks-import](docs/rules/no-mocks-import.md)                             | Disallow manually importing from `__mocks__`                    | ![recommended][] |              |
-| [no-restricted-matchers](docs/rules/no-restricted-matchers.md)               | Disallow specific matchers & modifiers                          |                  |              |
-| [no-standalone-expect](docs/rules/no-standalone-expect.md)                   | Disallow using `expect` outside of `it` or `test` blocks        | ![recommended][] |              |
-| [no-test-prefixes](docs/rules/no-test-prefixes.md)                           | Use `.only` and `.skip` over `f` and `x`                        | ![recommended][] | ![fixable][] |
-| [no-test-return-statement](docs/rules/no-test-return-statement.md)           | Disallow explicitly returning from tests                        |                  |              |
-| [prefer-called-with](docs/rules/prefer-called-with.md)                       | Suggest using `toBeCalledWith()` or `toHaveBeenCalledWith()`    |                  |              |
-| [prefer-expect-assertions](docs/rules/prefer-expect-assertions.md)           | Suggest using `expect.assertions()` OR `expect.hasAssertions()` |                  | ![suggest][] |
-| [prefer-hooks-on-top](docs/rules/prefer-hooks-on-top.md)                     | Suggest having hooks before any test cases                      |                  |              |
-| [prefer-spy-on](docs/rules/prefer-spy-on.md)                                 | Suggest using `jest.spyOn()`                                    |                  | ![fixable][] |
-| [prefer-strict-equal](docs/rules/prefer-strict-equal.md)                     | Suggest using `toStrictEqual()`                                 |                  | ![suggest][] |
-| [prefer-to-be-null](docs/rules/prefer-to-be-null.md)                         | Suggest using `toBeNull()`                                      | ![style][]       | ![fixable][] |
-| [prefer-to-be-undefined](docs/rules/prefer-to-be-undefined.md)               | Suggest using `toBeUndefined()`                                 | ![style][]       | ![fixable][] |
-| [prefer-to-contain](docs/rules/prefer-to-contain.md)                         | Suggest using `toContain()`                                     | ![style][]       | ![fixable][] |
-| [prefer-to-have-length](docs/rules/prefer-to-have-length.md)                 | Suggest using `toHaveLength()`                                  | ![style][]       | ![fixable][] |
-| [prefer-todo](docs/rules/prefer-todo.md)                                     | Suggest using `test.todo`                                       |                  | ![fixable][] |
-| [require-to-throw-message](docs/rules/require-to-throw-message.md)           | Require a message for `toThrow()`                               |                  |              |
-| [require-top-level-describe](docs/rules/require-top-level-describe.md)       | Require test cases and hooks to be inside a `describe` block    |                  |              |
-| [valid-describe](docs/rules/valid-describe.md)                               | Enforce valid `describe()` callback                             | ![recommended][] |              |
-| [valid-expect](docs/rules/valid-expect.md)                                   | Enforce valid `expect()` usage                                  | ![recommended][] |              |
-| [valid-expect-in-promise](docs/rules/valid-expect-in-promise.md)             | Enforce having return statement when testing with promises      | ![recommended][] |              |
-| [valid-title](docs/rules/valid-title.md)                                     | Enforce valid titles                                            | ![recommended][] | ![fixable][] |
+| Rule                                                                         | Description                                                         | Configurations   | Fixable      |
+| ---------------------------------------------------------------------------- | ------------------------------------------------------------------- | ---------------- | ------------ |
+| [consistent-test-it](docs/rules/consistent-test-it.md)                       | Have control over `test` and `it` usages                            |                  | ![fixable][] |
+| [expect-expect](docs/rules/expect-expect.md)                                 | Enforce assertion to be made in a test body                         | ![recommended][] |              |
+| [lowercase-name](docs/rules/lowercase-name.md)                               | Enforce lowercase test names                                        |                  | ![fixable][] |
+| [max-nested-describe](docs/rules/max-nested-describe.md)                     | Enforces a maximum depth to nested describe calls                   |                  |              |
+| [no-alias-methods](docs/rules/no-alias-methods.md)                           | Disallow alias methods                                              | ![style][]       | ![fixable][] |
+| [no-commented-out-tests](docs/rules/no-commented-out-tests.md)               | Disallow commented out tests                                        | ![recommended][] |              |
+| [no-conditional-expect](docs/rules/no-conditional-expect.md)                 | Prevent calling `expect` conditionally                              | ![recommended][] |              |
+| [no-deprecated-functions](docs/rules/no-deprecated-functions.md)             | Disallow use of deprecated functions                                | ![recommended][] | ![fixable][] |
+| [no-disabled-tests](docs/rules/no-disabled-tests.md)                         | Disallow disabled tests                                             | ![recommended][] |              |
+| [no-done-callback](docs/rules/no-done-callback.md)                           | Avoid using a callback in asynchronous tests and hooks              | ![recommended][] | ![suggest][] |
+| [no-duplicate-hooks](docs/rules/no-duplicate-hooks.md)                       | Disallow duplicate setup and teardown hooks                         |                  |              |
+| [no-export](docs/rules/no-export.md)                                         | Disallow using `exports` in files containing tests                  | ![recommended][] |              |
+| [no-focused-tests](docs/rules/no-focused-tests.md)                           | Disallow focused tests                                              | ![recommended][] | ![suggest][] |
+| [no-hooks](docs/rules/no-hooks.md)                                           | Disallow setup and teardown hooks                                   |                  |              |
+| [no-identical-title](docs/rules/no-identical-title.md)                       | Disallow identical titles                                           | ![recommended][] |              |
+| [no-if](docs/rules/no-if.md)                                                 | Disallow conditional logic                                          |                  |              |
+| [no-interpolation-in-snapshots](docs/rules/no-interpolation-in-snapshots.md) | Disallow string interpolation inside snapshots                      | ![recommended][] |              |
+| [no-jasmine-globals](docs/rules/no-jasmine-globals.md)                       | Disallow Jasmine globals                                            | ![recommended][] | ![fixable][] |
+| [no-jest-import](docs/rules/no-jest-import.md)                               | Disallow importing Jest                                             | ![recommended][] |              |
+| [no-large-snapshots](docs/rules/no-large-snapshots.md)                       | disallow large snapshots                                            |                  |              |
+| [no-mocks-import](docs/rules/no-mocks-import.md)                             | Disallow manually importing from `__mocks__`                        | ![recommended][] |              |
+| [no-restricted-matchers](docs/rules/no-restricted-matchers.md)               | Disallow specific matchers & modifiers                              |                  |              |
+| [no-standalone-expect](docs/rules/no-standalone-expect.md)                   | Disallow using `expect` outside of `it` or `test` blocks            | ![recommended][] |              |
+| [no-test-prefixes](docs/rules/no-test-prefixes.md)                           | Use `.only` and `.skip` over `f` and `x`                            | ![recommended][] | ![fixable][] |
+| [no-test-return-statement](docs/rules/no-test-return-statement.md)           | Disallow explicitly returning from tests                            |                  |              |
+| [prefer-called-with](docs/rules/prefer-called-with.md)                       | Suggest using `toBeCalledWith()` or `toHaveBeenCalledWith()`        |                  |              |
+| [prefer-expect-assertions](docs/rules/prefer-expect-assertions.md)           | Suggest using `expect.assertions()` OR `expect.hasAssertions()`     |                  | ![suggest][] |
+| [prefer-expect-resolves](docs/rules/prefer-expect-resolves.md)               | Prefer `await expect(...).resolves` over `expect(await ...)` syntax |                  | ![fixable][] |
+| [prefer-hooks-on-top](docs/rules/prefer-hooks-on-top.md)                     | Suggest having hooks before any test cases                          |                  |              |
+| [prefer-spy-on](docs/rules/prefer-spy-on.md)                                 | Suggest using `jest.spyOn()`                                        |                  | ![fixable][] |
+| [prefer-strict-equal](docs/rules/prefer-strict-equal.md)                     | Suggest using `toStrictEqual()`                                     |                  | ![suggest][] |
+| [prefer-to-be](docs/rules/prefer-to-be.md)                                   | Suggest using `toBe()` for primitive literals                       |                  | ![fixable][] |
+| [prefer-to-be-null](docs/rules/prefer-to-be-null.md)                         | Suggest using `toBeNull()`                                          | ![style][]       | ![fixable][] |
+| [prefer-to-be-undefined](docs/rules/prefer-to-be-undefined.md)               | Suggest using `toBeUndefined()`                                     | ![style][]       | ![fixable][] |
+| [prefer-to-contain](docs/rules/prefer-to-contain.md)                         | Suggest using `toContain()`                                         | ![style][]       | ![fixable][] |
+| [prefer-to-have-length](docs/rules/prefer-to-have-length.md)                 | Suggest using `toHaveLength()`                                      | ![style][]       | ![fixable][] |
+| [prefer-todo](docs/rules/prefer-todo.md)                                     | Suggest using `test.todo`                                           |                  | ![fixable][] |
+| [require-to-throw-message](docs/rules/require-to-throw-message.md)           | Require a message for `toThrow()`                                   |                  |              |
+| [require-top-level-describe](docs/rules/require-top-level-describe.md)       | Require test cases and hooks to be inside a `describe` block        |                  |              |
+| [valid-describe](docs/rules/valid-describe.md)                               | Enforce valid `describe()` callback                                 | ![recommended][] |              |
+| [valid-expect](docs/rules/valid-expect.md)                                   | Enforce valid `expect()` usage                                      | ![recommended][] |              |
+| [valid-expect-in-promise](docs/rules/valid-expect-in-promise.md)             | Enforce having return statement when testing with promises          | ![recommended][] |              |
+| [valid-title](docs/rules/valid-title.md)                                     | Enforce valid titles                                                | ![recommended][] | ![fixable][] |
 
 <!-- end base rules list -->
 
@@ -226,3 +248,4 @@ https://github.com/istanbuljs/eslint-plugin-istanbul
 [suggest]: https://img.shields.io/badge/-suggest-yellow.svg
 [fixable]: https://img.shields.io/badge/-fixable-green.svg
 [style]: https://img.shields.io/badge/-style-blue.svg
+[`no-deprecated-functions`]: docs/rules/no-deprecated-functions.md

@@ -112,3 +112,72 @@ ruleTester.run('require-top-level-describe', rule, {
     },
   ],
 });
+
+ruleTester.run(
+  'require-top-level-describe (enforce number of describes)',
+  rule,
+  {
+    valid: [
+      'describe("test suite", () => { test("my test") });',
+      'foo()',
+      'describe.each([1, true])("trues", value => { it("an it", () => expect(value).toBe(true) ); });',
+      dedent`
+        describe('one', () => {});
+        describe('two', () => {});
+        describe('three', () => {});
+      `,
+      {
+        code: dedent`
+          describe('one', () => {
+            describe('two', () => {});
+            describe('three', () => {});
+          });
+        `,
+        options: [{ maxNumberOfTopLevelDescribes: 1 }],
+      },
+    ],
+    invalid: [
+      {
+        code: dedent`
+          describe('one', () => {});
+          describe('two', () => {});
+          describe('three', () => {});
+        `,
+        options: [{ maxNumberOfTopLevelDescribes: 2 }],
+        errors: [{ messageId: 'tooManyDescribes', line: 3 }],
+      },
+      {
+        code: dedent`
+          describe('one', () => {
+            describe('one (nested)', () => {});
+            describe('two (nested)', () => {});
+          });
+          describe('two', () => {
+            describe('one (nested)', () => {});
+            describe('two (nested)', () => {});
+            describe('three (nested)', () => {});
+          });
+          describe('three', () => {
+            describe('one (nested)', () => {});
+            describe('two (nested)', () => {});
+            describe('three (nested)', () => {});
+          });
+        `,
+        options: [{ maxNumberOfTopLevelDescribes: 2 }],
+        errors: [{ messageId: 'tooManyDescribes', line: 10 }],
+      },
+      {
+        code: dedent`
+          describe('one', () => {});
+          describe('two', () => {});
+          describe('three', () => {});
+        `,
+        options: [{ maxNumberOfTopLevelDescribes: 1 }],
+        errors: [
+          { messageId: 'tooManyDescribes', line: 2 },
+          { messageId: 'tooManyDescribes', line: 3 },
+        ],
+      },
+    ],
+  },
+);

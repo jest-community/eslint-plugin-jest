@@ -42,6 +42,30 @@
 
 * Drop support for Node 10 and 15
 
+# [24.5.0](https://github.com/jest-community/eslint-plugin-jest/compare/v24.4.3...v24.5.0) (2021-09-29)
+
+
+### Bug Fixes
+
+* **no-deprecated-functions:** remove `process.cwd` from resolve paths ([#889](https://github.com/jest-community/eslint-plugin-jest/issues/889)) ([6940488](https://github.com/jest-community/eslint-plugin-jest/commit/6940488d7b5a47577e2823e6d4385b511c5becf4))
+* **no-identical-title:** always consider `.each` titles unique ([#910](https://github.com/jest-community/eslint-plugin-jest/issues/910)) ([a41a40e](https://github.com/jest-community/eslint-plugin-jest/commit/a41a40eafaf1db444ba940cccd2014cb0dc41be9))
+
+
+### Features
+
+* create `prefer-expect-resolves` rule ([#822](https://github.com/jest-community/eslint-plugin-jest/issues/822)) ([2556020](https://github.com/jest-community/eslint-plugin-jest/commit/2556020a777f9daaf1d362a04e3f990415e82db8))
+* create `prefer-to-be` rule ([#864](https://github.com/jest-community/eslint-plugin-jest/issues/864)) ([3a64aea](https://github.com/jest-community/eslint-plugin-jest/commit/3a64aea5bdc55465f1ef34f1426ae626d6c8a230))
+* **require-top-level-describe:** support enforcing max num of describes ([#912](https://github.com/jest-community/eslint-plugin-jest/issues/912)) ([14a2d13](https://github.com/jest-community/eslint-plugin-jest/commit/14a2d1391c9f6f52509316542f45df35853c9b79))
+* **valid-title:** allow custom matcher messages ([#913](https://github.com/jest-community/eslint-plugin-jest/issues/913)) ([ffc9392](https://github.com/jest-community/eslint-plugin-jest/commit/ffc93921348b0d4a394125f665d2bb09148ea37e))
+
+## [24.4.3](https://github.com/jest-community/eslint-plugin-jest/compare/v24.4.2...v24.4.3) (2021-09-28)
+
+
+### Bug Fixes
+
+* **valid-expect-in-promise:** support `finally` ([#914](https://github.com/jest-community/eslint-plugin-jest/issues/914)) ([9c89855](https://github.com/jest-community/eslint-plugin-jest/commit/9c89855d23534272230afe6d9e665b8e11ef3075))
+* **valid-expect-in-promise:** support additional test functions ([#915](https://github.com/jest-community/eslint-plugin-jest/issues/915)) ([4798005](https://github.com/jest-community/eslint-plugin-jest/commit/47980058d8d1ff86ee69a376c4edd182d462d594))
+
 ## [24.4.2](https://github.com/jest-community/eslint-plugin-jest/compare/v24.4.1...v24.4.2) (2021-09-17)
 
 

@@ -1,5 +1,6 @@
 import {
   AST_NODE_TYPES,
+  JSONSchema,
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
 import {
@@ -36,33 +37,66 @@ const quoteStringValue = (node: StringNode): string =>
     ? `\`${node.quasis[0].value.raw}\``
     : node.raw;
 
+const compileMatcherPattern = (
+  matcherMaybeWithMessage: MatcherAndMessage | string,
+): CompiledMatcherAndMessage => {
+  const [matcher, message] = Array.isArray(matcherMaybeWithMessage)
+    ? matcherMaybeWithMessage
+    : [matcherMaybeWithMessage];
+
+  return [new RegExp(matcher, 'u'), message];
+};
+
 const compileMatcherPatterns = (
-  matchers: Partial<Record<MatcherGroups, string>> | string,
-): Record<MatcherGroups, RegExp | null> & Record<string, RegExp | null> => {
-  if (typeof matchers === 'string') {
-    const matcher = new RegExp(matchers, 'u');
+  matchers:
+    | Partial<Record<MatcherGroups, string | MatcherAndMessage>>
+    | MatcherAndMessage
+    | string,
+): Record<MatcherGroups, CompiledMatcherAndMessage | null> &
+  Record<string, CompiledMatcherAndMessage | null> => {
+  if (typeof matchers === 'string' || Array.isArray(matchers)) {
+    const compiledMatcher = compileMatcherPattern(matchers);
 
     return {
-      describe: matcher,
-      test: matcher,
-      it: matcher,
+      describe: compiledMatcher,
+      test: compiledMatcher,
+      it: compiledMatcher,
     };
   }
 
   return {
-    describe: matchers.describe ? new RegExp(matchers.describe, 'u') : null,
-    test: matchers.test ? new RegExp(matchers.test, 'u') : null,
-    it: matchers.it ? new RegExp(matchers.it, 'u') : null,
+    describe: matchers.describe
+      ? compileMatcherPattern(matchers.describe)
+      : null,
+    test: matchers.test ? compileMatcherPattern(matchers.test) : null,
+    it: matchers.it ? compileMatcherPattern(matchers.it) : null,
   };
 };
+
+type CompiledMatcherAndMessage = [matcher: RegExp, message?: string];
+type MatcherAndMessage = [matcher: string, message?: string];
+
+const MatcherAndMessageSchema: JSONSchema.JSONSchema7 = {
+  type: 'array',
+  items: { type: 'string' },
+  minItems: 1,
+  maxItems: 2,
+  additionalItems: false,
+} as const;
 
 type MatcherGroups = 'describe' | 'test' | 'it';
 
 interface Options {
   ignoreTypeOfDescribeName?: boolean;
   disallowedWords?: string[];
-  mustNotMatch?: Partial<Record<MatcherGroups, string>> | string;
-  mustMatch?: Partial<Record<MatcherGroups, string>> | string;
+  mustNotMatch?:
+    | Partial<Record<MatcherGroups, string | MatcherAndMessage>>
+    | MatcherAndMessage
+    | string;
+  mustMatch?:
+    | Partial<Record<MatcherGroups, string | MatcherAndMessage>>
+    | MatcherAndMessage
+    | string;
 }
 
 type MessageIds =
@@ -72,7 +106,9 @@ type MessageIds =
   | 'accidentalSpace'
   | 'disallowedWord'
   | 'mustNotMatch'
-  | 'mustMatch';
+  | 'mustMatch'
+  | 'mustNotMatchCustom'
+  | 'mustMatchCustom';
 
 export default createRule<[Options], MessageIds>({
   name: __filename,
@@ -90,6 +126,8 @@ export default createRule<[Options], MessageIds>({
       disallowedWord: '"{{ word }}" is not allowed in test titles.',
       mustNotMatch: '{{ jestFunctionName }} should not match {{ pattern }}',
       mustMatch: '{{ jestFunctionName }} should match {{ pattern }}',
+      mustNotMatchCustom: '{{ message }}',
+      mustMatchCustom: '{{ message }}',
     },
     type: 'suggestion',
     schema: [
@@ -104,31 +142,18 @@ export default createRule<[Options], MessageIds>({
             type: 'array',
             items: { type: 'string' },
           },
-          mustNotMatch: {
+        },
+        patternProperties: {
+          [/^must(?:Not)?Match$/u.source]: {
             oneOf: [
               { type: 'string' },
+              MatcherAndMessageSchema,
               {
                 type: 'object',
-                properties: {
-                  describe: { type: 'string' },
-                  test: { type: 'string' },
-                  it: { type: 'string' },
+                propertyNames: { enum: ['describe', 'test', 'it'] },
+                additionalProperties: {
+                  oneOf: [{ type: 'string' }, MatcherAndMessageSchema],
                 },
-                additionalProperties: false,
-              },
-            ],
-          },
-          mustMatch: {
-            oneOf: [
-              { type: 'string' },
-              {
-                type: 'object',
-                properties: {
-                  describe: { type: 'string' },
-                  test: { type: 'string' },
-                  it: { type: 'string' },
-                },
-                additionalProperties: false,
               },
             ],
           },
@@ -254,28 +279,40 @@ export default createRule<[Options], MessageIds>({
 
         const [jestFunctionName] = nodeName.split('.');
 
-        const mustNotMatchPattern = mustNotMatchPatterns[jestFunctionName];
+        const [mustNotMatchPattern, mustNotMatchMessage] =
+          mustNotMatchPatterns[jestFunctionName] ?? [];
 
         if (mustNotMatchPattern) {
           if (mustNotMatchPattern.test(title)) {
             context.report({
-              messageId: 'mustNotMatch',
+              messageId: mustNotMatchMessage
+                ? 'mustNotMatchCustom'
+                : 'mustNotMatch',
               node: argument,
-              data: { jestFunctionName, pattern: mustNotMatchPattern },
+              data: {
+                jestFunctionName,
+                pattern: mustNotMatchPattern,
+                message: mustNotMatchMessage,
+              },
             });
 
             return;
           }
         }
 
-        const mustMatchPattern = mustMatchPatterns[jestFunctionName];
+        const [mustMatchPattern, mustMatchMessage] =
+          mustMatchPatterns[jestFunctionName] ?? [];
 
         if (mustMatchPattern) {
           if (!mustMatchPattern.test(title)) {
             context.report({
-              messageId: 'mustMatch',
+              messageId: mustMatchMessage ? 'mustMatchCustom' : 'mustMatch',
               node: argument,
-              data: { jestFunctionName, pattern: mustMatchPattern },
+              data: {
+                jestFunctionName,
+                pattern: mustMatchPattern,
+                message: mustMatchMessage,
+              },
             });
 
             return;

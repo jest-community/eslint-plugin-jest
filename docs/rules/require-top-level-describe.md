@@ -47,6 +47,34 @@ describe('test suite', () => {
 });
 ```
 
+You can also enforce a limit on the number of describes allowed at the top-level
+using the `maxNumberOfTopLevelDescribes` option:
+
+```json
+{
+  "jest/require-top-level-describe": [
+    "error",
+    {
+      "maxNumberOfTopLevelDescribes": 2
+    }
+  ]
+}
+```
+
+Examples of **incorrect** code with the above config:
+
+```js
+describe('test suite', () => {
+  it('test', () => {});
+});
+
+describe('test suite', () => {});
+
+describe('test suite', () => {});
+```
+
+This option defaults to `Infinity`, allowing any number of top-level describes.
+
 ## When Not To Use It
 
 Don't use this rule on non-jest test files.

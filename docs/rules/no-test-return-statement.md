@@ -7,8 +7,7 @@ If you are returning Promises then you should update the test to use
 
 ## Rule details
 
-This rule triggers a warning if you use a return statement inside of a test
-body.
+This rule triggers a warning if you use a return statement inside a test body.
 
 ```js
 /*eslint jest/no-test-return-statement: "error"*/

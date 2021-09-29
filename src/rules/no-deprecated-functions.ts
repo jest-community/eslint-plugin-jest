@@ -1,64 +1,26 @@
-import { JSONSchemaForNPMPackageJsonFiles } from '@schemastore/package';
 import {
   AST_NODE_TYPES,
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
+import { JestVersion, detectJestVersion } from './detectJestVersion';
 import { createRule, getNodeName } from './utils';
 
 interface ContextSettings {
   jest?: EslintPluginJestSettings;
 }
 
-export type JestVersion =
-  | 14
-  | 15
-  | 16
-  | 17
-  | 18
-  | 19
-  | 20
-  | 21
-  | 22
-  | 23
-  | 24
-  | 25
-  | 26
-  | 27
-  | number;
-
 interface EslintPluginJestSettings {
-  version: JestVersion;
+  version: JestVersion | string;
 }
 
-let cachedJestVersion: JestVersion | null = null;
-
-/** @internal */
-export const _clearCachedJestVersion = () => (cachedJestVersion = null);
-
-const detectJestVersion = (): JestVersion => {
-  if (cachedJestVersion) {
-    return cachedJestVersion;
+const parseJestVersion = (rawVersion: number | string): JestVersion => {
+  if (typeof rawVersion === 'number') {
+    return rawVersion;
   }
 
-  try {
-    const jestPath = require.resolve('jest/package.json', {
-      paths: [process.cwd()],
-    });
+  const [majorVersion] = rawVersion.split('.');
 
-    const jestPackageJson =
-      // eslint-disable-next-line @typescript-eslint/no-require-imports
-      require(jestPath) as JSONSchemaForNPMPackageJsonFiles;
-
-    if (jestPackageJson.version) {
-      const [majorVersion] = jestPackageJson.version.split('.');
-
-      return (cachedJestVersion = parseInt(majorVersion, 10));
-    }
-  } catch {}
-
-  throw new Error(
-    'Unable to detect Jest version - please ensure jest package is installed, or otherwise set version explicitly',
-  );
+  return parseInt(majorVersion, 10);
 };
 
 export default createRule({
@@ -79,9 +41,10 @@ export default createRule({
   },
   defaultOptions: [],
   create(context) {
-    const jestVersion =
+    const jestVersion = parseJestVersion(
       (context.settings as ContextSettings)?.jest?.version ||
-      detectJestVersion();
+        detectJestVersion(),
+    );
 
     const deprecations: Record<string, string> = {
       ...(jestVersion >= 15 && {

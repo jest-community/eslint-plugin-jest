@@ -3,7 +3,7 @@
 When calling asynchronous code in hooks and tests, `jest` needs to know when the
 asynchronous work is complete to progress the current run.
 
-Originally the most common pattern to archive this was to use callbacks:
+Originally the most common pattern to achieve this was to use callbacks:
 
 ```js
 test('the data is peanut butter', done => {
@@ -20,11 +20,11 @@ test('the data is peanut butter', done => {
 });
 ```
 
-This can be very error prone however, as it requires careful understanding of
+This can be very error-prone however, as it requires careful understanding of
 how assertions work in tests or otherwise tests won't behave as expected.
 
 For example, if the `try/catch` was left out of the above code, the test would
-timeout rather than fail. Even with the `try/catch`, forgetting to pass the
+time out rather than fail. Even with the `try/catch`, forgetting to pass the
 caught error to `done` will result in `jest` believing the test has passed.
 
 A more straightforward way to handle asynchronous code is to use Promises:

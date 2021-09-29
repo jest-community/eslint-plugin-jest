@@ -124,12 +124,12 @@ ruleTester.run('no-identical-title', rule, {
     dedent`
       describe.each\`
         description
-        ${'b'}
+        $\{'b'}
       \`('$description', () => {});
 
       describe.each\`
         description
-        ${'a'}
+        $\{'a'}
       \`('$description', () => {});
     `,
     dedent`
@@ -140,6 +140,16 @@ ruleTester.run('no-identical-title', rule, {
 
         describe('nested', () => {});
       });
+    `,
+    dedent`
+      describe.each\`\`('my title', value => {});
+      describe.each\`\`('my title', value => {});
+      describe.each([])('my title', value => {});
+      describe.each([])('my title', value => {});
+    `,
+    dedent`
+      describe.each([])('when the value is %s', value => {});
+      describe.each([])('when the value is %s', value => {});
     `,
   ],
   invalid: [
