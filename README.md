@@ -182,6 +182,7 @@ installations requiring long-term consistency.
 | [prefer-hooks-on-top](docs/rules/prefer-hooks-on-top.md)                     | Suggest having hooks before any test cases                      |                  |              |
 | [prefer-spy-on](docs/rules/prefer-spy-on.md)                                 | Suggest using `jest.spyOn()`                                    |                  | ![fixable][] |
 | [prefer-strict-equal](docs/rules/prefer-strict-equal.md)                     | Suggest using `toStrictEqual()`                                 |                  | ![suggest][] |
+| [prefer-to-be](docs/rules/prefer-to-be.md)                                   | Suggest using `toBe()` for primitive literals                   |                  | ![fixable][] |
 | [prefer-to-be-null](docs/rules/prefer-to-be-null.md)                         | Suggest using `toBeNull()`                                      | ![style][]       | ![fixable][] |
 | [prefer-to-be-undefined](docs/rules/prefer-to-be-undefined.md)               | Suggest using `toBeUndefined()`                                 | ![style][]       | ![fixable][] |
 | [prefer-to-contain](docs/rules/prefer-to-contain.md)                         | Suggest using `toContain()`                                     | ![style][]       | ![fixable][] |
