@@ -155,7 +155,7 @@ installations requiring long-term consistency.
 | [consistent-test-it](docs/rules/consistent-test-it.md)                       | Have control over `test` and `it` usages                            |                  | ![fixable][] |
 | [expect-expect](docs/rules/expect-expect.md)                                 | Enforce assertion to be made in a test body                         | ![recommended][] |              |
 | [lowercase-name](docs/rules/lowercase-name.md)                               | Enforce lowercase test names                                        |                  | ![fixable][] |
-| [max-nested-describe](docs/rules/max-nested-describe.md)                     | Enforces a maximum depth to nested describe calls               |                  |              |
+| [max-nested-describe](docs/rules/max-nested-describe.md)                     | Enforces a maximum depth to nested describe calls                   |                  |              |
 | [no-alias-methods](docs/rules/no-alias-methods.md)                           | Disallow alias methods                                              | ![style][]       | ![fixable][] |
 | [no-commented-out-tests](docs/rules/no-commented-out-tests.md)               | Disallow commented out tests                                        | ![recommended][] |              |
 | [no-conditional-expect](docs/rules/no-conditional-expect.md)                 | Prevent calling `expect` conditionally                              | ![recommended][] |              |
@@ -183,7 +183,7 @@ installations requiring long-term consistency.
 | [prefer-hooks-on-top](docs/rules/prefer-hooks-on-top.md)                     | Suggest having hooks before any test cases                          |                  |              |
 | [prefer-spy-on](docs/rules/prefer-spy-on.md)                                 | Suggest using `jest.spyOn()`                                        |                  | ![fixable][] |
 | [prefer-strict-equal](docs/rules/prefer-strict-equal.md)                     | Suggest using `toStrictEqual()`                                     |                  | ![suggest][] |
-| [prefer-to-be](docs/rules/prefer-to-be.md)                                   | Suggest using `toBe()` for primitive literals                   |                  | ![fixable][] |
+| [prefer-to-be](docs/rules/prefer-to-be.md)                                   | Suggest using `toBe()` for primitive literals                       |                  | ![fixable][] |
 | [prefer-to-be-null](docs/rules/prefer-to-be-null.md)                         | Suggest using `toBeNull()`                                          | ![style][]       | ![fixable][] |
 | [prefer-to-be-undefined](docs/rules/prefer-to-be-undefined.md)               | Suggest using `toBeUndefined()`                                     | ![style][]       | ![fixable][] |
 | [prefer-to-contain](docs/rules/prefer-to-contain.md)                         | Suggest using `toContain()`                                         | ![style][]       | ![fixable][] |
