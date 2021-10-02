@@ -192,6 +192,26 @@ ruleTester.run('valid-expect-in-promise', rule, {
     dedent`
       it('it1', () => {
         return somePromise.then(() => {
+          return value;
+        })
+        .then(value => {
+          expect(someThing).toEqual(value);
+        })
+      });
+    `,
+    dedent`
+      it('it1', () => {
+        return somePromise.then(() => {
+          expect(someThing).toEqual(true);
+        })
+        .then(() => {
+          console.log('this is silly');
+        })
+      });
+    `,
+    dedent`
+      it('it1', () => {
+        return somePromise.then(() => {
           expect(someThing).toEqual(true);
         })
         .catch(() => {
@@ -480,6 +500,108 @@ ruleTester.run('valid-expect-in-promise', rule, {
         });
       `,
       errors: [{ column: 3, endColumn: 5, messageId: 'returnPromise' }],
+    },
+    {
+      code: dedent`
+        it('is a test', () => {
+          somePromise
+            .then(() => {})
+            .then(() => expect(someThing).toEqual(value))
+        });
+      `,
+      errors: [{ column: 3, endColumn: 50, messageId: 'returnPromise' }],
+    },
+    {
+      code: dedent`
+        it('is a test', () => {
+          somePromise
+            .then(() => expect(someThing).toEqual(value))
+            .then(() => {})
+        });
+      `,
+      errors: [{ column: 3, endColumn: 20, messageId: 'returnPromise' }],
+    },
+    {
+      code: dedent`
+        it('is a test', () => {
+          somePromise.then(() => {
+            return value;
+          })
+          .then(value => {
+            expect(someThing).toEqual(value);
+          })
+        });
+      `,
+      errors: [{ column: 3, endColumn: 5, messageId: 'returnPromise' }],
+    },
+    {
+      code: dedent`
+        it('is a test', () => {
+          somePromise.then(() => {
+            expect(someThing).toEqual(true);
+          })
+          .then(() => {
+            console.log('this is silly');
+          })
+        });
+      `,
+      errors: [{ column: 3, endColumn: 5, messageId: 'returnPromise' }],
+    },
+    {
+      code: dedent`
+        it('is a test', () => {
+          somePromise.then(() => {
+            // return value;
+          })
+          .then(value => {
+            expect(someThing).toEqual(value);
+          })
+        });
+      `,
+      errors: [{ column: 3, endColumn: 5, messageId: 'returnPromise' }],
+    },
+    {
+      code: dedent`
+        it('is a test', () => {
+          somePromise.then(() => {
+            return value;
+          })
+          .then(value => {
+            expect(someThing).toEqual(value);
+          })
+
+          return anotherPromise.then(() => expect(x).toBe(y));
+        });
+      `,
+      errors: [{ column: 3, endColumn: 5, messageId: 'returnPromise' }],
+    },
+    {
+      code: dedent`
+        it('is a test', () => {
+          somePromise
+            .then(() => 1)
+            .then(x => x + 1)
+            .catch(() => -1)
+            .then(v => expect(v).toBe(2));
+
+          return anotherPromise.then(() => expect(x).toBe(y));
+        });
+      `,
+      errors: [{ column: 3, endColumn: 35, messageId: 'returnPromise' }],
+    },
+    {
+      code: dedent`
+        it('is a test', () => {
+          somePromise
+            .then(() => 1)
+            .then(v => expect(v).toBe(2))
+            .then(x => x + 1)
+            .catch(() => -1);
+
+          return anotherPromise.then(() => expect(x).toBe(y));
+        });
+      `,
+      errors: [{ column: 3, endColumn: 22, messageId: 'returnPromise' }],
     },
     {
       code: dedent`

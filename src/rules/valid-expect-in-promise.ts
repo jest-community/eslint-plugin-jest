@@ -134,8 +134,7 @@ export default createRule<unknown[], MessageIds>({
   defaultOptions: [],
   create(context) {
     let inTestCaseWithDoneCallback = false;
-    let inPromiseChain = false;
-    let hasExpectCall = false;
+    const chains: boolean[] = [];
 
     return {
       CallExpression(node) {
@@ -146,17 +145,17 @@ export default createRule<unknown[], MessageIds>({
         }
 
         if (isPromiseChainCall(node)) {
-          inPromiseChain = true;
+          chains.unshift(false);
 
           return;
         }
 
-        if (!inPromiseChain) {
+        if (chains.length === 0) {
           return;
         }
 
         if (isExpectCall(node)) {
-          hasExpectCall = true;
+          chains[0] = true;
 
           return;
         }
@@ -171,9 +170,7 @@ export default createRule<unknown[], MessageIds>({
         }
 
         if (isPromiseChainCall(node)) {
-          inPromiseChain = false;
-
-          if (hasExpectCall) {
+          if (chains.shift()) {
             const topNode = findTopOfBodyNode(node);
 
             if (
