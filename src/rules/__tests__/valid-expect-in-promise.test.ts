@@ -376,6 +376,47 @@ ruleTester.run('valid-expect-in-promise', rule, {
         expect(text).toBe('text');
       });
     `,
+    dedent`
+      test('promise test', async function () {
+        let somePromise = getPromise().then((data) => {
+          expect(data).toEqual('foo');
+        });
+
+        await somePromise;
+
+        somePromise = getPromise().then((data) => {
+          expect(data).toEqual('foo');
+        }); 
+
+        await somePromise;
+      });
+    `,
+    dedent`
+      test('promise test', async function () {
+        let somePromise = getPromise().then((data) => {
+          expect(data).toEqual('foo');
+        });
+
+        await somePromise;
+
+        somePromise = getPromise().then((data) => {
+          expect(data).toEqual('foo');
+        }); 
+
+        return somePromise;
+      });
+    `,
+    dedent`
+      test('promise test', async function () {
+        let somePromise = getPromise().then((data) => {
+          expect(data).toEqual('foo');
+        });
+
+        {}
+
+        await somePromise;
+      });
+    `,
   ],
   invalid: [
     {
@@ -715,6 +756,52 @@ ruleTester.run('valid-expect-in-promise', rule, {
         });
       `,
       errors: [{ column: 3, endColumn: 6, messageId: 'returnPromise' }],
+    },
+    {
+      code: dedent`
+        test('promise test', async function () {
+          let somePromise = getPromise().then((data) => {
+            expect(data).toEqual('foo');
+          });
+
+          somePromise = null;
+
+          await somePromise;
+        });
+      `,
+      errors: [{ column: 3, endColumn: 6, messageId: 'returnPromise' }],
+    },
+    {
+      code: dedent`
+        test('promise test', async function () {
+          let somePromise = getPromise().then((data) => {
+            expect(data).toEqual('foo');
+          });
+
+          somePromise = getPromise().then((data) => {
+            expect(data).toEqual('foo');
+          }); 
+
+          await somePromise;
+        });
+      `,
+      errors: [
+        { column: 3, endColumn: 6, line: 2, messageId: 'returnPromise' },
+      ],
+    },
+    {
+      code: dedent`
+        test('promise test', async function () {
+          let somePromise = getPromise().then((data) => {
+            expect(data).toEqual('foo');
+          });
+  
+          ({ somePromise } = {})
+        });
+      `,
+      errors: [
+        { column: 3, endColumn: 6, line: 2, messageId: 'returnPromise' },
+      ],
     },
   ],
 });

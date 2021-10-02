@@ -121,34 +121,23 @@ const isTestCaseCallWithCallbackArg = (
   return false;
 };
 
-const getVariableName = (
-  variable: TSESTree.VariableDeclarator,
-): string | null => {
-  if (isIdentifier(variable.id)) {
-    return variable.id.name;
-  }
-
-  return null;
-};
-
-const isVariableAwaitedOrReturned = (
-  variables: TSESTree.VariableDeclaration & { parent: TSESTree.BlockStatement },
+/**
+ * Attempts to determine if the runtime value represented by the given `identifier`
+ * is `await`ed or `return`ed within the given `body` of statements
+ */
+const isValueAwaitedOrReturned = (
+  identifier: TSESTree.Identifier,
+  body: TSESTree.Statement[],
 ): boolean => {
-  const { body } = variables.parent;
-  const [variable] = variables.declarations;
-  const name = getVariableName(variable);
-
-  if (variable.init?.type === AST_NODE_TYPES.AwaitExpression) {
-    return true;
-  }
-
-  // null means that the variable is destructured, which is pretty much impossible
-  // for us to track, so we return true to bailout gracefully
-  if (name === null) {
-    return true;
-  }
+  const { name } = identifier;
 
   for (const node of body) {
+    // skip all nodes that are before this identifier, because they'd probably
+    // be affecting a different runtime value (e.g. due to reassignment)
+    if (node.range[0] <= identifier.range[0]) {
+      continue;
+    }
+
     if (
       node.type === AST_NODE_TYPES.ReturnStatement &&
       node.argument?.type === AST_NODE_TYPES.Identifier
@@ -156,16 +145,42 @@ const isVariableAwaitedOrReturned = (
       return isIdentifier(node.argument, name);
     }
 
-    if (
-      node.type === AST_NODE_TYPES.ExpressionStatement &&
-      node.expression.type === AST_NODE_TYPES.AwaitExpression &&
-      node.expression.argument?.type === AST_NODE_TYPES.Identifier
-    ) {
-      return isIdentifier(node.expression.argument, name);
+    if (node.type === AST_NODE_TYPES.ExpressionStatement) {
+      if (
+        node.expression.type === AST_NODE_TYPES.AwaitExpression &&
+        node.expression.argument?.type === AST_NODE_TYPES.Identifier
+      ) {
+        return isIdentifier(node.expression.argument, name);
+      }
+
+      // (re)assignment changes the runtime value, so if we've not found an
+      // await or return already we act as if we've reached the end of the body
+      if (node.expression.type === AST_NODE_TYPES.AssignmentExpression) {
+        break;
+      }
     }
   }
 
   return false;
+};
+
+const isVariableAwaitedOrReturned = (
+  variables: TSESTree.VariableDeclaration & { parent: TSESTree.BlockStatement },
+): boolean => {
+  const { body } = variables.parent;
+  const [variable] = variables.declarations;
+
+  if (variable.init?.type === AST_NODE_TYPES.AwaitExpression) {
+    return true;
+  }
+
+  // it's pretty much impossible for us to track destructuring assignments,
+  // so we return true to bailout gracefully
+  if (!isIdentifier(variable.id)) {
+    return true;
+  }
+
+  return isValueAwaitedOrReturned(variable.id, body);
 };
 
 export default createRule<unknown[], MessageIds>({
@@ -227,7 +242,7 @@ export default createRule<unknown[], MessageIds>({
 
         const topNode = findStartingStatementInTestBody(node);
 
-        if (!topNode) {
+        if (!topNode || topNode.type === AST_NODE_TYPES.ReturnStatement) {
           return;
         }
 
@@ -238,12 +253,21 @@ export default createRule<unknown[], MessageIds>({
           return;
         }
 
-        if (
-          topNode.type === AST_NODE_TYPES.ReturnStatement ||
-          (topNode.type === AST_NODE_TYPES.ExpressionStatement &&
-            topNode.expression.type === AST_NODE_TYPES.AwaitExpression)
-        ) {
-          return;
+        if (topNode.type === AST_NODE_TYPES.ExpressionStatement) {
+          if (topNode.expression.type === AST_NODE_TYPES.AwaitExpression) {
+            return;
+          }
+
+          if (
+            topNode.expression.type === AST_NODE_TYPES.AssignmentExpression &&
+            topNode.expression.left.type === AST_NODE_TYPES.Identifier &&
+            isValueAwaitedOrReturned(
+              topNode.expression.left,
+              topNode.parent.body,
+            )
+          ) {
+            return;
+          }
         }
 
         reportReturnRequired(context, topNode);
