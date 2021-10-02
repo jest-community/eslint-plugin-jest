@@ -217,32 +217,32 @@ export default createRule<unknown[], MessageIds>({
           return;
         }
 
-        if (isPromiseChainCall(node)) {
-          if (chains.shift()) {
-            const topNode = findStartingStatementInTestBody(node);
-
-            if (!topNode) {
-              return;
-            }
-
-            if (
-              topNode.type === AST_NODE_TYPES.VariableDeclaration &&
-              isVariableAwaitedOrReturned(topNode)
-            ) {
-              return;
-            }
-
-            if (
-              topNode.type === AST_NODE_TYPES.ReturnStatement ||
-              (topNode.type === AST_NODE_TYPES.ExpressionStatement &&
-                topNode.expression.type === AST_NODE_TYPES.AwaitExpression)
-            ) {
-              return;
-            }
-
-            reportReturnRequired(context, topNode);
-          }
+        if (!isPromiseChainCall(node) || !chains.shift()) {
+          return;
         }
+
+        const topNode = findStartingStatementInTestBody(node);
+
+        if (!topNode) {
+          return;
+        }
+
+        if (
+          topNode.type === AST_NODE_TYPES.VariableDeclaration &&
+          isVariableAwaitedOrReturned(topNode)
+        ) {
+          return;
+        }
+
+        if (
+          topNode.type === AST_NODE_TYPES.ReturnStatement ||
+          (topNode.type === AST_NODE_TYPES.ExpressionStatement &&
+            topNode.expression.type === AST_NODE_TYPES.AwaitExpression)
+        ) {
+          return;
+        }
+
+        reportReturnRequired(context, topNode);
       },
     };
   },
