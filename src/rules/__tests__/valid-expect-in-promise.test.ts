@@ -219,26 +219,42 @@ ruleTester.run('valid-expect-in-promise', rule, {
         })
       });
     `,
-    // todo: as variable
-    // dedent`
-    //   test('later return', () => {
-    //     const promise = something().then(value => {
-    //       expect(value).toBe('red');
-    //     });
-    //
-    //     return promise;
-    //   });
-    // `,
-    // todo: as variable
-    // dedent`
-    //   test.only('later return', () => {
-    //     const promise = something().then(value => {
-    //       expect(value).toBe('red');
-    //     });
-    //
-    //     return promise;
-    //   });
-    // `,
+    dedent`
+      test('later return', () => {
+        const promise = something().then(value => {
+          expect(value).toBe('red');
+        });
+
+        return promise;
+      });
+    `,
+    dedent`
+      test('later return', async () => {
+        const promise = something().then(value => {
+          expect(value).toBe('red');
+        });
+
+        await promise;
+      });
+    `,
+    dedent`
+      test.only('later return', () => {
+        const promise = something().then(value => {
+          expect(value).toBe('red');
+        });
+
+        return promise;
+      });
+    `,
+    dedent`
+      test('that we bailout if destructuring is used', () => {
+        const [promise] = [
+          something().then(value => {
+            expect(value).toBe('red');
+          })
+        ];
+      });
+    `,
     dedent`
       it('shorthand arrow', () =>
         something().then(value => {
@@ -248,37 +264,14 @@ ruleTester.run('valid-expect-in-promise', rule, {
         })
       );
     `,
-    // todo: as variable
-    // dedent`
-    //   it('promise test', () => {
-    //     const somePromise = getThatPromise();
-    //     somePromise.then((data) => {
-    //       expect(data).toEqual('foo');
-    //     });
-    //     expect(somePromise).toBeDefined();
-    //     return somePromise;
-    //   });
-    // `,
-    // todo: as variable
-    // dedent`
-    //   test('promise test', function () {
-    //     let somePromise = getThatPromise();
-    //     somePromise.then((data) => {
-    //       expect(data).toEqual('foo');
-    //     });
-    //     expect(somePromise).toBeDefined();
-    //     return somePromise;
-    //   });
-    // `,
-    // todo: as variable
-    // dedent`
-    //   it('crawls for files based on patterns', () => {
-    //     const promise = nodeCrawl({}).then(data => {
-    //       expect(childProcess.spawn).lastCalledWith('find');
-    //     });
-    //     return promise;
-    //   });
-    // `,
+    dedent`
+      it('crawls for files based on patterns', () => {
+        const promise = nodeCrawl({}).then(data => {
+          expect(childProcess.spawn).lastCalledWith('find');
+        });
+        return promise;
+      });
+    `,
     dedent`
       it(
         'test function',
@@ -646,6 +639,44 @@ ruleTester.run('valid-expect-in-promise', rule, {
         });
       `,
       errors: [{ column: 3, endColumn: 5, messageId: 'returnPromise' }],
+    },
+    {
+      code: dedent`
+        test('later return', async () => {
+          const promise = something().then(value => {
+            expect(value).toBe('red');
+          });
+
+          promise;
+        });
+      `,
+      errors: [{ column: 3, endColumn: 6, messageId: 'returnPromise' }],
+    },
+    {
+      code: dedent`
+        it('promise test', () => {
+          const somePromise = getThatPromise();
+          somePromise.then((data) => {
+            expect(data).toEqual('foo');
+          });
+          expect(somePromise).toBeDefined();
+          return somePromise;
+        });
+      `,
+      errors: [{ column: 3, endColumn: 6, messageId: 'returnPromise' }],
+    },
+    {
+      code: dedent`
+        test('promise test', function () {
+          let somePromise = getThatPromise();
+          somePromise.then((data) => {
+            expect(data).toEqual('foo');
+          });
+          expect(somePromise).toBeDefined();
+          return somePromise;
+        });
+      `,
+      errors: [{ column: 3, endColumn: 6, messageId: 'returnPromise' }],
     },
   ],
 });

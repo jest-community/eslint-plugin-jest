@@ -10,6 +10,7 @@ import {
   getNodeName,
   isExpectCall,
   isFunction,
+  isIdentifier,
   isSupportedAccessor,
   isTestCaseCall,
 } from './utils';
@@ -60,9 +61,13 @@ const reportReturnRequired = (context: RuleContext, node: TSESTree.Node) => {
   });
 };
 
-const findTopOfBodyNode = (
+type StartingStatementNode = TSESTree.Statement & {
+  parent: TSESTree.BlockStatement;
+};
+
+const findStartingStatementInTestBody = (
   node: PromiseChainCallExpression,
-): TSESTree.Statement | null => {
+): StartingStatementNode | null => {
   let { parent } = node;
 
   while (parent) {
@@ -71,7 +76,7 @@ const findTopOfBodyNode = (
         parent.parent.parent?.parent?.type === AST_NODE_TYPES.CallExpression &&
         isTestCaseCall(parent.parent.parent?.parent)
       ) {
-        return parent as TSESTree.Statement;
+        return parent as StartingStatementNode;
       }
     }
 
@@ -116,6 +121,49 @@ const isTestCaseCallWithCallbackArg = (
   return false;
 };
 
+const getVariableName = (
+  variable: TSESTree.VariableDeclarator,
+): string | null => {
+  if (isIdentifier(variable.id)) {
+    return variable.id.name;
+  }
+
+  return null;
+};
+
+const isVariableAwaitedOrReturned = (
+  variables: TSESTree.VariableDeclaration & { parent: TSESTree.BlockStatement },
+): boolean => {
+  const { body } = variables.parent;
+  const [variable] = variables.declarations;
+  const name = getVariableName(variable);
+
+  // null means that the variable is destructured, which is pretty much impossible
+  // for us to track, so we return true to bailout gracefully
+  if (name === null) {
+    return true;
+  }
+
+  for (const node of body) {
+    if (
+      node.type === AST_NODE_TYPES.ReturnStatement &&
+      node.argument?.type === AST_NODE_TYPES.Identifier
+    ) {
+      return isIdentifier(node.argument, name);
+    }
+
+    if (
+      node.type === AST_NODE_TYPES.ExpressionStatement &&
+      node.expression.type === AST_NODE_TYPES.AwaitExpression &&
+      node.expression.argument?.type === AST_NODE_TYPES.Identifier
+    ) {
+      return isIdentifier(node.expression.argument, name);
+    }
+  }
+
+  return false;
+};
+
 export default createRule<unknown[], MessageIds>({
   name: __filename,
   meta: {
@@ -137,7 +185,7 @@ export default createRule<unknown[], MessageIds>({
     const chains: boolean[] = [];
 
     return {
-      CallExpression(node) {
+      CallExpression(node: TSESTree.CallExpression) {
         if (isTestCaseCallWithCallbackArg(node)) {
           inTestCaseWithDoneCallback = true;
 
@@ -171,10 +219,20 @@ export default createRule<unknown[], MessageIds>({
 
         if (isPromiseChainCall(node)) {
           if (chains.shift()) {
-            const topNode = findTopOfBodyNode(node);
+            const topNode = findStartingStatementInTestBody(node);
+
+            if (!topNode) {
+              return;
+            }
 
             if (
-              !topNode ||
+              topNode.type === AST_NODE_TYPES.VariableDeclaration &&
+              isVariableAwaitedOrReturned(topNode)
+            ) {
+              return;
+            }
+
+            if (
               topNode.type === AST_NODE_TYPES.ReturnStatement ||
               (topNode.type === AST_NODE_TYPES.ExpressionStatement &&
                 topNode.expression.type === AST_NODE_TYPES.AwaitExpression)
