@@ -273,6 +273,44 @@ ruleTester.run('valid-expect-in-promise', rule, {
       });
     `,
     dedent`
+      it('is a test', async () => {
+        const value = await somePromise().then(response => {
+          expect(response).toHaveProperty('data');
+
+          return response.data;
+        });
+
+        expect(value).toBe('hello world');
+      });
+    `,
+    dedent`
+      it('is a test', async () => {
+        return await somePromise().then(response => {
+          expect(response).toHaveProperty('data');
+
+          return response.data;
+        });
+      });
+    `,
+    dedent`
+      it('is a test', async () => {
+        return somePromise().then(response => {
+          expect(response).toHaveProperty('data');
+
+          return response.data;
+        });
+      });
+    `,
+    dedent`
+      it('is a test', async () => {
+        await somePromise().then(response => {
+          expect(response).toHaveProperty('data');
+
+          return response.data;
+        });
+      });
+    `,
+    dedent`
       it(
         'test function',
         () => {

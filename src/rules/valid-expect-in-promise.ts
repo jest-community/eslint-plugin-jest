@@ -138,6 +138,10 @@ const isVariableAwaitedOrReturned = (
   const [variable] = variables.declarations;
   const name = getVariableName(variable);
 
+  if (variable.init?.type === AST_NODE_TYPES.AwaitExpression) {
+    return true;
+  }
+
   // null means that the variable is destructured, which is pretty much impossible
   // for us to track, so we return true to bailout gracefully
   if (name === null) {
