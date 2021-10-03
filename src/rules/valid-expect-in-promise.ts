@@ -120,11 +120,15 @@ const isValueAwaitedOrReturned = (
       continue;
     }
 
-    if (
-      node.type === AST_NODE_TYPES.ReturnStatement &&
-      node.argument?.type === AST_NODE_TYPES.Identifier
-    ) {
-      return isIdentifier(node.argument, name);
+    if (node.type === AST_NODE_TYPES.ReturnStatement) {
+      if (node.argument === null) {
+        return false;
+      }
+
+      return (
+        node.argument.type === AST_NODE_TYPES.Identifier &&
+        isIdentifier(node.argument, name)
+      );
     }
 
     if (node.type === AST_NODE_TYPES.ExpressionStatement) {

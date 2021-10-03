@@ -963,6 +963,38 @@ ruleTester.run('valid-expect-in-promise', rule, {
         test('later return', async () => {
           const promise = something().then(value => {
             expect(value).toBe('red');
+          });
+
+          return;
+
+          await promise;
+        });
+      `,
+      errors: [
+        { column: 9, endColumn: 5, messageId: 'expectInFloatingPromise' },
+      ],
+    },
+    {
+      code: dedent`
+        test('later return', async () => {
+          const promise = something().then(value => {
+            expect(value).toBe('red');
+          });
+
+          return 1;
+
+          await promise;
+        });
+      `,
+      errors: [
+        { column: 9, endColumn: 5, messageId: 'expectInFloatingPromise' },
+      ],
+    },
+    {
+      code: dedent`
+        test('later return', async () => {
+          const promise = something().then(value => {
+            expect(value).toBe('red');
           }), x = 1;
         });
       `,
