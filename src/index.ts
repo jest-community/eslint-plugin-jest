@@ -73,6 +73,7 @@ export = {
       plugins: ['jest'],
       rules: {
         'jest/no-alias-methods': 'warn',
+        'jest/prefer-to-be': 'error',
         'jest/prefer-to-be-null': 'error',
         'jest/prefer-to-be-undefined': 'error',
         'jest/prefer-to-contain': 'error',
