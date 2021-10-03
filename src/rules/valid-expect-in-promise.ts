@@ -115,16 +115,26 @@ const isPromiseMethodThatUsesValue = (
 
   if (
     node.argument.type === AST_NODE_TYPES.CallExpression &&
-    node.argument.arguments.length > 0 &&
-    getNodeName(node.argument) === 'Promise.all'
+    node.argument.arguments.length > 0
   ) {
-    const [firstArg] = node.argument.arguments;
+    const nodeName = getNodeName(node.argument);
+
+    if (nodeName === 'Promise.all') {
+      const [firstArg] = node.argument.arguments;
+
+      if (
+        firstArg.type === AST_NODE_TYPES.ArrayExpression &&
+        firstArg.elements.some(nod => isIdentifier(nod, name))
+      ) {
+        return true;
+      }
+    }
 
     if (
-      firstArg.type === AST_NODE_TYPES.ArrayExpression &&
-      firstArg.elements.some(nod => isIdentifier(nod, name))
+      ['Promise.resolve', 'Promise.reject'].includes(nodeName as string) &&
+      node.argument.arguments.length === 1
     ) {
-      return true;
+      return isIdentifier(node.argument.arguments[0], name);
     }
   }
 

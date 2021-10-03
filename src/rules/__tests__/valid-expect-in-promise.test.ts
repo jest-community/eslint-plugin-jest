@@ -605,6 +605,42 @@ ruleTester.run('valid-expect-in-promise', rule, {
         return Promise.all([somePromise]);
       });
     `,
+    dedent`
+      test('promise test', async function () {
+        const somePromise = getPromise().then((data) => {
+          expect(data).toEqual('foo');
+        });
+
+        return Promise.resolve(somePromise);
+      });
+    `,
+    dedent`
+      test('promise test', async function () {
+        const somePromise = getPromise().then((data) => {
+          expect(data).toEqual('foo');
+        });
+
+        return Promise.reject(somePromise);
+      });
+    `,
+    dedent`
+      test('promise test', async function () {
+        const somePromise = getPromise().then((data) => {
+          expect(data).toEqual('foo');
+        });
+
+        await Promise.resolve(somePromise);
+      });
+    `,
+    dedent`
+      test('promise test', async function () {
+        const somePromise = getPromise().then((data) => {
+          expect(data).toEqual('foo');
+        });
+
+        await Promise.reject(somePromise);
+      });
+    `,
   ],
   invalid: [
     {
