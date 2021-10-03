@@ -193,7 +193,7 @@ installations requiring long-term consistency.
 | [require-top-level-describe](docs/rules/require-top-level-describe.md)       | Require test cases and hooks to be inside a `describe` block        |                  |              |
 | [valid-describe](docs/rules/valid-describe.md)                               | Enforce valid `describe()` callback                                 | ![recommended][] |              |
 | [valid-expect](docs/rules/valid-expect.md)                                   | Enforce valid `expect()` usage                                      | ![recommended][] |              |
-| [valid-expect-in-promise](docs/rules/valid-expect-in-promise.md)             | Enforce having return statement when testing with promises          | ![recommended][] |              |
+| [valid-expect-in-promise](docs/rules/valid-expect-in-promise.md)             | Ensure promises that have expectations in their chain are valid     | ![recommended][] |              |
 | [valid-title](docs/rules/valid-title.md)                                     | Enforce valid titles                                                | ![recommended][] | ![fixable][] |
 
 <!-- end base rules list -->

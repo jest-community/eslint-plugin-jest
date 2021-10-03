@@ -1,4 +1,4 @@
-# Enforce having return statement when testing with promises (`valid-expect-in-promise`)
+# Ensure promises that have expectations in their chain are valid (`valid-expect-in-promise`)
 
 Ensure to return promise when having assertions in `then` or `catch` block of
 promise

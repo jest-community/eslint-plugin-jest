@@ -219,7 +219,8 @@ export default createRule({
   meta: {
     docs: {
       category: 'Best Practices',
-      description: 'Enforce having return statement when testing with promises',
+      description:
+        'Ensure promises that have expectations in their chain are valid',
       recommended: 'error',
     },
     messages: {
