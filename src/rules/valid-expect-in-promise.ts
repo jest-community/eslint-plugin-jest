@@ -223,8 +223,8 @@ export default createRule({
       recommended: 'error',
     },
     messages: {
-      returnPromise:
-        'Promise should be returned to test its fulfillment or rejection',
+      expectInFloatingPromise:
+        "This promise should either be returned or awaited to ensure the expects in it's chain are called",
     },
     type: 'suggestion',
     schema: [],
@@ -310,7 +310,7 @@ export default createRule({
         }
 
         context.report({
-          messageId: 'returnPromise',
+          messageId: 'expectInFloatingPromise',
           node: parent,
         });
       },
