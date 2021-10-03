@@ -1,5 +1,9 @@
 # Suggest using `toBeNull()` (`prefer-to-be-null`)
 
+## Deprecated
+
+This rule has been deprecated in favor of [`prefer-to-be`](prefer-to-be.md).
+
 In order to have a better failure message, `toBeNull()` should be used upon
 asserting expectations on null value.
 
