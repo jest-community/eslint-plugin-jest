@@ -1,6 +1,5 @@
 import {
   AST_NODE_TYPES,
-  TSESLint,
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
 import {
@@ -14,9 +13,6 @@ import {
   isSupportedAccessor,
   isTestCaseCall,
 } from './utils';
-
-type MessageIds = 'returnPromise';
-type RuleContext = TSESLint.RuleContext<MessageIds, unknown[]>;
 
 type PromiseChainCallExpression = KnownCallExpression<
   'then' | 'catch' | 'finally'
@@ -45,20 +41,6 @@ const isPromiseChainCall = (
   }
 
   return false;
-};
-
-const reportReturnRequired = (context: RuleContext, node: TSESTree.Node) => {
-  context.report({
-    loc: {
-      end: {
-        column: node.loc.end.column,
-        line: node.loc.end.line,
-      },
-      start: node.loc.start,
-    },
-    messageId: 'returnPromise',
-    node,
-  });
 };
 
 const findTopMostCallExpression = (
@@ -232,7 +214,7 @@ const isVariableAwaitedOrReturned = (
   return isValueAwaitedOrReturned(variable.id, body);
 };
 
-export default createRule<unknown[], MessageIds>({
+export default createRule({
   name: __filename,
   meta: {
     docs: {
@@ -327,7 +309,10 @@ export default createRule<unknown[], MessageIds>({
             return;
         }
 
-        reportReturnRequired(context, parent);
+        context.report({
+          messageId: 'returnPromise',
+          node: parent,
+        });
       },
     };
   },
