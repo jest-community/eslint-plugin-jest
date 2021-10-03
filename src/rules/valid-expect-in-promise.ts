@@ -291,11 +291,7 @@ export default createRule<unknown[], MessageIds>({
 
         const { parent } = findTopMostCallExpression(node);
 
-        if (
-          !parent ||
-          !isDirectlyWithinTestCaseCall(parent) ||
-          parent.type === AST_NODE_TYPES.ArrowFunctionExpression
-        ) {
+        if (!parent || !isDirectlyWithinTestCaseCall(parent)) {
           return;
         }
 
