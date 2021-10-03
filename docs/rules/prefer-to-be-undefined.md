@@ -1,5 +1,9 @@
 # Suggest using `toBeUndefined()` (`prefer-to-be-undefined`)
 
+## Deprecated
+
+This rule has been deprecated in favor of [`prefer-to-be`](prefer-to-be.md).
+
 In order to have a better failure message, `toBeUndefined()` should be used upon
 asserting expectations on undefined value.
 
