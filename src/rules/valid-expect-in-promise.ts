@@ -61,29 +61,29 @@ const reportReturnRequired = (context: RuleContext, node: TSESTree.Node) => {
   });
 };
 
-type StartingStatementNode = TSESTree.Statement & {
-  parent: TSESTree.BlockStatement;
-};
-
-const findStartingStatementInTestBody = (
-  node: PromiseChainCallExpression,
-): StartingStatementNode | null => {
+const findTopMostCallExpression = (
+  node: TSESTree.CallExpression,
+): TSESTree.CallExpression => {
+  let topMostCallExpression = node;
   let { parent } = node;
 
   while (parent) {
-    if (parent.parent && parent.parent.type === AST_NODE_TYPES.BlockStatement) {
-      if (
-        parent.parent.parent?.parent?.type === AST_NODE_TYPES.CallExpression &&
-        isTestCaseCall(parent.parent.parent?.parent)
-      ) {
-        return parent as StartingStatementNode;
-      }
+    if (parent.type === AST_NODE_TYPES.CallExpression) {
+      topMostCallExpression = parent;
+
+      parent = parent.parent;
+
+      continue;
+    }
+
+    if (parent.type !== AST_NODE_TYPES.MemberExpression) {
+      break;
     }
 
     parent = parent.parent;
   }
 
-  return null;
+  return topMostCallExpression;
 };
 
 const isTestCaseCallWithCallbackArg = (
@@ -159,20 +159,59 @@ const isValueAwaitedOrReturned = (
         break;
       }
     }
+
+    if (
+      node.type === AST_NODE_TYPES.BlockStatement &&
+      isValueAwaitedOrReturned(identifier, node.body)
+    ) {
+      return true;
+    }
+  }
+
+  return false;
+};
+
+const findFirstBlockBodyUp = (
+  node: TSESTree.Node,
+): TSESTree.BlockStatement['body'] => {
+  let parent: TSESTree.Node['parent'] = node;
+
+  while (parent) {
+    if (parent.type === AST_NODE_TYPES.BlockStatement) {
+      return parent.body;
+    }
+
+    parent = parent.parent;
+  }
+
+  /* istanbul ignore next */
+  throw new Error(
+    `Could not find BlockStatement - please file a github issue at https://github.com/jest-community/eslint-plugin-jest`,
+  );
+};
+
+const isDirectlyWithinTestCaseCall = (node: TSESTree.Node): boolean => {
+  let parent: TSESTree.Node['parent'] = node;
+
+  while (parent) {
+    if (isFunction(parent)) {
+      parent = parent.parent;
+
+      return !!(
+        parent?.type === AST_NODE_TYPES.CallExpression && isTestCaseCall(parent)
+      );
+    }
+
+    parent = parent.parent;
   }
 
   return false;
 };
 
 const isVariableAwaitedOrReturned = (
-  variables: TSESTree.VariableDeclaration & { parent: TSESTree.BlockStatement },
+  variable: TSESTree.VariableDeclarator,
 ): boolean => {
-  const { body } = variables.parent;
-  const [variable] = variables.declarations;
-
-  if (variable.init?.type === AST_NODE_TYPES.AwaitExpression) {
-    return true;
-  }
+  const body = findFirstBlockBodyUp(variable);
 
   // it's pretty much impossible for us to track destructuring assignments,
   // so we return true to bailout gracefully
@@ -240,37 +279,49 @@ export default createRule<unknown[], MessageIds>({
           return;
         }
 
-        const topNode = findStartingStatementInTestBody(node);
-
-        if (!topNode || topNode.type === AST_NODE_TYPES.ReturnStatement) {
-          return;
-        }
+        const { parent } = findTopMostCallExpression(node);
 
         if (
-          topNode.type === AST_NODE_TYPES.VariableDeclaration &&
-          isVariableAwaitedOrReturned(topNode)
+          !parent ||
+          !isDirectlyWithinTestCaseCall(parent) ||
+          parent.type === AST_NODE_TYPES.ArrowFunctionExpression
         ) {
           return;
         }
 
-        if (topNode.type === AST_NODE_TYPES.ExpressionStatement) {
-          if (topNode.expression.type === AST_NODE_TYPES.AwaitExpression) {
-            return;
+        switch (parent?.type) {
+          case AST_NODE_TYPES.VariableDeclarator: {
+            if (isVariableAwaitedOrReturned(parent)) {
+              return;
+            }
+
+            break;
           }
 
-          if (
-            topNode.expression.type === AST_NODE_TYPES.AssignmentExpression &&
-            topNode.expression.left.type === AST_NODE_TYPES.Identifier &&
-            isValueAwaitedOrReturned(
-              topNode.expression.left,
-              topNode.parent.body,
-            )
-          ) {
-            return;
+          case AST_NODE_TYPES.AssignmentExpression: {
+            if (
+              parent.left.type === AST_NODE_TYPES.Identifier &&
+              isValueAwaitedOrReturned(
+                parent.left,
+                findFirstBlockBodyUp(parent),
+              )
+            ) {
+              return;
+            }
+
+            break;
           }
+
+          case AST_NODE_TYPES.ExpressionStatement:
+            break;
+
+          case AST_NODE_TYPES.ReturnStatement:
+          case AST_NODE_TYPES.AwaitExpression:
+          default:
+            return;
         }
 
-        reportReturnRequired(context, topNode);
+        reportReturnRequired(context, parent);
       },
     };
   },

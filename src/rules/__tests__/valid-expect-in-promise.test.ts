@@ -12,6 +12,9 @@ const ruleTester = new TSESLint.RuleTester({
 
 ruleTester.run('valid-expect-in-promise', rule, {
   valid: [
+    "test('something', () => Promise.resolve().then(() => expect(1).toBe(2)));",
+    'Promise.resolve().then(() => expect(1).toBe(2))',
+    'const x = Promise.resolve().then(() => expect(1).toBe(2))',
     dedent`
       it('it1', () => new Promise((done) => {
         test()
@@ -20,6 +23,16 @@ ruleTester.run('valid-expect-in-promise', rule, {
             done();
           });
       }));
+    `,
+    dedent`
+      it('it1', () => {
+        return new Promise(done => {
+          test().then(() => {
+            expect(someThing).toEqual(true);
+            done();
+          });
+        });
+      });
     `,
     dedent`
       it('passes', () => {
@@ -248,11 +261,44 @@ ruleTester.run('valid-expect-in-promise', rule, {
     `,
     dedent`
       test('that we bailout if destructuring is used', () => {
+        const [promise] = something().then(value => {
+          expect(value).toBe('red');
+        });
+      });
+    `,
+    dedent`
+      test('that we bailout if destructuring is used', async () => {
+        const [promise] = await something().then(value => {
+          expect(value).toBe('red');
+        });
+      });
+    `,
+    dedent`
+      test('that we bailout if destructuring is used', () => {
         const [promise] = [
           something().then(value => {
             expect(value).toBe('red');
           })
         ];
+      });
+    `,
+    dedent`
+      test('that we bailout if destructuring is used', () => {
+        const {promise} = {
+          promise: something().then(value => {
+            expect(value).toBe('red');
+          })
+        };
+      });
+    `,
+    dedent`
+      test('that we bailout in complex cases', () => {
+        promiseSomething({
+          timeout: 500,
+          promise: something().then(value => {
+            expect(value).toBe('red');
+          })
+        });
       });
     `,
     dedent`
@@ -380,6 +426,24 @@ ruleTester.run('valid-expect-in-promise', rule, {
       test('promise test', async function () {
         let somePromise = getPromise().then((data) => {
           expect(data).toEqual('foo');
+        }), x = 1;
+
+        await somePromise;
+      });
+    `,
+    dedent`
+      test('promise test', async function () {
+        let x = 1, somePromise = getPromise().then((data) => {
+          expect(data).toEqual('foo');
+        });
+
+        await somePromise;
+      });
+    `,
+    dedent`
+      test('promise test', async function () {
+        let somePromise = getPromise().then((data) => {
+          expect(data).toEqual('foo');
         });
 
         await somePromise;
@@ -415,6 +479,70 @@ ruleTester.run('valid-expect-in-promise', rule, {
         {}
 
         await somePromise;
+      });
+    `,
+    dedent`
+      test('promise test', async function () {
+        const somePromise = getPromise().then((data) => {
+          expect(data).toEqual('foo');
+        });
+
+        {
+          await somePromise;
+        }
+      });
+    `,
+    dedent`
+      test('promise test', async function () {
+        let somePromise = getPromise().then((data) => {
+          expect(data).toEqual('foo');
+        });
+
+        {
+          await somePromise;
+
+          somePromise = getPromise().then((data) => {
+            expect(data).toEqual('foo');
+          });
+
+          await somePromise;
+        }
+      });
+    `,
+    dedent`
+      test('promise test', async function () {
+        let somePromise = getPromise().then((data) => {
+          expect(data).toEqual('foo');
+        });
+
+        await somePromise;
+
+        {
+          somePromise = getPromise().then((data) => {
+            expect(data).toEqual('foo');
+          });
+
+          await somePromise;
+        }
+      });
+    `,
+    dedent`
+      test('promise test', async function () {
+        let somePromise = getPromise().then((data) => {
+          expect(data).toEqual('foo');
+        });
+
+        await somePromise;
+
+        {
+          somePromise = getPromise().then((data) => {
+            expect(data).toEqual('foo');
+          });
+
+          {
+            await somePromise;
+          }
+        }
       });
     `,
   ],
@@ -695,7 +823,7 @@ ruleTester.run('valid-expect-in-promise', rule, {
           });
         });
       `,
-      errors: [{ column: 3, endColumn: 6, messageId: 'returnPromise' }],
+      errors: [{ column: 9, endColumn: 5, messageId: 'returnPromise' }],
     },
     {
       code: dedent`
@@ -729,7 +857,27 @@ ruleTester.run('valid-expect-in-promise', rule, {
           promise;
         });
       `,
-      errors: [{ column: 3, endColumn: 6, messageId: 'returnPromise' }],
+      errors: [{ column: 9, endColumn: 5, messageId: 'returnPromise' }],
+    },
+    {
+      code: dedent`
+        test('later return', async () => {
+          const promise = something().then(value => {
+            expect(value).toBe('red');
+          }), x = 1;
+        });
+      `,
+      errors: [{ column: 9, endColumn: 5, messageId: 'returnPromise' }],
+    },
+    {
+      code: dedent`
+        test('later return', async () => {
+          const x = 1, promise = something().then(value => {
+            expect(value).toBe('red');
+          });
+        });
+      `,
+      errors: [{ column: 16, endColumn: 5, messageId: 'returnPromise' }],
     },
     {
       code: dedent`
@@ -769,7 +917,7 @@ ruleTester.run('valid-expect-in-promise', rule, {
           await somePromise;
         });
       `,
-      errors: [{ column: 3, endColumn: 6, messageId: 'returnPromise' }],
+      errors: [{ column: 7, endColumn: 5, messageId: 'returnPromise' }],
     },
     {
       code: dedent`
@@ -786,7 +934,7 @@ ruleTester.run('valid-expect-in-promise', rule, {
         });
       `,
       errors: [
-        { column: 3, endColumn: 6, line: 2, messageId: 'returnPromise' },
+        { column: 7, endColumn: 5, line: 2, messageId: 'returnPromise' },
       ],
     },
     {
@@ -800,7 +948,39 @@ ruleTester.run('valid-expect-in-promise', rule, {
         });
       `,
       errors: [
-        { column: 3, endColumn: 6, line: 2, messageId: 'returnPromise' },
+        { column: 7, endColumn: 5, line: 2, messageId: 'returnPromise' },
+      ],
+    },
+    {
+      code: dedent`
+        test('promise test', async function () {
+          let somePromise = getPromise().then((data) => {
+            expect(data).toEqual('foo');
+          });
+
+          {
+            somePromise = getPromise().then((data) => {
+              expect(data).toEqual('foo');
+            }); 
+
+            await somePromise;
+          }
+        });
+      `,
+      errors: [
+        { column: 7, endColumn: 5, line: 2, messageId: 'returnPromise' },
+      ],
+    },
+    {
+      code: dedent`
+        test('that we error on this destructuring', async () => {
+          [promise] = something().then(value => {
+            expect(value).toBe('red');
+          });
+        });
+      `,
+      errors: [
+        { column: 3, endColumn: 5, line: 2, messageId: 'returnPromise' },
       ],
     },
   ],
