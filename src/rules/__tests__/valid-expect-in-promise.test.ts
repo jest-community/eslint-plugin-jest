@@ -587,6 +587,24 @@ ruleTester.run('valid-expect-in-promise', rule, {
         }
       });
     `,
+    dedent`
+      test('promise test', async function () {
+        const somePromise = getPromise().then((data) => {
+          expect(data).toEqual('foo');
+        });
+
+        await Promise.all([somePromise]);
+      });
+    `,
+    dedent`
+      test('promise test', async function () {
+        const somePromise = getPromise().then((data) => {
+          expect(data).toEqual('foo');
+        });
+
+        return Promise.all([somePromise]);
+      });
+    `,
   ],
   invalid: [
     {
@@ -984,6 +1002,140 @@ ruleTester.run('valid-expect-in-promise', rule, {
           return 1;
 
           await promise;
+        });
+      `,
+      errors: [
+        { column: 9, endColumn: 5, messageId: 'expectInFloatingPromise' },
+      ],
+    },
+    {
+      code: dedent`
+        test('later return', async () => {
+          const promise = something().then(value => {
+            expect(value).toBe('red');
+          });
+
+          return [];
+
+          await promise;
+        });
+      `,
+      errors: [
+        { column: 9, endColumn: 5, messageId: 'expectInFloatingPromise' },
+      ],
+    },
+    {
+      code: dedent`
+        test('later return', async () => {
+          const promise = something().then(value => {
+            expect(value).toBe('red');
+          });
+
+          return Promise.all([anotherPromise]);
+
+          await promise;
+        });
+      `,
+      errors: [
+        { column: 9, endColumn: 5, messageId: 'expectInFloatingPromise' },
+      ],
+    },
+    {
+      code: dedent`
+        test('later return', async () => {
+          const promise = something().then(value => {
+            expect(value).toBe('red');
+          });
+
+          return {};
+
+          await promise;
+        });
+      `,
+      errors: [
+        { column: 9, endColumn: 5, messageId: 'expectInFloatingPromise' },
+      ],
+    },
+    {
+      code: dedent`
+        test('later return', async () => {
+          const promise = something().then(value => {
+            expect(value).toBe('red');
+          });
+
+          return Promise.all([]);
+
+          await promise;
+        });
+      `,
+      errors: [
+        { column: 9, endColumn: 5, messageId: 'expectInFloatingPromise' },
+      ],
+    },
+    {
+      code: dedent`
+        test('later return', async () => {
+          const promise = something().then(value => {
+            expect(value).toBe('red');
+          });
+
+          await 1;
+        });
+      `,
+      errors: [
+        { column: 9, endColumn: 5, messageId: 'expectInFloatingPromise' },
+      ],
+    },
+    {
+      code: dedent`
+        test('later return', async () => {
+          const promise = something().then(value => {
+            expect(value).toBe('red');
+          });
+
+          await [];
+        });
+      `,
+      errors: [
+        { column: 9, endColumn: 5, messageId: 'expectInFloatingPromise' },
+      ],
+    },
+    {
+      code: dedent`
+        test('later return', async () => {
+          const promise = something().then(value => {
+            expect(value).toBe('red');
+          });
+
+          await Promise.all([anotherPromise]);
+        });
+      `,
+      errors: [
+        { column: 9, endColumn: 5, messageId: 'expectInFloatingPromise' },
+      ],
+    },
+    {
+      code: dedent`
+        test('later return', async () => {
+          const promise = something().then(value => {
+            expect(value).toBe('red');
+          });
+
+          await {};
+        });
+      `,
+      errors: [
+        { column: 9, endColumn: 5, messageId: 'expectInFloatingPromise' },
+      ],
+    },
+    {
+      code: dedent`
+        test('later return', async () => {
+          const promise = something().then(value => {
+            expect(value).toBe('red');
+          });
+
+          await Promise.all([]);
         });
       `,
       errors: [

@@ -103,6 +103,37 @@ const isTestCaseCallWithCallbackArg = (
   return false;
 };
 
+const isPromiseMethodThatUsesValue = (
+  node: TSESTree.AwaitExpression | TSESTree.ReturnStatement,
+  identifier: TSESTree.Identifier,
+): boolean => {
+  const { name } = identifier;
+
+  if (node.argument === null) {
+    return false;
+  }
+
+  if (
+    node.argument.type === AST_NODE_TYPES.CallExpression &&
+    node.argument.arguments.length > 0 &&
+    getNodeName(node.argument) === 'Promise.all'
+  ) {
+    const [firstArg] = node.argument.arguments;
+
+    if (
+      firstArg.type === AST_NODE_TYPES.ArrayExpression &&
+      firstArg.elements.some(nod => isIdentifier(nod, name))
+    ) {
+      return true;
+    }
+  }
+
+  return (
+    node.argument.type === AST_NODE_TYPES.Identifier &&
+    isIdentifier(node.argument, name)
+  );
+};
+
 /**
  * Attempts to determine if the runtime value represented by the given `identifier`
  * is `await`ed or `return`ed within the given `body` of statements
@@ -121,22 +152,12 @@ const isValueAwaitedOrReturned = (
     }
 
     if (node.type === AST_NODE_TYPES.ReturnStatement) {
-      if (node.argument === null) {
-        return false;
-      }
-
-      return (
-        node.argument.type === AST_NODE_TYPES.Identifier &&
-        isIdentifier(node.argument, name)
-      );
+      return isPromiseMethodThatUsesValue(node, identifier);
     }
 
     if (node.type === AST_NODE_TYPES.ExpressionStatement) {
-      if (
-        node.expression.type === AST_NODE_TYPES.AwaitExpression &&
-        node.expression.argument?.type === AST_NODE_TYPES.Identifier
-      ) {
-        return isIdentifier(node.expression.argument, name);
+      if (node.expression.type === AST_NODE_TYPES.AwaitExpression) {
+        return isPromiseMethodThatUsesValue(node.expression, identifier);
       }
 
       // (re)assignment changes the runtime value, so if we've not found an
