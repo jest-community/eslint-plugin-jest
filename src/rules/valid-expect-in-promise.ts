@@ -156,6 +156,16 @@ const isValueAwaitedOrReturned = (
       // (re)assignment changes the runtime value, so if we've not found an
       // await or return already we act as if we've reached the end of the body
       if (node.expression.type === AST_NODE_TYPES.AssignmentExpression) {
+        // unless we're assigning to the same identifier, in which case
+        // we might be chaining off the existing promise value
+        if (
+          isIdentifier(node.expression.left, name) &&
+          getNodeName(node.expression.right)?.startsWith(`${name}.`) &&
+          isPromiseChainCall(node.expression.right)
+        ) {
+          continue;
+        }
+
         break;
       }
     }

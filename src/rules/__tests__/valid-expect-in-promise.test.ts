@@ -532,6 +532,48 @@ ruleTester.run('valid-expect-in-promise', rule, {
           expect(data).toEqual('foo');
         });
 
+        somePromise = somePromise.then((data) => {
+          expect(data).toEqual('foo');
+        }); 
+
+        await somePromise;
+      });
+    `,
+    dedent`
+      test('promise test', async function () {
+        let somePromise = getPromise().then((data) => {
+          expect(data).toEqual('foo');
+        });
+
+        somePromise = somePromise
+          .then((data) => data)
+          .then((data) => data)
+          .then((data) => {
+            expect(data).toEqual('foo');
+          }); 
+
+        await somePromise;
+      });
+    `,
+    dedent`
+      test('promise test', async function () {
+        let somePromise = getPromise().then((data) => {
+          expect(data).toEqual('foo');
+        });
+
+        somePromise = somePromise
+          .then((data) => data)
+          .then((data) => data)
+
+        await somePromise;
+      });
+    `,
+    dedent`
+      test('promise test', async function () {
+        let somePromise = getPromise().then((data) => {
+          expect(data).toEqual('foo');
+        });
+
         await somePromise;
 
         {
