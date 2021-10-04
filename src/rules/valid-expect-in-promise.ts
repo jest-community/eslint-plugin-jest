@@ -313,7 +313,7 @@ export default createRule({
           return;
         }
 
-        switch (parent?.type) {
+        switch (parent.type) {
           case AST_NODE_TYPES.VariableDeclarator: {
             if (isVariableAwaitedOrReturned(parent)) {
               return;
