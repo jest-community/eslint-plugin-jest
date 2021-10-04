@@ -14,6 +14,8 @@ ruleTester.run('prefer-to-be', rule, {
     'expect(value).toMatchSnapshot();',
     "expect(catchError()).toStrictEqual({ message: 'oh noes!' })",
     'expect("something");',
+    'expect(token).toStrictEqual(/[abc]+/g);',
+    "expect(token).toStrictEqual(new RegExp('[abc]+', 'g'));",
   ],
   invalid: [
     {

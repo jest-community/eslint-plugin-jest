@@ -35,8 +35,11 @@ const isFirstArgumentIdentifier = (
   name: string,
 ) => isIdentifier(getFirstArgument(matcher), name);
 
-const isPrimitiveLiteral = (matcher: ParsedEqualityMatcherCall) =>
-  getFirstArgument(matcher).type === AST_NODE_TYPES.Literal;
+const isPrimitiveLiteral = (matcher: ParsedEqualityMatcherCall): boolean => {
+  const firstArg = getFirstArgument(matcher);
+
+  return firstArg.type === AST_NODE_TYPES.Literal && !('regex' in firstArg);
+};
 
 const getFirstArgument = (matcher: ParsedEqualityMatcherCall) => {
   return followTypeAssertionChain(matcher.arguments[0]);
