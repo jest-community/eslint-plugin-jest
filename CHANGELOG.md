@@ -1,3 +1,10 @@
+## [24.5.2](https://github.com/jest-community/eslint-plugin-jest/compare/v24.5.1...v24.5.2) (2021-10-04)
+
+
+### Bug Fixes
+
+* **lowercase-name:** consider skip and only prefixes for ignores ([#923](https://github.com/jest-community/eslint-plugin-jest/issues/923)) ([8716c24](https://github.com/jest-community/eslint-plugin-jest/commit/8716c24678ea7dc7c9f692b573d1ea19a67efd84))
+
 ## [24.5.1](https://github.com/jest-community/eslint-plugin-jest/compare/v24.5.0...v24.5.1) (2021-10-04)
 
 
