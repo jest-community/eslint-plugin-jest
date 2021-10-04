@@ -1,3 +1,10 @@
+## [24.5.1](https://github.com/jest-community/eslint-plugin-jest/compare/v24.5.0...v24.5.1) (2021-10-04)
+
+
+### Bug Fixes
+
+* **prefer-to-be:** don't consider RegExp literals as `toBe`-able ([#922](https://github.com/jest-community/eslint-plugin-jest/issues/922)) ([99b6d42](https://github.com/jest-community/eslint-plugin-jest/commit/99b6d429e697d60645b4bc64ee4ae34d7016118c))
+
 # [24.5.0](https://github.com/jest-community/eslint-plugin-jest/compare/v24.4.3...v24.5.0) (2021-09-29)
 
 
