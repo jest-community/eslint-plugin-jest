@@ -36,6 +36,22 @@ const findNodeNameAndArgument = (
   return [getNodeName(node).split('.')[0], node.arguments[0]];
 };
 
+const populateIgnores = (ignore: readonly string[]): string[] => {
+  const ignores: string[] = [];
+
+  if (ignore.includes(DescribeAlias.describe)) {
+    ignores.push(...Object.keys(DescribeAlias));
+  }
+  if (ignore.includes(TestCaseName.test)) {
+    ignores.push(...Object.keys(TestCaseName));
+  }
+  if (ignore.includes(TestCaseName.it)) {
+    ignores.push(...Object.keys(TestCaseName));
+  }
+
+  return ignores;
+};
+
 export default createRule<
   [
     Partial<{
@@ -94,6 +110,7 @@ export default createRule<
     context,
     [{ ignore = [], allowedPrefixes = [], ignoreTopLevelDescribe }],
   ) {
+    const ignores = populateIgnores(ignore);
     let numberOfDescribeBlocks = 0;
 
     return {
@@ -125,7 +142,7 @@ export default createRule<
         if (
           !firstCharacter ||
           firstCharacter === firstCharacter.toLowerCase() ||
-          ignore.includes(name as IgnorableFunctionExpressions)
+          ignores.includes(name as IgnorableFunctionExpressions)
         ) {
           return;
         }
