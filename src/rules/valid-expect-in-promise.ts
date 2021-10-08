@@ -284,14 +284,8 @@ export default createRule({
           return;
         }
 
-        if (chains.length === 0) {
-          return;
-        }
-
-        if (isExpectCall(node)) {
+        if (chains.length > 0 && isExpectCall(node)) {
           chains[0] = true;
-
-          return;
         }
       },
       'CallExpression:exit'(node: TSESTree.CallExpression) {
@@ -303,7 +297,13 @@ export default createRule({
           return;
         }
 
-        if (!isPromiseChainCall(node) || !chains.shift()) {
+        if (!isPromiseChainCall(node)) {
+          return;
+        }
+
+        const hasExpectCall = chains.shift();
+
+        if (!hasExpectCall) {
           return;
         }
 
