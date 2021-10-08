@@ -268,27 +268,43 @@ export default createRule({
   defaultOptions: [],
   create(context) {
     let inTestCaseWithDoneCallback = false;
+    // an array of booleans representing each promise chain we enter, with the
+    // boolean value representing if we think a given chain contains an expect
+    // in it's body.
+    //
+    // since we only care about the inner-most chain, we represent the state in
+    // reverse with the inner-most being the first item, as that makes it
+    // slightly less code to assign to by not needing to know the length
     const chains: boolean[] = [];
 
     return {
       CallExpression(node: TSESTree.CallExpression) {
+        // there are too many ways that the done argument could be used with
+        // promises that contain expect that would make the promise safe for us
         if (isTestCaseCallWithCallbackArg(node)) {
           inTestCaseWithDoneCallback = true;
 
           return;
         }
 
+        // if this call expression is a promise chain, add it to the stack with
+        // value of "false", as we assume there are no expect calls initially
         if (isPromiseChainCall(node)) {
           chains.unshift(false);
 
           return;
         }
 
+        // if we're within a promise chain, and this call expression looks like
+        // an expect call, mark the deepest chain as having an expect call
         if (chains.length > 0 && isExpectCall(node)) {
           chains[0] = true;
         }
       },
       'CallExpression:exit'(node: TSESTree.CallExpression) {
+        // there are too many ways that the "done" argument could be used to
+        // make promises containing expects safe in a test for us to be able to
+        // accurately check, so we just bail out completely if it's present
         if (inTestCaseWithDoneCallback) {
           if (isTestCaseCall(node)) {
             inTestCaseWithDoneCallback = false;
@@ -301,14 +317,22 @@ export default createRule({
           return;
         }
 
+        // since we're exiting this call expression (which is a promise chain)
+        // we remove it from the stack of chains, since we're unwinding
         const hasExpectCall = chains.shift();
 
+        // if the promise chain we're exiting doesn't contain an expect,
+        // then we don't need to check it for anything
         if (!hasExpectCall) {
           return;
         }
 
         const { parent } = findTopMostCallExpression(node);
 
+        // if we don't have a parent (which is technically impossible at runtime)
+        // or our parent is not directly within the test case, we stop checking
+        // because we're most likely in the body of a function being defined
+        // within the test, which we can't track
         if (!parent || !isDirectlyWithinTestCaseCall(parent)) {
           return;
         }
