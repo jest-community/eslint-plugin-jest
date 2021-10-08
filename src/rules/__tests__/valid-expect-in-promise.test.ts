@@ -641,6 +641,30 @@ ruleTester.run('valid-expect-in-promise', rule, {
         await Promise.reject(somePromise);
       });
     `,
+    dedent`
+      test('later return', async () => {
+        const onePromise = something().then(value => {
+          console.log(value);
+        });
+        const twoPromise = something().then(value => {
+          expect(value).toBe('red');
+        });
+
+        return Promise.all([onePromise, twoPromise]);
+      });
+    `,
+    dedent`
+      test('later return', async () => {
+        const onePromise = something().then(value => {
+          console.log(value);
+        });
+        const twoPromise = something().then(value => {
+          expect(value).toBe('red');
+        });
+
+        return Promise.allSettled([onePromise, twoPromise]);
+      });
+    `,
   ],
   invalid: [
     {

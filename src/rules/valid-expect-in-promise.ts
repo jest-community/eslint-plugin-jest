@@ -119,7 +119,7 @@ const isPromiseMethodThatUsesValue = (
   ) {
     const nodeName = getNodeName(node.argument);
 
-    if (nodeName === 'Promise.all') {
+    if (['Promise.all', 'Promise.allSettled'].includes(nodeName as string)) {
       const [firstArg] = node.argument.arguments;
 
       if (
