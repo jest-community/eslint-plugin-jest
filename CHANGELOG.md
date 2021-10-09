@@ -1,3 +1,10 @@
+# [24.6.0](https://github.com/jest-community/eslint-plugin-jest/compare/v24.5.2...v24.6.0) (2021-10-09)
+
+
+### Features
+
+* **valid-expect-in-promise:** re-implement rule ([#916](https://github.com/jest-community/eslint-plugin-jest/issues/916)) ([7a49c58](https://github.com/jest-community/eslint-plugin-jest/commit/7a49c5831e3d85a60c11e385203b8f83d98ad580))
+
 ## [24.5.2](https://github.com/jest-community/eslint-plugin-jest/compare/v24.5.1...v24.5.2) (2021-10-04)
 
 
