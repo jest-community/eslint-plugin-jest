@@ -12,7 +12,6 @@ Object {
     "rules": Object {
       "jest/consistent-test-it": "error",
       "jest/expect-expect": "error",
-      "jest/lowercase-name": "error",
       "jest/max-nested-describe": "error",
       "jest/no-alias-methods": "error",
       "jest/no-commented-out-tests": "error",
@@ -39,6 +38,7 @@ Object {
       "jest/prefer-expect-assertions": "error",
       "jest/prefer-expect-resolves": "error",
       "jest/prefer-hooks-on-top": "error",
+      "jest/prefer-lowercase-title": "error",
       "jest/prefer-spy-on": "error",
       "jest/prefer-strict-equal": "error",
       "jest/prefer-to-be": "error",

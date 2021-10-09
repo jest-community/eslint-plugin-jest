@@ -1,7 +1,7 @@
 import { TSESLint } from '@typescript-eslint/experimental-utils';
 import dedent from 'dedent';
 import resolveFrom from 'resolve-from';
-import rule from '../lowercase-name';
+import rule from '../prefer-lowercase-title';
 import { DescribeAlias, TestCaseName } from '../utils';
 
 const ruleTester = new TSESLint.RuleTester({
@@ -11,7 +11,7 @@ const ruleTester = new TSESLint.RuleTester({
   },
 });
 
-ruleTester.run('lowercase-name', rule, {
+ruleTester.run('prefer-lowercase-title', rule, {
   valid: [
     'it.each()',
     'it.each()(1)',
@@ -247,7 +247,7 @@ ruleTester.run('lowercase-name', rule, {
   ],
 });
 
-ruleTester.run('lowercase-name with ignore=describe', rule, {
+ruleTester.run('prefer-lowercase-title with ignore=describe', rule, {
   valid: [
     {
       code: "describe('Foo', function () {})",
@@ -273,7 +273,7 @@ ruleTester.run('lowercase-name with ignore=describe', rule, {
   invalid: [],
 });
 
-ruleTester.run('lowercase-name with ignore=test', rule, {
+ruleTester.run('prefer-lowercase-title with ignore=test', rule, {
   valid: [
     {
       code: "test('Foo', function () {})",
@@ -299,7 +299,7 @@ ruleTester.run('lowercase-name with ignore=test', rule, {
   invalid: [],
 });
 
-ruleTester.run('lowercase-name with ignore=it', rule, {
+ruleTester.run('prefer-lowercase-title with ignore=it', rule, {
   valid: [
     {
       code: "it('Foo', function () {})",
@@ -325,7 +325,7 @@ ruleTester.run('lowercase-name with ignore=it', rule, {
   invalid: [],
 });
 
-ruleTester.run('lowercase-name with allowedPrefixes', rule, {
+ruleTester.run('prefer-lowercase-title with allowedPrefixes', rule, {
   valid: [
     {
       code: "it('GET /live', function () {})",
@@ -343,7 +343,7 @@ ruleTester.run('lowercase-name with allowedPrefixes', rule, {
   invalid: [],
 });
 
-ruleTester.run('lowercase-name with ignoreTopLevelDescribe', rule, {
+ruleTester.run('prefer-lowercase-title with ignoreTopLevelDescribe', rule, {
   valid: [
     {
       code: 'describe("MyClass", () => {});',
