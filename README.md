@@ -189,6 +189,7 @@ installations requiring long-term consistency.
 | [prefer-to-contain](docs/rules/prefer-to-contain.md)                         | Suggest using `toContain()`                                         | ![style][]       | ![fixable][] |
 | [prefer-to-have-length](docs/rules/prefer-to-have-length.md)                 | Suggest using `toHaveLength()`                                      | ![style][]       | ![fixable][] |
 | [prefer-todo](docs/rules/prefer-todo.md)                                     | Suggest using `test.todo`                                           |                  | ![fixable][] |
+| [require-hook](docs/rules/require-hook.md)                                   | Require setup and teardown code to be within a hook                 |                  |              |
 | [require-to-throw-message](docs/rules/require-to-throw-message.md)           | Require a message for `toThrow()`                                   |                  |              |
 | [require-top-level-describe](docs/rules/require-top-level-describe.md)       | Require test cases and hooks to be inside a `describe` block        |                  |              |
 | [valid-describe](docs/rules/valid-describe.md)                               | Enforce valid `describe()` callback                                 | ![recommended][] |              |

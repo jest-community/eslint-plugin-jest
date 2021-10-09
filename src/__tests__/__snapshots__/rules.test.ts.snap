@@ -47,6 +47,7 @@ Object {
       "jest/prefer-to-contain": "error",
       "jest/prefer-to-have-length": "error",
       "jest/prefer-todo": "error",
+      "jest/require-hook": "error",
       "jest/require-to-throw-message": "error",
       "jest/require-top-level-describe": "error",
       "jest/unbound-method": "error",
