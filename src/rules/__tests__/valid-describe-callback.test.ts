@@ -1,7 +1,7 @@
 import { TSESLint } from '@typescript-eslint/experimental-utils';
 import dedent from 'dedent';
 import resolveFrom from 'resolve-from';
-import rule from '../valid-describe';
+import rule from '../valid-describe-callback';
 
 const ruleTester = new TSESLint.RuleTester({
   parser: resolveFrom(require.resolve('eslint'), 'espree'),
@@ -10,7 +10,7 @@ const ruleTester = new TSESLint.RuleTester({
   },
 });
 
-ruleTester.run('valid-describe', rule, {
+ruleTester.run('valid-describe-callback', rule, {
   valid: [
     'describe.each([1, 2, 3])("%s", (a, b) => {});',
     'describe("foo", function() {})',
