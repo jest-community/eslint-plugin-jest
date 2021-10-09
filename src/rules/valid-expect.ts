@@ -35,7 +35,6 @@ const getPromiseCallExpressionNode = (node: TSESTree.Node) => {
 
   if (
     node.type === AST_NODE_TYPES.CallExpression &&
-    node.callee &&
     node.callee.type === AST_NODE_TYPES.MemberExpression &&
     isSupportedAccessor(node.callee.object) &&
     getAccessorValue(node.callee.object) === 'Promise' &&
@@ -48,8 +47,7 @@ const getPromiseCallExpressionNode = (node: TSESTree.Node) => {
 };
 
 const findPromiseCallExpressionNode = (node: TSESTree.Node) =>
-  node.parent &&
-  node.parent.parent &&
+  node.parent?.parent &&
   [AST_NODE_TYPES.CallExpression, AST_NODE_TYPES.ArrayExpression].includes(
     node.parent.type,
   )
@@ -57,12 +55,11 @@ const findPromiseCallExpressionNode = (node: TSESTree.Node) =>
     : null;
 
 const getParentIfThenified = (node: TSESTree.Node): TSESTree.Node => {
-  const grandParentNode = node.parent && node.parent.parent;
+  const grandParentNode = node.parent?.parent;
 
   if (
     grandParentNode &&
     grandParentNode.type === AST_NODE_TYPES.CallExpression &&
-    grandParentNode.callee &&
     isExpectMember(grandParentNode.callee) &&
     ['then', 'catch'].includes(
       getAccessorValue(grandParentNode.callee.property),
