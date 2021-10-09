@@ -1,21 +1,18 @@
 import {
   AST_NODE_TYPES,
-  TSESLint,
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
 import {
-  FunctionExpression,
   KnownCallExpression,
   createRule,
   getAccessorValue,
-  isExpectMember,
+  getNodeName,
+  isExpectCall,
   isFunction,
+  isIdentifier,
   isSupportedAccessor,
   isTestCaseCall,
 } from './utils';
-
-type MessageIds = 'returnPromise';
-type RuleContext = TSESLint.RuleContext<MessageIds, unknown[]>;
 
 type PromiseChainCallExpression = KnownCallExpression<
   'then' | 'catch' | 'finally'
@@ -23,175 +20,359 @@ type PromiseChainCallExpression = KnownCallExpression<
 
 const isPromiseChainCall = (
   node: TSESTree.Node,
-): node is PromiseChainCallExpression =>
-  node.type === AST_NODE_TYPES.CallExpression &&
-  node.callee.type === AST_NODE_TYPES.MemberExpression &&
-  isSupportedAccessor(node.callee.property) &&
-  ['then', 'catch', 'finally'].includes(getAccessorValue(node.callee.property));
-
-const isExpectCallPresentInFunction = (body: TSESTree.Node) => {
-  if (body.type === AST_NODE_TYPES.BlockStatement) {
-    return body.body.find(line => {
-      if (line.type === AST_NODE_TYPES.ExpressionStatement) {
-        return isFullExpectCall(line.expression);
-      }
-      if (line.type === AST_NODE_TYPES.ReturnStatement && line.argument) {
-        return isFullExpectCall(line.argument);
-      }
-
-      return false;
-    });
-  }
-
-  return isFullExpectCall(body);
-};
-
-const isFullExpectCall = (expression: TSESTree.Node) =>
-  expression.type === AST_NODE_TYPES.CallExpression &&
-  isExpectMember(expression.callee);
-
-const reportReturnRequired = (context: RuleContext, node: TSESTree.Node) => {
-  context.report({
-    loc: {
-      end: {
-        column: node.loc.end.column,
-        line: node.loc.end.line,
-      },
-      start: node.loc.start,
-    },
-    messageId: 'returnPromise',
-    node,
-  });
-};
-
-const isPromiseReturnedLater = (
-  node: TSESTree.Node,
-  testFunctionBody: TSESTree.Statement[],
-) => {
-  let promiseName;
-
+): node is PromiseChainCallExpression => {
   if (
-    node.type === AST_NODE_TYPES.ExpressionStatement &&
-    node.expression.type === AST_NODE_TYPES.CallExpression &&
-    node.expression.callee.type === AST_NODE_TYPES.MemberExpression &&
-    isSupportedAccessor(node.expression.callee.object)
+    node.type === AST_NODE_TYPES.CallExpression &&
+    node.callee.type === AST_NODE_TYPES.MemberExpression &&
+    isSupportedAccessor(node.callee.property)
   ) {
-    promiseName = getAccessorValue(node.expression.callee.object);
-  } else if (
-    node.type === AST_NODE_TYPES.VariableDeclarator &&
-    node.id.type === AST_NODE_TYPES.Identifier
-  ) {
-    promiseName = node.id.name;
-  }
-
-  const lastLineInTestFunc = testFunctionBody[testFunctionBody.length - 1];
-
-  return (
-    lastLineInTestFunc.type === AST_NODE_TYPES.ReturnStatement &&
-    lastLineInTestFunc.argument &&
-    (('name' in lastLineInTestFunc.argument &&
-      lastLineInTestFunc.argument.name === promiseName) ||
-      !promiseName)
-  );
-};
-
-const findTestFunction = (node: TSESTree.Node | undefined) => {
-  while (node) {
-    if (
-      isFunction(node) &&
-      node.parent?.type === AST_NODE_TYPES.CallExpression &&
-      isTestCaseCall(node.parent)
-    ) {
-      return node;
+    // promise methods should have at least 1 argument
+    if (node.arguments.length === 0) {
+      return false;
     }
 
-    node = node.parent;
+    switch (getAccessorValue(node.callee.property)) {
+      case 'then':
+        return node.arguments.length < 3;
+      case 'catch':
+      case 'finally':
+        return node.arguments.length < 2;
+    }
   }
 
-  return null;
+  return false;
 };
 
-const isParentThenOrPromiseReturned = (
-  node: TSESTree.Node,
-  testFunctionBody: TSESTree.Statement[],
-) =>
-  node.type === AST_NODE_TYPES.ReturnStatement ||
-  isPromiseReturnedLater(node, testFunctionBody);
+const findTopMostCallExpression = (
+  node: TSESTree.CallExpression,
+): TSESTree.CallExpression => {
+  let topMostCallExpression = node;
+  let { parent } = node;
 
-const verifyExpectWithReturn = (
-  promiseCallbacks: Array<TSESTree.CallExpressionArgument | undefined>,
-  node: PromiseChainCallExpression['callee'],
-  context: RuleContext,
-  testFunctionBody: TSESTree.Statement[],
-) => {
-  promiseCallbacks.some(promiseCallback => {
-    if (promiseCallback && isFunction(promiseCallback)) {
+  while (parent) {
+    if (parent.type === AST_NODE_TYPES.CallExpression) {
+      topMostCallExpression = parent;
+
+      parent = parent.parent;
+
+      continue;
+    }
+
+    if (parent.type !== AST_NODE_TYPES.MemberExpression) {
+      break;
+    }
+
+    parent = parent.parent;
+  }
+
+  return topMostCallExpression;
+};
+
+const isTestCaseCallWithCallbackArg = (
+  node: TSESTree.CallExpression,
+): boolean => {
+  if (!isTestCaseCall(node)) {
+    return false;
+  }
+
+  const isJestEach = getNodeName(node).endsWith('.each');
+
+  if (
+    isJestEach &&
+    node.callee.type !== AST_NODE_TYPES.TaggedTemplateExpression
+  ) {
+    // isJestEach but not a TaggedTemplateExpression, so this must be
+    // the `jest.each([])()` syntax which this rule doesn't support due
+    // to its complexity (see jest-community/eslint-plugin-jest#710)
+    // so we return true to trigger bailout
+    return true;
+  }
+
+  if (isJestEach || node.arguments.length >= 2) {
+    const [, callback] = node.arguments;
+
+    const callbackArgIndex = Number(isJestEach);
+
+    return (
+      callback &&
+      isFunction(callback) &&
+      callback.params.length === 1 + callbackArgIndex
+    );
+  }
+
+  return false;
+};
+
+const isPromiseMethodThatUsesValue = (
+  node: TSESTree.AwaitExpression | TSESTree.ReturnStatement,
+  identifier: TSESTree.Identifier,
+): boolean => {
+  const { name } = identifier;
+
+  if (node.argument === null) {
+    return false;
+  }
+
+  if (
+    node.argument.type === AST_NODE_TYPES.CallExpression &&
+    node.argument.arguments.length > 0
+  ) {
+    const nodeName = getNodeName(node.argument);
+
+    if (['Promise.all', 'Promise.allSettled'].includes(nodeName as string)) {
+      const [firstArg] = node.argument.arguments;
+
       if (
-        isExpectCallPresentInFunction(promiseCallback.body) &&
-        node.parent.parent &&
-        !isParentThenOrPromiseReturned(node.parent.parent, testFunctionBody)
+        firstArg.type === AST_NODE_TYPES.ArrayExpression &&
+        firstArg.elements.some(nod => isIdentifier(nod, name))
       ) {
-        reportReturnRequired(context, node.parent.parent);
-
         return true;
       }
     }
 
-    return false;
-  });
+    if (
+      ['Promise.resolve', 'Promise.reject'].includes(nodeName as string) &&
+      node.argument.arguments.length === 1
+    ) {
+      return isIdentifier(node.argument.arguments[0], name);
+    }
+  }
+
+  return (
+    node.argument.type === AST_NODE_TYPES.Identifier &&
+    isIdentifier(node.argument, name)
+  );
 };
 
-const isHavingAsyncCallBackParam = (testFunction: FunctionExpression) =>
-  testFunction.params[0] &&
-  testFunction.params[0].type === AST_NODE_TYPES.Identifier;
+/**
+ * Attempts to determine if the runtime value represented by the given `identifier`
+ * is `await`ed or `return`ed within the given `body` of statements
+ */
+const isValueAwaitedOrReturned = (
+  identifier: TSESTree.Identifier,
+  body: TSESTree.Statement[],
+): boolean => {
+  const { name } = identifier;
 
-export default createRule<unknown[], MessageIds>({
+  for (const node of body) {
+    // skip all nodes that are before this identifier, because they'd probably
+    // be affecting a different runtime value (e.g. due to reassignment)
+    if (node.range[0] <= identifier.range[0]) {
+      continue;
+    }
+
+    if (node.type === AST_NODE_TYPES.ReturnStatement) {
+      return isPromiseMethodThatUsesValue(node, identifier);
+    }
+
+    if (node.type === AST_NODE_TYPES.ExpressionStatement) {
+      if (node.expression.type === AST_NODE_TYPES.AwaitExpression) {
+        return isPromiseMethodThatUsesValue(node.expression, identifier);
+      }
+
+      // (re)assignment changes the runtime value, so if we've not found an
+      // await or return already we act as if we've reached the end of the body
+      if (node.expression.type === AST_NODE_TYPES.AssignmentExpression) {
+        // unless we're assigning to the same identifier, in which case
+        // we might be chaining off the existing promise value
+        if (
+          isIdentifier(node.expression.left, name) &&
+          getNodeName(node.expression.right)?.startsWith(`${name}.`) &&
+          isPromiseChainCall(node.expression.right)
+        ) {
+          continue;
+        }
+
+        break;
+      }
+    }
+
+    if (
+      node.type === AST_NODE_TYPES.BlockStatement &&
+      isValueAwaitedOrReturned(identifier, node.body)
+    ) {
+      return true;
+    }
+  }
+
+  return false;
+};
+
+const findFirstBlockBodyUp = (
+  node: TSESTree.Node,
+): TSESTree.BlockStatement['body'] => {
+  let parent: TSESTree.Node['parent'] = node;
+
+  while (parent) {
+    if (parent.type === AST_NODE_TYPES.BlockStatement) {
+      return parent.body;
+    }
+
+    parent = parent.parent;
+  }
+
+  /* istanbul ignore next */
+  throw new Error(
+    `Could not find BlockStatement - please file a github issue at https://github.com/jest-community/eslint-plugin-jest`,
+  );
+};
+
+const isDirectlyWithinTestCaseCall = (node: TSESTree.Node): boolean => {
+  let parent: TSESTree.Node['parent'] = node;
+
+  while (parent) {
+    if (isFunction(parent)) {
+      parent = parent.parent;
+
+      return !!(
+        parent?.type === AST_NODE_TYPES.CallExpression && isTestCaseCall(parent)
+      );
+    }
+
+    parent = parent.parent;
+  }
+
+  return false;
+};
+
+const isVariableAwaitedOrReturned = (
+  variable: TSESTree.VariableDeclarator,
+): boolean => {
+  const body = findFirstBlockBodyUp(variable);
+
+  // it's pretty much impossible for us to track destructuring assignments,
+  // so we return true to bailout gracefully
+  if (!isIdentifier(variable.id)) {
+    return true;
+  }
+
+  return isValueAwaitedOrReturned(variable.id, body);
+};
+
+export default createRule({
   name: __filename,
   meta: {
     docs: {
       category: 'Best Practices',
-      description: 'Enforce having return statement when testing with promises',
+      description:
+        'Ensure promises that have expectations in their chain are valid',
       recommended: 'error',
     },
     messages: {
-      returnPromise:
-        'Promise should be returned to test its fulfillment or rejection',
+      expectInFloatingPromise:
+        "This promise should either be returned or awaited to ensure the expects in it's chain are called",
     },
     type: 'suggestion',
     schema: [],
   },
   defaultOptions: [],
   create(context) {
+    let inTestCaseWithDoneCallback = false;
+    // an array of booleans representing each promise chain we enter, with the
+    // boolean value representing if we think a given chain contains an expect
+    // in it's body.
+    //
+    // since we only care about the inner-most chain, we represent the state in
+    // reverse with the inner-most being the first item, as that makes it
+    // slightly less code to assign to by not needing to know the length
+    const chains: boolean[] = [];
+
     return {
-      CallExpression(node) {
-        if (
-          !isPromiseChainCall(node) ||
-          (node.parent && node.parent.type === AST_NODE_TYPES.AwaitExpression)
-        ) {
+      CallExpression(node: TSESTree.CallExpression) {
+        // there are too many ways that the done argument could be used with
+        // promises that contain expect that would make the promise safe for us
+        if (isTestCaseCallWithCallbackArg(node)) {
+          inTestCaseWithDoneCallback = true;
+
           return;
         }
-        const testFunction = findTestFunction(node);
 
-        if (testFunction && !isHavingAsyncCallBackParam(testFunction)) {
-          const { body } = testFunction;
+        // if this call expression is a promise chain, add it to the stack with
+        // value of "false", as we assume there are no expect calls initially
+        if (isPromiseChainCall(node)) {
+          chains.unshift(false);
 
-          if (body.type !== AST_NODE_TYPES.BlockStatement) {
-            return;
+          return;
+        }
+
+        // if we're within a promise chain, and this call expression looks like
+        // an expect call, mark the deepest chain as having an expect call
+        if (chains.length > 0 && isExpectCall(node)) {
+          chains[0] = true;
+        }
+      },
+      'CallExpression:exit'(node: TSESTree.CallExpression) {
+        // there are too many ways that the "done" argument could be used to
+        // make promises containing expects safe in a test for us to be able to
+        // accurately check, so we just bail out completely if it's present
+        if (inTestCaseWithDoneCallback) {
+          if (isTestCaseCall(node)) {
+            inTestCaseWithDoneCallback = false;
           }
 
-          const testFunctionBody = body.body;
-
-          // then block can have two args, fulfillment & rejection
-          // then block can have one args, fulfillment
-          // catch block can have one args, rejection
-          // ref: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise
-          verifyExpectWithReturn(
-            node.arguments.slice(0, 2),
-            node.callee,
-            context,
-            testFunctionBody,
-          );
+          return;
         }
+
+        if (!isPromiseChainCall(node)) {
+          return;
+        }
+
+        // since we're exiting this call expression (which is a promise chain)
+        // we remove it from the stack of chains, since we're unwinding
+        const hasExpectCall = chains.shift();
+
+        // if the promise chain we're exiting doesn't contain an expect,
+        // then we don't need to check it for anything
+        if (!hasExpectCall) {
+          return;
+        }
+
+        const { parent } = findTopMostCallExpression(node);
+
+        // if we don't have a parent (which is technically impossible at runtime)
+        // or our parent is not directly within the test case, we stop checking
+        // because we're most likely in the body of a function being defined
+        // within the test, which we can't track
+        if (!parent || !isDirectlyWithinTestCaseCall(parent)) {
+          return;
+        }
+
+        switch (parent.type) {
+          case AST_NODE_TYPES.VariableDeclarator: {
+            if (isVariableAwaitedOrReturned(parent)) {
+              return;
+            }
+
+            break;
+          }
+
+          case AST_NODE_TYPES.AssignmentExpression: {
+            if (
+              parent.left.type === AST_NODE_TYPES.Identifier &&
+              isValueAwaitedOrReturned(
+                parent.left,
+                findFirstBlockBodyUp(parent),
+              )
+            ) {
+              return;
+            }
+
+            break;
+          }
+
+          case AST_NODE_TYPES.ExpressionStatement:
+            break;
+
+          case AST_NODE_TYPES.ReturnStatement:
+          case AST_NODE_TYPES.AwaitExpression:
+          default:
+            return;
+        }
+
+        context.report({
+          messageId: 'expectInFloatingPromise',
+          node: parent,
+        });
       },
     };
   },

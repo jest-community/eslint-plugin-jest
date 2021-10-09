@@ -1,31 +1,72 @@
-# Enforce having return statement when testing with promises (`valid-expect-in-promise`)
+# Ensure promises that have expectations in their chain are valid (`valid-expect-in-promise`)
 
-Ensure to return promise when having assertions in `then` or `catch` block of
-promise
+Ensure promises that include expectations are returned or awaited.
 
 ## Rule details
 
-This rule looks for tests that have assertions in `then` and `catch` methods on
-promises that are not returned by the test.
+This rule flags any promises within the body of a test that include expectations
+that have either not been returned or awaited.
 
-### Default configuration
-
-The following pattern is considered warning:
+The following patterns is considered warning:
 
 ```js
-it('promise test', () => {
-  somePromise.then(data => {
-    expect(data).toEqual('foo');
+it('promises a person', () => {
+  api.getPersonByName('bob').then(person => {
+    expect(person).toHaveProperty('name', 'Bob');
   });
+});
+
+it('promises a counted person', () => {
+  const promise = api.getPersonByName('bob').then(person => {
+    expect(person).toHaveProperty('name', 'Bob');
+  });
+
+  promise.then(() => {
+    expect(analytics.gottenPeopleCount).toBe(1);
+  });
+});
+
+it('promises multiple people', () => {
+  const firstPromise = api.getPersonByName('bob').then(person => {
+    expect(person).toHaveProperty('name', 'Bob');
+  });
+  const secondPromise = api.getPersonByName('alice').then(person => {
+    expect(person).toHaveProperty('name', 'Alice');
+  });
+
+  return Promise.any([firstPromise, secondPromise]);
 });
 ```
 
 The following pattern is not warning:
 
 ```js
-it('promise test', () => {
-  return somePromise.then(data => {
-    expect(data).toEqual('foo');
+it('promises a person', async () => {
+  await api.getPersonByName('bob').then(person => {
+    expect(person).toHaveProperty('name', 'Bob');
   });
+});
+
+it('promises a counted person', () => {
+  let promise = api.getPersonByName('bob').then(person => {
+    expect(person).toHaveProperty('name', 'Bob');
+  });
+
+  promise = promise.then(() => {
+    expect(analytics.gottenPeopleCount).toBe(1);
+  });
+
+  return promise;
+});
+
+it('promises multiple people', () => {
+  const firstPromise = api.getPersonByName('bob').then(person => {
+    expect(person).toHaveProperty('name', 'Bob');
+  });
+  const secondPromise = api.getPersonByName('alice').then(person => {
+    expect(person).toHaveProperty('name', 'Alice');
+  });
+
+  return Promise.allSettled([firstPromise, secondPromise]);
 });
 ```
