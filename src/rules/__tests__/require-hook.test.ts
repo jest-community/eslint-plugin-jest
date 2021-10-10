@@ -225,11 +225,6 @@ ruleTester.run('require-hook', rule, {
       errors: [
         {
           messageId: 'useHook',
-          line: 4,
-          column: 1,
-        },
-        {
-          messageId: 'useHook',
           line: 16,
           column: 1,
         },

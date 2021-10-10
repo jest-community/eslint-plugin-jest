@@ -4,18 +4,27 @@ import {
 } from '@typescript-eslint/experimental-utils';
 import {
   createRule,
+  getNodeName,
   isDescribeCall,
   isFunction,
   isHook,
   isTestCaseCall,
 } from './utils';
 
+const isJestFnCall = (node: TSESTree.CallExpression): boolean => {
+  if (isDescribeCall(node) || isTestCaseCall(node) || isHook(node)) {
+    return true;
+  }
+
+  return !!getNodeName(node)?.startsWith('jest.');
+};
+
 const shouldBeInHook = (node: TSESTree.Node): boolean => {
   switch (node.type) {
     case AST_NODE_TYPES.ExpressionStatement:
       return shouldBeInHook(node.expression);
     case AST_NODE_TYPES.CallExpression:
-      return !(isDescribeCall(node) || isTestCaseCall(node) || isHook(node));
+      return !isJestFnCall(node);
 
     default:
       return false;
