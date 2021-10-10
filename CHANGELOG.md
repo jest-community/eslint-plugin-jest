@@ -1,3 +1,19 @@
+# [25.0.0-next.6](https://github.com/jest-community/eslint-plugin-jest/compare/v25.0.0-next.5...v25.0.0-next.6) (2021-10-10)
+
+
+### Bug Fixes
+
+* **lowercase-name:** consider skip and only prefixes for ignores ([#923](https://github.com/jest-community/eslint-plugin-jest/issues/923)) ([8716c24](https://github.com/jest-community/eslint-plugin-jest/commit/8716c24678ea7dc7c9f692b573d1ea19a67efd84))
+* **prefer-to-be:** don't consider RegExp literals as `toBe`-able ([#922](https://github.com/jest-community/eslint-plugin-jest/issues/922)) ([99b6d42](https://github.com/jest-community/eslint-plugin-jest/commit/99b6d429e697d60645b4bc64ee4ae34d7016118c))
+
+
+### Features
+
+* create `require-hook` rule ([#929](https://github.com/jest-community/eslint-plugin-jest/issues/929)) ([6204b31](https://github.com/jest-community/eslint-plugin-jest/commit/6204b311e849b51a0e4705015575139f590ae7a4))
+* deprecate `prefer-to-be-null` rule ([4db9161](https://github.com/jest-community/eslint-plugin-jest/commit/4db91612e988e84ac2facbfe466331b22eeccec9))
+* deprecate `prefer-to-be-undefined` rule ([fa08f09](https://github.com/jest-community/eslint-plugin-jest/commit/fa08f0944e89915fb215bbeff970f12459121cb8))
+* **valid-expect-in-promise:** re-implement rule ([#916](https://github.com/jest-community/eslint-plugin-jest/issues/916)) ([7a49c58](https://github.com/jest-community/eslint-plugin-jest/commit/7a49c5831e3d85a60c11e385203b8f83d98ad580))
+
 # [25.0.0-next.5](https://github.com/jest-community/eslint-plugin-jest/compare/v25.0.0-next.4...v25.0.0-next.5) (2021-09-29)
 
 
