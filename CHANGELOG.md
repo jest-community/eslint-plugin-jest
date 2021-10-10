@@ -1,3 +1,10 @@
+## [25.0.1](https://github.com/jest-community/eslint-plugin-jest/compare/v25.0.0...v25.0.1) (2021-10-10)
+
+
+### Bug Fixes
+
+* specify peer dependency ranges correctly ([cb87458](https://github.com/jest-community/eslint-plugin-jest/commit/cb87458d5f7dc7f669ab0c4067d75fc06ee29553))
+
 # [25.0.0](https://github.com/jest-community/eslint-plugin-jest/compare/v24.7.0...v25.0.0) (2021-10-10)
 
 
