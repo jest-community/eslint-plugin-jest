@@ -18,6 +18,22 @@ ruleTester.run('require-hook', rule, {
       });
     `,
     dedent`
+      const { myFn } = require('../functions');
+
+      test('myFn', () => {
+        expect(myFn()).toBe(1);
+      });
+    `,
+    dedent`
+      const { myFn } = require('../functions');
+
+      describe('myFn', () => {
+        it('returns one', () => {
+          expect(myFn()).toBe(1);
+        });
+      });
+    `,
+    dedent`
       describe('some tests', () => {
         it('is true', () => {
           expect(true).toBe(true);
@@ -98,6 +114,16 @@ ruleTester.run('require-hook', rule, {
   ],
   invalid: [
     {
+      code: 'setup();',
+      errors: [
+        {
+          messageId: 'useHook',
+          line: 1,
+          column: 1,
+        },
+      ],
+    },
+    {
       code: dedent`
         describe('some tests', () => {
           setup();
@@ -139,6 +165,83 @@ ruleTester.run('require-hook', rule, {
           messageId: 'useHook',
           line: 9,
           column: 5,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        import { database, isCity } from '../database';
+        import { loadCities } from '../api';
+
+        jest.mock('../api');
+
+        const initializeCityDatabase = () => {
+          database.addCity('Vienna');
+          database.addCity('San Juan');
+          database.addCity('Wellington');
+        };
+
+        const clearCityDatabase = () => {
+          database.clear();
+        };
+
+        initializeCityDatabase();
+
+        test('that persists cities', () => {
+          expect(database.cities.length).toHaveLength(3);
+        });
+
+        test('city database has Vienna', () => {
+          expect(isCity('Vienna')).toBeTruthy();
+        });
+
+        test('city database has San Juan', () => {
+          expect(isCity('San Juan')).toBeTruthy();
+        });
+
+        describe('when loading cities from the api', () => {
+          let consoleWarnSpy = jest.spyOn(console, 'warn');
+
+          loadCities.mockResolvedValue(['Wellington', 'London']);
+
+          it('does not duplicate cities', async () => {
+            await database.loadCities();
+
+            expect(database.cities).toHaveLength(4);
+          });
+
+          it('logs any duplicates', async () => {
+            await database.loadCities();
+
+            expect(consoleWarnSpy).toHaveBeenCalledWith(
+              'Ignored duplicate cities: Wellington',
+            );
+          });
+        });
+
+        clearCityDatabase();
+      `,
+      parserOptions: { sourceType: 'module' },
+      errors: [
+        {
+          messageId: 'useHook',
+          line: 4,
+          column: 1,
+        },
+        {
+          messageId: 'useHook',
+          line: 16,
+          column: 1,
+        },
+        {
+          messageId: 'useHook',
+          line: 33,
+          column: 3,
+        },
+        {
+          messageId: 'useHook',
+          line: 50,
+          column: 1,
         },
       ],
     },
