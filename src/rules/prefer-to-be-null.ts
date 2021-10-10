@@ -41,6 +41,8 @@ export default createRule({
     messages: {
       useToBeNull: 'Use toBeNull() instead',
     },
+    deprecated: true,
+    replacedBy: ['prefer-to-be'],
     fixable: 'code',
     type: 'suggestion',
     schema: [],

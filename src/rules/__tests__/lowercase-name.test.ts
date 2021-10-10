@@ -77,6 +77,18 @@ ruleTester.run('lowercase-name', rule, {
       ],
     },
     {
+      code: "xit('Foo', function () {})",
+      output: "xit('foo', function () {})",
+      errors: [
+        {
+          messageId: 'unexpectedLowercase',
+          data: { method: TestCaseName.xit },
+          column: 5,
+          line: 1,
+        },
+      ],
+    },
+    {
       code: 'it("Foo", function () {})',
       output: 'it("foo", function () {})',
       errors: [
@@ -108,6 +120,18 @@ ruleTester.run('lowercase-name', rule, {
           messageId: 'unexpectedLowercase',
           data: { method: TestCaseName.test },
           column: 6,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: "xtest('Foo', function () {})",
+      output: "xtest('foo', function () {})",
+      errors: [
+        {
+          messageId: 'unexpectedLowercase',
+          data: { method: TestCaseName.xtest },
+          column: 7,
           line: 1,
         },
       ],
@@ -185,6 +209,18 @@ ruleTester.run('lowercase-name', rule, {
       ],
     },
     {
+      code: 'fdescribe(`Some longer description`, function () {})',
+      output: 'fdescribe(`some longer description`, function () {})',
+      errors: [
+        {
+          messageId: 'unexpectedLowercase',
+          data: { method: DescribeAlias.fdescribe },
+          column: 11,
+          line: 1,
+        },
+      ],
+    },
+    {
       code: "it.each(['green', 'black'])('Should return %', () => {})",
       output: "it.each(['green', 'black'])('should return %', () => {})",
       errors: [
@@ -225,6 +261,14 @@ ruleTester.run('lowercase-name with ignore=describe', rule, {
       code: 'describe(`Foo`, function () {})',
       options: [{ ignore: [DescribeAlias.describe] }],
     },
+    {
+      code: 'fdescribe(`Foo`, function () {})',
+      options: [{ ignore: [DescribeAlias.describe] }],
+    },
+    {
+      code: 'describe.skip(`Foo`, function () {})',
+      options: [{ ignore: [DescribeAlias.describe] }],
+    },
   ],
   invalid: [],
 });
@@ -243,6 +287,14 @@ ruleTester.run('lowercase-name with ignore=test', rule, {
       code: 'test(`Foo`, function () {})',
       options: [{ ignore: [TestCaseName.test] }],
     },
+    {
+      code: 'xtest(`Foo`, function () {})',
+      options: [{ ignore: [TestCaseName.test] }],
+    },
+    {
+      code: 'test.only(`Foo`, function () {})',
+      options: [{ ignore: [TestCaseName.test] }],
+    },
   ],
   invalid: [],
 });
@@ -259,6 +311,14 @@ ruleTester.run('lowercase-name with ignore=it', rule, {
     },
     {
       code: 'it(`Foo`, function () {})',
+      options: [{ ignore: [TestCaseName.it] }],
+    },
+    {
+      code: 'fit(`Foo`, function () {})',
+      options: [{ ignore: [TestCaseName.it] }],
+    },
+    {
+      code: 'it.skip(`Foo`, function () {})',
       options: [{ ignore: [TestCaseName.it] }],
     },
   ],

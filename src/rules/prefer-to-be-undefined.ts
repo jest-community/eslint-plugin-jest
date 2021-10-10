@@ -46,6 +46,8 @@ export default createRule({
     messages: {
       useToBeUndefined: 'Use toBeUndefined() instead',
     },
+    deprecated: true,
+    replacedBy: ['prefer-to-be'],
     fixable: 'code',
     type: 'suggestion',
     schema: [],

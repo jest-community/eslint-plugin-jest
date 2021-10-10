@@ -184,16 +184,15 @@ installations requiring long-term consistency.
 | [prefer-spy-on](docs/rules/prefer-spy-on.md)                                 | Suggest using `jest.spyOn()`                                        |                  | ![fixable][] |
 | [prefer-strict-equal](docs/rules/prefer-strict-equal.md)                     | Suggest using `toStrictEqual()`                                     |                  | ![suggest][] |
 | [prefer-to-be](docs/rules/prefer-to-be.md)                                   | Suggest using `toBe()` for primitive literals                       |                  | ![fixable][] |
-| [prefer-to-be-null](docs/rules/prefer-to-be-null.md)                         | Suggest using `toBeNull()`                                          | ![style][]       | ![fixable][] |
-| [prefer-to-be-undefined](docs/rules/prefer-to-be-undefined.md)               | Suggest using `toBeUndefined()`                                     | ![style][]       | ![fixable][] |
 | [prefer-to-contain](docs/rules/prefer-to-contain.md)                         | Suggest using `toContain()`                                         | ![style][]       | ![fixable][] |
 | [prefer-to-have-length](docs/rules/prefer-to-have-length.md)                 | Suggest using `toHaveLength()`                                      | ![style][]       | ![fixable][] |
 | [prefer-todo](docs/rules/prefer-todo.md)                                     | Suggest using `test.todo`                                           |                  | ![fixable][] |
+| [require-hook](docs/rules/require-hook.md)                                   | Require setup and teardown code to be within a hook                 |                  |              |
 | [require-to-throw-message](docs/rules/require-to-throw-message.md)           | Require a message for `toThrow()`                                   |                  |              |
 | [require-top-level-describe](docs/rules/require-top-level-describe.md)       | Require test cases and hooks to be inside a `describe` block        |                  |              |
 | [valid-describe](docs/rules/valid-describe.md)                               | Enforce valid `describe()` callback                                 | ![recommended][] |              |
 | [valid-expect](docs/rules/valid-expect.md)                                   | Enforce valid `expect()` usage                                      | ![recommended][] |              |
-| [valid-expect-in-promise](docs/rules/valid-expect-in-promise.md)             | Enforce having return statement when testing with promises          | ![recommended][] |              |
+| [valid-expect-in-promise](docs/rules/valid-expect-in-promise.md)             | Ensure promises that have expectations in their chain are valid     | ![recommended][] |              |
 | [valid-title](docs/rules/valid-title.md)                                     | Enforce valid titles                                                | ![recommended][] | ![fixable][] |
 
 <!-- end base rules list -->

@@ -122,7 +122,7 @@ export default createRule<[RuleOptions], MessageId>({
 
         const { matcher } = parseExpectCall(node);
 
-        if (matcher?.node.parent?.type !== AST_NODE_TYPES.CallExpression) {
+        if (matcher?.node.parent.type !== AST_NODE_TYPES.CallExpression) {
           return;
         }
 

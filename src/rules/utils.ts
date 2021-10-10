@@ -418,7 +418,6 @@ const reparseAsMatcher = (
    * If this matcher isn't called, this will be `null`.
    */
   arguments:
-    parsedMember.node.parent &&
     parsedMember.node.parent.type === AST_NODE_TYPES.CallExpression
       ? parsedMember.node.parent.arguments
       : null,
@@ -453,11 +452,9 @@ const reparseMemberAsModifier = (
     );
   }
 
-  const negation =
-    parsedMember.node.parent &&
-    isExpectMember(parsedMember.node.parent, ModifierName.not)
-      ? parsedMember.node.parent
-      : undefined;
+  const negation = isExpectMember(parsedMember.node.parent, ModifierName.not)
+    ? parsedMember.node.parent
+    : undefined;
 
   return {
     ...parsedMember,
@@ -506,7 +503,7 @@ export const parseExpectCall = <ExpectNode extends ExpectCall>(
 
   const memberNode = modifier.negation || modifier.node;
 
-  if (!memberNode.parent || !isExpectMember(memberNode.parent)) {
+  if (!isExpectMember(memberNode.parent)) {
     return expectation;
   }
 
