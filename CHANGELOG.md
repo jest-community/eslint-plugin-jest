@@ -1,3 +1,12 @@
+# [24.7.0](https://github.com/jest-community/eslint-plugin-jest/compare/v24.6.0...v24.7.0) (2021-10-10)
+
+
+### Features
+
+* create `require-hook` rule ([#929](https://github.com/jest-community/eslint-plugin-jest/issues/929)) ([6204b31](https://github.com/jest-community/eslint-plugin-jest/commit/6204b311e849b51a0e4705015575139f590ae7a4))
+* deprecate `prefer-to-be-null` rule ([4db9161](https://github.com/jest-community/eslint-plugin-jest/commit/4db91612e988e84ac2facbfe466331b22eeccec9))
+* deprecate `prefer-to-be-undefined` rule ([fa08f09](https://github.com/jest-community/eslint-plugin-jest/commit/fa08f0944e89915fb215bbeff970f12459121cb8))
+
 # [24.6.0](https://github.com/jest-community/eslint-plugin-jest/compare/v24.5.2...v24.6.0) (2021-10-09)
 
 
