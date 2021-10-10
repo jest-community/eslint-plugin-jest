@@ -1,3 +1,33 @@
+# [25.0.0](https://github.com/jest-community/eslint-plugin-jest/compare/v24.7.0...v25.0.0) (2021-10-10)
+
+
+### Bug Fixes
+
+* stop testing ESLint 5 ([#893](https://github.com/jest-community/eslint-plugin-jest/issues/893)) ([47a0138](https://github.com/jest-community/eslint-plugin-jest/commit/47a0138856e6247cde00b17682e49865b8f5a1f6))
+* stop testing on Node 10 and 15 ([#891](https://github.com/jest-community/eslint-plugin-jest/issues/891)) ([bcd8d11](https://github.com/jest-community/eslint-plugin-jest/commit/bcd8d112fcd98a7652c767bd246d05101979239c))
+
+
+### Features
+
+* add `prefer-to-be` to style ruleset ([2a3376f](https://github.com/jest-community/eslint-plugin-jest/commit/2a3376fc9f5fe60d03d9aad0c4e5c7c423487e60))
+* **lowercase-name:** rename to `prefer-lowercase-title` ([b860084](https://github.com/jest-community/eslint-plugin-jest/commit/b8600841e371d5d9f36be4e50e53252fd8f62734))
+* **prefer-to-be-null:** remove rule ([809bcda](https://github.com/jest-community/eslint-plugin-jest/commit/809bcda12c555a24c764d152bcac9814ea55e72f))
+* **prefer-to-be-undefined:** remove rule ([3434d9b](https://github.com/jest-community/eslint-plugin-jest/commit/3434d9bd22b92bace6e0a50e2c72b401ac17704d))
+* remove deprecated rules ([#661](https://github.com/jest-community/eslint-plugin-jest/issues/661)) ([e8f16ec](https://github.com/jest-community/eslint-plugin-jest/commit/e8f16ec0e204a94a0e549cb9b415b3c6c8981aee))
+* **valid-describe:** rename to `valid-describe-callback` ([f3e9e9a](https://github.com/jest-community/eslint-plugin-jest/commit/f3e9e9a64e183a0fb8af3436611a7f70366a528d))
+
+
+### BREAKING CHANGES
+
+* **valid-describe:** renamed `valid-describe` to `valid-describe-callback`
+* **lowercase-name:** renamed `lowercase-name` to `prefer-lowercase-title`
+* **prefer-to-be-undefined:** removed `prefer-to-be-undefined` rule
+* **prefer-to-be-null:** removed `prefer-to-be-null` rule
+* recommend `prefer-to-be` rule
+* Removes rules `no-expect-resolves`, `no-truthy-falsy`, `no-try-expect`, and `prefer-inline-snapshots`
+* Drop support for ESLint 5
+* Drop support for Node 10 and 15
+
 # [25.0.0-next.7](https://github.com/jest-community/eslint-plugin-jest/compare/v25.0.0-next.6...v25.0.0-next.7) (2021-10-10)
 
 
