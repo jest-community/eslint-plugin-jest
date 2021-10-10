@@ -12,6 +12,14 @@ const ruleTester = new TSESLint.RuleTester({
 
 ruleTester.run('require-hook', rule, {
   valid: [
+    'describe()',
+    'describe("just a title")',
+    dedent`
+      describe('a test', () =>
+        test('something', () => {
+          expect(true).toBe(true);
+        }));
+    `,
     dedent`
       test('it', () => {
         //
