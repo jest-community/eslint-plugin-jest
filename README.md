@@ -154,7 +154,6 @@ installations requiring long-term consistency.
 | ---------------------------------------------------------------------------- | ------------------------------------------------------------------- | ---------------- | ------------ |
 | [consistent-test-it](docs/rules/consistent-test-it.md)                       | Have control over `test` and `it` usages                            |                  | ![fixable][] |
 | [expect-expect](docs/rules/expect-expect.md)                                 | Enforce assertion to be made in a test body                         | ![recommended][] |              |
-| [lowercase-name](docs/rules/lowercase-name.md)                               | Enforce lowercase test names                                        |                  | ![fixable][] |
 | [max-nested-describe](docs/rules/max-nested-describe.md)                     | Enforces a maximum depth to nested describe calls                   |                  |              |
 | [no-alias-methods](docs/rules/no-alias-methods.md)                           | Disallow alias methods                                              | ![style][]       | ![fixable][] |
 | [no-commented-out-tests](docs/rules/no-commented-out-tests.md)               | Disallow commented out tests                                        | ![recommended][] |              |
@@ -181,16 +180,17 @@ installations requiring long-term consistency.
 | [prefer-expect-assertions](docs/rules/prefer-expect-assertions.md)           | Suggest using `expect.assertions()` OR `expect.hasAssertions()`     |                  | ![suggest][] |
 | [prefer-expect-resolves](docs/rules/prefer-expect-resolves.md)               | Prefer `await expect(...).resolves` over `expect(await ...)` syntax |                  | ![fixable][] |
 | [prefer-hooks-on-top](docs/rules/prefer-hooks-on-top.md)                     | Suggest having hooks before any test cases                          |                  |              |
+| [prefer-lowercase-title](docs/rules/prefer-lowercase-title.md)               | Enforce lowercase test names                                        |                  | ![fixable][] |
 | [prefer-spy-on](docs/rules/prefer-spy-on.md)                                 | Suggest using `jest.spyOn()`                                        |                  | ![fixable][] |
 | [prefer-strict-equal](docs/rules/prefer-strict-equal.md)                     | Suggest using `toStrictEqual()`                                     |                  | ![suggest][] |
-| [prefer-to-be](docs/rules/prefer-to-be.md)                                   | Suggest using `toBe()` for primitive literals                       |                  | ![fixable][] |
+| [prefer-to-be](docs/rules/prefer-to-be.md)                                   | Suggest using `toBe()` for primitive literals                       | ![style][]       | ![fixable][] |
 | [prefer-to-contain](docs/rules/prefer-to-contain.md)                         | Suggest using `toContain()`                                         | ![style][]       | ![fixable][] |
 | [prefer-to-have-length](docs/rules/prefer-to-have-length.md)                 | Suggest using `toHaveLength()`                                      | ![style][]       | ![fixable][] |
 | [prefer-todo](docs/rules/prefer-todo.md)                                     | Suggest using `test.todo`                                           |                  | ![fixable][] |
 | [require-hook](docs/rules/require-hook.md)                                   | Require setup and teardown code to be within a hook                 |                  |              |
 | [require-to-throw-message](docs/rules/require-to-throw-message.md)           | Require a message for `toThrow()`                                   |                  |              |
 | [require-top-level-describe](docs/rules/require-top-level-describe.md)       | Require test cases and hooks to be inside a `describe` block        |                  |              |
-| [valid-describe](docs/rules/valid-describe.md)                               | Enforce valid `describe()` callback                                 | ![recommended][] |              |
+| [valid-describe-callback](docs/rules/valid-describe-callback.md)             | Enforce valid `describe()` callback                                 | ![recommended][] |              |
 | [valid-expect](docs/rules/valid-expect.md)                                   | Enforce valid `expect()` usage                                      | ![recommended][] |              |
 | [valid-expect-in-promise](docs/rules/valid-expect-in-promise.md)             | Ensure promises that have expectations in their chain are valid     | ![recommended][] |              |
 | [valid-title](docs/rules/valid-title.md)                                     | Enforce valid titles                                                | ![recommended][] | ![fixable][] |

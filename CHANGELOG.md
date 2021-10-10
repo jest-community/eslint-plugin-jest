@@ -1,3 +1,101 @@
+# [25.0.0-next.7](https://github.com/jest-community/eslint-plugin-jest/compare/v25.0.0-next.6...v25.0.0-next.7) (2021-10-10)
+
+
+### Features
+
+* add `prefer-to-be` to style ruleset ([2a3376f](https://github.com/jest-community/eslint-plugin-jest/commit/2a3376fc9f5fe60d03d9aad0c4e5c7c423487e60))
+* **lowercase-name:** rename to `prefer-lowercase-title` ([b860084](https://github.com/jest-community/eslint-plugin-jest/commit/b8600841e371d5d9f36be4e50e53252fd8f62734))
+* **prefer-to-be-null:** remove rule ([809bcda](https://github.com/jest-community/eslint-plugin-jest/commit/809bcda12c555a24c764d152bcac9814ea55e72f))
+* **prefer-to-be-undefined:** remove rule ([3434d9b](https://github.com/jest-community/eslint-plugin-jest/commit/3434d9bd22b92bace6e0a50e2c72b401ac17704d))
+* **valid-describe:** rename to `valid-describe-callback` ([f3e9e9a](https://github.com/jest-community/eslint-plugin-jest/commit/f3e9e9a64e183a0fb8af3436611a7f70366a528d))
+
+
+### BREAKING CHANGES
+
+* **valid-describe:** renamed `valid-describe` to `valid-describe-callback`
+* **lowercase-name:** renamed `lowercase-name` to `prefer-lowercase-title`
+* **prefer-to-be-undefined:** removed `prefer-to-be-undefined` rule
+* **prefer-to-be-null:** removed `prefer-to-be-null` rule
+* recommend `prefer-to-be` rule
+
+# [25.0.0-next.6](https://github.com/jest-community/eslint-plugin-jest/compare/v25.0.0-next.5...v25.0.0-next.6) (2021-10-10)
+
+
+### Bug Fixes
+
+* **lowercase-name:** consider skip and only prefixes for ignores ([#923](https://github.com/jest-community/eslint-plugin-jest/issues/923)) ([8716c24](https://github.com/jest-community/eslint-plugin-jest/commit/8716c24678ea7dc7c9f692b573d1ea19a67efd84))
+* **prefer-to-be:** don't consider RegExp literals as `toBe`-able ([#922](https://github.com/jest-community/eslint-plugin-jest/issues/922)) ([99b6d42](https://github.com/jest-community/eslint-plugin-jest/commit/99b6d429e697d60645b4bc64ee4ae34d7016118c))
+
+
+### Features
+
+* create `require-hook` rule ([#929](https://github.com/jest-community/eslint-plugin-jest/issues/929)) ([6204b31](https://github.com/jest-community/eslint-plugin-jest/commit/6204b311e849b51a0e4705015575139f590ae7a4))
+* deprecate `prefer-to-be-null` rule ([4db9161](https://github.com/jest-community/eslint-plugin-jest/commit/4db91612e988e84ac2facbfe466331b22eeccec9))
+* deprecate `prefer-to-be-undefined` rule ([fa08f09](https://github.com/jest-community/eslint-plugin-jest/commit/fa08f0944e89915fb215bbeff970f12459121cb8))
+* **valid-expect-in-promise:** re-implement rule ([#916](https://github.com/jest-community/eslint-plugin-jest/issues/916)) ([7a49c58](https://github.com/jest-community/eslint-plugin-jest/commit/7a49c5831e3d85a60c11e385203b8f83d98ad580))
+
+# [25.0.0-next.5](https://github.com/jest-community/eslint-plugin-jest/compare/v25.0.0-next.4...v25.0.0-next.5) (2021-09-29)
+
+
+### Bug Fixes
+
+* **no-deprecated-functions:** remove `process.cwd` from resolve paths ([#889](https://github.com/jest-community/eslint-plugin-jest/issues/889)) ([6940488](https://github.com/jest-community/eslint-plugin-jest/commit/6940488d7b5a47577e2823e6d4385b511c5becf4))
+* **no-identical-title:** always consider `.each` titles unique ([#910](https://github.com/jest-community/eslint-plugin-jest/issues/910)) ([a41a40e](https://github.com/jest-community/eslint-plugin-jest/commit/a41a40eafaf1db444ba940cccd2014cb0dc41be9))
+* **valid-expect-in-promise:** support `finally` ([#914](https://github.com/jest-community/eslint-plugin-jest/issues/914)) ([9c89855](https://github.com/jest-community/eslint-plugin-jest/commit/9c89855d23534272230afe6d9e665b8e11ef3075))
+* **valid-expect-in-promise:** support additional test functions ([#915](https://github.com/jest-community/eslint-plugin-jest/issues/915)) ([4798005](https://github.com/jest-community/eslint-plugin-jest/commit/47980058d8d1ff86ee69a376c4edd182d462d594))
+
+
+### Features
+
+* create `prefer-expect-resolves` rule ([#822](https://github.com/jest-community/eslint-plugin-jest/issues/822)) ([2556020](https://github.com/jest-community/eslint-plugin-jest/commit/2556020a777f9daaf1d362a04e3f990415e82db8))
+* create `prefer-to-be` rule ([#864](https://github.com/jest-community/eslint-plugin-jest/issues/864)) ([3a64aea](https://github.com/jest-community/eslint-plugin-jest/commit/3a64aea5bdc55465f1ef34f1426ae626d6c8a230))
+* **require-top-level-describe:** support enforcing max num of describes ([#912](https://github.com/jest-community/eslint-plugin-jest/issues/912)) ([14a2d13](https://github.com/jest-community/eslint-plugin-jest/commit/14a2d1391c9f6f52509316542f45df35853c9b79))
+* **valid-title:** allow custom matcher messages ([#913](https://github.com/jest-community/eslint-plugin-jest/issues/913)) ([ffc9392](https://github.com/jest-community/eslint-plugin-jest/commit/ffc93921348b0d4a394125f665d2bb09148ea37e))
+
+# [25.0.0-next.4](https://github.com/jest-community/eslint-plugin-jest/compare/v25.0.0-next.3...v25.0.0-next.4) (2021-09-20)
+
+
+### Bug Fixes
+
+* mark rules that suggest fixes with `hasSuggestion` for ESLint v8 ([#898](https://github.com/jest-community/eslint-plugin-jest/issues/898)) ([ec0a21b](https://github.com/jest-community/eslint-plugin-jest/commit/ec0a21b0d98d043a9949138e495814e0935d5e31))
+* use correct property `hasSuggestions` rather than `hasSuggestion` ([#899](https://github.com/jest-community/eslint-plugin-jest/issues/899)) ([dfd2368](https://github.com/jest-community/eslint-plugin-jest/commit/dfd2368d1cb1789b6a95a11be24c36868bb8a819))
+
+# [25.0.0-next.3](https://github.com/jest-community/eslint-plugin-jest/compare/v25.0.0-next.2...v25.0.0-next.3) (2021-09-17)
+
+
+### Features
+
+* remove deprecated rules ([#661](https://github.com/jest-community/eslint-plugin-jest/issues/661)) ([e8f16ec](https://github.com/jest-community/eslint-plugin-jest/commit/e8f16ec0e204a94a0e549cb9b415b3c6c8981aee))
+
+
+### BREAKING CHANGES
+
+* Removes rules `no-expect-resolves`, `no-truthy-falsy`, `no-try-expect`, and `prefer-inline-snapshots`
+
+# [25.0.0-next.2](https://github.com/jest-community/eslint-plugin-jest/compare/v25.0.0-next.1...v25.0.0-next.2) (2021-09-13)
+
+
+### Bug Fixes
+
+* stop testing ESLint 5 ([#893](https://github.com/jest-community/eslint-plugin-jest/issues/893)) ([47a0138](https://github.com/jest-community/eslint-plugin-jest/commit/47a0138856e6247cde00b17682e49865b8f5a1f6))
+
+
+### BREAKING CHANGES
+
+* Drop support for ESLint 5
+
+# [25.0.0-next.1](https://github.com/jest-community/eslint-plugin-jest/compare/v24.4.0...v25.0.0-next.1) (2021-09-13)
+
+
+### Bug Fixes
+
+* stop testing on Node 10 and 15 ([#891](https://github.com/jest-community/eslint-plugin-jest/issues/891)) ([bcd8d11](https://github.com/jest-community/eslint-plugin-jest/commit/bcd8d112fcd98a7652c767bd246d05101979239c))
+
+
+### BREAKING CHANGES
+
+* Drop support for Node 10 and 15
+
 # [24.7.0](https://github.com/jest-community/eslint-plugin-jest/compare/v24.6.0...v24.7.0) (2021-10-10)
 
 
