@@ -1,3 +1,10 @@
+## [25.0.2](https://github.com/jest-community/eslint-plugin-jest/compare/v25.0.1...v25.0.2) (2021-10-11)
+
+
+### Bug Fixes
+
+* **valid-expect-in-promise:** support out of order awaits ([#939](https://github.com/jest-community/eslint-plugin-jest/issues/939)) ([07d2137](https://github.com/jest-community/eslint-plugin-jest/commit/07d213719de974d6b5a1cab75e836dc39b432f87))
+
 ## [25.0.1](https://github.com/jest-community/eslint-plugin-jest/compare/v25.0.0...v25.0.1) (2021-10-10)
 
 
