@@ -5,6 +5,7 @@ lib/
 *.log
 .yarn/*
 !.yarn/releases
+!.yarn/patches
 !.yarn/plugins
 !.yarn/sdks
 !.yarn/versions
