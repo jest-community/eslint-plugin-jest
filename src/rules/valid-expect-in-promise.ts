@@ -138,10 +138,7 @@ const isPromiseMethodThatUsesValue = (
     }
   }
 
-  return (
-    node.argument.type === AST_NODE_TYPES.Identifier &&
-    isIdentifier(node.argument, name)
-  );
+  return isIdentifier(node.argument, name);
 };
 
 /**
