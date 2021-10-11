@@ -1,3 +1,10 @@
+## [25.0.5](https://github.com/jest-community/eslint-plugin-jest/compare/v25.0.4...v25.0.5) (2021-10-11)
+
+
+### Bug Fixes
+
+* support `@typescript-eslint/eslint-plugin@5` ([#942](https://github.com/jest-community/eslint-plugin-jest/issues/942)) ([9b842a3](https://github.com/jest-community/eslint-plugin-jest/commit/9b842a309fb8e4263896f3e5b5150cf091d48698))
+
 ## [25.0.4](https://github.com/jest-community/eslint-plugin-jest/compare/v25.0.3...v25.0.4) (2021-10-11)
 
 
