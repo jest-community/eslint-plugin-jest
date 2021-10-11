@@ -79,7 +79,7 @@
     ]
   },
   "dependencies": {
-    "@typescript-eslint/experimental-utils": "^4.0.1"
+    "@typescript-eslint/experimental-utils": "^5.0.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.4.4",

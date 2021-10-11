@@ -681,7 +681,7 @@ const isTestCaseName = (node: TSESTree.LeftHandSideExpression) =>
   TestCaseName.hasOwnProperty(node.name);
 
 const isTestCaseProperty = (
-  node: TSESTree.Expression,
+  node: TSESTree.Expression | TSESTree.PrivateIdentifier,
 ): node is AccessorNode<TestCaseProperty> =>
   isSupportedAccessor(node) &&
   TestCaseProperty.hasOwnProperty(getAccessorValue(node));
@@ -737,7 +737,7 @@ const isDescribeAlias = (node: TSESTree.LeftHandSideExpression) =>
   DescribeAlias.hasOwnProperty(node.name);
 
 const isDescribeProperty = (
-  node: TSESTree.Expression,
+  node: TSESTree.Expression | TSESTree.PrivateIdentifier,
 ): node is AccessorNode<DescribeProperty> =>
   isSupportedAccessor(node) &&
   DescribeProperty.hasOwnProperty(getAccessorValue(node));
