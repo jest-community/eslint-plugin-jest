@@ -79,7 +79,9 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: yarn
-      - name: install with eslint v${{ matrix.eslint-version }}
+      - name:
+          # prettier-ignore
+          install with eslint v${{ matrix.eslint-version }} and ts-eslint/plugin v${{ matrix.ts-eslint-plugin-version }}
         run: |
           yarn
           yarn add --dev eslint@${{ matrix.eslint-version }} @typescript-eslint/eslint-plugin@${{ matrix.ts-eslint-plugin-version }}
