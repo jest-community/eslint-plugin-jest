@@ -143,6 +143,33 @@ const isPromiseMethodThatUsesValue = (
 
 /**
  * Attempts to determine if the runtime value represented by the given `identifier`
+ * is `await`ed as an argument along the given call expression
+ */
+const isValueAwaitedInArguments = (
+  name: string,
+  node: TSESTree.CallExpression,
+): boolean => {
+  for (const argument of node.arguments) {
+    if (
+      argument.type === AST_NODE_TYPES.AwaitExpression &&
+      isIdentifier(argument.argument, name)
+    ) {
+      return true;
+    }
+  }
+
+  if (
+    node.callee.type === AST_NODE_TYPES.MemberExpression &&
+    node.callee.object.type === AST_NODE_TYPES.CallExpression
+  ) {
+    return isValueAwaitedInArguments(name, node.callee.object);
+  }
+
+  return false;
+};
+
+/**
+ * Attempts to determine if the runtime value represented by the given `identifier`
  * is `await`ed or `return`ed within the given `body` of statements
  */
 const isValueAwaitedOrReturned = (
@@ -163,6 +190,14 @@ const isValueAwaitedOrReturned = (
     }
 
     if (node.type === AST_NODE_TYPES.ExpressionStatement) {
+      // it's possible that we're awaiting the value as an argument
+      if (
+        node.expression.type === AST_NODE_TYPES.CallExpression &&
+        isValueAwaitedInArguments(name, node.expression)
+      ) {
+        return true;
+      }
+
       if (
         node.expression.type === AST_NODE_TYPES.AwaitExpression &&
         isPromiseMethodThatUsesValue(node.expression, identifier)
