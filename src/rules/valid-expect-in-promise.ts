@@ -166,8 +166,11 @@ const isValueAwaitedOrReturned = (
     }
 
     if (node.type === AST_NODE_TYPES.ExpressionStatement) {
-      if (node.expression.type === AST_NODE_TYPES.AwaitExpression) {
-        return isPromiseMethodThatUsesValue(node.expression, identifier);
+      if (
+        node.expression.type === AST_NODE_TYPES.AwaitExpression &&
+        isPromiseMethodThatUsesValue(node.expression, identifier)
+      ) {
+        return true;
       }
 
       // (re)assignment changes the runtime value, so if we've not found an

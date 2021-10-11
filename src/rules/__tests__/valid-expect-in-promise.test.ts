@@ -384,6 +384,19 @@ ruleTester.run('valid-expect-in-promise', rule, {
       );
     `,
     dedent`
+      it('is valid', async () => {
+        const promiseOne = loadNumber().then(number => {
+          expect(typeof number).toBe('number');
+        });
+        const promiseTwo = loadNumber().then(number => {
+          expect(typeof number).toBe('number');
+        });
+
+        await promiseTwo;
+        await promiseOne;
+      });
+    `,
+    dedent`
       it("it1", () => somePromise.then(() => {
         expect(someThing).toEqual(true)
       }))
