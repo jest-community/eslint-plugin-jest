@@ -34,6 +34,48 @@ ruleTester.run('valid-expect-in-promise', rule, {
           return number + 1;
         });
 
+        expect(await promise).resolves.toBeGreaterThan(1);
+      });
+    `,
+    dedent`
+      it('is valid', async () => {
+        const promise = loadNumber().then(number => {
+          expect(typeof number).toBe('number');
+
+          return number + 1;
+        });
+
+        expect(1).toBeGreaterThan(await promise);
+      });
+    `,
+    dedent`
+      it('is valid', async () => {
+        const promise = loadNumber().then(number => {
+          expect(typeof number).toBe('number');
+
+          return number + 1;
+        });
+
+        expect.this.that.is(await promise);
+      });
+    `,
+    dedent`
+      it('is valid', async () => {
+        expect(await loadNumber().then(number => {
+          expect(typeof number).toBe('number');
+
+          return number + 1;
+        })).toBeGreaterThan(1);
+      });
+    `,
+    dedent`
+      it('is valid', async () => {
+        const promise = loadNumber().then(number => {
+          expect(typeof number).toBe('number');
+
+          return number + 1;
+        });
+
         logValue(await promise);
       });
     `,

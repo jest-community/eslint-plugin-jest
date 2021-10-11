@@ -147,22 +147,29 @@ const isPromiseMethodThatUsesValue = (
  */
 const isValueAwaitedInArguments = (
   name: string,
-  node: TSESTree.CallExpression,
+  call: TSESTree.CallExpression,
 ): boolean => {
-  for (const argument of node.arguments) {
-    if (
-      argument.type === AST_NODE_TYPES.AwaitExpression &&
-      isIdentifier(argument.argument, name)
-    ) {
-      return true;
-    }
-  }
+  let node: TSESTree.Node = call;
 
-  if (
-    node.callee.type === AST_NODE_TYPES.MemberExpression &&
-    node.callee.object.type === AST_NODE_TYPES.CallExpression
-  ) {
-    return isValueAwaitedInArguments(name, node.callee.object);
+  while (node) {
+    if (node.type === AST_NODE_TYPES.CallExpression) {
+      for (const argument of node.arguments) {
+        if (
+          argument.type === AST_NODE_TYPES.AwaitExpression &&
+          isIdentifier(argument.argument, name)
+        ) {
+          return true;
+        }
+      }
+
+      node = node.callee;
+    }
+
+    if (node.type !== AST_NODE_TYPES.MemberExpression) {
+      break;
+    }
+
+    node = node.object;
   }
 
   return false;
