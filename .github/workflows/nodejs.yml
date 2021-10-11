@@ -84,7 +84,7 @@ jobs:
           install with eslint v${{ matrix.eslint-version }} and ts-eslint/plugin v${{ matrix.ts-eslint-plugin-version }}
         run: |
           yarn
-          yarn add --dev eslint@${{ matrix.eslint-version }} @typescript-eslint/eslint-plugin@${{ matrix.ts-eslint-plugin-version }}
+          yarn add --dev eslint@${{ matrix.eslint-version }} @typescript-eslint/eslint-plugin@${{ matrix.ts-eslint-plugin-version }} @typescript-eslint/parser@${{ matrix.ts-eslint-plugin-version }}
       - name: run tests
         run: yarn test --coverage
         env:
