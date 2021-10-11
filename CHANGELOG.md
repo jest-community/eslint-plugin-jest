@@ -1,3 +1,10 @@
+## [25.0.4](https://github.com/jest-community/eslint-plugin-jest/compare/v25.0.3...v25.0.4) (2021-10-11)
+
+
+### Bug Fixes
+
+* update `@typescript-eslint/experimental-utils` to v5 ([#941](https://github.com/jest-community/eslint-plugin-jest/issues/941)) ([afad49a](https://github.com/jest-community/eslint-plugin-jest/commit/afad49a885eeb1ac52f00d8e1666259210a4b675))
+
 ## [25.0.3](https://github.com/jest-community/eslint-plugin-jest/compare/v25.0.2...v25.0.3) (2021-10-11)
 
 
