@@ -16,6 +16,88 @@ ruleTester.run('valid-expect-in-promise', rule, {
     'Promise.resolve().then(() => expect(1).toBe(2))',
     'const x = Promise.resolve().then(() => expect(1).toBe(2))',
     dedent`
+      it('is valid', async () => {
+        const promise = loadNumber().then(number => {
+          expect(typeof number).toBe('number');
+
+          return number + 1;
+        });
+
+        expect(await promise).toBeGreaterThan(1);
+      });
+    `,
+    dedent`
+      it('is valid', async () => {
+        const promise = loadNumber().then(number => {
+          expect(typeof number).toBe('number');
+
+          return number + 1;
+        });
+
+        expect(await promise).resolves.toBeGreaterThan(1);
+      });
+    `,
+    dedent`
+      it('is valid', async () => {
+        const promise = loadNumber().then(number => {
+          expect(typeof number).toBe('number');
+
+          return number + 1;
+        });
+
+        expect(1).toBeGreaterThan(await promise);
+      });
+    `,
+    dedent`
+      it('is valid', async () => {
+        const promise = loadNumber().then(number => {
+          expect(typeof number).toBe('number');
+
+          return number + 1;
+        });
+
+        expect.this.that.is(await promise);
+      });
+    `,
+    dedent`
+      it('is valid', async () => {
+        expect(await loadNumber().then(number => {
+          expect(typeof number).toBe('number');
+
+          return number + 1;
+        })).toBeGreaterThan(1);
+      });
+    `,
+    dedent`
+      it('is valid', async () => {
+        const promise = loadNumber().then(number => {
+          expect(typeof number).toBe('number');
+
+          return number + 1;
+        });
+
+        logValue(await promise);
+      });
+    `,
+    dedent`
+      it('is valid', async () => {
+        const promise = loadNumber().then(number => {
+          expect(typeof number).toBe('number');
+
+          return 1;
+        });
+
+        expect.assertions(await promise);
+      });
+    `,
+    dedent`
+      it('is valid', async () => {
+        await loadNumber().then(number => {
+          expect(typeof number).toBe('number');
+        });
+      });
+    `,
+    dedent`
       it('it1', () => new Promise((done) => {
         test()
           .then(() => {
@@ -1366,6 +1448,24 @@ ruleTester.run('valid-expect-in-promise', rule, {
           endColumn: 5,
           line: 2,
           messageId: 'expectInFloatingPromise',
+        },
+      ],
+    },
+    {
+      code: dedent`
+        test('that we error on this', () => {
+          const promise = something().then(value => {
+            expect(value).toBe('red');
+          });
+
+          log(promise);
+        });
+      `,
+      errors: [
+        {
+          messageId: 'expectInFloatingPromise',
+          line: 2,
+          column: 9,
         },
       ],
     },
