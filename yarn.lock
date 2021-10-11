@@ -2522,12 +2522,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/eslint-plugin@npm:^4.0.1":
-  version: 4.33.0
-  resolution: "@typescript-eslint/eslint-plugin@npm:4.33.0"
+"@typescript-eslint/eslint-plugin@npm:^5.0.0":
+  version: 5.0.0
+  resolution: "@typescript-eslint/eslint-plugin@npm:5.0.0"
   dependencies:
-    "@typescript-eslint/experimental-utils": 4.33.0
-    "@typescript-eslint/scope-manager": 4.33.0
+    "@typescript-eslint/experimental-utils": 5.0.0
+    "@typescript-eslint/scope-manager": 5.0.0
     debug: ^4.3.1
     functional-red-black-tree: ^1.0.1
     ignore: ^5.1.8
@@ -2535,32 +2535,16 @@ __metadata:
     semver: ^7.3.5
     tsutils: ^3.21.0
   peerDependencies:
-    "@typescript-eslint/parser": ^4.0.0
-    eslint: ^5.0.0 || ^6.0.0 || ^7.0.0
+    "@typescript-eslint/parser": ^5.0.0
+    eslint: ^6.0.0 || ^7.0.0 || ^8.0.0
   peerDependenciesMeta:
     typescript:
       optional: true
-  checksum: d74855d0a5ffe0b2f362ec02fcd9301d39a53fb4155b9bd0cb15a0a31d065143129ebf98df9d86af4b6f74de1d423a4c0d8c0095520844068117453afda5bc4f
+  checksum: 0b1230b9fc5f74ea7e24fb14ede8e7907710eb1b467dd02cb52ed233f034190ff0aa4fefe8b549f425bdf2301cb9c072cf5e2a970742c664053880a198c9e697
   languageName: node
   linkType: hard
 
-"@typescript-eslint/experimental-utils@npm:4.33.0, @typescript-eslint/experimental-utils@npm:^4.11.1":
-  version: 4.33.0
-  resolution: "@typescript-eslint/experimental-utils@npm:4.33.0"
-  dependencies:
-    "@types/json-schema": ^7.0.7
-    "@typescript-eslint/scope-manager": 4.33.0
-    "@typescript-eslint/types": 4.33.0
-    "@typescript-eslint/typescript-estree": 4.33.0
-    eslint-scope: ^5.1.1
-    eslint-utils: ^3.0.0
-  peerDependencies:
-    eslint: "*"
-  checksum: f859800ada0884f92db6856f24efcb1d073ac9883ddc2b1aa9339f392215487895bed8447ebce3741e8141bb32e545244abef62b73193ba9a8a0527c523aabae
-  languageName: node
-  linkType: hard
-
-"@typescript-eslint/experimental-utils@npm:^5.0.0":
+"@typescript-eslint/experimental-utils@npm:5.0.0, @typescript-eslint/experimental-utils@npm:^5.0.0":
   version: 5.0.0
   resolution: "@typescript-eslint/experimental-utils@npm:5.0.0"
   dependencies:
@@ -2576,20 +2560,36 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/parser@npm:^4.0.1":
+"@typescript-eslint/experimental-utils@npm:^4.11.1":
   version: 4.33.0
-  resolution: "@typescript-eslint/parser@npm:4.33.0"
+  resolution: "@typescript-eslint/experimental-utils@npm:4.33.0"
   dependencies:
+    "@types/json-schema": ^7.0.7
     "@typescript-eslint/scope-manager": 4.33.0
     "@typescript-eslint/types": 4.33.0
     "@typescript-eslint/typescript-estree": 4.33.0
+    eslint-scope: ^5.1.1
+    eslint-utils: ^3.0.0
+  peerDependencies:
+    eslint: "*"
+  checksum: f859800ada0884f92db6856f24efcb1d073ac9883ddc2b1aa9339f392215487895bed8447ebce3741e8141bb32e545244abef62b73193ba9a8a0527c523aabae
+  languageName: node
+  linkType: hard
+
+"@typescript-eslint/parser@npm:^5.0.0":
+  version: 5.0.0
+  resolution: "@typescript-eslint/parser@npm:5.0.0"
+  dependencies:
+    "@typescript-eslint/scope-manager": 5.0.0
+    "@typescript-eslint/types": 5.0.0
+    "@typescript-eslint/typescript-estree": 5.0.0
     debug: ^4.3.1
   peerDependencies:
-    eslint: ^5.0.0 || ^6.0.0 || ^7.0.0
+    eslint: ^6.0.0 || ^7.0.0 || ^8.0.0
   peerDependenciesMeta:
     typescript:
       optional: true
-  checksum: 102457eae1acd516211098fea081c8a2ed728522bbda7f5a557b6ef23d88970514f9a0f6285d53fca134d3d4d7d17822b5d5e12438d5918df4d1f89cc9e67d57
+  checksum: 9c97a60d583e80774e2593b79a9e8baa3b1867dcb2afab250ce8a950fccb44ccc5ecb270dcb071c592652a0eac6f28826ae02e8cbb386788f76eb134972e9c52
   languageName: node
   linkType: hard
 
@@ -4469,9 +4469,9 @@ __metadata:
     "@types/jest": ^27.0.0
     "@types/node": ^14.0.0
     "@types/prettier": ^2.0.0
-    "@typescript-eslint/eslint-plugin": ^4.0.1
+    "@typescript-eslint/eslint-plugin": ^5.0.0
     "@typescript-eslint/experimental-utils": ^5.0.0
-    "@typescript-eslint/parser": ^4.0.1
+    "@typescript-eslint/parser": ^5.0.0
     babel-jest: ^27.0.0
     babel-plugin-replace-ts-export-assignment: ^0.0.2
     dedent: ^0.7.0
@@ -4497,7 +4497,7 @@ __metadata:
     ts-node: ^10.2.1
     typescript: ^4.4.0
   peerDependencies:
-    "@typescript-eslint/eslint-plugin": ^4.0.0
+    "@typescript-eslint/eslint-plugin": ^4.0.0 || ^5.0.0
     eslint: ^6.0.0 || ^7.0.0
   peerDependenciesMeta:
     "@typescript-eslint/eslint-plugin":

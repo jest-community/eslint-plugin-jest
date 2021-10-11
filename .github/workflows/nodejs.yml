@@ -62,13 +62,14 @@ jobs:
   test-node:
     name:
       # prettier-ignore
-      Test on Node.js v${{ matrix.node-version }} and eslint v${{ matrix.eslint-version }}
+      Test on Node.js v${{ matrix.node-version }}, eslint v${{ matrix.eslint-version }} and ts-eslint/plugin v${{ matrix.ts-eslint-plugin-version }}
     needs: prepare-yarn-cache
     strategy:
       fail-fast: false
       matrix:
         node-version: [12.x, 14.x, 16.x]
         eslint-version: [6, 7]
+        ts-eslint-plugin-version: [4, 5]
     runs-on: ubuntu-latest
 
     steps:
@@ -78,10 +79,12 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: yarn
-      - name: install with eslint v${{ matrix.eslint-version }}
+      - name:
+          # prettier-ignore
+          install with eslint v${{ matrix.eslint-version }} and ts-eslint/plugin v${{ matrix.ts-eslint-plugin-version }}
         run: |
           yarn
-          yarn add --dev eslint@${{ matrix.eslint-version }}
+          yarn add --dev eslint@${{ matrix.eslint-version }} @typescript-eslint/eslint-plugin@${{ matrix.ts-eslint-plugin-version }} @typescript-eslint/parser@${{ matrix.ts-eslint-plugin-version }}
       - name: run tests
         run: yarn test --coverage
         env:
