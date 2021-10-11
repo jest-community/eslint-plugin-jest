@@ -1,3 +1,10 @@
+## [25.0.3](https://github.com/jest-community/eslint-plugin-jest/compare/v25.0.2...v25.0.3) (2021-10-11)
+
+
+### Bug Fixes
+
+* **valid-expect-in-promise:** support awaited promises in arguments ([#936](https://github.com/jest-community/eslint-plugin-jest/issues/936)) ([bd2c33c](https://github.com/jest-community/eslint-plugin-jest/commit/bd2c33c858573d5414d8bc0d401eb6f27801ad2b))
+
 ## [25.0.2](https://github.com/jest-community/eslint-plugin-jest/compare/v25.0.1...v25.0.2) (2021-10-11)
 
 
