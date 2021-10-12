@@ -4,6 +4,7 @@ import {
 } from '@typescript-eslint/experimental-utils';
 import {
   KnownCallExpression,
+  ModifierName,
   createRule,
   getAccessorValue,
   getNodeName,
@@ -12,6 +13,7 @@ import {
   isIdentifier,
   isSupportedAccessor,
   isTestCaseCall,
+  parseExpectCall,
 } from './utils';
 
 type PromiseChainCallExpression = KnownCallExpression<
@@ -175,6 +177,28 @@ const isValueAwaitedInArguments = (
   return false;
 };
 
+const getLeftMostCallExpression = (
+  call: TSESTree.CallExpression,
+): TSESTree.CallExpression => {
+  let leftMostCallExpression: TSESTree.CallExpression = call;
+  let node: TSESTree.Node = call;
+
+  while (node) {
+    if (node.type === AST_NODE_TYPES.CallExpression) {
+      leftMostCallExpression = node;
+      node = node.callee;
+    }
+
+    if (node.type !== AST_NODE_TYPES.MemberExpression) {
+      break;
+    }
+
+    node = node.object;
+  }
+
+  return leftMostCallExpression;
+};
+
 /**
  * Attempts to determine if the runtime value represented by the given `identifier`
  * is `await`ed or `return`ed within the given `body` of statements
@@ -198,11 +222,27 @@ const isValueAwaitedOrReturned = (
 
     if (node.type === AST_NODE_TYPES.ExpressionStatement) {
       // it's possible that we're awaiting the value as an argument
-      if (
-        node.expression.type === AST_NODE_TYPES.CallExpression &&
-        isValueAwaitedInArguments(name, node.expression)
-      ) {
-        return true;
+      if (node.expression.type === AST_NODE_TYPES.CallExpression) {
+        if (isValueAwaitedInArguments(name, node.expression)) {
+          return true;
+        }
+
+        const leftMostCall = getLeftMostCallExpression(node.expression);
+
+        if (
+          isExpectCall(leftMostCall) &&
+          leftMostCall.arguments.length > 0 &&
+          isIdentifier(leftMostCall.arguments[0], name)
+        ) {
+          const { modifier } = parseExpectCall(leftMostCall);
+
+          if (
+            modifier?.name === ModifierName.resolves ||
+            modifier?.name === ModifierName.rejects
+          ) {
+            return true;
+          }
+        }
       }
 
       if (

@@ -16,6 +16,50 @@ ruleTester.run('valid-expect-in-promise', rule, {
     'Promise.resolve().then(() => expect(1).toBe(2))',
     'const x = Promise.resolve().then(() => expect(1).toBe(2))',
     dedent`
+      it('is valid', () => {
+        const promise = loadNumber().then(number => {
+          expect(typeof number).toBe('number');
+
+          return number + 1;
+        });
+
+        expect(promise).resolves.toBe(1);
+      });
+    `,
+    dedent`
+      it('is valid', () => {
+        const promise = loadNumber().then(number => {
+          expect(typeof number).toBe('number');
+
+          return number + 1;
+        });
+
+        expect(promise).resolves.not.toBe(2);
+      });
+    `,
+    dedent`
+      it('is valid', () => {
+        const promise = loadNumber().then(number => {
+          expect(typeof number).toBe('number');
+
+          return number + 1;
+        });
+
+        expect(promise).rejects.toBe(1);
+      });
+    `,
+    dedent`
+      it('is valid', () => {
+        const promise = loadNumber().then(number => {
+          expect(typeof number).toBe('number');
+
+          return number + 1;
+        });
+
+        expect(promise).rejects.not.toBe(2);
+      });
+    `,
+    dedent`
       it('is valid', async () => {
         const promise = loadNumber().then(number => {
           expect(typeof number).toBe('number');
@@ -1459,6 +1503,46 @@ ruleTester.run('valid-expect-in-promise', rule, {
           });
 
           log(promise);
+        });
+      `,
+      errors: [
+        {
+          messageId: 'expectInFloatingPromise',
+          line: 2,
+          column: 9,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        it('is valid', async () => {
+          const promise = loadNumber().then(number => {
+            expect(typeof number).toBe('number');
+
+            return number + 1;
+          });
+
+          expect(promise).toBeInstanceOf(Promise);
+        });
+      `,
+      errors: [
+        {
+          messageId: 'expectInFloatingPromise',
+          line: 2,
+          column: 9,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        it('is valid', async () => {
+          const promise = loadNumber().then(number => {
+            expect(typeof number).toBe('number');
+
+            return number + 1;
+          });
+
+          expect(anotherPromise).resolves.toBe(1);
         });
       `,
       errors: [
