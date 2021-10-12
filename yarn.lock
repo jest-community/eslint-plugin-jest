@@ -4489,7 +4489,6 @@ __metadata:
     lint-staged: ^11.1.2
     pinst: ^2.0.0
     prettier: ^2.0.5
-    resolve-from: ^5.0.0
     rimraf: ^3.0.0
     semantic-release: ^18.0.0
     semver: ^7.3.5

@@ -1,9 +1,9 @@
 import { TSESLint } from '@typescript-eslint/experimental-utils';
-import resolveFrom from 'resolve-from';
 import rule from '../no-interpolation-in-snapshots';
+import { espreeParser } from './test-utils';
 
 const ruleTester = new TSESLint.RuleTester({
-  parser: resolveFrom(require.resolve('eslint'), 'espree'),
+  parser: espreeParser,
   parserOptions: {
     ecmaVersion: 2017,
   },
