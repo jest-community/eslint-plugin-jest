@@ -3,11 +3,11 @@ import {
   TSESLint,
 } from '@typescript-eslint/experimental-utils';
 import dedent from 'dedent';
-import resolveFrom from 'resolve-from';
 import rule from '../expect-expect';
+import { espreeParser } from './test-utils';
 
 const ruleTester = new TSESLint.RuleTester({
-  parser: resolveFrom(require.resolve('eslint'), 'espree'),
+  parser: espreeParser,
   parserOptions: {
     ecmaVersion: 2015,
   },
