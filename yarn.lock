@@ -4485,7 +4485,7 @@ __metadata:
     husky: ^7.0.2
     is-ci: ^3.0.0
     jest: ^27.0.0
-    jest-runner-eslint: ^1.0.0
+    jest-runner-eslint: ^0.11.1
     lint-staged: ^11.1.2
     pinst: ^2.0.0
     prettier: ^2.0.5
@@ -6333,18 +6333,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jest-runner-eslint@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "jest-runner-eslint@npm:1.0.0"
+"jest-runner-eslint@npm:^0.11.1":
+  version: 0.11.1
+  resolution: "jest-runner-eslint@npm:0.11.1"
   dependencies:
     chalk: ^3.0.0
     cosmiconfig: ^6.0.0
     create-jest-runner: ^0.6.0
     dot-prop: ^5.3.0
   peerDependencies:
-    eslint: ^6 || ^7 || ^8
+    eslint: ^6 || ^7
     jest: ^25.1 || ^26 || ^27
-  checksum: 2969532d67e8a3049b22a143a23b40226dc552e602b8cae060bf6427728dc2c13c0f95c3cf54981b0a551403c876e30d2881c96e6a42d29df1f4891e870427c9
+  checksum: 49d38ba63eaba12e4dcfa02e918940befa002f5b841df662be177be561dfe1f814d9830a6cd3d9e81b6e3d027a738690fc91325dd2fbf4feb4d13cac3266baf3
   languageName: node
   linkType: hard
 
