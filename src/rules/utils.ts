@@ -700,8 +700,17 @@ const isTestCaseProperty = (
 export const isTestCaseCall = (
   node: TSESTree.CallExpression,
 ): node is JestFunctionCallExpression<TestCaseName> => {
-  if (isTestCaseName(node.callee)) {
-    return true;
+  const name = findFirstCallPropertyName(node, Object.keys(TestCaseProperty));
+
+  return !!name && TestCaseName.hasOwnProperty(name);
+};
+
+const findFirstCallPropertyName = (
+  node: TSESTree.CallExpression,
+  properties: string[],
+): string | null => {
+  if (isIdentifier(node.callee)) {
+    return node.callee.name;
   }
 
   const callee =
@@ -713,7 +722,8 @@ export const isTestCaseCall = (
 
   if (
     callee.type === AST_NODE_TYPES.MemberExpression &&
-    isTestCaseProperty(callee.property)
+    isSupportedAccessor(callee.property) &&
+    properties.includes(getAccessorValue(callee.property))
   ) {
     // if we're an `each()`, ensure we're the outer CallExpression (i.e `.each()()`)
     if (
@@ -721,26 +731,21 @@ export const isTestCaseCall = (
       node.callee.type !== AST_NODE_TYPES.TaggedTemplateExpression &&
       node.callee.type !== AST_NODE_TYPES.CallExpression
     ) {
-      return false;
+      return null;
     }
 
-    return callee.object.type === AST_NODE_TYPES.MemberExpression
-      ? isTestCaseName(callee.object.object)
-      : isTestCaseName(callee.object);
+    const nod =
+      callee.object.type === AST_NODE_TYPES.MemberExpression
+        ? callee.object.object
+        : callee.object;
+
+    if (isSupportedAccessor(nod)) {
+      return getAccessorValue(nod);
+    }
   }
 
-  return false;
+  return null;
 };
-
-const isDescribeAlias = (node: TSESTree.LeftHandSideExpression) =>
-  node.type === AST_NODE_TYPES.Identifier &&
-  DescribeAlias.hasOwnProperty(node.name);
-
-const isDescribeProperty = (
-  node: TSESTree.Expression | TSESTree.PrivateIdentifier,
-): node is AccessorNode<DescribeProperty> =>
-  isSupportedAccessor(node) &&
-  DescribeProperty.hasOwnProperty(getAccessorValue(node));
 
 /**
  * Checks if the given `node` is a *call* to a `describe` function that would
@@ -756,36 +761,9 @@ const isDescribeProperty = (
 export const isDescribeCall = (
   node: TSESTree.CallExpression,
 ): node is JestFunctionCallExpression<DescribeAlias> => {
-  if (isDescribeAlias(node.callee)) {
-    return true;
-  }
+  const name = findFirstCallPropertyName(node, Object.keys(DescribeProperty));
 
-  const callee =
-    node.callee.type === AST_NODE_TYPES.TaggedTemplateExpression
-      ? node.callee.tag
-      : node.callee.type === AST_NODE_TYPES.CallExpression
-      ? node.callee.callee
-      : node.callee;
-
-  if (
-    callee.type === AST_NODE_TYPES.MemberExpression &&
-    isDescribeProperty(callee.property)
-  ) {
-    // if we're an `each()`, ensure we're the outer CallExpression (i.e `.each()()`)
-    if (
-      getAccessorValue(callee.property) === 'each' &&
-      node.callee.type !== AST_NODE_TYPES.TaggedTemplateExpression &&
-      node.callee.type !== AST_NODE_TYPES.CallExpression
-    ) {
-      return false;
-    }
-
-    return callee.object.type === AST_NODE_TYPES.MemberExpression
-      ? isDescribeAlias(callee.object.object)
-      : isDescribeAlias(callee.object);
-  }
-
-  return false;
+  return !!name && DescribeAlias.hasOwnProperty(name);
 };
 
 const collectReferences = (scope: TSESLint.Scope.Scope) => {

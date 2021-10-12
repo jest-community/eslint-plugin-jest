@@ -326,6 +326,41 @@ ruleTester.run('non-jest functions (esm)', rule, {
   valid: [
     {
       code: dedent`
+        it('should do something good', () => {
+          const test = obj => {};
+
+          expect(test({})).toBeDefined();
+        });
+      `,
+      parserOptions: { sourceType: 'module' },
+      only: true,
+    },
+    {
+      code: dedent`
+        const test = obj => {};
+
+        it('should do something good', () => {
+          expect(test({})).toBeDefined();
+        });
+      `,
+      parserOptions: { sourceType: 'module' },
+      only: true,
+    },
+    {
+      code: dedent`
+        const test = obj => {};
+
+        describe(test, () => {
+          it('should do something good', () => {
+            expect(test({})).toBeDefined();
+          });
+        });
+      `,
+      parserOptions: { sourceType: 'module' },
+      only: true,
+    },
+    {
+      code: dedent`
         import { test } from './test-fn';
 
         describe(test, () => {
