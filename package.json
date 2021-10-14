@@ -61,7 +61,8 @@
       {
         "displayName": "test",
         "moduleNameMapper": {
-          "@eslint/eslintrc/universal": "@eslint/eslintrc/dist/eslintrc-universal.cjs"
+          "@eslint/eslintrc/universal": "@eslint/eslintrc/dist/eslintrc-universal.cjs",
+          "eslint/use-at-your-own-risk": "eslint/lib/unsupported-api.js"
         },
         "testPathIgnorePatterns": [
           "<rootDir>/lib/.*",
