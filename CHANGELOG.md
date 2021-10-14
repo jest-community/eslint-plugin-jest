@@ -1,3 +1,10 @@
+# [25.2.0](https://github.com/jest-community/eslint-plugin-jest/compare/v25.1.0...v25.2.0) (2021-10-14)
+
+
+### Features
+
+* **expect-expect:** support `additionalTestBlockFunctions` option ([#850](https://github.com/jest-community/eslint-plugin-jest/issues/850)) ([3b94c62](https://github.com/jest-community/eslint-plugin-jest/commit/3b94c62b81a50bc8b213c597bb59799cff1ef207))
+
 # [25.1.0](https://github.com/jest-community/eslint-plugin-jest/compare/v25.0.6...v25.1.0) (2021-10-14)
 
 
