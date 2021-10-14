@@ -26,7 +26,7 @@ it('adds 1 + 2 to equal 3', () => {
 
 ```json
 {
-  "jest/lowercase-name": [
+  "jest/prefer-lowercase-name": [
     "error",
     {
       "ignore": ["describe", "test"]
@@ -50,7 +50,7 @@ By default, none of these options are enabled (the equivalent of
 Example of **correct** code for the `{ "ignore": ["describe"] }` option:
 
 ```js
-/* eslint jest/lowercase-name: ["error", { "ignore": ["describe"] }] */
+/* eslint jest/prefer-lowercase-name: ["error", { "ignore": ["describe"] }] */
 
 describe('Uppercase description');
 ```
@@ -58,7 +58,7 @@ describe('Uppercase description');
 Example of **correct** code for the `{ "ignore": ["test"] }` option:
 
 ```js
-/* eslint jest/lowercase-name: ["error", { "ignore": ["test"] }] */
+/* eslint jest/prefer-lowercase-name: ["error", { "ignore": ["test"] }] */
 
 test('Uppercase description');
 ```
@@ -66,7 +66,7 @@ test('Uppercase description');
 Example of **correct** code for the `{ "ignore": ["it"] }` option:
 
 ```js
-/* eslint jest/lowercase-name: ["error", { "ignore": ["it"] }] */
+/* eslint jest/prefer-lowercase-name: ["error", { "ignore": ["it"] }] */
 
 it('Uppercase description');
 ```
@@ -82,7 +82,7 @@ By default, nothing is allowed (the equivalent of `{ "allowedPrefixes": [] }`).
 Example of **correct** code for the `{ "allowedPrefixes": ["GET"] }` option:
 
 ```js
-/* eslint jest/lowercase-name: ["error", { "allowedPrefixes": ["GET"] }] */
+/* eslint jest/prefer-lowercase-name: ["error", { "allowedPrefixes": ["GET"] }] */
 
 describe('GET /live');
 ```
@@ -95,7 +95,7 @@ title starting with an upper-case letter.
 Example of **correct** code for the `{ "ignoreTopLevelDescribe": true }` option:
 
 ```js
-/* eslint jest/lowercase-name: ["error", { "ignoreTopLevelDescribe": true }] */
+/* eslint jest/prefer-lowercase-name: ["error", { "ignoreTopLevelDescribe": true }] */
 describe('MyClass', () => {
   describe('#myMethod', () => {
     it('does things', () => {
