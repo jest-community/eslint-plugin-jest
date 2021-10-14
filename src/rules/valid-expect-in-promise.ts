@@ -145,6 +145,35 @@ const isPromiseMethodThatUsesValue = (
 
 /**
  * Attempts to determine if the runtime value represented by the given `identifier`
+ * is `await`ed within the given array of elements
+ */
+const isValueAwaitedInElements = (
+  name: string,
+  elements:
+    | TSESTree.ArrayExpression['elements']
+    | TSESTree.CallExpression['arguments'],
+): boolean => {
+  for (const element of elements) {
+    if (
+      element.type === AST_NODE_TYPES.AwaitExpression &&
+      isIdentifier(element.argument, name)
+    ) {
+      return true;
+    }
+
+    if (
+      element.type === AST_NODE_TYPES.ArrayExpression &&
+      isValueAwaitedInElements(name, element.elements)
+    ) {
+      return true;
+    }
+  }
+
+  return false;
+};
+
+/**
+ * Attempts to determine if the runtime value represented by the given `identifier`
  * is `await`ed as an argument along the given call expression
  */
 const isValueAwaitedInArguments = (
@@ -155,13 +184,8 @@ const isValueAwaitedInArguments = (
 
   while (node) {
     if (node.type === AST_NODE_TYPES.CallExpression) {
-      for (const argument of node.arguments) {
-        if (
-          argument.type === AST_NODE_TYPES.AwaitExpression &&
-          isIdentifier(argument.argument, name)
-        ) {
-          return true;
-        }
+      if (isValueAwaitedInElements(name, node.arguments)) {
+        return true;
       }
 
       node = node.callee;
