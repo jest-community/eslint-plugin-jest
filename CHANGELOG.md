@@ -1,3 +1,10 @@
+# [25.1.0](https://github.com/jest-community/eslint-plugin-jest/compare/v25.0.6...v25.1.0) (2021-10-14)
+
+
+### Features
+
+* support `eslint@8` ([#940](https://github.com/jest-community/eslint-plugin-jest/issues/940)) ([5a9e45f](https://github.com/jest-community/eslint-plugin-jest/commit/5a9e45f61888a3c32eac3cbfeaf3acdfaa5d9c83))
+
 ## [25.0.6](https://github.com/jest-community/eslint-plugin-jest/compare/v25.0.5...v25.0.6) (2021-10-14)
 
 
