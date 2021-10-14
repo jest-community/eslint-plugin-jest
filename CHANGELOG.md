@@ -1,3 +1,11 @@
+## [25.0.6](https://github.com/jest-community/eslint-plugin-jest/compare/v25.0.5...v25.0.6) (2021-10-14)
+
+
+### Bug Fixes
+
+* **valid-expect-in-promise:** allow `expect.resolve` & `expect.reject` ([#948](https://github.com/jest-community/eslint-plugin-jest/issues/948)) ([71b7e17](https://github.com/jest-community/eslint-plugin-jest/commit/71b7e17953b4310a4f2845adc951c68cf062cdc1)), closes [#947](https://github.com/jest-community/eslint-plugin-jest/issues/947)
+* **valid-expect-in-promise:** support `await` in arrays ([#949](https://github.com/jest-community/eslint-plugin-jest/issues/949)) ([a62130c](https://github.com/jest-community/eslint-plugin-jest/commit/a62130c28d01dea065cc6900a062180de2079876))
+
 ## [25.0.5](https://github.com/jest-community/eslint-plugin-jest/compare/v25.0.4...v25.0.5) (2021-10-11)
 
 
