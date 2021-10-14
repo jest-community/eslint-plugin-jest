@@ -15,6 +15,7 @@ const ruleTester = new TSESLint.RuleTester({
 
 ruleTester.run('expect-expect', rule, {
   valid: [
+    "['x']();",
     'it("should pass", () => expect(true).toBeDefined())',
     'test("should pass", () => expect(true).toBeDefined())',
     'it("should pass", () => somePromise().then(() => expect(true).toBeDefined()))',
@@ -69,7 +70,21 @@ ruleTester.run('expect-expect', rule, {
     },
     {
       code: 'it("should pass", () => expect(true).toBeDefined())',
-      options: [{ assertFunctionNames: undefined }],
+      options: [
+        {
+          assertFunctionNames: undefined,
+          additionalTestBlockFunctions: undefined,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        theoretically('the number {input} is correctly translated to string', theories, theory => {
+          const output = NumberToLongString(theory.input);
+          expect(output).toBe(theory.expected);
+        })
+      `,
+      options: [{ additionalTestBlockFunctions: ['theoretically'] }],
     },
   ],
 
@@ -94,6 +109,39 @@ ruleTester.run('expect-expect', rule, {
     },
     {
       code: 'test("should fail", () => {});',
+      errors: [
+        {
+          messageId: 'noAssertions',
+          type: AST_NODE_TYPES.CallExpression,
+        },
+      ],
+    },
+    {
+      code: 'test.skip("should fail", () => {});',
+      errors: [
+        {
+          messageId: 'noAssertions',
+          type: AST_NODE_TYPES.CallExpression,
+        },
+      ],
+    },
+    {
+      code: 'afterEach(() => {});',
+      options: [{ additionalTestBlockFunctions: ['afterEach'] }],
+      errors: [
+        {
+          messageId: 'noAssertions',
+          type: AST_NODE_TYPES.CallExpression,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        theoretically('the number {input} is correctly translated to string', theories, theory => {
+          const output = NumberToLongString(theory.input);
+        })
+      `,
+      options: [{ additionalTestBlockFunctions: ['theoretically'] }],
       errors: [
         {
           messageId: 'noAssertions',

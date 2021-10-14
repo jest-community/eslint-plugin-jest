@@ -8,10 +8,10 @@ import {
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
 import {
-  TestCaseName,
   createRule,
   getNodeName,
   getTestCallExpressionsFromDeclaredVariables,
+  isTestCaseCall,
 } from './utils';
 
 /**
@@ -41,7 +41,12 @@ function matchesAssertFunctionName(
 }
 
 export default createRule<
-  [Partial<{ assertFunctionNames: readonly string[] }>],
+  [
+    Partial<{
+      assertFunctionNames: readonly string[];
+      additionalTestBlockFunctions: readonly string[];
+    }>,
+  ],
   'noAssertions'
 >({
   name: __filename,
@@ -62,14 +67,23 @@ export default createRule<
             type: 'array',
             items: [{ type: 'string' }],
           },
+          additionalTestBlockFunctions: {
+            type: 'array',
+            items: { type: 'string' },
+          },
         },
         additionalProperties: false,
       },
     ],
     type: 'suggestion',
   },
-  defaultOptions: [{ assertFunctionNames: ['expect'] }],
-  create(context, [{ assertFunctionNames = ['expect'] }]) {
+  defaultOptions: [
+    { assertFunctionNames: ['expect'], additionalTestBlockFunctions: [] },
+  ],
+  create(
+    context,
+    [{ assertFunctionNames = ['expect'], additionalTestBlockFunctions = [] }],
+  ) {
     const unchecked: TSESTree.CallExpression[] = [];
 
     function checkCallExpressionUsed(nodes: TSESTree.Node[]) {
@@ -96,14 +110,14 @@ export default createRule<
 
     return {
       CallExpression(node) {
-        const name = getNodeName(node.callee);
+        const name = getNodeName(node.callee) ?? '';
 
-        if (name === TestCaseName.it || name === TestCaseName.test) {
-          unchecked.push(node);
-        } else if (
-          name &&
-          matchesAssertFunctionName(name, assertFunctionNames)
+        if (
+          isTestCaseCall(node) ||
+          additionalTestBlockFunctions.includes(name)
         ) {
+          unchecked.push(node);
+        } else if (matchesAssertFunctionName(name, assertFunctionNames)) {
           // Return early in case of nested `it` statements.
           checkCallExpressionUsed(context.getAncestors());
         }
