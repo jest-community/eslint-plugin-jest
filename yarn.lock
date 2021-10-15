@@ -4342,7 +4342,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-eslint-plugin@npm:^4.0.1":
+"eslint-plugin-eslint-plugin@npm:^4.0.0":
   version: 4.0.1
   resolution: "eslint-plugin-eslint-plugin@npm:4.0.1"
   dependencies:
@@ -4404,7 +4404,7 @@ __metadata:
     eslint-config-prettier: ^8.3.0
     eslint-plugin-eslint-comments: ^3.1.2
     eslint-plugin-eslint-config: ^2.0.0
-    eslint-plugin-eslint-plugin: ^4.0.1
+    eslint-plugin-eslint-plugin: ^4.0.0
     eslint-plugin-import: ^2.25.1
     eslint-plugin-node: ^11.0.0
     eslint-plugin-prettier: ^3.4.1
