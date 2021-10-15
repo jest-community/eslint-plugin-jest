@@ -1,3 +1,10 @@
+## [25.2.1](https://github.com/jest-community/eslint-plugin-jest/compare/v25.2.0...v25.2.1) (2021-10-15)
+
+
+### Bug Fixes
+
+* **expect-expect:** don't error on `it.todo` & `test.todo` calls ([#954](https://github.com/jest-community/eslint-plugin-jest/issues/954)) ([d3cc0db](https://github.com/jest-community/eslint-plugin-jest/commit/d3cc0db129f8d2021cf278f656b73b8c7efb2dc2))
+
 # [25.2.0](https://github.com/jest-community/eslint-plugin-jest/compare/v25.1.0...v25.2.0) (2021-10-14)
 
 
