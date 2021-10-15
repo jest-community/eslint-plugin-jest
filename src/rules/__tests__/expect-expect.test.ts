@@ -15,6 +15,8 @@ const ruleTester = new TSESLint.RuleTester({
 
 ruleTester.run('expect-expect', rule, {
   valid: [
+    'it.todo("will test something eventually")',
+    'test.todo("will test something eventually")',
     "['x']();",
     'it("should pass", () => expect(true).toBeDefined())',
     'test("should pass", () => expect(true).toBeDefined())',

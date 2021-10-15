@@ -11,6 +11,7 @@ import {
   createRule,
   getNodeName,
   getTestCallExpressionsFromDeclaredVariables,
+  isSupportedAccessor,
   isTestCaseCall,
 } from './utils';
 
@@ -116,6 +117,13 @@ export default createRule<
           isTestCaseCall(node) ||
           additionalTestBlockFunctions.includes(name)
         ) {
+          if (
+            node.callee.type === AST_NODE_TYPES.MemberExpression &&
+            isSupportedAccessor(node.callee.property, 'todo')
+          ) {
+            return;
+          }
+
           unchecked.push(node);
         } else if (matchesAssertFunctionName(name, assertFunctionNames)) {
           // Return early in case of nested `it` statements.
