@@ -33,6 +33,15 @@ ruleTester.run('require-hook', rule, {
       });
     `,
     dedent`
+      class MockLogger {
+        log() {}
+      }
+
+      test('myFn', () => {
+        expect(myFn()).toBe(1);
+      });
+    `,
+    dedent`
       const { myFn } = require('../functions');
 
       describe('myFn', () => {

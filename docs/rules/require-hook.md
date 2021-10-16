@@ -20,6 +20,7 @@ directly within the body of a `describe`, _except_ for the following:
 - `import` statements
 - `const` variables
 - `let` _declarations_
+- Classes
 - Types
 - Calls to the standard Jest globals
 
