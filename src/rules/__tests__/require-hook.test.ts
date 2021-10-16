@@ -147,6 +147,27 @@ ruleTester.run('require-hook', rule, {
     },
     {
       code: dedent`
+        let { setup } = require('./test-utils');
+
+        describe('some tests', () => {
+          setup();
+        });
+      `,
+      errors: [
+        {
+          messageId: 'useHook',
+          line: 1,
+          column: 1,
+        },
+        {
+          messageId: 'useHook',
+          line: 4,
+          column: 3,
+        },
+      ],
+    },
+    {
+      code: dedent`
         describe('some tests', () => {
           setup();
 
