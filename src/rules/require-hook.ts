@@ -25,6 +25,13 @@ const shouldBeInHook = (node: TSESTree.Node): boolean => {
       return shouldBeInHook(node.expression);
     case AST_NODE_TYPES.CallExpression:
       return !isJestFnCall(node);
+    case AST_NODE_TYPES.VariableDeclaration: {
+      if (node.kind === 'const') {
+        return false;
+      }
+
+      return node.declarations.some(({ init }) => init !== null);
+    }
 
     default:
       return false;
