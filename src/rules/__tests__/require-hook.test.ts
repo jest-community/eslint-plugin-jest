@@ -32,6 +32,16 @@ ruleTester.run('require-hook', rule, {
         expect(myFn()).toBe(1);
       });
     `,
+    {
+      code: dedent`
+        import { myFn } from '../functions';
+
+        test('myFn', () => {
+          expect(myFn()).toBe(1);
+        });
+      `,
+      parserOptions: { sourceType: 'module' },
+    },
     dedent`
       class MockLogger {
         log() {}
