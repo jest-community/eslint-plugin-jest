@@ -250,3 +250,53 @@ ruleTester.run('require-hook', rule, {
     },
   ],
 });
+
+new TSESLint.RuleTester({
+  parser: require.resolve('@typescript-eslint/parser'),
+}).run('require-hook: typescript edition', rule, {
+  valid: [
+    dedent`
+      import { myFn } from '../functions';
+
+      // todo: https://github.com/DefinitelyTyped/DefinitelyTyped/pull/56545
+      declare module 'eslint' {
+        namespace ESLint {
+          interface LintResult {
+            fatalErrorCount: number;
+          }
+        }
+      }
+
+      test('myFn', () => {
+        expect(myFn()).toBe(1);
+      });
+    `,
+  ],
+  invalid: [
+    {
+      code: dedent`
+        import { setup } from '../test-utils';
+
+        // todo: https://github.com/DefinitelyTyped/DefinitelyTyped/pull/56545
+        declare module 'eslint' {
+          namespace ESLint {
+            interface LintResult {
+              fatalErrorCount: number;
+            }
+          }
+        }
+
+        describe('some tests', () => {
+          setup();
+        });
+      `,
+      errors: [
+        {
+          messageId: 'useHook',
+          line: 13,
+          column: 3,
+        },
+      ],
+    },
+  ],
+});
