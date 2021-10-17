@@ -1,3 +1,10 @@
+## [25.2.2](https://github.com/jest-community/eslint-plugin-jest/compare/v25.2.1...v25.2.2) (2021-10-17)
+
+
+### Bug Fixes
+
+* **require-hook:** check variables are either `const` or declarations ([#959](https://github.com/jest-community/eslint-plugin-jest/issues/959)) ([ce8cd61](https://github.com/jest-community/eslint-plugin-jest/commit/ce8cd612b7c4c16dc29934118b191d3fbe1ffc07))
+
 ## [25.2.1](https://github.com/jest-community/eslint-plugin-jest/compare/v25.2.0...v25.2.1) (2021-10-15)
 
 
