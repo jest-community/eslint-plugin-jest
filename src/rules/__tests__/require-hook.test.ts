@@ -32,6 +32,25 @@ ruleTester.run('require-hook', rule, {
         expect(myFn()).toBe(1);
       });
     `,
+    {
+      code: dedent`
+        import { myFn } from '../functions';
+
+        test('myFn', () => {
+          expect(myFn()).toBe(1);
+        });
+      `,
+      parserOptions: { sourceType: 'module' },
+    },
+    dedent`
+      class MockLogger {
+        log() {}
+      }
+
+      test('myFn', () => {
+        expect(myFn()).toBe(1);
+      });
+    `,
     dedent`
       const { myFn } = require('../functions');
 
@@ -352,6 +371,56 @@ ruleTester.run('require-hook', rule, {
           messageId: 'useHook',
           line: 50,
           column: 1,
+        },
+      ],
+    },
+  ],
+});
+
+new TSESLint.RuleTester({
+  parser: require.resolve('@typescript-eslint/parser'),
+}).run('require-hook: typescript edition', rule, {
+  valid: [
+    dedent`
+      import { myFn } from '../functions';
+
+      // todo: https://github.com/DefinitelyTyped/DefinitelyTyped/pull/56545
+      declare module 'eslint' {
+        namespace ESLint {
+          interface LintResult {
+            fatalErrorCount: number;
+          }
+        }
+      }
+
+      test('myFn', () => {
+        expect(myFn()).toBe(1);
+      });
+    `,
+  ],
+  invalid: [
+    {
+      code: dedent`
+        import { setup } from '../test-utils';
+
+        // todo: https://github.com/DefinitelyTyped/DefinitelyTyped/pull/56545
+        declare module 'eslint' {
+          namespace ESLint {
+            interface LintResult {
+              fatalErrorCount: number;
+            }
+          }
+        }
+
+        describe('some tests', () => {
+          setup();
+        });
+      `,
+      errors: [
+        {
+          messageId: 'useHook',
+          line: 13,
+          column: 3,
         },
       ],
     },
