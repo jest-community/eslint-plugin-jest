@@ -96,6 +96,20 @@ ruleTester.run('require-hook', rule, {
       });
     `,
     dedent`
+      let consoleErrorSpy = null; 
+
+      beforeEach(() => {
+        consoleErrorSpy = jest.spyOn(console, 'error');
+      });
+    `,
+    dedent`
+      let consoleErrorSpy = undefined; 
+
+      beforeEach(() => {
+        consoleErrorSpy = jest.spyOn(console, 'error');
+      });
+    `,
+    dedent`
       describe('some tests', () => {
         beforeEach(() => {
           setup();
@@ -166,6 +180,27 @@ ruleTester.run('require-hook', rule, {
     },
     {
       code: dedent`
+        let { setup } = require('./test-utils');
+
+        describe('some tests', () => {
+          setup();
+        });
+      `,
+      errors: [
+        {
+          messageId: 'useHook',
+          line: 1,
+          column: 1,
+        },
+        {
+          messageId: 'useHook',
+          line: 4,
+          column: 3,
+        },
+      ],
+    },
+    {
+      code: dedent`
         describe('some tests', () => {
           setup();
 
@@ -192,6 +227,73 @@ ruleTester.run('require-hook', rule, {
           messageId: 'useHook',
           line: 9,
           column: 5,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        let consoleErrorSpy = jest.spyOn(console, 'error');
+
+        describe('when loading cities from the api', () => {
+          let consoleWarnSpy = jest.spyOn(console, 'warn');
+        });
+      `,
+      errors: [
+        {
+          messageId: 'useHook',
+          line: 1,
+          column: 1,
+        },
+        {
+          messageId: 'useHook',
+          line: 4,
+          column: 3,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        let consoleErrorSpy = null;
+
+        describe('when loading cities from the api', () => {
+          let consoleWarnSpy = jest.spyOn(console, 'warn');
+        });
+      `,
+      errors: [
+        {
+          messageId: 'useHook',
+          line: 4,
+          column: 3,
+        },
+      ],
+    },
+    {
+      code: 'let value = 1',
+      errors: [
+        {
+          messageId: 'useHook',
+          line: 1,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: "let consoleErrorSpy, consoleWarnSpy = jest.spyOn(console, 'error');",
+      errors: [
+        {
+          messageId: 'useHook',
+          line: 1,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: "let consoleErrorSpy = jest.spyOn(console, 'error'), consoleWarnSpy;",
+      errors: [
+        {
+          messageId: 'useHook',
+          line: 1,
+          column: 1,
         },
       ],
     },
@@ -254,6 +356,11 @@ ruleTester.run('require-hook', rule, {
           messageId: 'useHook',
           line: 16,
           column: 1,
+        },
+        {
+          messageId: 'useHook',
+          line: 31,
+          column: 3,
         },
         {
           messageId: 'useHook',

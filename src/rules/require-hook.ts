@@ -8,6 +8,7 @@ import {
   isDescribeCall,
   isFunction,
   isHook,
+  isIdentifier,
   isTestCaseCall,
 } from './utils';
 
@@ -19,12 +20,28 @@ const isJestFnCall = (node: TSESTree.CallExpression): boolean => {
   return !!getNodeName(node)?.startsWith('jest.');
 };
 
+const isNullOrUndefined = (node: TSESTree.Expression): boolean => {
+  return (
+    (node.type === AST_NODE_TYPES.Literal && node.value === null) ||
+    isIdentifier(node, 'undefined')
+  );
+};
+
 const shouldBeInHook = (node: TSESTree.Node): boolean => {
   switch (node.type) {
     case AST_NODE_TYPES.ExpressionStatement:
       return shouldBeInHook(node.expression);
     case AST_NODE_TYPES.CallExpression:
       return !isJestFnCall(node);
+    case AST_NODE_TYPES.VariableDeclaration: {
+      if (node.kind === 'const') {
+        return false;
+      }
+
+      return node.declarations.some(
+        ({ init }) => init !== null && !isNullOrUndefined(init),
+      );
+    }
 
     default:
       return false;
