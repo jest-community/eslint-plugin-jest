@@ -77,6 +77,20 @@ ruleTester.run('require-hook', rule, {
       });
     `,
     dedent`
+      let consoleErrorSpy = null; 
+
+      beforeEach(() => {
+        consoleErrorSpy = jest.spyOn(console, 'error');
+      });
+    `,
+    dedent`
+      let consoleErrorSpy = undefined; 
+
+      beforeEach(() => {
+        consoleErrorSpy = jest.spyOn(console, 'error');
+      });
+    `,
+    dedent`
       describe('some tests', () => {
         beforeEach(() => {
           setup();
@@ -215,6 +229,32 @@ ruleTester.run('require-hook', rule, {
           messageId: 'useHook',
           line: 4,
           column: 3,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        let consoleErrorSpy = null;
+
+        describe('when loading cities from the api', () => {
+          let consoleWarnSpy = jest.spyOn(console, 'warn');
+        });
+      `,
+      errors: [
+        {
+          messageId: 'useHook',
+          line: 4,
+          column: 3,
+        },
+      ],
+    },
+    {
+      code: 'let value = 1',
+      errors: [
+        {
+          messageId: 'useHook',
+          line: 1,
+          column: 1,
         },
       ],
     },
