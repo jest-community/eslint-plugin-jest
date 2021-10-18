@@ -5911,9 +5911,9 @@ __metadata:
   linkType: hard
 
 "istanbul-lib-coverage@npm:^3.0.0":
-  version: 3.1.0
-  resolution: "istanbul-lib-coverage@npm:3.1.0"
-  checksum: b2e9e15277b8bb25ba0ecc1e7623a9e07f56c0d8ed8a158a187afedc524a5945baba3eb32e161d1dc038911f60898fd8e800339bd12164acf2c99dd8c5dfa2c8
+  version: 3.2.0
+  resolution: "istanbul-lib-coverage@npm:3.2.0"
+  checksum: a2a545033b9d56da04a8571ed05c8120bf10e9bce01cf8633a3a2b0d1d83dff4ac4fe78d6d5673c27fc29b7f21a41d75f83a36be09f82a61c367b56aa73c1ff9
   languageName: node
   linkType: hard
 
