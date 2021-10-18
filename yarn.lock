@@ -2233,10 +2233,10 @@ __metadata:
   linkType: hard
 
 "@semantic-release/npm@npm:^8.0.0":
-  version: 8.0.0
-  resolution: "@semantic-release/npm@npm:8.0.0"
+  version: 8.0.1
+  resolution: "@semantic-release/npm@npm:8.0.1"
   dependencies:
-    "@semantic-release/error": ^2.2.0
+    "@semantic-release/error": ^3.0.0
     aggregate-error: ^3.0.0
     execa: ^5.0.0
     fs-extra: ^10.0.0
@@ -2250,8 +2250,8 @@ __metadata:
     semver: ^7.1.2
     tempy: ^1.0.0
   peerDependencies:
-    semantic-release: ">=18.0.0-beta.1"
-  checksum: 8a5130150af48871da739e000520643e44adbd7c61cf474559075a5a782b2701e2a307bf503caac21c4ff5202ef275015e12f9ad15ad6464c052e355430bd074
+    semantic-release: ">=18.0.0"
+  checksum: b0499469e660ec901c061f56b127b41c10b4edece507ad705d3db13b24deee21cbd3d37566082e99dc0b13430f3262778ccc3b3b2363d4e750456aefab3c41fd
   languageName: node
   linkType: hard
 
