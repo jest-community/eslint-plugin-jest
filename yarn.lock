@@ -6670,9 +6670,9 @@ __metadata:
   linkType: hard
 
 "just-diff-apply@npm:^3.0.0":
-  version: 3.1.0
-  resolution: "just-diff-apply@npm:3.1.0"
-  checksum: db096b5bb870737af20ca0e65a5152e85e5bd5729b17d9cd6c2a0e963cfa9de2e75a2133ee294bb89e133bce472c2a902eb2c21086b814813547dd09ef4a13ca
+  version: 3.1.2
+  resolution: "just-diff-apply@npm:3.1.2"
+  checksum: 4368a2a3dd96665f0561b1b1b11861af2ef19b4f2371cb61f6d05ed4716cd4996fdde4dca401eb274fe09633b1ff16611f428ed7ffb00fe995723bab73e3fed8
   languageName: node
   linkType: hard
 
