@@ -131,6 +131,9 @@
   "peerDependenciesMeta": {
     "@typescript-eslint/eslint-plugin": {
       "optional": true
+    },
+    "jest": {
+      "optional": true
     }
   },
   "engines": {

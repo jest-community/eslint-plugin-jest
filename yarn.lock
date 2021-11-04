@@ -4430,6 +4430,8 @@ __metadata:
   peerDependenciesMeta:
     "@typescript-eslint/eslint-plugin":
       optional: true
+    jest:
+      optional: true
   languageName: unknown
   linkType: soft
 
