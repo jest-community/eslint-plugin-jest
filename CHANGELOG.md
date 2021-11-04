@@ -1,3 +1,10 @@
+## [25.2.3](https://github.com/jest-community/eslint-plugin-jest/compare/v25.2.2...v25.2.3) (2021-11-04)
+
+
+### Bug Fixes
+
+* **no-deprecated-functions:** mark jest as an optional peer dependency ([#970](https://github.com/jest-community/eslint-plugin-jest/issues/970)) ([f468752](https://github.com/jest-community/eslint-plugin-jest/commit/f468752fc0aba89dd9bcce5fe676a04cb2fa6407))
+
 ## [25.2.2](https://github.com/jest-community/eslint-plugin-jest/compare/v25.2.1...v25.2.2) (2021-10-17)
 
 
