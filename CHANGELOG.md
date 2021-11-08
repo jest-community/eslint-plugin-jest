@@ -1,3 +1,10 @@
+## [25.2.4](https://github.com/jest-community/eslint-plugin-jest/compare/v25.2.3...v25.2.4) (2021-11-08)
+
+
+### Bug Fixes
+
+* **prefer-to-be:** preserve `resolves` and `rejects` modifiers ([#980](https://github.com/jest-community/eslint-plugin-jest/issues/980)) ([a1296bd](https://github.com/jest-community/eslint-plugin-jest/commit/a1296bdee3a3a8ec5f64f95735ca01b91e8f4118))
+
 ## [25.2.3](https://github.com/jest-community/eslint-plugin-jest/compare/v25.2.2...v25.2.3) (2021-11-04)
 
 
