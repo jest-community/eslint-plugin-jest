@@ -60,7 +60,9 @@ const reportPreferToBe = (
   matcher: ParsedExpectMatcher,
   modifier?: ParsedExpectModifier,
 ) => {
-  const modifierNode = modifier?.negation || modifier?.node;
+  const modifierNode =
+    modifier?.negation ||
+    (modifier?.name === ModifierName.not && modifier?.node);
 
   context.report({
     messageId: `useToBe${whatToBe}`,
