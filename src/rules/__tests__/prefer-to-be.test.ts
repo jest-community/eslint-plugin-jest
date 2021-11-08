@@ -135,6 +135,11 @@ ruleTester.run('prefer-to-be: undefined', rule, {
       errors: [{ messageId: 'useToBeDefined', column: 24, line: 1 }],
     },
     {
+      code: 'expect("a string").rejects.not.toBe(undefined);',
+      output: 'expect("a string").rejects.toBeDefined();',
+      errors: [{ messageId: 'useToBeDefined', column: 32, line: 1 }],
+    },
+    {
       code: 'expect("a string").not.toEqual(undefined);',
       output: 'expect("a string").toBeDefined();',
       errors: [{ messageId: 'useToBeDefined', column: 24, line: 1 }],
@@ -182,6 +187,11 @@ ruleTester.run('prefer-to-be: NaN', rule, {
       errors: [{ messageId: 'useToBeNaN', column: 24, line: 1 }],
     },
     {
+      code: 'expect("a string").rejects.not.toBe(NaN);',
+      output: 'expect("a string").rejects.not.toBeNaN();',
+      errors: [{ messageId: 'useToBeNaN', column: 32, line: 1 }],
+    },
+    {
       code: 'expect("a string").not.toEqual(NaN);',
       output: 'expect("a string").not.toBeNaN();',
       errors: [{ messageId: 'useToBeNaN', column: 24, line: 1 }],
@@ -217,6 +227,11 @@ ruleTester.run('prefer-to-be: undefined vs defined', rule, {
       code: 'expect(undefined).resolves.not.toBeDefined();',
       output: 'expect(undefined).resolves.toBeUndefined();',
       errors: [{ messageId: 'useToBeUndefined', column: 32, line: 1 }],
+    },
+    {
+      code: 'expect(undefined).resolves.toBe(undefined);',
+      output: 'expect(undefined).resolves.toBeUndefined();',
+      errors: [{ messageId: 'useToBeUndefined', column: 28, line: 1 }],
     },
     {
       code: 'expect("a string").not.toBeUndefined();',
