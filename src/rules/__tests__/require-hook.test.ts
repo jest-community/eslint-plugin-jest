@@ -152,6 +152,18 @@ ruleTester.run('require-hook', rule, {
         });
       });
     `,
+    {
+      code: dedent`
+        enableAutoDestroy(afterEach);
+        
+        describe('some tests', () => {
+          it('is false', () => {
+            expect(true).toBe(true);
+          });
+        });
+      `,
+      options: [{ allowedFunctionCalls: ['enableAutoDestroy'] }],
+    },
   ],
   invalid: [
     {
@@ -370,6 +382,25 @@ ruleTester.run('require-hook', rule, {
         {
           messageId: 'useHook',
           line: 50,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        enableAutoDestroy(afterEach);
+        
+        describe('some tests', () => {
+          it('is false', () => {
+            expect(true).toBe(true);
+          });
+        });
+      `,
+      options: [{ allowedFunctionCalls: ['someOtherName'] }],
+      errors: [
+        {
+          messageId: 'useHook',
+          line: 1,
           column: 1,
         },
       ],
