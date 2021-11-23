@@ -1,3 +1,10 @@
+# [25.3.0](https://github.com/jest-community/eslint-plugin-jest/compare/v25.2.4...v25.3.0) (2021-11-23)
+
+
+### Features
+
+* **require-hook:** add `allowedFunctionCalls` setting ([#983](https://github.com/jest-community/eslint-plugin-jest/issues/983)) ([9d9336a](https://github.com/jest-community/eslint-plugin-jest/commit/9d9336a7624c53c0bb3ee899b8cc336a0b3349cb))
+
 ## [25.2.4](https://github.com/jest-community/eslint-plugin-jest/compare/v25.2.3...v25.2.4) (2021-11-08)
 
 
