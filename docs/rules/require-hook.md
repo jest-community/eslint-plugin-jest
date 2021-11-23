@@ -148,3 +148,40 @@ afterEach(() => {
   clearCityDatabase();
 });
 ```
+
+## Options
+
+If there are methods that you want to call outside of hooks and tests, you can
+mark them as allowed using the `allowedFunctionCalls` option.
+
+```json
+{
+  "jest/require-hook": [
+    "error",
+    {
+      "allowedFunctionCalls": ["enableAutoDestroy"]
+    }
+  ]
+}
+```
+
+Examples of **correct** code when using
+`{ "allowedFunctionCalls": ["enableAutoDestroy"] }` option:
+
+```js
+/* eslint jest/require-hook: ["error", { "allowedFunctionCalls": ["enableAutoDestroy"] }] */
+
+import { enableAutoDestroy, mount } from '@vue/test-utils';
+import { initDatabase, tearDownDatabase } from './databaseUtils';
+
+enableAutoDestroy(afterEach);
+
+beforeEach(initDatabase);
+afterEach(tearDownDatabase);
+
+describe('Foo', () => {
+  test('always returns 42', () => {
+    expect(global.getAnswer()).toBe(42);
+  });
+});
+```

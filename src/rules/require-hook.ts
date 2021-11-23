@@ -27,12 +27,18 @@ const isNullOrUndefined = (node: TSESTree.Expression): boolean => {
   );
 };
 
-const shouldBeInHook = (node: TSESTree.Node): boolean => {
+const shouldBeInHook = (
+  node: TSESTree.Node,
+  allowedFunctionCalls: readonly string[] = [],
+): boolean => {
   switch (node.type) {
     case AST_NODE_TYPES.ExpressionStatement:
-      return shouldBeInHook(node.expression);
+      return shouldBeInHook(node.expression, allowedFunctionCalls);
     case AST_NODE_TYPES.CallExpression:
-      return !isJestFnCall(node);
+      return !(
+        isJestFnCall(node) ||
+        allowedFunctionCalls.includes(getNodeName(node) as string)
+      );
     case AST_NODE_TYPES.VariableDeclaration: {
       if (node.kind === 'const') {
         return false;
@@ -48,7 +54,10 @@ const shouldBeInHook = (node: TSESTree.Node): boolean => {
   }
 };
 
-export default createRule({
+export default createRule<
+  [{ allowedFunctionCalls?: readonly string[] }],
+  'useHook'
+>({
   name: __filename,
   meta: {
     docs: {
@@ -60,13 +69,30 @@ export default createRule({
       useHook: 'This should be done within a hook',
     },
     type: 'suggestion',
-    schema: [],
+    schema: [
+      {
+        type: 'object',
+        properties: {
+          allowedFunctionCalls: {
+            type: 'array',
+            items: { type: 'string' },
+          },
+        },
+        additionalProperties: false,
+      },
+    ],
   },
-  defaultOptions: [],
+  defaultOptions: [
+    {
+      allowedFunctionCalls: [],
+    },
+  ],
   create(context) {
+    const { allowedFunctionCalls } = context.options[0] ?? {};
+
     const checkBlockBody = (body: TSESTree.BlockStatement['body']) => {
       for (const statement of body) {
-        if (shouldBeInHook(statement)) {
+        if (shouldBeInHook(statement, allowedFunctionCalls)) {
           context.report({
             node: statement,
             messageId: 'useHook',
