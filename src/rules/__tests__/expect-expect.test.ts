@@ -88,6 +88,20 @@ ruleTester.run('expect-expect', rule, {
       `,
       options: [{ additionalTestBlockFunctions: ['theoretically'] }],
     },
+    {
+      code: dedent`
+        const assertFoo = (input) => {
+          expect(input).toBe("foo");
+        }
+        it("should pass", () => assertFoo("foo"))
+      `,
+      options: [
+        {
+          assertFunctionNames: ['assert*'],
+          additionalTestBlockFunctions: ['assert*'],
+        },
+      ],
+    },
   ],
 
   invalid: [
@@ -144,6 +158,26 @@ ruleTester.run('expect-expect', rule, {
         })
       `,
       options: [{ additionalTestBlockFunctions: ['theoretically'] }],
+      errors: [
+        {
+          messageId: 'noAssertions',
+          type: AST_NODE_TYPES.CallExpression,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        const assertFoo = (input) => {
+          var valid = input === "foo"
+        }
+        it("should pass", () => assertFoo("foo"))
+      `,
+      options: [
+        {
+          assertFunctionNames: ['assert*'],
+          additionalTestBlockFunctions: ['assert*'],
+        },
+      ],
       errors: [
         {
           messageId: 'noAssertions',

@@ -56,6 +56,17 @@ ruleTester.run('no-standalone-expect', rule, {
       `,
       options: [{ additionalTestBlockFunctions: ['each.test'] }],
     },
+    {
+      code: dedent`
+        function expectToBeFoo(value) {
+          return expect(value).toBe("foo")
+        }
+        describe('scenario', () => {
+          expectToBeFoo("foo")
+        });
+      `,
+      options: [{ additionalTestBlockFunctions: ['expect*'] }],
+    },
   ],
   invalid: [
     {
@@ -118,6 +129,20 @@ ruleTester.run('no-standalone-expect', rule, {
       `,
       options: [{ additionalTestBlockFunctions: ['test'] }],
       errors: [{ endColumn: 16, column: 3, messageId: 'unexpectedExpect' }],
+    },
+    {
+      code: dedent`
+        function expectToBeFoo(value) {
+          return expect(value)
+        }
+        describe('scenario', () => {
+          expectToBeFoo("foo")
+        });
+      `,
+      options: [{ additionalTestBlockFunctions: ['expect*'] }],
+      errors: [
+        { line: 2, endColumn: 17, column: 9, messageId: 'unexpectedExpect' },
+      ],
     },
     {
       code: 'describe("a test", () => { expect(1).toBe(1); });',
