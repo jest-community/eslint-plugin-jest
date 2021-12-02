@@ -22,7 +22,7 @@ import {
  *   request.**.expect
  *   request.**.expect*
  */
-function matchesAssertFunctionName(
+function matchesFunctionName(
   nodeName: string,
   patterns: readonly string[],
 ): boolean {
@@ -115,7 +115,7 @@ export default createRule<
 
         if (
           isTestCaseCall(node) ||
-          additionalTestBlockFunctions.includes(name)
+          matchesFunctionName(name, additionalTestBlockFunctions)
         ) {
           if (
             node.callee.type === AST_NODE_TYPES.MemberExpression &&
@@ -125,7 +125,7 @@ export default createRule<
           }
 
           unchecked.push(node);
-        } else if (matchesAssertFunctionName(name, assertFunctionNames)) {
+        } else if (matchesFunctionName(name, assertFunctionNames)) {
           // Return early in case of nested `it` statements.
           checkCallExpressionUsed(context.getAncestors());
         }
