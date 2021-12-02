@@ -107,14 +107,15 @@ describe('GET /user', function () {
 ### `additionalTestBlockFunctions`
 
 This array can be used to specify the names of functions that should also be
-treated as test blocks:
+treated as test blocks. Function names can use wildcards i.e `expect*`,
+`expectUtils.**`, `*.expect*`
 
 ```json
 {
   "rules": {
     "jest/expect-expect": [
       "error",
-      { "additionalTestBlockFunctions": ["theoretically"] }
+      { "additionalTestBlockFunctions": ["theoretically", "expect*"] }
     ]
   }
 }
@@ -124,6 +125,10 @@ The following is _correct_ when using the above configuration:
 
 ```js
 import theoretically from 'jest-theories';
+
+function expectToBeCorrectString(result, expectedString) {
+  return expect(result).toBe(expectedString);
+}
 
 describe('NumberToLongString', () => {
   const theories = [
@@ -141,5 +146,38 @@ describe('NumberToLongString', () => {
       expect(output).toBe(theory.expected);
     },
   );
+
+  it('should be correctly translated to string', () =>
+    expectToBeCorrectString(NumberToLongString(100), 'One hundred'));
+});
+```
+
+The following is _incorrect_ when using the above configuration:
+
+```js
+import theoretically from 'jest-theories';
+
+function expectToBeCorrectString(result, expectedString) {
+  return true;
+}
+
+describe('NumberToLongString', () => {
+  const theories = [
+    { input: 100, expected: 'One hundred' },
+    { input: 1000, expected: 'One thousand' },
+    { input: 10000, expected: 'Ten thousand' },
+    { input: 100000, expected: 'One hundred thousand' },
+  ];
+
+  theoretically(
+    'the number {input} is correctly translated to string',
+    theories,
+    theory => {
+      const output = NumberToLongString(theory.input);
+    },
+  );
+
+  it('should be correctly translated to string', () =>
+    expectToBeCorrectString(NumberToLongString(100), 'One hundred'));
 });
 ```

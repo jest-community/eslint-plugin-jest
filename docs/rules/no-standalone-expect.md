@@ -69,7 +69,8 @@ this case.
 #### `additionalTestBlockFunctions`
 
 This array can be used to specify the names of functions that should also be
-treated as test blocks:
+treated as test blocks. Function names can use wildcards i.e `expect*`,
+`expectUtils.**`, `*.expect*`
 
 ```json
 {
