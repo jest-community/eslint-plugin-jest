@@ -10,6 +10,7 @@ import {
   isExpectCall,
   isFunction,
   isTestCaseCall,
+  matchesFunctionName,
 } from './utils';
 
 const getBlockType = (
@@ -82,7 +83,10 @@ export default createRule<
     const isCustomTestBlockFunction = (
       node: TSESTree.CallExpression,
     ): boolean =>
-      additionalTestBlockFunctions.includes(getNodeName(node) || '');
+      matchesFunctionName(
+        getNodeName(node) || '',
+        additionalTestBlockFunctions,
+      );
 
     const isTestBlock = (node: TSESTree.CallExpression): boolean =>
       isTestCaseCall(node) || isCustomTestBlockFunction(node);

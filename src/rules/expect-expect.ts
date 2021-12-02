@@ -13,33 +13,8 @@ import {
   getTestCallExpressionsFromDeclaredVariables,
   isSupportedAccessor,
   isTestCaseCall,
+  matchesFunctionName,
 } from './utils';
-
-/**
- * Checks if node names returned by getNodeName matches any of the given star patterns
- * Pattern examples:
- *   request.*.expect
- *   request.**.expect
- *   request.**.expect*
- */
-function matchesFunctionName(
-  nodeName: string,
-  patterns: readonly string[],
-): boolean {
-  return patterns.some(p =>
-    new RegExp(
-      `^${p
-        .split('.')
-        .map(x => {
-          if (x === '**') return '[a-z\\.]*';
-
-          return x.replace(/\*/gu, '[a-z]*');
-        })
-        .join('\\.')}(\\.|$)`,
-      'ui',
-    ).test(nodeName),
-  );
-}
 
 export default createRule<
   [
