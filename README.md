@@ -128,7 +128,7 @@ config file:
 ```
 
 See
-[ESLint documentation](http://eslint.org/docs/user-guide/configuring#extending-configuration-files)
+[ESLint documentation](https://eslint.org/docs/user-guide/configuring/configuration-files#extending-configuration-files)
 for more information about extending configuration files.
 
 ### All
