@@ -159,5 +159,5 @@
   "resolutions": {
     "@typescript-eslint/experimental-utils": "^5.0.0"
   },
-  "packageManager": "yarn@3.1.0"
+  "packageManager": "yarn@3.1.1"
 }
