@@ -22,6 +22,17 @@ ruleTester.run('basic describe block', rule, {
         });
       });
     `,
+    dedent`
+      describe('foo', () => {
+        someSetupFn();
+        beforeEach(() => {});
+        afterEach(() => {});
+
+        test('bar', () => {
+          someFn();
+        });
+      });
+    `,
   ],
   invalid: [
     {
