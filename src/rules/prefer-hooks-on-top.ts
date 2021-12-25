@@ -9,7 +9,7 @@ export default createRule({
       recommended: false,
     },
     messages: {
-      noHookOnTop: 'Move all hooks before test cases',
+      noHookOnTop: 'Hooks should come before test cases',
     },
     schema: [],
     type: 'suggestion',
