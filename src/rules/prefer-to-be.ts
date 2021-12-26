@@ -35,10 +35,16 @@ const isFirstArgumentIdentifier = (
   name: string,
 ) => isIdentifier(getFirstArgument(matcher), name);
 
-const isPrimitiveLiteral = (matcher: ParsedEqualityMatcherCall): boolean => {
+const shouldUseToBe = (matcher: ParsedEqualityMatcherCall): boolean => {
   const firstArg = getFirstArgument(matcher);
 
-  return firstArg.type === AST_NODE_TYPES.Literal && !('regex' in firstArg);
+  if (firstArg.type === AST_NODE_TYPES.Literal) {
+    // regex literals are classed as literals, but they're actually objects
+    // which means "toBe" will give different results than other matchers
+    return !('regex' in firstArg);
+  }
+
+  return firstArg.type === AST_NODE_TYPES.TemplateLiteral;
 };
 
 const getFirstArgument = (matcher: ParsedEqualityMatcherCall) => {
@@ -164,10 +170,7 @@ export default createRule({
           return;
         }
 
-        if (
-          isPrimitiveLiteral(matcher) &&
-          matcher.name !== EqualityMatcher.toBe
-        ) {
+        if (shouldUseToBe(matcher) && matcher.name !== EqualityMatcher.toBe) {
           reportPreferToBe(context, '', matcher);
         }
       },

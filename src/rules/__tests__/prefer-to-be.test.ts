@@ -1,7 +1,13 @@
 import { TSESLint } from '@typescript-eslint/experimental-utils';
 import rule from '../prefer-to-be';
+import { espreeParser } from './test-utils';
 
-const ruleTester = new TSESLint.RuleTester();
+const ruleTester = new TSESLint.RuleTester({
+  parser: espreeParser,
+  parserOptions: {
+    ecmaVersion: 2015,
+  },
+});
 
 ruleTester.run('prefer-to-be', rule, {
   valid: [
@@ -16,6 +22,7 @@ ruleTester.run('prefer-to-be', rule, {
     'expect("something");',
     'expect(token).toStrictEqual(/[abc]+/g);',
     "expect(token).toStrictEqual(new RegExp('[abc]+', 'g'));",
+    'expect(value).toEqual(dedent`my string`);',
   ],
   invalid: [
     {
@@ -31,6 +38,16 @@ ruleTester.run('prefer-to-be', rule, {
     {
       code: 'expect(value).toStrictEqual(1);',
       output: 'expect(value).toBe(1);',
+      errors: [{ messageId: 'useToBe', column: 15, line: 1 }],
+    },
+    {
+      code: 'expect(value).toEqual(`my string`);',
+      output: 'expect(value).toBe(`my string`);',
+      errors: [{ messageId: 'useToBe', column: 15, line: 1 }],
+    },
+    {
+      code: 'expect(value).toStrictEqual(`my ${string}`);',
+      output: 'expect(value).toBe(`my ${string}`);',
       errors: [{ messageId: 'useToBe', column: 15, line: 1 }],
     },
     {
