@@ -1,4 +1,5 @@
 import { TSESLint } from '@typescript-eslint/experimental-utils';
+import dedent from 'dedent';
 import rule from '../no-large-snapshots';
 import { espreeParser } from './test-utils';
 
@@ -27,6 +28,7 @@ ruleTester.run('no-large-snapshots', rule, {
     'expect(something)',
     'expect(something).toBe(1)',
     'expect(something).toMatchInlineSnapshot',
+    'expect(something).toMatchInlineSnapshot()',
     {
       filename: 'mock.js',
       code: generateExpectInlineSnapsCode(2, 'toMatchInlineSnapshot'),
@@ -51,6 +53,23 @@ ruleTester.run('no-large-snapshots', rule, {
     {
       filename: 'mock.jsx',
       code: generateExpectInlineSnapsCode(60, 'toMatchInlineSnapshot'),
+      options: [
+        {
+          maxSize: 61,
+        },
+      ],
+    },
+    {
+      filename: 'mock.jsx',
+      code: dedent`
+        expect(
+          functionUnderTest(
+            arg1,
+            arg2,
+            arg3
+          )
+        ).toMatchInlineSnapshot(${generateSnapshotLines(60)});
+      `,
       options: [
         {
           maxSize: 61,

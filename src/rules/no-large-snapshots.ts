@@ -24,7 +24,7 @@ type RuleContext = TSESLint.RuleContext<MessageId, [RuleOptions]>;
 
 const reportOnViolation = (
   context: RuleContext,
-  node: TSESTree.CallExpression | TSESTree.ExpressionStatement,
+  node: TSESTree.CallExpressionArgument | TSESTree.ExpressionStatement,
   { maxSize: lineLimit = 50, allowedSnapshots = {} }: RuleOptions,
 ) => {
   const startLine = node.loc.start.line;
@@ -130,9 +130,10 @@ export default createRule<[RuleOptions], MessageId>({
           [
             'toMatchInlineSnapshot',
             'toThrowErrorMatchingInlineSnapshot',
-          ].includes(matcher.name)
+          ].includes(matcher.name) &&
+          matcher.arguments?.length
         ) {
-          reportOnViolation(context, matcher.node.parent, {
+          reportOnViolation(context, matcher.arguments[0], {
             ...options,
             maxSize: options.inlineMaxSize ?? options.maxSize,
           });
