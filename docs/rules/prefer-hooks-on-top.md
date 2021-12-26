@@ -1,6 +1,10 @@
 # Suggest having hooks before any test cases (`prefer-hooks-on-top`)
 
-All hooks should be defined before the start of the tests
+While hooks can be setup anywhere in a test file, they are always called in a
+specific order which means it can be confusing if they're intermixed with test
+cases.
+
+This rule helps to ensure that hooks are always defined before test cases.
 
 ## Rule Details
 
