@@ -111,6 +111,8 @@
     "eslint-plugin-import": "^2.25.1",
     "eslint-plugin-node": "^11.0.0",
     "eslint-plugin-prettier": "^3.4.1",
+    "eslint-remote-tester": "^2.0.1",
+    "eslint-remote-tester-repositories": "^0.0.3",
     "husky": "^7.0.2",
     "is-ci": "^3.0.0",
     "jest": "^27.0.0",
