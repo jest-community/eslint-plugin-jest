@@ -1,3 +1,10 @@
+## [25.3.1](https://github.com/jest-community/eslint-plugin-jest/compare/v25.3.0...v25.3.1) (2021-12-27)
+
+
+### Bug Fixes
+
+* **prefer-to-be:** support template literals ([#1006](https://github.com/jest-community/eslint-plugin-jest/issues/1006)) ([aa428e6](https://github.com/jest-community/eslint-plugin-jest/commit/aa428e6598d5f7b259d3cec1bc505989a0fe9885))
+
 # [25.3.0](https://github.com/jest-community/eslint-plugin-jest/compare/v25.2.4...v25.3.0) (2021-11-23)
 
 
