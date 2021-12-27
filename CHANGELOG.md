@@ -1,3 +1,11 @@
+## [25.3.2](https://github.com/jest-community/eslint-plugin-jest/compare/v25.3.1...v25.3.2) (2021-12-27)
+
+
+### Bug Fixes
+
+* **no-large-snapshots:** only count size of template string for inline snapshots ([#1005](https://github.com/jest-community/eslint-plugin-jest/issues/1005)) ([5bea38f](https://github.com/jest-community/eslint-plugin-jest/commit/5bea38f9773ab686f08a7cc25247a782d50aa5ed))
+* **prefer-hooks-on-top:** improve message & docs ([#999](https://github.com/jest-community/eslint-plugin-jest/issues/999)) ([f9e7ae2](https://github.com/jest-community/eslint-plugin-jest/commit/f9e7ae29233daad7bfea2230bea7266659299328))
+
 ## [25.3.1](https://github.com/jest-community/eslint-plugin-jest/compare/v25.3.0...v25.3.1) (2021-12-27)
 
 
