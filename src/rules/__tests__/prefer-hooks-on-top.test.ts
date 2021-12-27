@@ -17,6 +17,18 @@ ruleTester.run('basic describe block', rule, {
         beforeEach(() => {});
         someSetupFn();
         afterEach(() => {});
+
+        test('bar', () => {
+          someFn();
+        });
+      });
+    `,
+    dedent`
+      describe('foo', () => {
+        someSetupFn();
+        beforeEach(() => {});
+        afterEach(() => {});
+
         test('bar', () => {
           someFn();
         });
@@ -31,6 +43,7 @@ ruleTester.run('basic describe block', rule, {
           test('bar', () => {
             someFn();
           });
+
           beforeAll(() => {});
           test('bar', () => {
             someFn();
@@ -41,7 +54,7 @@ ruleTester.run('basic describe block', rule, {
         {
           messageId: 'noHookOnTop',
           column: 3,
-          line: 6,
+          line: 7,
         },
       ],
     },
@@ -52,6 +65,7 @@ ruleTester.run('basic describe block', rule, {
           test.each\`\`('bar', () => {
             someFn();
           });
+
           beforeAll(() => {});
           test.only('bar', () => {
             someFn();
@@ -62,7 +76,7 @@ ruleTester.run('basic describe block', rule, {
         {
           messageId: 'noHookOnTop',
           column: 3,
-          line: 6,
+          line: 7,
         },
       ],
     },
@@ -73,6 +87,7 @@ ruleTester.run('basic describe block', rule, {
           test.only.each\`\`('bar', () => {
             someFn();
           });
+
           beforeAll(() => {});
           test.only('bar', () => {
             someFn();
@@ -83,7 +98,7 @@ ruleTester.run('basic describe block', rule, {
         {
           messageId: 'noHookOnTop',
           column: 3,
-          line: 6,
+          line: 7,
         },
       ],
     },
@@ -96,19 +111,21 @@ ruleTester.run('multiple describe blocks', rule, {
       describe.skip('foo', () => {
         beforeEach(() => {});
         beforeAll(() => {});
+
         test('bar', () => {
           someFn();
         });
       });
+
       describe('foo', () => {
         beforeEach(() => {});
+
         test('bar', () => {
           someFn();
         });
       });
     `,
   ],
-
   invalid: [
     {
       code: dedent`
@@ -117,6 +134,7 @@ ruleTester.run('multiple describe blocks', rule, {
           test('bar', () => {
             someFn();
           });
+
           beforeAll(() => {});
           test('bar', () => {
             someFn();
@@ -126,14 +144,17 @@ ruleTester.run('multiple describe blocks', rule, {
           beforeEach(() => {});
           beforeEach(() => {});
           beforeAll(() => {});
+
           test('bar', () => {
             someFn();
           });
         });
+
         describe('foo', () => {
           test('bar', () => {
             someFn();
           });
+
           beforeEach(() => {});
           beforeEach(() => {});
           beforeAll(() => {});
@@ -143,22 +164,22 @@ ruleTester.run('multiple describe blocks', rule, {
         {
           messageId: 'noHookOnTop',
           column: 3,
-          line: 6,
+          line: 7,
         },
         {
           messageId: 'noHookOnTop',
           column: 3,
-          line: 23,
+          line: 27,
         },
         {
           messageId: 'noHookOnTop',
           column: 3,
-          line: 24,
+          line: 28,
         },
         {
           messageId: 'noHookOnTop',
           column: 3,
-          line: 25,
+          line: 29,
         },
       ],
     },
@@ -173,6 +194,7 @@ ruleTester.run('nested describe blocks', rule, {
         test('bar', () => {
           someFn();
         });
+
         describe('inner_foo', () => {
           beforeEach(() => {});
           test('inner bar', () => {
@@ -182,7 +204,6 @@ ruleTester.run('nested describe blocks', rule, {
       });
     `,
   ],
-
   invalid: [
     {
       code: dedent`
@@ -191,14 +212,17 @@ ruleTester.run('nested describe blocks', rule, {
           test('bar', () => {
             someFn();
           });
+
           describe('inner_foo', () => {
             beforeEach(() => {});
             test('inner bar', () => {
               someFn();
             });
+
             test('inner bar', () => {
               someFn();
             });
+
             beforeAll(() => {});
             afterAll(() => {});
             test('inner bar', () => {
@@ -211,12 +235,12 @@ ruleTester.run('nested describe blocks', rule, {
         {
           messageId: 'noHookOnTop',
           column: 5,
-          line: 14,
+          line: 17,
         },
         {
           messageId: 'noHookOnTop',
           column: 5,
-          line: 15,
+          line: 18,
         },
       ],
     },

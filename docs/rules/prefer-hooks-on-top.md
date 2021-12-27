@@ -1,6 +1,10 @@
 # Suggest having hooks before any test cases (`prefer-hooks-on-top`)
 
-All hooks should be defined before the start of the tests
+While hooks can be setup anywhere in a test file, they are always called in a
+specific order which means it can be confusing if they're intermixed with test
+cases.
+
+This rule helps to ensure that hooks are always defined before test cases.
 
 ## Rule Details
 
@@ -11,46 +15,50 @@ Examples of **incorrect** code for this rule
 
 describe('foo', () => {
   beforeEach(() => {
-    //some hook code
+    seedMyDatabase();
   });
-  test('bar', () => {
-    some_fn();
-  });
-  beforeAll(() => {
-    //some hook code
-  });
-  test('bar', () => {
-    some_fn();
-  });
-});
 
-// Nested describe scenario
-describe('foo', () => {
+  it('accepts this input', () => {
+    // ...
+  });
+
   beforeAll(() => {
-    //some hook code
+    createMyDatabase();
   });
-  test('bar', () => {
-    some_fn();
+
+  it('returns that value', () => {
+    // ...
   });
-  describe('inner_foo', () => {
+
+  describe('when the database has specific values', () => {
+    const specificValue = '...';
+
     beforeEach(() => {
-      //some hook code
+      seedMyDatabase(specificValue);
     });
-    test('inner bar', () => {
-      some_fn();
+
+    it('accepts that input', () => {
+      // ...
     });
-    test('inner bar', () => {
-      some_fn();
+
+    it('throws an error', () => {
+      // ...
     });
-    beforeAll(() => {
-      //some hook code
+
+    afterEach(() => {
+      clearLogger();
     });
-    afterAll(() => {
-      //some hook code
+    beforeEach(() => {
+      mockLogger();
     });
-    test('inner bar', () => {
-      some_fn();
+
+    it('logs a message', () => {
+      // ...
     });
+  });
+
+  afterAll(() => {
+    removeMyDatabase();
   });
 });
 ```
@@ -61,35 +69,51 @@ Examples of **correct** code for this rule
 /* eslint jest/prefer-hooks-on-top: "error" */
 
 describe('foo', () => {
+  beforeAll(() => {
+    createMyDatabase();
+  });
+
   beforeEach(() => {
-    //some hook code
+    seedMyDatabase();
   });
 
-  // Not affected by rule
-  someSetup();
+  afterAll(() => {
+    clearMyDatabase();
+  });
 
-  afterEach(() => {
-    //some hook code
+  it('accepts this input', () => {
+    // ...
   });
-  test('bar', () => {
-    some_fn();
-  });
-});
 
-// Nested describe scenario
-describe('foo', () => {
-  beforeEach(() => {
-    //some hook code
+  it('returns that value', () => {
+    // ...
   });
-  test('bar', () => {
-    some_fn();
-  });
-  describe('inner_foo', () => {
+
+  describe('when the database has specific values', () => {
+    const specificValue = '...';
+
     beforeEach(() => {
-      //some hook code
+      seedMyDatabase(specificValue);
     });
-    test('inner bar', () => {
-      some_fn();
+
+    beforeEach(() => {
+      mockLogger();
+    });
+
+    afterEach(() => {
+      clearLogger();
+    });
+
+    it('accepts that input', () => {
+      // ...
+    });
+
+    it('throws an error', () => {
+      // ...
+    });
+
+    it('logs a message', () => {
+      // ...
     });
   });
 });
