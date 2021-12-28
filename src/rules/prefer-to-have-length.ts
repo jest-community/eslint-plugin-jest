@@ -53,7 +53,10 @@ export default createRule({
                 argument.property.range[0] - 1,
                 argument.range[1],
               ]),
-              fixer.replaceText(matcher.node.property, 'toHaveLength'),
+              fixer.replaceTextRange(
+                [matcher.node.object.range[1], matcher.node.range[1]],
+                '.toHaveLength',
+              ),
             ];
           },
           messageId: 'useToHaveLength',
