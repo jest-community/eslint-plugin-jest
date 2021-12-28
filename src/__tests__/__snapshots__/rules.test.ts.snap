@@ -41,6 +41,7 @@ Object {
       "jest/prefer-expect-resolves": "error",
       "jest/prefer-hooks-on-top": "error",
       "jest/prefer-lowercase-title": "error",
+      "jest/prefer-snapshot-hint": "error",
       "jest/prefer-spy-on": "error",
       "jest/prefer-strict-equal": "error",
       "jest/prefer-to-be": "error",
