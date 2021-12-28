@@ -49,10 +49,12 @@ export default createRule({
         context.report({
           fix(fixer) {
             return [
+              // remove the "length" property accessor
               fixer.removeRange([
                 argument.property.range[0] - 1,
                 argument.range[1],
               ]),
+              // replace the current matcher with "toHaveLength"
               fixer.replaceTextRange(
                 [matcher.node.object.range[1], matcher.node.range[1]],
                 '.toHaveLength',
