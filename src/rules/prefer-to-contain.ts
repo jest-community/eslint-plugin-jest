@@ -11,7 +11,6 @@ import {
   NotNegatableParsedModifier,
   ParsedEqualityMatcherCall,
   ParsedExpectMatcher,
-  assertNotNull,
   createRule,
   followTypeAssertionChain,
   hasOnlyOneArgument,
@@ -58,9 +57,6 @@ type FixableIncludesCallExpression = KnownCallExpression<'includes'> &
  * @param {CallExpression} node
  *
  * @return {node is FixableIncludesCallExpression}
- *
- * @todo support `['includes']()` syntax (remove last property.type check to begin)
- * @todo break out into `isMethodCall<Name extends string>(node: TSESTree.Node, method: Name)` util-fn
  */
 const isFixableIncludesCallExpression = (
   node: TSESTree.Node,
@@ -68,105 +64,27 @@ const isFixableIncludesCallExpression = (
   node.type === AST_NODE_TYPES.CallExpression &&
   node.callee.type === AST_NODE_TYPES.MemberExpression &&
   isSupportedAccessor(node.callee.property, 'includes') &&
-  // node.callee.property.type === AST_NODE_TYPES.Identifier &&
   hasOnlyOneArgument(node);
 
 const buildToContainFuncExpectation = (negated: boolean) =>
   negated ? `${ModifierName.not}.toContain` : 'toContain';
 
-/**
- * Finds the first "accessor start" token (either a dot or opening square bracket)
- * between the `object` & `property` of the given `member` expression.
- *
- * @param {TSESTree.MemberExpression} member
- * @param {SourceCode} sourceCode
- *
- * @return {Token | null}
- */
-const findAccessorStartToken = (
-  member: TSESTree.MemberExpression,
-  sourceCode: TSESLint.SourceCode,
-) =>
-  sourceCode.getFirstTokenBetween(
-    member.object,
-    member.property,
-    token => token.value === '.' || token.value === '[',
-  );
-
 const getNegationFixes = (
-  node: FixableIncludesCallExpression,
   modifier: NotNegatableParsedModifier,
   matcher: ParsedBooleanEqualityMatcherCall,
-  sourceCode: TSESLint.SourceCode,
   fixer: TSESLint.RuleFixer,
-  fileName: string,
 ) => {
-  const [containArg] = node.arguments;
-  const negationAccessorStart = findAccessorStartToken(
-    modifier.node,
-    sourceCode,
-  );
-
   const toContainFunc = buildToContainFuncExpectation(
     followTypeAssertionChain(matcher.arguments[0]).value,
   );
 
-  assertNotNull(negationAccessorStart, fileName);
-
-  const fixers = [
-    fixer.remove(negationAccessorStart),
-    fixer.remove(modifier.node.property),
+  return [
+    fixer.removeRange([
+      modifier.node.property.range[0] - 1,
+      modifier.node.range[1],
+    ]),
     fixer.replaceText(matcher.node.property, toContainFunc),
-    fixer.replaceText(matcher.arguments[0], sourceCode.getText(containArg)),
   ];
-
-  if (negationAccessorStart.value === '[') {
-    const negationAccessorStop = sourceCode.getTokenAfter(
-      modifier.node.property,
-    );
-
-    assertNotNull(negationAccessorStop, fileName);
-
-    fixers.push(fixer.remove(negationAccessorStop));
-  }
-
-  return fixers;
-};
-
-const getCommonFixes = (
-  node: FixableIncludesCallExpression,
-  sourceCode: TSESLint.SourceCode,
-  fileName: string,
-): Array<TSESTree.Node | TSESTree.Token> => {
-  const [containArg] = node.arguments;
-  const includesCallee = node.callee;
-
-  const accessorStartToken = findAccessorStartToken(includesCallee, sourceCode);
-
-  const closingParenthesis = sourceCode.getTokenAfter(containArg);
-  const openParenthesis = sourceCode.getTokenBefore(containArg);
-
-  assertNotNull(accessorStartToken, fileName);
-  assertNotNull(closingParenthesis, fileName);
-  assertNotNull(openParenthesis, fileName);
-
-  const fixers = [
-    containArg,
-    includesCallee.property,
-    accessorStartToken,
-    closingParenthesis,
-    openParenthesis,
-  ];
-
-  if (accessorStartToken.value === '[') {
-    const accessorStopToken = sourceCode.getTokenBefore(openParenthesis);
-
-    assertNotNull(accessorStopToken, fileName);
-
-    fixers.push(accessorStopToken);
-  }
-
-  return fixers;
 };
 
 // expect(array.includes(<value>)[not.]{toBe,toEqual}(<boolean>)
@@ -214,39 +132,28 @@ export default createRule({
         context.report({
           fix(fixer) {
             const sourceCode = context.getSourceCode();
-            const fileName = context.getFilename();
 
-            const fixArr = getCommonFixes(
-              includesCall,
-              sourceCode,
-              fileName,
-            ).map(target => fixer.remove(target));
+            const fixArr = [
+              fixer.removeRange([
+                includesCall.callee.property.range[0] - 1,
+                includesCall.range[1],
+              ]),
+              fixer.replaceText(
+                matcher.arguments[0],
+                sourceCode.getText(includesCall.arguments[0]),
+              ),
+            ];
 
             if (modifier) {
-              return getNegationFixes(
-                includesCall,
-                modifier,
-                matcher,
-                sourceCode,
-                fixer,
-                fileName,
-              ).concat(fixArr);
+              return getNegationFixes(modifier, matcher, fixer).concat(fixArr);
             }
 
             const toContainFunc = buildToContainFuncExpectation(
               !followTypeAssertionChain(matcher.arguments[0]).value,
             );
 
-            const [containArg] = includesCall.arguments;
-
             fixArr.push(
               fixer.replaceText(matcher.node.property, toContainFunc),
-            );
-            fixArr.push(
-              fixer.replaceText(
-                matcher.arguments[0],
-                sourceCode.getText(containArg),
-              ),
             );
 
             return fixArr;

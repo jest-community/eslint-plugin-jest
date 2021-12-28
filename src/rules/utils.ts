@@ -15,17 +15,6 @@ export const createRule = ESLintUtils.RuleCreator(name => {
   return `${REPO_URL}/blob/v${version}/docs/rules/${ruleName}.md`;
 });
 
-export function assertNotNull<T>(
-  value: T | null,
-  fileName: string,
-): asserts value is T {
-  if (value === null) {
-    throw new Error(
-      `Unexpected null when attempting to fix ${fileName} - please file a github issue at https://github.com/jest-community/eslint-plugin-jest`,
-    );
-  }
-}
-
 export type MaybeTypeCast<Expression extends TSESTree.Expression> =
   | TSTypeCastExpression<Expression>
   | Expression;
