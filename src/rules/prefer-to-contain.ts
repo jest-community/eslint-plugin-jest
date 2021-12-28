@@ -111,19 +111,24 @@ export default createRule({
           fix(fixer) {
             const sourceCode = context.getSourceCode();
 
+            // we need to negate the expectation if the current expected
+            // value is itself negated by the "not" modifier
             const addNotModifier =
               followTypeAssertionChain(matcher.arguments[0]).value ===
               !!modifier;
 
             return [
+              // remove the "includes" call entirely
               fixer.removeRange([
                 includesCall.callee.property.range[0] - 1,
                 includesCall.range[1],
               ]),
+              // replace the matcher argument with the value from the "includes"
               fixer.replaceText(
                 matcher.arguments[0],
                 sourceCode.getText(includesCall.arguments[0]),
               ),
+              // replace the current matcher with "toContain", adding "not" if needed
               fixer.replaceTextRange(
                 [expectCallEnd, matcher.node.range[1]],
                 addNotModifier
