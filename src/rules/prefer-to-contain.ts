@@ -11,6 +11,7 @@ import {
   NotNegatableParsedModifier,
   ParsedEqualityMatcherCall,
   ParsedExpectMatcher,
+  assertNotNull,
   createRule,
   followTypeAssertionChain,
   hasOnlyOneArgument,
@@ -67,28 +68,29 @@ const isFixableIncludesCallExpression = (
   node.type === AST_NODE_TYPES.CallExpression &&
   node.callee.type === AST_NODE_TYPES.MemberExpression &&
   isSupportedAccessor(node.callee.property, 'includes') &&
-  node.callee.property.type === AST_NODE_TYPES.Identifier &&
+  // node.callee.property.type === AST_NODE_TYPES.Identifier &&
   hasOnlyOneArgument(node);
 
 const buildToContainFuncExpectation = (negated: boolean) =>
   negated ? `${ModifierName.not}.toContain` : 'toContain';
 
 /**
- * Finds the first `.` character token between the `object` & `property` of the given `member` expression.
+ * Finds the first "accessor start" token (either a dot or opening square bracket)
+ * between the `object` & `property` of the given `member` expression.
  *
  * @param {TSESTree.MemberExpression} member
  * @param {SourceCode} sourceCode
  *
  * @return {Token | null}
  */
-const findPropertyDotToken = (
+const findAccessorStartToken = (
   member: TSESTree.MemberExpression,
   sourceCode: TSESLint.SourceCode,
 ) =>
   sourceCode.getFirstTokenBetween(
     member.object,
     member.property,
-    token => token.value === '.',
+    token => token.value === '.' || token.value === '[',
   );
 
 const getNegationFixes = (
@@ -100,25 +102,35 @@ const getNegationFixes = (
   fileName: string,
 ) => {
   const [containArg] = node.arguments;
-  const negationPropertyDot = findPropertyDotToken(modifier.node, sourceCode);
+  const negationAccessorStart = findAccessorStartToken(
+    modifier.node,
+    sourceCode,
+  );
 
   const toContainFunc = buildToContainFuncExpectation(
     followTypeAssertionChain(matcher.arguments[0]).value,
   );
 
-  /* istanbul ignore if */
-  if (negationPropertyDot === null) {
-    throw new Error(
-      `Unexpected null when attempting to fix ${fileName} - please file a github issue at https://github.com/jest-community/eslint-plugin-jest`,
-    );
-  }
+  assertNotNull(negationAccessorStart, fileName);
 
-  return [
-    fixer.remove(negationPropertyDot),
+  const fixers = [
+    fixer.remove(negationAccessorStart),
     fixer.remove(modifier.node.property),
     fixer.replaceText(matcher.node.property, toContainFunc),
     fixer.replaceText(matcher.arguments[0], sourceCode.getText(containArg)),
   ];
+
+  if (negationAccessorStart.value === '[') {
+    const negationAccessorStop = sourceCode.getTokenAfter(
+      modifier.node.property,
+    );
+
+    assertNotNull(negationAccessorStop, fileName);
+
+    fixers.push(fixer.remove(negationAccessorStop));
+  }
+
+  return fixers;
 };
 
 const getCommonFixes = (
@@ -129,29 +141,32 @@ const getCommonFixes = (
   const [containArg] = node.arguments;
   const includesCallee = node.callee;
 
-  const propertyDot = findPropertyDotToken(includesCallee, sourceCode);
+  const accessorStartToken = findAccessorStartToken(includesCallee, sourceCode);
 
   const closingParenthesis = sourceCode.getTokenAfter(containArg);
   const openParenthesis = sourceCode.getTokenBefore(containArg);
 
-  /* istanbul ignore if */
-  if (
-    propertyDot === null ||
-    closingParenthesis === null ||
-    openParenthesis === null
-  ) {
-    throw new Error(
-      `Unexpected null when attempting to fix ${fileName} - please file a github issue at https://github.com/jest-community/eslint-plugin-jest`,
-    );
-  }
+  assertNotNull(accessorStartToken, fileName);
+  assertNotNull(closingParenthesis, fileName);
+  assertNotNull(openParenthesis, fileName);
 
-  return [
+  const fixers = [
     containArg,
     includesCallee.property,
-    propertyDot,
+    accessorStartToken,
     closingParenthesis,
     openParenthesis,
   ];
+
+  if (accessorStartToken.value === '[') {
+    const accessorStopToken = sourceCode.getTokenBefore(openParenthesis);
+
+    assertNotNull(accessorStopToken, fileName);
+
+    fixers.push(accessorStopToken);
+  }
+
+  return fixers;
 };
 
 // expect(array.includes(<value>)[not.]{toBe,toEqual}(<boolean>)

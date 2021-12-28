@@ -33,11 +33,26 @@ ruleTester.run('prefer-to-contain', rule, {
       errors: [{ messageId: 'useToContain', column: 23, line: 1 }],
     },
     // todo: support this, as it's counted by isSupportedAccessor
-    // {
-    //   code: "expect(a['includes'](b)).toEqual(true);",
-    //   errors: [{ messageId: 'useToContain', column: 23, line: 1 }],
-    //   output: 'expect(a).toContain(b);',
-    // },
+    {
+      code: "expect(a['includes'](b)).toEqual(true);",
+      output: 'expect(a).toContain(b);',
+      errors: [{ messageId: 'useToContain', column: 26, line: 1 }],
+    },
+    {
+      code: "expect(a['includes'](b)).toEqual(false);",
+      output: 'expect(a).not.toContain(b);',
+      errors: [{ messageId: 'useToContain', column: 26, line: 1 }],
+    },
+    {
+      code: "expect(a['includes'](b)).not.toEqual(false);",
+      output: 'expect(a).toContain(b);',
+      errors: [{ messageId: 'useToContain', column: 26, line: 1 }],
+    },
+    {
+      code: "expect(a['includes'](b))['not'].toEqual(false);",
+      output: 'expect(a).toContain(b);',
+      errors: [{ messageId: 'useToContain', column: 26, line: 1 }],
+    },
     {
       code: 'expect(a.includes(b)).toEqual(false);',
       output: 'expect(a).not.toContain(b);',
