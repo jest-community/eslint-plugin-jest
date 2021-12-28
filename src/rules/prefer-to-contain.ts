@@ -1,6 +1,5 @@
 import {
   AST_NODE_TYPES,
-  TSESLint,
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
 import {
@@ -8,7 +7,6 @@ import {
   KnownCallExpression,
   MaybeTypeCast,
   ModifierName,
-  NotNegatableParsedModifier,
   ParsedEqualityMatcherCall,
   ParsedExpectMatcher,
   createRule,
@@ -66,27 +64,6 @@ const isFixableIncludesCallExpression = (
   isSupportedAccessor(node.callee.property, 'includes') &&
   hasOnlyOneArgument(node);
 
-const buildToContainFuncExpectation = (negated: boolean) =>
-  negated ? `${ModifierName.not}.toContain` : 'toContain';
-
-const getNegationFixes = (
-  modifier: NotNegatableParsedModifier,
-  matcher: ParsedBooleanEqualityMatcherCall,
-  fixer: TSESLint.RuleFixer,
-) => {
-  const toContainFunc = buildToContainFuncExpectation(
-    followTypeAssertionChain(matcher.arguments[0]).value,
-  );
-
-  return [
-    fixer.removeRange([
-      modifier.node.property.range[0] - 1,
-      modifier.node.range[1],
-    ]),
-    fixer.replaceText(matcher.node.property, toContainFunc),
-  ];
-};
-
 // expect(array.includes(<value>)[not.]{toBe,toEqual}(<boolean>)
 export default createRule({
   name: __filename,
@@ -133,6 +110,8 @@ export default createRule({
           fix(fixer) {
             const sourceCode = context.getSourceCode();
 
+            const negated = modifier?.name === ModifierName.not;
+
             const fixArr = [
               fixer.removeRange([
                 includesCall.callee.property.range[0] - 1,
@@ -142,19 +121,22 @@ export default createRule({
                 matcher.arguments[0],
                 sourceCode.getText(includesCall.arguments[0]),
               ),
+              fixer.replaceText(
+                matcher.node.property,
+                followTypeAssertionChain(matcher.arguments[0]).value === negated
+                  ? `${ModifierName.not}.toContain`
+                  : 'toContain',
+              ),
             ];
 
-            if (modifier) {
-              return getNegationFixes(modifier, matcher, fixer).concat(fixArr);
+            if (negated) {
+              fixArr.push(
+                fixer.removeRange([
+                  modifier.node.property.range[0] - 1,
+                  modifier.node.range[1],
+                ]),
+              );
             }
-
-            const toContainFunc = buildToContainFuncExpectation(
-              !followTypeAssertionChain(matcher.arguments[0]).value,
-            );
-
-            fixArr.push(
-              fixer.replaceText(matcher.node.property, toContainFunc),
-            );
 
             return fixArr;
           },
