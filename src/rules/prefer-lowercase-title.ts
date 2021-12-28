@@ -43,10 +43,14 @@ const populateIgnores = (ignore: readonly string[]): string[] => {
     ignores.push(...Object.keys(DescribeAlias));
   }
   if (ignore.includes(TestCaseName.test)) {
-    ignores.push(...Object.keys(TestCaseName));
+    ignores.push(
+      ...Object.keys(TestCaseName).filter(k => k.endsWith(TestCaseName.test)),
+    );
   }
   if (ignore.includes(TestCaseName.it)) {
-    ignores.push(...Object.keys(TestCaseName));
+    ignores.push(
+      ...Object.keys(TestCaseName).filter(k => k.endsWith(TestCaseName.it)),
+    );
   }
 
   return ignores;

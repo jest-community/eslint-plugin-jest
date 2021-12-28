@@ -270,7 +270,34 @@ ruleTester.run('prefer-lowercase-title with ignore=describe', rule, {
       options: [{ ignore: [DescribeAlias.describe] }],
     },
   ],
-  invalid: [],
+  invalid: [
+    {
+      code: "test('Foo', function () {})",
+      output: "test('foo', function () {})",
+      options: [{ ignore: [DescribeAlias.describe] }],
+      errors: [
+        {
+          messageId: 'unexpectedLowercase',
+          data: { method: TestCaseName.test },
+          column: 6,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: "xit('Foo', function () {})",
+      output: "xit('foo', function () {})",
+      options: [{ ignore: [DescribeAlias.describe] }],
+      errors: [
+        {
+          messageId: 'unexpectedLowercase',
+          data: { method: TestCaseName.xit },
+          column: 5,
+          line: 1,
+        },
+      ],
+    },
+  ],
 });
 
 ruleTester.run('prefer-lowercase-title with ignore=test', rule, {
@@ -296,7 +323,47 @@ ruleTester.run('prefer-lowercase-title with ignore=test', rule, {
       options: [{ ignore: [TestCaseName.test] }],
     },
   ],
-  invalid: [],
+  invalid: [
+    {
+      code: "describe('Foo', function () {})",
+      output: "describe('foo', function () {})",
+      options: [{ ignore: [TestCaseName.test] }],
+      errors: [
+        {
+          messageId: 'unexpectedLowercase',
+          data: { method: DescribeAlias.describe },
+          column: 10,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: "it('Foo', function () {})",
+      output: "it('foo', function () {})",
+      options: [{ ignore: [TestCaseName.test] }],
+      errors: [
+        {
+          messageId: 'unexpectedLowercase',
+          data: { method: TestCaseName.it },
+          column: 4,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: "xit('Foo', function () {})",
+      output: "xit('foo', function () {})",
+      options: [{ ignore: [TestCaseName.test] }],
+      errors: [
+        {
+          messageId: 'unexpectedLowercase',
+          data: { method: TestCaseName.xit },
+          column: 5,
+          line: 1,
+        },
+      ],
+    },
+  ],
 });
 
 ruleTester.run('prefer-lowercase-title with ignore=it', rule, {
@@ -322,7 +389,47 @@ ruleTester.run('prefer-lowercase-title with ignore=it', rule, {
       options: [{ ignore: [TestCaseName.it] }],
     },
   ],
-  invalid: [],
+  invalid: [
+    {
+      code: "describe('Foo', function () {})",
+      output: "describe('foo', function () {})",
+      options: [{ ignore: [TestCaseName.it] }],
+      errors: [
+        {
+          messageId: 'unexpectedLowercase',
+          data: { method: DescribeAlias.describe },
+          column: 10,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: "test('Foo', function () {})",
+      output: "test('foo', function () {})",
+      options: [{ ignore: [TestCaseName.it] }],
+      errors: [
+        {
+          messageId: 'unexpectedLowercase',
+          data: { method: TestCaseName.test },
+          column: 6,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: "xtest('Foo', function () {})",
+      output: "xtest('foo', function () {})",
+      options: [{ ignore: [TestCaseName.it] }],
+      errors: [
+        {
+          messageId: 'unexpectedLowercase',
+          data: { method: TestCaseName.xtest },
+          column: 7,
+          line: 1,
+        },
+      ],
+    },
+  ],
 });
 
 ruleTester.run('prefer-lowercase-title with allowedPrefixes', rule, {
@@ -368,7 +475,7 @@ ruleTester.run('prefer-lowercase-title with ignoreTopLevelDescribe', rule, {
             expect('abc').toBe('abc');
           });
         });
-        
+
         describe('Booleans', () => {
           it('are booleans', () => {
             expect(true).toBe(true);
