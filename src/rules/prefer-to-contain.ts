@@ -91,6 +91,7 @@ export default createRule({
         const {
           expect: {
             arguments: [includesCall],
+            range: [, expectCallEnd],
           },
           matcher,
           modifier,
@@ -110,9 +111,11 @@ export default createRule({
           fix(fixer) {
             const sourceCode = context.getSourceCode();
 
-            const negated = modifier?.name === ModifierName.not;
+            const addNotModifier =
+              followTypeAssertionChain(matcher.arguments[0]).value ===
+              !!modifier;
 
-            const fixArr = [
+            return [
               fixer.removeRange([
                 includesCall.callee.property.range[0] - 1,
                 includesCall.range[1],
@@ -121,24 +124,13 @@ export default createRule({
                 matcher.arguments[0],
                 sourceCode.getText(includesCall.arguments[0]),
               ),
-              fixer.replaceText(
-                matcher.node.property,
-                followTypeAssertionChain(matcher.arguments[0]).value === negated
-                  ? `${ModifierName.not}.toContain`
-                  : 'toContain',
+              fixer.replaceTextRange(
+                [expectCallEnd, matcher.node.range[1]],
+                addNotModifier
+                  ? `.${ModifierName.not}.toContain`
+                  : '.toContain',
               ),
             ];
-
-            if (negated) {
-              fixArr.push(
-                fixer.removeRange([
-                  modifier.node.property.range[0] - 1,
-                  modifier.node.range[1],
-                ]),
-              );
-            }
-
-            return fixArr;
           },
           messageId: 'useToContain',
           node: (modifier || matcher).node.property,
