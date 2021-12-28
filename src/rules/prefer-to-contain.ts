@@ -123,17 +123,17 @@ export default createRule({
                 includesCall.callee.property.range[0] - 1,
                 includesCall.range[1],
               ]),
-              // replace the matcher argument with the value from the "includes"
-              fixer.replaceText(
-                matcher.arguments[0],
-                sourceCode.getText(includesCall.arguments[0]),
-              ),
               // replace the current matcher with "toContain", adding "not" if needed
               fixer.replaceTextRange(
                 [expectCallEnd, matcher.node.range[1]],
                 addNotModifier
                   ? `.${ModifierName.not}.toContain`
                   : '.toContain',
+              ),
+              // replace the matcher argument with the value from the "includes"
+              fixer.replaceText(
+                matcher.arguments[0],
+                sourceCode.getText(includesCall.arguments[0]),
               ),
             ];
           },
