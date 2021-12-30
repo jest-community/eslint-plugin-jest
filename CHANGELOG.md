@@ -1,3 +1,11 @@
+## [25.3.3](https://github.com/jest-community/eslint-plugin-jest/compare/v25.3.2...v25.3.3) (2021-12-30)
+
+
+### Bug Fixes
+
+* **prefer-to-contain:** support square bracket accessors ([#1009](https://github.com/jest-community/eslint-plugin-jest/issues/1009)) ([73984a7](https://github.com/jest-community/eslint-plugin-jest/commit/73984a79f790986a17116589a587506bcc10efc0))
+* **prefer-to-have-length:** support square bracket accessors ([#1010](https://github.com/jest-community/eslint-plugin-jest/issues/1010)) ([9e70f55](https://github.com/jest-community/eslint-plugin-jest/commit/9e70f550e341432f69a1cd334c19df87513ea906))
+
 ## [25.3.2](https://github.com/jest-community/eslint-plugin-jest/compare/v25.3.1...v25.3.2) (2021-12-27)
 
 
