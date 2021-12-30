@@ -2,7 +2,6 @@ import {
   ParsedExpectMatcher,
   createRule,
   isExpectCall,
-  isTestCaseCall,
   parseExpectCall,
 } from './utils';
 
@@ -13,10 +12,6 @@ const isSnapshotMatcher = (matcher: ParsedExpectMatcher) => {
 };
 
 const isSnapshotMatcherWithoutHint = (matcher: ParsedExpectMatcher) => {
-  if (!isSnapshotMatcher(matcher)) {
-    return false;
-  }
-
   const expectedNumberOfArgumentsWithHint =
     1 + Number(matcher.name === 'toMatchSnapshot');
 
@@ -46,72 +41,62 @@ export default createRule<[('always' | 'multi')?], keyof typeof messages>({
   },
   defaultOptions: ['multi'],
   create(context, [mode]) {
-    let withinTestBody = false;
-    let previousSnapshotMatcher: ParsedExpectMatcher | null = null;
-    let hasReportedPreviousSnapshotMatcher = false;
+    const snapshotMatchers: ParsedExpectMatcher[] = [];
+    let expressionDepth = 0;
 
-    return {
-      CallExpression(node) {
-        if (isTestCaseCall(node)) {
-          withinTestBody = true;
+    const reportSnapshotMatchersWithoutHints = () => {
+      for (const snapshotMatcher of snapshotMatchers) {
+        if (isSnapshotMatcherWithoutHint(snapshotMatcher)) {
+          context.report({
+            messageId: 'missingHint',
+            node: snapshotMatcher.node.property,
+          });
+        }
+      }
+    };
 
-          return;
+    const enterExpression = () => {
+      expressionDepth++;
+    };
+
+    const exitExpression = () => {
+      expressionDepth--;
+
+      if (mode === 'always') {
+        reportSnapshotMatchersWithoutHints();
+        snapshotMatchers.length = 0;
+      }
+
+      if (mode === 'multi' && expressionDepth === 0) {
+        if (snapshotMatchers.length > 1) {
+          reportSnapshotMatchersWithoutHints();
         }
 
+        snapshotMatchers.length = 0;
+      }
+    };
+
+    return {
+      'Program:exit'() {
+        enterExpression();
+        exitExpression();
+      },
+      FunctionExpression: enterExpression,
+      'FunctionExpression:exit': exitExpression,
+      ArrowFunctionExpression: enterExpression,
+      'ArrowFunctionExpression:exit': exitExpression,
+      CallExpression(node) {
         if (!isExpectCall(node)) {
           return;
         }
 
         const { matcher } = parseExpectCall(node);
 
-        if (!matcher) {
+        if (!matcher || !isSnapshotMatcher(matcher)) {
           return;
         }
 
-        if (mode === 'always' && isSnapshotMatcherWithoutHint(matcher)) {
-          context.report({
-            messageId: 'missingHint',
-            node: matcher.node.property,
-          });
-
-          return;
-        }
-
-        if (!withinTestBody || !isSnapshotMatcher(matcher)) {
-          return;
-        }
-
-        if (!previousSnapshotMatcher) {
-          previousSnapshotMatcher = matcher;
-
-          return;
-        }
-
-        if (isSnapshotMatcherWithoutHint(matcher)) {
-          context.report({
-            messageId: 'missingHint',
-            node: matcher.node.property,
-          });
-        }
-
-        if (
-          isSnapshotMatcherWithoutHint(previousSnapshotMatcher) &&
-          !hasReportedPreviousSnapshotMatcher
-        ) {
-          context.report({
-            messageId: 'missingHint',
-            node: previousSnapshotMatcher.node.property,
-          });
-
-          hasReportedPreviousSnapshotMatcher = true;
-        }
-      },
-      'CallExpression:exit'(node) {
-        if (isTestCaseCall(node)) {
-          withinTestBody = false;
-          previousSnapshotMatcher = null;
-          hasReportedPreviousSnapshotMatcher = false;
-        }
+        snapshotMatchers.push(matcher);
       },
     };
   },

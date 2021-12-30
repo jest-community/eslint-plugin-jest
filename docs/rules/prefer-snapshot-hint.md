@@ -108,18 +108,20 @@ describe('cli', () => {
 ### `'multi'` (default)
 
 Require a hint to be provided when there are multiple external snapshot matchers
-within the same test body.
+within the scope (meaning it includes nested calls).
 
 Examples of **incorrect** code for the `'multi'` option:
 
 ```js
+const snapshotOutput = ({ stdout, stderr }) => {
+  expect(stdout).toMatchSnapshot();
+  expect(stderr).toMatchSnapshot();
+};
+
 describe('cli', () => {
   describe('--version flag', () => {
     it('prints the version', async () => {
-      const { stdout, stderr } = await runCli(['--version']);
-
-      expect(stdout).toMatchSnapshot();
-      expect(stderr).toMatchSnapshot();
+      snapshotOutput(await runCli(['--version']));
     });
   });
 
@@ -146,13 +148,18 @@ describe('cli', () => {
 Examples of **correct** code for the `'multi'` option:
 
 ```js
+const snapshotOutput = ({ stdout, stderr }, hints) => {
+  expect(stdout).toMatchSnapshot({}, `stdout: ${hints.stdout}`);
+  expect(stderr).toMatchSnapshot({}, `stderr: ${hints.stderr}`);
+};
+
 describe('cli', () => {
   describe('--version flag', () => {
     it('prints the version', async () => {
-      const { stdout, stderr } = await runCli(['--version']);
-
-      expect(stdout).toMatchSnapshot('stdout: version string');
-      expect(stderr).toMatchSnapshot('stderr: empty');
+      snapshotOutput(await runCli(['--version']), {
+        stdout: 'version string',
+        stderr: 'empty',
+      });
     });
   });
 

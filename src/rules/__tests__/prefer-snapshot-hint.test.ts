@@ -157,6 +157,21 @@ ruleTester.run('prefer-snapshot-hint (always)', rule, {
         },
       ],
     },
+    {
+      code: dedent`
+        it('is true', () => {
+          { expect(1).toMatchSnapshot(); }
+        });
+      `,
+      options: ['always'],
+      errors: [
+        {
+          messageId: 'missingHint',
+          column: 15,
+          line: 2,
+        },
+      ],
+    },
   ],
 });
 
@@ -260,6 +275,57 @@ ruleTester.run('prefer-snapshot-hint (multi)', rule, {
       `,
       options: ['multi'],
     },
+    {
+      code: dedent`
+        const myReusableTestBody = (value, snapshotHint) => {
+          const innerFn = anotherValue => {
+            expect(anotherValue).toMatchSnapshot();
+
+            expect(value).toBe(1);
+          };
+
+          expect(value).toBe(1);
+        };
+
+        it('my test', () => {
+          expect(1).toMatchSnapshot();
+        });
+      `,
+      options: ['multi'],
+    },
+    {
+      code: dedent`
+        const myReusableTestBody = (value, snapshotHint) => {
+          const innerFn = anotherValue => {
+            expect(value).toBe(1);
+          };
+
+          expect(value).toBe(1);
+          expect(anotherValue).toMatchSnapshot();
+        };
+
+        it('my test', () => {
+          expect(1).toMatchSnapshot();
+        });
+      `,
+      options: ['multi'],
+    },
+    {
+      code: dedent`
+        const myReusableTestBody = (value, snapshotHint) => {
+          const innerFn = anotherValue => {
+            expect(anotherValue).toMatchSnapshot();
+
+            expect(value).toBe(1);
+          };
+
+          expect(value).toBe(1);
+        };
+
+        expect(1).toMatchSnapshot();
+      `,
+      options: ['multi'],
+    },
   ],
   invalid: [
     {
@@ -342,6 +408,50 @@ ruleTester.run('prefer-snapshot-hint (multi)', rule, {
         {
           messageId: 'missingHint',
           column: 13,
+          line: 3,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        it('is true', () => {
+          expect(1).toMatchSnapshot({});
+          {
+            expect(2).toMatchSnapshot({});
+          }
+        });
+      `,
+      options: ['multi'],
+      errors: [
+        {
+          messageId: 'missingHint',
+          column: 13,
+          line: 2,
+        },
+        {
+          messageId: 'missingHint',
+          column: 15,
+          line: 4,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        it('is true', () => {
+          { expect(1).toMatchSnapshot(); }
+          { expect(2).toMatchSnapshot(); }
+        });
+      `,
+      options: ['multi'],
+      errors: [
+        {
+          messageId: 'missingHint',
+          column: 15,
+          line: 2,
+        },
+        {
+          messageId: 'missingHint',
+          column: 15,
           line: 3,
         },
       ],
@@ -457,6 +567,158 @@ ruleTester.run('prefer-snapshot-hint (multi)', rule, {
           messageId: 'missingHint',
           column: 13,
           line: 3,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        const myReusableTestBody = (value, snapshotHint) => {
+          expect(value).toMatchSnapshot();
+
+          const innerFn = anotherValue => {
+            expect(anotherValue).toMatchSnapshot();
+          };
+
+          expect(value).toBe(1);
+          expect(value + 1).toMatchSnapshot(null);
+          expect(value + 2).toThrowErrorMatchingSnapshot(snapshotHint);
+        };
+      `,
+      options: ['multi'],
+      errors: [
+        {
+          messageId: 'missingHint',
+          column: 17,
+          line: 2,
+        },
+        {
+          messageId: 'missingHint',
+          column: 26,
+          line: 5,
+        },
+        {
+          messageId: 'missingHint',
+          column: 21,
+          line: 9,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        const myReusableTestBody = (value, snapshotHint) => {
+          expect(value).toMatchSnapshot();
+
+          const innerFn = anotherValue => {
+            expect(anotherValue).toMatchSnapshot();
+
+            expect(value).toBe(1);
+            expect(value + 1).toMatchSnapshot(null);
+            expect(value + 2).toMatchSnapshot(null, snapshotHint);
+          };
+        };
+      `,
+      options: ['multi'],
+      errors: [
+        {
+          messageId: 'missingHint',
+          column: 17,
+          line: 2,
+        },
+        {
+          messageId: 'missingHint',
+          column: 26,
+          line: 5,
+        },
+        {
+          messageId: 'missingHint',
+          column: 23,
+          line: 8,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        const myReusableTestBody = (value, snapshotHint) => {
+          const innerFn = anotherValue => {
+            expect(anotherValue).toMatchSnapshot();
+
+            expect(value).toBe(1);
+            expect(value + 1).toMatchSnapshot(null);
+            expect(value + 2).toMatchSnapshot(null, snapshotHint);
+          };
+
+          expect(value).toThrowErrorMatchingSnapshot();
+        };
+      `,
+      options: ['multi'],
+      errors: [
+        {
+          messageId: 'missingHint',
+          column: 26,
+          line: 3,
+        },
+        {
+          messageId: 'missingHint',
+          column: 23,
+          line: 6,
+        },
+        {
+          messageId: 'missingHint',
+          column: 17,
+          line: 10,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        const myReusableTestBody = (value, snapshotHint) => {
+          const innerFn = anotherValue => {
+            expect(anotherValue).toMatchSnapshot();
+
+            expect(value).toBe(1);
+          };
+
+          expect(value).toMatchSnapshot();
+        };
+
+        it('my test', () => {
+          expect(1).toMatchSnapshot();
+        });
+      `,
+      options: ['multi'],
+      errors: [
+        {
+          messageId: 'missingHint',
+          column: 26,
+          line: 3,
+        },
+        {
+          messageId: 'missingHint',
+          column: 17,
+          line: 8,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        const myReusableTestBody = value => {
+          expect(value).toMatchSnapshot();
+        };
+
+        expect(1).toMatchSnapshot();
+        expect(1).toThrowErrorMatchingSnapshot();
+      `,
+      options: ['multi'],
+      errors: [
+        {
+          messageId: 'missingHint',
+          column: 11,
+          line: 5,
+        },
+        {
+          messageId: 'missingHint',
+          column: 11,
+          line: 6,
         },
       ],
     },
