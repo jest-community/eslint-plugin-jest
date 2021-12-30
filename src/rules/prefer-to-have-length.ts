@@ -41,33 +41,24 @@ export default createRule({
           !matcher ||
           !isParsedEqualityMatcherCall(matcher) ||
           argument?.type !== AST_NODE_TYPES.MemberExpression ||
-          !isSupportedAccessor(argument.property, 'length') ||
-          argument.property.type !== AST_NODE_TYPES.Identifier
+          !isSupportedAccessor(argument.property, 'length')
         ) {
           return;
         }
 
         context.report({
           fix(fixer) {
-            const propertyDot = context
-              .getSourceCode()
-              .getFirstTokenBetween(
-                argument.object,
-                argument.property,
-                token => token.value === '.',
-              );
-
-            /* istanbul ignore if */
-            if (propertyDot === null) {
-              throw new Error(
-                `Unexpected null when attempting to fix ${context.getFilename()} - please file a github issue at https://github.com/jest-community/eslint-plugin-jest`,
-              );
-            }
-
             return [
-              fixer.remove(propertyDot),
-              fixer.remove(argument.property),
-              fixer.replaceText(matcher.node.property, 'toHaveLength'),
+              // remove the "length" property accessor
+              fixer.removeRange([
+                argument.property.range[0] - 1,
+                argument.range[1],
+              ]),
+              // replace the current matcher with "toHaveLength"
+              fixer.replaceTextRange(
+                [matcher.node.object.range[1], matcher.node.range[1]],
+                '.toHaveLength',
+              ),
             ];
           },
           messageId: 'useToHaveLength',

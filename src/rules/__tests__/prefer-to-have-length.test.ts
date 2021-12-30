@@ -18,16 +18,34 @@ ruleTester.run('prefer-to-have-length', rule, {
     `expect(user.getUserName(5)).resolves.toEqual('Paul')`,
     `expect(user.getUserName(5)).rejects.toEqual('Paul')`,
     'expect(a);',
-    'expect(files["length"]).toBe(1);',
   ],
 
   invalid: [
-    // todo: support this
-    // {
-    //   code: 'expect(files["length"]).toBe(1);',
-    //   errors: [{ messageId: 'useToHaveLength', column: 22, line: 1 }],
-    //   output: 'expect(files).toHaveLength(1);',
-    // },
+    {
+      code: 'expect(files["length"]).toBe(1);',
+      output: 'expect(files).toHaveLength(1);',
+      errors: [{ messageId: 'useToHaveLength', column: 25, line: 1 }],
+    },
+    {
+      code: 'expect(files["length"])["not"].toBe(1);',
+      output: 'expect(files)["not"].toHaveLength(1);',
+      errors: [{ messageId: 'useToHaveLength', column: 32, line: 1 }],
+    },
+    {
+      code: 'expect(files["length"])["toBe"](1);',
+      output: 'expect(files).toHaveLength(1);',
+      errors: [{ messageId: 'useToHaveLength', column: 25, line: 1 }],
+    },
+    {
+      code: 'expect(files["length"]).not["toBe"](1);',
+      output: 'expect(files).not.toHaveLength(1);',
+      errors: [{ messageId: 'useToHaveLength', column: 29, line: 1 }],
+    },
+    {
+      code: 'expect(files["length"])["not"]["toBe"](1);',
+      output: 'expect(files)["not"].toHaveLength(1);',
+      errors: [{ messageId: 'useToHaveLength', column: 32, line: 1 }],
+    },
     {
       code: 'expect(files.length).toBe(1);',
       output: 'expect(files).toHaveLength(1);',
@@ -42,6 +60,11 @@ ruleTester.run('prefer-to-have-length', rule, {
       code: 'expect(files.length).toStrictEqual(1);',
       output: 'expect(files).toHaveLength(1);',
       errors: [{ messageId: 'useToHaveLength', column: 22, line: 1 }],
+    },
+    {
+      code: 'expect(files.length).not.toStrictEqual(1);',
+      output: 'expect(files).not.toHaveLength(1);',
+      errors: [{ messageId: 'useToHaveLength', column: 26, line: 1 }],
     },
   ],
 });
