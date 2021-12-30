@@ -8,6 +8,7 @@ import {
   createRule,
   getAccessorValue,
   hasOnlyOneArgument,
+  isExpectCall,
   isFunction,
   isSupportedAccessor,
   isTestCaseCall,
@@ -44,6 +45,7 @@ const suggestRemovingExtraArguments = (
 
 interface RuleOptions {
   onlyFunctionsWithAsyncKeyword?: boolean;
+  onlyFunctionsWithExpectInLoop?: boolean;
 }
 
 type MessageIds =
@@ -89,9 +91,8 @@ export default createRule<[RuleOptions], MessageIds>({
       {
         type: 'object',
         properties: {
-          onlyFunctionsWithAsyncKeyword: {
-            type: 'boolean',
-          },
+          onlyFunctionsWithAsyncKeyword: { type: 'boolean' },
+          onlyFunctionsWithExpectInLoop: { type: 'boolean' },
         },
         additionalProperties: false,
       },
@@ -99,8 +100,62 @@ export default createRule<[RuleOptions], MessageIds>({
   },
   defaultOptions: [{ onlyFunctionsWithAsyncKeyword: false }],
   create(context, [options]) {
+    let expressionDepth = 0;
+    let hasExpectInLoop = false;
+    let inTestCaseCall = false;
+    let inForLoop = false;
+
+    const shouldCheckFunction = (testFunction: TSESTree.FunctionLike) => {
+      if (
+        !options.onlyFunctionsWithAsyncKeyword &&
+        !options.onlyFunctionsWithExpectInLoop
+      ) {
+        return true;
+      }
+
+      if (options.onlyFunctionsWithAsyncKeyword) {
+        if (testFunction.async) {
+          return true;
+        }
+      }
+
+      if (options.onlyFunctionsWithExpectInLoop) {
+        if (hasExpectInLoop) {
+          return true;
+        }
+      }
+
+      return false;
+    };
+
+    const enterExpression = () => inTestCaseCall && expressionDepth++;
+    const exitExpression = () => inTestCaseCall && expressionDepth--;
+    const enterForLoop = () => (inForLoop = true);
+    const exitForLoop = () => (inForLoop = false);
+
     return {
-      CallExpression(node: TSESTree.CallExpression) {
+      FunctionExpression: enterExpression,
+      'FunctionExpression:exit': exitExpression,
+      ArrowFunctionExpression: enterExpression,
+      'ArrowFunctionExpression:exit': exitExpression,
+      ForStatement: enterForLoop,
+      'ForStatement:exit': exitForLoop,
+      ForInStatement: enterForLoop,
+      'ForInStatement:exit': exitForLoop,
+      ForOfStatement: enterForLoop,
+      'ForOfStatement:exit': exitForLoop,
+      CallExpression(node) {
+        if (isTestCaseCall(node)) {
+          inTestCaseCall = true;
+
+          return;
+        }
+
+        if (isExpectCall(node) && expressionDepth === 1 && inForLoop) {
+          hasExpectInLoop = true;
+        }
+      },
+      'CallExpression:exit'(node: TSESTree.CallExpression) {
         if (!isTestCaseCall(node)) {
           return;
         }
@@ -113,11 +168,16 @@ export default createRule<[RuleOptions], MessageIds>({
 
         if (
           !isFunction(testFn) ||
-          testFn.body.type !== AST_NODE_TYPES.BlockStatement ||
-          (options.onlyFunctionsWithAsyncKeyword && !testFn.async)
+          testFn.body.type !== AST_NODE_TYPES.BlockStatement
         ) {
           return;
         }
+
+        if (!shouldCheckFunction(testFn)) {
+          return;
+        }
+
+        hasExpectInLoop = false;
 
         const testFuncBody = testFn.body.body;
 

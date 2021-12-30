@@ -58,6 +58,16 @@ test('my test', () => {
 
 ## Options
 
+This rule can be configured to only check tests that match certain patterns that
+typically look like `expect` calls might be missed, such as in promises or
+loops.
+
+By default, none of these options are enabled meaning the rule checks _every_
+test for a call to either `expect.hasAssertions` or `expect.assertions`. If any
+of the options are enabled the rule checks any test that matches _at least one_
+of the patterns represented by the enabled options (think "OR" rather than
+"AND").
+
 #### `onlyFunctionsWithAsyncKeyword`
 
 When `true`, this rule will only warn for tests that use the `async` keyword.
@@ -95,5 +105,55 @@ test('my test', async () => {
   expect.assertions(1);
   const result = await someAsyncFunc();
   expect(result).toBe('foo');
+});
+```
+
+#### `onlyFunctionsWithExpectInLoop`
+
+When `true`, this rule will only warn for tests that have `expect` calls within
+a native loop.
+
+```json
+{
+  "rules": {
+    "jest/prefer-expect-assertions": [
+      "warn",
+      { "onlyFunctionsWithAsyncKeyword": true }
+    ]
+  }
+}
+```
+
+Examples of **incorrect** code when `'onlyFunctionsWithExpectInLoop'` is `true`:
+
+```js
+describe('getNumbers', () => {
+  it('only returns numbers that are greater than zero', () => {
+    const numbers = getNumbers();
+
+    for (const number in numbers) {
+      expect(number).toBeGreaterThan(0);
+    }
+  });
+});
+```
+
+Examples of **correct** code when `'onlyFunctionsWithExpectInLoop'` is `true`:
+
+```js
+describe('getNumbers', () => {
+  it('only returns numbers that are greater than zero', () => {
+    expect.hasAssertions();
+
+    const numbers = getNumbers();
+
+    for (const number in numbers) {
+      expect(number).toBeGreaterThan(0);
+    }
+  });
+
+  it('returns more than one number', () => {
+    expect(getNumbers().length).toBeGreaterThan(1);
+  });
 });
 ```
