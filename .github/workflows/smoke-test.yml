@@ -18,7 +18,7 @@ jobs:
           npm run build
           npm link
           npm link eslint-plugin-jest
-      - uses: AriPerkkio/eslint-remote-tester-run-action@v2
+      - uses: AriPerkkio/eslint-remote-tester-run-action@v3
         with:
           issue-title: 'Results of weekly scheduled smoke test'
           eslint-remote-tester-config: smoke-test/eslint-remote-tester.config.js
