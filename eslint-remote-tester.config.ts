@@ -1,12 +1,12 @@
 'use strict';
 
-const {
-  getRepositories,
+import { Config } from 'eslint-remote-tester';
+import {
   getPathIgnorePattern,
-} = require('eslint-remote-tester-repositories');
+  getRepositories,
+} from 'eslint-remote-tester-repositories';
 
-// eslint-disable-next-line import/no-commonjs
-module.exports = {
+const config: Config = {
   repositories: getRepositories({ randomize: true }),
   pathIgnorePattern: getPathIgnorePattern(),
   extensions: ['js', 'jsx', 'ts', 'tsx'],
@@ -29,3 +29,5 @@ module.exports = {
     extends: ['plugin:jest/all'],
   },
 };
+
+export default config;
