@@ -1,8 +1,8 @@
 import { TSESLint } from '@typescript-eslint/experimental-utils';
-import { JestVersion, detectJestVersion } from '../detectJestVersion';
 import rule from '../no-deprecated-functions';
+import { JestVersion, detectJestVersion } from '../utils';
 
-jest.mock('../detectJestVersion');
+jest.mock('../utils/detectJestVersion');
 
 const detectJestVersionMock = detectJestVersion as jest.MockedFunction<
   typeof detectJestVersion

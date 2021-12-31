@@ -1,11 +1,11 @@
 import { TSESLint } from '@typescript-eslint/experimental-utils';
+import { espreeParser } from '../../__tests__/test-utils';
 import {
   createRule,
   getNodeName,
   isDescribeCall,
   isTestCaseCall,
-} from '../utils';
-import { espreeParser } from './test-utils';
+} from '../index';
 
 const ruleTester = new TSESLint.RuleTester({
   parser: espreeParser,

@@ -2,8 +2,12 @@ import {
   AST_NODE_TYPES,
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
-import { JestVersion, detectJestVersion } from './detectJestVersion';
-import { createRule, getNodeName } from './utils';
+import {
+  JestVersion,
+  createRule,
+  detectJestVersion,
+  getNodeName,
+} from './utils';
 
 interface ContextSettings {
   jest?: EslintPluginJestSettings;
