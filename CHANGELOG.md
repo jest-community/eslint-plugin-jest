@@ -1,3 +1,10 @@
+## [25.3.4](https://github.com/jest-community/eslint-plugin-jest/compare/v25.3.3...v25.3.4) (2022-01-01)
+
+
+### Bug Fixes
+
+* **prefer-lowercase-title:** ignore `it` and `test` separately ([#1011](https://github.com/jest-community/eslint-plugin-jest/issues/1011)) ([f1a7674](https://github.com/jest-community/eslint-plugin-jest/commit/f1a767400967bd923512f79e80f283b3b2afa772))
+
 ## [25.3.3](https://github.com/jest-community/eslint-plugin-jest/compare/v25.3.2...v25.3.3) (2021-12-30)
 
 
