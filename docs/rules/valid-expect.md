@@ -38,6 +38,11 @@ This rule is enabled by default.
       type: 'boolean',
       default: false,
     },
+    asyncMatchers: {
+      type: 'array',
+      items: { type: 'string' },
+      default: ['toResolve', 'toReject'],
+    },
     minArgs: {
       type: 'number',
       minimum: 1,
@@ -77,6 +82,14 @@ test('test1', async () => {
 
 test('test2', () => expect(Promise.resolve(2)).resolves.toBe(2));
 ```
+
+### `asyncMatchers`
+
+Allows specifying which matchers return promises, and so should be considered
+async when checking if an `expect` should be returned or awaited.
+
+By default, this has a list of all the async matchers provided by
+`jest-extended` (namely, `toResolve` and `toReject`).
 
 ### `minArgs` & `maxArgs`
 
