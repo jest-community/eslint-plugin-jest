@@ -660,20 +660,22 @@ export const getTestCallExpressionsFromDeclaredVariables = (
 ): Array<JestFunctionCallExpression<TestCaseName>> => {
   return declaredVariables.reduce<
     Array<JestFunctionCallExpression<TestCaseName>>
-  >(
-    (acc, { references }) =>
-      acc.concat(
-        references
-          .map(({ identifier }) => identifier.parent)
-          .filter(
-            (node): node is JestFunctionCallExpression<TestCaseName> =>
-              !!node &&
-              node.type === AST_NODE_TYPES.CallExpression &&
-              isTestCaseCall(node),
-          ),
-      ),
-    [],
-  );
+  >((acc, { references }) => {
+    references.forEach(({ identifier }) => {
+      const node =
+        identifier.parent as JestFunctionCallExpression<TestCaseName>;
+
+      if (
+        !!node &&
+        node.type === AST_NODE_TYPES.CallExpression &&
+        isTestCaseCall(node)
+      ) {
+        acc.push(node);
+      }
+    });
+
+    return acc;
+  }, []);
 };
 
 const isTestCaseName = (node: TSESTree.LeftHandSideExpression) =>
