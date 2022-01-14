@@ -517,6 +517,27 @@ ruleTester.run('prefer-expect-assertions (loops)', rule, {
     },
     {
       code: dedent`
+        it.each([1, 2, 3])("returns numbers that are greater than four", () => {
+          for (const number of getNumbers()) {
+            expect(number).toBeGreaterThan(4);
+          }
+        });
+
+        it("is a number that is greater than four", () => {
+          expect(number).toBeGreaterThan(4);
+        });
+      `,
+      options: [{ onlyFunctionsWithExpectInLoop: true }],
+      errors: [
+        {
+          messageId: 'haveExpectAssertions',
+          column: 1,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: dedent`
         it("returns numbers that are greater than four", () => {
           for (const number of getNumbers()) {
             expect(number).toBeGreaterThan(4);
@@ -615,6 +636,31 @@ ruleTester.run('prefer-expect-assertions (loops)', rule, {
     {
       code: dedent`
         it("it1", async () => {
+          expect.hasAssertions();
+
+          for (const number of getNumbers()) {
+            expect(number).toBeGreaterThan(4);
+          }
+        })
+
+        it("it1", () => {
+          for (const number of getNumbers()) {
+            expect(number).toBeGreaterThan(4);
+          }
+        })
+      `,
+      options: [{ onlyFunctionsWithExpectInLoop: true }],
+      errors: [
+        {
+          messageId: 'haveExpectAssertions',
+          column: 1,
+          line: 9,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        it.skip.each\`\`("it1", async () => {
           expect.hasAssertions();
 
           for (const number of getNumbers()) {
