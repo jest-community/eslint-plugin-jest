@@ -157,3 +157,69 @@ describe('getNumbers', () => {
   });
 });
 ```
+
+#### `onlyFunctionsWithExpectInCallback`
+
+When `true`, this rule will only warn for tests that have `expect` calls within
+a callback.
+
+```json
+{
+  "rules": {
+    "jest/prefer-expect-assertions": [
+      "warn",
+      { "onlyFunctionsWithExpectInCallback": true }
+    ]
+  }
+}
+```
+
+Examples of **incorrect** code when `'onlyFunctionsWithExpectInCallback'` is
+`true`:
+
+```js
+describe('getNumbers', () => {
+  it('only returns numbers that are greater than zero', () => {
+    const numbers = getNumbers();
+
+    getNumbers().forEach(number => {
+      expect(number).toBeGreaterThan(0);
+    });
+  });
+});
+
+describe('/users', () => {
+  it.each([1, 2, 3])('returns ok', id => {
+    client.get(`/users/${id}`, response => {
+      expect(response.status).toBe(200);
+    });
+  });
+});
+```
+
+Examples of **correct** code when `'onlyFunctionsWithExpectInCallback'` is
+`true`:
+
+```js
+describe('getNumbers', () => {
+  it('only returns numbers that are greater than zero', () => {
+    expect.hasAssertions();
+
+    const numbers = getNumbers();
+
+    getNumbers().forEach(number => {
+      expect(number).toBeGreaterThan(0);
+    });
+  });
+});
+
+describe('/users', () => {
+  it.each([1, 2, 3])('returns ok', id => {
+    expect.assertions(3);
+
+    client.get(`/users/${id}`, response => {
+      expect(response.status).toBe(200);
+    });
+  });
+});
+```

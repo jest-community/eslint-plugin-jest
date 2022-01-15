@@ -46,6 +46,7 @@ const suggestRemovingExtraArguments = (
 interface RuleOptions {
   onlyFunctionsWithAsyncKeyword?: boolean;
   onlyFunctionsWithExpectInLoop?: boolean;
+  onlyFunctionsWithExpectInCallback?: boolean;
 }
 
 type MessageIds =
@@ -93,6 +94,7 @@ export default createRule<[RuleOptions], MessageIds>({
         properties: {
           onlyFunctionsWithAsyncKeyword: { type: 'boolean' },
           onlyFunctionsWithExpectInLoop: { type: 'boolean' },
+          onlyFunctionsWithExpectInCallback: { type: 'boolean' },
         },
         additionalProperties: false,
       },
@@ -102,9 +104,12 @@ export default createRule<[RuleOptions], MessageIds>({
     {
       onlyFunctionsWithAsyncKeyword: false,
       onlyFunctionsWithExpectInLoop: false,
+      onlyFunctionsWithExpectInCallback: false,
     },
   ],
   create(context, [options]) {
+    let expressionDepth = 0;
+    let hasExpectInCallback = false;
     let hasExpectInLoop = false;
     let inTestCaseCall = false;
     let inForLoop = false;
@@ -112,7 +117,8 @@ export default createRule<[RuleOptions], MessageIds>({
     const shouldCheckFunction = (testFunction: TSESTree.FunctionLike) => {
       if (
         !options.onlyFunctionsWithAsyncKeyword &&
-        !options.onlyFunctionsWithExpectInLoop
+        !options.onlyFunctionsWithExpectInLoop &&
+        !options.onlyFunctionsWithExpectInCallback
       ) {
         return true;
       }
@@ -129,13 +135,25 @@ export default createRule<[RuleOptions], MessageIds>({
         }
       }
 
+      if (options.onlyFunctionsWithExpectInCallback) {
+        if (hasExpectInCallback) {
+          return true;
+        }
+      }
+
       return false;
     };
 
+    const enterExpression = () => inTestCaseCall && expressionDepth++;
+    const exitExpression = () => inTestCaseCall && expressionDepth--;
     const enterForLoop = () => (inForLoop = true);
     const exitForLoop = () => (inForLoop = false);
 
     return {
+      FunctionExpression: enterExpression,
+      'FunctionExpression:exit': exitExpression,
+      ArrowFunctionExpression: enterExpression,
+      'ArrowFunctionExpression:exit': exitExpression,
       ForStatement: enterForLoop,
       'ForStatement:exit': exitForLoop,
       ForInStatement: enterForLoop,
@@ -149,8 +167,14 @@ export default createRule<[RuleOptions], MessageIds>({
           return;
         }
 
-        if (isExpectCall(node) && inTestCaseCall && inForLoop) {
-          hasExpectInLoop = true;
+        if (isExpectCall(node) && inTestCaseCall) {
+          if (inForLoop) {
+            hasExpectInLoop = true;
+          }
+
+          if (expressionDepth > 1) {
+            hasExpectInCallback = true;
+          }
         }
       },
       'CallExpression:exit'(node: TSESTree.CallExpression) {
@@ -176,6 +200,7 @@ export default createRule<[RuleOptions], MessageIds>({
         }
 
         hasExpectInLoop = false;
+        hasExpectInCallback = false;
 
         const testFuncBody = testFn.body.body;
 
