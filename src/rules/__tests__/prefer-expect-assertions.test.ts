@@ -376,20 +376,6 @@ ruleTester.run('prefer-expect-assertions (loops)', rule, {
     },
     {
       code: dedent`
-        it('returns numbers that are greater than two', function () {
-          const expectNumbersToBeGreaterThan = (numbers, value) => {
-            for (let number of numbers) {
-              expect(number).toBeGreaterThan(value);
-            }
-          };
-
-          expectNumbersToBeGreaterThan(getNumbers(), 2);
-        });
-      `,
-      options: [{ onlyFunctionsWithExpectInLoop: true }],
-    },
-    {
-      code: dedent`
         it("returns numbers that are greater than five", function () {
           expect.assertions(2);
 
@@ -420,6 +406,27 @@ ruleTester.run('prefer-expect-assertions (loops)', rule, {
           for (const number of getNumbers()) {
             expect(number).toBeGreaterThan(6);
           }
+        });
+      `,
+      options: [{ onlyFunctionsWithExpectInLoop: true }],
+      errors: [
+        {
+          messageId: 'haveExpectAssertions',
+          column: 1,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        it('returns numbers that are greater than two', function () {
+          const expectNumbersToBeGreaterThan = (numbers, value) => {
+            for (let number of numbers) {
+              expect(number).toBeGreaterThan(value);
+            }
+          };
+
+          expectNumbersToBeGreaterThan(getNumbers(), 2);
         });
       `,
       options: [{ onlyFunctionsWithExpectInLoop: true }],

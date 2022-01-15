@@ -105,7 +105,6 @@ export default createRule<[RuleOptions], MessageIds>({
     },
   ],
   create(context, [options]) {
-    let expressionDepth = 0;
     let hasExpectInLoop = false;
     let inTestCaseCall = false;
     let inForLoop = false;
@@ -133,16 +132,10 @@ export default createRule<[RuleOptions], MessageIds>({
       return false;
     };
 
-    const enterExpression = () => inTestCaseCall && expressionDepth++;
-    const exitExpression = () => inTestCaseCall && expressionDepth--;
     const enterForLoop = () => (inForLoop = true);
     const exitForLoop = () => (inForLoop = false);
 
     return {
-      FunctionExpression: enterExpression,
-      'FunctionExpression:exit': exitExpression,
-      ArrowFunctionExpression: enterExpression,
-      'ArrowFunctionExpression:exit': exitExpression,
       ForStatement: enterForLoop,
       'ForStatement:exit': exitForLoop,
       ForInStatement: enterForLoop,
@@ -156,7 +149,7 @@ export default createRule<[RuleOptions], MessageIds>({
           return;
         }
 
-        if (isExpectCall(node) && expressionDepth === 1 && inForLoop) {
+        if (isExpectCall(node) && inTestCaseCall && inForLoop) {
           hasExpectInLoop = true;
         }
       },
