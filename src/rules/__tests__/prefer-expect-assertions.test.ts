@@ -363,7 +363,7 @@ ruleTester.run('prefer-expect-assertions (loops)', rule, {
     {
       code: dedent`
         const expectNumbersToBeGreaterThan = (numbers, value) => {
-          for (let number of getNumbers()()) {
+          for (let number of numbers) {
             expect(number).toBeGreaterThan(value);
           }
         };
@@ -378,7 +378,7 @@ ruleTester.run('prefer-expect-assertions (loops)', rule, {
       code: dedent`
         it('returns numbers that are greater than two', function () {
           const expectNumbersToBeGreaterThan = (numbers, value) => {
-            for (let number of getNumbers()()) {
+            for (let number of numbers) {
               expect(number).toBeGreaterThan(value);
             }
           };
