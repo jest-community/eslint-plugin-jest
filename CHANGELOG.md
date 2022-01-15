@@ -1,3 +1,10 @@
+# [25.6.0](https://github.com/jest-community/eslint-plugin-jest/compare/v25.5.0...v25.6.0) (2022-01-15)
+
+
+### Features
+
+* create `prefer-comparison-matcher` rule ([#1015](https://github.com/jest-community/eslint-plugin-jest/issues/1015)) ([eb11876](https://github.com/jest-community/eslint-plugin-jest/commit/eb118761a422b3589311113cd827a6be437f5bb5))
+
 # [25.5.0](https://github.com/jest-community/eslint-plugin-jest/compare/v25.4.0...v25.5.0) (2022-01-15)
 
 
