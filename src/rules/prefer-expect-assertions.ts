@@ -98,7 +98,12 @@ export default createRule<[RuleOptions], MessageIds>({
       },
     ],
   },
-  defaultOptions: [{ onlyFunctionsWithAsyncKeyword: false }],
+  defaultOptions: [
+    {
+      onlyFunctionsWithAsyncKeyword: false,
+      onlyFunctionsWithExpectInLoop: false,
+    },
+  ],
   create(context, [options]) {
     let expressionDepth = 0;
     let hasExpectInLoop = false;
