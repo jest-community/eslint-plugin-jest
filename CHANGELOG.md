@@ -1,3 +1,10 @@
+# [25.5.0](https://github.com/jest-community/eslint-plugin-jest/compare/v25.4.0...v25.5.0) (2022-01-15)
+
+
+### Features
+
+* **prefer-expect-assertions:** support requiring only if `expect` is used in a callback ([#1028](https://github.com/jest-community/eslint-plugin-jest/issues/1028)) ([8d5fd33](https://github.com/jest-community/eslint-plugin-jest/commit/8d5fd33eed633f0c0bbdcb9e86bd2d8d7de79c4b))
+
 # [25.4.0](https://github.com/jest-community/eslint-plugin-jest/compare/v25.3.4...v25.4.0) (2022-01-15)
 
 
