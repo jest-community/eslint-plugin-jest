@@ -1,3 +1,10 @@
+# [25.4.0](https://github.com/jest-community/eslint-plugin-jest/compare/v25.3.4...v25.4.0) (2022-01-15)
+
+
+### Features
+
+* **prefer-expect-assertions:** support requiring only if `expect` is used in a loop ([#1013](https://github.com/jest-community/eslint-plugin-jest/issues/1013)) ([e6f4f8a](https://github.com/jest-community/eslint-plugin-jest/commit/e6f4f8aaf7664bcf9d9d5549c3c43b1b09f49461))
+
 ## [25.3.4](https://github.com/jest-community/eslint-plugin-jest/compare/v25.3.3...v25.3.4) (2022-01-01)
 
 
