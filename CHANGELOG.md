@@ -1,3 +1,11 @@
+# [25.7.0](https://github.com/jest-community/eslint-plugin-jest/compare/v25.6.0...v25.7.0) (2022-01-15)
+
+
+### Features
+
+* create `prefer-equality-matcher` rule ([#1016](https://github.com/jest-community/eslint-plugin-jest/issues/1016)) ([341353b](https://github.com/jest-community/eslint-plugin-jest/commit/341353bc7d57685cc5e0b31501d6ca336a0dbaf0))
+* **valid-expect:** support `asyncMatchers` option and default to `jest-extended` matchers ([#1018](https://github.com/jest-community/eslint-plugin-jest/issues/1018)) ([c82205a](https://github.com/jest-community/eslint-plugin-jest/commit/c82205a73a4e8de315a2ad4d413b146e27c14a34))
+
 # [25.6.0](https://github.com/jest-community/eslint-plugin-jest/compare/v25.5.0...v25.6.0) (2022-01-15)
 
 
