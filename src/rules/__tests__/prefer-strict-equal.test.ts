@@ -1,4 +1,4 @@
-import { TSESLint } from '@typescript-eslint/experimental-utils';
+import { TSESLint } from '@typescript-eslint/utils';
 import rule from '../prefer-strict-equal';
 
 const ruleTester = new TSESLint.RuleTester();

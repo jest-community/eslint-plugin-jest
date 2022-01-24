@@ -4,7 +4,7 @@ import {
   ESLintUtils,
   TSESLint,
   TSESTree,
-} from '@typescript-eslint/experimental-utils';
+} from '@typescript-eslint/utils';
 import { version } from '../../package.json';
 
 const REPO_URL = 'https://github.com/jest-community/eslint-plugin-jest';

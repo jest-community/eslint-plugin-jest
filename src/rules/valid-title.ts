@@ -1,8 +1,4 @@
-import {
-  AST_NODE_TYPES,
-  JSONSchema,
-  TSESTree,
-} from '@typescript-eslint/experimental-utils';
+import { AST_NODE_TYPES, JSONSchema, TSESTree } from '@typescript-eslint/utils';
 import {
   DescribeAlias,
   StringNode,

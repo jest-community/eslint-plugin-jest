@@ -1,7 +1,4 @@
-import {
-  AST_NODE_TYPES,
-  TSESLint,
-} from '@typescript-eslint/experimental-utils';
+import { AST_NODE_TYPES, TSESLint } from '@typescript-eslint/utils';
 import dedent from 'dedent';
 import rule from '../expect-expect';
 import { espreeParser } from './test-utils';

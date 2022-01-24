@@ -1,6 +1,6 @@
 import { readdirSync } from 'fs';
 import { join, parse } from 'path';
-import { TSESLint } from '@typescript-eslint/experimental-utils';
+import { TSESLint } from '@typescript-eslint/utils';
 import globals from './globals.json';
 import * as snapshotProcessor from './processors/snapshot-processor';
 
@@ -9,7 +9,7 @@ type RuleModule = TSESLint.RuleModule<string, unknown[]> & {
 };
 
 // v5 of `@typescript-eslint/experimental-utils` removed this
-declare module '@typescript-eslint/experimental-utils/dist/ts-eslint/Rule' {
+declare module '@typescript-eslint/utils/dist/ts-eslint/Rule' {
   export interface RuleMetaDataDocs {
     category: 'Best Practices' | 'Possible Errors';
   }

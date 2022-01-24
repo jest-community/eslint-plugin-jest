@@ -3,10 +3,7 @@
  * MIT license, Tom Vincent.
  */
 
-import {
-  AST_NODE_TYPES,
-  TSESTree,
-} from '@typescript-eslint/experimental-utils';
+import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/utils';
 import {
   ModifierName,
   createRule,

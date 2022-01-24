@@ -1,4 +1,4 @@
-import { TSESLint } from '@typescript-eslint/experimental-utils';
+import { TSESLint } from '@typescript-eslint/utils';
 import rule from '../no-alias-methods';
 
 const ruleTester = new TSESLint.RuleTester();
