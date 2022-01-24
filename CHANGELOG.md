@@ -1,3 +1,15 @@
+# [26.0.0](https://github.com/jest-community/eslint-plugin-jest/compare/v25.7.0...v26.0.0) (2022-01-24)
+
+
+### Bug Fixes
+
+* migrate to non-experimental ts-eslint utils ([#1035](https://github.com/jest-community/eslint-plugin-jest/issues/1035)) ([e894f51](https://github.com/jest-community/eslint-plugin-jest/commit/e894f51a0d12e3872a4a41d6ea01950b81c07950))
+
+
+### BREAKING CHANGES
+
+* Drop support for `@typescript-eslint/eslint-plugin@4`
+
 # [25.7.0](https://github.com/jest-community/eslint-plugin-jest/compare/v25.6.0...v25.7.0) (2022-01-15)
 
 
