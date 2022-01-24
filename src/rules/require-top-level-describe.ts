@@ -1,4 +1,4 @@
-import { TSESTree } from '@typescript-eslint/experimental-utils';
+import { TSESTree } from '@typescript-eslint/utils';
 import { createRule, isDescribeCall, isHook, isTestCaseCall } from './utils';
 
 const messages = {

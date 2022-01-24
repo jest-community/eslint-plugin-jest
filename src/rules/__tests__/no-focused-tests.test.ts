@@ -1,4 +1,4 @@
-import { TSESLint } from '@typescript-eslint/experimental-utils';
+import { TSESLint } from '@typescript-eslint/utils';
 import rule from '../no-focused-tests';
 import { espreeParser } from './test-utils';
 

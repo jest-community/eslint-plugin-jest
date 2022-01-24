@@ -2,7 +2,7 @@
 
 import * as fs from 'fs';
 import * as path from 'path';
-import { TSESLint } from '@typescript-eslint/experimental-utils';
+import { TSESLint } from '@typescript-eslint/utils';
 import prettier, { Options } from 'prettier';
 import { prettier as prettierRC } from '../package.json';
 import config from '../src/index';

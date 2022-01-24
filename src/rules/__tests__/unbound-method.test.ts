@@ -1,5 +1,5 @@
 import path from 'path';
-import { ESLintUtils, TSESLint } from '@typescript-eslint/experimental-utils';
+import { ESLintUtils, TSESLint } from '@typescript-eslint/utils';
 import dedent from 'dedent';
 import type { MessageIds, Options } from '../unbound-method';
 

@@ -1,7 +1,4 @@
-import {
-  AST_NODE_TYPES,
-  TSESLint,
-} from '@typescript-eslint/experimental-utils';
+import { AST_NODE_TYPES, TSESLint } from '@typescript-eslint/utils';
 import rule from '../prefer-spy-on';
 import { espreeParser } from './test-utils';
 

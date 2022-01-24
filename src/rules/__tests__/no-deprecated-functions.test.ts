@@ -1,4 +1,4 @@
-import { TSESLint } from '@typescript-eslint/experimental-utils';
+import { TSESLint } from '@typescript-eslint/utils';
 import { JestVersion, detectJestVersion } from '../detectJestVersion';
 import rule from '../no-deprecated-functions';
 

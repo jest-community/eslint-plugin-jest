@@ -1,4 +1,4 @@
-import { TSESLint } from '@typescript-eslint/experimental-utils';
+import { TSESLint } from '@typescript-eslint/utils';
 import dedent from 'dedent';
 import rule from '../require-top-level-describe';
 import { espreeParser } from './test-utils';
