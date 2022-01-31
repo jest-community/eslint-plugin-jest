@@ -159,7 +159,7 @@
     ]
   },
   "resolutions": {
-    "@semantic-release/npm/npm": "7.20.6",
+    "@semantic-release/npm/npm": "7.24.2",
     "@typescript-eslint/experimental-utils": "^5.0.0",
     "fsevents/node-gyp": "^7.0.0"
   },
