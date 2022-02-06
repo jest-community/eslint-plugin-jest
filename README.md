@@ -167,7 +167,6 @@ installations requiring long-term consistency.
 | [no-focused-tests](docs/rules/no-focused-tests.md)                           | Disallow focused tests                                              | ![recommended][] | ![suggest][] |
 | [no-hooks](docs/rules/no-hooks.md)                                           | Disallow setup and teardown hooks                                   |                  |              |
 | [no-identical-title](docs/rules/no-identical-title.md)                       | Disallow identical titles                                           | ![recommended][] |              |
-| [no-if](docs/rules/no-if.md)                                                 | Disallow conditional logic                                          |                  |              |
 | [no-interpolation-in-snapshots](docs/rules/no-interpolation-in-snapshots.md) | Disallow string interpolation inside snapshots                      | ![recommended][] |              |
 | [no-jasmine-globals](docs/rules/no-jasmine-globals.md)                       | Disallow Jasmine globals                                            | ![recommended][] | ![fixable][] |
 | [no-jest-import](docs/rules/no-jest-import.md)                               | Disallow importing Jest                                             | ![recommended][] |              |

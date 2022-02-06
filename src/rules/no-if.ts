@@ -44,6 +44,8 @@ export default createRule({
     messages: {
       conditionalInTest: 'Test should not contain {{ condition }} statements.',
     },
+    deprecated: true,
+    replacedBy: ['no-conditional-in-test'],
     schema: [],
     type: 'suggestion',
   },
