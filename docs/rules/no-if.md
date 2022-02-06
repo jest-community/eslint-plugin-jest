@@ -1,5 +1,10 @@
 # Disallow conditional logic (`no-if`)
 
+## Deprecated
+
+This rule has been deprecated in favor of
+[`no-conditional-in-test`](no-conditional-in-test.md).
+
 Conditional logic in tests is usually an indication that a test is attempting to
 cover too much, and not testing the logic it intends to. Each branch of code
 executing within an if statement will usually be better served by a test devoted
