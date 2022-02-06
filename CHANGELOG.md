@@ -1,3 +1,10 @@
+# [26.1.0-next.1](https://github.com/jest-community/eslint-plugin-jest/compare/v26.0.0...v26.1.0-next.1) (2022-02-06)
+
+
+### Features
+
+* create `no-conditional-in-test` rule ([#1027](https://github.com/jest-community/eslint-plugin-jest/issues/1027)) ([004ddc5](https://github.com/jest-community/eslint-plugin-jest/commit/004ddc5cff58e57489ff55cc783b0fa9b964b09a))
+
 # [26.0.0](https://github.com/jest-community/eslint-plugin-jest/compare/v25.7.0...v26.0.0) (2022-01-24)
 
 
