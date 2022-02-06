@@ -1,3 +1,10 @@
+# [26.1.0-next.2](https://github.com/jest-community/eslint-plugin-jest/compare/v26.1.0-next.1...v26.1.0-next.2) (2022-02-06)
+
+
+### Features
+
+* deprecate `no-if` in favor of `no-conditional-in-test` ([#1049](https://github.com/jest-community/eslint-plugin-jest/issues/1049)) ([b15f3af](https://github.com/jest-community/eslint-plugin-jest/commit/b15f3af2d370b7d8d6a0293bc78d560cb874aef6))
+
 # [26.1.0-next.1](https://github.com/jest-community/eslint-plugin-jest/compare/v26.0.0...v26.1.0-next.1) (2022-02-06)
 
 
