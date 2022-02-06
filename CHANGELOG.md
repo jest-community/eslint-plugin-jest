@@ -1,3 +1,12 @@
+# [26.1.0](https://github.com/jest-community/eslint-plugin-jest/compare/v26.0.0...v26.1.0) (2022-02-06)
+
+
+### Features
+
+* create `no-conditional-in-test` rule ([#1027](https://github.com/jest-community/eslint-plugin-jest/issues/1027)) ([d551850](https://github.com/jest-community/eslint-plugin-jest/commit/d5518503e7c5c3051e698bf1a53e9fa2b6d840dc))
+* create `prefer-snapshot-hint` rule ([#1012](https://github.com/jest-community/eslint-plugin-jest/issues/1012)) ([d854723](https://github.com/jest-community/eslint-plugin-jest/commit/d85472365eb45d6073625965c390ba3445a18935))
+* deprecate `no-if` in favor of `no-conditional-in-test` ([#1049](https://github.com/jest-community/eslint-plugin-jest/issues/1049)) ([35f32cc](https://github.com/jest-community/eslint-plugin-jest/commit/35f32cc9da8741649766c2e33b8a6bcaa46ac0e7))
+
 # [26.1.0-next.2](https://github.com/jest-community/eslint-plugin-jest/compare/v26.1.0-next.1...v26.1.0-next.2) (2022-02-06)
 
 
