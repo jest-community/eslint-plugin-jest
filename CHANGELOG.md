@@ -1,3 +1,10 @@
+## [26.1.1](https://github.com/jest-community/eslint-plugin-jest/compare/v26.1.0...v26.1.1) (2022-02-15)
+
+
+### Bug Fixes
+
+* **docs:** use the correct function name ([#1056](https://github.com/jest-community/eslint-plugin-jest/issues/1056)) ([7435556](https://github.com/jest-community/eslint-plugin-jest/commit/74355566e6eef64b98a7da675c0cdcc2e8dc9df6))
+
 # [26.1.0](https://github.com/jest-community/eslint-plugin-jest/compare/v26.0.0...v26.1.0) (2022-02-06)
 
 
