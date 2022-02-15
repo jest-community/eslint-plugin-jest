@@ -118,7 +118,7 @@ a native loop.
   "rules": {
     "jest/prefer-expect-assertions": [
       "warn",
-      { "onlyFunctionsWithAsyncKeyword": true }
+      { "onlyFunctionsWithExpectInLoop": true }
     ]
   }
 }
