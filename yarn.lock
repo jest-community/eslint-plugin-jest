@@ -4591,7 +4591,7 @@ __metadata:
     jest: ^27.0.0
     jest-runner-eslint: ^1.0.0
     lint-staged: ^12.0.0
-    pinst: ^2.0.0
+    pinst: ^3.0.0
     prettier: ^2.0.5
     rimraf: ^3.0.0
     semantic-release: ^19.0.0
@@ -8354,14 +8354,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pinst@npm:^2.0.0":
-  version: 2.1.6
-  resolution: "pinst@npm:2.1.6"
-  dependencies:
-    fromentries: ^1.3.2
+"pinst@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "pinst@npm:3.0.0"
   bin:
     pinst: bin.js
-  checksum: 3644c352a7a956a0a299012609783456e055b2c4dab274bcbe8ea86d3347355a0552da31a7f3fb6ce91d6102f27b6dde64edd69c2cdaaeb811b87bf205655e36
+  checksum: 4ae48a6a60f79c37071233af51b4d91bfc85cfa3c12b66ccda60cdb642b4d14a4ab0cb3587afc55b1f6192cea1772a5e4822026a0d0d3528296edef00cc2d61f
   languageName: node
   linkType: hard
 
