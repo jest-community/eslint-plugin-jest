@@ -5,7 +5,7 @@ jobs:
   commitlint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - uses: wagoid/commitlint-github-action@v4
@@ -16,7 +16,7 @@ jobs:
   danger:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Danger
         uses: danger/danger-js@11.0.2
         env:
