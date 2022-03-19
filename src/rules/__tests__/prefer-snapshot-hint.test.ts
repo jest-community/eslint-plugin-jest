@@ -29,6 +29,28 @@ ruleTester.run('prefer-snapshot-hint (always)', rule, {
       options: ['always'],
     },
     {
+      code: 'expect(1).toMatchSnapshot("my snapshot");',
+      options: ['always'],
+    },
+    {
+      code: 'expect(1).toMatchSnapshot(`my snapshot`);',
+      options: ['always'],
+    },
+    {
+      code: dedent`
+        const x = {};
+        expect(1).toMatchSnapshot(x, "my snapshot");
+      `,
+      options: ['always'],
+    },
+    {
+      code: dedent`
+        const x = "snapshot";
+        expect(1).toMatchSnapshot(\`my $\{x}\`);
+      `,
+      options: ['always'],
+    },
+    {
       code: 'expect(1).toThrowErrorMatchingSnapshot("my snapshot");',
       options: ['always'],
     },
@@ -61,6 +83,20 @@ ruleTester.run('prefer-snapshot-hint (always)', rule, {
           messageId: 'missingHint',
           column: 11,
           line: 1,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        const x = "we can't know if this is a string or not"; 
+        expect(1).toMatchSnapshot(x);
+      `,
+      options: ['always'],
+      errors: [
+        {
+          messageId: 'missingHint',
+          column: 11,
+          line: 2,
         },
       ],
     },
