@@ -1,3 +1,10 @@
+## [26.1.2](https://github.com/jest-community/eslint-plugin-jest/compare/v26.1.1...v26.1.2) (2022-03-19)
+
+
+### Bug Fixes
+
+* **prefer-snapshot-hint:** support passing hint to `toMatchSnapshot` as first argument ([#1070](https://github.com/jest-community/eslint-plugin-jest/issues/1070)) ([97b1f9d](https://github.com/jest-community/eslint-plugin-jest/commit/97b1f9d8063811d8ebb7ad41b92a5286c56aa2c4))
+
 ## [26.1.1](https://github.com/jest-community/eslint-plugin-jest/compare/v26.1.0...v26.1.1) (2022-02-15)
 
 
