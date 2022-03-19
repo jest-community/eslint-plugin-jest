@@ -2,6 +2,7 @@ import {
   ParsedExpectMatcher,
   createRule,
   isExpectCall,
+  isStringNode,
   parseExpectCall,
 } from './utils';
 
@@ -12,10 +13,27 @@ const isSnapshotMatcher = (matcher: ParsedExpectMatcher) => {
 };
 
 const isSnapshotMatcherWithoutHint = (matcher: ParsedExpectMatcher) => {
-  const expectedNumberOfArgumentsWithHint =
-    1 + Number(matcher.name === 'toMatchSnapshot');
+  if (!matcher.arguments || matcher.arguments.length === 0) {
+    return true;
+  }
 
-  return matcher.arguments?.length !== expectedNumberOfArgumentsWithHint;
+  // this matcher only supports one argument which is the hint
+  if (matcher.name !== 'toMatchSnapshot') {
+    return matcher.arguments.length !== 1;
+  }
+
+  // if we're being passed two arguments,
+  // the second one should be the hint
+  if (matcher.arguments.length === 2) {
+    return false;
+  }
+
+  const [arg] = matcher.arguments;
+
+  // the first argument to `toMatchSnapshot` can be _either_ a snapshot hint or
+  // an object with asymmetric matchers, so we can't just assume that the first
+  // argument is a hint when it's by itself.
+  return !isStringNode(arg);
 };
 
 const messages = {
