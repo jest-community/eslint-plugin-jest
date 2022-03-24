@@ -1,3 +1,10 @@
+## [26.1.3](https://github.com/jest-community/eslint-plugin-jest/compare/v26.1.2...v26.1.3) (2022-03-24)
+
+
+### Bug Fixes
+
+* change node engine version to match dependencies ([#1072](https://github.com/jest-community/eslint-plugin-jest/issues/1072)) ([ef2c093](https://github.com/jest-community/eslint-plugin-jest/commit/ef2c093477457e462d5c272e97deadc5089ae0b9))
+
 ## [26.1.2](https://github.com/jest-community/eslint-plugin-jest/compare/v26.1.1...v26.1.2) (2022-03-19)
 
 
