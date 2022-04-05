@@ -88,7 +88,7 @@ jobs:
         run: yarn test --coverage
         env:
           CI: true
-      - uses: codecov/codecov-action@v2
+      - uses: codecov/codecov-action@v3
         if: always()
   test-os:
     name: Test on ${{ matrix.os }} using Node.js LTS
@@ -111,7 +111,7 @@ jobs:
         run: yarn test --coverage
         env:
           CI: true
-      - uses: codecov/codecov-action@v2
+      - uses: codecov/codecov-action@v3
         if: always()
 
   docs:
