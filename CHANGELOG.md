@@ -1,3 +1,10 @@
+## [26.1.4](https://github.com/jest-community/eslint-plugin-jest/compare/v26.1.3...v26.1.4) (2022-04-08)
+
+
+### Bug Fixes
+
+* **prefer-snapshot-hint:** don't report multi snapshots in different tests within the same describe ([#1078](https://github.com/jest-community/eslint-plugin-jest/issues/1078)) ([98e5166](https://github.com/jest-community/eslint-plugin-jest/commit/98e5166347990901b55c64b30f48907984890c48))
+
 ## [26.1.3](https://github.com/jest-community/eslint-plugin-jest/compare/v26.1.2...v26.1.3) (2022-03-24)
 
 
