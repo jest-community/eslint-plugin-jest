@@ -1,8 +1,10 @@
 import {
   ParsedExpectMatcher,
   createRule,
+  isDescribeCall,
   isExpectCall,
   isStringNode,
+  isTestCaseCall,
   parseExpectCall,
 } from './utils';
 
@@ -60,6 +62,7 @@ export default createRule<[('always' | 'multi')?], keyof typeof messages>({
   defaultOptions: ['multi'],
   create(context, [mode]) {
     const snapshotMatchers: ParsedExpectMatcher[] = [];
+    const depths: number[] = [];
     let expressionDepth = 0;
 
     const reportSnapshotMatchersWithoutHints = () => {
@@ -103,7 +106,18 @@ export default createRule<[('always' | 'multi')?], keyof typeof messages>({
       'FunctionExpression:exit': exitExpression,
       ArrowFunctionExpression: enterExpression,
       'ArrowFunctionExpression:exit': exitExpression,
+      'CallExpression:exit'(node) {
+        if (isDescribeCall(node) || isTestCaseCall(node)) {
+          /* istanbul ignore next */
+          expressionDepth = depths.pop() ?? 0;
+        }
+      },
       CallExpression(node) {
+        if (isDescribeCall(node) || isTestCaseCall(node)) {
+          depths.push(expressionDepth);
+          expressionDepth = 0;
+        }
+
         if (!isExpectCall(node)) {
           return;
         }

@@ -259,12 +259,28 @@ ruleTester.run('prefer-snapshot-hint (multi)', rule, {
     },
     {
       code: dedent`
+        describe('my tests', () => {
+          it('is true', () => {
+            expect(1).toMatchSnapshot('this is a hint, all by itself');
+          });
+
+          it('is false', () => {
+            expect(2).toMatchSnapshot('this is a hint');
+            expect(2).toMatchSnapshot('and so is this');
+          });
+        });
+      `,
+      options: ['multi'],
+    },
+    {
+      code: dedent`
         it('is true', () => {
           expect(1).toMatchSnapshot();
         });
 
         it('is false', () => {
-          expect(2).toMatchSnapshot();
+          expect(2).toMatchSnapshot('this is a hint');
+          expect(2).toMatchSnapshot('and so is this');
         });
       `,
       options: ['multi'],
@@ -307,6 +323,18 @@ ruleTester.run('prefer-snapshot-hint (multi)', rule, {
           expect(1).toMatchInlineSnapshot();
           expect(1).toMatchInlineSnapshot();
           expect(1).toThrowErrorMatchingInlineSnapshot();
+        });
+      `,
+      options: ['multi'],
+    },
+    {
+      code: dedent`
+        it('is true', () => {
+          expect(1).toMatchSnapshot();
+        });
+
+        it('is false', () => {
+          expect(1).toMatchSnapshot();
         });
       `,
       options: ['multi'],
@@ -603,6 +631,103 @@ ruleTester.run('prefer-snapshot-hint (multi)', rule, {
           messageId: 'missingHint',
           column: 13,
           line: 3,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        describe('my tests', () => {
+          it('is true', () => {
+            expect(1).toMatchSnapshot();
+          });
+
+          it('is false', () => {
+            expect(2).toMatchSnapshot();
+            expect(2).toMatchSnapshot();
+          });
+        });
+      `,
+      options: ['multi'],
+      errors: [
+        {
+          messageId: 'missingHint',
+          column: 15,
+          line: 7,
+        },
+        {
+          messageId: 'missingHint',
+          column: 15,
+          line: 8,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        describe('my tests', () => {
+          it('is true', () => {
+            expect(1).toMatchSnapshot();
+          });
+
+          it('is false', () => {
+            expect(2).toMatchSnapshot();
+            expect(2).toMatchSnapshot('hello world');
+          });
+        });
+      `,
+      options: ['multi'],
+      errors: [
+        {
+          messageId: 'missingHint',
+          column: 15,
+          line: 7,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        describe('my tests', () => {
+          describe('more tests', () => {
+            it('is true', () => {
+              expect(1).toMatchSnapshot();
+            });
+          });
+
+          it('is false', () => {
+            expect(2).toMatchSnapshot();
+            expect(2).toMatchSnapshot('hello world');
+          });
+        });
+      `,
+      options: ['multi'],
+      errors: [
+        {
+          messageId: 'missingHint',
+          column: 15,
+          line: 9,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        describe('my tests', () => {
+          it('is true', () => {
+            expect(1).toMatchSnapshot();
+          });
+
+          describe('more tests', () => {
+            it('is false', () => {
+              expect(2).toMatchSnapshot();
+              expect(2).toMatchSnapshot('hello world');
+            });
+          });
+        });
+      `,
+      options: ['multi'],
+      errors: [
+        {
+          messageId: 'missingHint',
+          column: 17,
+          line: 8,
         },
       ],
     },
