@@ -108,6 +108,7 @@ export default createRule<[('always' | 'multi')?], keyof typeof messages>({
       'ArrowFunctionExpression:exit': exitExpression,
       'CallExpression:exit'(node) {
         if (isDescribeCall(node) || isTestCaseCall(node)) {
+          /* istanbul ignore next */
           expressionDepth = depths.pop() ?? 0;
         }
       },
