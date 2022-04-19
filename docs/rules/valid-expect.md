@@ -136,9 +136,9 @@ test('all the things', async () => {
   await Promise.resolve(
     expect(Promise.resolve('hello')).resolves.toEqual('hello'),
   );
-  await Promise.all(
+  await Promise.all([
     expect(Promise.resolve('hello')).resolves.toEqual('hello'),
     expect(Promise.resolve('hi')).resolves.toEqual('hi'),
-  );
+  ]);
 });
 ```
