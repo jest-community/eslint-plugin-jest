@@ -59,6 +59,34 @@ doing:
 This is included in all configs shared by this plugin, so can be omitted if
 extending them.
 
+### Running rules only on test-related files
+
+The rules provided by this plugin assume that the files they are checking are
+test-related. This means it's generally not suitable to include them in your
+top-level configuration as that applies to all files being linted which can
+include source files.
+
+You can use
+[overrides](https://eslint.org/docs/user-guide/configuring/configuration-files#how-do-overrides-work)
+to have ESLint apply additional rules to specific files:
+
+```json
+{
+  "extends": ["eslint:recommended"],
+  "overrides": [
+    {
+      "files": ["test/**"],
+      "plugins": ["jest"],
+      "extends": ["plugin:jest/recommended"],
+      "rules": { "jest/prefer-expect-assertions": "off" }
+    }
+  ],
+  "rules": {
+    "indent": ["error", 2]
+  }
+}
+```
+
 ### Jest `version` setting
 
 The behaviour of some rules (specifically [`no-deprecated-functions`][]) change
