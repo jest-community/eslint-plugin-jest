@@ -61,7 +61,7 @@ describe('a test', () => {
 ```
 
 \*Note that this rule will not trigger if the helper function is never used even
-thought the `expect` will not execute. Rely on a rule like no-unused-vars for
+though the `expect` will not execute. Rely on a rule like no-unused-vars for
 this case.
 
 ### Options

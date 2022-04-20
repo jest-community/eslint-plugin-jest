@@ -1,6 +1,6 @@
 # Suggest using the built-in comparison matchers (`prefer-comparison-matcher`)
 
-Jest has a number of built-in matchers for comparing numbers which allow for
+Jest has a number of built-in matchers for comparing numbers, which allow for
 more readable tests and error messages if an expectation fails.
 
 ## Rule details

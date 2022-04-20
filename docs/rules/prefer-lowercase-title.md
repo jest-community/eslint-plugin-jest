@@ -73,8 +73,8 @@ it('Uppercase description');
 
 ### `allowedPrefixes`
 
-This array option allows specifying prefixes which contain capitals that titles
-can start with. This can be useful when writing tests for api endpoints, where
+This array option allows specifying prefixes, which contain capitals that titles
+can start with. This can be useful when writing tests for API endpoints, where
 you'd like to prefix with the HTTP method.
 
 By default, nothing is allowed (the equivalent of `{ "allowedPrefixes": [] }`).
