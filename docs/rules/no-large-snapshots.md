@@ -118,8 +118,8 @@ External). Use `inlineMaxSize` for
 [Inline Snapshots](https://jestjs.io/docs/en/snapshot-testing#inline-snapshots)
 size and `maxSize` for
 [External Snapshots](https://jestjs.io/docs/en/snapshot-testing#snapshot-testing-with-jest).
-If only `maxSize` is provided on options, the value of `maxSize` will be used to
-both snapshot types (Inline and External).
+If only `maxSize` is provided on options, the value of `maxSize` will be used
+for both snapshot types (Inline and External).
 
 Since `eslint-disable` comments are not preserved by Jest when updating
 snapshots, you can use the `allowedSnapshots` option to have specific snapshots

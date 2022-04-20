@@ -1,6 +1,6 @@
 # Suggest using the built-in equality matchers (`prefer-equality-matcher`)
 
-Jest has built-in matchers for expecting equality which allow for more readable
+Jest has built-in matchers for expecting equality, which allow for more readable
 tests and error messages if an expectation fails.
 
 ## Rule details

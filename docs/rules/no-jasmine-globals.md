@@ -9,8 +9,8 @@ API.
 
 ### Rule details
 
-This rule reports on any usage of Jasmine globals which is not ported to Jest,
-and suggests alternative from Jest's own API.
+This rule reports on any usage of Jasmine globals, which is not ported to Jest,
+and suggests alternatives from Jest's own API.
 
 ### Default configuration
 

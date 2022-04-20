@@ -37,8 +37,7 @@ Originally, the `requireActual` & `requireMock` the `requireActual`&
 
 These functions were later moved onto the `jest` object in order to be easier
 for type checkers to handle, and their use via `require` deprecated. Finally,
-the release of Jest 26 saw them removed from the `require` function all
-together.
+the release of Jest 26 saw them removed from the `require` function altogether.
 
 ### `jest.runTimersToTime`
 

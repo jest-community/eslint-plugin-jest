@@ -107,7 +107,7 @@ While you can use `expect.assertions` & `expect.hasAssertions` for these
 situations, they only work with `expect`.
 
 A better way to handle this situation is to introduce a wrapper to handle the
-catching, and otherwise returns a specific "no error thrown" error if nothing is
+catching, and otherwise return a specific "no error thrown" error if nothing is
 thrown by the wrapped function:
 
 ```typescript
