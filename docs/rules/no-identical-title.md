@@ -7,7 +7,7 @@ fix.
 
 ## Rule Details
 
-This rule looks at the title of every test and test suites. It will report when
+This rule looks at the title of every test and test suite. It will report when
 two test suites or two test cases at the same level of a test suite have the
 same title.
 

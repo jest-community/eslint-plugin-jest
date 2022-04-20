@@ -118,8 +118,8 @@ External). Use `inlineMaxSize` for
 [Inline Snapshots](https://jestjs.io/docs/en/snapshot-testing#inline-snapshots)
 size and `maxSize` for
 [External Snapshots](https://jestjs.io/docs/en/snapshot-testing#snapshot-testing-with-jest).
-If only `maxSize` is provided on options, the value of `maxSize` will be used to
-both snapshot types (Inline and External).
+If only `maxSize` is provided on options, the value of `maxSize` will be used
+for both snapshot types (Inline and External).
 
 Since `eslint-disable` comments are not preserved by Jest when updating
 snapshots, you can use the `allowedSnapshots` option to have specific snapshots
@@ -128,7 +128,7 @@ allowed regardless of their size.
 This option takes a map, with the key being the absolute filepath to a snapshot
 file, and the value an array of values made up of strings and regular
 expressions to compare to the names of the snapshots in the `.snap` file when
-checking if the snapshots size should be allowed.
+checking if the size of the snapshot should be allowed.
 
 Note that regular expressions can only be passed in via `.eslintrc.js` as
 instances of `RegExp`.
@@ -150,7 +150,7 @@ module.exports = {
 };
 ```
 
-Since absolute paths are typically not very portable, you can use the builtin
+Since absolute paths are typically not very portable, you can use the built-in
 `path.resolve` function to expand relative paths into absolutes like so:
 
 ```javascript

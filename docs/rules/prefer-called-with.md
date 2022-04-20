@@ -4,7 +4,7 @@ The `toBeCalled()` matcher is used to assert that a mock function has been
 called one or more times, without checking the arguments passed. The assertion
 is stronger when arguments are also validated using the `toBeCalledWith()`
 matcher. When some arguments are difficult to check, using generic match like
-`expect.anything()` at least enforces number and position of arguments.
+`expect.anything()` at least enforces the number and position of arguments.
 
 This rule warns if the form without argument checking is used, except for `.not`
 enforcing a function has never been called.

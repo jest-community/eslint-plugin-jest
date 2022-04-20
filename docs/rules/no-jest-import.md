@@ -17,4 +17,4 @@ first place.
 
 ## Further Reading
 
-\*[The Jest Object](https://facebook.github.io/jest/docs/en/jest-object.html)
+- [The Jest Object](https://facebook.github.io/jest/docs/en/jest-object.html)

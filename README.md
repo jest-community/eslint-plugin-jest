@@ -205,14 +205,14 @@ installations requiring long-term consistency.
 In addition to the above rules, this plugin also includes a few advanced rules
 that are powered by type-checking information provided by TypeScript.
 
-In order to use these rules, you must be using `@typescript-eslint/parser` &
-adjust your eslint config as outlined
+To use these rules, you must be using `@typescript-eslint/parser` & adjust your
+eslint config as outlined
 [here](https://github.com/typescript-eslint/typescript-eslint/blob/master/docs/getting-started/linting/TYPED_LINTING.md)
 
 Note that unlike the type-checking rules in `@typescript-eslint/eslint-plugin`,
 the rules here will fallback to doing nothing if type information is not
-available, meaning its safe to include them in shared configs that could be used
-on JavaScript and TypeScript projects.
+available, meaning it's safe to include them in shared configs that could be
+used on JavaScript and TypeScript projects.
 
 Also note that `unbound-method` depends on `@typescript-eslint/eslint-plugin`,
 as it extends the original `unbound-method` rule from that plugin.

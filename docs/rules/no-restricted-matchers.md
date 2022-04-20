@@ -1,6 +1,6 @@
 # Disallow specific matchers & modifiers (`no-restricted-matchers`)
 
-This rule bans specific matchers & modifiers from being used, and can suggest
+This rule bans specific matchers & modifiers from being used and can suggest
 alternatives.
 
 ## Rule Details

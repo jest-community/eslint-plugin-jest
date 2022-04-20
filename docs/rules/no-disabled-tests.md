@@ -1,7 +1,7 @@
 # Disallow disabled tests (`no-disabled-tests`)
 
 Jest has a feature that allows you to temporarily mark tests as disabled. This
-feature is often helpful while debugging or to create placeholders for future
+feature is often helpful while debugging or creating placeholders for future
 tests. Before committing changes we may want to check that all tests are
 running.
 

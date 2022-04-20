@@ -59,7 +59,7 @@ This rule is enabled by default.
 ### `alwaysAwait`
 
 Enforces to use `await` inside block statements. Using `return` will trigger a
-warning. Returning one line statements with arrow functions is _always allowed_.
+warning. Returning one-line statements with arrow functions is _always allowed_.
 
 Examples of **incorrect** code for the { "alwaysAwait": **true** } option:
 
@@ -93,7 +93,7 @@ By default, this has a list of all the async matchers provided by
 
 ### `minArgs` & `maxArgs`
 
-Enforces the minimum and maximum number of arguments that `expect` can take, and
+Enforces the minimum and maximum number of arguments that `expect` can take and
 is required to take.
 
 Both of these properties have a default value of `1`, which is the number of

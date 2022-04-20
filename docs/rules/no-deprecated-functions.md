@@ -1,6 +1,6 @@
 # Disallow use of deprecated functions (`no-deprecated-functions`)
 
-Over the years Jest has accrued some debt in the form of functions that have
+Over the years, Jest has accrued some debt in the form of functions that have
 either been renamed for clarity, or replaced with more powerful APIs.
 
 While typically these deprecated functions are kept in the codebase for a number
@@ -13,8 +13,8 @@ version if needed.
 
 ## Rule details
 
-This rule warns about calls to deprecated functions, and provides details on
-what to replace them with, based on the version of Jest that is installed.
+This rule warns about calls to deprecated functions and provides details on what
+to replace them with, based on the version of Jest that is installed.
 
 This rule can also autofix a number of these deprecations for you.
 
@@ -35,10 +35,9 @@ These functions were replaced in Jest 21 and removed in Jest 26.
 Originally, the `requireActual` & `requireMock` the `requireActual`&
 `requireMock` functions were placed onto the `require` function.
 
-These functions were later moved onto the `jest` object in order to be easier
-for type checkers to handle, and their use via `require` deprecated. Finally,
-the release of Jest 26 saw them removed from the `require` function all
-together.
+These functions were later moved onto the `jest` object for it to be easier for
+type checkers to handle, and their use via `require` deprecated. Finally, the
+release of Jest 26 saw them removed from the `require` function altogether.
 
 ### `jest.runTimersToTime`
 

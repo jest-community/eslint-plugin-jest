@@ -1,6 +1,6 @@
 # Require test cases and hooks to be inside a `describe` block (`require-top-level-describe`)
 
-Jest allows you to organise your test files the way you want it. However, the
+Jest allows you to organise your test files the way you want them. However, the
 more your codebase grows, the more it becomes hard to navigate in your test
 files. This rule makes sure you provide at least a top-level `describe` block in
 your test file.

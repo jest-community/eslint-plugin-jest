@@ -11,7 +11,7 @@ Checks that the title of Jest blocks are valid by ensuring that titles are:
 
 **emptyTitle**
 
-An empty title is not informative, and serves little purpose.
+An empty title is not informative and serves little purpose.
 
 Examples of **incorrect** code for this rule:
 

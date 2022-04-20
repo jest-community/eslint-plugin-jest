@@ -6,7 +6,7 @@ no-disabled-tests rule.
 ## Rule Details
 
 The rule uses fuzzy matching to do its best to determine what constitutes a
-commented out test, checking for a presence of `it(`, `describe(`, `it.skip(`,
+commented out test, checking for the presence of `it(`, `describe(`, `it.skip(`,
 etc. in code comments.
 
 The following patterns are considered warnings:
