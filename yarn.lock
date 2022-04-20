@@ -4586,7 +4586,7 @@ __metadata:
     eslint-plugin-import: ^2.25.1
     eslint-plugin-node: ^11.0.0
     eslint-plugin-prettier: ^3.4.1
-    eslint-remote-tester: ^2.1.0
+    eslint-remote-tester: ^2.1.3
     eslint-remote-tester-repositories: ^0.0.5
     husky: ^7.0.2
     is-ci: ^3.0.0
@@ -4649,17 +4649,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-remote-tester@npm:^2.1.0":
-  version: 2.1.1
-  resolution: "eslint-remote-tester@npm:2.1.1"
+"eslint-remote-tester@npm:^2.1.3":
+  version: 2.1.3
+  resolution: "eslint-remote-tester@npm:2.1.3"
   dependencies:
-    "@babel/code-frame": ^7.12.13
+    "@babel/code-frame": ^7.16.7
     JSONStream: ^1.3.5
-    chalk: ^4.1.0
-    ink: ^3.0.8
-    object-hash: ^2.1.1
+    chalk: ^4.1.2
+    ink: ^3.2.0
+    object-hash: ^3.0.0
     react: ">=16.8.0"
-    simple-git: ^2.20.1
+    simple-git: ^3.7.0
   peerDependencies:
     eslint: ">=7"
     ts-node: ">=9.0.0"
@@ -4668,7 +4668,7 @@ __metadata:
       optional: true
   bin:
     eslint-remote-tester: dist/index.js
-  checksum: 146037bfbc0e0faf0c53dc1fa5170c5990306667f8a6db2e18cb897746f1e0839901bb517893f46bedc313cca74e05a342d06462ceed5a2922c68f59bdff883e
+  checksum: f8d0d3c473802515fed5b3c0fee7d3284b37d26c43075cc16dc4e1677ab7c00d613526093556b388f3ddf780cdef752bbbfcbcba247821fa4926919f54510ada
   languageName: node
   linkType: hard
 
@@ -5716,7 +5716,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ink@npm:^3.0.8":
+"ink@npm:^3.2.0":
   version: 3.2.0
   resolution: "ink@npm:3.2.0"
   dependencies:
@@ -7974,10 +7974,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"object-hash@npm:^2.1.1":
-  version: 2.2.0
-  resolution: "object-hash@npm:2.2.0"
-  checksum: 55ba841e3adce9c4f1b9b46b41983eda40f854e0d01af2802d3ae18a7085a17168d6b81731d43fdf1d6bcbb3c9f9c56d22c8fea992203ad90a38d7d919bc28f1
+"object-hash@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "object-hash@npm:3.0.0"
+  checksum: 80b4904bb3857c52cc1bfd0b52c0352532ca12ed3b8a6ff06a90cd209dfda1b95cee059a7625eb9da29537027f68ac4619363491eedb2f5d3dddbba97494fd6c
   languageName: node
   linkType: hard
 
@@ -9209,14 +9209,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"simple-git@npm:^2.20.1":
-  version: 2.48.0
-  resolution: "simple-git@npm:2.48.0"
+"simple-git@npm:^3.7.0":
+  version: 3.7.0
+  resolution: "simple-git@npm:3.7.0"
   dependencies:
     "@kwsites/file-exists": ^1.1.1
     "@kwsites/promise-deferred": ^1.1.1
-    debug: ^4.3.2
-  checksum: ba84b942ad5cebb9d43df2f147e414e348584f40023121896959f22d05e260ae71b862a93db5c473413f8d218f2122f2964d22f6b7bd77cc12dabc7e73b066be
+    debug: ^4.3.3
+  checksum: 413050fa1c6e98533d450de508ba62d38701e788d4818da15df153172a441a5f429f36862f3a679185d022a702eb4d893d92fca6e4ada56b0c36b43e4e74c157
   languageName: node
   linkType: hard
 
