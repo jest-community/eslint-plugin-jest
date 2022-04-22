@@ -1,3 +1,10 @@
+## [26.1.5](https://github.com/jest-community/eslint-plugin-jest/compare/v26.1.4...v26.1.5) (2022-04-22)
+
+
+### Bug Fixes
+
+* **prefer-expect-assertions:** properly handle checking across multiple tests ([#1089](https://github.com/jest-community/eslint-plugin-jest/issues/1089)) ([8b61b0c](https://github.com/jest-community/eslint-plugin-jest/commit/8b61b0c0dd79e8f3a83cbbd78eada2bc8dee52e8))
+
 ## [26.1.4](https://github.com/jest-community/eslint-plugin-jest/compare/v26.1.3...v26.1.4) (2022-04-08)
 
 
