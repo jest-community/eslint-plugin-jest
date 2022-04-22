@@ -215,7 +215,7 @@ describe('getNumbers', () => {
 
 describe('/users', () => {
   it.each([1, 2, 3])('returns ok', id => {
-    expect.assertions(3);
+    expect.assertions(1);
 
     client.get(`/users/${id}`, response => {
       expect(response.status).toBe(200);
