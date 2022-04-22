@@ -178,6 +178,8 @@ export default createRule<[RuleOptions], MessageIds>({
           return;
         }
 
+        inTestCaseCall = false;
+
         if (node.arguments.length < 2) {
           return;
         }
