@@ -816,6 +816,20 @@ ruleTester.run('prefer-expect-assertions (callbacks)', rule, {
       `,
       options: [{ onlyFunctionsWithExpectInCallback: true }],
     },
+    {
+      code: dedent`
+        it('is a test', () => {
+          expect(expected).toBe(actual);
+        });
+
+        describe('my test', () => {
+          it('is another test', () => {
+            expect(expected).toBe(actual);
+          });
+        });
+      `,
+      options: [{ onlyFunctionsWithExpectInCallback: true }],
+    },
   ],
   invalid: [
     {
