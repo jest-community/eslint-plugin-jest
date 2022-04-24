@@ -273,3 +273,102 @@ ruleTester.run('wildcards', rule, {
     },
   ],
 });
+
+ruleTester.run('non-jest functions (commonjs)', rule, {
+  valid: [
+    {
+      code: dedent`
+        const { test } = require('./test-fn');
+
+        describe(test, () => {
+          it('should do something good', () => {
+            expect(test({})).toBeDefined();
+          });
+        });
+      `,
+    },
+    {
+      code: dedent`
+        const { test: testWithJest } = require('@jest/globals');
+        const { test } = require('./test-fn');
+
+        describe(test, () => {
+          testWithJest('should do something good', () => {
+            expect(test({})).toBeDefined();
+          });
+        });
+      `,
+    },
+  ],
+  invalid: [
+    {
+      code: dedent`
+        const { test: testWithJest } = require('@jest/globals');
+        const { test } = require('./test-fn');
+
+        describe(test, () => {
+          testWithJest('should do something good', () => {
+            //
+          });
+        });
+      `,
+      errors: [
+        {
+          messageId: 'noAssertions',
+          type: AST_NODE_TYPES.CallExpression,
+        },
+      ],
+    },
+  ],
+});
+
+ruleTester.run('non-jest functions (esm)', rule, {
+  valid: [
+    {
+      code: dedent`
+        import { test } from './test-fn';
+
+        describe(test, () => {
+          it('should do something good', () => {
+            expect(test({})).toBeDefined();
+          });
+        });
+      `,
+      parserOptions: { sourceType: 'module' },
+    },
+    {
+      code: dedent`
+        import { test as testWithJest } from '@jest/globals';
+        import { test } from './test-fn';
+
+        describe(test, () => {
+          testWithJest('should do something good', () => {
+            expect(test({})).toBeDefined();
+          });
+        });
+      `,
+      parserOptions: { sourceType: 'module' },
+    },
+  ],
+  invalid: [
+    {
+      code: dedent`
+        import { test as testWithJest } from '@jest/globals';
+        import { test } from './test-fn';
+
+        describe(test, () => {
+          testWithJest('should do something good', () => {
+            //
+          });
+        });
+      `,
+      parserOptions: { sourceType: 'module' },
+      errors: [
+        {
+          messageId: 'noAssertions',
+          type: AST_NODE_TYPES.CallExpression,
+        },
+      ],
+    },
+  ],
+});
