@@ -60,9 +60,6 @@
     "projects": [
       {
         "displayName": "test",
-        "moduleNameMapper": {
-          "eslint/use-at-your-own-risk": "eslint/lib/unsupported-api.js"
-        },
         "testPathIgnorePatterns": [
           "<rootDir>/lib/.*",
           "<rootDir>/src/rules/__tests__/fixtures/*",
@@ -100,7 +97,7 @@
     "@types/prettier": "^2.0.0",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
     "@typescript-eslint/parser": "^5.0.0",
-    "babel-jest": "^27.0.0",
+    "babel-jest": "^28.0.0",
     "babel-plugin-replace-ts-export-assignment": "^0.0.2",
     "dedent": "^0.7.0",
     "eslint": "^6.0.0 || ^7.0.0 || ^8.0.0",
@@ -115,7 +112,7 @@
     "eslint-remote-tester-repositories": "^0.0.5",
     "husky": "^7.0.2",
     "is-ci": "^3.0.0",
-    "jest": "^27.0.0",
+    "jest": "^28.0.0",
     "jest-runner-eslint": "^1.0.0",
     "lint-staged": "^12.0.0",
     "pinst": "^3.0.0",
