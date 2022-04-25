@@ -692,15 +692,46 @@ const isTestCaseProperty = (
  *
  * Note that `.each()` does not count as a call in this context, as it will not
  * result in `jest` running any tests.
+ */
+export const isTestCaseCall2 = (
+  node: TSESTree.CallExpression,
+  scope?: TSESLint.Scope.Scope,
+): node is JestFunctionCallExpression<TestCaseName> => {
+  const name = findFirstCallPropertyName(node, Object.keys(TestCaseProperty));
+
+  if (!!name && TestCaseName.hasOwnProperty(name)) {
+    if (!scope) {
+      return true;
+    }
+
+    return !scopeHasLocalReference(scope, name);
+  }
+
+  return false;
+};
+
+/**
+ * Checks if the given `node` is a *call* to a test case function that would
+ * result in tests being run by `jest`.
  *
- * @param {TSESTree.CallExpression} node
- *
- * @return {node is JestFunctionCallExpression<TestCaseName>}
+ * Note that `.each()` does not count as a call in this context, as it will not
+ * result in `jest` running any tests.
  */
 export const isTestCaseCall = (
   node: TSESTree.CallExpression,
+  scope?: TSESLint.Scope.Scope,
 ): node is JestFunctionCallExpression<TestCaseName> => {
-  const name = findFirstCallPropertyName(node, Object.keys(TestCaseProperty));
+  let name = findFirstCallPropertyName(node, Object.keys(TestCaseProperty));
+
+  if (!name) {
+    return false;
+  }
+
+  if (scope && name) {
+    name = resolveToJestFn(scope, name);
+  }
+
+  console.log(name);
 
   return !!name && TestCaseName.hasOwnProperty(name);
 };
@@ -766,19 +797,64 @@ export const isDescribeCall = (
   return !!name && DescribeAlias.hasOwnProperty(name);
 };
 
+interface ImportDetails {
+  source: string;
+  local: string;
+  imported: string;
+}
+
+const describeImportDef = (
+  def: TSESLint.Scope.Definitions.ImportBindingDefinition,
+): ImportDetails | null => {
+  if (def.parent.type === AST_NODE_TYPES.TSImportEqualsDeclaration) {
+    return null;
+  }
+
+  if (def.node.type !== AST_NODE_TYPES.ImportSpecifier) {
+    return null;
+  }
+
+  return {
+    source: def.parent.source.value,
+    imported: def.node.imported.name,
+    local: def.node.local.name,
+  };
+};
+
 const collectReferences = (scope: TSESLint.Scope.Scope) => {
   const locals = new Set();
+  const imports = new Map<string, ImportDetails>();
   const unresolved = new Set();
 
   let currentScope: TSESLint.Scope.Scope | null = scope;
 
   while (currentScope !== null) {
     for (const ref of currentScope.variables) {
-      const isReferenceDefined = ref.defs.some(def => {
-        return def.type !== 'ImplicitGlobalVariable';
-      });
+      if (ref.defs.length === 0) {
+        continue;
+      }
 
-      if (isReferenceDefined) {
+      if (ref.defs.length > 1) {
+        throw new Error('please report this');
+      }
+
+      const [def] = ref.defs;
+
+      if (def.type === 'ImportBinding') {
+        if (def.parent.type === AST_NODE_TYPES.TSImportEqualsDeclaration) {
+          continue;
+        }
+
+        const details = describeImportDef(def);
+
+        if (details) {
+          imports.set(details.local, details);
+        }
+
+        continue;
+      }
+
+      if (def.type !== 'ImplicitGlobalVariable') {
         locals.add(ref.name);
       }
     }
@@ -790,7 +866,7 @@ const collectReferences = (scope: TSESLint.Scope.Scope) => {
     currentScope = currentScope.upper;
   }
 
-  return { locals, unresolved };
+  return { locals, imports, unresolved };
 };
 
 export const scopeHasLocalReference = (
@@ -806,4 +882,37 @@ export const scopeHasLocalReference = (
     // meaning it is likely not an implicit global reference.
     !references.unresolved.has(referenceName)
   );
+};
+
+export const resolveToJestFn = (
+  scope: TSESLint.Scope.Scope,
+  identifier: string,
+) => {
+  const references = collectReferences(scope);
+
+  // the identifier was found as a local variable or function declaration
+  // meaning it's not a function from jest
+  if (references.locals.has(identifier)) {
+    return null;
+  }
+
+  // the identifier was not found as an unresolved reference,
+  // meaning it's unlikely to be an implicit global variable
+  if (!references.unresolved.has(identifier)) {
+    return null;
+  }
+
+  const maybeImport = references.imports.get(identifier);
+
+  if (maybeImport) {
+    // the identifier is imported from @jest/globals,
+    // so return the original import name
+    if (maybeImport.source === '@jest/globals') {
+      return maybeImport.imported;
+    }
+
+    return null;
+  }
+
+  return identifier;
 };

@@ -304,6 +304,24 @@ ruleTester.run('non-jest functions (commonjs)', rule, {
     {
       code: dedent`
         const { test: testWithJest } = require('@jest/globals');
+
+        describe(test, () => {
+          it('should do something good', () => {
+            expect(testWithJest({})).toBeDefined();
+          });
+        });
+      `,
+      parserOptions: { sourceType: 'module' },
+      errors: [
+        {
+          messageId: 'noAssertions',
+          type: AST_NODE_TYPES.CallExpression,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        const { test: testWithJest } = require('@jest/globals');
         const { test } = require('./test-fn');
 
         describe(test, () => {
@@ -333,7 +351,6 @@ ruleTester.run('non-jest functions (esm)', rule, {
         });
       `,
       parserOptions: { sourceType: 'module' },
-      only: true,
     },
     {
       code: dedent`
@@ -344,7 +361,6 @@ ruleTester.run('non-jest functions (esm)', rule, {
         });
       `,
       parserOptions: { sourceType: 'module' },
-      only: true,
     },
     {
       code: dedent`
@@ -357,7 +373,6 @@ ruleTester.run('non-jest functions (esm)', rule, {
         });
       `,
       parserOptions: { sourceType: 'module' },
-      only: true,
     },
     {
       code: dedent`
@@ -386,6 +401,24 @@ ruleTester.run('non-jest functions (esm)', rule, {
     },
   ],
   invalid: [
+    {
+      code: dedent`
+        import { test as testWithJest } from '@jest/globals';
+
+        describe(test, () => {
+          it('should do something good', () => {
+            expect(testWithJest({})).toBeDefined();
+          });
+        });
+      `,
+      parserOptions: { sourceType: 'module' },
+      errors: [
+        {
+          messageId: 'noAssertions',
+          type: AST_NODE_TYPES.CallExpression,
+        },
+      ],
+    },
     {
       code: dedent`
         import { test as testWithJest } from '@jest/globals';

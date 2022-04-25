@@ -111,7 +111,7 @@ export default createRule<
         const name = getNodeName(node.callee) ?? '';
 
         if (
-          isTestCaseCall(node) ||
+          isTestCaseCall(node, context.getScope()) ||
           additionalTestBlockFunctions.includes(name)
         ) {
           if (
