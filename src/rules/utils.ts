@@ -784,15 +784,20 @@ const findFirstCallPropertyName = (
  *
  * Note that `.each()` does not count as a call in this context, as it will not
  * result in `jest` creating any `describe` blocks.
- *
- * @param {TSESTree.CallExpression} node
- *
- * @return {node is JestFunctionCallExpression<TestCaseName>}
  */
 export const isDescribeCall = (
   node: TSESTree.CallExpression,
+  scope?: TSESLint.Scope.Scope,
 ): node is JestFunctionCallExpression<DescribeAlias> => {
-  const name = findFirstCallPropertyName(node, Object.keys(DescribeProperty));
+  let name = findFirstCallPropertyName(node, Object.keys(DescribeProperty));
+
+  if (!name) {
+    return false;
+  }
+
+  if (scope && name) {
+    name = resolveToJestFn(scope, name);
+  }
 
   return !!name && DescribeAlias.hasOwnProperty(name);
 };
