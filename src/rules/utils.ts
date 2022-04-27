@@ -898,12 +898,8 @@ export const resolveToJestFn = (
   // the identifier was found as a local variable or function declaration
   // meaning it's not a function from jest
   if (references.locals.has(identifier)) {
-    return null;
-  }
+    console.log('this is a local!');
 
-  // the identifier was not found as an unresolved reference,
-  // meaning it's unlikely to be an implicit global variable
-  if (!references.unresolved.has(identifier)) {
     return null;
   }
 
@@ -915,6 +911,14 @@ export const resolveToJestFn = (
     if (maybeImport.source === '@jest/globals') {
       return maybeImport.imported;
     }
+
+    return null;
+  }
+
+  // the identifier was not found as an unresolved reference,
+  // meaning it's unlikely to be an implicit global variable
+  if (!references.unresolved.has(identifier)) {
+    console.log('this is not unresolved local!');
 
     return null;
   }
