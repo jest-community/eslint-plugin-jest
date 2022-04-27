@@ -1,4 +1,5 @@
 import { TSESLint } from '@typescript-eslint/utils';
+import dedent from 'dedent';
 import {
   createRule,
   getNodeName,
@@ -37,9 +38,10 @@ const rule = createRule({
   defaultOptions: [],
   create: context => ({
     CallExpression(node) {
+      const scope = context.getScope();
       const callType =
-        (isDescribeCall(node) && ('describe' as const)) ||
-        (isTestCaseCall(node) && ('test' as const));
+        (isDescribeCall(node, scope) && ('describe' as const)) ||
+        (isTestCaseCall(node, scope) && ('test' as const));
 
       if (callType) {
         context.report({
@@ -299,3 +301,308 @@ testUtilsAgainst(
   ],
   'describe',
 );
+
+describe('reference checking', () => {
+  ruleTester.run('general', rule, {
+    valid: [
+      {
+        code: dedent`
+          const test = () => {};
+
+          test('is not a jest function', () => {});
+        `,
+      },
+      {
+        code: dedent`
+          const { it } = await import('./test-utils');
+
+          it('is not a jest function', () => {});
+        `,
+        parserOptions: { sourceType: 'module' },
+      },
+    ],
+    invalid: [
+      {
+        code: 'describe()',
+        errors: [
+          {
+            messageId: 'details' as const,
+            data: {
+              callType: 'describe',
+              numOfArgs: 0,
+              nodeName: 'describe',
+            },
+            column: 1,
+            line: 1,
+          },
+        ],
+      },
+    ],
+  });
+
+  ruleTester.run('esm', rule, {
+    valid: [
+      {
+        code: dedent`
+          import { it } from './test-utils';
+
+          it('is not a jest function', () => {});
+        `,
+        parserOptions: { sourceType: 'module' },
+      },
+      {
+        code: dedent`
+          import { describe } from './test-utils';
+
+          describe('a function that is not from jest', () => {});
+        `,
+        parserOptions: { sourceType: 'module' },
+      },
+      {
+        code: dedent`
+          import { fn as it } from './test-utils';
+
+          it('is not a jest function', () => {});
+        `,
+        parserOptions: { sourceType: 'module' },
+      },
+    ],
+    invalid: [
+      {
+        code: dedent`
+          import { describe } from '@jest/globals';
+
+          describe('is a jest function', () => {});
+        `,
+        parserOptions: { sourceType: 'module' },
+        errors: [
+          {
+            messageId: 'details' as const,
+            data: {
+              callType: 'describe',
+              numOfArgs: 2,
+              nodeName: 'describe',
+            },
+            column: 1,
+            line: 3,
+          },
+        ],
+      },
+      {
+        code: dedent`
+          import { it } from '@jest/globals';
+
+          it('is a jest function', () => {});
+        `,
+        parserOptions: { sourceType: 'module' },
+        errors: [
+          {
+            messageId: 'details' as const,
+            data: {
+              callType: 'test',
+              numOfArgs: 2,
+              nodeName: 'it',
+            },
+            column: 1,
+            line: 3,
+          },
+        ],
+      },
+      {
+        code: dedent`
+          import { it as testThis, xit as skipThis } from '@jest/globals';
+
+          testThis('is a jest function', () => {});
+          skipThis('is a jest function', () => {});
+        `,
+        parserOptions: { sourceType: 'module' },
+        errors: [
+          {
+            messageId: 'details' as const,
+            data: {
+              callType: 'test',
+              numOfArgs: 2,
+              nodeName: 'testThis',
+            },
+            column: 1,
+            line: 3,
+          },
+          {
+            messageId: 'details' as const,
+            data: {
+              callType: 'test',
+              numOfArgs: 2,
+              nodeName: 'skipThis',
+            },
+            column: 1,
+            line: 4,
+          },
+        ],
+      },
+      {
+        code: dedent`
+          import { it as xit, xit as skipThis } from '@jest/globals';
+
+          xit('is a jest function', () => {});
+          skipThis('is a jest function');
+        `,
+        parserOptions: { sourceType: 'module' },
+        errors: [
+          {
+            messageId: 'details' as const,
+            data: {
+              callType: 'test',
+              numOfArgs: 2,
+              nodeName: 'xit',
+            },
+            column: 1,
+            line: 3,
+          },
+          {
+            messageId: 'details' as const,
+            data: {
+              callType: 'test',
+              numOfArgs: 1,
+              nodeName: 'skipThis',
+            },
+            column: 1,
+            line: 4,
+          },
+        ],
+      },
+    ],
+  });
+
+  ruleTester.run('cjs', rule, {
+    valid: [
+      {
+        code: dedent`
+          const { it } = require('./test-utils');
+
+          it('is not a jest function', () => {});
+        `,
+        parserOptions: { sourceType: 'script' },
+      },
+      {
+        code: dedent`
+          const { describe } = require('./test-utils');
+
+          describe('a function that is not from jest', () => {});
+        `,
+        parserOptions: { sourceType: 'script' },
+      },
+      {
+        code: dedent`
+          const { fn: it } = require('./test-utils');
+
+          it('is not a jest function', () => {});
+        `,
+        parserOptions: { sourceType: 'script' },
+      },
+    ],
+    invalid: [
+      {
+        code: dedent`
+          const { describe } = require('@jest/globals');
+
+          describe('is a jest function', () => {});
+        `,
+        parserOptions: { sourceType: 'script' },
+        errors: [
+          {
+            messageId: 'details' as const,
+            data: {
+              callType: 'describe',
+              numOfArgs: 2,
+              nodeName: 'describe',
+            },
+            column: 1,
+            line: 3,
+          },
+        ],
+      },
+      {
+        code: dedent`
+          const { it } = require('@jest/globals');
+
+          it('is a jest function', () => {});
+        `,
+        parserOptions: { sourceType: 'script' },
+        errors: [
+          {
+            messageId: 'details' as const,
+            data: {
+              callType: 'test',
+              numOfArgs: 2,
+              nodeName: 'it',
+            },
+            column: 1,
+            line: 3,
+          },
+        ],
+      },
+      {
+        code: dedent`
+          const { it: testThis, xit: skipThis } = require('@jest/globals');
+
+          testThis('is a jest function', () => {});
+          skipThis('is a jest function', () => {});
+        `,
+        parserOptions: { sourceType: 'script' },
+        errors: [
+          {
+            messageId: 'details' as const,
+            data: {
+              callType: 'test',
+              numOfArgs: 2,
+              nodeName: 'testThis',
+            },
+            column: 1,
+            line: 3,
+          },
+          {
+            messageId: 'details' as const,
+            data: {
+              callType: 'test',
+              numOfArgs: 2,
+              nodeName: 'skipThis',
+            },
+            column: 1,
+            line: 4,
+          },
+        ],
+      },
+      {
+        code: dedent`
+          const { it: xit, xit: skipThis } = require('@jest/globals');
+
+          xit('is a jest function', () => {});
+          skipThis('is a jest function');
+      `,
+        parserOptions: { sourceType: 'script' },
+        errors: [
+          {
+            messageId: 'details' as const,
+            data: {
+              callType: 'test',
+              numOfArgs: 2,
+              nodeName: 'xit',
+            },
+            column: 1,
+            line: 3,
+          },
+          {
+            messageId: 'details' as const,
+            data: {
+              callType: 'test',
+              numOfArgs: 1,
+              nodeName: 'skipThis',
+            },
+            column: 1,
+            line: 4,
+          },
+        ],
+      },
+    ],
+  });
+});
