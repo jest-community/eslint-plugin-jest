@@ -676,40 +676,6 @@ export const getTestCallExpressionsFromDeclaredVariables = (
   );
 };
 
-const isTestCaseName = (node: TSESTree.LeftHandSideExpression) =>
-  node.type === AST_NODE_TYPES.Identifier &&
-  TestCaseName.hasOwnProperty(node.name);
-
-const isTestCaseProperty = (
-  node: TSESTree.Expression | TSESTree.PrivateIdentifier,
-): node is AccessorNode<TestCaseProperty> =>
-  isSupportedAccessor(node) &&
-  TestCaseProperty.hasOwnProperty(getAccessorValue(node));
-
-/**
- * Checks if the given `node` is a *call* to a test case function that would
- * result in tests being run by `jest`.
- *
- * Note that `.each()` does not count as a call in this context, as it will not
- * result in `jest` running any tests.
- */
-export const isTestCaseCall2 = (
-  node: TSESTree.CallExpression,
-  scope?: TSESLint.Scope.Scope,
-): node is JestFunctionCallExpression<TestCaseName> => {
-  const name = findFirstCallPropertyName(node, Object.keys(TestCaseProperty));
-
-  if (!!name && TestCaseName.hasOwnProperty(name)) {
-    if (!scope) {
-      return true;
-    }
-
-    return !scopeHasLocalReference(scope, name);
-  }
-
-  return false;
-};
-
 /**
  * Checks if the given `node` is a *call* to a test case function that would
  * result in tests being run by `jest`.
@@ -817,6 +783,11 @@ const describeImportDefAsImport = (
     return null;
   }
 
+  // we only care about value imports
+  if (def.parent.importKind === 'type') {
+    return null;
+  }
+
   return {
     source: def.parent.source.value,
     imported: def.node.imported.name,
@@ -872,7 +843,7 @@ const describeVariableDefAsImport = (
   if (
     def.node.init.type !== AST_NODE_TYPES.ImportExpression &&
     (def.node.init.type !== AST_NODE_TYPES.CallExpression ||
-      isStringNode(def.node.init.callee, 'require'))
+      !isIdentifier(def.node.init.callee, 'require'))
   ) {
     return null;
   }
@@ -998,12 +969,6 @@ export const resolveToJestFn = (
   // the identifier was found as a local variable or function declaration
   // meaning it's not a function from jest
   if (references.locals.has(identifier)) {
-    return null;
-  }
-
-  // the identifier was not found as an unresolved reference,
-  // meaning it's unlikely to be an implicit global variable
-  if (!references.unresolved.has(identifier)) {
     return null;
   }
 

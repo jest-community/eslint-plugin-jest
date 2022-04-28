@@ -352,6 +352,18 @@ describe('reference checking', () => {
       },
       {
         code: dedent`
+          import { defineFeature, loadFeature } from "jest-cucumber";
+
+          const feature = loadFeature("some/feature");
+
+          defineFeature(feature, (test) => {
+            test("A scenario", ({ given, when, then }) => {});
+          });
+        `,
+        parserOptions: { sourceType: 'module' },
+      },
+      {
+        code: dedent`
           import { describe } from './test-utils';
 
           describe('a function that is not from jest', () => {});
@@ -363,6 +375,15 @@ describe('reference checking', () => {
           import { fn as it } from './test-utils';
 
           it('is not a jest function', () => {});
+        `,
+        parserOptions: { sourceType: 'module' },
+      },
+      {
+        code: dedent`
+          import * as jest from '@jest/globals';
+          const { it } = jest;
+
+          it('is not supported', () => {});
         `,
         parserOptions: { sourceType: 'module' },
       },
@@ -470,6 +491,41 @@ describe('reference checking', () => {
           },
         ],
       },
+      {
+        code: dedent`
+          import { test as testWithJest } from '@jest/globals';
+          const test = () => {};
+
+          describe(test, () => {
+            testWithJest('should do something good', () => {
+              expect(test({})).toBeDefined();
+            });
+          });
+        `,
+        parserOptions: { sourceType: 'module' },
+        errors: [
+          {
+            messageId: 'details' as const,
+            data: {
+              callType: 'describe',
+              numOfArgs: 2,
+              nodeName: 'describe',
+            },
+            column: 1,
+            line: 4,
+          },
+          {
+            messageId: 'details' as const,
+            data: {
+              callType: 'test',
+              numOfArgs: 2,
+              nodeName: 'testWithJest',
+            },
+            column: 3,
+            line: 5,
+          },
+        ],
+      },
     ],
   });
 
@@ -478,6 +534,14 @@ describe('reference checking', () => {
       {
         code: dedent`
           const { it } = require('./test-utils');
+
+          it('is not a jest function', () => {});
+        `,
+        parserOptions: { sourceType: 'script' },
+      },
+      {
+        code: dedent`
+          const { it } = require(\`./test-utils\`);
 
           it('is not a jest function', () => {});
         `,
@@ -499,11 +563,71 @@ describe('reference checking', () => {
         `,
         parserOptions: { sourceType: 'script' },
       },
+      {
+        code: dedent`
+          const { fn: it } = require('@jest/globals');
+
+          it('is not considered a test function', () => {});
+        `,
+        parserOptions: { sourceType: 'script' },
+      },
+      {
+        code: dedent`
+          const { it } = aliasedRequire('@jest/globals');
+
+          it('is not considered a jest function', () => {});
+        `,
+        parserOptions: { sourceType: 'script' },
+      },
+      {
+        code: dedent`
+          const { it } = require();
+
+          it('is not a jest function', () => {});
+        `,
+        parserOptions: { sourceType: 'script' },
+      },
+      {
+        code: dedent`
+          const { it } = require(pathToMyPackage);
+
+          it('is not a jest function', () => {});
+        `,
+        parserOptions: { sourceType: 'script' },
+      },
+      {
+        code: dedent`
+          const { it } = require(pathToMyPackage);
+
+          it('is not a jest function', () => {});
+        `,
+        parserOptions: { sourceType: 'script' },
+      },
     ],
     invalid: [
       {
         code: dedent`
           const { describe } = require('@jest/globals');
+
+          describe('is a jest function', () => {});
+        `,
+        parserOptions: { sourceType: 'script' },
+        errors: [
+          {
+            messageId: 'details' as const,
+            data: {
+              callType: 'describe',
+              numOfArgs: 2,
+              nodeName: 'describe',
+            },
+            column: 1,
+            line: 3,
+          },
+        ],
+      },
+      {
+        code: dedent`
+          const { describe } = require(\`@jest/globals\`);
 
           describe('is a jest function', () => {});
         `,
@@ -604,5 +728,30 @@ describe('reference checking', () => {
         ],
       },
     ],
+  });
+
+  ruleTester.run('typescript', rule, {
+    valid: [
+      {
+        code: dedent`
+          import type { it } from '@jest/globals';
+
+          it('is not a jest function', () => {});
+        `,
+        parser: require.resolve('@typescript-eslint/parser'),
+        parserOptions: { sourceType: 'module' },
+      },
+      {
+        code: dedent`
+          import jest = require('@jest/globals');
+          const { it } = jest;
+  
+          it('is not a jest function', () => {});
+        `,
+        parser: require.resolve('@typescript-eslint/parser'),
+        parserOptions: { sourceType: 'module' },
+      },
+    ],
+    invalid: [],
   });
 });
