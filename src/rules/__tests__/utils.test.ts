@@ -318,7 +318,7 @@ describe('reference checking', () => {
 
           it('is not a jest function', () => {});
         `,
-        parserOptions: { sourceType: 'module' },
+        parserOptions: { sourceType: 'module', ecmaVersion: 2022 },
       },
     ],
     invalid: [
