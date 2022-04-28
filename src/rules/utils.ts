@@ -1,4 +1,5 @@
 import { parse as parsePath } from 'path';
+import { inspect } from 'util';
 import {
   AST_NODE_TYPES,
   ESLintUtils,
@@ -731,7 +732,7 @@ export const isTestCaseCall = (
     name = resolveToJestFn(scope, name);
   }
 
-  console.log(name);
+  // console.log(name);
 
   return !!name && TestCaseName.hasOwnProperty(name);
 };
@@ -808,7 +809,7 @@ interface ImportDetails {
   imported: string;
 }
 
-const describeImportDef = (
+const describeImportDefAsImport = (
   def: TSESLint.Scope.Definitions.ImportBindingDefinition,
 ): ImportDetails | null => {
   if (def.parent.type === AST_NODE_TYPES.TSImportEqualsDeclaration) {
@@ -826,7 +827,105 @@ const describeImportDef = (
   };
 };
 
-const collectReferences = (scope: TSESLint.Scope.Scope) => {
+/**
+ * Attempts to get the import source from the given `node`.
+ *
+ * If the `node` is a `CallExpression`, it's assumed that the first argument
+ * should be the import source (i.e. that it's a `require` call).
+ *
+ * If the source cannot be determined, `null` is returned.
+ */
+const determineImportSource = (
+  node: TSESTree.ImportExpression | TSESTree.CallExpression,
+): string | null => {
+  if (node.type === AST_NODE_TYPES.ImportExpression) {
+    if (isStringNode(node.source)) {
+      return getStringValue(node.source);
+    }
+
+    return null;
+  }
+
+  if (node.type === AST_NODE_TYPES.CallExpression) {
+    if (node.arguments.length === 0) {
+      return null;
+    }
+
+    if (isStringNode(node.arguments[0])) {
+      return getStringValue(node.arguments[0]);
+    }
+  }
+
+  return null;
+};
+
+const describeVariableDefAsImport = (
+  def: TSESLint.Scope.Definitions.VariableDefinition,
+): ImportDetails | null => {
+  // make sure that we've actually being assigned a value
+  if (!def.node.init) {
+    return null;
+  }
+
+  // currently we only support access via destructuring
+  if (def.node.id.type !== AST_NODE_TYPES.ObjectPattern) {
+    return null;
+  }
+
+  if (
+    def.node.init.type !== AST_NODE_TYPES.ImportExpression &&
+    (def.node.init.type !== AST_NODE_TYPES.CallExpression ||
+      isStringNode(def.node.init.callee, 'require'))
+  ) {
+    return null;
+  }
+
+  const source = determineImportSource(def.node.init);
+
+  if (!source) {
+    return null;
+  }
+
+  if (def.name.parent?.type !== AST_NODE_TYPES.Property) {
+    throw new Error('oh noes!');
+  }
+
+  if (!isSupportedAccessor(def.name.parent.key)) {
+    return null;
+  }
+
+  return {
+    source,
+    imported: getAccessorValue(def.name.parent.key),
+    local: def.name.name,
+  };
+
+  return null;
+};
+
+/**
+ * Attempts to describe a definition as an import if possible.
+ *
+ * If the definition is an import binding, it's described as you'd expect.
+ * If the definition is a variable, then we try and determine if it's either
+ * a dynamic `import()` or otherwise a call to `require()`.
+ *
+ * If it's neither of these, `null` is returned to indicate that the definition
+ * is not describable as an import of any kind.
+ */
+const describePossibleImportDef = (def: TSESLint.Scope.Definition) => {
+  if (def.type === 'Variable') {
+    return describeVariableDefAsImport(def);
+  }
+
+  if (def.type === 'ImportBinding') {
+    return describeImportDefAsImport(def);
+  }
+
+  return null;
+};
+
+const collectReferences = (scope: TSESLint.Scope.Scope, log?: boolean) => {
   const locals = new Set();
   const imports = new Map<string, ImportDetails>();
   const unresolved = new Set();
@@ -845,16 +944,13 @@ const collectReferences = (scope: TSESLint.Scope.Scope) => {
 
       const [def] = ref.defs;
 
-      if (def.type === 'ImportBinding') {
-        if (def.parent.type === AST_NODE_TYPES.TSImportEqualsDeclaration) {
-          continue;
-        }
+      // console.log(inspect(def, { depth: Infinity }));
+      const importDetails = describePossibleImportDef(def);
 
-        const details = describeImportDef(def);
+      console.log(importDetails);
 
-        if (details) {
-          imports.set(details.local, details);
-        }
+      if (importDetails) {
+        imports.set(importDetails.local, importDetails);
 
         continue;
       }
@@ -893,14 +989,10 @@ export const resolveToJestFn = (
   scope: TSESLint.Scope.Scope,
   identifier: string,
 ) => {
-  const references = collectReferences(scope);
+  const references = collectReferences(scope, identifier === 'it');
 
-  // the identifier was found as a local variable or function declaration
-  // meaning it's not a function from jest
-  if (references.locals.has(identifier)) {
-    console.log('this is a local!');
-
-    return null;
+  if (identifier === 'it') {
+    console.log(identifier, inspect(references, { depth: Infinity }));
   }
 
   const maybeImport = references.imports.get(identifier);
@@ -911,6 +1003,14 @@ export const resolveToJestFn = (
     if (maybeImport.source === '@jest/globals') {
       return maybeImport.imported;
     }
+
+    return null;
+  }
+
+  // the identifier was found as a local variable or function declaration
+  // meaning it's not a function from jest
+  if (references.locals.has(identifier)) {
+    console.log('this is a local!');
 
     return null;
   }
