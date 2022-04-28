@@ -1,5 +1,4 @@
 import { parse as parsePath } from 'path';
-import { inspect } from 'util';
 import {
   AST_NODE_TYPES,
   ESLintUtils,
@@ -732,8 +731,6 @@ export const isTestCaseCall = (
     name = resolveToJestFn(scope, name);
   }
 
-  // console.log(name);
-
   return !!name && TestCaseName.hasOwnProperty(name);
 };
 
@@ -899,8 +896,6 @@ const describeVariableDefAsImport = (
     imported: getAccessorValue(def.name.parent.key),
     local: def.name.name,
   };
-
-  return null;
 };
 
 /**
@@ -925,7 +920,7 @@ const describePossibleImportDef = (def: TSESLint.Scope.Definition) => {
   return null;
 };
 
-const collectReferences = (scope: TSESLint.Scope.Scope, log?: boolean) => {
+const collectReferences = (scope: TSESLint.Scope.Scope) => {
   const locals = new Set();
   const imports = new Map<string, ImportDetails>();
   const unresolved = new Set();
@@ -944,10 +939,7 @@ const collectReferences = (scope: TSESLint.Scope.Scope, log?: boolean) => {
 
       const [def] = ref.defs;
 
-      // console.log(inspect(def, { depth: Infinity }));
       const importDetails = describePossibleImportDef(def);
-
-      console.log(importDetails);
 
       if (importDetails) {
         imports.set(importDetails.local, importDetails);
@@ -989,11 +981,7 @@ export const resolveToJestFn = (
   scope: TSESLint.Scope.Scope,
   identifier: string,
 ) => {
-  const references = collectReferences(scope, identifier === 'it');
-
-  if (identifier === 'it') {
-    console.log(identifier, inspect(references, { depth: Infinity }));
-  }
+  const references = collectReferences(scope);
 
   const maybeImport = references.imports.get(identifier);
 
@@ -1010,16 +998,12 @@ export const resolveToJestFn = (
   // the identifier was found as a local variable or function declaration
   // meaning it's not a function from jest
   if (references.locals.has(identifier)) {
-    console.log('this is a local!');
-
     return null;
   }
 
   // the identifier was not found as an unresolved reference,
   // meaning it's unlikely to be an implicit global variable
   if (!references.unresolved.has(identifier)) {
-    console.log('this is not unresolved local!');
-
     return null;
   }
 
