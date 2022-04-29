@@ -36,13 +36,14 @@ export default createRule({
   },
   defaultOptions: [],
   create(context) {
+    const scope = context.getScope();
     const contexts = [newDescribeContext()];
 
     return {
       CallExpression(node) {
         const currentLayer = contexts[contexts.length - 1];
 
-        if (isDescribeCall(node)) {
+        if (isDescribeCall(node, scope)) {
           contexts.push(newDescribeContext());
         }
 
@@ -58,7 +59,7 @@ export default createRule({
 
         const title = getStringValue(argument);
 
-        if (isTestCaseCall(node)) {
+        if (isTestCaseCall(node, scope)) {
           if (currentLayer.testTitles.includes(title)) {
             context.report({
               messageId: 'multipleTestTitle',
@@ -68,7 +69,7 @@ export default createRule({
           currentLayer.testTitles.push(title);
         }
 
-        if (!isDescribeCall(node)) {
+        if (!isDescribeCall(node, scope)) {
           return;
         }
         if (currentLayer.describeTitles.includes(title)) {
@@ -80,7 +81,7 @@ export default createRule({
         currentLayer.describeTitles.push(title);
       },
       'CallExpression:exit'(node) {
-        if (isDescribeCall(node)) {
+        if (isDescribeCall(node, scope)) {
           contexts.pop();
         }
       },

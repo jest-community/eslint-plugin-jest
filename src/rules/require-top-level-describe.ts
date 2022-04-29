@@ -39,12 +39,13 @@ export default createRule<
   create(context) {
     const { maxNumberOfTopLevelDescribes = Infinity } =
       context.options[0] ?? {};
+    const scope = context.getScope();
     let numberOfTopLevelDescribeBlocks = 0;
     let numberOfDescribeBlocks = 0;
 
     return {
       CallExpression(node) {
-        if (isDescribeCall(node)) {
+        if (isDescribeCall(node, scope)) {
           numberOfDescribeBlocks++;
 
           if (numberOfDescribeBlocks === 1) {
@@ -65,7 +66,7 @@ export default createRule<
         }
 
         if (numberOfDescribeBlocks === 0) {
-          if (isTestCaseCall(node)) {
+          if (isTestCaseCall(node, scope)) {
             context.report({ node, messageId: 'unexpectedTestCase' });
 
             return;
@@ -79,7 +80,7 @@ export default createRule<
         }
       },
       'CallExpression:exit'(node: TSESTree.CallExpression) {
-        if (isDescribeCall(node)) {
+        if (isDescribeCall(node, scope)) {
           numberOfDescribeBlocks--;
         }
       },

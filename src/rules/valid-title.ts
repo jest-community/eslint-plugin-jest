@@ -171,6 +171,7 @@ export default createRule<[Options], MessageIds>({
       },
     ],
   ) {
+    const scope = context.getScope();
     const disallowedWordsRegexp = new RegExp(
       `\\b(${disallowedWords.join('|')})\\b`,
       'iu',
@@ -181,7 +182,7 @@ export default createRule<[Options], MessageIds>({
 
     return {
       CallExpression(node: TSESTree.CallExpression) {
-        if (!isDescribeCall(node) && !isTestCaseCall(node)) {
+        if (!isDescribeCall(node, scope) && !isTestCaseCall(node, scope)) {
           return;
         }
 
@@ -201,7 +202,7 @@ export default createRule<[Options], MessageIds>({
 
           if (
             argument.type !== AST_NODE_TYPES.TemplateLiteral &&
-            !(ignoreTypeOfDescribeName && isDescribeCall(node))
+            !(ignoreTypeOfDescribeName && isDescribeCall(node, scope))
           ) {
             context.report({
               messageId: 'titleMustBeString',
@@ -218,7 +219,7 @@ export default createRule<[Options], MessageIds>({
           context.report({
             messageId: 'emptyTitle',
             data: {
-              jestFunctionName: isDescribeCall(node)
+              jestFunctionName: isDescribeCall(node, scope)
                 ? DescribeAlias.describe
                 : TestCaseName.test,
             },

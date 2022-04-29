@@ -1,4 +1,4 @@
-import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, TSESLint, TSESTree } from '@typescript-eslint/utils';
 import {
   createRule,
   getNodeName,
@@ -9,8 +9,15 @@ import {
   isTestCaseCall,
 } from './utils';
 
-const isJestFnCall = (node: TSESTree.CallExpression): boolean => {
-  if (isDescribeCall(node) || isTestCaseCall(node) || isHook(node)) {
+const isJestFnCall = (
+  node: TSESTree.CallExpression,
+  scope: TSESLint.Scope.Scope,
+): boolean => {
+  if (
+    isDescribeCall(node, scope) ||
+    isTestCaseCall(node, scope) ||
+    isHook(node)
+  ) {
     return true;
   }
 
@@ -26,14 +33,15 @@ const isNullOrUndefined = (node: TSESTree.Expression): boolean => {
 
 const shouldBeInHook = (
   node: TSESTree.Node,
+  scope: TSESLint.Scope.Scope,
   allowedFunctionCalls: readonly string[] = [],
 ): boolean => {
   switch (node.type) {
     case AST_NODE_TYPES.ExpressionStatement:
-      return shouldBeInHook(node.expression, allowedFunctionCalls);
+      return shouldBeInHook(node.expression, scope, allowedFunctionCalls);
     case AST_NODE_TYPES.CallExpression:
       return !(
-        isJestFnCall(node) ||
+        isJestFnCall(node, scope) ||
         allowedFunctionCalls.includes(getNodeName(node) as string)
       );
     case AST_NODE_TYPES.VariableDeclaration: {
@@ -85,11 +93,12 @@ export default createRule<
     },
   ],
   create(context) {
+    const scope = context.getScope();
     const { allowedFunctionCalls } = context.options[0] ?? {};
 
     const checkBlockBody = (body: TSESTree.BlockStatement['body']) => {
       for (const statement of body) {
-        if (shouldBeInHook(statement, allowedFunctionCalls)) {
+        if (shouldBeInHook(statement, scope, allowedFunctionCalls)) {
           context.report({
             node: statement,
             messageId: 'useHook',
@@ -103,7 +112,7 @@ export default createRule<
         checkBlockBody(program.body);
       },
       CallExpression(node) {
-        if (!isDescribeCall(node) || node.arguments.length < 2) {
+        if (!isDescribeCall(node, scope) || node.arguments.length < 2) {
           return;
         }
 

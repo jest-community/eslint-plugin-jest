@@ -1,4 +1,4 @@
-import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, TSESLint, TSESTree } from '@typescript-eslint/utils';
 import {
   DescribeAlias,
   createRule,
@@ -11,6 +11,7 @@ import {
 
 const getBlockType = (
   statement: TSESTree.BlockStatement,
+  scope: TSESLint.Scope.Scope,
 ): 'function' | 'describe' | null => {
   const func = statement.parent;
 
@@ -35,7 +36,10 @@ const getBlockType = (
     }
 
     // if it's not a variable, it will be callExpr, we only care about describe
-    if (expr.type === AST_NODE_TYPES.CallExpression && isDescribeCall(expr)) {
+    if (
+      expr.type === AST_NODE_TYPES.CallExpression &&
+      isDescribeCall(expr, scope)
+    ) {
       return 'describe';
     }
   }
@@ -74,6 +78,7 @@ export default createRule<
   },
   defaultOptions: [{ additionalTestBlockFunctions: [] }],
   create(context, [{ additionalTestBlockFunctions = [] }]) {
+    const scope = context.getScope();
     const callStack: BlockType[] = [];
 
     const isCustomTestBlockFunction = (
@@ -82,7 +87,7 @@ export default createRule<
       additionalTestBlockFunctions.includes(getNodeName(node) || '');
 
     const isTestBlock = (node: TSESTree.CallExpression): boolean =>
-      isTestCaseCall(node) || isCustomTestBlockFunction(node);
+      isTestCaseCall(node, scope) || isCustomTestBlockFunction(node);
 
     return {
       CallExpression(node) {
@@ -119,14 +124,16 @@ export default createRule<
       },
 
       BlockStatement(statement) {
-        const blockType = getBlockType(statement);
+        const blockType = getBlockType(statement, scope);
 
         if (blockType) {
           callStack.push(blockType);
         }
       },
       'BlockStatement:exit'(statement: TSESTree.BlockStatement) {
-        if (callStack[callStack.length - 1] === getBlockType(statement)) {
+        if (
+          callStack[callStack.length - 1] === getBlockType(statement, scope)
+        ) {
           callStack.pop();
         }
       },

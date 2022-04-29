@@ -657,6 +657,7 @@ export const isHook = (
 
 export const getTestCallExpressionsFromDeclaredVariables = (
   declaredVariables: readonly TSESLint.Scope.Variable[],
+  scope: TSESLint.Scope.Scope,
 ): Array<JestFunctionCallExpression<TestCaseName>> => {
   return declaredVariables.reduce<
     Array<JestFunctionCallExpression<TestCaseName>>
@@ -669,7 +670,7 @@ export const getTestCallExpressionsFromDeclaredVariables = (
             (node): node is JestFunctionCallExpression<TestCaseName> =>
               !!node &&
               node.type === AST_NODE_TYPES.CallExpression &&
-              isTestCaseCall(node),
+              isTestCaseCall(node, scope),
           ),
       ),
     [],
@@ -685,7 +686,7 @@ export const getTestCallExpressionsFromDeclaredVariables = (
  */
 export const isTestCaseCall = (
   node: TSESTree.CallExpression,
-  scope?: TSESLint.Scope.Scope,
+  scope: TSESLint.Scope.Scope,
 ): node is JestFunctionCallExpression<TestCaseName> => {
   let name = findFirstCallPropertyName(node, Object.keys(TestCaseProperty));
 
@@ -693,9 +694,7 @@ export const isTestCaseCall = (
     return false;
   }
 
-  if (scope && name) {
-    name = resolveToJestFn(scope, name);
-  }
+  name = resolveToJestFn(scope, name);
 
   return !!name && TestCaseName.hasOwnProperty(name);
 };
@@ -751,7 +750,7 @@ const findFirstCallPropertyName = (
  */
 export const isDescribeCall = (
   node: TSESTree.CallExpression,
-  scope?: TSESLint.Scope.Scope,
+  scope: TSESLint.Scope.Scope,
 ): node is JestFunctionCallExpression<DescribeAlias> => {
   let name = findFirstCallPropertyName(node, Object.keys(DescribeProperty));
 
@@ -759,9 +758,7 @@ export const isDescribeCall = (
     return false;
   }
 
-  if (scope && name) {
-    name = resolveToJestFn(scope, name);
-  }
+  name = resolveToJestFn(scope, name);
 
   return !!name && DescribeAlias.hasOwnProperty(name);
 };

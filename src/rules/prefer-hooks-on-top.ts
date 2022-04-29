@@ -16,11 +16,12 @@ export default createRule({
   },
   defaultOptions: [],
   create(context) {
+    const scope = context.getScope();
     const hooksContext = [false];
 
     return {
       CallExpression(node) {
-        if (!isHook(node) && isTestCaseCall(node)) {
+        if (!isHook(node) && isTestCaseCall(node, scope)) {
           hooksContext[hooksContext.length - 1] = true;
         }
         if (hooksContext[hooksContext.length - 1] && isHook(node)) {

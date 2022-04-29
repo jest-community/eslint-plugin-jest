@@ -1,4 +1,4 @@
-import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, TSESLint, TSESTree } from '@typescript-eslint/utils';
 import {
   createRule,
   getNodeName,
@@ -10,6 +10,7 @@ import {
 const findCallbackArg = (
   node: TSESTree.CallExpression,
   isJestEach: boolean,
+  scope: TSESLint.Scope.Scope,
 ): TSESTree.CallExpression['arguments'][0] | null => {
   if (isJestEach) {
     return node.arguments[1];
@@ -19,7 +20,7 @@ const findCallbackArg = (
     return node.arguments[0];
   }
 
-  if (isTestCaseCall(node) && node.arguments.length >= 2) {
+  if (isTestCaseCall(node, scope) && node.arguments.length >= 2) {
     return node.arguments[1];
   }
 
@@ -48,6 +49,8 @@ export default createRule({
   },
   defaultOptions: [],
   create(context) {
+    const scope = context.getScope();
+
     return {
       CallExpression(node) {
         // done is the second argument for it.each, not the first
@@ -63,7 +66,7 @@ export default createRule({
           return;
         }
 
-        const callback = findCallbackArg(node, isJestEach);
+        const callback = findCallbackArg(node, isJestEach, scope);
         const callbackArgIndex = Number(isJestEach);
 
         if (

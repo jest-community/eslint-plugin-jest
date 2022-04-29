@@ -64,6 +64,7 @@ export default createRule<
   },
   defaultOptions: [{ fn: TestCaseName.test, withinDescribe: TestCaseName.it }],
   create(context) {
+    const scope = context.getScope();
     const configObj = context.options[0] || {};
     const testKeyword = configObj.fn || TestCaseName.test;
     const testKeywordWithinDescribe =
@@ -79,7 +80,7 @@ export default createRule<
           return;
         }
 
-        if (isDescribeCall(node)) {
+        if (isDescribeCall(node, scope)) {
           describeNestingLevel++;
         }
 
@@ -91,7 +92,7 @@ export default createRule<
             : node.callee;
 
         if (
-          isTestCaseCall(node) &&
+          isTestCaseCall(node, scope) &&
           describeNestingLevel === 0 &&
           !nodeName.includes(testKeyword)
         ) {
@@ -106,7 +107,7 @@ export default createRule<
         }
 
         if (
-          isTestCaseCall(node) &&
+          isTestCaseCall(node, scope) &&
           describeNestingLevel > 0 &&
           !nodeName.includes(testKeywordWithinDescribe)
         ) {
@@ -123,7 +124,7 @@ export default createRule<
         }
       },
       'CallExpression:exit'(node) {
-        if (isDescribeCall(node)) {
+        if (isDescribeCall(node, scope)) {
           describeNestingLevel--;
         }
       },
