@@ -314,9 +314,9 @@ describe('reference checking', () => {
       },
       {
         code: dedent`
-          const { it } = await import('./test-utils');
+          const { test } = await Promise.resolve();
 
-          it('is not a jest function', () => {});
+          test('is not a jest function', () => {});
         `,
         parserOptions: { sourceType: 'module', ecmaVersion: 2022 },
       },
@@ -523,6 +523,69 @@ describe('reference checking', () => {
             },
             column: 3,
             line: 5,
+          },
+        ],
+      },
+    ],
+  });
+
+  ruleTester.run('esm (dynamic)', rule, {
+    valid: [
+      {
+        code: dedent`
+          const { it } = await import('./test-utils');
+
+          it('is not a jest function', () => {});
+        `,
+        parserOptions: { sourceType: 'module', ecmaVersion: 2022 },
+      },
+      {
+        code: dedent`
+          const { it } = await import(\`./test-utils\`);
+
+          it('is not a jest function', () => {});
+        `,
+        parserOptions: { sourceType: 'module', ecmaVersion: 2022 },
+      },
+    ],
+    invalid: [
+      {
+        code: dedent`
+          const { it } = await import("@jest/globals");
+
+          it('is a jest function', () => {});
+        `,
+        parserOptions: { sourceType: 'module', ecmaVersion: 2022 },
+        errors: [
+          {
+            messageId: 'details' as const,
+            data: {
+              callType: 'test',
+              numOfArgs: 2,
+              nodeName: 'it',
+            },
+            column: 1,
+            line: 3,
+          },
+        ],
+      },
+      {
+        code: dedent`
+          const { it } = await import(\`@jest/globals\`);
+
+          it('is a jest function', () => {});
+        `,
+        parserOptions: { sourceType: 'module', ecmaVersion: 2022 },
+        errors: [
+          {
+            messageId: 'details' as const,
+            data: {
+              callType: 'test',
+              numOfArgs: 2,
+              nodeName: 'it',
+            },
+            column: 1,
+            line: 3,
           },
         ],
       },

@@ -796,32 +796,29 @@ const describeImportDefAsImport = (
 };
 
 /**
- * Attempts to get the import source from the given `node`.
+ * Attempts to find the node that represents the import source for the
+ * given expression node, if it looks like it's an import.
  *
- * If the `node` is a `CallExpression`, it's assumed that the first argument
- * should be the import source (i.e. that it's a `require` call).
- *
- * If the source cannot be determined, `null` is returned.
+ * If no such node can be found (e.g. because the expression doesn't look
+ * like an import), then `null` is returned instead.
  */
-const determineImportSource = (
-  node: TSESTree.ImportExpression | TSESTree.CallExpression,
-): string | null => {
-  if (node.type === AST_NODE_TYPES.ImportExpression) {
-    if (isStringNode(node.source)) {
-      return getStringValue(node.source);
+const findImportSourceNode = (
+  node: TSESTree.Expression,
+): TSESTree.Node | null => {
+  if (node.type === AST_NODE_TYPES.AwaitExpression) {
+    // @ts-expect-error: https://github.com/typescript-eslint/typescript-eslint/issues/4877
+    if (node.argument.type === AST_NODE_TYPES.ImportExpression) {
+      return (node.argument as TSESTree.ImportExpression).source;
     }
 
     return null;
   }
 
-  if (node.type === AST_NODE_TYPES.CallExpression) {
-    if (node.arguments.length === 0) {
-      return null;
-    }
-
-    if (isStringNode(node.arguments[0])) {
-      return getStringValue(node.arguments[0]);
-    }
+  if (
+    node.type === AST_NODE_TYPES.CallExpression &&
+    isIdentifier(node.callee, 'require')
+  ) {
+    return node.arguments[0] ?? null;
   }
 
   return null;
@@ -840,17 +837,9 @@ const describeVariableDefAsImport = (
     return null;
   }
 
-  if (
-    def.node.init.type !== AST_NODE_TYPES.ImportExpression &&
-    (def.node.init.type !== AST_NODE_TYPES.CallExpression ||
-      !isIdentifier(def.node.init.callee, 'require'))
-  ) {
-    return null;
-  }
+  const sourceNode = findImportSourceNode(def.node.init);
 
-  const source = determineImportSource(def.node.init);
-
-  if (!source) {
+  if (!sourceNode || !isStringNode(sourceNode)) {
     return null;
   }
 
@@ -863,7 +852,7 @@ const describeVariableDefAsImport = (
   }
 
   return {
-    source,
+    source: getStringValue(sourceNode),
     imported: getAccessorValue(def.name.parent.key),
     local: def.name.name,
   };
