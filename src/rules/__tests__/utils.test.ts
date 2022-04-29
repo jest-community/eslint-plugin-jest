@@ -797,6 +797,14 @@ describe('reference checking', () => {
     valid: [
       {
         code: dedent`
+          const { test };
+
+          test('is not a jest function', () => {});
+        `,
+        parser: require.resolve('@typescript-eslint/parser'),
+      },
+      {
+        code: dedent`
           import type { it } from '@jest/globals';
 
           it('is not a jest function', () => {});
