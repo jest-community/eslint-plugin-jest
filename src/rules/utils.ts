@@ -941,10 +941,7 @@ export const scopeHasLocalReference = (
   );
 };
 
-export const resolveToJestFn = (
-  scope: TSESLint.Scope.Scope,
-  identifier: string,
-) => {
+const resolveToJestFn = (scope: TSESLint.Scope.Scope, identifier: string) => {
   const references = collectReferences(scope);
 
   const maybeImport = references.imports.get(identifier);
