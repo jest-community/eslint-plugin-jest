@@ -1,3 +1,4 @@
+import { JSONSchemaForNPMPackageJsonFiles } from '@schemastore/package';
 import { TSESLint } from '@typescript-eslint/utils';
 import dedent from 'dedent';
 import {
@@ -7,6 +8,26 @@ import {
   isTestCaseCall,
 } from '../utils';
 import { espreeParser } from './test-utils';
+
+const findESLintVersion = (): number => {
+  try {
+    const eslintPath = require.resolve('eslint/package.json');
+
+    const eslintPackageJson =
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
+      require(eslintPath) as JSONSchemaForNPMPackageJsonFiles;
+
+    if (eslintPackageJson.version) {
+      const [majorVersion] = eslintPackageJson.version.split('.');
+
+      return parseInt(majorVersion, 10);
+    }
+  } catch {}
+
+  throw new Error('Unable to detect ESLint version!');
+};
+
+const eslintVersion = findESLintVersion();
 
 const ruleTester = new TSESLint.RuleTester({
   parser: espreeParser,
@@ -314,11 +335,13 @@ describe('reference checking', () => {
       },
       {
         code: dedent`
-          const { test } = await Promise.resolve();
+          (async () => {
+            const { test } = await Promise.resolve();
 
-          test('is not a jest function', () => {});
+            test('is not a jest function', () => {});
+          })();
         `,
-        parserOptions: { sourceType: 'module', ecmaVersion: 2022 },
+        parserOptions: { sourceType: 'module', ecmaVersion: 2017 },
       },
     ],
     invalid: [
@@ -529,68 +552,70 @@ describe('reference checking', () => {
     ],
   });
 
-  ruleTester.run('esm (dynamic)', rule, {
-    valid: [
-      {
-        code: dedent`
+  if (eslintVersion >= 8) {
+    ruleTester.run('esm (dynamic)', rule, {
+      valid: [
+        {
+          code: dedent`
           const { it } = await import('./test-utils');
 
           it('is not a jest function', () => {});
         `,
-        parserOptions: { sourceType: 'module', ecmaVersion: 2022 },
-      },
-      {
-        code: dedent`
+          parserOptions: { sourceType: 'module', ecmaVersion: 2022 },
+        },
+        {
+          code: dedent`
           const { it } = await import(\`./test-utils\`);
 
           it('is not a jest function', () => {});
         `,
-        parserOptions: { sourceType: 'module', ecmaVersion: 2022 },
-      },
-    ],
-    invalid: [
-      {
-        code: dedent`
+          parserOptions: { sourceType: 'module', ecmaVersion: 2022 },
+        },
+      ],
+      invalid: [
+        {
+          code: dedent`
           const { it } = await import("@jest/globals");
 
           it('is a jest function', () => {});
         `,
-        parserOptions: { sourceType: 'module', ecmaVersion: 2022 },
-        errors: [
-          {
-            messageId: 'details' as const,
-            data: {
-              callType: 'test',
-              numOfArgs: 2,
-              nodeName: 'it',
+          parserOptions: { sourceType: 'module', ecmaVersion: 2022 },
+          errors: [
+            {
+              messageId: 'details' as const,
+              data: {
+                callType: 'test',
+                numOfArgs: 2,
+                nodeName: 'it',
+              },
+              column: 1,
+              line: 3,
             },
-            column: 1,
-            line: 3,
-          },
-        ],
-      },
-      {
-        code: dedent`
+          ],
+        },
+        {
+          code: dedent`
           const { it } = await import(\`@jest/globals\`);
 
           it('is a jest function', () => {});
         `,
-        parserOptions: { sourceType: 'module', ecmaVersion: 2022 },
-        errors: [
-          {
-            messageId: 'details' as const,
-            data: {
-              callType: 'test',
-              numOfArgs: 2,
-              nodeName: 'it',
+          parserOptions: { sourceType: 'module', ecmaVersion: 2022 },
+          errors: [
+            {
+              messageId: 'details' as const,
+              data: {
+                callType: 'test',
+                numOfArgs: 2,
+                nodeName: 'it',
+              },
+              column: 1,
+              line: 3,
             },
-            column: 1,
-            line: 3,
-          },
-        ],
-      },
-    ],
-  });
+          ],
+        },
+      ],
+    });
+  }
 
   ruleTester.run('cjs', rule, {
     valid: [
