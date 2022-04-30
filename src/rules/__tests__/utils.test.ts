@@ -666,6 +666,14 @@ describe('reference checking', () => {
         `,
         parserOptions: { sourceType: 'script' },
       },
+      {
+        code: dedent`
+          const { [() => {}]: it } = require('@jest/globals');
+
+          it('is not a jest function', () => {});
+        `,
+        parserOptions: { sourceType: 'script' },
+      },
     ],
     invalid: [
       {

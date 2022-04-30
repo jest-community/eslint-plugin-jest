@@ -829,11 +829,6 @@ const describeVariableDefAsImport = (
     return null;
   }
 
-  // currently we only support access via destructuring
-  if (def.node.id.type !== AST_NODE_TYPES.ObjectPattern) {
-    return null;
-  }
-
   const sourceNode = findImportSourceNode(def.node.init);
 
   if (!sourceNode || !isStringNode(sourceNode)) {
@@ -841,7 +836,7 @@ const describeVariableDefAsImport = (
   }
 
   if (def.name.parent?.type !== AST_NODE_TYPES.Property) {
-    throw new Error('oh noes!');
+    return null;
   }
 
   if (!isSupportedAccessor(def.name.parent.key)) {
@@ -890,8 +885,11 @@ const collectReferences = (scope: TSESLint.Scope.Scope) => {
         continue;
       }
 
+      /* istanbul ignore if */
       if (ref.defs.length > 1) {
-        throw new Error('please report this');
+        throw new Error(
+          `Reference unexpected had more than one definition - please file a github issue at https://github.com/jest-community/eslint-plugin-jest`,
+        );
       }
 
       const [def] = ref.defs;
