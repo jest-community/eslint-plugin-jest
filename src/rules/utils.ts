@@ -803,6 +803,7 @@ const findImportSourceNode = (
   node: TSESTree.Expression,
 ): TSESTree.Node | null => {
   if (node.type === AST_NODE_TYPES.AwaitExpression) {
+    /* istanbul ignore if */
     // @ts-expect-error: https://github.com/typescript-eslint/typescript-eslint/issues/4877
     if (node.argument.type === AST_NODE_TYPES.ImportExpression) {
       return (node.argument as TSESTree.ImportExpression).source;
