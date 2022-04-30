@@ -904,9 +904,7 @@ const collectReferences = (scope: TSESLint.Scope.Scope) => {
         continue;
       }
 
-      if (def.type !== 'ImplicitGlobalVariable') {
-        locals.add(ref.name);
-      }
+      locals.add(ref.name);
     }
 
     for (const ref of currentScope.through) {
