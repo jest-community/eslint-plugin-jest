@@ -4,7 +4,7 @@ import {
   getNodeName,
   isDescribeCall,
   isFunction,
-  isHook,
+  isHookCall,
   isIdentifier,
   isTestCaseCall,
 } from './utils';
@@ -16,7 +16,7 @@ const isJestFnCall = (
   if (
     isDescribeCall(node, scope) ||
     isTestCaseCall(node, scope) ||
-    isHook(node)
+    isHookCall(node, scope)
   ) {
     return true;
   }

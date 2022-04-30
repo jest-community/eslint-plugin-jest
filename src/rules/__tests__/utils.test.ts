@@ -5,6 +5,7 @@ import {
   createRule,
   getNodeName,
   isDescribeCall,
+  isHookCall,
   isTestCaseCall,
 } from '../utils';
 import { espreeParser } from './test-utils';
@@ -62,7 +63,8 @@ const rule = createRule({
       const scope = context.getScope();
       const callType =
         (isDescribeCall(node, scope) && ('describe' as const)) ||
-        (isTestCaseCall(node, scope) && ('test' as const));
+        (isTestCaseCall(node, scope) && ('test' as const)) ||
+        (isHookCall(node, scope) && ('hook' as const));
 
       if (callType) {
         context.report({
@@ -322,6 +324,27 @@ testUtilsAgainst(
   ],
   'describe',
 );
+
+const hooks = ['beforeAll', 'beforeEach', 'afterEach', 'afterAll'];
+
+ruleTester.run('hooks', rule, {
+  valid: [...hooks, 'beforeAll.each(() => {})'],
+  invalid: hooks.map(code => ({
+    code: `${code}(() => {})`,
+    errors: [
+      {
+        messageId: 'details' as const,
+        data: {
+          callType: 'hook',
+          numOfArgs: 1,
+          nodeName: expectedNodeName(code),
+        },
+        column: 1,
+        line: 1,
+      },
+    ],
+  })),
+});
 
 describe('reference checking', () => {
   ruleTester.run('general', rule, {

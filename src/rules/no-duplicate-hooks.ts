@@ -1,4 +1,4 @@
-import { createRule, isDescribeCall, isHook } from './utils';
+import { createRule, isDescribeCall, isHookCall } from './utils';
 
 const newHookContext = () => ({
   beforeAll: 0,
@@ -32,7 +32,7 @@ export default createRule({
           hookContexts.push(newHookContext());
         }
 
-        if (isHook(node)) {
+        if (isHookCall(node, scope)) {
           const currentLayer = hookContexts[hookContexts.length - 1];
 
           currentLayer[node.callee.name] += 1;

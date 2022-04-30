@@ -649,11 +649,20 @@ export const isFunction = (node: TSESTree.Node): node is FunctionExpression =>
   node.type === AST_NODE_TYPES.FunctionExpression ||
   node.type === AST_NODE_TYPES.ArrowFunctionExpression;
 
-export const isHook = (
+export const isHookCall = (
   node: TSESTree.CallExpression,
-): node is JestFunctionCallExpressionWithIdentifierCallee<HookName> =>
-  node.callee.type === AST_NODE_TYPES.Identifier &&
-  HookName.hasOwnProperty(node.callee.name);
+  scope: TSESLint.Scope.Scope,
+): node is JestFunctionCallExpressionWithIdentifierCallee<HookName> => {
+  let name = findFirstCallPropertyName(node, []);
+
+  if (!name) {
+    return false;
+  }
+
+  name = resolveToJestFn(scope, name);
+
+  return !!name && HookName.hasOwnProperty(name);
+};
 
 export const getTestCallExpressionsFromDeclaredVariables = (
   declaredVariables: readonly TSESLint.Scope.Variable[],

@@ -3,7 +3,7 @@ import {
   createRule,
   getNodeName,
   isFunction,
-  isHook,
+  isHookCall,
   isTestCaseCall,
 } from './utils';
 
@@ -16,7 +16,7 @@ const findCallbackArg = (
     return node.arguments[1];
   }
 
-  if (isHook(node) && node.arguments.length >= 1) {
+  if (isHookCall(node, scope) && node.arguments.length >= 1) {
     return node.arguments[0];
   }
 

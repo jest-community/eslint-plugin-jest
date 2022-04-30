@@ -1,5 +1,10 @@
 import { TSESTree } from '@typescript-eslint/utils';
-import { createRule, isDescribeCall, isHook, isTestCaseCall } from './utils';
+import {
+  createRule,
+  isDescribeCall,
+  isHookCall,
+  isTestCaseCall,
+} from './utils';
 
 const messages = {
   tooManyDescribes:
@@ -72,7 +77,7 @@ export default createRule<
             return;
           }
 
-          if (isHook(node)) {
+          if (isHookCall(node, scope)) {
             context.report({ node, messageId: 'unexpectedHook' });
 
             return;
