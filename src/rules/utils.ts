@@ -710,7 +710,7 @@ export const isTestCaseCall = (
 
 const findFirstCallPropertyName = (
   node: TSESTree.CallExpression,
-  properties: string[],
+  properties: readonly string[],
 ): string | null => {
   if (isIdentifier(node.callee)) {
     return node.callee.name;
