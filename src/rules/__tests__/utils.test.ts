@@ -329,15 +329,15 @@ const hooks = ['beforeAll', 'beforeEach', 'afterEach', 'afterAll'];
 
 ruleTester.run('hooks', rule, {
   valid: [...hooks, 'beforeAll.each(() => {})'],
-  invalid: hooks.map(code => ({
-    code: `${code}(() => {})`,
+  invalid: hooks.map(hook => ({
+    code: `${hook}(() => {})`,
     errors: [
       {
         messageId: 'details' as const,
         data: {
           callType: 'hook',
           numOfArgs: 1,
-          nodeName: expectedNodeName(code),
+          nodeName: expectedNodeName(hook),
         },
         column: 1,
         line: 1,
