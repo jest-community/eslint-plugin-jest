@@ -661,7 +661,7 @@ export const isHookCall = (
 
   name = resolveToJestFn(scope, name);
 
-  return !!name && HookName.hasOwnProperty(name);
+  return name !== null && HookName.hasOwnProperty(name);
 };
 
 export const getTestCallExpressionsFromDeclaredVariables = (
@@ -705,7 +705,7 @@ export const isTestCaseCall = (
 
   name = resolveToJestFn(scope, name);
 
-  return !!name && TestCaseName.hasOwnProperty(name);
+  return name !== null && TestCaseName.hasOwnProperty(name);
 };
 
 const findFirstCallPropertyName = (
@@ -769,7 +769,7 @@ export const isDescribeCall = (
 
   name = resolveToJestFn(scope, name);
 
-  return !!name && DescribeAlias.hasOwnProperty(name);
+  return name !== null && DescribeAlias.hasOwnProperty(name);
 };
 
 interface ImportDetails {
