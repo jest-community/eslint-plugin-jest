@@ -20,7 +20,6 @@ ruleTester.run('valid-describe-callback', rule, {
     'fdescribe("foo", () => {})',
     'describe.only("foo", () => {})',
     'describe.skip("foo", () => {})',
-    '([]).skip("foo", () => {})',
     dedent`
       describe('foo', () => {
         it('bar', () => {

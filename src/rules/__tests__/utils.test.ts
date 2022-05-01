@@ -349,6 +349,7 @@ ruleTester.run('hooks', rule, {
 describe('reference checking', () => {
   ruleTester.run('general', rule, {
     valid: [
+      "([]).skip('is not a jest function', () => {});",
       {
         code: dedent`
           const test = () => {};
