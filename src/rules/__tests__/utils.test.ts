@@ -458,6 +458,26 @@ describe('reference checking', () => {
       },
       {
         code: dedent`
+          import { describe } from '@jest/globals';
+
+          describe.skip('is a jest function', () => {});
+        `,
+        parserOptions: { sourceType: 'module' },
+        errors: [
+          {
+            messageId: 'details' as const,
+            data: {
+              callType: 'describe',
+              numOfArgs: 2,
+              nodeName: 'describe.skip',
+            },
+            column: 1,
+            line: 3,
+          },
+        ],
+      },
+      {
+        code: dedent`
           import { it } from '@jest/globals';
 
           it('is a jest function', () => {});
@@ -469,6 +489,46 @@ describe('reference checking', () => {
             data: {
               callType: 'test',
               numOfArgs: 2,
+              nodeName: 'it',
+            },
+            column: 1,
+            line: 3,
+          },
+        ],
+      },
+      {
+        code: dedent`
+          import { beforeEach } from '@jest/globals';
+
+          beforeEach(() => {});
+        `,
+        parserOptions: { sourceType: 'module' },
+        errors: [
+          {
+            messageId: 'details' as const,
+            data: {
+              callType: 'hook',
+              numOfArgs: 1,
+              nodeName: 'beforeEach',
+            },
+            column: 1,
+            line: 3,
+          },
+        ],
+      },
+      {
+        code: dedent`
+          import { beforeEach as it } from '@jest/globals';
+
+          it(() => {});
+        `,
+        parserOptions: { sourceType: 'module' },
+        errors: [
+          {
+            messageId: 'details' as const,
+            data: {
+              callType: 'hook',
+              numOfArgs: 1,
               nodeName: 'it',
             },
             column: 1,
@@ -747,6 +807,26 @@ describe('reference checking', () => {
       },
       {
         code: dedent`
+          const { describe } = require('@jest/globals');
+
+          describe.skip('is a jest function', () => {});
+        `,
+        parserOptions: { sourceType: 'script' },
+        errors: [
+          {
+            messageId: 'details' as const,
+            data: {
+              callType: 'describe',
+              numOfArgs: 2,
+              nodeName: 'describe.skip',
+            },
+            column: 1,
+            line: 3,
+          },
+        ],
+      },
+      {
+        code: dedent`
           const { describe } = require(\`@jest/globals\`);
 
           describe('is a jest function', () => {});
@@ -778,6 +858,46 @@ describe('reference checking', () => {
             data: {
               callType: 'test',
               numOfArgs: 2,
+              nodeName: 'it',
+            },
+            column: 1,
+            line: 3,
+          },
+        ],
+      },
+      {
+        code: dedent`
+          const { beforeEach } = require('@jest/globals');
+
+          beforeEach(() => {});
+        `,
+        parserOptions: { sourceType: 'script' },
+        errors: [
+          {
+            messageId: 'details' as const,
+            data: {
+              callType: 'hook',
+              numOfArgs: 1,
+              nodeName: 'beforeEach',
+            },
+            column: 1,
+            line: 3,
+          },
+        ],
+      },
+      {
+        code: dedent`
+          const { beforeEach: it } = require('@jest/globals');
+
+          it(() => {});
+        `,
+        parserOptions: { sourceType: 'script' },
+        errors: [
+          {
+            messageId: 'details' as const,
+            data: {
+              callType: 'hook',
+              numOfArgs: 1,
               nodeName: 'it',
             },
             column: 1,
