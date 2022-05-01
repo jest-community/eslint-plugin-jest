@@ -769,14 +769,6 @@ describe('reference checking', () => {
       },
       {
         code: dedent`
-          const { it } = require(pathToMyPackage);
-
-          it('is not a jest function', () => {});
-        `,
-        parserOptions: { sourceType: 'script' },
-      },
-      {
-        code: dedent`
           const { [() => {}]: it } = require('@jest/globals');
 
           it('is not a jest function', () => {});
