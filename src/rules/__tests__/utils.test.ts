@@ -11,21 +11,19 @@ import {
 import { espreeParser } from './test-utils';
 
 const findESLintVersion = (): number => {
-  try {
-    const eslintPath = require.resolve('eslint/package.json');
+  const eslintPath = require.resolve('eslint/package.json');
 
-    const eslintPackageJson =
-      // eslint-disable-next-line @typescript-eslint/no-require-imports
-      require(eslintPath) as JSONSchemaForNPMPackageJsonFiles;
+  const eslintPackageJson =
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    require(eslintPath) as JSONSchemaForNPMPackageJsonFiles;
 
-    if (eslintPackageJson.version) {
-      const [majorVersion] = eslintPackageJson.version.split('.');
+  if (!eslintPackageJson.version) {
+    throw new Error('eslint package.json does not have a version!');
+  }
 
-      return parseInt(majorVersion, 10);
-    }
-  } catch {}
+  const [majorVersion] = eslintPackageJson.version.split('.');
 
-  throw new Error('Unable to detect ESLint version!');
+  return parseInt(majorVersion, 10);
 };
 
 const eslintVersion = findESLintVersion();
