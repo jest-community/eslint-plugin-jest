@@ -7,8 +7,6 @@ const HooksOrder = [
   'afterAll',
 ] as const;
 
-type HookName = typeof HooksOrder[number];
-
 export default createRule({
   name: __filename,
   meta: {
@@ -25,66 +23,51 @@ export default createRule({
   },
   defaultOptions: [],
   create(context) {
-    const hookContexts: Array<HookName | null> = [null];
-    // const hookContexts = [false];
-    // let previousHook: HookName | null = null;
+    let previousHookIndex = -1;
+    let inHook = false;
 
     return {
       CallExpression(node) {
-        // on enter:
-        //   if "is hook:
-        //     if "have seen a previous hook":
-        //       if "previous hook name is different":
-        //         - compare hook orders
-        //         - update previous hook name
-        //   else:
-        //     - mark previous hook name as null
-        //
-        // ----------
-        // if "hook":
-        //  if: "have seen a previous hook"
-        //    if: previous hook name is different
-        //    - check hook order
-        //    - update previous hook name
-        // else:
-        //    - mark previous hook name as null
-        if (!isHook(node)) {
-          hookContexts.unshift(null);
-          // hookContexts.unshift(true);
-
+        if (inHook) {
+          // Ignore everything that is passed into a hook
           return;
         }
 
-        const { name: currentHook } = node.callee;
-        const [previousHook] = hookContexts;
-
-        if (previousHook) {
-          if (currentHook === previousHook) {
-            return;
-          }
-
-          const previousHookIndex = HooksOrder.indexOf(previousHook);
-          const currentHookIndex = HooksOrder.indexOf(currentHook);
-
-          if (previousHookIndex <= currentHookIndex) {
-            return;
-          }
-
-          context.report({
-            messageId: 'reorderHooks',
-            data: { currentHook, previousHook },
-            node,
-          });
+        if (!isHook(node)) {
+          // Reset the previousHookIndex when encountering something different from a hook
+          previousHookIndex = -1;
         }
 
-        // previousHook = currentHook;
-        hookContexts.unshift(currentHook);
-        // hookContexts[0] = currentHook;
+        if (isHook(node)) {
+          inHook = true;
+          const currentHook = node.callee.name;
+          const currentHookIndex = HooksOrder.findIndex(
+            name => name === currentHook,
+          );
+
+          if (currentHookIndex < previousHookIndex) {
+            context.report({
+              messageId: 'reorderHooks',
+              node,
+              data: {
+                previousHook: HooksOrder[previousHookIndex],
+                currentHook,
+              },
+            });
+          } else {
+            previousHookIndex = currentHookIndex;
+          }
+        }
       },
       'CallExpression:exit'(node) {
-        // if (!isHook(node)) {
-        hookContexts.shift();
-        // }
+        if (!isHook(node) && !inHook) {
+          // Reset the previousHookIndex when encountering something different from a hook
+          previousHookIndex = -1;
+        }
+
+        if (isHook(node)) {
+          inHook = false;
+        }
       },
     };
   },
