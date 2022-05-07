@@ -1,7 +1,7 @@
 # Suggest having hooks before any test cases (`prefer-hooks-on-top`)
 
 While hooks can be setup anywhere in a test file, they are always called in a
-specific order which means it can be confusing if they're intermixed with test
+specific order, which means it can be confusing if they're intermixed with test
 cases.
 
 This rule helps to ensure that hooks are always defined before test cases.

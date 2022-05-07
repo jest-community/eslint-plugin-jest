@@ -1,3 +1,102 @@
+## [26.1.5](https://github.com/jest-community/eslint-plugin-jest/compare/v26.1.4...v26.1.5) (2022-04-22)
+
+
+### Bug Fixes
+
+* **prefer-expect-assertions:** properly handle checking across multiple tests ([#1089](https://github.com/jest-community/eslint-plugin-jest/issues/1089)) ([8b61b0c](https://github.com/jest-community/eslint-plugin-jest/commit/8b61b0c0dd79e8f3a83cbbd78eada2bc8dee52e8))
+
+## [26.1.4](https://github.com/jest-community/eslint-plugin-jest/compare/v26.1.3...v26.1.4) (2022-04-08)
+
+
+### Bug Fixes
+
+* **prefer-snapshot-hint:** don't report multi snapshots in different tests within the same describe ([#1078](https://github.com/jest-community/eslint-plugin-jest/issues/1078)) ([98e5166](https://github.com/jest-community/eslint-plugin-jest/commit/98e5166347990901b55c64b30f48907984890c48))
+
+## [26.1.3](https://github.com/jest-community/eslint-plugin-jest/compare/v26.1.2...v26.1.3) (2022-03-24)
+
+
+### Bug Fixes
+
+* change node engine version to match dependencies ([#1072](https://github.com/jest-community/eslint-plugin-jest/issues/1072)) ([ef2c093](https://github.com/jest-community/eslint-plugin-jest/commit/ef2c093477457e462d5c272e97deadc5089ae0b9))
+
+## [26.1.2](https://github.com/jest-community/eslint-plugin-jest/compare/v26.1.1...v26.1.2) (2022-03-19)
+
+
+### Bug Fixes
+
+* **prefer-snapshot-hint:** support passing hint to `toMatchSnapshot` as first argument ([#1070](https://github.com/jest-community/eslint-plugin-jest/issues/1070)) ([97b1f9d](https://github.com/jest-community/eslint-plugin-jest/commit/97b1f9d8063811d8ebb7ad41b92a5286c56aa2c4))
+
+## [26.1.1](https://github.com/jest-community/eslint-plugin-jest/compare/v26.1.0...v26.1.1) (2022-02-15)
+
+
+### Bug Fixes
+
+* **docs:** use the correct function name ([#1056](https://github.com/jest-community/eslint-plugin-jest/issues/1056)) ([7435556](https://github.com/jest-community/eslint-plugin-jest/commit/74355566e6eef64b98a7da675c0cdcc2e8dc9df6))
+
+# [26.1.0](https://github.com/jest-community/eslint-plugin-jest/compare/v26.0.0...v26.1.0) (2022-02-06)
+
+
+### Features
+
+* create `no-conditional-in-test` rule ([#1027](https://github.com/jest-community/eslint-plugin-jest/issues/1027)) ([d551850](https://github.com/jest-community/eslint-plugin-jest/commit/d5518503e7c5c3051e698bf1a53e9fa2b6d840dc))
+* create `prefer-snapshot-hint` rule ([#1012](https://github.com/jest-community/eslint-plugin-jest/issues/1012)) ([d854723](https://github.com/jest-community/eslint-plugin-jest/commit/d85472365eb45d6073625965c390ba3445a18935))
+* deprecate `no-if` in favor of `no-conditional-in-test` ([#1049](https://github.com/jest-community/eslint-plugin-jest/issues/1049)) ([35f32cc](https://github.com/jest-community/eslint-plugin-jest/commit/35f32cc9da8741649766c2e33b8a6bcaa46ac0e7))
+
+# [26.1.0-next.2](https://github.com/jest-community/eslint-plugin-jest/compare/v26.1.0-next.1...v26.1.0-next.2) (2022-02-06)
+
+
+### Features
+
+* deprecate `no-if` in favor of `no-conditional-in-test` ([#1049](https://github.com/jest-community/eslint-plugin-jest/issues/1049)) ([b15f3af](https://github.com/jest-community/eslint-plugin-jest/commit/b15f3af2d370b7d8d6a0293bc78d560cb874aef6))
+
+# [26.1.0-next.1](https://github.com/jest-community/eslint-plugin-jest/compare/v26.0.0...v26.1.0-next.1) (2022-02-06)
+
+
+### Features
+
+* create `no-conditional-in-test` rule ([#1027](https://github.com/jest-community/eslint-plugin-jest/issues/1027)) ([004ddc5](https://github.com/jest-community/eslint-plugin-jest/commit/004ddc5cff58e57489ff55cc783b0fa9b964b09a))
+
+# [26.0.0](https://github.com/jest-community/eslint-plugin-jest/compare/v25.7.0...v26.0.0) (2022-01-24)
+
+
+### Bug Fixes
+
+* migrate to non-experimental ts-eslint utils ([#1035](https://github.com/jest-community/eslint-plugin-jest/issues/1035)) ([e894f51](https://github.com/jest-community/eslint-plugin-jest/commit/e894f51a0d12e3872a4a41d6ea01950b81c07950))
+
+
+### BREAKING CHANGES
+
+* Drop support for `@typescript-eslint/eslint-plugin@4`
+
+# [25.7.0](https://github.com/jest-community/eslint-plugin-jest/compare/v25.6.0...v25.7.0) (2022-01-15)
+
+
+### Features
+
+* create `prefer-equality-matcher` rule ([#1016](https://github.com/jest-community/eslint-plugin-jest/issues/1016)) ([341353b](https://github.com/jest-community/eslint-plugin-jest/commit/341353bc7d57685cc5e0b31501d6ca336a0dbaf0))
+* **valid-expect:** support `asyncMatchers` option and default to `jest-extended` matchers ([#1018](https://github.com/jest-community/eslint-plugin-jest/issues/1018)) ([c82205a](https://github.com/jest-community/eslint-plugin-jest/commit/c82205a73a4e8de315a2ad4d413b146e27c14a34))
+
+# [25.6.0](https://github.com/jest-community/eslint-plugin-jest/compare/v25.5.0...v25.6.0) (2022-01-15)
+
+
+### Features
+
+* create `prefer-comparison-matcher` rule ([#1015](https://github.com/jest-community/eslint-plugin-jest/issues/1015)) ([eb11876](https://github.com/jest-community/eslint-plugin-jest/commit/eb118761a422b3589311113cd827a6be437f5bb5))
+
+# [25.5.0](https://github.com/jest-community/eslint-plugin-jest/compare/v25.4.0...v25.5.0) (2022-01-15)
+
+
+### Features
+
+* **prefer-expect-assertions:** support requiring only if `expect` is used in a callback ([#1028](https://github.com/jest-community/eslint-plugin-jest/issues/1028)) ([8d5fd33](https://github.com/jest-community/eslint-plugin-jest/commit/8d5fd33eed633f0c0bbdcb9e86bd2d8d7de79c4b))
+
+# [25.4.0](https://github.com/jest-community/eslint-plugin-jest/compare/v25.3.4...v25.4.0) (2022-01-15)
+
+
+### Features
+
+* **prefer-expect-assertions:** support requiring only if `expect` is used in a loop ([#1013](https://github.com/jest-community/eslint-plugin-jest/issues/1013)) ([e6f4f8a](https://github.com/jest-community/eslint-plugin-jest/commit/e6f4f8aaf7664bcf9d9d5549c3c43b1b09f49461))
+
 ## [25.3.4](https://github.com/jest-community/eslint-plugin-jest/compare/v25.3.3...v25.3.4) (2022-01-01)
 
 

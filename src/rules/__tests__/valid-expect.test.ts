@@ -1,4 +1,4 @@
-import { TSESLint } from '@typescript-eslint/experimental-utils';
+import { TSESLint } from '@typescript-eslint/utils';
 import dedent from 'dedent';
 import rule from '../valid-expect';
 import { espreeParser } from './test-utils';
@@ -113,6 +113,22 @@ ruleTester.run('valid-expect', rule, {
     {
       code: 'expect(1, "1 !== 2").toBe(2);',
       options: [{ maxArgs: 2, minArgs: 2 }],
+    },
+    {
+      code: 'test("valid-expect", () => { expect(2).not.toBe(2); });',
+      options: [{ asyncMatchers: ['toRejectWith'] }],
+    },
+    {
+      code: 'test("valid-expect", () => { expect(Promise.reject(2)).toRejectWith(2); });',
+      options: [{ asyncMatchers: ['toResolveWith'] }],
+    },
+    {
+      code: 'test("valid-expect", async () => { await expect(Promise.resolve(2)).toResolve(); });',
+      options: [{ asyncMatchers: ['toResolveWith'] }],
+    },
+    {
+      code: 'test("valid-expect", async () => { expect(Promise.resolve(2)).toResolve(); });',
+      options: [{ asyncMatchers: ['toResolveWith'] }],
     },
   ],
   invalid: [
@@ -466,6 +482,51 @@ ruleTester.run('valid-expect', rule, {
         },
       ],
     },
+    {
+      code: 'test("valid-expect", () => { expect(Promise.resolve(2)).toResolve(); });',
+      errors: [
+        {
+          messageId: 'asyncMustBeAwaited',
+          data: { orReturned: ' or returned' },
+          column: 30,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: 'test("valid-expect", () => { expect(Promise.resolve(2)).toResolve(); });',
+      options: [{ asyncMatchers: undefined }],
+      errors: [
+        {
+          messageId: 'asyncMustBeAwaited',
+          data: { orReturned: ' or returned' },
+          column: 30,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: 'test("valid-expect", () => { expect(Promise.resolve(2)).toReject(); });',
+      errors: [
+        {
+          messageId: 'asyncMustBeAwaited',
+          data: { orReturned: ' or returned' },
+          column: 30,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: 'test("valid-expect", () => { expect(Promise.resolve(2)).not.toReject(); });',
+      errors: [
+        {
+          messageId: 'asyncMustBeAwaited',
+          data: { orReturned: ' or returned' },
+          column: 30,
+          line: 1,
+        },
+      ],
+    },
     // expect().resolves.not
     {
       code: 'test("valid-expect", () => { expect(Promise.resolve(2)).resolves.not.toBeDefined(); });',
@@ -522,6 +583,28 @@ ruleTester.run('valid-expect', rule, {
           endColumn: 89,
           messageId: 'asyncMustBeAwaited',
           data: { orReturned: ' or returned' },
+        },
+      ],
+    },
+    {
+      code: 'test("valid-expect", () => { expect(Promise.reject(2)).toRejectWith(2); });',
+      options: [{ asyncMatchers: ['toRejectWith'] }],
+      errors: [
+        {
+          messageId: 'asyncMustBeAwaited',
+          data: { orReturned: ' or returned' },
+          column: 30,
+        },
+      ],
+    },
+    {
+      code: 'test("valid-expect", () => { expect(Promise.reject(2)).rejects.toBe(2); });',
+      options: [{ asyncMatchers: ['toRejectWith'] }],
+      errors: [
+        {
+          messageId: 'asyncMustBeAwaited',
+          data: { orReturned: ' or returned' },
+          column: 30,
         },
       ],
     },
@@ -628,6 +711,22 @@ ruleTester.run('valid-expect', rule, {
           column: 10,
           endColumn: 58,
           messageId: 'asyncMustBeAwaited',
+        },
+      ],
+    },
+    {
+      code: dedent`
+        test("valid-expect", async () => {
+          await expect(Promise.resolve(2)).toResolve();
+          return expect(Promise.resolve(1)).toReject();
+        });
+      `,
+      options: [{ alwaysAwait: true }],
+      errors: [
+        {
+          messageId: 'asyncMustBeAwaited',
+          column: 10,
+          line: 3,
         },
       ],
     },
@@ -768,6 +867,54 @@ ruleTester.run('valid-expect', rule, {
           endColumn: 58,
           messageId: 'asyncMustBeAwaited',
           data: { orReturned: ' or returned' },
+        },
+      ],
+    },
+    {
+      code: dedent`
+        test("valid-expect", () => {
+          const assertions = [
+            expect(Promise.resolve(2)).toResolve(),
+            expect(Promise.resolve(3)).toReject(),
+          ]
+        });
+      `,
+      errors: [
+        {
+          messageId: 'asyncMustBeAwaited',
+          data: { orReturned: ' or returned' },
+          column: 5,
+          line: 3,
+        },
+        {
+          messageId: 'asyncMustBeAwaited',
+          data: { orReturned: ' or returned' },
+          column: 5,
+          line: 4,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        test("valid-expect", () => {
+          const assertions = [
+            expect(Promise.resolve(2)).not.toResolve(),
+            expect(Promise.resolve(3)).resolves.toReject(),
+          ]
+        });
+      `,
+      errors: [
+        {
+          messageId: 'asyncMustBeAwaited',
+          data: { orReturned: ' or returned' },
+          column: 5,
+          line: 3,
+        },
+        {
+          messageId: 'asyncMustBeAwaited',
+          data: { orReturned: ' or returned' },
+          column: 5,
+          line: 4,
         },
       ],
     },

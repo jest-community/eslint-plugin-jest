@@ -59,6 +59,34 @@ doing:
 This is included in all configs shared by this plugin, so can be omitted if
 extending them.
 
+### Running rules only on test-related files
+
+The rules provided by this plugin assume that the files they are checking are
+test-related. This means it's generally not suitable to include them in your
+top-level configuration as that applies to all files being linted which can
+include source files.
+
+You can use
+[overrides](https://eslint.org/docs/user-guide/configuring/configuration-files#how-do-overrides-work)
+to have ESLint apply additional rules to specific files:
+
+```json
+{
+  "extends": ["eslint:recommended"],
+  "overrides": [
+    {
+      "files": ["test/**"],
+      "plugins": ["jest"],
+      "extends": ["plugin:jest/recommended"],
+      "rules": { "jest/prefer-expect-assertions": "off" }
+    }
+  ],
+  "rules": {
+    "indent": ["error", 2]
+  }
+}
+```
+
 ### Jest `version` setting
 
 The behaviour of some rules (specifically [`no-deprecated-functions`][]) change
@@ -158,6 +186,7 @@ installations requiring long-term consistency.
 | [no-alias-methods](docs/rules/no-alias-methods.md)                           | Disallow alias methods                                              | ![style][]       | ![fixable][] |
 | [no-commented-out-tests](docs/rules/no-commented-out-tests.md)               | Disallow commented out tests                                        | ![recommended][] |              |
 | [no-conditional-expect](docs/rules/no-conditional-expect.md)                 | Prevent calling `expect` conditionally                              | ![recommended][] |              |
+| [no-conditional-in-test](docs/rules/no-conditional-in-test.md)               | Disallow conditional logic in tests                                 |                  |              |
 | [no-deprecated-functions](docs/rules/no-deprecated-functions.md)             | Disallow use of deprecated functions                                | ![recommended][] | ![fixable][] |
 | [no-disabled-tests](docs/rules/no-disabled-tests.md)                         | Disallow disabled tests                                             | ![recommended][] |              |
 | [no-done-callback](docs/rules/no-done-callback.md)                           | Avoid using a callback in asynchronous tests and hooks              | ![recommended][] | ![suggest][] |
@@ -166,7 +195,6 @@ installations requiring long-term consistency.
 | [no-focused-tests](docs/rules/no-focused-tests.md)                           | Disallow focused tests                                              | ![recommended][] | ![suggest][] |
 | [no-hooks](docs/rules/no-hooks.md)                                           | Disallow setup and teardown hooks                                   |                  |              |
 | [no-identical-title](docs/rules/no-identical-title.md)                       | Disallow identical titles                                           | ![recommended][] |              |
-| [no-if](docs/rules/no-if.md)                                                 | Disallow conditional logic                                          |                  |              |
 | [no-interpolation-in-snapshots](docs/rules/no-interpolation-in-snapshots.md) | Disallow string interpolation inside snapshots                      | ![recommended][] |              |
 | [no-jasmine-globals](docs/rules/no-jasmine-globals.md)                       | Disallow Jasmine globals                                            | ![recommended][] | ![fixable][] |
 | [no-jest-import](docs/rules/no-jest-import.md)                               | Disallow importing Jest                                             | ![recommended][] |              |
@@ -177,10 +205,13 @@ installations requiring long-term consistency.
 | [no-test-prefixes](docs/rules/no-test-prefixes.md)                           | Use `.only` and `.skip` over `f` and `x`                            | ![recommended][] | ![fixable][] |
 | [no-test-return-statement](docs/rules/no-test-return-statement.md)           | Disallow explicitly returning from tests                            |                  |              |
 | [prefer-called-with](docs/rules/prefer-called-with.md)                       | Suggest using `toBeCalledWith()` or `toHaveBeenCalledWith()`        |                  |              |
+| [prefer-comparison-matcher](docs/rules/prefer-comparison-matcher.md)         | Suggest using the built-in comparison matchers                      |                  | ![fixable][] |
+| [prefer-equality-matcher](docs/rules/prefer-equality-matcher.md)             | Suggest using the built-in equality matchers                        |                  | ![suggest][] |
 | [prefer-expect-assertions](docs/rules/prefer-expect-assertions.md)           | Suggest using `expect.assertions()` OR `expect.hasAssertions()`     |                  | ![suggest][] |
 | [prefer-expect-resolves](docs/rules/prefer-expect-resolves.md)               | Prefer `await expect(...).resolves` over `expect(await ...)` syntax |                  | ![fixable][] |
 | [prefer-hooks-on-top](docs/rules/prefer-hooks-on-top.md)                     | Suggest having hooks before any test cases                          |                  |              |
 | [prefer-lowercase-title](docs/rules/prefer-lowercase-title.md)               | Enforce lowercase test names                                        |                  | ![fixable][] |
+| [prefer-snapshot-hint](docs/rules/prefer-snapshot-hint.md)                   | Prefer including a hint with external snapshots                     |                  |              |
 | [prefer-spy-on](docs/rules/prefer-spy-on.md)                                 | Suggest using `jest.spyOn()`                                        |                  | ![fixable][] |
 | [prefer-strict-equal](docs/rules/prefer-strict-equal.md)                     | Suggest using `toStrictEqual()`                                     |                  | ![suggest][] |
 | [prefer-to-be](docs/rules/prefer-to-be.md)                                   | Suggest using `toBe()` for primitive literals                       | ![style][]       | ![fixable][] |
@@ -208,8 +239,8 @@ adjust your eslint config as outlined
 
 Note that unlike the type-checking rules in `@typescript-eslint/eslint-plugin`,
 the rules here will fallback to doing nothing if type information is not
-available, meaning its safe to include them in shared configs that could be used
-on JavaScript and TypeScript projects.
+available, meaning it's safe to include them in shared configs that could be
+used on JavaScript and TypeScript projects.
 
 Also note that `unbound-method` depends on `@typescript-eslint/eslint-plugin`,
 as it extends the original `unbound-method` rule from that plugin.

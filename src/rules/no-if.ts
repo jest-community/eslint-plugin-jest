@@ -1,7 +1,4 @@
-import {
-  AST_NODE_TYPES,
-  TSESTree,
-} from '@typescript-eslint/experimental-utils';
+import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/utils';
 import {
   TestCaseName,
   createRule,
@@ -47,6 +44,8 @@ export default createRule({
     messages: {
       conditionalInTest: 'Test should not contain {{ condition }} statements.',
     },
+    deprecated: true,
+    replacedBy: ['no-conditional-in-test'],
     schema: [],
     type: 'suggestion',
   },

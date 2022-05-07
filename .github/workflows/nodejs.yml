@@ -16,11 +16,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
-      - uses: actions/setup-node@v2
+      - uses: actions/setup-node@v3
         with:
-          node-version: 14.x
+          node-version: lts/*
           cache: yarn
 
       - name: Validate cache
@@ -35,10 +35,10 @@ jobs:
     needs: prepare-yarn-cache
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
-          node-version: 14.x
+          node-version: lts/*
           cache: yarn
       - name: install
         run: yarn
@@ -49,10 +49,10 @@ jobs:
     needs: prepare-yarn-cache
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
-          node-version: 14.x
+          node-version: lts/*
           cache: yarn
       - name: install
         run: yarn
@@ -62,38 +62,33 @@ jobs:
   test-node:
     name:
       # prettier-ignore
-      Test on Node.js v${{ matrix.node-version }}, eslint v${{ matrix.eslint-version }} and ts-eslint/plugin v${{ matrix.ts-eslint-plugin-version }}
+      Test on Node.js v${{ matrix.node-version }}, eslint v${{ matrix.eslint-version }}
     needs: prepare-yarn-cache
     strategy:
       fail-fast: false
       matrix:
-        node-version: [12.x, 14.x, 16.x]
+        node-version: [12.x, 14.x, 16.x, 17.x, 18.x]
         eslint-version: [6, 7, 8]
-        ts-eslint-plugin-version: [4, 5]
-        exclude:
-          # ts-eslint/plugin@4 doesn't support eslint@8
-          - eslint-version: 8
-            ts-eslint-plugin-version: 4
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
           cache: yarn
       - name:
           # prettier-ignore
-          install with eslint v${{ matrix.eslint-version }} and ts-eslint/plugin v${{ matrix.ts-eslint-plugin-version }}
+          install with eslint v${{ matrix.eslint-version }}
         run: |
           yarn
-          yarn add --dev eslint@${{ matrix.eslint-version }} @typescript-eslint/eslint-plugin@${{ matrix.ts-eslint-plugin-version }} @typescript-eslint/parser@${{ matrix.ts-eslint-plugin-version }}
+          yarn add --dev eslint@${{ matrix.eslint-version }}
       - name: run tests
         run: yarn test --coverage
         env:
           CI: true
-      - uses: codecov/codecov-action@v2
+      - uses: codecov/codecov-action@v3
         if: always()
   test-os:
     name: Test on ${{ matrix.os }} using Node.js LTS
@@ -105,10 +100,10 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
-          node-version: 14.x
+          node-version: lts/*
           cache: yarn
       - name: install
         run: yarn
@@ -116,7 +111,7 @@ jobs:
         run: yarn test --coverage
         env:
           CI: true
-      - uses: codecov/codecov-action@v2
+      - uses: codecov/codecov-action@v3
         if: always()
 
   docs:
@@ -124,10 +119,10 @@ jobs:
     needs: prepare-yarn-cache
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
-          node-version: 14.x
+          node-version: lts/*
           cache: yarn
       - name: install
         run: yarn
@@ -147,10 +142,10 @@ jobs:
     needs: [prettier, typecheck, test-node, test-os]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
-          node-version: 14.x
+          node-version: lts/*
           cache: yarn
       - name: install
         run: yarn

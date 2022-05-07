@@ -3,10 +3,7 @@
  * MIT license, Tom Vincent.
  */
 
-import {
-  AST_NODE_TYPES,
-  TSESTree,
-} from '@typescript-eslint/experimental-utils';
+import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/utils';
 import {
   ModifierName,
   createRule,
@@ -104,6 +101,13 @@ const isNoAssertionsParentNode = (node: TSESTree.Node): boolean =>
 const promiseArrayExceptionKey = ({ start, end }: TSESTree.SourceLocation) =>
   `${start.line}:${start.column}-${end.line}:${end.column}`;
 
+interface Options {
+  alwaysAwait?: boolean;
+  asyncMatchers?: string[];
+  minArgs?: number;
+  maxArgs?: number;
+}
+
 type MessageIds =
   | 'tooManyArgs'
   | 'notEnoughArgs'
@@ -113,10 +117,9 @@ type MessageIds =
   | 'asyncMustBeAwaited'
   | 'promisesWithAsyncAssertionsMustBeAwaited';
 
-export default createRule<
-  [{ alwaysAwait?: boolean; minArgs?: number; maxArgs?: number }],
-  MessageIds
->({
+const defaultAsyncMatchers = ['toReject', 'toResolve'];
+
+export default createRule<[Options], MessageIds>({
   name: __filename,
   meta: {
     docs: {
@@ -143,6 +146,10 @@ export default createRule<
             type: 'boolean',
             default: false,
           },
+          asyncMatchers: {
+            type: 'array',
+            items: { type: 'string' },
+          },
           minArgs: {
             type: 'number',
             minimum: 1,
@@ -156,8 +163,25 @@ export default createRule<
       },
     ],
   },
-  defaultOptions: [{ alwaysAwait: false, minArgs: 1, maxArgs: 1 }],
-  create(context, [{ alwaysAwait, minArgs = 1, maxArgs = 1 }]) {
+  defaultOptions: [
+    {
+      alwaysAwait: false,
+      asyncMatchers: defaultAsyncMatchers,
+      minArgs: 1,
+      maxArgs: 1,
+    },
+  ],
+  create(
+    context,
+    [
+      {
+        alwaysAwait,
+        asyncMatchers = defaultAsyncMatchers,
+        minArgs = 1,
+        maxArgs = 1,
+      },
+    ],
+  ) {
     // Context state
     const arrayExceptions = new Set<string>();
 
@@ -254,12 +278,11 @@ export default createRule<
         }
 
         const parentNode = matcher.node.parent;
+        const shouldBeAwaited =
+          (modifier && modifier.name !== ModifierName.not) ||
+          asyncMatchers.includes(matcher.name);
 
-        if (
-          !parentNode.parent ||
-          !modifier ||
-          modifier.name === ModifierName.not
-        ) {
+        if (!parentNode.parent || !shouldBeAwaited) {
           return;
         }
         /**

@@ -1,4 +1,4 @@
-import { TSESLint } from '@typescript-eslint/experimental-utils';
+import { TSESLint } from '@typescript-eslint/utils';
 import dedent from 'dedent';
 import rule from '../prefer-expect-assertions';
 import { espreeParser } from './test-utils';
@@ -21,18 +21,36 @@ ruleTester.run('prefer-expect-assertions', rule, {
       it("it1", function() {
         expect.assertions(1);
         expect(someValue).toBe(true)
-      })
+      });
     `,
     'test("it1")',
     'itHappensToStartWithIt("foo", function() {})',
     'testSomething("bar", function() {})',
     'it(async () => {expect.assertions(0);})',
+    dedent`
+      it("returns numbers that are greater than four", function() {
+        expect.assertions(2);
+
+        for(let thing in things) {
+          expect(number).toBeGreaterThan(4);
+        }
+      });
+    `,
+    dedent`
+      it("returns numbers that are greater than four", function() {
+        expect.hasAssertions();
+
+        for (let i = 0; i < things.length; i++) {
+          expect(number).toBeGreaterThan(4);
+        }
+      });
+    `,
     {
       code: dedent`
         it("it1", async () => {
           expect.assertions(1);
           expect(someValue).toBe(true)
-        })
+        });
       `,
       options: [{ onlyFunctionsWithAsyncKeyword: true }],
     },
@@ -40,12 +58,34 @@ ruleTester.run('prefer-expect-assertions', rule, {
       code: dedent`
         it("it1", function() {
           expect(someValue).toBe(true)
-        })
+        });
       `,
       options: [{ onlyFunctionsWithAsyncKeyword: true }],
     },
     {
       code: 'it("it1", () => {})',
+      options: [{ onlyFunctionsWithAsyncKeyword: true }],
+    },
+    {
+      code: dedent`
+        it("returns numbers that are greater than four", async () => {
+          expect.assertions(2);
+
+          for(let thing in things) {
+            expect(number).toBeGreaterThan(4);
+          }
+        });
+      `,
+      options: [{ onlyFunctionsWithAsyncKeyword: true }],
+    },
+    {
+      code: dedent`
+        it("returns numbers that are greater than four", () => {
+          for(let thing in things) {
+            expect(number).toBeGreaterThan(4);
+          }
+        });
+      `,
       options: [{ onlyFunctionsWithAsyncKeyword: true }],
     },
   ],
@@ -95,7 +135,7 @@ ruleTester.run('prefer-expect-assertions', rule, {
         it("it1", function() {
           someFunctionToDo();
           someFunctionToDo2();
-        })
+        });
       `,
       errors: [
         {
@@ -109,7 +149,7 @@ ruleTester.run('prefer-expect-assertions', rule, {
                 it("it1", function() {
                   expect.hasAssertions();someFunctionToDo();
                   someFunctionToDo2();
-                })
+                });
               `,
             },
             {
@@ -118,7 +158,7 @@ ruleTester.run('prefer-expect-assertions', rule, {
                 it("it1", function() {
                   expect.assertions();someFunctionToDo();
                   someFunctionToDo2();
-                })
+                });
               `,
             },
           ],
@@ -223,7 +263,7 @@ ruleTester.run('prefer-expect-assertions', rule, {
             someFunctionToDo();
             someFunctionToDo2();
           });
-        })
+        });
       `,
       errors: [
         {
@@ -236,7 +276,7 @@ ruleTester.run('prefer-expect-assertions', rule, {
               output: dedent`
                 it("it1", function() {
                   expect.hasAssertions();
-                })
+                });
               `,
             },
           ],
@@ -247,9 +287,1022 @@ ruleTester.run('prefer-expect-assertions', rule, {
       code: dedent`
         it("it1", async function() {
           expect(someValue).toBe(true);
-        })
+        });
       `,
       options: [{ onlyFunctionsWithAsyncKeyword: true }],
+      errors: [
+        {
+          messageId: 'haveExpectAssertions',
+          column: 1,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        it("returns numbers that are greater than four", async () => {
+          for(let thing in things) {
+            expect(number).toBeGreaterThan(4);
+          }
+        });
+      `,
+      options: [{ onlyFunctionsWithAsyncKeyword: true }],
+      errors: [
+        {
+          messageId: 'haveExpectAssertions',
+          column: 1,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        it("returns numbers that are greater than four", async () => {
+          for (const number of getNumbers()) {
+            expect(number).toBeGreaterThan(4);
+          }
+        });
+      `,
+      options: [{ onlyFunctionsWithAsyncKeyword: true }],
+      errors: [
+        {
+          messageId: 'haveExpectAssertions',
+          column: 1,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        it("returns numbers that are greater than four", async () => {
+          for (const number of getNumbers()) {
+            expect(number).toBeGreaterThan(4);
+          }
+        });
+
+        it("returns numbers that are greater than five", () => {
+          for (const number of getNumbers()) {
+            expect(number).toBeGreaterThan(5);
+          }
+        });
+      `,
+      options: [{ onlyFunctionsWithAsyncKeyword: true }],
+      errors: [
+        {
+          messageId: 'haveExpectAssertions',
+          column: 1,
+          line: 1,
+        },
+      ],
+    },
+  ],
+});
+
+ruleTester.run('prefer-expect-assertions (loops)', rule, {
+  valid: [
+    {
+      code: dedent`
+        const expectNumbersToBeGreaterThan = (numbers, value) => {
+          for (let number of numbers) {
+            expect(number).toBeGreaterThan(value);
+          }
+        };
+
+        it('returns numbers that are greater than two', function () {
+          expectNumbersToBeGreaterThan(getNumbers(), 2);
+        });
+      `,
+      options: [{ onlyFunctionsWithExpectInLoop: true }],
+    },
+    {
+      code: dedent`
+        it("returns numbers that are greater than five", function () {
+          expect.assertions(2);
+
+          for (const number of getNumbers()) {
+            expect(number).toBeGreaterThan(5);
+          }
+        });
+      `,
+      options: [{ onlyFunctionsWithExpectInLoop: true }],
+    },
+    {
+      code: dedent`
+        it("returns things that are less than ten", function () {
+          expect.hasAssertions();
+
+          for (const thing in things) {
+            expect(thing).toBeLessThan(10);
+          }
+        });
+      `,
+      options: [{ onlyFunctionsWithExpectInLoop: true }],
+    },
+  ],
+  invalid: [
+    {
+      code: dedent`
+        it('only returns numbers that are greater than six', () => {
+          for (const number of getNumbers()) {
+            expect(number).toBeGreaterThan(6);
+          }
+        });
+      `,
+      options: [{ onlyFunctionsWithExpectInLoop: true }],
+      errors: [
+        {
+          messageId: 'haveExpectAssertions',
+          column: 1,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        it('returns numbers that are greater than two', function () {
+          const expectNumbersToBeGreaterThan = (numbers, value) => {
+            for (let number of numbers) {
+              expect(number).toBeGreaterThan(value);
+            }
+          };
+
+          expectNumbersToBeGreaterThan(getNumbers(), 2);
+        });
+      `,
+      options: [{ onlyFunctionsWithExpectInLoop: true }],
+      errors: [
+        {
+          messageId: 'haveExpectAssertions',
+          column: 1,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        it("only returns numbers that are greater than seven", function () {
+          const numbers = getNumbers();
+
+          for (let i = 0; i < numbers.length; i++) {
+            expect(numbers[i]).toBeGreaterThan(7);
+          }
+        });
+      `,
+      options: [{ onlyFunctionsWithExpectInLoop: true }],
+      errors: [
+        {
+          messageId: 'haveExpectAssertions',
+          column: 1,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        it('has the number two', () => {
+          expect(number).toBe(2);
+        });
+
+        it('only returns numbers that are less than twenty', () => {
+          for (const number of getNumbers()) {
+            expect(number).toBeLessThan(20);
+          }
+        });
+      `,
+      options: [{ onlyFunctionsWithExpectInLoop: true }],
+      errors: [
+        {
+          messageId: 'haveExpectAssertions',
+          column: 1,
+          line: 5,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        it("is wrong");
+
+        it("is a test", () => {
+          for (const number of getNumbers()) {
+            expect(number).toBeGreaterThan(4);
+          }
+        });
+      `,
+      options: [{ onlyFunctionsWithExpectInLoop: true }],
+      errors: [
+        {
+          messageId: 'haveExpectAssertions',
+          column: 1,
+          line: 3,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        it("is a number that is greater than four", () => {
+          expect(number).toBeGreaterThan(4);
+        });
+
+        it("returns numbers that are greater than four", () => {
+          for (const number of getNumbers()) {
+            expect(number).toBeGreaterThan(4);
+          }
+        });
+
+        it("returns numbers that are greater than five", () => {
+          expect(number).toBeGreaterThan(5);
+        });
+      `,
+      options: [{ onlyFunctionsWithExpectInLoop: true }],
+      errors: [
+        {
+          messageId: 'haveExpectAssertions',
+          column: 1,
+          line: 5,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        it.each([1, 2, 3])("returns numbers that are greater than four", () => {
+          for (const number of getNumbers()) {
+            expect(number).toBeGreaterThan(4);
+          }
+        });
+
+        it("is a number that is greater than four", () => {
+          expect(number).toBeGreaterThan(4);
+        });
+      `,
+      options: [{ onlyFunctionsWithExpectInLoop: true }],
+      errors: [
+        {
+          messageId: 'haveExpectAssertions',
+          column: 1,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        it("returns numbers that are greater than four", () => {
+          for (const number of getNumbers()) {
+            expect(number).toBeGreaterThan(4);
+          }
+        });
+
+        it("is a number that is greater than four", () => {
+          expect(number).toBeGreaterThan(4);
+        });
+      `,
+      options: [{ onlyFunctionsWithExpectInLoop: true }],
+      errors: [
+        {
+          messageId: 'haveExpectAssertions',
+          column: 1,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        it("returns numbers that are greater than four", () => {
+          for (const number of getNumbers()) {
+            expect(number).toBeGreaterThan(4);
+          }
+        });
+
+        it("is a number that is greater than four", () => {
+          expect.hasAssertions();
+
+          expect(number).toBeGreaterThan(4);
+        });
+      `,
+      options: [{ onlyFunctionsWithExpectInLoop: true }],
+      errors: [
+        {
+          messageId: 'haveExpectAssertions',
+          column: 1,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        it("it1", () => {
+          expect.hasAssertions();
+
+          for (const number of getNumbers()) {
+            expect(number).toBeGreaterThan(0);
+          }
+        });
+
+        it("it1", () => {
+          for (const number of getNumbers()) {
+            expect(number).toBeGreaterThan(0);
+          }
+        });
+      `,
+      options: [{ onlyFunctionsWithExpectInLoop: true }],
+      errors: [
+        {
+          messageId: 'haveExpectAssertions',
+          column: 1,
+          line: 9,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        it("returns numbers that are greater than four", async () => {
+          for (const number of await getNumbers()) {
+            expect(number).toBeGreaterThan(4);
+          }
+        });
+
+        it("returns numbers that are greater than five", () => {
+          for (const number of getNumbers()) {
+            expect(number).toBeGreaterThan(5);
+          }
+        });
+      `,
+      options: [{ onlyFunctionsWithExpectInLoop: true }],
+      errors: [
+        {
+          messageId: 'haveExpectAssertions',
+          column: 1,
+          line: 1,
+        },
+        {
+          messageId: 'haveExpectAssertions',
+          column: 1,
+          line: 7,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        it("it1", async () => {
+          expect.hasAssertions();
+
+          for (const number of getNumbers()) {
+            expect(number).toBeGreaterThan(4);
+          }
+        });
+
+        it("it1", () => {
+          for (const number of getNumbers()) {
+            expect(number).toBeGreaterThan(4);
+          }
+        });
+      `,
+      options: [{ onlyFunctionsWithExpectInLoop: true }],
+      errors: [
+        {
+          messageId: 'haveExpectAssertions',
+          column: 1,
+          line: 9,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        it.skip.each\`\`("it1", async () => {
+          expect.hasAssertions();
+
+          for (const number of getNumbers()) {
+            expect(number).toBeGreaterThan(4);
+          }
+        });
+
+        it("it1", () => {
+          for (const number of getNumbers()) {
+            expect(number).toBeGreaterThan(4);
+          }
+        });
+      `,
+      options: [{ onlyFunctionsWithExpectInLoop: true }],
+      errors: [
+        {
+          messageId: 'haveExpectAssertions',
+          column: 1,
+          line: 9,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        it("it1", async () => {
+          for (const number of getNumbers()) {
+            expect(number).toBeGreaterThan(4);
+          }
+        });
+
+        it("it1", () => {
+          expect.hasAssertions();
+
+          for (const number of getNumbers()) {
+            expect(number).toBeGreaterThan(4);
+          }
+        });
+      `,
+      options: [{ onlyFunctionsWithExpectInLoop: true }],
+      errors: [
+        {
+          messageId: 'haveExpectAssertions',
+          column: 1,
+          line: 1,
+        },
+      ],
+    },
+  ],
+});
+
+ruleTester.run('prefer-expect-assertions (callbacks)', rule, {
+  valid: [
+    {
+      code: dedent`
+        const expectNumbersToBeGreaterThan = (numbers, value) => {
+          numbers.forEach(number => {
+            expect(number).toBeGreaterThan(value);
+          });
+        };
+
+        it('returns numbers that are greater than two', function () {
+          expectNumbersToBeGreaterThan(getNumbers(), 2);
+        });
+      `,
+      options: [{ onlyFunctionsWithExpectInCallback: true }],
+    },
+    {
+      code: dedent`
+        it('returns numbers that are greater than two', function () {
+          expect.assertions(2);
+
+          const expectNumbersToBeGreaterThan = (numbers, value) => {
+            for (let number of numbers) {
+              expect(number).toBeGreaterThan(value);
+            }
+          };
+
+          expectNumbersToBeGreaterThan(getNumbers(), 2);
+        });
+      `,
+      options: [{ onlyFunctionsWithExpectInCallback: true }],
+    },
+    {
+      code: dedent`
+        it("returns numbers that are greater than five", function () {
+          expect.assertions(2);
+
+          getNumbers().forEach(number => {
+            expect(number).toBeGreaterThan(5);
+          });
+        });
+      `,
+      options: [{ onlyFunctionsWithExpectInCallback: true }],
+    },
+    {
+      code: dedent`
+        it("returns things that are less than ten", function () {
+          expect.hasAssertions();
+
+          things.forEach(thing => {
+            expect(thing).toBeLessThan(10);
+          });
+        });
+      `,
+      options: [{ onlyFunctionsWithExpectInCallback: true }],
+    },
+    {
+      code: dedent`
+        it('sends the data as a string', () => {
+          expect.hasAssertions();
+
+          const stream = openStream();
+
+          stream.on('data', data => {
+            expect(data).toBe(expect.any(String));
+          });
+        });
+      `,
+      options: [{ onlyFunctionsWithExpectInCallback: true }],
+    },
+    {
+      code: dedent`
+        it('responds ok', function () {
+          expect.assertions(1);
+
+          client.get('/user', response => {
+            expect(response.status).toBe(200);
+          });
+        });
+      `,
+      options: [{ onlyFunctionsWithExpectInCallback: true }],
+    },
+    {
+      code: dedent`
+        it.each([1, 2, 3])("returns ok", id => {
+          expect.assertions(3);
+
+          client.get(\`/users/$\{id}\`, response => {
+            expect(response.status).toBe(200);
+          });
+        });
+
+        it("is a number that is greater than four", () => {
+          expect(number).toBeGreaterThan(4);
+        });
+      `,
+      options: [{ onlyFunctionsWithExpectInCallback: true }],
+    },
+    {
+      code: dedent`
+        it('is a test', () => {
+          expect(expected).toBe(actual);
+        });
+
+        describe('my test', () => {
+          it('is another test', () => {
+            expect(expected).toBe(actual);
+          });
+        });
+      `,
+      options: [{ onlyFunctionsWithExpectInCallback: true }],
+    },
+  ],
+  invalid: [
+    {
+      code: dedent`
+        it('sends the data as a string', () => {
+          const stream = openStream();
+
+          stream.on('data', data => {
+            expect(data).toBe(expect.any(String));
+          });
+        });
+      `,
+      options: [{ onlyFunctionsWithExpectInCallback: true }],
+      errors: [
+        {
+          messageId: 'haveExpectAssertions',
+          column: 1,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        it('responds ok', function () {
+          client.get('/user', response => {
+            expect(response.status).toBe(200);
+          });
+        });
+      `,
+      options: [{ onlyFunctionsWithExpectInCallback: true }],
+      errors: [
+        {
+          messageId: 'haveExpectAssertions',
+          column: 1,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        it('responds ok', function () {
+          client.get('/user', response => {
+            expect.assertions(1);
+
+            expect(response.status).toBe(200);
+          });
+        });
+      `,
+      options: [{ onlyFunctionsWithExpectInCallback: true }],
+      errors: [
+        {
+          messageId: 'haveExpectAssertions',
+          column: 1,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        it('responds ok', function () {
+          const expectOkResponse = response => {
+            expect.assertions(1);
+
+            expect(response.status).toBe(200);
+          }; 
+
+          client.get('/user', expectOkResponse);
+        });
+      `,
+      options: [{ onlyFunctionsWithExpectInCallback: true }],
+      errors: [
+        {
+          messageId: 'haveExpectAssertions',
+          column: 1,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        it('returns numbers that are greater than two', function () {
+          const expectNumberToBeGreaterThan = (number, value) => {
+            expect(number).toBeGreaterThan(value);
+          };
+
+          expectNumberToBeGreaterThan(1, 2);
+        });
+      `,
+      options: [{ onlyFunctionsWithExpectInCallback: true }],
+      errors: [
+        {
+          messageId: 'haveExpectAssertions',
+          column: 1,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        it('returns numbers that are greater than two', function () {
+          const expectNumbersToBeGreaterThan = (numbers, value) => {
+            for (let number of numbers) {
+              expect(number).toBeGreaterThan(value);
+            }
+          };
+
+          expectNumbersToBeGreaterThan(getNumbers(), 2);
+        });
+      `,
+      options: [{ onlyFunctionsWithExpectInCallback: true }],
+      errors: [
+        {
+          messageId: 'haveExpectAssertions',
+          column: 1,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        it('only returns numbers that are greater than six', () => {
+          getNumbers().forEach(number => {
+            expect(number).toBeGreaterThan(6);
+          });
+        });
+      `,
+      options: [{ onlyFunctionsWithExpectInCallback: true }],
+      errors: [
+        {
+          messageId: 'haveExpectAssertions',
+          column: 1,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        it("is wrong");
+
+        it('responds ok', function () {
+          const expectOkResponse = response => {
+            expect.assertions(1);
+
+            expect(response.status).toBe(200);
+          };
+
+          client.get('/user', expectOkResponse);
+        });
+      `,
+      options: [{ onlyFunctionsWithExpectInCallback: true }],
+      errors: [
+        {
+          messageId: 'haveExpectAssertions',
+          column: 1,
+          line: 3,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        it("is a number that is greater than four", () => {
+          expect(number).toBeGreaterThan(4);
+        });
+
+        it('responds ok', function () {
+          const expectOkResponse = response => {
+            expect(response.status).toBe(200);
+          };
+
+          client.get('/user', expectOkResponse);
+        });
+
+        it("returns numbers that are greater than five", () => {
+          expect(number).toBeGreaterThan(5);
+        });
+      `,
+      options: [{ onlyFunctionsWithExpectInCallback: true }],
+      errors: [
+        {
+          messageId: 'haveExpectAssertions',
+          column: 1,
+          line: 5,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        it("is a number that is greater than four", () => {
+          expect(number).toBeGreaterThan(4);
+        });
+
+        it("returns numbers that are greater than four", () => {
+          getNumbers().map(number => {
+            expect(number).toBeGreaterThan(0);
+          });
+        });
+
+        it("returns numbers that are greater than five", () => {
+          expect(number).toBeGreaterThan(5);
+        });
+      `,
+      options: [{ onlyFunctionsWithExpectInCallback: true }],
+      errors: [
+        {
+          messageId: 'haveExpectAssertions',
+          column: 1,
+          line: 5,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        it.each([1, 2, 3])("returns ok", id => {
+          client.get(\`/users/$\{id}\`, response => {
+            expect(response.status).toBe(200);
+          });
+        });
+
+        it("is a number that is greater than four", () => {
+          expect(number).toBeGreaterThan(4);
+        });
+      `,
+      options: [{ onlyFunctionsWithExpectInCallback: true }],
+      errors: [
+        {
+          messageId: 'haveExpectAssertions',
+          column: 1,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        it('responds ok', function () {
+          client.get('/user', response => {
+            expect(response.status).toBe(200);
+          });
+        });
+
+        it("is a number that is greater than four", () => {
+          expect(number).toBeGreaterThan(4);
+        });
+      `,
+      options: [{ onlyFunctionsWithExpectInCallback: true }],
+      errors: [
+        {
+          messageId: 'haveExpectAssertions',
+          column: 1,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        it('responds ok', function () {
+          client.get('/user', response => {
+            expect(response.status).toBe(200);
+          });
+        });
+
+        it("is a number that is greater than four", () => {
+          expect.hasAssertions();
+
+          expect(number).toBeGreaterThan(4);
+        });
+      `,
+      options: [{ onlyFunctionsWithExpectInCallback: true }],
+      errors: [
+        {
+          messageId: 'haveExpectAssertions',
+          column: 1,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        it("it1", () => {
+          expect.hasAssertions();
+
+          getNumbers().forEach(number => {
+            expect(number).toBeGreaterThan(0);
+          });
+        });
+
+        it("it1", () => {
+          getNumbers().forEach(number => {
+            expect(number).toBeGreaterThan(0);
+          });
+        });
+      `,
+      options: [{ onlyFunctionsWithExpectInCallback: true }],
+      errors: [
+        {
+          messageId: 'haveExpectAssertions',
+          column: 1,
+          line: 9,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        it('responds ok', function () {
+          expect.hasAssertions();
+
+          client.get('/user', response => {
+            expect(response.status).toBe(200);
+          });
+        });
+
+        it('responds not found', function () {
+          client.get('/user', response => {
+            expect(response.status).toBe(404);
+          });
+        });
+      `,
+      options: [{ onlyFunctionsWithExpectInCallback: true }],
+      errors: [
+        {
+          messageId: 'haveExpectAssertions',
+          column: 1,
+          line: 9,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        it.skip.each\`\`("it1", async () => {
+          expect.hasAssertions();
+
+          client.get('/user', response => {
+            expect(response.status).toBe(200);
+          });
+        });
+
+        it("responds ok", () => {
+          client.get('/user', response => {
+            expect(response.status).toBe(200);
+          });
+        });
+      `,
+      options: [{ onlyFunctionsWithExpectInCallback: true }],
+      errors: [
+        {
+          messageId: 'haveExpectAssertions',
+          column: 1,
+          line: 9,
+        },
+      ],
+    },
+  ],
+});
+
+ruleTester.run('prefer-expect-assertions (mixed)', rule, {
+  valid: [
+    {
+      code: dedent`
+        it('only returns numbers that are greater than zero', async () => {
+          expect.hasAssertions();
+
+          for (const number of await getNumbers()) {
+            expect(number).toBeGreaterThan(0);
+          }
+        });
+      `,
+      options: [
+        {
+          onlyFunctionsWithAsyncKeyword: true,
+          onlyFunctionsWithExpectInLoop: true,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        it('only returns numbers that are greater than zero', async () => {
+          expect.assertions(2);
+
+          for (const number of await getNumbers()) {
+            expect(number).toBeGreaterThan(0);
+          }
+        });
+      `,
+      options: [
+        {
+          onlyFunctionsWithAsyncKeyword: true,
+          onlyFunctionsWithExpectInLoop: true,
+        },
+      ],
+    },
+  ],
+  invalid: [
+    {
+      code: dedent`
+        it('only returns numbers that are greater than zero', () => {
+          for (const number of getNumbers()) {
+            expect(number).toBeGreaterThan(0);
+          }
+        });
+
+        it("is zero", () => {
+          expect.hasAssertions();
+
+          expect(0).toBe(0);
+        });
+      `,
+      options: [{ onlyFunctionsWithExpectInLoop: true }],
+      errors: [
+        {
+          messageId: 'haveExpectAssertions',
+          column: 1,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        it('only returns numbers that are greater than zero', () => {
+          expect.hasAssertions();
+
+          for (const number of getNumbers()) {
+            expect(number).toBeGreaterThan(0);
+          }
+        });
+
+        it('only returns numbers that are less than 100', () => {
+          for (const number of getNumbers()) {
+            expect(number).toBeLessThan(0);
+          }
+        });
+      `,
+      options: [{ onlyFunctionsWithExpectInLoop: true }],
+      errors: [
+        {
+          messageId: 'haveExpectAssertions',
+          column: 1,
+          line: 9,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        it("to be true", async function() {
+          expect(someValue).toBe(true);
+        });
+      `,
+      options: [
+        {
+          onlyFunctionsWithAsyncKeyword: true,
+          onlyFunctionsWithExpectInLoop: true,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'haveExpectAssertions',
+          column: 1,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        it('only returns numbers that are greater than zero', async () => {
+          for (const number of getNumbers()) {
+            expect(number).toBeGreaterThan(0);
+          }
+        });
+      `,
+      options: [
+        {
+          onlyFunctionsWithAsyncKeyword: true,
+          onlyFunctionsWithExpectInLoop: true,
+        },
+      ],
       errors: [
         {
           messageId: 'haveExpectAssertions',

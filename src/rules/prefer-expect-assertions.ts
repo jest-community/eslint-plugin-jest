@@ -1,13 +1,10 @@
-import {
-  AST_NODE_TYPES,
-  TSESLint,
-  TSESTree,
-} from '@typescript-eslint/experimental-utils';
+import { AST_NODE_TYPES, TSESLint, TSESTree } from '@typescript-eslint/utils';
 import {
   KnownCallExpression,
   createRule,
   getAccessorValue,
   hasOnlyOneArgument,
+  isExpectCall,
   isFunction,
   isSupportedAccessor,
   isTestCaseCall,
@@ -44,6 +41,8 @@ const suggestRemovingExtraArguments = (
 
 interface RuleOptions {
   onlyFunctionsWithAsyncKeyword?: boolean;
+  onlyFunctionsWithExpectInLoop?: boolean;
+  onlyFunctionsWithExpectInCallback?: boolean;
 }
 
 type MessageIds =
@@ -89,21 +88,97 @@ export default createRule<[RuleOptions], MessageIds>({
       {
         type: 'object',
         properties: {
-          onlyFunctionsWithAsyncKeyword: {
-            type: 'boolean',
-          },
+          onlyFunctionsWithAsyncKeyword: { type: 'boolean' },
+          onlyFunctionsWithExpectInLoop: { type: 'boolean' },
+          onlyFunctionsWithExpectInCallback: { type: 'boolean' },
         },
         additionalProperties: false,
       },
     ],
   },
-  defaultOptions: [{ onlyFunctionsWithAsyncKeyword: false }],
+  defaultOptions: [
+    {
+      onlyFunctionsWithAsyncKeyword: false,
+      onlyFunctionsWithExpectInLoop: false,
+      onlyFunctionsWithExpectInCallback: false,
+    },
+  ],
   create(context, [options]) {
+    let expressionDepth = 0;
+    let hasExpectInCallback = false;
+    let hasExpectInLoop = false;
+    let inTestCaseCall = false;
+    let inForLoop = false;
+
+    const shouldCheckFunction = (testFunction: TSESTree.FunctionLike) => {
+      if (
+        !options.onlyFunctionsWithAsyncKeyword &&
+        !options.onlyFunctionsWithExpectInLoop &&
+        !options.onlyFunctionsWithExpectInCallback
+      ) {
+        return true;
+      }
+
+      if (options.onlyFunctionsWithAsyncKeyword) {
+        if (testFunction.async) {
+          return true;
+        }
+      }
+
+      if (options.onlyFunctionsWithExpectInLoop) {
+        if (hasExpectInLoop) {
+          return true;
+        }
+      }
+
+      if (options.onlyFunctionsWithExpectInCallback) {
+        if (hasExpectInCallback) {
+          return true;
+        }
+      }
+
+      return false;
+    };
+
+    const enterExpression = () => inTestCaseCall && expressionDepth++;
+    const exitExpression = () => inTestCaseCall && expressionDepth--;
+    const enterForLoop = () => (inForLoop = true);
+    const exitForLoop = () => (inForLoop = false);
+
     return {
-      CallExpression(node: TSESTree.CallExpression) {
+      FunctionExpression: enterExpression,
+      'FunctionExpression:exit': exitExpression,
+      ArrowFunctionExpression: enterExpression,
+      'ArrowFunctionExpression:exit': exitExpression,
+      ForStatement: enterForLoop,
+      'ForStatement:exit': exitForLoop,
+      ForInStatement: enterForLoop,
+      'ForInStatement:exit': exitForLoop,
+      ForOfStatement: enterForLoop,
+      'ForOfStatement:exit': exitForLoop,
+      CallExpression(node) {
+        if (isTestCaseCall(node)) {
+          inTestCaseCall = true;
+
+          return;
+        }
+
+        if (isExpectCall(node) && inTestCaseCall) {
+          if (inForLoop) {
+            hasExpectInLoop = true;
+          }
+
+          if (expressionDepth > 1) {
+            hasExpectInCallback = true;
+          }
+        }
+      },
+      'CallExpression:exit'(node: TSESTree.CallExpression) {
         if (!isTestCaseCall(node)) {
           return;
         }
+
+        inTestCaseCall = false;
 
         if (node.arguments.length < 2) {
           return;
@@ -113,11 +188,17 @@ export default createRule<[RuleOptions], MessageIds>({
 
         if (
           !isFunction(testFn) ||
-          testFn.body.type !== AST_NODE_TYPES.BlockStatement ||
-          (options.onlyFunctionsWithAsyncKeyword && !testFn.async)
+          testFn.body.type !== AST_NODE_TYPES.BlockStatement
         ) {
           return;
         }
+
+        if (!shouldCheckFunction(testFn)) {
+          return;
+        }
+
+        hasExpectInLoop = false;
+        hasExpectInCallback = false;
 
         const testFuncBody = testFn.body.body;
 
