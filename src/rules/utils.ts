@@ -649,14 +649,24 @@ export const isFunction = (node: TSESTree.Node): node is FunctionExpression =>
   node.type === AST_NODE_TYPES.FunctionExpression ||
   node.type === AST_NODE_TYPES.ArrowFunctionExpression;
 
-export const isHook = (
+export const isHookCall = (
   node: TSESTree.CallExpression,
-): node is JestFunctionCallExpressionWithIdentifierCallee<HookName> =>
-  node.callee.type === AST_NODE_TYPES.Identifier &&
-  HookName.hasOwnProperty(node.callee.name);
+  scope: TSESLint.Scope.Scope,
+): node is JestFunctionCallExpressionWithIdentifierCallee<HookName> => {
+  let name = findFirstCallPropertyName(node, []);
+
+  if (!name) {
+    return false;
+  }
+
+  name = resolveToJestFn(scope, name);
+
+  return name !== null && HookName.hasOwnProperty(name);
+};
 
 export const getTestCallExpressionsFromDeclaredVariables = (
   declaredVariables: readonly TSESLint.Scope.Variable[],
+  scope: TSESLint.Scope.Scope,
 ): Array<JestFunctionCallExpression<TestCaseName>> => {
   return declaredVariables.reduce<
     Array<JestFunctionCallExpression<TestCaseName>>
@@ -669,22 +679,12 @@ export const getTestCallExpressionsFromDeclaredVariables = (
             (node): node is JestFunctionCallExpression<TestCaseName> =>
               !!node &&
               node.type === AST_NODE_TYPES.CallExpression &&
-              isTestCaseCall(node),
+              isTestCaseCall(node, scope),
           ),
       ),
     [],
   );
 };
-
-const isTestCaseName = (node: TSESTree.LeftHandSideExpression) =>
-  node.type === AST_NODE_TYPES.Identifier &&
-  TestCaseName.hasOwnProperty(node.name);
-
-const isTestCaseProperty = (
-  node: TSESTree.Expression | TSESTree.PrivateIdentifier,
-): node is AccessorNode<TestCaseProperty> =>
-  isSupportedAccessor(node) &&
-  TestCaseProperty.hasOwnProperty(getAccessorValue(node));
 
 /**
  * Checks if the given `node` is a *call* to a test case function that would
@@ -692,16 +692,28 @@ const isTestCaseProperty = (
  *
  * Note that `.each()` does not count as a call in this context, as it will not
  * result in `jest` running any tests.
- *
- * @param {TSESTree.CallExpression} node
- *
- * @return {node is JestFunctionCallExpression<TestCaseName>}
  */
 export const isTestCaseCall = (
   node: TSESTree.CallExpression,
+  scope: TSESLint.Scope.Scope,
 ): node is JestFunctionCallExpression<TestCaseName> => {
-  if (isTestCaseName(node.callee)) {
-    return true;
+  let name = findFirstCallPropertyName(node, Object.keys(TestCaseProperty));
+
+  if (!name) {
+    return false;
+  }
+
+  name = resolveToJestFn(scope, name);
+
+  return name !== null && TestCaseName.hasOwnProperty(name);
+};
+
+const findFirstCallPropertyName = (
+  node: TSESTree.CallExpression,
+  properties: readonly string[],
+): string | null => {
+  if (isIdentifier(node.callee)) {
+    return node.callee.name;
   }
 
   const callee =
@@ -713,7 +725,8 @@ export const isTestCaseCall = (
 
   if (
     callee.type === AST_NODE_TYPES.MemberExpression &&
-    isTestCaseProperty(callee.property)
+    isSupportedAccessor(callee.property) &&
+    properties.includes(getAccessorValue(callee.property))
   ) {
     // if we're an `each()`, ensure we're the outer CallExpression (i.e `.each()()`)
     if (
@@ -721,26 +734,21 @@ export const isTestCaseCall = (
       node.callee.type !== AST_NODE_TYPES.TaggedTemplateExpression &&
       node.callee.type !== AST_NODE_TYPES.CallExpression
     ) {
-      return false;
+      return null;
     }
 
-    return callee.object.type === AST_NODE_TYPES.MemberExpression
-      ? isTestCaseName(callee.object.object)
-      : isTestCaseName(callee.object);
+    const nod =
+      callee.object.type === AST_NODE_TYPES.MemberExpression
+        ? callee.object.object
+        : callee.object;
+
+    if (isSupportedAccessor(nod)) {
+      return getAccessorValue(nod);
+    }
   }
 
-  return false;
+  return null;
 };
-
-const isDescribeAlias = (node: TSESTree.LeftHandSideExpression) =>
-  node.type === AST_NODE_TYPES.Identifier &&
-  DescribeAlias.hasOwnProperty(node.name);
-
-const isDescribeProperty = (
-  node: TSESTree.Expression | TSESTree.PrivateIdentifier,
-): node is AccessorNode<DescribeProperty> =>
-  isSupportedAccessor(node) &&
-  DescribeProperty.hasOwnProperty(getAccessorValue(node));
 
 /**
  * Checks if the given `node` is a *call* to a `describe` function that would
@@ -748,61 +756,161 @@ const isDescribeProperty = (
  *
  * Note that `.each()` does not count as a call in this context, as it will not
  * result in `jest` creating any `describe` blocks.
- *
- * @param {TSESTree.CallExpression} node
- *
- * @return {node is JestFunctionCallExpression<TestCaseName>}
  */
 export const isDescribeCall = (
   node: TSESTree.CallExpression,
+  scope: TSESLint.Scope.Scope,
 ): node is JestFunctionCallExpression<DescribeAlias> => {
-  if (isDescribeAlias(node.callee)) {
-    return true;
+  let name = findFirstCallPropertyName(node, Object.keys(DescribeProperty));
+
+  if (!name) {
+    return false;
   }
 
-  const callee =
-    node.callee.type === AST_NODE_TYPES.TaggedTemplateExpression
-      ? node.callee.tag
-      : node.callee.type === AST_NODE_TYPES.CallExpression
-      ? node.callee.callee
-      : node.callee;
+  name = resolveToJestFn(scope, name);
 
-  if (
-    callee.type === AST_NODE_TYPES.MemberExpression &&
-    isDescribeProperty(callee.property)
-  ) {
-    // if we're an `each()`, ensure we're the outer CallExpression (i.e `.each()()`)
-    if (
-      getAccessorValue(callee.property) === 'each' &&
-      node.callee.type !== AST_NODE_TYPES.TaggedTemplateExpression &&
-      node.callee.type !== AST_NODE_TYPES.CallExpression
-    ) {
-      return false;
+  return name !== null && DescribeAlias.hasOwnProperty(name);
+};
+
+interface ImportDetails {
+  source: string;
+  local: string;
+  imported: string;
+}
+
+const describeImportDefAsImport = (
+  def: TSESLint.Scope.Definitions.ImportBindingDefinition,
+): ImportDetails | null => {
+  if (def.parent.type === AST_NODE_TYPES.TSImportEqualsDeclaration) {
+    return null;
+  }
+
+  if (def.node.type !== AST_NODE_TYPES.ImportSpecifier) {
+    return null;
+  }
+
+  // we only care about value imports
+  if (def.parent.importKind === 'type') {
+    return null;
+  }
+
+  return {
+    source: def.parent.source.value,
+    imported: def.node.imported.name,
+    local: def.node.local.name,
+  };
+};
+
+/**
+ * Attempts to find the node that represents the import source for the
+ * given expression node, if it looks like it's an import.
+ *
+ * If no such node can be found (e.g. because the expression doesn't look
+ * like an import), then `null` is returned instead.
+ */
+const findImportSourceNode = (
+  node: TSESTree.Expression,
+): TSESTree.Node | null => {
+  if (node.type === AST_NODE_TYPES.AwaitExpression) {
+    if (node.argument.type === AST_NODE_TYPES.ImportExpression) {
+      return (node.argument as TSESTree.ImportExpression).source;
     }
 
-    return callee.object.type === AST_NODE_TYPES.MemberExpression
-      ? isDescribeAlias(callee.object.object)
-      : isDescribeAlias(callee.object);
+    return null;
   }
 
-  return false;
+  if (
+    node.type === AST_NODE_TYPES.CallExpression &&
+    isIdentifier(node.callee, 'require')
+  ) {
+    return node.arguments[0] ?? null;
+  }
+
+  return null;
+};
+
+const describeVariableDefAsImport = (
+  def: TSESLint.Scope.Definitions.VariableDefinition,
+): ImportDetails | null => {
+  // make sure that we've actually being assigned a value
+  if (!def.node.init) {
+    return null;
+  }
+
+  const sourceNode = findImportSourceNode(def.node.init);
+
+  if (!sourceNode || !isStringNode(sourceNode)) {
+    return null;
+  }
+
+  if (def.name.parent?.type !== AST_NODE_TYPES.Property) {
+    return null;
+  }
+
+  if (!isSupportedAccessor(def.name.parent.key)) {
+    return null;
+  }
+
+  return {
+    source: getStringValue(sourceNode),
+    imported: getAccessorValue(def.name.parent.key),
+    local: def.name.name,
+  };
+};
+
+/**
+ * Attempts to describe a definition as an import if possible.
+ *
+ * If the definition is an import binding, it's described as you'd expect.
+ * If the definition is a variable, then we try and determine if it's either
+ * a dynamic `import()` or otherwise a call to `require()`.
+ *
+ * If it's neither of these, `null` is returned to indicate that the definition
+ * is not describable as an import of any kind.
+ */
+const describePossibleImportDef = (def: TSESLint.Scope.Definition) => {
+  if (def.type === 'Variable') {
+    return describeVariableDefAsImport(def);
+  }
+
+  if (def.type === 'ImportBinding') {
+    return describeImportDefAsImport(def);
+  }
+
+  return null;
 };
 
 const collectReferences = (scope: TSESLint.Scope.Scope) => {
   const locals = new Set();
+  const imports = new Map<string, ImportDetails>();
   const unresolved = new Set();
 
   let currentScope: TSESLint.Scope.Scope | null = scope;
 
   while (currentScope !== null) {
     for (const ref of currentScope.variables) {
-      const isReferenceDefined = ref.defs.some(def => {
-        return def.type !== 'ImplicitGlobalVariable';
-      });
-
-      if (isReferenceDefined) {
-        locals.add(ref.name);
+      if (ref.defs.length === 0) {
+        continue;
       }
+
+      /* istanbul ignore if */
+      if (ref.defs.length > 1) {
+        throw new Error(
+          `Reference unexpected had more than one definition - please file a github issue at https://github.com/jest-community/eslint-plugin-jest`,
+        );
+      }
+
+      const [def] = ref.defs;
+
+      const importDetails = describePossibleImportDef(def);
+
+      if (importDetails) {
+        imports.set(importDetails.local, importDetails);
+
+        continue;
+      }
+
+      locals.add(ref.name);
     }
 
     for (const ref of currentScope.through) {
@@ -812,7 +920,7 @@ const collectReferences = (scope: TSESLint.Scope.Scope) => {
     currentScope = currentScope.upper;
   }
 
-  return { locals, unresolved };
+  return { locals, imports, unresolved };
 };
 
 export const scopeHasLocalReference = (
@@ -824,8 +932,34 @@ export const scopeHasLocalReference = (
   return (
     // referenceName was found as a local variable or function declaration.
     references.locals.has(referenceName) ||
+    // referenceName was found as an imported identifier
+    references.imports.has(referenceName) ||
     // referenceName was not found as an unresolved reference,
     // meaning it is likely not an implicit global reference.
     !references.unresolved.has(referenceName)
   );
+};
+
+const resolveToJestFn = (scope: TSESLint.Scope.Scope, identifier: string) => {
+  const references = collectReferences(scope);
+
+  const maybeImport = references.imports.get(identifier);
+
+  if (maybeImport) {
+    // the identifier is imported from @jest/globals,
+    // so return the original import name
+    if (maybeImport.source === '@jest/globals') {
+      return maybeImport.imported;
+    }
+
+    return null;
+  }
+
+  // the identifier was found as a local variable or function declaration
+  // meaning it's not a function from jest
+  if (references.locals.has(identifier)) {
+    return null;
+  }
+
+  return identifier;
 };

@@ -1,11 +1,32 @@
+import { JSONSchemaForNPMPackageJsonFiles } from '@schemastore/package';
 import { TSESLint } from '@typescript-eslint/utils';
+import dedent from 'dedent';
 import {
   createRule,
   getNodeName,
   isDescribeCall,
+  isHookCall,
   isTestCaseCall,
 } from '../utils';
 import { espreeParser } from './test-utils';
+
+const findESLintVersion = (): number => {
+  const eslintPath = require.resolve('eslint/package.json');
+
+  const eslintPackageJson =
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    require(eslintPath) as JSONSchemaForNPMPackageJsonFiles;
+
+  if (!eslintPackageJson.version) {
+    throw new Error('eslint package.json does not have a version!');
+  }
+
+  const [majorVersion] = eslintPackageJson.version.split('.');
+
+  return parseInt(majorVersion, 10);
+};
+
+const eslintVersion = findESLintVersion();
 
 const ruleTester = new TSESLint.RuleTester({
   parser: espreeParser,
@@ -37,9 +58,11 @@ const rule = createRule({
   defaultOptions: [],
   create: context => ({
     CallExpression(node) {
+      const scope = context.getScope();
       const callType =
-        (isDescribeCall(node) && ('describe' as const)) ||
-        (isTestCaseCall(node) && ('test' as const));
+        (isDescribeCall(node, scope) && ('describe' as const)) ||
+        (isTestCaseCall(node, scope) && ('test' as const)) ||
+        (isHookCall(node, scope) && ('hook' as const));
 
       if (callType) {
         context.report({
@@ -299,3 +322,674 @@ testUtilsAgainst(
   ],
   'describe',
 );
+
+const hooks = ['beforeAll', 'beforeEach', 'afterEach', 'afterAll'];
+
+ruleTester.run('hooks', rule, {
+  valid: [...hooks, 'beforeAll.each(() => {})'],
+  invalid: hooks.map(hook => ({
+    code: `${hook}(() => {})`,
+    errors: [
+      {
+        messageId: 'details' as const,
+        data: {
+          callType: 'hook',
+          numOfArgs: 1,
+          nodeName: expectedNodeName(hook),
+        },
+        column: 1,
+        line: 1,
+      },
+    ],
+  })),
+});
+
+describe('reference checking', () => {
+  ruleTester.run('general', rule, {
+    valid: [
+      "([]).skip('is not a jest function', () => {});",
+      {
+        code: dedent`
+          const test = () => {};
+
+          test('is not a jest function', () => {});
+        `,
+      },
+      {
+        code: dedent`
+          (async () => {
+            const { test } = await Promise.resolve();
+
+            test('is not a jest function', () => {});
+          })();
+        `,
+        parserOptions: { sourceType: 'module', ecmaVersion: 2017 },
+      },
+    ],
+    invalid: [
+      {
+        code: 'describe()',
+        errors: [
+          {
+            messageId: 'details' as const,
+            data: {
+              callType: 'describe',
+              numOfArgs: 0,
+              nodeName: 'describe',
+            },
+            column: 1,
+            line: 1,
+          },
+        ],
+      },
+    ],
+  });
+
+  ruleTester.run('esm', rule, {
+    valid: [
+      {
+        code: dedent`
+          import { it } from './test-utils';
+
+          it('is not a jest function', () => {});
+        `,
+        parserOptions: { sourceType: 'module' },
+      },
+      {
+        code: dedent`
+          import { defineFeature, loadFeature } from "jest-cucumber";
+
+          const feature = loadFeature("some/feature");
+
+          defineFeature(feature, (test) => {
+            test("A scenario", ({ given, when, then }) => {});
+          });
+        `,
+        parserOptions: { sourceType: 'module' },
+      },
+      {
+        code: dedent`
+          import { describe } from './test-utils';
+
+          describe('a function that is not from jest', () => {});
+        `,
+        parserOptions: { sourceType: 'module' },
+      },
+      {
+        code: dedent`
+          import { fn as it } from './test-utils';
+
+          it('is not a jest function', () => {});
+        `,
+        parserOptions: { sourceType: 'module' },
+      },
+      {
+        code: dedent`
+          import * as jest from '@jest/globals';
+          const { it } = jest;
+
+          it('is not supported', () => {});
+        `,
+        parserOptions: { sourceType: 'module' },
+      },
+    ],
+    invalid: [
+      {
+        code: dedent`
+          import { describe } from '@jest/globals';
+
+          describe('is a jest function', () => {});
+        `,
+        parserOptions: { sourceType: 'module' },
+        errors: [
+          {
+            messageId: 'details' as const,
+            data: {
+              callType: 'describe',
+              numOfArgs: 2,
+              nodeName: 'describe',
+            },
+            column: 1,
+            line: 3,
+          },
+        ],
+      },
+      {
+        code: dedent`
+          import { describe } from '@jest/globals';
+
+          describe.skip('is a jest function', () => {});
+        `,
+        parserOptions: { sourceType: 'module' },
+        errors: [
+          {
+            messageId: 'details' as const,
+            data: {
+              callType: 'describe',
+              numOfArgs: 2,
+              nodeName: 'describe.skip',
+            },
+            column: 1,
+            line: 3,
+          },
+        ],
+      },
+      {
+        code: dedent`
+          import { it } from '@jest/globals';
+
+          it('is a jest function', () => {});
+        `,
+        parserOptions: { sourceType: 'module' },
+        errors: [
+          {
+            messageId: 'details' as const,
+            data: {
+              callType: 'test',
+              numOfArgs: 2,
+              nodeName: 'it',
+            },
+            column: 1,
+            line: 3,
+          },
+        ],
+      },
+      {
+        code: dedent`
+          import { beforeEach } from '@jest/globals';
+
+          beforeEach(() => {});
+        `,
+        parserOptions: { sourceType: 'module' },
+        errors: [
+          {
+            messageId: 'details' as const,
+            data: {
+              callType: 'hook',
+              numOfArgs: 1,
+              nodeName: 'beforeEach',
+            },
+            column: 1,
+            line: 3,
+          },
+        ],
+      },
+      {
+        code: dedent`
+          import { beforeEach as it } from '@jest/globals';
+
+          it(() => {});
+        `,
+        parserOptions: { sourceType: 'module' },
+        errors: [
+          {
+            messageId: 'details' as const,
+            data: {
+              callType: 'hook',
+              numOfArgs: 1,
+              nodeName: 'it',
+            },
+            column: 1,
+            line: 3,
+          },
+        ],
+      },
+      {
+        code: dedent`
+          import { it as testThis, xit as skipThis } from '@jest/globals';
+
+          testThis('is a jest function', () => {});
+          skipThis('is a jest function', () => {});
+        `,
+        parserOptions: { sourceType: 'module' },
+        errors: [
+          {
+            messageId: 'details' as const,
+            data: {
+              callType: 'test',
+              numOfArgs: 2,
+              nodeName: 'testThis',
+            },
+            column: 1,
+            line: 3,
+          },
+          {
+            messageId: 'details' as const,
+            data: {
+              callType: 'test',
+              numOfArgs: 2,
+              nodeName: 'skipThis',
+            },
+            column: 1,
+            line: 4,
+          },
+        ],
+      },
+      {
+        code: dedent`
+          import { it as xit, xit as skipThis } from '@jest/globals';
+
+          xit('is a jest function', () => {});
+          skipThis('is a jest function');
+        `,
+        parserOptions: { sourceType: 'module' },
+        errors: [
+          {
+            messageId: 'details' as const,
+            data: {
+              callType: 'test',
+              numOfArgs: 2,
+              nodeName: 'xit',
+            },
+            column: 1,
+            line: 3,
+          },
+          {
+            messageId: 'details' as const,
+            data: {
+              callType: 'test',
+              numOfArgs: 1,
+              nodeName: 'skipThis',
+            },
+            column: 1,
+            line: 4,
+          },
+        ],
+      },
+      {
+        code: dedent`
+          import { test as testWithJest } from '@jest/globals';
+          const test = () => {};
+
+          describe(test, () => {
+            testWithJest('should do something good', () => {
+              expect(test({})).toBeDefined();
+            });
+          });
+        `,
+        parserOptions: { sourceType: 'module' },
+        errors: [
+          {
+            messageId: 'details' as const,
+            data: {
+              callType: 'describe',
+              numOfArgs: 2,
+              nodeName: 'describe',
+            },
+            column: 1,
+            line: 4,
+          },
+          {
+            messageId: 'details' as const,
+            data: {
+              callType: 'test',
+              numOfArgs: 2,
+              nodeName: 'testWithJest',
+            },
+            column: 3,
+            line: 5,
+          },
+        ],
+      },
+    ],
+  });
+
+  if (eslintVersion >= 8) {
+    ruleTester.run('esm (dynamic)', rule, {
+      valid: [
+        {
+          code: dedent`
+          const { it } = await import('./test-utils');
+
+          it('is not a jest function', () => {});
+        `,
+          parserOptions: { sourceType: 'module', ecmaVersion: 2022 },
+        },
+        {
+          code: dedent`
+          const { it } = await import(\`./test-utils\`);
+
+          it('is not a jest function', () => {});
+        `,
+          parserOptions: { sourceType: 'module', ecmaVersion: 2022 },
+        },
+      ],
+      invalid: [
+        {
+          code: dedent`
+          const { it } = await import("@jest/globals");
+
+          it('is a jest function', () => {});
+        `,
+          parserOptions: { sourceType: 'module', ecmaVersion: 2022 },
+          errors: [
+            {
+              messageId: 'details' as const,
+              data: {
+                callType: 'test',
+                numOfArgs: 2,
+                nodeName: 'it',
+              },
+              column: 1,
+              line: 3,
+            },
+          ],
+        },
+        {
+          code: dedent`
+          const { it } = await import(\`@jest/globals\`);
+
+          it('is a jest function', () => {});
+        `,
+          parserOptions: { sourceType: 'module', ecmaVersion: 2022 },
+          errors: [
+            {
+              messageId: 'details' as const,
+              data: {
+                callType: 'test',
+                numOfArgs: 2,
+                nodeName: 'it',
+              },
+              column: 1,
+              line: 3,
+            },
+          ],
+        },
+      ],
+    });
+  }
+
+  ruleTester.run('cjs', rule, {
+    valid: [
+      {
+        code: dedent`
+          const { it } = require('./test-utils');
+
+          it('is not a jest function', () => {});
+        `,
+        parserOptions: { sourceType: 'script' },
+      },
+      {
+        code: dedent`
+          const { it } = require(\`./test-utils\`);
+
+          it('is not a jest function', () => {});
+        `,
+        parserOptions: { sourceType: 'script' },
+      },
+      {
+        code: dedent`
+          const { describe } = require('./test-utils');
+
+          describe('a function that is not from jest', () => {});
+        `,
+        parserOptions: { sourceType: 'script' },
+      },
+      {
+        code: dedent`
+          const { fn: it } = require('./test-utils');
+
+          it('is not a jest function', () => {});
+        `,
+        parserOptions: { sourceType: 'script' },
+      },
+      {
+        code: dedent`
+          const { fn: it } = require('@jest/globals');
+
+          it('is not considered a test function', () => {});
+        `,
+        parserOptions: { sourceType: 'script' },
+      },
+      {
+        code: dedent`
+          const { it } = aliasedRequire('@jest/globals');
+
+          it('is not considered a jest function', () => {});
+        `,
+        parserOptions: { sourceType: 'script' },
+      },
+      {
+        code: dedent`
+          const { it } = require();
+
+          it('is not a jest function', () => {});
+        `,
+        parserOptions: { sourceType: 'script' },
+      },
+      {
+        code: dedent`
+          const { it } = require(pathToMyPackage);
+
+          it('is not a jest function', () => {});
+        `,
+        parserOptions: { sourceType: 'script' },
+      },
+      {
+        code: dedent`
+          const { [() => {}]: it } = require('@jest/globals');
+
+          it('is not a jest function', () => {});
+        `,
+        parserOptions: { sourceType: 'script' },
+      },
+    ],
+    invalid: [
+      {
+        code: dedent`
+          const { describe } = require('@jest/globals');
+
+          describe('is a jest function', () => {});
+        `,
+        parserOptions: { sourceType: 'script' },
+        errors: [
+          {
+            messageId: 'details' as const,
+            data: {
+              callType: 'describe',
+              numOfArgs: 2,
+              nodeName: 'describe',
+            },
+            column: 1,
+            line: 3,
+          },
+        ],
+      },
+      {
+        code: dedent`
+          const { describe } = require('@jest/globals');
+
+          describe.skip('is a jest function', () => {});
+        `,
+        parserOptions: { sourceType: 'script' },
+        errors: [
+          {
+            messageId: 'details' as const,
+            data: {
+              callType: 'describe',
+              numOfArgs: 2,
+              nodeName: 'describe.skip',
+            },
+            column: 1,
+            line: 3,
+          },
+        ],
+      },
+      {
+        code: dedent`
+          const { describe } = require(\`@jest/globals\`);
+
+          describe('is a jest function', () => {});
+        `,
+        parserOptions: { sourceType: 'script' },
+        errors: [
+          {
+            messageId: 'details' as const,
+            data: {
+              callType: 'describe',
+              numOfArgs: 2,
+              nodeName: 'describe',
+            },
+            column: 1,
+            line: 3,
+          },
+        ],
+      },
+      {
+        code: dedent`
+          const { it } = require('@jest/globals');
+
+          it('is a jest function', () => {});
+        `,
+        parserOptions: { sourceType: 'script' },
+        errors: [
+          {
+            messageId: 'details' as const,
+            data: {
+              callType: 'test',
+              numOfArgs: 2,
+              nodeName: 'it',
+            },
+            column: 1,
+            line: 3,
+          },
+        ],
+      },
+      {
+        code: dedent`
+          const { beforeEach } = require('@jest/globals');
+
+          beforeEach(() => {});
+        `,
+        parserOptions: { sourceType: 'script' },
+        errors: [
+          {
+            messageId: 'details' as const,
+            data: {
+              callType: 'hook',
+              numOfArgs: 1,
+              nodeName: 'beforeEach',
+            },
+            column: 1,
+            line: 3,
+          },
+        ],
+      },
+      {
+        code: dedent`
+          const { beforeEach: it } = require('@jest/globals');
+
+          it(() => {});
+        `,
+        parserOptions: { sourceType: 'script' },
+        errors: [
+          {
+            messageId: 'details' as const,
+            data: {
+              callType: 'hook',
+              numOfArgs: 1,
+              nodeName: 'it',
+            },
+            column: 1,
+            line: 3,
+          },
+        ],
+      },
+      {
+        code: dedent`
+          const { it: testThis, xit: skipThis } = require('@jest/globals');
+
+          testThis('is a jest function', () => {});
+          skipThis('is a jest function', () => {});
+        `,
+        parserOptions: { sourceType: 'script' },
+        errors: [
+          {
+            messageId: 'details' as const,
+            data: {
+              callType: 'test',
+              numOfArgs: 2,
+              nodeName: 'testThis',
+            },
+            column: 1,
+            line: 3,
+          },
+          {
+            messageId: 'details' as const,
+            data: {
+              callType: 'test',
+              numOfArgs: 2,
+              nodeName: 'skipThis',
+            },
+            column: 1,
+            line: 4,
+          },
+        ],
+      },
+      {
+        code: dedent`
+          const { it: xit, xit: skipThis } = require('@jest/globals');
+
+          xit('is a jest function', () => {});
+          skipThis('is a jest function');
+      `,
+        parserOptions: { sourceType: 'script' },
+        errors: [
+          {
+            messageId: 'details' as const,
+            data: {
+              callType: 'test',
+              numOfArgs: 2,
+              nodeName: 'xit',
+            },
+            column: 1,
+            line: 3,
+          },
+          {
+            messageId: 'details' as const,
+            data: {
+              callType: 'test',
+              numOfArgs: 1,
+              nodeName: 'skipThis',
+            },
+            column: 1,
+            line: 4,
+          },
+        ],
+      },
+    ],
+  });
+
+  ruleTester.run('typescript', rule, {
+    valid: [
+      {
+        code: dedent`
+          const { test };
+
+          test('is not a jest function', () => {});
+        `,
+        parser: require.resolve('@typescript-eslint/parser'),
+      },
+      {
+        code: dedent`
+          import type { it } from '@jest/globals';
+
+          it('is not a jest function', () => {});
+        `,
+        parser: require.resolve('@typescript-eslint/parser'),
+        parserOptions: { sourceType: 'module' },
+      },
+      {
+        code: dedent`
+          import jest = require('@jest/globals');
+          const { it } = jest;
+  
+          it('is not a jest function', () => {});
+        `,
+        parser: require.resolve('@typescript-eslint/parser'),
+        parserOptions: { sourceType: 'module' },
+      },
+    ],
+    invalid: [],
+  });
+});

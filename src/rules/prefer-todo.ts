@@ -31,8 +31,9 @@ function createTodoFixer(
 
 const isTargetedTestCase = (
   node: TSESTree.CallExpression,
+  scope: TSESLint.Scope.Scope,
 ): node is JestFunctionCallExpression<TestCaseName> =>
-  isTestCaseCall(node) &&
+  isTestCaseCall(node, scope) &&
   [TestCaseName.it, TestCaseName.test, 'it.skip', 'test.skip'].includes(
     getNodeName(node),
   );
@@ -55,11 +56,17 @@ export default createRule({
   },
   defaultOptions: [],
   create(context) {
+    const scope = context.getScope();
+
     return {
       CallExpression(node) {
         const [title, callback] = node.arguments;
 
-        if (!title || !isTargetedTestCase(node) || !isStringNode(title)) {
+        if (
+          !title ||
+          !isTargetedTestCase(node, scope) ||
+          !isStringNode(title)
+        ) {
           return;
         }
 

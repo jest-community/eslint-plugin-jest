@@ -52,49 +52,53 @@ export default createRule({
     hasSuggestions: true,
   },
   defaultOptions: [],
-  create: context => ({
-    CallExpression(node) {
-      if (!isDescribeCall(node) && !isTestCaseCall(node)) {
-        return;
-      }
+  create(context) {
+    const scope = context.getScope();
 
-      if (getNodeName(node).startsWith('f')) {
+    return {
+      CallExpression(node) {
+        if (!isDescribeCall(node, scope) && !isTestCaseCall(node, scope)) {
+          return;
+        }
+
+        if (getNodeName(node).startsWith('f')) {
+          context.report({
+            messageId: 'focusedTest',
+            node,
+            suggest: [
+              {
+                messageId: 'suggestRemoveFocus',
+                fix: fixer =>
+                  fixer.removeRange([node.range[0], node.range[0] + 1]),
+              },
+            ],
+          });
+
+          return;
+        }
+
+        const onlyNode = findOnlyNode(node);
+
+        if (!onlyNode) {
+          return;
+        }
+
         context.report({
           messageId: 'focusedTest',
-          node,
+          node: onlyNode,
           suggest: [
             {
               messageId: 'suggestRemoveFocus',
               fix: fixer =>
-                fixer.removeRange([node.range[0], node.range[0] + 1]),
+                fixer.removeRange([
+                  onlyNode.range[0] - 1,
+                  onlyNode.range[1] +
+                    Number(onlyNode.type !== AST_NODE_TYPES.Identifier),
+                ]),
             },
           ],
         });
-
-        return;
-      }
-
-      const onlyNode = findOnlyNode(node);
-
-      if (!onlyNode) {
-        return;
-      }
-
-      context.report({
-        messageId: 'focusedTest',
-        node: onlyNode,
-        suggest: [
-          {
-            messageId: 'suggestRemoveFocus',
-            fix: fixer =>
-              fixer.removeRange([
-                onlyNode.range[0] - 1,
-                onlyNode.range[1] +
-                  Number(onlyNode.type !== AST_NODE_TYPES.Identifier),
-              ]),
-          },
-        ],
-      });
-    },
-  }),
+      },
+    };
+  },
 });

@@ -1,4 +1,4 @@
-import { createRule, isDescribeCall, isHook } from './utils';
+import { createRule, isDescribeCall, isHookCall } from './utils';
 
 const newHookContext = () => ({
   beforeAll: 0,
@@ -23,15 +23,16 @@ export default createRule({
   },
   defaultOptions: [],
   create(context) {
+    const scope = context.getScope();
     const hookContexts = [newHookContext()];
 
     return {
       CallExpression(node) {
-        if (isDescribeCall(node)) {
+        if (isDescribeCall(node, scope)) {
           hookContexts.push(newHookContext());
         }
 
-        if (isHook(node)) {
+        if (isHookCall(node, scope)) {
           const currentLayer = hookContexts[hookContexts.length - 1];
 
           currentLayer[node.callee.name] += 1;
@@ -45,7 +46,7 @@ export default createRule({
         }
       },
       'CallExpression:exit'(node) {
-        if (isDescribeCall(node)) {
+        if (isDescribeCall(node, scope)) {
           hookContexts.pop();
         }
       },

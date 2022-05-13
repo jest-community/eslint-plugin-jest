@@ -36,9 +36,11 @@ export default createRule({
   },
   defaultOptions: [],
   create(context) {
+    const scope = context.getScope();
+
     return {
       CallExpression(node) {
-        if (!isTestCaseCall(node)) return;
+        if (!isTestCaseCall(node, scope)) return;
         const body = getBody(node.arguments);
         const returnStmt = body.find(
           t => t.type === AST_NODE_TYPES.ReturnStatement,
@@ -50,8 +52,10 @@ export default createRule({
       },
       FunctionDeclaration(node) {
         const declaredVariables = context.getDeclaredVariables(node);
-        const testCallExpressions =
-          getTestCallExpressionsFromDeclaredVariables(declaredVariables);
+        const testCallExpressions = getTestCallExpressionsFromDeclaredVariables(
+          declaredVariables,
+          scope,
+        );
 
         if (testCallExpressions.length === 0) return;
 

@@ -23,11 +23,16 @@ export default createRule({
   },
   defaultOptions: [],
   create(context) {
+    const scope = context.getScope();
+
     return {
       CallExpression(node) {
         const nodeName = getNodeName(node.callee);
 
-        if (!nodeName || (!isDescribeCall(node) && !isTestCaseCall(node)))
+        if (
+          !nodeName ||
+          (!isDescribeCall(node, scope) && !isTestCaseCall(node, scope))
+        )
           return;
 
         const preferredNodeName = getPreferredNodeName(nodeName);

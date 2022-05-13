@@ -29,6 +29,7 @@ export default createRule({
   },
   defaultOptions: [{ max: 5 }],
   create(context, [{ max }]) {
+    const scope = context.getScope();
     const describeCallbackStack: number[] = [];
 
     function pushDescribeCallback(
@@ -38,7 +39,7 @@ export default createRule({
 
       if (
         parent?.type !== AST_NODE_TYPES.CallExpression ||
-        !isDescribeCall(parent)
+        !isDescribeCall(parent, scope)
       ) {
         return;
       }
@@ -61,7 +62,7 @@ export default createRule({
 
       if (
         parent?.type === AST_NODE_TYPES.CallExpression &&
-        isDescribeCall(parent)
+        isDescribeCall(parent, scope)
       ) {
         describeCallbackStack.pop();
       }
