@@ -1,3 +1,10 @@
+# [26.2.0](https://github.com/jest-community/eslint-plugin-jest/compare/v26.1.5...v26.2.0) (2022-05-13)
+
+
+### Features
+
+* support `@jest/globals` ([#1094](https://github.com/jest-community/eslint-plugin-jest/issues/1094)) ([84d7a68](https://github.com/jest-community/eslint-plugin-jest/commit/84d7a68e8c64720a46fddddbcb1ba248cd61fd08))
+
 ## [26.1.5](https://github.com/jest-community/eslint-plugin-jest/compare/v26.1.4...v26.1.5) (2022-04-22)
 
 
