@@ -1,3 +1,10 @@
+## [26.2.1](https://github.com/jest-community/eslint-plugin-jest/compare/v26.2.0...v26.2.1) (2022-05-14)
+
+
+### Bug Fixes
+
+* use correct scope for checking references ([#1107](https://github.com/jest-community/eslint-plugin-jest/issues/1107)) ([89ab1a0](https://github.com/jest-community/eslint-plugin-jest/commit/89ab1a03c3f0eab53fd5af2f5051a4e4d010578e))
+
 # [26.2.0](https://github.com/jest-community/eslint-plugin-jest/compare/v26.1.5...v26.2.0) (2022-05-13)
 
 
