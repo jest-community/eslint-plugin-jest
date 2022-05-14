@@ -893,14 +893,7 @@ const collectReferences = (scope: TSESLint.Scope.Scope) => {
         continue;
       }
 
-      /* istanbul ignore if */
-      if (ref.defs.length > 1) {
-        throw new Error(
-          `Reference unexpected had more than one definition - please file a github issue at https://github.com/jest-community/eslint-plugin-jest`,
-        );
-      }
-
-      const [def] = ref.defs;
+      const def = ref.defs[ref.defs.length - 1];
 
       const importDetails = describePossibleImportDef(def);
 

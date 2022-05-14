@@ -989,7 +989,61 @@ describe('reference checking', () => {
         parser: require.resolve('@typescript-eslint/parser'),
         parserOptions: { sourceType: 'module' },
       },
+      {
+        code: dedent`
+          function it(message: string, fn: () => void): void;
+          function it(cases: unknown[], message: string, fn: () => void): void;
+          function it(...all: any[]): void {}
+  
+          it('is not a jest function', () => {});
+        `,
+        parser: require.resolve('@typescript-eslint/parser'),
+        parserOptions: { sourceType: 'module' },
+      },
+      {
+        code: dedent`
+          interface it {}
+          function it(...all: any[]): void {}
+  
+          it('is not a jest function', () => {});
+        `,
+        parser: require.resolve('@typescript-eslint/parser'),
+        parserOptions: { sourceType: 'module' },
+      },
+      {
+        code: dedent`
+          import { it } from '@jest/globals';
+          import { it } from '../it-utils';
+
+          it('is not a jest function', () => {});
+        `,
+        parser: require.resolve('@typescript-eslint/parser'),
+        parserOptions: { sourceType: 'module' },
+      },
     ],
-    invalid: [],
+    invalid: [
+      {
+        code: dedent`
+          import { it } from '../it-utils';
+          import { it } from '@jest/globals';
+
+          it('is a jest function', () => {});
+        `,
+        parser: require.resolve('@typescript-eslint/parser'),
+        parserOptions: { sourceType: 'module' },
+        errors: [
+          {
+            messageId: 'details' as const,
+            data: {
+              callType: 'test',
+              numOfArgs: 2,
+              nodeName: 'it',
+            },
+            column: 1,
+            line: 4,
+          },
+        ],
+      },
+    ],
   });
 });
