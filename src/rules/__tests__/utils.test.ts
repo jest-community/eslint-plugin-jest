@@ -1002,6 +1002,16 @@ describe('reference checking', () => {
       },
       {
         code: dedent`
+          interface it {}
+          function it(...all: any[]): void {}
+  
+          it('is not a jest function', () => {});
+        `,
+        parser: require.resolve('@typescript-eslint/parser'),
+        parserOptions: { sourceType: 'module' },
+      },
+      {
+        code: dedent`
           import { it } from '@jest/globals';
           import { it } from '../it-utils';
 
