@@ -104,8 +104,6 @@ export default createRule<[RuleOptions], MessageIds>({
     },
   ],
   create(context, [options]) {
-    const scope = context.getScope();
-
     let expressionDepth = 0;
     let hasExpectInCallback = false;
     let hasExpectInLoop = false;
@@ -159,7 +157,7 @@ export default createRule<[RuleOptions], MessageIds>({
       ForOfStatement: enterForLoop,
       'ForOfStatement:exit': exitForLoop,
       CallExpression(node) {
-        if (isTestCaseCall(node, scope)) {
+        if (isTestCaseCall(node, context.getScope())) {
           inTestCaseCall = true;
 
           return;
@@ -176,7 +174,7 @@ export default createRule<[RuleOptions], MessageIds>({
         }
       },
       'CallExpression:exit'(node: TSESTree.CallExpression) {
-        if (!isTestCaseCall(node, scope)) {
+        if (!isTestCaseCall(node, context.getScope())) {
           return;
         }
 

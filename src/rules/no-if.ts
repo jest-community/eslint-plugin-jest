@@ -51,7 +51,6 @@ export default createRule({
   },
   defaultOptions: [],
   create(context) {
-    const scope = context.getScope();
     const stack: boolean[] = [];
 
     function validate(
@@ -75,7 +74,7 @@ export default createRule({
 
     return {
       CallExpression(node) {
-        if (isTestCaseCall(node, scope)) {
+        if (isTestCaseCall(node, context.getScope())) {
           stack.push(true);
 
           if (getNodeName(node).endsWith('each')) {
@@ -90,7 +89,7 @@ export default createRule({
         const declaredVariables = context.getDeclaredVariables(node);
         const testCallExpressions = getTestCallExpressionsFromDeclaredVariables(
           declaredVariables,
-          scope,
+          context.getScope(),
         );
 
         stack.push(testCallExpressions.length > 0);

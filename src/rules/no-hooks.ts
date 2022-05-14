@@ -30,11 +30,12 @@ export default createRule<
   },
   defaultOptions: [{ allow: [] }],
   create(context, [{ allow = [] }]) {
-    const scope = context.getScope();
-
     return {
       CallExpression(node) {
-        if (isHookCall(node, scope) && !allow.includes(node.callee.name)) {
+        if (
+          isHookCall(node, context.getScope()) &&
+          !allow.includes(node.callee.name)
+        ) {
           context.report({
             node,
             messageId: 'unexpectedHook',

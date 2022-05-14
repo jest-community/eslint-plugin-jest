@@ -171,7 +171,6 @@ export default createRule<[Options], MessageIds>({
       },
     ],
   ) {
-    const scope = context.getScope();
     const disallowedWordsRegexp = new RegExp(
       `\\b(${disallowedWords.join('|')})\\b`,
       'iu',
@@ -182,6 +181,8 @@ export default createRule<[Options], MessageIds>({
 
     return {
       CallExpression(node: TSESTree.CallExpression) {
+        const scope = context.getScope();
+
         if (!isDescribeCall(node, scope) && !isTestCaseCall(node, scope)) {
           return;
         }

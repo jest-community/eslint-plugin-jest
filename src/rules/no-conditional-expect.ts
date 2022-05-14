@@ -30,7 +30,6 @@ export default createRule({
   },
   defaultOptions: [],
   create(context) {
-    const scope = context.getScope();
     let conditionalDepth = 0;
     let inTestCase = false;
     let inPromiseCatch = false;
@@ -43,7 +42,7 @@ export default createRule({
         const declaredVariables = context.getDeclaredVariables(node);
         const testCallExpressions = getTestCallExpressionsFromDeclaredVariables(
           declaredVariables,
-          scope,
+          context.getScope(),
         );
 
         if (testCallExpressions.length > 0) {
@@ -51,7 +50,7 @@ export default createRule({
         }
       },
       CallExpression(node: TSESTree.CallExpression) {
-        if (isTestCaseCall(node, scope)) {
+        if (isTestCaseCall(node, context.getScope())) {
           inTestCase = true;
         }
 
@@ -74,7 +73,7 @@ export default createRule({
         }
       },
       'CallExpression:exit'(node) {
-        if (isTestCaseCall(node, scope)) {
+        if (isTestCaseCall(node, context.getScope())) {
           inTestCase = false;
         }
 

@@ -56,15 +56,13 @@ export default createRule({
   },
   defaultOptions: [],
   create(context) {
-    const scope = context.getScope();
-
     return {
       CallExpression(node) {
         const [title, callback] = node.arguments;
 
         if (
           !title ||
-          !isTargetedTestCase(node, scope) ||
+          !isTargetedTestCase(node, context.getScope()) ||
           !isStringNode(title)
         ) {
           return;

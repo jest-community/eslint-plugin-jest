@@ -64,7 +64,6 @@ export default createRule<
   },
   defaultOptions: [{ fn: TestCaseName.test, withinDescribe: TestCaseName.it }],
   create(context) {
-    const scope = context.getScope();
     const configObj = context.options[0] || {};
     const testKeyword = configObj.fn || TestCaseName.test;
     const testKeywordWithinDescribe =
@@ -74,6 +73,7 @@ export default createRule<
 
     return {
       CallExpression(node: TSESTree.CallExpression) {
+        const scope = context.getScope();
         const nodeName = getNodeName(node.callee);
 
         if (!nodeName) {
@@ -124,7 +124,7 @@ export default createRule<
         }
       },
       'CallExpression:exit'(node) {
-        if (isDescribeCall(node, scope)) {
+        if (isDescribeCall(node, context.getScope())) {
           describeNestingLevel--;
         }
       },

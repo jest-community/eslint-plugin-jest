@@ -78,7 +78,6 @@ export default createRule<
   },
   defaultOptions: [{ additionalTestBlockFunctions: [] }],
   create(context, [{ additionalTestBlockFunctions = [] }]) {
-    const scope = context.getScope();
     const callStack: BlockType[] = [];
 
     const isCustomTestBlockFunction = (
@@ -87,7 +86,8 @@ export default createRule<
       additionalTestBlockFunctions.includes(getNodeName(node) || '');
 
     const isTestBlock = (node: TSESTree.CallExpression): boolean =>
-      isTestCaseCall(node, scope) || isCustomTestBlockFunction(node);
+      isTestCaseCall(node, context.getScope()) ||
+      isCustomTestBlockFunction(node);
 
     return {
       CallExpression(node) {
@@ -124,7 +124,7 @@ export default createRule<
       },
 
       BlockStatement(statement) {
-        const blockType = getBlockType(statement, scope);
+        const blockType = getBlockType(statement, context.getScope());
 
         if (blockType) {
           callStack.push(blockType);
@@ -132,7 +132,8 @@ export default createRule<
       },
       'BlockStatement:exit'(statement: TSESTree.BlockStatement) {
         if (
-          callStack[callStack.length - 1] === getBlockType(statement, scope)
+          callStack[callStack.length - 1] ===
+          getBlockType(statement, context.getScope())
         ) {
           callStack.pop();
         }

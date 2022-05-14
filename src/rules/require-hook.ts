@@ -93,12 +93,13 @@ export default createRule<
     },
   ],
   create(context) {
-    const scope = context.getScope();
     const { allowedFunctionCalls } = context.options[0] ?? {};
 
     const checkBlockBody = (body: TSESTree.BlockStatement['body']) => {
       for (const statement of body) {
-        if (shouldBeInHook(statement, scope, allowedFunctionCalls)) {
+        if (
+          shouldBeInHook(statement, context.getScope(), allowedFunctionCalls)
+        ) {
           context.report({
             node: statement,
             messageId: 'useHook',
@@ -112,7 +113,10 @@ export default createRule<
         checkBlockBody(program.body);
       },
       CallExpression(node) {
-        if (!isDescribeCall(node, scope) || node.arguments.length < 2) {
+        if (
+          !isDescribeCall(node, context.getScope()) ||
+          node.arguments.length < 2
+        ) {
           return;
         }
 

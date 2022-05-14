@@ -17,7 +17,6 @@ export default createRule({
   },
   defaultOptions: [],
   create(context) {
-    const scope = context.getScope();
     let inTestCase = false;
 
     const maybeReportConditional = (node: TSESTree.Node) => {
@@ -31,12 +30,12 @@ export default createRule({
 
     return {
       CallExpression(node: TSESTree.CallExpression) {
-        if (isTestCaseCall(node, scope)) {
+        if (isTestCaseCall(node, context.getScope())) {
           inTestCase = true;
         }
       },
       'CallExpression:exit'(node) {
-        if (isTestCaseCall(node, scope)) {
+        if (isTestCaseCall(node, context.getScope())) {
           inTestCase = false;
         }
       },

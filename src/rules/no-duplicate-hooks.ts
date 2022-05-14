@@ -23,11 +23,12 @@ export default createRule({
   },
   defaultOptions: [],
   create(context) {
-    const scope = context.getScope();
     const hookContexts = [newHookContext()];
 
     return {
       CallExpression(node) {
+        const scope = context.getScope();
+
         if (isDescribeCall(node, scope)) {
           hookContexts.push(newHookContext());
         }
@@ -46,7 +47,7 @@ export default createRule({
         }
       },
       'CallExpression:exit'(node) {
-        if (isDescribeCall(node, scope)) {
+        if (isDescribeCall(node, context.getScope())) {
           hookContexts.pop();
         }
       },

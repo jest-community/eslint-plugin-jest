@@ -82,7 +82,6 @@ export default createRule<
     context,
     [{ assertFunctionNames = ['expect'], additionalTestBlockFunctions = [] }],
   ) {
-    const scope = context.getScope();
     const unchecked: TSESTree.CallExpression[] = [];
 
     function checkCallExpressionUsed(nodes: TSESTree.Node[]) {
@@ -97,7 +96,7 @@ export default createRule<
           const testCallExpressions =
             getTestCallExpressionsFromDeclaredVariables(
               declaredVariables,
-              scope,
+              context.getScope(),
             );
 
           checkCallExpressionUsed(testCallExpressions);
@@ -115,7 +114,7 @@ export default createRule<
         const name = getNodeName(node.callee) ?? '';
 
         if (
-          isTestCaseCall(node, scope) ||
+          isTestCaseCall(node, context.getScope()) ||
           additionalTestBlockFunctions.includes(name)
         ) {
           if (

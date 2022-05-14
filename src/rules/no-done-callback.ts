@@ -49,8 +49,6 @@ export default createRule({
   },
   defaultOptions: [],
   create(context) {
-    const scope = context.getScope();
-
     return {
       CallExpression(node) {
         // done is the second argument for it.each, not the first
@@ -66,7 +64,7 @@ export default createRule({
           return;
         }
 
-        const callback = findCallbackArg(node, isJestEach, scope);
+        const callback = findCallbackArg(node, isJestEach, context.getScope());
         const callbackArgIndex = Number(isJestEach);
 
         if (

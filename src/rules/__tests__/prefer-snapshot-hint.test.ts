@@ -341,6 +341,21 @@ ruleTester.run('prefer-snapshot-hint (multi)', rule, {
     },
     {
       code: dedent`
+        import { it as itIs } from '@jest/globals';
+
+        it('is true', () => {
+          expect(1).toMatchSnapshot();
+        });
+
+        itIs('false', () => {
+          expect(1).toMatchSnapshot();
+        });
+      `,
+      options: ['multi'],
+      parserOptions: { sourceType: 'module' },
+    },
+    {
+      code: dedent`
         const myReusableTestBody = (value, snapshotHint) => {
           const innerFn = anotherValue => {
             expect(anotherValue).toMatchSnapshot();
@@ -728,6 +743,33 @@ ruleTester.run('prefer-snapshot-hint (multi)', rule, {
           messageId: 'missingHint',
           column: 17,
           line: 8,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        import { describe as context, it as itIs } from '@jest/globals';
+
+        describe('my tests', () => {
+          it('is true', () => {
+            expect(1).toMatchSnapshot();
+          });
+
+          context('more tests', () => {
+            itIs('false', () => {
+              expect(2).toMatchSnapshot();
+              expect(2).toMatchSnapshot('hello world');
+            });
+          });
+        });
+      `,
+      options: ['multi'],
+      parserOptions: { sourceType: 'module' },
+      errors: [
+        {
+          messageId: 'missingHint',
+          column: 17,
+          line: 10,
         },
       ],
     },
