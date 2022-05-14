@@ -115,12 +115,13 @@ export default createRule<
     context,
     [{ ignore = [], allowedPrefixes = [], ignoreTopLevelDescribe }],
   ) {
-    const scope = context.getScope();
     const ignores = populateIgnores(ignore);
     let numberOfDescribeBlocks = 0;
 
     return {
       CallExpression(node: TSESTree.CallExpression) {
+        const scope = context.getScope();
+
         if (isDescribeCall(node, scope)) {
           numberOfDescribeBlocks++;
 
@@ -175,7 +176,7 @@ export default createRule<
         });
       },
       'CallExpression:exit'(node: TSESTree.CallExpression) {
-        if (isDescribeCall(node, scope)) {
+        if (isDescribeCall(node, context.getScope())) {
           numberOfDescribeBlocks--;
         }
       },

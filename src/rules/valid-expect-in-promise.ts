@@ -375,7 +375,6 @@ export default createRule({
   },
   defaultOptions: [],
   create(context) {
-    const scope = context.getScope();
     let inTestCaseWithDoneCallback = false;
     // an array of booleans representing each promise chain we enter, with the
     // boolean value representing if we think a given chain contains an expect
@@ -390,7 +389,7 @@ export default createRule({
       CallExpression(node: TSESTree.CallExpression) {
         // there are too many ways that the done argument could be used with
         // promises that contain expect that would make the promise safe for us
-        if (isTestCaseCallWithCallbackArg(node, scope)) {
+        if (isTestCaseCallWithCallbackArg(node, context.getScope())) {
           inTestCaseWithDoneCallback = true;
 
           return;
@@ -415,7 +414,7 @@ export default createRule({
         // make promises containing expects safe in a test for us to be able to
         // accurately check, so we just bail out completely if it's present
         if (inTestCaseWithDoneCallback) {
-          if (isTestCaseCall(node, scope)) {
+          if (isTestCaseCall(node, context.getScope())) {
             inTestCaseWithDoneCallback = false;
           }
 
@@ -442,7 +441,10 @@ export default createRule({
         // or our parent is not directly within the test case, we stop checking
         // because we're most likely in the body of a function being defined
         // within the test, which we can't track
-        if (!parent || !isDirectlyWithinTestCaseCall(parent, scope)) {
+        if (
+          !parent ||
+          !isDirectlyWithinTestCaseCall(parent, context.getScope())
+        ) {
           return;
         }
 

@@ -53,10 +53,10 @@ export default createRule({
   },
   defaultOptions: [],
   create(context) {
-    const scope = context.getScope();
-
     return {
       CallExpression(node) {
+        const scope = context.getScope();
+
         if (!isDescribeCall(node, scope) && !isTestCaseCall(node, scope)) {
           return;
         }

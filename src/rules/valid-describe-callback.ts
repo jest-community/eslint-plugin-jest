@@ -34,11 +34,9 @@ export default createRule({
   },
   defaultOptions: [],
   create(context) {
-    const scope = context.getScope();
-
     return {
       CallExpression(node) {
-        if (!isDescribeCall(node, scope)) {
+        if (!isDescribeCall(node, context.getScope())) {
           return;
         }
 

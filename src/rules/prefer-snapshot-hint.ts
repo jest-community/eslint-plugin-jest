@@ -61,7 +61,6 @@ export default createRule<[('always' | 'multi')?], keyof typeof messages>({
   },
   defaultOptions: ['multi'],
   create(context, [mode]) {
-    const scope = context.getScope();
     const snapshotMatchers: ParsedExpectMatcher[] = [];
     const depths: number[] = [];
     let expressionDepth = 0;
@@ -108,12 +107,16 @@ export default createRule<[('always' | 'multi')?], keyof typeof messages>({
       ArrowFunctionExpression: enterExpression,
       'ArrowFunctionExpression:exit': exitExpression,
       'CallExpression:exit'(node) {
+        const scope = context.getScope();
+
         if (isDescribeCall(node, scope) || isTestCaseCall(node, scope)) {
           /* istanbul ignore next */
           expressionDepth = depths.pop() ?? 0;
         }
       },
       CallExpression(node) {
+        const scope = context.getScope();
+
         if (isDescribeCall(node, scope) || isTestCaseCall(node, scope)) {
           depths.push(expressionDepth);
           expressionDepth = 0;

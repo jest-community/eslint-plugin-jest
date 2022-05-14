@@ -23,10 +23,9 @@ export default createRule({
   },
   defaultOptions: [],
   create(context) {
-    const scope = context.getScope();
-
     return {
       CallExpression(node) {
+        const scope = context.getScope();
         const nodeName = getNodeName(node.callee);
 
         if (

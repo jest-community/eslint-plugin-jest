@@ -1,4 +1,5 @@
 import { TSESLint } from '@typescript-eslint/utils';
+import dedent from 'dedent';
 import rule from '../no-focused-tests';
 import { espreeParser } from './test-utils';
 
@@ -312,6 +313,95 @@ ruleTester.run('no-focused-tests', rule, {
             {
               messageId: 'suggestRemoveFocus',
               output: 'it.each`table`()',
+            },
+          ],
+        },
+      ],
+    },
+  ],
+});
+
+ruleTester.run('no-focused-tests (with imports)', rule, {
+  valid: [
+    {
+      code: dedent`
+        import { fdescribe as describeJustThis } from '@jest/globals';
+
+        describeJustThis()
+      `,
+      parserOptions: { sourceType: 'module' },
+    },
+  ],
+
+  invalid: [
+    {
+      code: dedent`
+        const { describe } = require('@jest/globals');
+
+        describe.only()
+      `,
+      errors: [
+        {
+          messageId: 'focusedTest',
+          column: 10,
+          line: 3,
+          suggestions: [
+            {
+              messageId: 'suggestRemoveFocus',
+              output: dedent`
+                const { describe } = require('@jest/globals');
+
+                describe()
+              `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: dedent`
+        import { describe as describeThis } from '@jest/globals';
+
+        describeThis.only()
+      `,
+      parserOptions: { sourceType: 'module' },
+      errors: [
+        {
+          messageId: 'focusedTest',
+          column: 14,
+          line: 3,
+          suggestions: [
+            {
+              messageId: 'suggestRemoveFocus',
+              output: dedent`
+                import { describe as describeThis } from '@jest/globals';
+
+                describeThis()
+              `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: dedent`
+        const { fdescribe } = require('@jest/globals');
+
+        fdescribe()
+      `,
+      errors: [
+        {
+          messageId: 'focusedTest',
+          column: 1,
+          line: 3,
+          suggestions: [
+            {
+              messageId: 'suggestRemoveFocus',
+              output: dedent`
+                const { fdescribe } = require('@jest/globals');
+
+                describe()
+              `,
             },
           ],
         },

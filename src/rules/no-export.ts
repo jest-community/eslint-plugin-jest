@@ -17,7 +17,6 @@ export default createRule({
   },
   defaultOptions: [],
   create(context) {
-    const scope = context.getScope();
     const exportNodes: Array<
       | TSESTree.ExportNamedDeclaration
       | TSESTree.ExportDefaultDeclaration
@@ -35,7 +34,7 @@ export default createRule({
       },
 
       CallExpression(node) {
-        if (isTestCaseCall(node, scope)) {
+        if (isTestCaseCall(node, context.getScope())) {
           hasTestCase = true;
         }
       },

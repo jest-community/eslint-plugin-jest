@@ -36,11 +36,11 @@ export default createRule({
   },
   defaultOptions: [],
   create(context) {
-    const scope = context.getScope();
     const contexts = [newDescribeContext()];
 
     return {
       CallExpression(node) {
+        const scope = context.getScope();
         const currentLayer = contexts[contexts.length - 1];
 
         if (isDescribeCall(node, scope)) {
@@ -81,7 +81,7 @@ export default createRule({
         currentLayer.describeTitles.push(title);
       },
       'CallExpression:exit'(node) {
-        if (isDescribeCall(node, scope)) {
+        if (isDescribeCall(node, context.getScope())) {
           contexts.pop();
         }
       },

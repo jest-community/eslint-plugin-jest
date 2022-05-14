@@ -115,6 +115,15 @@ ruleTester.run('valid-describe-callback', rule, {
       errors: [{ messageId: 'noAsyncDescribeCallback', line: 1, column: 18 }],
     },
     {
+      code: dedent`
+        import { fdescribe } from '@jest/globals';
+
+        fdescribe("foo", async function () {})
+      `,
+      parserOptions: { sourceType: 'module' },
+      errors: [{ messageId: 'noAsyncDescribeCallback', line: 3, column: 18 }],
+    },
+    {
       code: 'describe.only("foo", async function () {})',
       errors: [{ messageId: 'noAsyncDescribeCallback', line: 1, column: 22 }],
     },
