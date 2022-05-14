@@ -1,3 +1,10 @@
+## [26.2.2](https://github.com/jest-community/eslint-plugin-jest/compare/v26.2.1...v26.2.2) (2022-05-14)
+
+
+### Bug Fixes
+
+* use the last reference definition when checking jest fn scope ([#1109](https://github.com/jest-community/eslint-plugin-jest/issues/1109)) ([1b2b9c1](https://github.com/jest-community/eslint-plugin-jest/commit/1b2b9c1695a6dec1088daf0b44749100989226a4))
+
 ## [26.2.1](https://github.com/jest-community/eslint-plugin-jest/compare/v26.2.0...v26.2.1) (2022-05-14)
 
 
