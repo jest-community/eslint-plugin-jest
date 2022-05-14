@@ -209,6 +209,7 @@ installations requiring long-term consistency.
 | [prefer-equality-matcher](docs/rules/prefer-equality-matcher.md)             | Suggest using the built-in equality matchers                        |                  | ![suggest][] |
 | [prefer-expect-assertions](docs/rules/prefer-expect-assertions.md)           | Suggest using `expect.assertions()` OR `expect.hasAssertions()`     |                  | ![suggest][] |
 | [prefer-expect-resolves](docs/rules/prefer-expect-resolves.md)               | Prefer `await expect(...).resolves` over `expect(await ...)` syntax |                  | ![fixable][] |
+| [prefer-hooks-in-order](docs/rules/prefer-hooks-in-order.md)                 | Prefer having hooks in a consistent order                           |                  |              |
 | [prefer-hooks-on-top](docs/rules/prefer-hooks-on-top.md)                     | Suggest having hooks before any test cases                          |                  |              |
 | [prefer-lowercase-title](docs/rules/prefer-lowercase-title.md)               | Enforce lowercase test names                                        |                  | ![fixable][] |
 | [prefer-snapshot-hint](docs/rules/prefer-snapshot-hint.md)                   | Prefer including a hint with external snapshots                     |                  |              |

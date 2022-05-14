@@ -12,7 +12,7 @@ export default createRule({
   meta: {
     docs: {
       category: 'Best Practices',
-      description: 'Suggest having hooks before any test cases',
+      description: 'Prefer having hooks in a consistent order',
       recommended: false,
     },
     messages: {

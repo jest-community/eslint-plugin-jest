@@ -22,7 +22,7 @@ describe('foo', () => {
   beforeEach(() => {
     seedMyDatabase();
   });
-  
+
   beforeAll(() => {
     createMyDatabase();
   });
