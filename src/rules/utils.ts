@@ -547,7 +547,7 @@ export enum TestCaseProperty {
   'todo' = 'todo',
 }
 
-type JestFunctionName = DescribeAlias | TestCaseName | HookName;
+type JestFunctionName = DescribeAlias | TestCaseName | HookName | string;
 type JestPropertyName = DescribeProperty | TestCaseProperty;
 
 interface JestFunctionIdentifier<FunctionName extends JestFunctionName>
@@ -659,7 +659,13 @@ export const isHookCall = (
     return false;
   }
 
-  name = resolveToJestFn(scope, name);
+  const resolved = resolveToJestFn(scope, name);
+
+  if (!resolved) {
+    return false;
+  }
+
+  name = resolved ? resolved.original ?? resolved.local : null;
 
   return name !== null && HookName.hasOwnProperty(name);
 };
@@ -703,7 +709,13 @@ export const isTestCaseCall = (
     return false;
   }
 
-  name = resolveToJestFn(scope, name);
+  const resolved = resolveToJestFn(scope, name);
+
+  if (!resolved) {
+    return false;
+  }
+
+  name = resolved ? resolved.original ?? resolved.local : null;
 
   return name !== null && TestCaseName.hasOwnProperty(name);
 };
@@ -767,7 +779,13 @@ export const isDescribeCall = (
     return false;
   }
 
-  name = resolveToJestFn(scope, name);
+  const resolved = resolveToJestFn(scope, name);
+
+  if (!resolved) {
+    return false;
+  }
+
+  name = resolved ? resolved.original ?? resolved.local : null;
 
   return name !== null && DescribeAlias.hasOwnProperty(name);
 };
@@ -933,7 +951,22 @@ export const scopeHasLocalReference = (
   );
 };
 
-const resolveToJestFn = (scope: TSESLint.Scope.Scope, identifier: string) => {
+// interface ResolvedJestFn {
+//   name: string;
+//   type: string;
+//   imported: boolean;
+// }
+
+interface ResolvedJestFn {
+  original: string | null;
+  local: string;
+  type: 'import' | 'global';
+}
+
+const resolveToJestFn = (
+  scope: TSESLint.Scope.Scope,
+  identifier: string,
+): ResolvedJestFn | null => {
   const references = collectReferences(scope);
 
   const maybeImport = references.imports.get(identifier);
@@ -942,7 +975,11 @@ const resolveToJestFn = (scope: TSESLint.Scope.Scope, identifier: string) => {
     // the identifier is imported from @jest/globals,
     // so return the original import name
     if (maybeImport.source === '@jest/globals') {
-      return maybeImport.imported;
+      return {
+        original: maybeImport.imported,
+        local: maybeImport.local,
+        type: 'import',
+      };
     }
 
     return null;
@@ -954,5 +991,9 @@ const resolveToJestFn = (scope: TSESLint.Scope.Scope, identifier: string) => {
     return null;
   }
 
-  return identifier;
+  return {
+    original: null,
+    local: identifier,
+    type: 'global',
+  };
 };
