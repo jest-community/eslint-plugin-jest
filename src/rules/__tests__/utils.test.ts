@@ -1367,3 +1367,525 @@ testJestFn('afterEach', 'hook');
 testJestFn('afterAll', 'hook');
 
 testJestFn('expect', 'expect');
+
+ruleTester.run('more reference checking', rule2, {
+  valid: [
+    {
+      code: dedent`
+        import { it } from '../test-fns';
+
+        it.skip();
+      `,
+      parserOptions: { sourceType: 'module' },
+    },
+    {
+      code: dedent`
+        (async () => {
+          const { it } = await Promise.resolve();
+
+          it.skip();
+        })();
+      `,
+      parserOptions: { sourceType: 'module', ecmaVersion: 2017 },
+    },
+  ],
+  invalid: [
+    {
+      code: dedent`
+        import { it } from '@jest/globals';
+
+        it.skip();
+      `,
+      parserOptions: { sourceType: 'module' },
+      errors: [
+        {
+          messageId: 'details' as const,
+          data: {
+            type: 'test',
+            name: 'it',
+            numOfArgs: 0,
+            imported: true,
+          },
+          column: 1,
+          line: 3,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        import { it as somethingElse } from '@jest/globals';
+
+        somethingElse.skip();
+      `,
+      parserOptions: { sourceType: 'module' },
+      errors: [
+        {
+          messageId: 'details' as const,
+          data: {
+            type: 'test',
+            name: 'it',
+            numOfArgs: 0,
+            imported: true,
+          },
+          column: 1,
+          line: 3,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        import { describe as somethingElse } from '@jest/globals';
+
+        describe();
+        somethingElse.skip();
+      `,
+      parserOptions: { sourceType: 'module' },
+      errors: [
+        {
+          messageId: 'details' as const,
+          data: {
+            type: 'describe',
+            name: 'describe',
+            numOfArgs: 0,
+            imported: false,
+          },
+          column: 1,
+          line: 3,
+        },
+        {
+          messageId: 'details' as const,
+          data: {
+            type: 'describe',
+            name: 'describe',
+            numOfArgs: 0,
+            imported: true,
+          },
+          column: 1,
+          line: 4,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        const { it } = require('@jest/globals');
+
+        it.skip();
+      `,
+      parserOptions: { sourceType: 'script' },
+      errors: [
+        {
+          messageId: 'details' as const,
+          data: {
+            type: 'test',
+            name: 'it',
+            numOfArgs: 0,
+            imported: true,
+          },
+          column: 1,
+          line: 3,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        const { it: somethingElse } = require('@jest/globals');
+
+        somethingElse.skip();
+      `,
+      parserOptions: { sourceType: 'script' },
+      errors: [
+        {
+          messageId: 'details' as const,
+          data: {
+            type: 'test',
+            name: 'it',
+            numOfArgs: 0,
+            imported: true,
+          },
+          column: 1,
+          line: 3,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        const { it: somethingElse } = require('@jest/globals');
+
+        it.only();
+        somethingElse.skip();
+      `,
+      parserOptions: { sourceType: 'script' },
+      errors: [
+        {
+          messageId: 'details' as const,
+          data: {
+            type: 'test',
+            name: 'it',
+            numOfArgs: 0,
+            imported: false,
+          },
+          column: 1,
+          line: 3,
+        },
+        {
+          messageId: 'details' as const,
+          data: {
+            type: 'test',
+            name: 'it',
+            numOfArgs: 0,
+            imported: true,
+          },
+          column: 1,
+          line: 4,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        const { it, it: somethingElse } = require('@jest/globals');
+
+        it.skip();
+        somethingElse.skip();
+      `,
+      parserOptions: { sourceType: 'script' },
+      errors: [
+        {
+          messageId: 'details' as const,
+          data: {
+            type: 'test',
+            name: 'it',
+            numOfArgs: 0,
+            imported: true,
+          },
+          column: 1,
+          line: 3,
+        },
+        {
+          messageId: 'details' as const,
+          data: {
+            type: 'test',
+            name: 'it',
+            numOfArgs: 0,
+            imported: true,
+          },
+          column: 1,
+          line: 4,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        import { describe } from '@jest/globals';
+
+        describe.each()()
+        describe.only.each()()
+
+        describe.each\`\`()
+        describe.only.each\`\`()
+      `,
+      parserOptions: { sourceType: 'module' },
+      errors: [
+        {
+          messageId: 'details' as const,
+          data: {
+            type: 'describe',
+            name: 'describe',
+            numOfArgs: 0,
+            imported: true,
+          },
+          column: 1,
+          line: 3,
+        },
+        {
+          messageId: 'details' as const,
+          data: {
+            type: 'describe',
+            name: 'describe',
+            numOfArgs: 0,
+            imported: true,
+          },
+          column: 1,
+          line: 4,
+        },
+        {
+          messageId: 'details' as const,
+          data: {
+            type: 'describe',
+            name: 'describe',
+            numOfArgs: 0,
+            imported: true,
+          },
+          column: 1,
+          line: 6,
+        },
+        {
+          messageId: 'details' as const,
+          data: {
+            type: 'describe',
+            name: 'describe',
+            numOfArgs: 0,
+            imported: true,
+          },
+          column: 1,
+          line: 7,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        import { expect } from '@jest/globals';
+
+        expect(x).toBe(y);
+      `,
+      parserOptions: { sourceType: 'module' },
+      errors: [
+        {
+          messageId: 'details' as const,
+          data: {
+            type: 'expect',
+            name: 'expect',
+            numOfArgs: 1,
+            imported: true,
+          },
+          column: 1,
+          line: 3,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        import { expect } from '@jest/globals';
+
+        expect.hasAssertions();
+      `,
+      parserOptions: { sourceType: 'module' },
+      errors: [
+        {
+          messageId: 'details' as const,
+          data: {
+            type: 'expect',
+            name: 'expect',
+            numOfArgs: 0,
+            imported: true,
+          },
+          column: 1,
+          line: 3,
+        },
+      ],
+    },
+    {
+      code: 'it.skip()',
+      parserOptions: { sourceType: 'script' },
+      errors: [
+        {
+          messageId: 'details' as const,
+          data: {
+            type: 'test',
+            name: 'it',
+            numOfArgs: 0,
+            imported: false,
+          },
+          column: 1,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        describe();
+        somethingElse.skip();
+      `,
+      parserOptions: { sourceType: 'script' },
+      errors: [
+        {
+          messageId: 'details' as const,
+          data: {
+            type: 'describe',
+            name: 'describe',
+            numOfArgs: 0,
+            imported: false,
+          },
+          column: 1,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: 'it.skip()',
+      parserOptions: { sourceType: 'script' },
+      errors: [
+        {
+          messageId: 'details' as const,
+          data: {
+            type: 'test',
+            name: 'it',
+            numOfArgs: 0,
+            imported: false,
+          },
+          column: 1,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        it.only();
+        somethingElse.skip();
+      `,
+      parserOptions: { sourceType: 'script' },
+      errors: [
+        {
+          messageId: 'details' as const,
+          data: {
+            type: 'test',
+            name: 'it',
+            numOfArgs: 0,
+            imported: false,
+          },
+          column: 1,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        describe.each()()
+        describe.only.each()()
+
+        describe.each\`\`()
+        describe.only.each\`\`()
+      `,
+      parserOptions: { sourceType: 'script' },
+      errors: [
+        {
+          messageId: 'details' as const,
+          data: {
+            type: 'describe',
+            name: 'describe',
+            numOfArgs: 0,
+            imported: false,
+          },
+          column: 1,
+          line: 1,
+        },
+        {
+          messageId: 'details' as const,
+          data: {
+            type: 'describe',
+            name: 'describe',
+            numOfArgs: 0,
+            imported: false,
+          },
+          column: 1,
+          line: 2,
+        },
+        {
+          messageId: 'details' as const,
+          data: {
+            type: 'describe',
+            name: 'describe',
+            numOfArgs: 0,
+            imported: false,
+          },
+          column: 1,
+          line: 4,
+        },
+        {
+          messageId: 'details' as const,
+          data: {
+            type: 'describe',
+            name: 'describe',
+            numOfArgs: 0,
+            imported: false,
+          },
+          column: 1,
+          line: 5,
+        },
+      ],
+    },
+    {
+      code: 'expect(x).toBe(y)',
+      parserOptions: { sourceType: 'script' },
+      errors: [
+        {
+          messageId: 'details' as const,
+          data: {
+            type: 'expect',
+            name: 'expect',
+            numOfArgs: 1,
+            imported: false,
+          },
+          column: 1,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: 'expect.hasAssertions()',
+      parserOptions: { sourceType: 'script' },
+      errors: [
+        {
+          messageId: 'details' as const,
+          data: {
+            type: 'expect',
+            name: 'expect',
+            numOfArgs: 0,
+            imported: false,
+          },
+          column: 1,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        const myFn = () => {
+          Promise.resolve().then(() => {
+            expect(true).toBe(false);
+          });
+        };
+
+        it('it1', () => {
+          somePromise.then(() => {
+            expect(someThing).toEqual(true);
+          });
+        });
+      `,
+      errors: [
+        {
+          messageId: 'details' as const,
+          data: {
+            type: 'expect',
+            name: 'expect',
+            numOfArgs: 1,
+            imported: false,
+          },
+          column: 5,
+          line: 3,
+        },
+        {
+          messageId: 'details' as const,
+          data: {
+            type: 'test',
+            name: 'it',
+            numOfArgs: 2,
+            imported: false,
+          },
+          column: 1,
+          line: 7,
+        },
+        {
+          messageId: 'details' as const,
+          data: {
+            type: 'expect',
+            name: 'expect',
+            numOfArgs: 1,
+            imported: false,
+          },
+          column: 5,
+          line: 9,
+        },
+      ],
+    },
+  ],
+});

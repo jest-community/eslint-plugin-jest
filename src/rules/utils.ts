@@ -836,6 +836,31 @@ type ParsedJestFn =
   | ParsedJestHookFn
   | ParsedJestExpectFn;
 
+const getLeftMostIdentifier = (
+  call: TSESTree.CallExpression,
+): TSESTree.Identifier | null => {
+  let node: TSESTree.Node =
+    call.callee.type === AST_NODE_TYPES.TaggedTemplateExpression
+      ? call.callee.tag
+      : call.callee.type === AST_NODE_TYPES.CallExpression
+      ? call.callee.callee
+      : call.callee;
+
+  while (node) {
+    if (node.type !== AST_NODE_TYPES.MemberExpression) {
+      break;
+    }
+
+    node = node.object;
+  }
+
+  if (isIdentifier(node)) {
+    return node;
+  }
+
+  return null;
+};
+
 /**
  * Checks if the given `node` is a *call* to a `describe` function that would
  * result in a `describe` block being created by `jest`.
@@ -847,11 +872,9 @@ export const parseJestFnRaw = (
   node: TSESTree.CallExpression,
   scope: TSESLint.Scope.Scope,
 ): ParsedRawJestFn | null => {
-  if (!isIdentifier(node.callee)) {
-    return null;
-  }
+  const leftMostIdentifier = getLeftMostIdentifier(node);
 
-  const first = node.callee.name;
+  const first = leftMostIdentifier?.name;
   // const [first] = getNodeName(node)?.split('.') ?? [];
 
   if (!first) {
