@@ -16,6 +16,7 @@ ruleTester.run('prefer-hooks-in-order', rule, {
     'beforeEach(() => {})',
     'afterEach(() => {})',
     'afterAll(() => {})',
+    'describe(() => {})',
     dedent`
       beforeAll(() => {});
       beforeEach(() => {});
@@ -52,6 +53,10 @@ ruleTester.run('prefer-hooks-in-order', rule, {
     dedent`
       afterEach(() => {});
       afterAll(() => {});
+    `,
+    dedent`
+      beforeAll(() => {});
+      beforeAll(() => {});
     `,
     dedent`
       describe('my test', () => {
@@ -223,6 +228,49 @@ ruleTester.run('prefer-hooks-in-order', rule, {
         });
       });
     `,
+    dedent`
+      describe('A file with a lot of test', () => {
+        beforeAll(() => {
+          setupTheDatabase();
+          createMocks();
+        });
+        
+        beforeAll(() => {
+          doEvenMore();
+        });
+        
+        beforeEach(() => {
+          cleanTheDatabase();
+          resetSomeThings();
+        });
+        
+        afterEach(() => {
+          cleanTheDatabase();
+          resetSomeThings();
+        });
+        
+        afterAll(() => {
+          closeTheDatabase();
+          stop();
+        });
+        
+        it('does something', () => {
+          const thing = getThing();
+          expect(thing).toBe('something');
+        });
+        
+        it('throws', () => {
+          // Do something that throws
+        });
+        
+        describe('Also have tests in here', () => {
+          afterAll(() => {});
+          it('tests something', () => {});
+          it('tests something else', () => {});
+          beforeAll(()=>{});
+        });
+      });
+    `,
   ],
   invalid: [
     {
@@ -338,6 +386,22 @@ ruleTester.run('prefer-hooks-in-order', rule, {
     {
       code: dedent`
         afterAll(() => {});
+        // The afterEach should do this
+        // This comment does not matter for the order
+        afterEach(() => {});
+      `,
+      errors: [
+        {
+          messageId: 'reorderHooks',
+          data: { currentHook: 'afterEach', previousHook: 'afterAll' },
+          column: 1,
+          line: 4,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        afterAll(() => {});
         afterAll(() => {});
         afterEach(() => {});
       `,
@@ -437,6 +501,121 @@ ruleTester.run('prefer-hooks-in-order', rule, {
           data: { currentHook: 'beforeAll', previousHook: 'beforeEach' },
           column: 5,
           line: 6,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        describe('my test', () => {
+          beforeAll(() => {});
+          afterAll(() => {});
+          beforeAll(() => {});
+
+          describe('when something is true', () => {
+            beforeAll(() => {});
+            afterEach(() => {});
+            beforeEach(() => {});
+            afterEach(() => {});
+          });
+        });
+      `,
+      errors: [
+        {
+          messageId: 'reorderHooks',
+          data: { currentHook: 'beforeAll', previousHook: 'afterAll' },
+          column: 3,
+          line: 4,
+        },
+        {
+          messageId: 'reorderHooks',
+          data: { currentHook: 'beforeEach', previousHook: 'afterEach' },
+          column: 5,
+          line: 9,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        describe('my test', () => {
+          beforeAll(() => {});
+          beforeAll(() => {});
+          afterAll(() => {});
+          
+          it('foo nested', () => {
+            // this is a test
+          });
+
+          describe('when something is true', () => {
+            beforeAll(() => {});
+            afterEach(() => {});
+            
+            it('foo nested', () => {
+              // this is a test
+            });
+            
+            describe('deeply nested', () => { 
+              afterAll(() => {});
+              afterAll(() => {});
+              // This comment does nothing
+              afterEach(() => {});
+              
+              it('foo nested', () => {
+                // this is a test
+              });
+            })
+            beforeEach(() => {});
+            afterEach(() => {});
+          });
+        });
+      `,
+      errors: [
+        {
+          messageId: 'reorderHooks',
+          data: { currentHook: 'afterEach', previousHook: 'afterAll' },
+          column: 7,
+          line: 22,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        describe('my test', () => {
+          const setupDatabase = () => {
+            beforeEach(() => {
+              initDatabase();
+              fillWithData();
+            });
+            beforeAll(() => {
+              setupMocks();
+            });
+          };
+          
+          it('foo', () => {
+            // this is a test
+          });
+          
+          describe('my nested test', () => {
+            afterAll(() => {});
+            afterEach(() => {});
+            
+            it('foo nested', () => {
+              // this is a test
+            });
+          });
+        });
+      `,
+      errors: [
+        {
+          messageId: 'reorderHooks',
+          data: { currentHook: 'beforeAll', previousHook: 'beforeEach' },
+          column: 5,
+          line: 7,
+        },
+        {
+          messageId: 'reorderHooks',
+          data: { currentHook: 'afterEach', previousHook: 'afterAll' },
+          column: 5,
+          line: 18,
         },
       ],
     },
