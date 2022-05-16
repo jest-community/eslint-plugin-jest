@@ -58,8 +58,8 @@ describe('the rule', () => {
   // a few sanity checks before doing our massive loop
   ruleTester.run('no-deprecated-functions', rule, {
     valid: [
-      { settings: { jest: { version: 14 } }, code: 'jest' },
-      { settings: { jest: { version: 14 } }, code: 'require("fs")' },
+      { code: 'jest', settings: { jest: { version: 14 } } },
+      { code: 'require("fs")', settings: { jest: { version: 14 } } },
       ...generateValidCases(14, 'jest.resetModuleRegistry'),
       ...generateValidCases(17, 'require.requireActual'),
       ...generateValidCases(25, 'jest.genMockFromModule'),

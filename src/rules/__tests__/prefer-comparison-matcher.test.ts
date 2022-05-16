@@ -145,7 +145,6 @@ const testComparisonOperator = (
       `expect(value).${preferredMatcherWhenNegated}(1);`,
       `expect(value).not.${preferredMatcher}(1);`,
       `expect(value).not.${preferredMatcherWhenNegated}(1);`,
-      `expect(value).${preferredMatcher}(1);`,
       ...['toBe', 'toEqual', 'toStrictEqual'].reduce<string[]>(
         (cases, equalityMatcher) => [
           ...cases,
