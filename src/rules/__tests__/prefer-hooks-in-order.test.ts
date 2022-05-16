@@ -172,6 +172,57 @@ ruleTester.run('prefer-hooks-in-order', rule, {
         beforeEach(() => {});
       });
     `,
+    dedent`
+      describe('foo', () => {
+        beforeAll(() => {
+          createMyDatabase();
+        });
+      
+        beforeEach(() => {
+          seedMyDatabase();
+        });
+      
+        it('accepts this input', () => {
+          // ...
+        });
+      
+        it('returns that value', () => {
+          // ...
+        });
+      
+        describe('when the database has specific values', () => {
+          const specificValue = '...';
+      
+          beforeEach(() => {
+            seedMyDatabase(specificValue);
+          });
+      
+          it('accepts that input', () => {
+            // ...
+          });
+      
+          it('throws an error', () => {
+            // ...
+          });
+      
+          beforeEach(() => {
+            mockLogger();
+          });
+      
+          afterEach(() => {
+            clearLogger();
+          });
+      
+          it('logs a message', () => {
+            // ...
+          });
+        });
+      
+        afterAll(() => {
+          removeMyDatabase();
+        });
+      });
+    `,
   ],
   invalid: [
     {
@@ -386,6 +437,73 @@ ruleTester.run('prefer-hooks-in-order', rule, {
           data: { currentHook: 'beforeAll', previousHook: 'beforeEach' },
           column: 5,
           line: 6,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        describe('foo', () => {
+          beforeEach(() => {
+            seedMyDatabase();
+          });
+        
+          beforeAll(() => {
+            createMyDatabase();
+          });
+        
+          it('accepts this input', () => {
+            // ...
+          });
+        
+          it('returns that value', () => {
+            // ...
+          });
+        
+          describe('when the database has specific values', () => {
+            const specificValue = '...';
+        
+            beforeEach(() => {
+              seedMyDatabase(specificValue);
+            });
+        
+            it('accepts that input', () => {
+              // ...
+            });
+        
+            it('throws an error', () => {
+              // ...
+            });
+        
+            afterEach(() => {
+              clearLogger();
+            });
+            
+            beforeEach(() => {
+              mockLogger();
+            });
+        
+            it('logs a message', () => {
+              // ...
+            });
+          });
+        
+          afterAll(() => {
+            removeMyDatabase();
+          });
+        });
+      `,
+      errors: [
+        {
+          messageId: 'reorderHooks',
+          data: { currentHook: 'beforeAll', previousHook: 'beforeEach' },
+          column: 3,
+          line: 6,
+        },
+        {
+          messageId: 'reorderHooks',
+          data: { currentHook: 'beforeEach', previousHook: 'afterEach' },
+          column: 5,
+          line: 37,
         },
       ],
     },
