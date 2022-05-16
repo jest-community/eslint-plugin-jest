@@ -288,7 +288,10 @@ export const isExpectCall = (
   node: TSESTree.Node,
   scope?: TSESLint.Scope.Scope,
 ): node is ExpectCall => {
-  if (node.type !== AST_NODE_TYPES.CallExpression) {
+  if (
+    node.type !== AST_NODE_TYPES.CallExpression ||
+    !isSupportedAccessor(node.callee, 'expect')
+  ) {
     return false;
   }
 

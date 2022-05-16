@@ -1711,23 +1711,6 @@ ruleTester.run('more reference checking', rule2, {
       ],
     },
     {
-      code: 'it.skip()',
-      parserOptions: { sourceType: 'script' },
-      errors: [
-        {
-          messageId: 'details' as const,
-          data: {
-            type: 'test',
-            name: 'it',
-            numOfArgs: 0,
-            imported: false,
-          },
-          column: 1,
-          line: 1,
-        },
-      ],
-    },
-    {
       code: dedent`
         it.only();
         somethingElse.skip();
@@ -1884,6 +1867,65 @@ ruleTester.run('more reference checking', rule2, {
           },
           column: 5,
           line: 9,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        expect.extend({
+          toResolve(obj) {
+            this.isNot
+              ? expect(obj).toBe(true)
+              : anotherCondition
+              ? expect(obj).resolves.not.toThrow()
+              : expect(obj).toBe(false)
+          }
+        });
+      `,
+      errors: [
+        {
+          messageId: 'details' as const,
+          data: {
+            type: 'expect',
+            name: 'expect',
+            numOfArgs: 1,
+            imported: false,
+          },
+          column: 1,
+          line: 1,
+        },
+        {
+          messageId: 'details' as const,
+          data: {
+            type: 'expect',
+            name: 'expect',
+            numOfArgs: 1,
+            imported: false,
+          },
+          column: 9,
+          line: 4,
+        },
+        {
+          messageId: 'details' as const,
+          data: {
+            type: 'expect',
+            name: 'expect',
+            numOfArgs: 1,
+            imported: false,
+          },
+          column: 9,
+          line: 6,
+        },
+        {
+          messageId: 'details' as const,
+          data: {
+            type: 'expect',
+            name: 'expect',
+            numOfArgs: 1,
+            imported: false,
+          },
+          column: 9,
+          line: 7,
         },
       ],
     },
