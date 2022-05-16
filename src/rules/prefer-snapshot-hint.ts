@@ -122,7 +122,7 @@ export default createRule<[('always' | 'multi')?], keyof typeof messages>({
           expressionDepth = 0;
         }
 
-        if (!isExpectCall(node)) {
+        if (!isExpectCall(node, scope)) {
           return;
         }
 

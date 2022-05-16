@@ -200,7 +200,7 @@ export default createRule<[Options], MessageIds>({
 
     return {
       CallExpression(node) {
-        if (!isExpectCall(node)) {
+        if (!isExpectCall(node, context.getScope())) {
           return;
         }
 
@@ -328,7 +328,10 @@ export default createRule<[Options], MessageIds>({
 
       // nothing called on "expect()"
       'CallExpression:exit'(node: TSESTree.CallExpression) {
-        if (isExpectCall(node) && isNoAssertionsParentNode(node.parent)) {
+        if (
+          isExpectCall(node, context.getScope()) &&
+          isNoAssertionsParentNode(node.parent)
+        ) {
           context.report({ messageId: 'matcherNotFound', node });
         }
       },

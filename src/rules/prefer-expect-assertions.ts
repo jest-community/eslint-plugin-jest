@@ -163,7 +163,7 @@ export default createRule<[RuleOptions], MessageIds>({
           return;
         }
 
-        if (isExpectCall(node) && inTestCaseCall) {
+        if (isExpectCall(node, context.getScope()) && inTestCaseCall) {
           if (inForLoop) {
             hasExpectInLoop = true;
           }

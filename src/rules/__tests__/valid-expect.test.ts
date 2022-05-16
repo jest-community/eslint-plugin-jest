@@ -239,6 +239,7 @@ ruleTester.run('valid-expect', rule, {
           },
         },
       ],
+      // only: true,
     },
     {
       code: 'expect("something", "else", "entirely").toEqual("something");',

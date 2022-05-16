@@ -7,6 +7,7 @@ import {
   isDescribeCall,
   isHookCall,
   isTestCaseCall,
+  parseJestFnAdvanced,
 } from '../utils';
 import { espreeParser } from './test-utils';
 
@@ -1047,3 +1048,322 @@ describe('reference checking', () => {
     ],
   });
 });
+
+const rule2 = createRule({
+  name: __filename,
+  meta: {
+    docs: {
+      category: 'Possible Errors',
+      description: 'Fake rule for testing AST guards',
+      recommended: false,
+    },
+    messages: {
+      details: [
+        'type', //
+        'name',
+        'imported',
+        'numOfArgs',
+      ]
+        .map(data => `${data}: {{ ${data} }}`)
+        .join('\n'),
+    },
+    schema: [],
+    type: 'problem',
+  },
+  defaultOptions: [],
+  create: context => ({
+    CallExpression(node) {
+      const scope = context.getScope();
+      const parsed = parseJestFnAdvanced(node, scope);
+
+      if (parsed) {
+        context.report({
+          messageId: 'details',
+          node,
+          data: {
+            numOfArgs: node.arguments.length,
+            ...parsed,
+            node: null,
+          },
+        });
+      }
+    },
+  }),
+});
+
+const testJestFn = (name: string, type: string) => {
+  ruleTester.run(`reference checking (${name})`, rule2, {
+    valid: [
+      name,
+      {
+        code: dedent`
+          import { ${name} } from '../test-fns';
+
+          ${name}();
+        `,
+        parserOptions: { sourceType: 'module' },
+      },
+      {
+        code: dedent`
+          (async () => {
+            const { ${name} } = await Promise.resolve();
+
+            ${name}();
+          })();
+        `,
+        parserOptions: { sourceType: 'module', ecmaVersion: 2017 },
+      },
+    ],
+    invalid: [
+      {
+        code: `${name}()`,
+        errors: [
+          {
+            messageId: 'details' as const,
+            data: {
+              type,
+              name,
+              numOfArgs: 0,
+              original: null,
+              imported: false,
+            },
+            column: 1,
+            line: 1,
+          },
+        ],
+      },
+      {
+        code: dedent`
+          import { ${name} } from '@jest/globals';
+
+          ${name}();
+        `,
+        parserOptions: { sourceType: 'module' },
+        errors: [
+          {
+            messageId: 'details' as const,
+            data: {
+              type,
+              name,
+              numOfArgs: 0,
+              imported: true,
+            },
+            column: 1,
+            line: 3,
+          },
+        ],
+      },
+      {
+        code: dedent`
+          import { ${name} as somethingElse } from '@jest/globals';
+
+          somethingElse();
+        `,
+        parserOptions: { sourceType: 'module' },
+        errors: [
+          {
+            messageId: 'details' as const,
+            data: {
+              type,
+              name,
+              numOfArgs: 0,
+              imported: true,
+            },
+            column: 1,
+            line: 3,
+          },
+        ],
+      },
+      {
+        code: dedent`
+          import { ${name} as somethingElse } from '@jest/globals';
+
+          ${name}();
+          somethingElse();
+        `,
+        parserOptions: { sourceType: 'module' },
+        errors: [
+          {
+            messageId: 'details' as const,
+            data: {
+              type,
+              name,
+              numOfArgs: 0,
+              imported: false,
+            },
+            column: 1,
+            line: 3,
+          },
+          {
+            messageId: 'details' as const,
+            data: {
+              type,
+              name,
+              numOfArgs: 0,
+              imported: true,
+            },
+            column: 1,
+            line: 4,
+          },
+        ],
+      },
+      {
+        code: dedent`
+          import { ${name}, ${name} as somethingElse } from '@jest/globals';
+
+          ${name}();
+          somethingElse();
+        `,
+        parserOptions: { sourceType: 'module' },
+        errors: [
+          {
+            messageId: 'details' as const,
+            data: {
+              type,
+              name,
+              numOfArgs: 0,
+              imported: true,
+            },
+            column: 1,
+            line: 3,
+          },
+          {
+            messageId: 'details' as const,
+            data: {
+              type,
+              name,
+              numOfArgs: 0,
+              imported: true,
+            },
+            column: 1,
+            line: 4,
+          },
+        ],
+      },
+      {
+        code: dedent`
+          const { ${name} } = require('@jest/globals');
+
+          ${name}();
+        `,
+        parserOptions: { sourceType: 'script' },
+        errors: [
+          {
+            messageId: 'details' as const,
+            data: {
+              type,
+              name,
+              numOfArgs: 0,
+              imported: true,
+            },
+            column: 1,
+            line: 3,
+          },
+        ],
+      },
+      {
+        code: dedent`
+          const { ${name}: somethingElse } = require('@jest/globals');
+
+          somethingElse();
+        `,
+        parserOptions: { sourceType: 'script' },
+        errors: [
+          {
+            messageId: 'details' as const,
+            data: {
+              type,
+              name,
+              numOfArgs: 0,
+              imported: true,
+            },
+            column: 1,
+            line: 3,
+          },
+        ],
+      },
+      {
+        code: dedent`
+          const { ${name}: somethingElse } = require('@jest/globals');
+
+          ${name}();
+          somethingElse();
+        `,
+        parserOptions: { sourceType: 'script' },
+        errors: [
+          {
+            messageId: 'details' as const,
+            data: {
+              type,
+              name,
+              numOfArgs: 0,
+              imported: false,
+            },
+            column: 1,
+            line: 3,
+          },
+          {
+            messageId: 'details' as const,
+            data: {
+              type,
+              name,
+              numOfArgs: 0,
+              imported: true,
+            },
+            column: 1,
+            line: 4,
+          },
+        ],
+      },
+      {
+        code: dedent`
+          const { ${name}, ${name}: somethingElse } = require('@jest/globals');
+
+          ${name}();
+          somethingElse();
+        `,
+        parserOptions: { sourceType: 'script' },
+        errors: [
+          {
+            messageId: 'details' as const,
+            data: {
+              type,
+              name,
+              numOfArgs: 0,
+              imported: true,
+            },
+            column: 1,
+            line: 3,
+          },
+          {
+            messageId: 'details' as const,
+            data: {
+              type,
+              name,
+              numOfArgs: 0,
+              imported: true,
+            },
+            column: 1,
+            line: 4,
+          },
+        ],
+      },
+    ],
+  });
+};
+
+testJestFn('describe', 'describe');
+testJestFn('fdescribe', 'describe');
+testJestFn('xdescribe', 'describe');
+
+testJestFn('fit', 'test');
+testJestFn('it', 'test');
+testJestFn('test', 'test');
+testJestFn('xtest', 'test');
+
+testJestFn('beforeAll', 'hook');
+testJestFn('beforeEach', 'hook');
+testJestFn('afterEach', 'hook');
+testJestFn('afterAll', 'hook');
+
+testJestFn('expect', 'expect');

@@ -280,13 +280,33 @@ interface ExpectCall extends TSESTree.CallExpression {
  *  * have a `parent`.
  *
  * @param {Node} node
+ * @param [scope]
  *
  * @return {node is ExpectCall}
  */
-export const isExpectCall = (node: TSESTree.Node): node is ExpectCall =>
-  node.type === AST_NODE_TYPES.CallExpression &&
-  isSupportedAccessor(node.callee, 'expect') &&
-  node.parent !== undefined;
+export const isExpectCall = (
+  node: TSESTree.Node,
+  scope?: TSESLint.Scope.Scope,
+): node is ExpectCall => {
+  if (node.type !== AST_NODE_TYPES.CallExpression) {
+    return false;
+  }
+
+  if (scope) {
+    const parsed = parseJestFnAdvanced(node, scope);
+
+    return parsed?.type === 'expect';
+  }
+
+  return (
+    isSupportedAccessor(node.callee, 'expect') && node.parent !== undefined
+  );
+};
+
+// export const isExpectCall = (node: TSESTree.Node): node is ExpectCall =>
+//   node.type === AST_NODE_TYPES.CallExpression &&
+//   isSupportedAccessor(node.callee, 'expect') &&
+//   node.parent !== undefined;
 
 interface ParsedExpectMember<
   Name extends ExpectPropertyName = ExpectPropertyName,
@@ -653,21 +673,9 @@ export const isHookCall = (
   node: TSESTree.CallExpression,
   scope: TSESLint.Scope.Scope,
 ): node is JestFunctionCallExpressionWithIdentifierCallee<HookName> => {
-  let name = findFirstCallPropertyName(node, []);
+  const parsed = parseJestFnAdvanced(node, scope);
 
-  if (!name) {
-    return false;
-  }
-
-  const resolved = resolveToJestFn(scope, name);
-
-  if (!resolved) {
-    return false;
-  }
-
-  name = resolved ? resolved.original ?? resolved.local : null;
-
-  return name !== null && HookName.hasOwnProperty(name);
+  return parsed?.type === 'hook';
 };
 
 export const getTestCallExpressionsFromDeclaredVariables = (
@@ -692,14 +700,7 @@ export const getTestCallExpressionsFromDeclaredVariables = (
   );
 };
 
-/**
- * Checks if the given `node` is a *call* to a test case function that would
- * result in tests being run by `jest`.
- *
- * Note that `.each()` does not count as a call in this context, as it will not
- * result in `jest` running any tests.
- */
-export const isTestCaseCall = (
+export const isTestCaseCallOriginal = (
   node: TSESTree.CallExpression,
   scope: TSESLint.Scope.Scope,
 ): node is JestFunctionCallExpression<TestCaseName> => {
@@ -718,6 +719,23 @@ export const isTestCaseCall = (
   name = resolved ? resolved.original ?? resolved.local : null;
 
   return name !== null && TestCaseName.hasOwnProperty(name);
+};
+
+/**
+ * Checks if the given `node` is a *call* to a test case function that would
+ * result in tests being run by `jest`.
+ *
+ * Note that `.each()` does not count as a call in this context, as it will not
+ * result in `jest` running any tests.
+ */
+export const isTestCaseCall = (
+  node: TSESTree.CallExpression,
+  scope: TSESLint.Scope.Scope,
+): node is JestFunctionCallExpression<TestCaseName> => {
+  // return isTestCaseCallOriginal(node, scope);
+  const parsed = parseJestFnAdvanced(node, scope);
+
+  return parsed?.type === 'test';
 };
 
 const findFirstCallPropertyName = (
@@ -773,22 +791,181 @@ export const isDescribeCall = (
   node: TSESTree.CallExpression,
   scope: TSESLint.Scope.Scope,
 ): node is JestFunctionCallExpression<DescribeAlias> => {
-  let name = findFirstCallPropertyName(node, Object.keys(DescribeProperty));
+  const parsed = parseJestFnAdvanced(node, scope);
 
-  if (!name) {
-    return false;
+  return parsed?.type === 'describe';
+};
+
+interface ParsedJestDescribeFn {
+  name: DescribeAlias;
+  node: JestFunctionCallExpression<string>;
+  imported: boolean;
+  type: 'describe';
+}
+
+interface ParsedJestTestFn {
+  name: TestCaseName;
+  node: JestFunctionCallExpression<string>;
+  imported: boolean;
+  type: 'test';
+}
+
+interface ParsedJestHookFn {
+  name: HookName;
+  node: JestFunctionCallExpressionWithIdentifierCallee<string>;
+  imported: boolean;
+  type: 'hook';
+}
+
+interface ParsedJestExpectFn {
+  name: 'expect';
+  node: ExpectCall;
+  imported: boolean;
+  type: 'expect';
+}
+
+interface ParsedRawJestFn {
+  name: string;
+  node: TSESTree.Node;
+  imported: boolean;
+}
+
+type ParsedJestFn =
+  | ParsedJestDescribeFn
+  | ParsedJestTestFn
+  | ParsedJestHookFn
+  | ParsedJestExpectFn;
+
+/**
+ * Checks if the given `node` is a *call* to a `describe` function that would
+ * result in a `describe` block being created by `jest`.
+ *
+ * Note that `.each()` does not count as a call in this context, as it will not
+ * result in `jest` creating any `describe` blocks.
+ */
+export const parseJestFnRaw = (
+  node: TSESTree.CallExpression,
+  scope: TSESLint.Scope.Scope,
+): ParsedRawJestFn | null => {
+  if (!isIdentifier(node.callee)) {
+    return null;
   }
 
-  const resolved = resolveToJestFn(scope, name);
+  const first = node.callee.name;
+  // const [first] = getNodeName(node)?.split('.') ?? [];
+
+  if (!first) {
+    return null;
+  }
+
+  const resolved = resolveToJestFn(scope, first);
 
   if (!resolved) {
-    return false;
+    return null;
   }
 
-  name = resolved ? resolved.original ?? resolved.local : null;
-
-  return name !== null && DescribeAlias.hasOwnProperty(name);
+  return {
+    imported: resolved.type === 'import',
+    name: resolved.original ?? resolved.local,
+    node,
+  };
 };
+
+/**
+ * Checks if the given `node` is a *call* to a `describe` function that would
+ * result in a `describe` block being created by `jest`.
+ *
+ * Note that `.each()` does not count as a call in this context, as it will not
+ * result in `jest` creating any `describe` blocks.
+ */
+export const parseJestFnAdvanced = (
+  node: TSESTree.CallExpression,
+  scope: TSESLint.Scope.Scope,
+): ParsedJestFn | null => {
+  const raw = parseJestFnRaw(node, scope);
+
+  if (!raw) {
+    return null;
+  }
+
+  if (DescribeAlias.hasOwnProperty(raw.name)) {
+    const name = findFirstCallPropertyName(node, Object.keys(DescribeProperty));
+
+    if (!name) {
+      return null;
+    }
+
+    return { ...raw, type: 'describe' } as ParsedJestDescribeFn;
+  }
+
+  if (TestCaseName.hasOwnProperty(raw.name)) {
+    const name = findFirstCallPropertyName(node, Object.keys(TestCaseProperty));
+
+    if (!name) {
+      return null;
+    }
+
+    return { ...raw, type: 'test' } as ParsedJestTestFn;
+  }
+
+  if (HookName.hasOwnProperty(raw.name)) {
+    const name = findFirstCallPropertyName(node, []);
+
+    if (!name) {
+      return null;
+    }
+
+    return { ...raw, type: 'hook' } as ParsedJestHookFn;
+  }
+
+  if (raw.name === 'expect') {
+    return { ...raw, type: 'expect' } as ParsedJestExpectFn;
+  }
+
+  return null;
+};
+
+// /**
+//  * Checks if the given `node` is a *call* to a `describe` function that would
+//  * result in a `describe` block being created by `jest`.
+//  *
+//  * Note that `.each()` does not count as a call in this context, as it will not
+//  * result in `jest` creating any `describe` blocks.
+//  */
+// export const parseJestFn = (
+//   node: TSESTree.CallExpression,
+//   scope: TSESLint.Scope.Scope,
+// ): node is JestFunctionCallExpression<DescribeAlias> => {
+//   const [first, ...rest] = getNodeName(node)?.split('.') ?? [];
+//
+//   if (!first) {
+//     return false;
+//   }
+//
+//   const resolved = resolveToJestFn(scope, first);
+//
+//   if (!resolved) {
+//     return false;
+//   }
+//
+//   name = resolved ? resolved.original ?? resolved.local : null;
+//
+//   let name = findFirstCallPropertyName(node, Object.keys(DescribeProperty));
+//
+//   if (!name) {
+//     return false;
+//   }
+//
+//   const resolved = resolveToJestFn(scope, name);
+//
+//   if (!resolved) {
+//     return false;
+//   }
+//
+//   name = resolved ? resolved.original ?? resolved.local : null;
+//
+//   return name !== null && DescribeAlias.hasOwnProperty(name);
+// };
 
 interface ImportDetails {
   source: string;
