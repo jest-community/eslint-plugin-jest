@@ -405,7 +405,7 @@ export default createRule({
 
         // if we're within a promise chain, and this call expression looks like
         // an expect call, mark the deepest chain as having an expect call
-        if (chains.length > 0 && isExpectCall(node)) {
+        if (chains.length > 0 && isExpectCall(node, context.getScope())) {
           chains[0] = true;
         }
       },

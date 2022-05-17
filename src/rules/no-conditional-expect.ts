@@ -50,7 +50,9 @@ export default createRule({
         }
       },
       CallExpression(node: TSESTree.CallExpression) {
-        if (isTestCaseCall(node, context.getScope())) {
+        const scope = context.getScope();
+
+        if (isTestCaseCall(node, scope)) {
           inTestCase = true;
         }
 
@@ -58,14 +60,14 @@ export default createRule({
           inPromiseCatch = true;
         }
 
-        if (inTestCase && isExpectCall(node) && conditionalDepth > 0) {
+        if (inTestCase && isExpectCall(node, scope) && conditionalDepth > 0) {
           context.report({
             messageId: 'conditionalExpect',
             node,
           });
         }
 
-        if (inPromiseCatch && isExpectCall(node)) {
+        if (inPromiseCatch && isExpectCall(node, scope)) {
           context.report({
             messageId: 'conditionalExpect',
             node,

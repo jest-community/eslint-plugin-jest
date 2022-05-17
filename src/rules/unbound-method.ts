@@ -8,8 +8,11 @@ const toThrowMatchers = [
   'toThrowErrorMatchingInlineSnapshot',
 ];
 
-const isJestExpectToThrowCall = (node: TSESTree.CallExpression) => {
-  if (!isExpectCall(node)) {
+const isJestExpectToThrowCall = (
+  node: TSESTree.CallExpression,
+  scope: TSESLint.Scope.Scope,
+) => {
+  if (!isExpectCall(node, scope)) {
     return false;
   }
 
@@ -95,10 +98,13 @@ export default createRule<Options, MessageIds>({
     return {
       ...baseSelectors,
       CallExpression(node: TSESTree.CallExpression): void {
-        inExpectToThrowCall = isJestExpectToThrowCall(node);
+        inExpectToThrowCall = isJestExpectToThrowCall(node, context.getScope());
       },
       'CallExpression:exit'(node: TSESTree.CallExpression): void {
-        if (inExpectToThrowCall && isJestExpectToThrowCall(node)) {
+        if (
+          inExpectToThrowCall &&
+          isJestExpectToThrowCall(node, context.getScope())
+        ) {
           inExpectToThrowCall = false;
         }
       },

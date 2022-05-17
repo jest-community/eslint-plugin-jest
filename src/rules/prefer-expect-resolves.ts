@@ -23,7 +23,7 @@ export default createRule({
       const [awaitNode] = node.arguments;
 
       if (
-        isExpectCall(node) &&
+        isExpectCall(node, context.getScope()) &&
         awaitNode?.type === AST_NODE_TYPES.AwaitExpression
       ) {
         context.report({

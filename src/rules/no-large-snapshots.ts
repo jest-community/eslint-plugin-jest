@@ -112,7 +112,7 @@ export default createRule<[RuleOptions], MessageId>({
 
     return {
       CallExpression(node) {
-        if (!isExpectCall(node)) {
+        if (!isExpectCall(node, context.getScope())) {
           return;
         }
 

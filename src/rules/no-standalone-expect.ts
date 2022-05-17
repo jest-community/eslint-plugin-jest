@@ -91,7 +91,7 @@ export default createRule<
 
     return {
       CallExpression(node) {
-        if (isExpectCall(node)) {
+        if (isExpectCall(node, context.getScope())) {
           const parent = callStack[callStack.length - 1];
 
           if (!parent || parent === DescribeAlias.describe) {
