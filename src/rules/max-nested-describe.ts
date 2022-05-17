@@ -38,7 +38,7 @@ export default createRule({
 
       if (
         parent?.type !== AST_NODE_TYPES.CallExpression ||
-        !isDescribeCall(parent)
+        !isDescribeCall(parent, context.getScope())
       ) {
         return;
       }
@@ -61,7 +61,7 @@ export default createRule({
 
       if (
         parent?.type === AST_NODE_TYPES.CallExpression &&
-        isDescribeCall(parent)
+        isDescribeCall(parent, context.getScope())
       ) {
         describeCallbackStack.pop();
       }

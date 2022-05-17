@@ -1,4 +1,4 @@
-import { HookName, createRule, isHook } from './utils';
+import { HookName, createRule, isHookCall } from './utils';
 
 export default createRule<
   [Partial<{ allow: readonly HookName[] }>],
@@ -32,7 +32,10 @@ export default createRule<
   create(context, [{ allow = [] }]) {
     return {
       CallExpression(node) {
-        if (isHook(node) && !allow.includes(node.callee.name)) {
+        if (
+          isHookCall(node, context.getScope()) &&
+          !allow.includes(node.callee.name)
+        ) {
           context.report({
             node,
             messageId: 'unexpectedHook',

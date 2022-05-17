@@ -40,15 +40,17 @@ export default createRule({
     return {
       FunctionDeclaration(node) {
         const declaredVariables = context.getDeclaredVariables(node);
-        const testCallExpressions =
-          getTestCallExpressionsFromDeclaredVariables(declaredVariables);
+        const testCallExpressions = getTestCallExpressionsFromDeclaredVariables(
+          declaredVariables,
+          context.getScope(),
+        );
 
         if (testCallExpressions.length > 0) {
           inTestCase = true;
         }
       },
       CallExpression(node: TSESTree.CallExpression) {
-        if (isTestCaseCall(node)) {
+        if (isTestCaseCall(node, context.getScope())) {
           inTestCase = true;
         }
 
@@ -71,7 +73,7 @@ export default createRule({
         }
       },
       'CallExpression:exit'(node) {
-        if (isTestCaseCall(node)) {
+        if (isTestCaseCall(node, context.getScope())) {
           inTestCase = false;
         }
 

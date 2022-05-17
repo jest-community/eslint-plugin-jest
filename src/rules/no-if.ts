@@ -74,7 +74,7 @@ export default createRule({
 
     return {
       CallExpression(node) {
-        if (isTestCaseCall(node)) {
+        if (isTestCaseCall(node, context.getScope())) {
           stack.push(true);
 
           if (getNodeName(node).endsWith('each')) {
@@ -87,8 +87,10 @@ export default createRule({
       },
       FunctionDeclaration(node) {
         const declaredVariables = context.getDeclaredVariables(node);
-        const testCallExpressions =
-          getTestCallExpressionsFromDeclaredVariables(declaredVariables);
+        const testCallExpressions = getTestCallExpressionsFromDeclaredVariables(
+          declaredVariables,
+          context.getScope(),
+        );
 
         stack.push(testCallExpressions.length > 0);
       },

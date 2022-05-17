@@ -1,4 +1,4 @@
-import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, TSESLint, TSESTree } from '@typescript-eslint/utils';
 import {
   KnownCallExpression,
   ModifierName,
@@ -69,8 +69,9 @@ const findTopMostCallExpression = (
 
 const isTestCaseCallWithCallbackArg = (
   node: TSESTree.CallExpression,
+  scope: TSESLint.Scope.Scope,
 ): boolean => {
-  if (!isTestCaseCall(node)) {
+  if (!isTestCaseCall(node, scope)) {
     return false;
   }
 
@@ -320,7 +321,10 @@ const findFirstBlockBodyUp = (
   );
 };
 
-const isDirectlyWithinTestCaseCall = (node: TSESTree.Node): boolean => {
+const isDirectlyWithinTestCaseCall = (
+  node: TSESTree.Node,
+  scope: TSESLint.Scope.Scope,
+): boolean => {
   let parent: TSESTree.Node['parent'] = node;
 
   while (parent) {
@@ -328,7 +332,8 @@ const isDirectlyWithinTestCaseCall = (node: TSESTree.Node): boolean => {
       parent = parent.parent;
 
       return !!(
-        parent?.type === AST_NODE_TYPES.CallExpression && isTestCaseCall(parent)
+        parent?.type === AST_NODE_TYPES.CallExpression &&
+        isTestCaseCall(parent, scope)
       );
     }
 
@@ -384,7 +389,7 @@ export default createRule({
       CallExpression(node: TSESTree.CallExpression) {
         // there are too many ways that the done argument could be used with
         // promises that contain expect that would make the promise safe for us
-        if (isTestCaseCallWithCallbackArg(node)) {
+        if (isTestCaseCallWithCallbackArg(node, context.getScope())) {
           inTestCaseWithDoneCallback = true;
 
           return;
@@ -409,7 +414,7 @@ export default createRule({
         // make promises containing expects safe in a test for us to be able to
         // accurately check, so we just bail out completely if it's present
         if (inTestCaseWithDoneCallback) {
-          if (isTestCaseCall(node)) {
+          if (isTestCaseCall(node, context.getScope())) {
             inTestCaseWithDoneCallback = false;
           }
 
@@ -436,7 +441,10 @@ export default createRule({
         // or our parent is not directly within the test case, we stop checking
         // because we're most likely in the body of a function being defined
         // within the test, which we can't track
-        if (!parent || !isDirectlyWithinTestCaseCall(parent)) {
+        if (
+          !parent ||
+          !isDirectlyWithinTestCaseCall(parent, context.getScope())
+        ) {
           return;
         }
 

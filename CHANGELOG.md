@@ -1,3 +1,24 @@
+## [26.2.2](https://github.com/jest-community/eslint-plugin-jest/compare/v26.2.1...v26.2.2) (2022-05-14)
+
+
+### Bug Fixes
+
+* use the last reference definition when checking jest fn scope ([#1109](https://github.com/jest-community/eslint-plugin-jest/issues/1109)) ([1b2b9c1](https://github.com/jest-community/eslint-plugin-jest/commit/1b2b9c1695a6dec1088daf0b44749100989226a4))
+
+## [26.2.1](https://github.com/jest-community/eslint-plugin-jest/compare/v26.2.0...v26.2.1) (2022-05-14)
+
+
+### Bug Fixes
+
+* use correct scope for checking references ([#1107](https://github.com/jest-community/eslint-plugin-jest/issues/1107)) ([89ab1a0](https://github.com/jest-community/eslint-plugin-jest/commit/89ab1a03c3f0eab53fd5af2f5051a4e4d010578e))
+
+# [26.2.0](https://github.com/jest-community/eslint-plugin-jest/compare/v26.1.5...v26.2.0) (2022-05-13)
+
+
+### Features
+
+* support `@jest/globals` ([#1094](https://github.com/jest-community/eslint-plugin-jest/issues/1094)) ([84d7a68](https://github.com/jest-community/eslint-plugin-jest/commit/84d7a68e8c64720a46fddddbcb1ba248cd61fd08))
+
 ## [26.1.5](https://github.com/jest-community/eslint-plugin-jest/compare/v26.1.4...v26.1.5) (2022-04-22)
 
 

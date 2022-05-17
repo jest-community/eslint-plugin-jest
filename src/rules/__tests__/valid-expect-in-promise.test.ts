@@ -1389,6 +1389,21 @@ ruleTester.run('valid-expect-in-promise', rule, {
     },
     {
       code: dedent`
+        import { test } from '@jest/globals';
+
+        test('later return', async () => {
+          const x = 1, promise = something().then(value => {
+            expect(value).toBe('red');
+          });
+        });
+      `,
+      parserOptions: { sourceType: 'module' },
+      errors: [
+        { column: 16, endColumn: 5, messageId: 'expectInFloatingPromise' },
+      ],
+    },
+    {
+      code: dedent`
         it('promise test', () => {
           const somePromise = getThatPromise();
           somePromise.then((data) => {

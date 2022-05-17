@@ -94,7 +94,10 @@ export default createRule<
         if (node.type === AST_NODE_TYPES.FunctionDeclaration) {
           const declaredVariables = context.getDeclaredVariables(node);
           const testCallExpressions =
-            getTestCallExpressionsFromDeclaredVariables(declaredVariables);
+            getTestCallExpressionsFromDeclaredVariables(
+              declaredVariables,
+              context.getScope(),
+            );
 
           checkCallExpressionUsed(testCallExpressions);
         }
@@ -111,7 +114,7 @@ export default createRule<
         const name = getNodeName(node.callee) ?? '';
 
         if (
-          isTestCaseCall(node) ||
+          isTestCaseCall(node, context.getScope()) ||
           additionalTestBlockFunctions.includes(name)
         ) {
           if (

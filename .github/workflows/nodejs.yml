@@ -85,11 +85,12 @@ jobs:
           yarn
           yarn add --dev eslint@${{ matrix.eslint-version }}
       - name: run tests
-        run: yarn test --coverage
+        # only collect coverage on eslint versions that support dynamic import
+        run: yarn test --coverage ${{ matrix.eslint-version >= 8 }}
         env:
           CI: true
       - uses: codecov/codecov-action@v3
-        if: always()
+        if: ${{ matrix.eslint-version >= 8 }}
   test-os:
     name: Test on ${{ matrix.os }} using Node.js LTS
     needs: prepare-yarn-cache
@@ -108,11 +109,12 @@ jobs:
       - name: install
         run: yarn
       - name: run tests
-        run: yarn test --coverage
+        # only collect coverage on eslint versions that support dynamic import
+        run: yarn test --coverage ${{ matrix.eslint-version >= 8 }}
         env:
           CI: true
       - uses: codecov/codecov-action@v3
-        if: always()
+        if: ${{ matrix.eslint-version >= 8 }}
 
   docs:
     if: ${{ github.event_name == 'pull_request' }}

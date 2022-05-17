@@ -14,7 +14,7 @@ jobs:
         with:
           node-version: 16
       - run: |
-          npm install
+          npm install --legacy-peer-deps
           npm run build
           npm link
           npm link eslint-plugin-jest

@@ -34,7 +34,7 @@ export default createRule({
       },
 
       CallExpression(node) {
-        if (isTestCaseCall(node)) {
+        if (isTestCaseCall(node, context.getScope())) {
           hasTestCase = true;
         }
       },

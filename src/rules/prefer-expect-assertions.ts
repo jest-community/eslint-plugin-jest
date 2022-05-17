@@ -157,7 +157,7 @@ export default createRule<[RuleOptions], MessageIds>({
       ForOfStatement: enterForLoop,
       'ForOfStatement:exit': exitForLoop,
       CallExpression(node) {
-        if (isTestCaseCall(node)) {
+        if (isTestCaseCall(node, context.getScope())) {
           inTestCaseCall = true;
 
           return;
@@ -174,7 +174,7 @@ export default createRule<[RuleOptions], MessageIds>({
         }
       },
       'CallExpression:exit'(node: TSESTree.CallExpression) {
-        if (!isTestCaseCall(node)) {
+        if (!isTestCaseCall(node, context.getScope())) {
           return;
         }
 

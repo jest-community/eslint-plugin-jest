@@ -36,7 +36,7 @@ export default createRule({
   create(context) {
     return {
       CallExpression(node) {
-        if (!isDescribeCall(node)) {
+        if (!isDescribeCall(node, context.getScope())) {
           return;
         }
 

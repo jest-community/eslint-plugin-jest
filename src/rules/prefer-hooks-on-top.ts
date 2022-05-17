@@ -1,4 +1,4 @@
-import { createRule, isHook, isTestCaseCall } from './utils';
+import { createRule, isHookCall, isTestCaseCall } from './utils';
 
 export default createRule({
   name: __filename,
@@ -20,10 +20,12 @@ export default createRule({
 
     return {
       CallExpression(node) {
-        if (!isHook(node) && isTestCaseCall(node)) {
+        const scope = context.getScope();
+
+        if (!isHookCall(node, scope) && isTestCaseCall(node, scope)) {
           hooksContext[hooksContext.length - 1] = true;
         }
-        if (hooksContext[hooksContext.length - 1] && isHook(node)) {
+        if (hooksContext[hooksContext.length - 1] && isHookCall(node, scope)) {
           context.report({
             messageId: 'noHookOnTop',
             node,

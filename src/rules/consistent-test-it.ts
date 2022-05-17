@@ -73,13 +73,14 @@ export default createRule<
 
     return {
       CallExpression(node: TSESTree.CallExpression) {
+        const scope = context.getScope();
         const nodeName = getNodeName(node.callee);
 
         if (!nodeName) {
           return;
         }
 
-        if (isDescribeCall(node)) {
+        if (isDescribeCall(node, scope)) {
           describeNestingLevel++;
         }
 
@@ -91,7 +92,7 @@ export default createRule<
             : node.callee;
 
         if (
-          isTestCaseCall(node) &&
+          isTestCaseCall(node, scope) &&
           describeNestingLevel === 0 &&
           !nodeName.includes(testKeyword)
         ) {
@@ -106,7 +107,7 @@ export default createRule<
         }
 
         if (
-          isTestCaseCall(node) &&
+          isTestCaseCall(node, scope) &&
           describeNestingLevel > 0 &&
           !nodeName.includes(testKeywordWithinDescribe)
         ) {
@@ -123,7 +124,7 @@ export default createRule<
         }
       },
       'CallExpression:exit'(node) {
-        if (isDescribeCall(node)) {
+        if (isDescribeCall(node, context.getScope())) {
           describeNestingLevel--;
         }
       },

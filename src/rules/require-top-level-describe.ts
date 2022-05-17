@@ -1,5 +1,10 @@
 import { TSESTree } from '@typescript-eslint/utils';
-import { createRule, isDescribeCall, isHook, isTestCaseCall } from './utils';
+import {
+  createRule,
+  isDescribeCall,
+  isHookCall,
+  isTestCaseCall,
+} from './utils';
 
 const messages = {
   tooManyDescribes:
@@ -44,7 +49,9 @@ export default createRule<
 
     return {
       CallExpression(node) {
-        if (isDescribeCall(node)) {
+        const scope = context.getScope();
+
+        if (isDescribeCall(node, scope)) {
           numberOfDescribeBlocks++;
 
           if (numberOfDescribeBlocks === 1) {
@@ -65,13 +72,13 @@ export default createRule<
         }
 
         if (numberOfDescribeBlocks === 0) {
-          if (isTestCaseCall(node)) {
+          if (isTestCaseCall(node, scope)) {
             context.report({ node, messageId: 'unexpectedTestCase' });
 
             return;
           }
 
-          if (isHook(node)) {
+          if (isHookCall(node, scope)) {
             context.report({ node, messageId: 'unexpectedHook' });
 
             return;
@@ -79,7 +86,7 @@ export default createRule<
         }
       },
       'CallExpression:exit'(node: TSESTree.CallExpression) {
-        if (isDescribeCall(node)) {
+        if (isDescribeCall(node, context.getScope())) {
           numberOfDescribeBlocks--;
         }
       },

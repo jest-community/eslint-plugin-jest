@@ -181,7 +181,9 @@ export default createRule<[Options], MessageIds>({
 
     return {
       CallExpression(node: TSESTree.CallExpression) {
-        if (!isDescribeCall(node) && !isTestCaseCall(node)) {
+        const scope = context.getScope();
+
+        if (!isDescribeCall(node, scope) && !isTestCaseCall(node, scope)) {
           return;
         }
 
@@ -201,7 +203,7 @@ export default createRule<[Options], MessageIds>({
 
           if (
             argument.type !== AST_NODE_TYPES.TemplateLiteral &&
-            !(ignoreTypeOfDescribeName && isDescribeCall(node))
+            !(ignoreTypeOfDescribeName && isDescribeCall(node, scope))
           ) {
             context.report({
               messageId: 'titleMustBeString',
@@ -218,7 +220,7 @@ export default createRule<[Options], MessageIds>({
           context.report({
             messageId: 'emptyTitle',
             data: {
-              jestFunctionName: isDescribeCall(node)
+              jestFunctionName: isDescribeCall(node, scope)
                 ? DescribeAlias.describe
                 : TestCaseName.test,
             },

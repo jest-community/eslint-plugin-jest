@@ -107,13 +107,17 @@ export default createRule<[('always' | 'multi')?], keyof typeof messages>({
       ArrowFunctionExpression: enterExpression,
       'ArrowFunctionExpression:exit': exitExpression,
       'CallExpression:exit'(node) {
-        if (isDescribeCall(node) || isTestCaseCall(node)) {
+        const scope = context.getScope();
+
+        if (isDescribeCall(node, scope) || isTestCaseCall(node, scope)) {
           /* istanbul ignore next */
           expressionDepth = depths.pop() ?? 0;
         }
       },
       CallExpression(node) {
-        if (isDescribeCall(node) || isTestCaseCall(node)) {
+        const scope = context.getScope();
+
+        if (isDescribeCall(node, scope) || isTestCaseCall(node, scope)) {
           depths.push(expressionDepth);
           expressionDepth = 0;
         }
