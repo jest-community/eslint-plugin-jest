@@ -1,4 +1,4 @@
-import { createRule, isHook } from './utils';
+import { createRule, isHookCall } from './utils';
 
 const HooksOrder = [
   'beforeAll',
@@ -33,12 +33,12 @@ export default createRule({
           return;
         }
 
-        if (!isHook(node)) {
+        if (!isHookCall(node, context.getScope())) {
           // Reset the previousHookIndex when encountering something different from a hook
           previousHookIndex = -1;
         }
 
-        if (isHook(node)) {
+        if (isHookCall(node, context.getScope())) {
           inHook = true;
           const currentHook = node.callee.name;
           const currentHookIndex = HooksOrder.findIndex(
@@ -60,12 +60,12 @@ export default createRule({
         }
       },
       'CallExpression:exit'(node) {
-        if (!isHook(node) && !inHook) {
+        if (!isHookCall(node, context.getScope()) && !inHook) {
           // Reset the previousHookIndex when encountering something different from a hook
           previousHookIndex = -1;
         }
 
-        if (isHook(node)) {
+        if (isHookCall(node, context.getScope())) {
           inHook = false;
         }
       },
