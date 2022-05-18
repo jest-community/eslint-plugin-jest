@@ -36,38 +36,42 @@ export default createRule({
         if (!isHookCall(node, context.getScope())) {
           // Reset the previousHookIndex when encountering something different from a hook
           previousHookIndex = -1;
+
+          return;
         }
 
-        if (isHookCall(node, context.getScope())) {
-          inHook = true;
-          const currentHook = node.callee.name;
-          const currentHookIndex = HooksOrder.findIndex(
-            name => name === currentHook,
-          );
+        inHook = true;
+        const currentHook = node.callee.name;
+        const currentHookIndex = HooksOrder.indexOf(currentHook);
 
-          if (currentHookIndex < previousHookIndex) {
-            context.report({
-              messageId: 'reorderHooks',
-              node,
-              data: {
-                previousHook: HooksOrder[previousHookIndex],
-                currentHook,
-              },
-            });
-          } else {
-            previousHookIndex = currentHookIndex;
-          }
+        if (currentHookIndex < previousHookIndex) {
+          context.report({
+            messageId: 'reorderHooks',
+            node,
+            data: {
+              previousHook: HooksOrder[previousHookIndex],
+              currentHook,
+            },
+          });
+
+          return;
         }
+
+        previousHookIndex = currentHookIndex;
       },
       'CallExpression:exit'(node) {
-        if (!isHookCall(node, context.getScope()) && !inHook) {
-          // Reset the previousHookIndex when encountering something different from a hook
-          previousHookIndex = -1;
-        }
-
         if (isHookCall(node, context.getScope())) {
           inHook = false;
+
+          return;
         }
+
+        if (inHook) {
+          return;
+        }
+
+        // Reset the previousHookIndex when encountering something different from a hook
+        previousHookIndex = -1;
       },
     };
   },
