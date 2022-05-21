@@ -776,13 +776,96 @@ export interface ParsedJestFnCall {
   members: AccessorNode[];
 }
 
+const ValidJestFnCallChains = [
+  'afterAll',
+  'afterEach',
+  'beforeAll',
+  'beforeEach',
+  'describe',
+  'describe.each',
+  'describe.only',
+  'describe.only.each',
+  'describe.skip',
+  'describe.skip.each',
+  'fdescribe',
+  'fdescribe.each',
+  'fdescribe.each',
+  'xdescribe',
+  'xdescribe.each',
+  'xdescribe.each',
+  'it',
+  'it.concurrent',
+  'it.concurrent.each',
+  'it.concurrent.only.each',
+  'it.concurrent.skip.each',
+  'it.each',
+  'it.each',
+  'it.failing',
+  'it.only',
+  'it.only.each',
+  'it.only.each',
+  'it.only.failing',
+  'it.skip',
+  'it.skip.each',
+  'it.skip.each',
+  'it.skip.failing',
+  'it.todo',
+  'fit',
+  'fit.each',
+  'fit.each',
+  'fit.failing',
+  'xit',
+  'xit.each',
+  'xit.each',
+  'xit.failing',
+  'test',
+  'test.concurrent',
+  'test.concurrent.each',
+  'test.concurrent.only.each',
+  'test.concurrent.skip.each',
+  'test.each',
+  'test.failing',
+  'test.only',
+  'test.only.each',
+  'test.only.failing',
+  'test.skip',
+  'test.skip.each',
+  'test.skip.failing',
+  'test.todo',
+  'xtest',
+  'xtest.each',
+  'xtest.each',
+  'xtest.failing',
+
+  // todo: check if actually valid (not in docs)
+  'test.concurrent.skip',
+  'test.concurrent.only',
+  'it.concurrent.skip',
+  'it.concurrent.only',
+];
+
 export const parseJestFnCall_1 = (
   node: TSESTree.CallExpression,
   scope: TSESLint.Scope.Scope,
 ): ParsedJestFnCall | null => {
+  // ensure that we're at the "top" of the function call chain otherwise when
+  // parsing e.g. x().y.z(), we'll incorrectly find & parse "x()"
+  if (node.parent?.type !== AST_NODE_TYPES.ExpressionStatement) {
+    return null;
+  }
+
   const chain = getNodeChain(node);
 
   if (chain.length === 0) {
+    return null;
+  }
+
+  // ensure that the only call expression in the chain is at the end
+  if (
+    chain
+      .slice(0, chain.length - 1)
+      .some(nod => nod.parent?.type === AST_NODE_TYPES.CallExpression)
+  ) {
     return null;
   }
 
@@ -811,6 +894,10 @@ export const parseJestFnCall_1 = (
     resolved.original ?? resolved.local,
     ...rest.map(link => getAccessorValue(link)),
   ];
+
+  if (!ValidJestFnCallChains.includes(links.join('.'))) {
+    return null;
+  }
 
   return {
     head: { ...resolved, node: first },
