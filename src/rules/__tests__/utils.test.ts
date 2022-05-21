@@ -2244,19 +2244,9 @@ interface TestParsedJestFnCall
   members: string[];
 }
 
-const expectedParsedJestFnCallResult = (code: string): TestParsedJestFnCall => {
-  const [node, ...members] = expectedNodeName(code).split('.');
-
-  return {
-    head: {
-      original: null,
-      local: node,
-      type: 'global',
-      node,
-    },
-    members,
-  };
-};
+const expectedParsedJestFnCallResultData = (result: TestParsedJestFnCall) => ({
+  data: JSON.stringify(result),
+});
 
 /**
  * Tests the AST utils against the given member expressions both
@@ -2273,19 +2263,82 @@ const testParsingJestFnCall = (
 
   ruleTester.run('parseJestFnCall', rule4, {
     valid: memberExpressions,
-    invalid: memberExpressions.map(code => ({
-      code: `${code}("works", () => {})`,
-      errors: [
+    invalid: memberExpressions.flatMap(code => {
+      const [node, ...members] = expectedNodeName(code).split('.');
+
+      return [
+        // global
         {
-          messageId: 'details' as const,
-          data: {
-            data: JSON.stringify(expectedParsedJestFnCallResult(code)),
-          },
-          column: 1,
-          line: 1,
+          code: `${code}("works", () => {})`,
+          errors: [
+            {
+              messageId: 'details' as const,
+              data: expectedParsedJestFnCallResultData({
+                head: {
+                  original: null,
+                  local: node,
+                  type: 'global',
+                  node,
+                },
+                members,
+              }),
+              column: 1,
+              line: 1,
+            },
+          ],
         },
-      ],
-    })),
+        // import
+        {
+          code: dedent`
+            import { ${node} } from '@jest/globals';
+
+            ${code}("works", () => {})
+          `,
+          parserOptions: { sourceType: 'module' },
+          errors: [
+            {
+              messageId: 'details' as const,
+              data: expectedParsedJestFnCallResultData({
+                head: {
+                  original: node,
+                  local: node,
+                  type: 'import',
+                  node,
+                },
+                members,
+              }),
+              column: 1,
+              line: 3,
+            },
+          ],
+        },
+        // import (aliased)
+        {
+          code: dedent`
+            import { ${node} as aliased } from '@jest/globals';
+
+            ${code.replace(node, 'aliased')}("works", () => {})
+          `,
+          parserOptions: { sourceType: 'module' },
+          errors: [
+            {
+              messageId: 'details' as const,
+              data: expectedParsedJestFnCallResultData({
+                head: {
+                  original: node,
+                  local: 'aliased',
+                  type: 'import',
+                  node: 'aliased',
+                },
+                members,
+              }),
+              column: 1,
+              line: 3,
+            },
+          ],
+        },
+      ];
+    }),
   });
 };
 
