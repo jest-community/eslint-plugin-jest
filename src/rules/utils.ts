@@ -767,6 +767,108 @@ const p = (node: TSESTree.Node): string[] => {
   return [node.type];
 };
 
+export interface ResolvedJestFnWithNode extends ResolvedJestFn {
+  node: AccessorNode;
+}
+
+export interface ParsedJestFnCall {
+  head: ResolvedJestFnWithNode;
+  members: AccessorNode[];
+}
+
+export const parseJestFnCall_1 = (
+  node: TSESTree.CallExpression,
+  scope: TSESLint.Scope.Scope,
+): ParsedJestFnCall | null => {
+  const chain = getNodeChain(node);
+
+  if (chain.length === 0) {
+    return null;
+  }
+
+  const [first, ...rest] = chain;
+
+  const resolved = resolveToJestFn(scope, getAccessorValue(first));
+
+  // we're not a jest function
+  if (!resolved) {
+    return null;
+  }
+
+  const links = [
+    resolved.original ?? resolved.local,
+    ...rest.map(link => getAccessorValue(link)),
+  ];
+
+  return {
+    head: { ...resolved, node: first },
+    members: rest,
+  };
+};
+
+/*
+  "parse jest function call"
+
+  1. parse the function call chain
+  2. resolve scope of left-most identifier
+
+  checks to perform:
+    "things"
+ */
+
+const parseJestFnCallChainInner = (
+  node: TSESTree.CallExpression,
+  properties: readonly string[],
+): AccessorNode[] | null => {
+  const chain = getNodeChain(node);
+
+  // console.log(getAccessorValue(chain[0]), chain.length);
+
+  // "each" is only valid at the last member of the call chain,
+  // or if there are any call expressions in the chain aside
+  if (
+    chain
+      .slice(0, chain.length - 1)
+      .some(
+        nod =>
+          nod.parent?.type === AST_NODE_TYPES.CallExpression ||
+          isSupportedAccessor(nod, 'each'),
+      )
+  ) {
+    return null;
+  }
+
+  // if the chain contains any members that don't match any of the given properties,
+  // we're not a valid jest function call chain
+  if (chain.slice(1).some(nod => !properties.includes(getAccessorValue(nod)))) {
+    return null;
+  }
+
+  const lastNode = chain[chain.length - 1];
+
+  console.log(
+    getAccessorValue(chain[0]),
+    chain.length,
+    p(lastNode).join(' > '),
+  );
+  // if (lastNode.parent?.parent?.parent?.type === AST_NODE_TYPES.CallExpression) {
+  //   return null;
+  // }
+
+  console.log(isSupportedAccessor(lastNode, 'each'));
+  // if we're an `each()`, ensure we're the outer CallExpression (i.e `.each()()`)
+  if (isSupportedAccessor(lastNode, 'each')) {
+    if (
+      node.callee.type !== AST_NODE_TYPES.CallExpression &&
+      node.callee.type !== AST_NODE_TYPES.TaggedTemplateExpression
+    ) {
+      return null;
+    }
+  }
+
+  return chain;
+};
+
 export const parseJestFnCallChain3 = (
   node: TSESTree.CallExpression,
   properties: readonly string[],

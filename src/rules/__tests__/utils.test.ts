@@ -1,17 +1,20 @@
 import { JSONSchemaForNPMPackageJsonFiles } from '@schemastore/package';
-import { TSESLint } from '@typescript-eslint/utils';
+import { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import dedent from 'dedent';
 import {
   TestCaseProperty,
   createRule,
   getAccessorValue,
-  getNodeChain,
   getNodeName,
   isDescribeCall,
   isHookCall,
   isTestCaseCall,
   parseJestFnAdvanced,
   parseJestFnCallChain3,
+  parseJestFnCall_1,
+  isSupportedAccessor,
+  ParsedJestFnCall,
+  ResolvedJestFnWithNode,
 } from '../utils';
 import { espreeParser } from './test-utils';
 
@@ -2158,6 +2161,7 @@ testUtilsAgainst3(
     ['it', ['it']],
   ],
   Object.keys(TestCaseProperty),
+  true,
 );
 
 // testUtilsAgainst2(
@@ -2169,3 +2173,386 @@ testUtilsAgainst3(
 //   ],
 //   [],
 // );
+
+// -----------------------------------------------------------------------------
+
+const isNode = (obj: unknown): obj is TSESTree.Node => {
+  if (typeof obj === 'object' && obj !== null) {
+    return ['type', 'loc', 'range', 'parent'].every(p => p in obj);
+  }
+
+  return false;
+};
+
+const rule4 = createRule({
+  name: __filename,
+  meta: {
+    docs: {
+      category: 'Possible Errors',
+      description: 'Fake rule for testing AST guards',
+      recommended: false,
+    },
+    messages: {
+      details: '{{ data }}',
+    },
+    schema: [],
+    type: 'problem',
+  },
+  defaultOptions: [],
+  create: context => ({
+    CallExpression(node) {
+      // if (node.parent.type !== AST_NODE_TYPES.ExpressionStatement) {
+      //   return;
+      // }
+
+      const parsed = parseJestFnCall_1(node, context.getScope());
+
+      if (parsed) {
+        context.report({
+          messageId: 'details',
+          node,
+          data: {
+            data: JSON.stringify(parsed, (key, value) => {
+              if (isNode(value)) {
+                if (isSupportedAccessor(value)) {
+                  return getAccessorValue(value);
+                }
+
+                return undefined;
+              }
+
+              return value;
+            }),
+            // subject: getAccessorValue(chain.subject),
+            // modifier: chain.modifier ? getAccessorValue(chain.modifier) : null,
+            // each: chain.each ? getAccessorValue(chain.each) : null,
+          },
+        });
+      }
+    },
+  }),
+});
+
+interface TestResolvedJestFnWithNode
+  extends Omit<ResolvedJestFnWithNode, 'node'> {
+  node: string;
+}
+
+interface TestParsedJestFnCall
+  extends Omit<ParsedJestFnCall, 'head' | 'members'> {
+  head: TestResolvedJestFnWithNode;
+  members: string[];
+}
+
+const expectedParsedJestFnCallResult = (code: string): TestParsedJestFnCall => {
+  const [node, ...members] = expectedNodeName(code).split('.');
+
+  return {
+    head: {
+      original: null,
+      local: node,
+      type: 'global',
+      node,
+    },
+    members,
+  };
+};
+
+/**
+ * Tests the AST utils against the given member expressions both
+ * as is and as call expressions.
+ */
+const testParsingJestFnCall = (
+  memberExpressions: string[],
+  _: string,
+  skip = false,
+) => {
+  if (skip) {
+    return;
+  }
+
+  ruleTester.run('parseJestFnCall', rule4, {
+    valid: memberExpressions.filter(c => !c.includes('each')),
+    invalid: memberExpressions
+      .filter(c => !c.includes('each'))
+      .map(code => ({
+        code: `${code}("works", () => {})`,
+        errors: [
+          {
+            messageId: 'details' as const,
+            data: {
+              data: JSON.stringify(expectedParsedJestFnCallResult(code)),
+            },
+            column: 1,
+            line: 1,
+          },
+        ],
+      })),
+  });
+};
+
+testParsingJestFnCall(
+  [
+    'it["concurrent"]["skip"]',
+    'it["concurrent"].skip',
+    'it.concurrent["skip"]',
+    'it.concurrent.skip',
+
+    'it["concurrent"]["only"]',
+    'it["concurrent"].only',
+    'it.concurrent["only"]',
+    'it.concurrent.only',
+
+    'it["skip"]["each"]()',
+    'it["skip"].each()',
+    'it.skip["each"]()',
+    'it.skip.each()',
+
+    'it["skip"]["each"]``',
+    'it["skip"].each``',
+    'it.skip["each"]``',
+    'it.skip.each``',
+
+    'it["only"]["each"]()',
+    'it["only"].each()',
+    'it.only["each"]()',
+    'it.only.each()',
+
+    'it["only"]["each"]``',
+    'it["only"].each``',
+    'it.only["each"]``',
+    'it.only.each``',
+
+    'xit["each"]()',
+    'xit.each()',
+
+    'xit["each"]``',
+    'xit.each``',
+
+    'fit["each"]()',
+    'fit.each()',
+
+    'fit["each"]``',
+    'fit.each``',
+
+    'it["skip"]',
+    'it.skip',
+
+    'it["only"]',
+    'it.only',
+
+    'it["each"]()',
+    'it.each()',
+
+    'it["each"]``',
+    'it.each``',
+
+    'fit',
+    'xit',
+    'it',
+  ],
+  'test',
+  false,
+);
+
+testParsingJestFnCall(
+  [
+    'test["concurrent"]["skip"]',
+    'test["concurrent"].skip',
+    'test.concurrent["skip"]',
+    'test.concurrent.skip',
+
+    'test["concurrent"]["only"]',
+    'test["concurrent"].only',
+    'test.concurrent["only"]',
+    'test.concurrent.only',
+
+    'test["skip"]["each"]()',
+    'test["skip"].each()',
+    'test.skip["each"]()',
+    'test.skip.each()',
+
+    'test["skip"]["each"]``',
+    'test["skip"].each``',
+    'test.skip["each"]``',
+    'test.skip.each``',
+
+    'test["only"]["each"]()',
+    'test["only"].each()',
+    'test.only["each"]()',
+    'test.only.each()',
+
+    'test["only"]["each"]``',
+    'test["only"].each``',
+    'test.only["each"]``',
+    'test.only.each``',
+
+    'xtest["each"]()',
+    'xtest.each()',
+
+    'xtest["each"]``',
+    'xtest.each``',
+
+    'test["skip"]',
+    'test.skip',
+
+    'test["only"]',
+    'test.only',
+
+    'test["each"]()',
+    'test.each()',
+
+    'test["each"]``',
+    'test.each``',
+
+    'xtest',
+    'test',
+  ],
+  'test',
+  false,
+);
+
+testParsingJestFnCall(
+  [
+    'describe["skip"]["each"]()',
+    'describe["skip"].each()',
+    'describe.skip["each"]()',
+    'describe.skip.each()',
+
+    'describe["skip"]["each"]``',
+    'describe["skip"].each``',
+    'describe.skip["each"]``',
+    'describe.skip.each``',
+
+    'describe["only"]["each"]()',
+    'describe["only"].each()',
+    'describe.only["each"]()',
+    'describe.only.each()',
+
+    'describe["only"]["each"]``',
+    'describe["only"].each``',
+    'describe.only["each"]``',
+    'describe.only.each``',
+
+    'xdescribe["each"]()',
+    'xdescribe.each()',
+
+    'xdescribe["each"]``',
+    'xdescribe.each``',
+
+    'fdescribe["each"]()',
+    'fdescribe.each()',
+
+    'fdescribe["each"]``',
+    'fdescribe.each``',
+
+    'describe["skip"]',
+    'describe.skip',
+
+    'describe["only"]',
+    'describe.only',
+
+    'describe["each"]()',
+    'describe.each()',
+
+    'describe["each"]``',
+    'describe.each``',
+
+    'fdescribe',
+    'xdescribe',
+    'describe',
+  ],
+  'describe',
+  false,
+);
+
+// testParsingJestFnCall(
+//   [
+//     [
+//       'describe',
+//       {
+//         head: {
+//           original: null,
+//           local: 'describe',
+//           type: 'global',
+//           node: 'describe',
+//         },
+//         members: [],
+//       },
+//     ],
+//     [
+//       'describe.only',
+//       {
+//         head: {
+//           original: null,
+//           local: 'describe',
+//           type: 'global',
+//           node: 'describe',
+//         },
+//         members: ['only'],
+//       },
+//     ],
+//     [
+//       'describe.skip',
+//       {
+//         head: {
+//           original: null,
+//           local: 'describe',
+//           type: 'global',
+//           node: 'describe',
+//         },
+//         members: ['skip'],
+//       },
+//     ],
+//     // [
+//     //   'describe.each()',
+//     //   {
+//     //     head: {
+//     //       original: null,
+//     //       local: 'describe',
+//     //       type: 'global',
+//     //       node: 'describe',
+//     //     },
+//     //     members: ['each'],
+//     //   },
+//     // ],
+//   ],
+//   false,
+// );
+
+// ruleTester.run('nonexistent methods4', rule4, {
+//   valid: [
+//     // 'describe.something()',
+//     // 'describe.me()',
+//     // 'test.me()',
+//     // 'it.fails()',
+//     // 'context()',
+//     // 'context.each``()',
+//     // 'context.each()',
+//     // 'describe.context()',
+//     // 'describe.concurrent()()',
+//     // 'describe.concurrent``()',
+//     // 'describe.every``()',
+//     // 'it.only().fails()',
+//   ],
+//   invalid: [
+//     {
+//       code: 'describe()',
+//       errors: [
+//         {
+//           messageId: 'details',
+//           data: {
+//             data: JSON.stringify({
+//               head: {
+//                 original: null,
+//                 local: 'describe',
+//                 type: 'global',
+//               },
+//               members: [],
+//             }),
+//           },
+//         },
+//       ],
+//     },
+//   ],
+// });
