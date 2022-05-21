@@ -3,11 +3,10 @@ import {
   AccessorNode,
   JestFunctionCallExpression,
   createRule,
-  getNodeName,
   isDescribeCall,
   isSupportedAccessor,
   isTestCaseCall,
-  parseJestFnAdvanced,
+  parseJestFnCall_1,
 } from './utils';
 
 const findOnlyNode = (
@@ -58,7 +57,7 @@ export default createRule({
       CallExpression(node) {
         const scope = context.getScope();
 
-        const parsed = parseJestFnAdvanced(node, scope);
+        const parsed = parseJestFnCall_1(node, scope);
 
         if (parsed?.type !== 'test' && parsed?.type !== 'describe') {
           return;
@@ -68,14 +67,14 @@ export default createRule({
           return;
         }
 
-        if (parsed.name.startsWith('f')) {
+        if ((parsed.head.original ?? parsed.head.local).startsWith('f')) {
           context.report({
             messageId: 'focusedTest',
             node,
             suggest: [
               {
                 messageId: 'suggestRemoveFocus',
-                fix: fixer => {
+                fix(fixer) {
                   // if(parsed.name !== parsed.)
                   // return [];
                   return fixer.removeRange([node.range[0], node.range[0] + 1]);

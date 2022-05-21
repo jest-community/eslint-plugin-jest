@@ -771,9 +771,30 @@ export interface ResolvedJestFnWithNode extends ResolvedJestFn {
   node: AccessorNode;
 }
 
+type JestFnType = 'hook' | 'describe' | 'test' | 'expect' | 'other';
+
+const determineJestFnType = (name: string): JestFnType => {
+  if (name === 'expect') {
+    return 'expect';
+  }
+
+  if (DescribeAlias.hasOwnProperty(name)) {
+    return 'describe';
+  }
+  if (TestCaseName.hasOwnProperty(name)) {
+    return 'test';
+  }
+  if (HookName.hasOwnProperty(name)) {
+    return 'hook';
+  }
+
+  return 'other';
+};
+
 export interface ParsedJestFnCall {
   head: ResolvedJestFnWithNode;
   members: AccessorNode[];
+  type: JestFnType;
 }
 
 const ValidJestFnCallChains = [
@@ -902,6 +923,7 @@ export const parseJestFnCall_1 = (
   return {
     head: { ...resolved, node: first },
     members: rest,
+    type: determineJestFnType(resolved.original ?? resolved.local),
   };
 };
 

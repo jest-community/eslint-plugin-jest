@@ -2250,6 +2250,7 @@ const expectedParsedJestFnCallResultData = (result: TestParsedJestFnCall) => ({
 
 const buildParsedJestFnCallCases = (
   code: string,
+  type: TestParsedJestFnCall['type'],
 ): [
   valid: Array<TSESLint.ValidTestCase<unknown[]> | string>,
   invalid: Array<TSESLint.InvalidTestCase<'details', unknown[]>>,
@@ -2294,6 +2295,7 @@ const buildParsedJestFnCallCases = (
                 node,
               },
               members,
+              type,
             }),
             column: 1,
             line: 1,
@@ -2319,6 +2321,7 @@ const buildParsedJestFnCallCases = (
                 node,
               },
               members,
+              type,
             }),
             column: 1,
             line: 3,
@@ -2344,6 +2347,7 @@ const buildParsedJestFnCallCases = (
                 node: 'aliased',
               },
               members,
+              type,
             }),
             column: 1,
             line: 3,
@@ -2360,7 +2364,7 @@ const buildParsedJestFnCallCases = (
  */
 const testParsingJestFnCall = (
   memberExpressions: string[],
-  _: string,
+  type: TestParsedJestFnCall['type'],
   skip = false,
 ) => {
   if (skip) {
@@ -2368,7 +2372,7 @@ const testParsingJestFnCall = (
   }
 
   const [valid, invalid] = memberExpressions
-    .map(code => buildParsedJestFnCallCases(code))
+    .map(code => buildParsedJestFnCallCases(code, type))
     .reduce(
       ([valid, invalid], [nv, ni]) => [
         [...valid, ...nv],
@@ -2511,7 +2515,7 @@ testParsingJestFnCall(
     'it.todo',
   ],
   '',
-  false,
+  true,
 );
 
 testParsingJestFnCall(

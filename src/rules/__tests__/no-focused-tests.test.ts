@@ -325,9 +325,9 @@ ruleTester.run('no-focused-tests (with imports)', rule, {
   valid: [
     {
       code: dedent`
-        import { fdescribe as describeJustThis } from '@jest/globals';
+        import { describe as fdescribe } from '@jest/globals';
 
-        describeJustThis()
+        fdescribe()
       `,
       parserOptions: { sourceType: 'module' },
     },
@@ -453,7 +453,6 @@ ruleTester.run('no-focused-tests (aliases)', rule, {
           line: 3,
         },
       ],
-      // only: true,
     },
     {
       code: dedent`
@@ -469,14 +468,12 @@ ruleTester.run('no-focused-tests (aliases)', rule, {
           line: 3,
         },
       ],
-      // only: true,
     },
     {
       code: dedent`
         import { describe as context } from '@jest/globals';
 
         context.only.each()()
-        context.only()
       `,
       parserOptions: { sourceType: 'module' },
       errors: [
@@ -496,7 +493,6 @@ ruleTester.run('no-focused-tests (aliases)', rule, {
           ],
         },
       ],
-      only: true,
     },
   ],
 });
