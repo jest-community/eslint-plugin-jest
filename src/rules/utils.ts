@@ -676,7 +676,7 @@ export const isHookCall = (
   node: TSESTree.CallExpression,
   scope: TSESLint.Scope.Scope,
 ): node is JestFunctionCallExpressionWithIdentifierCallee<HookName> => {
-  const parsed = parseJestFnAdvanced(node, scope);
+  const parsed = parseJestFnCall_1(node, scope);
 
   return parsed?.type === 'hook';
 };
@@ -736,7 +736,7 @@ export const isTestCaseCall = (
   scope: TSESLint.Scope.Scope,
 ): node is JestFunctionCallExpression<TestCaseName> => {
   // return isTestCaseCallOriginal(node, scope);
-  const parsed = parseJestFnAdvanced(node, scope);
+  const parsed = parseJestFnCall_1(node, scope);
 
   return parsed?.type === 'test';
 };
@@ -1268,7 +1268,7 @@ export const isDescribeCall = (
   node: TSESTree.CallExpression,
   scope: TSESLint.Scope.Scope,
 ): node is JestFunctionCallExpression<DescribeAlias> => {
-  const parsed = parseJestFnAdvanced(node, scope);
+  const parsed = parseJestFnCall_1(node, scope);
 
   return parsed?.type === 'describe';
 };

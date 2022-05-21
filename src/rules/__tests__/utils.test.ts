@@ -225,7 +225,7 @@ testUtilsAgainst(
     'it',
   ],
   'test',
-  true,
+  false,
 );
 
 testUtilsAgainst(
@@ -282,7 +282,7 @@ testUtilsAgainst(
     'test',
   ],
   'test',
-  true,
+  false,
 );
 
 testUtilsAgainst(
@@ -336,7 +336,7 @@ testUtilsAgainst(
     'describe',
   ],
   'describe',
-  true,
+  false,
 );
 
 const hooks = ['beforeAll', 'beforeEach', 'afterEach', 'afterAll'];
