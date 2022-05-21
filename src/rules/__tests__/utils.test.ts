@@ -2,19 +2,19 @@ import { JSONSchemaForNPMPackageJsonFiles } from '@schemastore/package';
 import { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import dedent from 'dedent';
 import {
+  ParsedJestFnCall,
+  ResolvedJestFnWithNode,
   TestCaseProperty,
   createRule,
   getAccessorValue,
   getNodeName,
   isDescribeCall,
   isHookCall,
+  isSupportedAccessor,
   isTestCaseCall,
   parseJestFnAdvanced,
   parseJestFnCallChain3,
   parseJestFnCall_1,
-  isSupportedAccessor,
-  ParsedJestFnCall,
-  ResolvedJestFnWithNode,
 } from '../utils';
 import { espreeParser } from './test-utils';
 
@@ -360,7 +360,7 @@ ruleTester.run('hooks', rule, {
   })),
 });
 
-describe.skip('reference checking', () => {
+describe('reference checking', () => {
   ruleTester.run('general', rule, {
     valid: [
       "([]).skip('is not a jest function', () => {});",
