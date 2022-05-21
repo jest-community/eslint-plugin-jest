@@ -101,6 +101,50 @@ ruleTester.run('basic describe block', rule, {
     },
     {
       code: dedent`
+        import { afterEach } from '@jest/globals';
+
+        describe.skip("foo", () => {
+          afterEach(() => {}),
+          afterEach(() => {}),
+          test("bar", () => {
+            someFn();
+          })
+        })
+      `,
+      parserOptions: { sourceType: 'module' },
+      errors: [
+        {
+          messageId: 'noDuplicateHook',
+          data: { hook: 'afterEach' },
+          column: 3,
+          line: 5,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        import { afterEach, afterEach as somethingElse } from '@jest/globals';
+
+        describe.skip("foo", () => {
+          afterEach(() => {}),
+          somethingElse(() => {}),
+          test("bar", () => {
+            someFn();
+          })
+        })
+      `,
+      parserOptions: { sourceType: 'module' },
+      errors: [
+        {
+          messageId: 'noDuplicateHook',
+          data: { hook: 'afterEach' },
+          column: 3,
+          line: 5,
+        },
+      ],
+    },
+    {
+      code: dedent`
         describe.skip("foo", () => {
           afterAll(() => {}),
           afterAll(() => {}),
