@@ -2449,7 +2449,58 @@ ruleTester.run('parseJestFnCall', rule4, {
       parserOptions: { sourceType: 'module' },
     },
   ],
-  invalid: [],
+  invalid: [
+    {
+      code: dedent`
+        beforeEach(() => {}),
+        beforeEach(() => {}),
+        beforeEach(() => {});
+      `,
+      parserOptions: { sourceType: 'module' },
+      errors: [1, 2, 3].map(line => ({
+        messageId: 'details' as const,
+        data: expectedParsedJestFnCallResultData({
+          name: 'beforeEach',
+          type: 'hook',
+          head: {
+            original: null,
+            local: 'beforeEach',
+            type: 'global',
+            node: 'beforeEach',
+          },
+          members: [],
+        }),
+        column: 1,
+        line,
+      })),
+    },
+    {
+      code: dedent`
+        import { beforeEach } from '@jest/globals';
+
+        beforeEach(() => {}),
+        beforeEach(() => {}),
+        beforeEach(() => {});
+      `,
+      parserOptions: { sourceType: 'module' },
+      errors: [1, 2, 3].map(line => ({
+        messageId: 'details' as const,
+        data: expectedParsedJestFnCallResultData({
+          name: 'beforeEach',
+          type: 'hook',
+          head: {
+            original: 'beforeEach',
+            local: 'beforeEach',
+            type: 'import',
+            node: 'beforeEach',
+          },
+          members: [],
+        }),
+        column: 1,
+        line: line + 2,
+      })),
+    },
+  ],
 });
 
 testParsingJestFnCall(
@@ -2693,6 +2744,12 @@ testParsingJestFnCall(
     'describe',
   ],
   'describe',
+  false,
+);
+
+testParsingJestFnCall(
+  ['afterAll', 'afterEach', 'beforeAll', 'beforeEach'],
+  'hook',
   false,
 );
 

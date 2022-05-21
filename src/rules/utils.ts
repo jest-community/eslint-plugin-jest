@@ -871,8 +871,12 @@ export const parseJestFnCall_1 = (
   scope: TSESLint.Scope.Scope,
 ): ParsedJestFnCall | null => {
   // ensure that we're at the "top" of the function call chain otherwise when
-  // parsing e.g. x().y.z(), we'll incorrectly find & parse "x()"
-  if (node.parent?.type !== AST_NODE_TYPES.ExpressionStatement) {
+  // parsing e.g. x().y.z(), we'll incorrectly find & parse "x()" even though
+  // the full chain is not a valid jest function call chain
+  if (
+    node.parent?.type === AST_NODE_TYPES.CallExpression ||
+    node.parent?.type === AST_NODE_TYPES.MemberExpression
+  ) {
     return null;
   }
 
