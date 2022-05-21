@@ -2,9 +2,8 @@ import { AST_NODE_TYPES, TSESLint, TSESTree } from '@typescript-eslint/utils';
 import {
   TestCaseName,
   createRule,
-  getNodeName,
   isDescribeCall,
-  isTestCaseCall,
+  parseJestFnCall_1,
 } from './utils';
 
 const buildFixer =
@@ -74,14 +73,16 @@ export default createRule<
     return {
       CallExpression(node: TSESTree.CallExpression) {
         const scope = context.getScope();
-        const nodeName = getNodeName(node.callee);
+        const jestFnCall = parseJestFnCall_1(node, scope);
 
-        if (!nodeName) {
+        if (!jestFnCall) {
           return;
         }
 
-        if (isDescribeCall(node, scope)) {
+        if (jestFnCall.type === 'describe') {
           describeNestingLevel++;
+
+          return;
         }
 
         const funcNode =
@@ -92,9 +93,9 @@ export default createRule<
             : node.callee;
 
         if (
-          isTestCaseCall(node, scope) &&
+          jestFnCall.type === 'test' &&
           describeNestingLevel === 0 &&
-          !nodeName.includes(testKeyword)
+          !jestFnCall.name.endsWith(testKeyword)
         ) {
           const oppositeTestKeyword = getOppositeTestKeyword(testKeyword);
 
@@ -102,14 +103,14 @@ export default createRule<
             messageId: 'consistentMethod',
             node: node.callee,
             data: { testKeyword, oppositeTestKeyword },
-            fix: buildFixer(funcNode, nodeName, testKeyword),
+            fix: buildFixer(funcNode, jestFnCall.name, testKeyword),
           });
         }
 
         if (
-          isTestCaseCall(node, scope) &&
+          jestFnCall.type === 'test' &&
           describeNestingLevel > 0 &&
-          !nodeName.includes(testKeywordWithinDescribe)
+          !jestFnCall.name.endsWith(testKeywordWithinDescribe)
         ) {
           const oppositeTestKeyword = getOppositeTestKeyword(
             testKeywordWithinDescribe,
@@ -119,7 +120,11 @@ export default createRule<
             messageId: 'consistentMethodWithinDescribe',
             node: node.callee,
             data: { testKeywordWithinDescribe, oppositeTestKeyword },
-            fix: buildFixer(funcNode, nodeName, testKeywordWithinDescribe),
+            fix: buildFixer(
+              funcNode,
+              jestFnCall.name,
+              testKeywordWithinDescribe,
+            ),
           });
         }
       },

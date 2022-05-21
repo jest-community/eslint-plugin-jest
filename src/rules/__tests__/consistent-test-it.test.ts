@@ -62,6 +62,52 @@ ruleTester.run('consistent-test-it with fn=test', rule, {
       ],
     },
     {
+      code: dedent`
+        import { it } from '@jest/globals';
+
+        it("foo")
+      `,
+      output: dedent`
+        import { it } from '@jest/globals';
+
+        test("foo")
+      `,
+      options: [{ fn: TestCaseName.test }],
+      parserOptions: { sourceType: 'module' },
+      errors: [
+        {
+          messageId: 'consistentMethod',
+          data: {
+            testKeyword: TestCaseName.test,
+            oppositeTestKeyword: TestCaseName.it,
+          },
+        },
+      ],
+    },
+    {
+      code: dedent`
+        import { it as testThisThing } from '@jest/globals';
+
+        testThisThing("foo")
+      `,
+      output: dedent`
+        import { it as testThisThing } from '@jest/globals';
+
+        test("foo")
+      `,
+      options: [{ fn: TestCaseName.test }],
+      parserOptions: { sourceType: 'module' },
+      errors: [
+        {
+          messageId: 'consistentMethod',
+          data: {
+            testKeyword: TestCaseName.test,
+            oppositeTestKeyword: TestCaseName.it,
+          },
+        },
+      ],
+    },
+    {
       code: 'xit("foo")',
       output: 'xtest("foo")',
       options: [{ fn: TestCaseName.test }],
@@ -485,6 +531,52 @@ ruleTester.run('consistent-test-it with fn=test and withinDescribe=it ', rule, {
       code: 'describe("suite", () => { xtest("foo") })',
       output: 'describe("suite", () => { xit("foo") })',
       options: [{ fn: TestCaseName.test, withinDescribe: TestCaseName.it }],
+      errors: [
+        {
+          messageId: 'consistentMethodWithinDescribe',
+          data: {
+            testKeywordWithinDescribe: TestCaseName.it,
+            oppositeTestKeyword: TestCaseName.test,
+          },
+        },
+      ],
+    },
+    {
+      code: dedent`
+        import { xtest as dontTestThis } from '@jest/globals';
+
+        describe("suite", () => { dontTestThis("foo") });
+      `,
+      output: dedent`
+        import { xtest as dontTestThis } from '@jest/globals';
+
+        describe("suite", () => { xit("foo") });
+      `,
+      options: [{ fn: TestCaseName.test, withinDescribe: TestCaseName.it }],
+      parserOptions: { sourceType: 'module' },
+      errors: [
+        {
+          messageId: 'consistentMethodWithinDescribe',
+          data: {
+            testKeywordWithinDescribe: TestCaseName.it,
+            oppositeTestKeyword: TestCaseName.test,
+          },
+        },
+      ],
+    },
+    {
+      code: dedent`
+        import { describe as context, xtest as dontTestThis } from '@jest/globals';
+
+        context("suite", () => { dontTestThis("foo") });
+      `,
+      output: dedent`
+        import { describe as context, xtest as dontTestThis } from '@jest/globals';
+
+        context("suite", () => { xit("foo") });
+      `,
+      options: [{ fn: TestCaseName.test, withinDescribe: TestCaseName.it }],
+      parserOptions: { sourceType: 'module' },
       errors: [
         {
           messageId: 'consistentMethodWithinDescribe',
