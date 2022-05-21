@@ -2272,22 +2272,20 @@ const testParsingJestFnCall = (
   }
 
   ruleTester.run('parseJestFnCall', rule4, {
-    valid: memberExpressions.filter(c => !c.includes('each')),
-    invalid: memberExpressions
-      .filter(c => !c.includes('each'))
-      .map(code => ({
-        code: `${code}("works", () => {})`,
-        errors: [
-          {
-            messageId: 'details' as const,
-            data: {
-              data: JSON.stringify(expectedParsedJestFnCallResult(code)),
-            },
-            column: 1,
-            line: 1,
+    valid: memberExpressions,
+    invalid: memberExpressions.map(code => ({
+      code: `${code}("works", () => {})`,
+      errors: [
+        {
+          messageId: 'details' as const,
+          data: {
+            data: JSON.stringify(expectedParsedJestFnCallResult(code)),
           },
-        ],
-      })),
+          column: 1,
+          line: 1,
+        },
+      ],
+    })),
   });
 };
 

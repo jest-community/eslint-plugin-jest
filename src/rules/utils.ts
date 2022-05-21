@@ -788,6 +788,18 @@ export const parseJestFnCall_1 = (
 
   const [first, ...rest] = chain;
 
+  const lastNode = chain[chain.length - 1];
+
+  // if we're an `each()`, ensure we're the outer CallExpression (i.e `.each()()`)
+  if (isSupportedAccessor(lastNode, 'each')) {
+    if (
+      node.callee.type !== AST_NODE_TYPES.CallExpression &&
+      node.callee.type !== AST_NODE_TYPES.TaggedTemplateExpression
+    ) {
+      return null;
+    }
+  }
+
   const resolved = resolveToJestFn(scope, getAccessorValue(first));
 
   // we're not a jest function
