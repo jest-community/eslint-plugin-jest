@@ -792,9 +792,10 @@ const determineJestFnType = (name: string): JestFnType => {
 };
 
 export interface ParsedJestFnCall {
+  name: string;
+  type: JestFnType;
   head: ResolvedJestFnWithNode;
   members: AccessorNode[];
-  type: JestFnType;
 }
 
 const ValidJestFnCallChains = [
@@ -911,19 +912,19 @@ export const parseJestFnCall_1 = (
     return null;
   }
 
-  const links = [
-    resolved.original ?? resolved.local,
-    ...rest.map(link => getAccessorValue(link)),
-  ];
+  const name = resolved.original ?? resolved.local;
+
+  const links = [name, ...rest.map(link => getAccessorValue(link))];
 
   if (!ValidJestFnCallChains.includes(links.join('.'))) {
     return null;
   }
 
   return {
+    name,
+    type: determineJestFnType(name),
     head: { ...resolved, node: first },
     members: rest,
-    type: determineJestFnType(resolved.original ?? resolved.local),
   };
 };
 

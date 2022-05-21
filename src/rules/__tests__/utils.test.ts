@@ -2288,6 +2288,8 @@ const buildParsedJestFnCallCases = (
           {
             messageId: 'details' as const,
             data: expectedParsedJestFnCallResultData({
+              name: node,
+              type,
               head: {
                 original: null,
                 local: node,
@@ -2295,7 +2297,6 @@ const buildParsedJestFnCallCases = (
                 node,
               },
               members,
-              type,
             }),
             column: 1,
             line: 1,
@@ -2314,6 +2315,8 @@ const buildParsedJestFnCallCases = (
           {
             messageId: 'details' as const,
             data: expectedParsedJestFnCallResultData({
+              name: node,
+              type,
               head: {
                 original: node,
                 local: node,
@@ -2321,7 +2324,6 @@ const buildParsedJestFnCallCases = (
                 node,
               },
               members,
-              type,
             }),
             column: 1,
             line: 3,
@@ -2340,6 +2342,8 @@ const buildParsedJestFnCallCases = (
           {
             messageId: 'details' as const,
             data: expectedParsedJestFnCallResultData({
+              name: node,
+              type,
               head: {
                 original: node,
                 local: 'aliased',
@@ -2347,7 +2351,6 @@ const buildParsedJestFnCallCases = (
                 node: 'aliased',
               },
               members,
-              type,
             }),
             column: 1,
             line: 3,
