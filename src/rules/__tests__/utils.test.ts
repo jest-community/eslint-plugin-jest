@@ -2,12 +2,16 @@ import { JSONSchemaForNPMPackageJsonFiles } from '@schemastore/package';
 import { TSESLint } from '@typescript-eslint/utils';
 import dedent from 'dedent';
 import {
+  TestCaseProperty,
   createRule,
+  getAccessorValue,
+  getNodeChain,
   getNodeName,
   isDescribeCall,
   isHookCall,
   isTestCaseCall,
   parseJestFnAdvanced,
+  parseJestFnCallChain3,
 } from '../utils';
 import { espreeParser } from './test-utils';
 
@@ -152,6 +156,11 @@ const testUtilsAgainst = (
   });
 };
 
+ruleTester.run('it', rule, {
+  valid: ['test.for.each()()', 'test.for.each``()', 'test.each.each()()'],
+  invalid: [],
+});
+
 testUtilsAgainst(
   [
     'it["concurrent"]["skip"]',
@@ -213,6 +222,7 @@ testUtilsAgainst(
     'it',
   ],
   'test',
+  true,
 );
 
 testUtilsAgainst(
@@ -269,6 +279,7 @@ testUtilsAgainst(
     'test',
   ],
   'test',
+  true,
 );
 
 testUtilsAgainst(
@@ -322,6 +333,7 @@ testUtilsAgainst(
     'describe',
   ],
   'describe',
+  true,
 );
 
 const hooks = ['beforeAll', 'beforeEach', 'afterEach', 'afterAll'];
@@ -345,7 +357,7 @@ ruleTester.run('hooks', rule, {
   })),
 });
 
-describe('reference checking', () => {
+describe.skip('reference checking', () => {
   ruleTester.run('general', rule, {
     valid: [
       "([]).skip('is not a jest function', () => {});",
@@ -1931,3 +1943,229 @@ ruleTester.run('more reference checking', rule2, {
     },
   ],
 });
+
+// -----------------------------------------------------------------------------
+
+const rule3 = createRule<[{ properties: readonly string[] }], 'details'>({
+  name: __filename,
+  meta: {
+    docs: {
+      category: 'Possible Errors',
+      description: 'Fake rule for testing AST guards',
+      recommended: false,
+    },
+    messages: {
+      details: 'chain: {{ chain }}',
+      // details: [
+      //   'subject', //
+      //   'modifier',
+      //   'each',
+      // ]
+      //   .map(data => `${data}: {{ ${data} }}`)
+      //   .join('\n'),
+    },
+    schema: [
+      {
+        type: 'object',
+        properties: {
+          properties: {
+            type: 'array',
+            items: { type: 'string' },
+          },
+        },
+      },
+    ],
+    type: 'problem',
+  },
+  defaultOptions: [{ properties: [] }],
+  create: context => ({
+    CallExpression(node) {
+      // if (node.parent.type !== AST_NODE_TYPES.ExpressionStatement) {
+      //   return;
+      // }
+
+      // const chain = parseJestFnCallChain3(node);
+      const chain = parseJestFnCallChain3(node, context.options[0]?.properties);
+
+      if (chain) {
+        context.report({
+          messageId: 'details',
+          node,
+          data: {
+            chain: JSON.stringify(chain.map(c => getAccessorValue(c))),
+            // subject: getAccessorValue(chain.subject),
+            // modifier: chain.modifier ? getAccessorValue(chain.modifier) : null,
+            // each: chain.each ? getAccessorValue(chain.each) : null,
+          },
+        });
+      }
+    },
+  }),
+});
+
+// ruleTester.run('nonexistent methods', rule, {
+//   valid: [
+//     'describe.something()',
+//     'describe.me()',
+//     'test.me()',
+//     'it.fails()',
+//     'context()',
+//     'context.each``()',
+//     'context.each()',
+//     'describe.context()',
+//     'describe.concurrent()()',
+//     'describe.concurrent``()',
+//     'describe.every``()',
+//   ],
+//   invalid: [],
+// });
+
+ruleTester.run('nonexistent methods3', rule3, {
+  valid: [
+    // 'describe.something()',
+    // 'describe.me()',
+    // 'test.me()',
+    // 'it.fails()',
+    // 'context()',
+    // 'context.each``()',
+    // 'context.each()',
+    // 'describe.context()',
+    // 'describe.concurrent()()',
+    // 'describe.concurrent``()',
+    // 'describe.every``()',
+    // 'it.only().fails()',
+  ],
+  invalid: [],
+});
+
+interface ParsedJestFnCallChain2 {
+  subject: string;
+  modifier?: string;
+  each?: string;
+}
+
+type TestPair = [memberExpression: string, expectedChain: string[]];
+// type TestPair = [string, ParsedJestFnCallChain2];
+// /**
+//  * Tests the AST utils against the given member expressions both
+//  * as is and as call expressions.
+//  */
+// const testUtilsAgainst2 = (
+//   memberExpressions: TestPair[],
+//   properties: readonly string[],
+//   skip = false,
+// ) => {
+//   if (skip) {
+//     return;
+//   }
+//
+//   ruleTester.run('it', rule3, {
+//     valid: memberExpressions.map(([code]) => code),
+//     invalid: memberExpressions.map(([code, results]) => ({
+//       code: `${code}("works", () => {})`,
+//       options: [{ properties }] as const,
+//       errors: [
+//         {
+//           messageId: 'details' as const,
+//           data: results as any,
+//           column: 1,
+//           line: 1,
+//         },
+//       ],
+//     })),
+//   });
+// };
+//
+// testUtilsAgainst2(
+//   [
+//     // ['it.concurrent.skip', { subject: 'it', modifier: 'skip' }],
+//     // ['it.concurrent.only', { subject: 'it', modifier: 'only' }],
+//
+//     ['it.skip.each()', { subject: 'it', modifier: 'skip', each: 'each' }],
+//     ['it.only.each()', { subject: 'it', modifier: 'only', each: 'each' }],
+//
+//     // ['it.skip.each``', { subject: 'it', modifier: 'skip', each: 'each' }],
+//     // ['it.only.each``', { subject: 'it', modifier: 'only', each: 'each' }],
+//
+//     // ['xit.each``', { subject: 'xit', modifier: null, each: 'each' }],
+//     // ['fit.each``', { subject: 'fit', modifier: null, each: 'each' }],
+//
+//     ['xit.each()', { subject: 'xit', modifier: null, each: 'each' }],
+//     ['fit.each()', { subject: 'fit', modifier: null, each: 'each' }],
+//
+//     ['it.skip', { subject: 'it', modifier: 'skip', each: null }],
+//     ['it.only', { subject: 'it', modifier: 'only', each: null }],
+//
+//     ['xit', { subject: 'xit', modifier: null, each: null }],
+//     ['fit', { subject: 'fit', modifier: null, each: null }],
+//     ['it', { subject: 'it', modifier: null, each: null }],
+//   ],
+//   Object.keys(TestCaseProperty),
+// );
+
+/**
+ * Tests the AST utils against the given member expressions both
+ * as is and as call expressions.
+ */
+const testUtilsAgainst3 = (
+  memberExpressions: TestPair[],
+  properties: readonly string[],
+  skip = false,
+) => {
+  if (skip) {
+    return;
+  }
+
+  ruleTester.run('it3', rule3, {
+    valid: memberExpressions.map(([code]) => code),
+    invalid: memberExpressions.map(([code, chain]) => ({
+      code: `${code}("works", () => {})`,
+      options: [{ properties }] as const,
+      errors: [
+        {
+          messageId: 'details' as const,
+          data: { chain: JSON.stringify(chain) },
+          column: 1,
+          line: 1,
+        },
+      ],
+    })),
+  });
+};
+
+testUtilsAgainst3(
+  [
+    ['it.concurrent.skip', ['it', 'concurrent', 'skip']],
+    ['it.concurrent.only', ['it', 'concurrent', 'only']],
+
+    ['it.skip.each()', ['it', 'skip', 'each']],
+    ['it.only.each()', ['it', 'only', 'each']],
+
+    ['it.skip.each``', ['it', 'skip', 'each']],
+    ['it.only.each``', ['it', 'only', 'each']],
+
+    ['xit.each``', ['xit', 'each']],
+    ['fit.each``', ['fit', 'each']],
+
+    ['fit.each()', ['fit', 'each']],
+    ['xit.each()', ['xit', 'each']],
+
+    ['it.only', ['it', 'only']],
+    ['it.skip', ['it', 'skip']],
+
+    ['fit', ['fit']],
+    ['xit', ['xit']],
+    ['it', ['it']],
+  ],
+  Object.keys(TestCaseProperty),
+);
+
+// testUtilsAgainst2(
+//   [
+//     'beforeAll', //
+//     'beforeEach',
+//     'afterEach',
+//     'afterAll',
+//   ],
+//   [],
+// );

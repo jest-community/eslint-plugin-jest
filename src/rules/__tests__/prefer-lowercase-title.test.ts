@@ -56,6 +56,7 @@ ruleTester.run('prefer-lowercase-title', rule, {
       describe.each()(1);
       describe.each()(2);
     `,
+    'test.for.each()("My Thing")',
     'describe(42)',
     {
       code: 'describe(42)',

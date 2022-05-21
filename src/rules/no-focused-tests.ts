@@ -7,6 +7,7 @@ import {
   isDescribeCall,
   isSupportedAccessor,
   isTestCaseCall,
+  parseJestFnAdvanced,
 } from './utils';
 
 const findOnlyNode = (
@@ -57,19 +58,28 @@ export default createRule({
       CallExpression(node) {
         const scope = context.getScope();
 
+        const parsed = parseJestFnAdvanced(node, scope);
+
+        if (parsed?.type !== 'test' && parsed?.type !== 'describe') {
+          return;
+        }
+
         if (!isDescribeCall(node, scope) && !isTestCaseCall(node, scope)) {
           return;
         }
 
-        if (getNodeName(node).startsWith('f')) {
+        if (parsed.name.startsWith('f')) {
           context.report({
             messageId: 'focusedTest',
             node,
             suggest: [
               {
                 messageId: 'suggestRemoveFocus',
-                fix: fixer =>
-                  fixer.removeRange([node.range[0], node.range[0] + 1]),
+                fix: fixer => {
+                  // if(parsed.name !== parsed.)
+                  // return [];
+                  return fixer.removeRange([node.range[0], node.range[0] + 1]);
+                },
               },
             ],
           });

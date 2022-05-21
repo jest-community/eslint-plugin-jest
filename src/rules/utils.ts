@@ -502,10 +502,10 @@ const shouldBeParsedExpectModifier = (
 ): member is ParsedExpectMember<ModifierName> =>
   ModifierName.hasOwnProperty(member.name);
 
-export const parseExpectCall = <ExpectNode extends ExpectCall>(
-  expect: ExpectNode,
-): Expectation<ExpectNode> => {
-  const expectation: Expectation<ExpectNode> = {
+export const parseExpectCall = (
+  expect: ExpectCall,
+): Expectation<ExpectCall> => {
+  const expectation: Expectation<ExpectCall> = {
     expect,
   };
 
@@ -741,6 +741,247 @@ export const isTestCaseCall = (
   return parsed?.type === 'test';
 };
 
+export function getNodeChain(node: TSESTree.Node): AccessorNode[] {
+  if (isSupportedAccessor(node)) {
+    return [node];
+  }
+
+  switch (node.type) {
+    case AST_NODE_TYPES.TaggedTemplateExpression:
+      return getNodeChain(node.tag);
+    case AST_NODE_TYPES.MemberExpression:
+      return [...getNodeChain(node.object), ...getNodeChain(node.property)];
+    case AST_NODE_TYPES.NewExpression:
+    case AST_NODE_TYPES.CallExpression:
+      return getNodeChain(node.callee);
+  }
+
+  return [];
+}
+
+const p = (node: TSESTree.Node): string[] => {
+  if (node.parent) {
+    return [...p(node.parent), node.type];
+  }
+
+  return [node.type];
+};
+
+export const parseJestFnCallChain3 = (
+  node: TSESTree.CallExpression,
+  properties: readonly string[],
+): AccessorNode[] | null => {
+  const chain = getNodeChain(node);
+
+  // console.log(getAccessorValue(chain[0]), chain.length);
+
+  if (
+    chain
+      .slice(0, chain.length - 1)
+      .some(
+        nod =>
+          nod.parent?.type === AST_NODE_TYPES.CallExpression ||
+          isSupportedAccessor(nod, 'each'),
+      )
+  ) {
+    return null;
+  }
+
+  const lastNode = chain[chain.length - 1];
+
+  console.log(
+    getAccessorValue(chain[0]),
+    chain.length,
+    p(lastNode).join(' > '),
+  );
+  // if (lastNode.parent?.parent?.parent?.type === AST_NODE_TYPES.CallExpression) {
+  //   return null;
+  // }
+
+  console.log(isSupportedAccessor(lastNode, 'each'));
+  // if we're an `each()`, ensure we're the outer CallExpression (i.e `.each()()`)
+  if (isSupportedAccessor(lastNode, 'each')) {
+    if (
+      node.callee.type !== AST_NODE_TYPES.CallExpression &&
+      node.callee.type !== AST_NODE_TYPES.TaggedTemplateExpression
+    ) {
+      return null;
+    }
+  }
+
+  // the first element in the chain should be one of x
+  // the second element in the chain should be one of y
+
+  return chain;
+};
+
+interface ParsedJestFnCallChain {
+  subject: TSESTree.Identifier;
+  modifier?: AccessorNode;
+  each?: AccessorNode;
+}
+
+export const parseJestFnCallChain2 = (
+  node: TSESTree.CallExpression,
+  properties: readonly string[],
+): ParsedJestFnCallChain | null => {
+  if (isIdentifier(node.callee)) {
+    return { subject: node.callee };
+  }
+
+  const parsedChain: Omit<ParsedJestFnCallChain, 'subject'> = {};
+
+  const callee =
+    node.callee.type === AST_NODE_TYPES.TaggedTemplateExpression
+      ? node.callee.tag
+      : node.callee.type === AST_NODE_TYPES.CallExpression
+      ? node.callee.callee
+      : node.callee;
+
+  if (
+    callee.type !== AST_NODE_TYPES.MemberExpression ||
+    !isSupportedAccessor(callee.property)
+  ) {
+    return null;
+  }
+
+  const value = getAccessorValue(callee.property);
+
+  if (!properties.includes(value)) {
+    return null;
+  }
+
+  if (isIdentifier(callee.object)) {
+    if (value === 'each') {
+      // if we're an `each()`, ensure we're the outer CallExpression (i.e `.each()()`)
+      if (
+        node.callee.type !== AST_NODE_TYPES.TaggedTemplateExpression &&
+        node.callee.type !== AST_NODE_TYPES.CallExpression
+      ) {
+        return null;
+      }
+
+      return {
+        subject: callee.object,
+        each: callee.property,
+      };
+    }
+
+    return {
+      subject: callee.object,
+      modifier: callee.property,
+    };
+  }
+
+  // if we're an `each()`, ensure we're the outer CallExpression (i.e `.each()()`)
+  if (
+    value === 'each' &&
+    node.callee.type !== AST_NODE_TYPES.TaggedTemplateExpression &&
+    node.callee.type !== AST_NODE_TYPES.CallExpression
+  ) {
+    return null;
+  }
+
+  let value2 = null;
+
+  if (callee.object.type === AST_NODE_TYPES.MemberExpression) {
+    if (!isSupportedAccessor(callee.object.property)) {
+      return null;
+    }
+
+    value2 = getAccessorValue(callee.object.property);
+
+    if (!properties.includes(value2) || value2 === 'each') {
+      return null;
+    }
+  }
+
+  const nod =
+    callee.object.type === AST_NODE_TYPES.MemberExpression
+      ? callee.object.object
+      : callee.object;
+
+  if (isSupportedAccessor(nod)) {
+    if (value2) {
+      return [getAccessorValue(nod), value2, value];
+    }
+
+    return [getAccessorValue(nod), value];
+  }
+
+  return null;
+};
+
+const parseJestFnCallChain = (
+  node: TSESTree.CallExpression,
+  properties: readonly string[],
+):
+  | [name: string, property?: string]
+  | [name: string, property?: string, each?: string]
+  | null => {
+  if (isIdentifier(node.callee)) {
+    return [node.callee.name];
+  }
+
+  const callee =
+    node.callee.type === AST_NODE_TYPES.TaggedTemplateExpression
+      ? node.callee.tag
+      : node.callee.type === AST_NODE_TYPES.CallExpression
+      ? node.callee.callee
+      : node.callee;
+
+  if (
+    callee.type !== AST_NODE_TYPES.MemberExpression ||
+    !isSupportedAccessor(callee.property)
+  ) {
+    return null;
+  }
+
+  const value = getAccessorValue(callee.property);
+
+  if (!properties.includes(value)) {
+    return null;
+  }
+
+  // if we're an `each()`, ensure we're the outer CallExpression (i.e `.each()()`)
+  if (
+    value === 'each' &&
+    node.callee.type !== AST_NODE_TYPES.TaggedTemplateExpression &&
+    node.callee.type !== AST_NODE_TYPES.CallExpression
+  ) {
+    return null;
+  }
+
+  let value2 = null;
+
+  if (callee.object.type === AST_NODE_TYPES.MemberExpression) {
+    if (!isSupportedAccessor(callee.object.property)) {
+      return null;
+    }
+
+    value2 = getAccessorValue(callee.object.property);
+
+    if (!properties.includes(value2) || value2 === 'each') {
+      return null;
+    }
+  }
+
+  const nod =
+    callee.object.type === AST_NODE_TYPES.MemberExpression
+      ? callee.object.object
+      : callee.object;
+
+  if (isSupportedAccessor(nod)) {
+    if (value2) {
+      return [getAccessorValue(nod), value2, value];
+    }
+
+    return [getAccessorValue(nod), value];
+  }
+
+  return null;
+};
+
 const findFirstCallPropertyName = (
   node: TSESTree.CallExpression,
   properties: readonly string[],
@@ -768,6 +1009,16 @@ const findFirstCallPropertyName = (
       node.callee.type !== AST_NODE_TYPES.CallExpression
     ) {
       return null;
+    }
+
+    if (callee.object.type === AST_NODE_TYPES.MemberExpression) {
+      if (
+        !isSupportedAccessor(callee.object.property) ||
+        !properties.includes(getAccessorValue(callee.object.property)) ||
+        getAccessorValue(callee.object.property) === 'each'
+      ) {
+        return null;
+      }
     }
 
     const nod =
@@ -915,6 +1166,21 @@ export const parseJestFnAdvanced = (
   }
 
   if (DescribeAlias.hasOwnProperty(raw.name)) {
+    // const chain = parseJestFnCallChain(node, Object.keys(DescribeProperty));
+    //
+    // if (!chain) {
+    //   return null;
+    // }
+    //
+    // // const [localName, ]
+    //
+    // console.log(chain);
+    //
+    // // original import identifier
+    // // local identifier
+    // // chain identifiers
+    // // has each?
+    // // middle member
     const name = findFirstCallPropertyName(node, Object.keys(DescribeProperty));
 
     if (!name) {
