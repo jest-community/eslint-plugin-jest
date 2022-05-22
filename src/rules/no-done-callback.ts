@@ -3,8 +3,7 @@ import {
   createRule,
   getNodeName,
   isFunction,
-  isHookCall,
-  isTestCaseCall,
+  parseJestFnCall_1,
 } from './utils';
 
 const findCallbackArg = (
@@ -16,11 +15,13 @@ const findCallbackArg = (
     return node.arguments[1];
   }
 
-  if (isHookCall(node, scope) && node.arguments.length >= 1) {
+  const jestFnCall = parseJestFnCall_1(node, scope);
+
+  if (jestFnCall?.type === 'hook' && node.arguments.length >= 1) {
     return node.arguments[0];
   }
 
-  if (isTestCaseCall(node, scope) && node.arguments.length >= 2) {
+  if (jestFnCall?.type === 'test' && node.arguments.length >= 2) {
     return node.arguments[1];
   }
 

@@ -1,10 +1,9 @@
 import {
   ParsedExpectMatcher,
   createRule,
-  isDescribeCall,
   isExpectCall,
   isStringNode,
-  isTestCaseCall,
+  isTypeOfJestFnCall,
   parseExpectCall,
 } from './utils';
 
@@ -109,7 +108,7 @@ export default createRule<[('always' | 'multi')?], keyof typeof messages>({
       'CallExpression:exit'(node) {
         const scope = context.getScope();
 
-        if (isDescribeCall(node, scope) || isTestCaseCall(node, scope)) {
+        if (isTypeOfJestFnCall(node, scope, ['describe', 'test'])) {
           /* istanbul ignore next */
           expressionDepth = depths.pop() ?? 0;
         }
@@ -117,7 +116,7 @@ export default createRule<[('always' | 'multi')?], keyof typeof messages>({
       CallExpression(node) {
         const scope = context.getScope();
 
-        if (isDescribeCall(node, scope) || isTestCaseCall(node, scope)) {
+        if (isTypeOfJestFnCall(node, scope, ['describe', 'test'])) {
           depths.push(expressionDepth);
           expressionDepth = 0;
         }

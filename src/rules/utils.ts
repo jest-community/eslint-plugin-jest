@@ -724,6 +724,16 @@ export const isTestCaseCallOriginal = (
   return name !== null && TestCaseName.hasOwnProperty(name);
 };
 
+export const isTypeOfJestFnCall = (
+  node: TSESTree.CallExpression,
+  scope: TSESLint.Scope.Scope,
+  types: JestFnType[],
+): boolean => {
+  // return isTestCaseCallOriginal(node, scope);
+  const parsed = parseJestFnCall_1(node, scope);
+
+  return parsed !== null && types.includes(parsed.type);
+};
 /**
  * Checks if the given `node` is a *call* to a test case function that would
  * result in tests being run by `jest`.

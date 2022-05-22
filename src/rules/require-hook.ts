@@ -4,20 +4,15 @@ import {
   getNodeName,
   isDescribeCall,
   isFunction,
-  isHookCall,
   isIdentifier,
-  isTestCaseCall,
+  parseJestFnCall_1,
 } from './utils';
 
 const isJestFnCall = (
   node: TSESTree.CallExpression,
   scope: TSESLint.Scope.Scope,
 ): boolean => {
-  if (
-    isDescribeCall(node, scope) ||
-    isTestCaseCall(node, scope) ||
-    isHookCall(node, scope)
-  ) {
+  if (parseJestFnCall_1(node, scope)) {
     return true;
   }
 
