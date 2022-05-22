@@ -1,10 +1,5 @@
 import { TSESTree } from '@typescript-eslint/utils';
-import {
-  createRule,
-  isDescribeCall,
-  isHookCall,
-  isTestCaseCall,
-} from './utils';
+import { createRule, isDescribeCall, parseJestFnCall_1 } from './utils';
 
 const messages = {
   tooManyDescribes:
@@ -51,7 +46,13 @@ export default createRule<
       CallExpression(node) {
         const scope = context.getScope();
 
-        if (isDescribeCall(node, scope)) {
+        const jestFnCall = parseJestFnCall_1(node, scope);
+
+        if (!jestFnCall) {
+          return;
+        }
+
+        if (jestFnCall.type === 'describe') {
           numberOfDescribeBlocks++;
 
           if (numberOfDescribeBlocks === 1) {
@@ -72,13 +73,13 @@ export default createRule<
         }
 
         if (numberOfDescribeBlocks === 0) {
-          if (isTestCaseCall(node, scope)) {
+          if (jestFnCall.type === 'test') {
             context.report({ node, messageId: 'unexpectedTestCase' });
 
             return;
           }
 
-          if (isHookCall(node, scope)) {
+          if (jestFnCall.type === 'hook') {
             context.report({ node, messageId: 'unexpectedHook' });
 
             return;
