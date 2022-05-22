@@ -2041,11 +2041,11 @@ ruleTester.run('nonexistent methods3', rule3, {
   invalid: [],
 });
 
-interface ParsedJestFnCallChain2 {
-  subject: string;
-  modifier?: string;
-  each?: string;
-}
+// interface ParsedJestFnCallChain2 {
+//   subject: string;
+//   modifier?: string;
+//   each?: string;
+// }
 
 type TestPair = [memberExpression: string, expectedChain: string[]];
 // type TestPair = [string, ParsedJestFnCallChain2];

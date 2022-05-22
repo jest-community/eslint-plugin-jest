@@ -952,59 +952,6 @@ export const parseJestFnCall_1 = (
     "things"
  */
 
-const parseJestFnCallChainInner = (
-  node: TSESTree.CallExpression,
-  properties: readonly string[],
-): AccessorNode[] | null => {
-  const chain = getNodeChain(node);
-
-  // console.log(getAccessorValue(chain[0]), chain.length);
-
-  // "each" is only valid at the last member of the call chain,
-  // or if there are any call expressions in the chain aside
-  if (
-    chain
-      .slice(0, chain.length - 1)
-      .some(
-        nod =>
-          nod.parent?.type === AST_NODE_TYPES.CallExpression ||
-          isSupportedAccessor(nod, 'each'),
-      )
-  ) {
-    return null;
-  }
-
-  // if the chain contains any members that don't match any of the given properties,
-  // we're not a valid jest function call chain
-  if (chain.slice(1).some(nod => !properties.includes(getAccessorValue(nod)))) {
-    return null;
-  }
-
-  const lastNode = chain[chain.length - 1];
-
-  console.log(
-    getAccessorValue(chain[0]),
-    chain.length,
-    p(lastNode).join(' > '),
-  );
-  // if (lastNode.parent?.parent?.parent?.type === AST_NODE_TYPES.CallExpression) {
-  //   return null;
-  // }
-
-  console.log(isSupportedAccessor(lastNode, 'each'));
-  // if we're an `each()`, ensure we're the outer CallExpression (i.e `.each()()`)
-  if (isSupportedAccessor(lastNode, 'each')) {
-    if (
-      node.callee.type !== AST_NODE_TYPES.CallExpression &&
-      node.callee.type !== AST_NODE_TYPES.TaggedTemplateExpression
-    ) {
-      return null;
-    }
-  }
-
-  return chain;
-};
-
 export const parseJestFnCallChain3 = (
   node: TSESTree.CallExpression,
   properties: readonly string[],
@@ -1031,6 +978,7 @@ export const parseJestFnCallChain3 = (
     getAccessorValue(chain[0]),
     chain.length,
     p(lastNode).join(' > '),
+    properties,
   );
   // if (lastNode.parent?.parent?.parent?.type === AST_NODE_TYPES.CallExpression) {
   //   return null;
@@ -1066,8 +1014,6 @@ export const parseJestFnCallChain2 = (
   if (isIdentifier(node.callee)) {
     return { subject: node.callee };
   }
-
-  const parsedChain: Omit<ParsedJestFnCallChain, 'subject'> = {};
 
   const callee =
     node.callee.type === AST_NODE_TYPES.TaggedTemplateExpression
@@ -1141,79 +1087,11 @@ export const parseJestFnCallChain2 = (
 
   if (isSupportedAccessor(nod)) {
     if (value2) {
+      // @ts-expect-error temp
       return [getAccessorValue(nod), value2, value];
     }
 
-    return [getAccessorValue(nod), value];
-  }
-
-  return null;
-};
-
-const parseJestFnCallChain = (
-  node: TSESTree.CallExpression,
-  properties: readonly string[],
-):
-  | [name: string, property?: string]
-  | [name: string, property?: string, each?: string]
-  | null => {
-  if (isIdentifier(node.callee)) {
-    return [node.callee.name];
-  }
-
-  const callee =
-    node.callee.type === AST_NODE_TYPES.TaggedTemplateExpression
-      ? node.callee.tag
-      : node.callee.type === AST_NODE_TYPES.CallExpression
-      ? node.callee.callee
-      : node.callee;
-
-  if (
-    callee.type !== AST_NODE_TYPES.MemberExpression ||
-    !isSupportedAccessor(callee.property)
-  ) {
-    return null;
-  }
-
-  const value = getAccessorValue(callee.property);
-
-  if (!properties.includes(value)) {
-    return null;
-  }
-
-  // if we're an `each()`, ensure we're the outer CallExpression (i.e `.each()()`)
-  if (
-    value === 'each' &&
-    node.callee.type !== AST_NODE_TYPES.TaggedTemplateExpression &&
-    node.callee.type !== AST_NODE_TYPES.CallExpression
-  ) {
-    return null;
-  }
-
-  let value2 = null;
-
-  if (callee.object.type === AST_NODE_TYPES.MemberExpression) {
-    if (!isSupportedAccessor(callee.object.property)) {
-      return null;
-    }
-
-    value2 = getAccessorValue(callee.object.property);
-
-    if (!properties.includes(value2) || value2 === 'each') {
-      return null;
-    }
-  }
-
-  const nod =
-    callee.object.type === AST_NODE_TYPES.MemberExpression
-      ? callee.object.object
-      : callee.object;
-
-  if (isSupportedAccessor(nod)) {
-    if (value2) {
-      return [getAccessorValue(nod), value2, value];
-    }
-
+    // @ts-expect-error temp
     return [getAccessorValue(nod), value];
   }
 
