@@ -1,38 +1,5 @@
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import {
-  AccessorNode,
-  JestFunctionCallExpression,
-  createRule,
-  isDescribeCall,
-  isSupportedAccessor,
-  isTestCaseCall,
-  parseJestFnCall_1,
-} from './utils';
-
-const findOnlyNode = (
-  node: JestFunctionCallExpression,
-): AccessorNode<'only'> | null => {
-  const callee =
-    node.callee.type === AST_NODE_TYPES.TaggedTemplateExpression
-      ? node.callee.tag
-      : node.callee.type === AST_NODE_TYPES.CallExpression
-      ? node.callee.callee
-      : node.callee;
-
-  if (callee.type === AST_NODE_TYPES.MemberExpression) {
-    if (callee.object.type === AST_NODE_TYPES.MemberExpression) {
-      if (isSupportedAccessor(callee.object.property, 'only')) {
-        return callee.object.property;
-      }
-    }
-
-    if (isSupportedAccessor(callee.property, 'only')) {
-      return callee.property;
-    }
-  }
-
-  return null;
-};
+import { createRule, getAccessorValue, parseJestFnCall_1 } from './utils';
 
 export default createRule({
   name: __filename,
@@ -63,10 +30,6 @@ export default createRule({
           return;
         }
 
-        if (!isDescribeCall(node, scope) && !isTestCaseCall(node, scope)) {
-          return;
-        }
-
         if ((parsed.head.original ?? parsed.head.local).startsWith('f')) {
           context.report({
             messageId: 'focusedTest',
@@ -86,7 +49,9 @@ export default createRule({
           return;
         }
 
-        const onlyNode = findOnlyNode(node);
+        const onlyNode = parsed.members.find(
+          s => getAccessorValue(s) === 'only',
+        );
 
         if (!onlyNode) {
           return;
