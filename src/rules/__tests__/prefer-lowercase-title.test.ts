@@ -198,6 +198,27 @@ ruleTester.run('prefer-lowercase-title', rule, {
       ],
     },
     {
+      code: dedent`
+        import { describe as context } from '@jest/globals';
+
+        context(\`Foo\`, () => {});
+      `,
+      output: dedent`
+        import { describe as context } from '@jest/globals';
+
+        context(\`foo\`, () => {});
+      `,
+      parserOptions: { sourceType: 'module' },
+      errors: [
+        {
+          messageId: 'unexpectedLowercase',
+          data: { method: DescribeAlias.describe },
+          column: 9,
+          line: 3,
+        },
+      ],
+    },
+    {
       code: 'describe(`Some longer description`, function () {})',
       output: 'describe(`some longer description`, function () {})',
       errors: [
@@ -532,6 +553,46 @@ ruleTester.run('prefer-lowercase-title with ignoreTopLevelDescribe', rule, {
           data: { method: TestCaseName.it },
           column: 8,
           line: 3,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        import { describe, describe as context } from '@jest/globals';
+
+        describe('MyClass', () => {
+          context('MyMethod', () => {
+            it('Does things', () => {
+              //
+            });
+          });
+        });
+      `,
+      output: dedent`
+        import { describe, describe as context } from '@jest/globals';
+
+        describe('MyClass', () => {
+          context('myMethod', () => {
+            it('does things', () => {
+              //
+            });
+          });
+        });
+      `,
+      options: [{ ignoreTopLevelDescribe: true }],
+      parserOptions: { sourceType: 'module' },
+      errors: [
+        {
+          messageId: 'unexpectedLowercase',
+          data: { method: DescribeAlias.describe },
+          column: 11,
+          line: 4,
+        },
+        {
+          messageId: 'unexpectedLowercase',
+          data: { method: TestCaseName.it },
+          column: 8,
+          line: 5,
         },
       ],
     },

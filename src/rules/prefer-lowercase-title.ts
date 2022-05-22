@@ -5,11 +5,10 @@ import {
   StringNode,
   TestCaseName,
   createRule,
-  getNodeName,
   getStringValue,
   isDescribeCall,
   isStringNode,
-  isTestCaseCall,
+  parseJestFnCall_1,
 } from './utils';
 
 type IgnorableFunctionExpressions =
@@ -21,21 +20,6 @@ const hasStringAsFirstArgument = (
   node: TSESTree.CallExpression,
 ): node is CallExpressionWithSingleArgument<StringNode> =>
   node.arguments[0] && isStringNode(node.arguments[0]);
-
-const findNodeNameAndArgument = (
-  node: TSESTree.CallExpression,
-  scope: TSESLint.Scope.Scope,
-): [name: string, firstArg: StringNode] | null => {
-  if (!(isTestCaseCall(node, scope) || isDescribeCall(node, scope))) {
-    return null;
-  }
-
-  if (!hasStringAsFirstArgument(node)) {
-    return null;
-  }
-
-  return [getNodeName(node).split('.')[0], node.arguments[0]];
-};
 
 const populateIgnores = (ignore: readonly string[]): string[] => {
   const ignores: string[] = [];
@@ -122,21 +106,23 @@ export default createRule<
       CallExpression(node: TSESTree.CallExpression) {
         const scope = context.getScope();
 
-        if (isDescribeCall(node, scope)) {
+        const jestFnCall = parseJestFnCall_1(node, scope);
+
+        if (!jestFnCall || !hasStringAsFirstArgument(node)) {
+          return;
+        }
+
+        if (jestFnCall.type === 'describe') {
           numberOfDescribeBlocks++;
 
           if (ignoreTopLevelDescribe && numberOfDescribeBlocks === 1) {
             return;
           }
-        }
-
-        const results = findNodeNameAndArgument(node, scope);
-
-        if (!results) {
+        } else if (jestFnCall.type !== 'test') {
           return;
         }
 
-        const [name, firstArg] = results;
+        const [firstArg] = node.arguments;
 
         const description = getStringValue(firstArg);
 
@@ -149,7 +135,7 @@ export default createRule<
         if (
           !firstCharacter ||
           firstCharacter === firstCharacter.toLowerCase() ||
-          ignores.includes(name as IgnorableFunctionExpressions)
+          ignores.includes(jestFnCall.name as IgnorableFunctionExpressions)
         ) {
           return;
         }
@@ -157,7 +143,7 @@ export default createRule<
         context.report({
           messageId: 'unexpectedLowercase',
           node: node.arguments[0],
-          data: { method: name },
+          data: { method: jestFnCall.name },
           fix(fixer) {
             const description = getStringValue(firstArg);
 
