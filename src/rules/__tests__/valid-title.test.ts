@@ -190,6 +190,50 @@ ruleTester.run('mustMatch & mustNotMatch options', rule, {
     },
     {
       code: dedent`
+        import { describe, describe as context, it as thisTest } from '@jest/globals';
+
+        describe('things to test', () => {
+          context('unit tests #unit', () => {
+            thisTest('is true', () => {
+              expect(true).toBe(true);
+            });
+          });
+
+          context('e2e tests #e4e', () => {
+            thisTest('is another test #e2e #jest4life', () => {});
+          });
+        });
+      `,
+      parserOptions: { sourceType: 'module' },
+      options: [
+        {
+          mustNotMatch: /(?:#(?!unit|e2e))\w+/u.source,
+          mustMatch: /^[^#]+$|(?:#(?:unit|e2e))/u.source,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'mustNotMatch',
+          data: {
+            jestFunctionName: 'describe',
+            pattern: /(?:#(?!unit|e2e))\w+/u,
+          },
+          column: 11,
+          line: 10,
+        },
+        {
+          messageId: 'mustNotMatch',
+          data: {
+            jestFunctionName: 'it',
+            pattern: /(?:#(?!unit|e2e))\w+/u,
+          },
+          column: 14,
+          line: 11,
+        },
+      ],
+    },
+    {
+      code: dedent`
         describe('things to test', () => {
           describe('unit tests #unit', () => {
             it('is true', () => {
@@ -873,9 +917,9 @@ ruleTester.run('no-accidental-space', rule, {
       errors: [{ messageId: 'accidentalSpace', column: 5, line: 1 }],
     },
     {
-      code: 'fit.concurrent(" foo", function () {})',
-      output: 'fit.concurrent("foo", function () {})',
-      errors: [{ messageId: 'accidentalSpace', column: 16, line: 1 }],
+      code: 'it.concurrent.skip(" foo", function () {})',
+      output: 'it.concurrent.skip("foo", function () {})',
+      errors: [{ messageId: 'accidentalSpace', column: 20, line: 1 }],
     },
     {
       code: 'fit("foo ", function () {})',
@@ -883,9 +927,23 @@ ruleTester.run('no-accidental-space', rule, {
       errors: [{ messageId: 'accidentalSpace', column: 5, line: 1 }],
     },
     {
-      code: 'fit.concurrent("foo ", function () {})',
-      output: 'fit.concurrent("foo", function () {})',
-      errors: [{ messageId: 'accidentalSpace', column: 16, line: 1 }],
+      code: 'it.concurrent.skip("foo ", function () {})',
+      output: 'it.concurrent.skip("foo", function () {})',
+      errors: [{ messageId: 'accidentalSpace', column: 20, line: 1 }],
+    },
+    {
+      code: dedent`
+        import { test as testThat } from '@jest/globals';
+
+        testThat('foo works ', () => {});
+      `,
+      output: dedent`
+        import { test as testThat } from '@jest/globals';
+
+        testThat('foo works', () => {});
+      `,
+      parserOptions: { sourceType: 'module' },
+      errors: [{ messageId: 'accidentalSpace', column: 10, line: 3 }],
     },
     {
       code: 'xit(" foo", function () {})',
