@@ -956,3 +956,5 @@ const resolveToJestFn = (scope: TSESLint.Scope.Scope, identifier: string) => {
 
   return identifier;
 };
+
+export * from './utils/parseJestFnCall';
