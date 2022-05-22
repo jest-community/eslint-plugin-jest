@@ -1,10 +1,5 @@
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import {
-  createRule,
-  getNodeName,
-  isDescribeCall,
-  isTestCaseCall,
-} from './utils';
+import { createRule, getAccessorValue, parseJestFnCall_1 } from './utils';
 
 export default createRule({
   name: __filename,
@@ -26,17 +21,21 @@ export default createRule({
     return {
       CallExpression(node) {
         const scope = context.getScope();
-        const nodeName = getNodeName(node.callee);
+        const jestFnCall = parseJestFnCall_1(node, scope);
 
-        if (
-          !nodeName ||
-          (!isDescribeCall(node, scope) && !isTestCaseCall(node, scope))
-        )
+        if (jestFnCall?.type !== 'describe' && jestFnCall?.type !== 'test') {
           return;
+        }
 
-        const preferredNodeName = getPreferredNodeName(nodeName);
+        if (jestFnCall.name[0] !== 'f' && jestFnCall.name[0] !== 'x') {
+          return;
+        }
 
-        if (!preferredNodeName) return;
+        const preferredNodeName = [
+          jestFnCall.name.slice(1),
+          jestFnCall.name[0] === 'f' ? 'only' : 'skip',
+          ...jestFnCall.members.map(s => getAccessorValue(s)),
+        ].join('.');
 
         const funcNode =
           node.callee.type === AST_NODE_TYPES.TaggedTemplateExpression
@@ -57,19 +56,3 @@ export default createRule({
     };
   },
 });
-
-function getPreferredNodeName(nodeName: string) {
-  const firstChar = nodeName.charAt(0);
-
-  const suffix = nodeName.endsWith('.each') ? '.each' : '';
-
-  if (firstChar === 'f') {
-    return `${nodeName.slice(1).replace('.each', '')}.only${suffix}`;
-  }
-
-  if (firstChar === 'x') {
-    return `${nodeName.slice(1).replace('.each', '')}.skip${suffix}`;
-  }
-
-  return null;
-}

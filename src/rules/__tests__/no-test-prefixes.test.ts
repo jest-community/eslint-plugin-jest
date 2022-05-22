@@ -1,4 +1,5 @@
 import { TSESLint } from '@typescript-eslint/utils';
+import dedent from 'dedent';
 import rule from '../no-test-prefixes';
 
 const ruleTester = new TSESLint.RuleTester();
@@ -65,18 +66,6 @@ ruleTester.run('no-test-prefixes', rule, {
         {
           messageId: 'usePreferredName',
           data: { preferredNodeName: 'it.only' },
-          column: 1,
-          line: 1,
-        },
-      ],
-    },
-    {
-      code: 'fit.concurrent("foo", function () {})',
-      output: 'it.concurrent.only("foo", function () {})',
-      errors: [
-        {
-          messageId: 'usePreferredName',
-          data: { preferredNodeName: 'it.concurrent.only' },
           column: 1,
           line: 1,
         },
@@ -165,6 +154,48 @@ ruleTester.run('no-test-prefixes', rule, {
           data: { preferredNodeName: 'test.skip.each' },
           column: 1,
           line: 1,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        import { xit } from '@jest/globals';
+
+        xit("foo", function () {})
+      `,
+      output: dedent`
+        import { xit } from '@jest/globals';
+
+        it.skip("foo", function () {})
+      `,
+      parserOptions: { sourceType: 'module', ecmaVersion: 2015 },
+      errors: [
+        {
+          messageId: 'usePreferredName',
+          data: { preferredNodeName: 'it.skip' },
+          column: 1,
+          line: 3,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        import { xit as skipThis } from '@jest/globals';
+
+        skipThis("foo", function () {})
+      `,
+      output: dedent`
+        import { xit as skipThis } from '@jest/globals';
+
+        it.skip("foo", function () {})
+      `,
+      parserOptions: { sourceType: 'module', ecmaVersion: 2015 },
+      errors: [
+        {
+          messageId: 'usePreferredName',
+          data: { preferredNodeName: 'it.skip' },
+          column: 1,
+          line: 3,
         },
       ],
     },
