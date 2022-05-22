@@ -343,7 +343,7 @@ ruleTester.run('switch statements', rule, {
     },
     {
       code: dedent`
-        fit.concurrent('foo', () => {
+        it.concurrent('foo', () => {
           switch('bar') {}
         })
       `,
@@ -772,7 +772,7 @@ ruleTester.run('if statements', rule, {
     },
     {
       code: dedent`
-        fit.concurrent('foo', () => {
+        it.concurrent('foo', () => {
           if ('bar') {}
         })
       `,
