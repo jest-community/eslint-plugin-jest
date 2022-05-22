@@ -4,11 +4,9 @@ import {
   StringNode,
   TestCaseName,
   createRule,
-  getNodeName,
   getStringValue,
-  isDescribeCall,
   isStringNode,
-  isTestCaseCall,
+  parseJestFnCall_1,
 } from './utils';
 
 const trimFXprefix = (word: string) =>
@@ -183,7 +181,9 @@ export default createRule<[Options], MessageIds>({
       CallExpression(node: TSESTree.CallExpression) {
         const scope = context.getScope();
 
-        if (!isDescribeCall(node, scope) && !isTestCaseCall(node, scope)) {
+        const jestFnCall = parseJestFnCall_1(node, scope);
+
+        if (jestFnCall?.type !== 'describe' && jestFnCall?.type !== 'test') {
           return;
         }
 
@@ -203,7 +203,7 @@ export default createRule<[Options], MessageIds>({
 
           if (
             argument.type !== AST_NODE_TYPES.TemplateLiteral &&
-            !(ignoreTypeOfDescribeName && isDescribeCall(node, scope))
+            !(ignoreTypeOfDescribeName && jestFnCall.type === 'describe')
           ) {
             context.report({
               messageId: 'titleMustBeString',
@@ -220,9 +220,10 @@ export default createRule<[Options], MessageIds>({
           context.report({
             messageId: 'emptyTitle',
             data: {
-              jestFunctionName: isDescribeCall(node, scope)
-                ? DescribeAlias.describe
-                : TestCaseName.test,
+              jestFunctionName:
+                jestFnCall.type === 'describe'
+                  ? DescribeAlias.describe
+                  : TestCaseName.test,
             },
             node,
           });
@@ -259,10 +260,10 @@ export default createRule<[Options], MessageIds>({
           });
         }
 
-        const nodeName = trimFXprefix(getNodeName(node));
+        const unprefixedName = trimFXprefix(jestFnCall.name);
         const [firstWord] = title.split(' ');
 
-        if (firstWord.toLowerCase() === nodeName) {
+        if (firstWord.toLowerCase() === unprefixedName) {
           context.report({
             messageId: 'duplicatePrefix',
             node: argument,
@@ -275,7 +276,7 @@ export default createRule<[Options], MessageIds>({
           });
         }
 
-        const [jestFunctionName] = nodeName.split('.');
+        const jestFunctionName = unprefixedName;
 
         const [mustNotMatchPattern, mustNotMatchMessage] =
           mustNotMatchPatterns[jestFunctionName] ?? [];
