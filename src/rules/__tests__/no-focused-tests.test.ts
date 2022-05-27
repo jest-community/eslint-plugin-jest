@@ -325,9 +325,9 @@ ruleTester.run('no-focused-tests (with imports)', rule, {
   valid: [
     {
       code: dedent`
-        import { fdescribe as describeJustThis } from '@jest/globals';
+        import { describe as fdescribe } from '@jest/globals';
 
-        describeJustThis()
+        fdescribe()
       `,
       parserOptions: { sourceType: 'module' },
     },
@@ -401,6 +401,86 @@ ruleTester.run('no-focused-tests (with imports)', rule, {
                 const { fdescribe } = require('@jest/globals');
 
                 describe()
+              `,
+            },
+          ],
+        },
+      ],
+    },
+  ],
+});
+
+ruleTester.run('no-focused-tests (aliases)', rule, {
+  valid: [],
+
+  invalid: [
+    {
+      code: dedent`
+        import { describe as describeThis } from '@jest/globals';
+
+        describeThis.only()
+      `,
+      parserOptions: { sourceType: 'module' },
+      errors: [
+        {
+          messageId: 'focusedTest',
+          column: 14,
+          line: 3,
+          suggestions: [
+            {
+              messageId: 'suggestRemoveFocus',
+              output: dedent`
+                import { describe as describeThis } from '@jest/globals';
+
+                describeThis()
+              `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: dedent`
+        import { fdescribe as describeJustThis } from '@jest/globals';
+
+        describeJustThis()
+        describeJustThis.each()()
+      `,
+      parserOptions: { sourceType: 'module' },
+      errors: [
+        {
+          messageId: 'focusedTest',
+          column: 1,
+          line: 3,
+          suggestions: [],
+        },
+        {
+          messageId: 'focusedTest',
+          column: 1,
+          line: 4,
+          suggestions: [],
+        },
+      ],
+    },
+    {
+      code: dedent`
+        import { describe as context } from '@jest/globals';
+
+        context.only.each()()
+      `,
+      parserOptions: { sourceType: 'module' },
+      errors: [
+        {
+          messageId: 'focusedTest',
+          column: 9,
+          line: 3,
+          suggestions: [
+            {
+              messageId: 'suggestRemoveFocus',
+              output: dedent`
+                import { describe as context } from '@jest/globals';
+
+                context.each()()
               `,
             },
           ],
