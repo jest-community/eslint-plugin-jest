@@ -93,19 +93,15 @@ const isTestCaseCallWithCallbackArg = (
     return true;
   }
 
-  if (isJestEach || node.arguments.length >= 2) {
-    const [, callback] = node.arguments;
+  const [, callback] = node.arguments;
 
-    const callbackArgIndex = Number(isJestEach);
+  const callbackArgIndex = Number(isJestEach);
 
-    return (
-      callback &&
-      isFunction(callback) &&
-      callback.params.length === 1 + callbackArgIndex
-    );
-  }
-
-  return false;
+  return (
+    callback &&
+    isFunction(callback) &&
+    callback.params.length === 1 + callbackArgIndex
+  );
 };
 
 const isPromiseMethodThatUsesValue = (
