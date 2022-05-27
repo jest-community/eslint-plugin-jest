@@ -650,21 +650,6 @@ export const isFunction = (node: TSESTree.Node): node is FunctionExpression =>
   node.type === AST_NODE_TYPES.FunctionExpression ||
   node.type === AST_NODE_TYPES.ArrowFunctionExpression;
 
-export const isHookCall = (
-  node: TSESTree.CallExpression,
-  scope: TSESLint.Scope.Scope,
-): node is JestFunctionCallExpressionWithIdentifierCallee<HookName> => {
-  let name = findFirstCallPropertyName(node, []);
-
-  if (!name) {
-    return false;
-  }
-
-  name = resolveToJestFn(scope, name);
-
-  return name !== null && HookName.hasOwnProperty(name);
-};
-
 export const getTestCallExpressionsFromDeclaredVariables = (
   declaredVariables: readonly TSESLint.Scope.Variable[],
   scope: TSESLint.Scope.Scope,
@@ -685,92 +670,6 @@ export const getTestCallExpressionsFromDeclaredVariables = (
       ),
     [],
   );
-};
-
-/**
- * Checks if the given `node` is a *call* to a test case function that would
- * result in tests being run by `jest`.
- *
- * Note that `.each()` does not count as a call in this context, as it will not
- * result in `jest` running any tests.
- */
-export const isTestCaseCall = (
-  node: TSESTree.CallExpression,
-  scope: TSESLint.Scope.Scope,
-): node is JestFunctionCallExpression<TestCaseName> => {
-  let name = findFirstCallPropertyName(node, Object.keys(TestCaseProperty));
-
-  if (!name) {
-    return false;
-  }
-
-  name = resolveToJestFn(scope, name);
-
-  return name !== null && TestCaseName.hasOwnProperty(name);
-};
-
-const findFirstCallPropertyName = (
-  node: TSESTree.CallExpression,
-  properties: readonly string[],
-): string | null => {
-  if (isIdentifier(node.callee)) {
-    return node.callee.name;
-  }
-
-  const callee =
-    node.callee.type === AST_NODE_TYPES.TaggedTemplateExpression
-      ? node.callee.tag
-      : node.callee.type === AST_NODE_TYPES.CallExpression
-      ? node.callee.callee
-      : node.callee;
-
-  if (
-    callee.type === AST_NODE_TYPES.MemberExpression &&
-    isSupportedAccessor(callee.property) &&
-    properties.includes(getAccessorValue(callee.property))
-  ) {
-    // if we're an `each()`, ensure we're the outer CallExpression (i.e `.each()()`)
-    if (
-      getAccessorValue(callee.property) === 'each' &&
-      node.callee.type !== AST_NODE_TYPES.TaggedTemplateExpression &&
-      node.callee.type !== AST_NODE_TYPES.CallExpression
-    ) {
-      return null;
-    }
-
-    const nod =
-      callee.object.type === AST_NODE_TYPES.MemberExpression
-        ? callee.object.object
-        : callee.object;
-
-    if (isSupportedAccessor(nod)) {
-      return getAccessorValue(nod);
-    }
-  }
-
-  return null;
-};
-
-/**
- * Checks if the given `node` is a *call* to a `describe` function that would
- * result in a `describe` block being created by `jest`.
- *
- * Note that `.each()` does not count as a call in this context, as it will not
- * result in `jest` creating any `describe` blocks.
- */
-export const isDescribeCall = (
-  node: TSESTree.CallExpression,
-  scope: TSESLint.Scope.Scope,
-): node is JestFunctionCallExpression<DescribeAlias> => {
-  let name = findFirstCallPropertyName(node, Object.keys(DescribeProperty));
-
-  if (!name) {
-    return false;
-  }
-
-  name = resolveToJestFn(scope, name);
-
-  return name !== null && DescribeAlias.hasOwnProperty(name);
 };
 
 interface ImportDetails {
@@ -932,30 +831,6 @@ export const scopeHasLocalReference = (
     // meaning it is likely not an implicit global reference.
     !references.unresolved.has(referenceName)
   );
-};
-
-const resolveToJestFn = (scope: TSESLint.Scope.Scope, identifier: string) => {
-  const references = collectReferences(scope);
-
-  const maybeImport = references.imports.get(identifier);
-
-  if (maybeImport) {
-    // the identifier is imported from @jest/globals,
-    // so return the original import name
-    if (maybeImport.source === '@jest/globals') {
-      return maybeImport.imported;
-    }
-
-    return null;
-  }
-
-  // the identifier was found as a local variable or function declaration
-  // meaning it's not a function from jest
-  if (references.locals.has(identifier)) {
-    return null;
-  }
-
-  return identifier;
 };
 
 export * from './utils/parseJestFnCall';
