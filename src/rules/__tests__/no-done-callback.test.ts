@@ -393,6 +393,66 @@ ruleTester.run('no-done-callback', rule, {
       ],
     },
     {
+      code: dedent`
+        import { beforeEach } from '@jest/globals';
+
+        beforeEach((done) => {
+          done();
+        });
+      `,
+      parserOptions: { sourceType: 'module' },
+      errors: [
+        {
+          messageId: 'noDoneCallback',
+          line: 3,
+          column: 13,
+          suggestions: [
+            {
+              messageId: 'suggestWrappingInPromise',
+              data: { callback: 'done' },
+              output: dedent`
+                import { beforeEach } from '@jest/globals';
+
+                beforeEach(() => {return new Promise((done) => {
+                  done();
+                })});
+              `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: dedent`
+        import { beforeEach as atTheStartOfEachTest } from '@jest/globals';
+
+        atTheStartOfEachTest((done) => {
+          done();
+        });
+      `,
+      parserOptions: { sourceType: 'module' },
+      errors: [
+        {
+          messageId: 'noDoneCallback',
+          line: 3,
+          column: 23,
+          suggestions: [
+            {
+              messageId: 'suggestWrappingInPromise',
+              data: { callback: 'done' },
+              output: dedent`
+                import { beforeEach as atTheStartOfEachTest } from '@jest/globals';
+
+                atTheStartOfEachTest(() => {return new Promise((done) => {
+                  done();
+                })});
+              `,
+            },
+          ],
+        },
+      ],
+    },
+    {
       code: 'test.each``("something", ({ a, b }, done) => { done(); })',
       errors: [
         {

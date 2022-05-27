@@ -1,5 +1,5 @@
 import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/utils';
-import { createRule, isTestCaseCall } from './utils';
+import { createRule, isTypeOfJestFnCall } from './utils';
 
 export default createRule({
   name: __filename,
@@ -34,7 +34,7 @@ export default createRule({
       },
 
       CallExpression(node) {
-        if (isTestCaseCall(node, context.getScope())) {
+        if (isTypeOfJestFnCall(node, context.getScope(), ['test'])) {
           hasTestCase = true;
         }
       },

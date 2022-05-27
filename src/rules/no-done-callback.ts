@@ -1,11 +1,5 @@
 import { AST_NODE_TYPES, TSESLint, TSESTree } from '@typescript-eslint/utils';
-import {
-  createRule,
-  getNodeName,
-  isFunction,
-  isHookCall,
-  isTestCaseCall,
-} from './utils';
+import { createRule, getNodeName, isFunction, parseJestFnCall } from './utils';
 
 const findCallbackArg = (
   node: TSESTree.CallExpression,
@@ -16,11 +10,13 @@ const findCallbackArg = (
     return node.arguments[1];
   }
 
-  if (isHookCall(node, scope) && node.arguments.length >= 1) {
+  const jestFnCall = parseJestFnCall(node, scope);
+
+  if (jestFnCall?.type === 'hook' && node.arguments.length >= 1) {
     return node.arguments[0];
   }
 
-  if (isTestCaseCall(node, scope) && node.arguments.length >= 2) {
+  if (jestFnCall?.type === 'test' && node.arguments.length >= 2) {
     return node.arguments[1];
   }
 

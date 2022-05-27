@@ -6,6 +6,7 @@ import {
   TSESTree,
 } from '@typescript-eslint/utils';
 import { version } from '../../package.json';
+import { isTypeOfJestFnCall } from './utils/parseJestFnCall';
 
 const REPO_URL = 'https://github.com/jest-community/eslint-plugin-jest';
 
@@ -679,7 +680,7 @@ export const getTestCallExpressionsFromDeclaredVariables = (
             (node): node is JestFunctionCallExpression<TestCaseName> =>
               !!node &&
               node.type === AST_NODE_TYPES.CallExpression &&
-              isTestCaseCall(node, scope),
+              isTypeOfJestFnCall(node, scope, ['test']),
           ),
       ),
     [],

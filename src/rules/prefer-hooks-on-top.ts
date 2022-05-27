@@ -1,4 +1,4 @@
-import { createRule, isHookCall, isTestCaseCall } from './utils';
+import { createRule, isTypeOfJestFnCall } from './utils';
 
 export default createRule({
   name: __filename,
@@ -22,10 +22,13 @@ export default createRule({
       CallExpression(node) {
         const scope = context.getScope();
 
-        if (!isHookCall(node, scope) && isTestCaseCall(node, scope)) {
+        if (isTypeOfJestFnCall(node, scope, ['test'])) {
           hooksContext[hooksContext.length - 1] = true;
         }
-        if (hooksContext[hooksContext.length - 1] && isHookCall(node, scope)) {
+        if (
+          hooksContext[hooksContext.length - 1] &&
+          isTypeOfJestFnCall(node, scope, ['hook'])
+        ) {
           context.report({
             messageId: 'noHookOnTop',
             node,

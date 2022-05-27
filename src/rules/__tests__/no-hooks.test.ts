@@ -1,4 +1,5 @@
 import { TSESLint } from '@typescript-eslint/utils';
+import dedent from 'dedent';
 import rule from '../no-hooks';
 import { HookName } from '../utils';
 import { espreeParser } from './test-utils';
@@ -52,6 +53,22 @@ ruleTester.run('no-hooks', rule, {
     {
       code: 'beforeEach(() => {}); afterEach(() => { jest.resetModules() });',
       options: [{ allow: [HookName.afterEach] }],
+      errors: [
+        {
+          messageId: 'unexpectedHook',
+          data: { hookName: HookName.beforeEach },
+        },
+      ],
+    },
+    {
+      code: dedent`
+        import { beforeEach as afterEach, afterEach as beforeEach } from '@jest/globals';
+
+        afterEach(() => {});
+        beforeEach(() => { jest.resetModules() });
+      `,
+      options: [{ allow: [HookName.afterEach] }],
+      parserOptions: { sourceType: 'module' },
       errors: [
         {
           messageId: 'unexpectedHook',

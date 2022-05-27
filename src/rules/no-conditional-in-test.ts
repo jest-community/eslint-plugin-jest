@@ -1,5 +1,5 @@
 import { TSESTree } from '@typescript-eslint/utils';
-import { createRule, isTestCaseCall } from './utils';
+import { createRule, isTypeOfJestFnCall } from './utils';
 
 export default createRule({
   name: __filename,
@@ -30,12 +30,12 @@ export default createRule({
 
     return {
       CallExpression(node: TSESTree.CallExpression) {
-        if (isTestCaseCall(node, context.getScope())) {
+        if (isTypeOfJestFnCall(node, context.getScope(), ['test'])) {
           inTestCase = true;
         }
       },
       'CallExpression:exit'(node) {
-        if (isTestCaseCall(node, context.getScope())) {
+        if (isTypeOfJestFnCall(node, context.getScope(), ['test'])) {
           inTestCase = false;
         }
       },

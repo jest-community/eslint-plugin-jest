@@ -5,7 +5,7 @@ import {
   getTestCallExpressionsFromDeclaredVariables,
   isExpectCall,
   isSupportedAccessor,
-  isTestCaseCall,
+  isTypeOfJestFnCall,
 } from './utils';
 
 const isCatchCall = (
@@ -50,7 +50,7 @@ export default createRule({
         }
       },
       CallExpression(node: TSESTree.CallExpression) {
-        if (isTestCaseCall(node, context.getScope())) {
+        if (isTypeOfJestFnCall(node, context.getScope(), ['test'])) {
           inTestCase = true;
         }
 
@@ -73,7 +73,7 @@ export default createRule({
         }
       },
       'CallExpression:exit'(node) {
-        if (isTestCaseCall(node, context.getScope())) {
+        if (isTypeOfJestFnCall(node, context.getScope(), ['test'])) {
           inTestCase = false;
         }
 

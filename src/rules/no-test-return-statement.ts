@@ -3,7 +3,7 @@ import {
   createRule,
   getTestCallExpressionsFromDeclaredVariables,
   isFunction,
-  isTestCaseCall,
+  isTypeOfJestFnCall,
 } from './utils';
 
 const getBody = (args: TSESTree.CallExpressionArgument[]) => {
@@ -38,7 +38,10 @@ export default createRule({
   create(context) {
     return {
       CallExpression(node) {
-        if (!isTestCaseCall(node, context.getScope())) return;
+        if (!isTypeOfJestFnCall(node, context.getScope(), ['test'])) {
+          return;
+        }
+
         const body = getBody(node.arguments);
         const returnStmt = body.find(
           t => t.type === AST_NODE_TYPES.ReturnStatement,

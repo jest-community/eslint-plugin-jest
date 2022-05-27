@@ -1,5 +1,10 @@
 import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/utils';
-import { createRule, getNodeName, isDescribeCall, isFunction } from './utils';
+import {
+  createRule,
+  getAccessorValue,
+  isFunction,
+  parseJestFnCall,
+} from './utils';
 
 const paramsLocation = (
   params: TSESTree.CallExpressionArgument[] | TSESTree.Parameter[],
@@ -36,7 +41,9 @@ export default createRule({
   create(context) {
     return {
       CallExpression(node) {
-        if (!isDescribeCall(node, context.getScope())) {
+        const jestFnCall = parseJestFnCall(node, context.getScope());
+
+        if (jestFnCall?.type !== 'describe') {
           return;
         }
 
@@ -74,7 +81,10 @@ export default createRule({
           });
         }
 
-        if (!getNodeName(node).endsWith('each') && callback.params.length) {
+        if (
+          jestFnCall.members.every(s => getAccessorValue(s) !== 'each') &&
+          callback.params.length
+        ) {
           context.report({
             messageId: 'unexpectedDescribeArgument',
             loc: paramsLocation(callback.params),

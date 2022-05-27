@@ -273,3 +273,82 @@ ruleTester.run('wildcards', rule, {
     },
   ],
 });
+
+ruleTester.run('expect-expect (aliases)', rule, {
+  valid: [
+    {
+      code: dedent`
+        import { test } from '@jest/globals';
+
+        test('should pass', () => {
+          expect(true).toBeDefined();
+          foo(true).toBe(true);
+        });
+      `,
+      options: [{ assertFunctionNames: ['expect', 'foo'] }],
+      parserOptions: { sourceType: 'module' },
+    },
+    {
+      code: dedent`
+        import { test as checkThat } from '@jest/globals';
+
+        checkThat('this passes', () => {
+          expect(true).toBeDefined();
+          foo(true).toBe(true);
+        });
+      `,
+      options: [{ assertFunctionNames: ['expect', 'foo'] }],
+      parserOptions: { sourceType: 'module' },
+    },
+    {
+      code: dedent`
+        const { test } = require('@jest/globals');
+
+        test('verifies chained expect method call', () => {
+          tester
+            .foo()
+            .bar()
+            .expect(456);
+        });
+      `,
+      options: [{ assertFunctionNames: ['tester.foo.bar.expect'] }],
+      parserOptions: { sourceType: 'module' },
+    },
+  ],
+
+  invalid: [
+    {
+      code: dedent`
+        import { test as checkThat } from '@jest/globals';
+
+        checkThat('this passes', () => {
+          // ...
+        });
+      `,
+      options: [{ assertFunctionNames: ['expect', 'foo'] }],
+      parserOptions: { sourceType: 'module' },
+      errors: [
+        {
+          messageId: 'noAssertions',
+          type: AST_NODE_TYPES.CallExpression,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        import { test as checkThat } from '@jest/globals';
+
+        checkThat.skip('this passes', () => {
+          // ...
+        });
+      `,
+      parserOptions: { sourceType: 'module' },
+      errors: [
+        {
+          messageId: 'noAssertions',
+          type: AST_NODE_TYPES.CallExpression,
+        },
+      ],
+    },
+  ],
+});
