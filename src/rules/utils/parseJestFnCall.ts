@@ -46,9 +46,9 @@ export interface ResolvedJestFnWithNode extends ResolvedJestFn {
 type JestFnType = 'hook' | 'describe' | 'test' | 'expect' | 'jest' | 'unknown';
 
 const determineJestFnType = (name: string): JestFnType => {
-  if (name === 'expect') {
-    return 'expect';
-  }
+  // if (name === 'expect') {
+  //   return 'expect';
+  // }
 
   if (name === 'jest') {
     return 'jest';
@@ -62,10 +62,12 @@ const determineJestFnType = (name: string): JestFnType => {
     return 'test';
   }
 
+  /* istanbul ignore else */
   if (HookName.hasOwnProperty(name)) {
     return 'hook';
   }
 
+  /* istanbul ignore next */
   return 'unknown';
 };
 
