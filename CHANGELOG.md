@@ -1,3 +1,11 @@
+## [26.4.1](https://github.com/jest-community/eslint-plugin-jest/compare/v26.4.0...v26.4.1) (2022-05-28)
+
+
+### Bug Fixes
+
+* **no-disabled-tests:** switch to using jest function call parser ([#1125](https://github.com/jest-community/eslint-plugin-jest/issues/1125)) ([32931c3](https://github.com/jest-community/eslint-plugin-jest/commit/32931c331d5eb5584c7b6a24306d834d620c8470))
+* support `failing` property on test functions ([#1123](https://github.com/jest-community/eslint-plugin-jest/issues/1123)) ([6d75e8d](https://github.com/jest-community/eslint-plugin-jest/commit/6d75e8da7a33d1386db1f8d4a04544c42bec443e))
+
 # [26.4.0](https://github.com/jest-community/eslint-plugin-jest/compare/v26.3.0...v26.4.0) (2022-05-28)
 
 
