@@ -11,13 +11,13 @@ import {
 const testCaseNames = new Set<string | null>([
   ...Object.keys(TestCaseName),
   'it.only',
-  'it.concurrent.only',
+  'it.only',
   'it.skip',
-  'it.concurrent.skip',
+  'it.skip',
   'test.only',
-  'test.concurrent.only',
+  'test.only',
   'test.skip',
-  'test.concurrent.skip',
+  'test.skip',
   'fit.concurrent',
 ]);
 

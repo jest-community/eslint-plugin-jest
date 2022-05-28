@@ -134,12 +134,6 @@ const ValidJestFnCallChains = [
   'xtest',
   'xtest.each',
   'xtest.failing',
-
-  // todo: check if actually valid (not in docs)
-  'test.concurrent.skip',
-  'test.concurrent.only',
-  'it.concurrent.skip',
-  'it.concurrent.only',
 ];
 
 export const parseJestFnCall = (

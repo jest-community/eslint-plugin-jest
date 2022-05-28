@@ -96,10 +96,6 @@ ruleTester.run('no-disabled-tests', rule, {
       errors: [{ messageId: 'disabledTest', column: 1, line: 1 }],
     },
     {
-      code: 'it.concurrent.skip("foo", function () {})',
-      errors: [{ messageId: 'disabledTest', column: 1, line: 1 }],
-    },
-    {
       code: 'it["skip"]("foo", function () {})',
       errors: [{ messageId: 'disabledTest', column: 1, line: 1 }],
     },
@@ -121,10 +117,6 @@ ruleTester.run('no-disabled-tests', rule, {
     },
     {
       code: 'test.skip.each([])("foo", function () {})',
-      errors: [{ messageId: 'disabledTest', column: 1, line: 1 }],
-    },
-    {
-      code: 'test.concurrent.skip("foo", function () {})',
       errors: [{ messageId: 'disabledTest', column: 1, line: 1 }],
     },
     {

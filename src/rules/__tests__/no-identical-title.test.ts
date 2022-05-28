@@ -59,8 +59,8 @@ ruleTester.run('no-identical-title', rule, {
       test.only.concurrent('that', () => {});
     `,
     dedent`
-      test.concurrent.only('this', () => {});
-      test.concurrent.only('that', () => {});
+      test.only('this', () => {});
+      test.only('that', () => {});
     `,
     dedent`
       describe('foo', () => {
@@ -199,17 +199,10 @@ ruleTester.run('no-identical-title', rule, {
     },
     {
       code: dedent`
-        test.concurrent.only('this', () => {});
+        test.only('this', () => {});
         test.concurrent('this', () => {});
       `,
       errors: [{ messageId: 'multipleTestTitle', column: 17, line: 2 }],
-    },
-    {
-      code: dedent`
-        test.concurrent.only('this', () => {});
-        test.concurrent.only('this', () => {});
-      `,
-      errors: [{ messageId: 'multipleTestTitle', column: 22, line: 2 }],
     },
     {
       code: dedent`

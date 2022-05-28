@@ -16,10 +16,8 @@ ruleTester.run('no-focused-tests', rule, {
     'it()',
     'describe.skip()',
     'it.skip()',
-    'it.concurrent.skip()',
     'test()',
     'test.skip()',
-    'test.concurrent.skip()',
     'var appliedOnly = describe.only; appliedOnly.apply(describe)',
     'var calledOnly = it.only; calledOnly.call(it)',
     'it.each()()',
@@ -111,7 +109,7 @@ ruleTester.run('no-focused-tests', rule, {
       ],
     },
     {
-      code: 'it.concurrent.only()',
+      code: 'it.concurrent.only.each``()',
       errors: [
         {
           messageId: 'focusedTest',
@@ -120,7 +118,7 @@ ruleTester.run('no-focused-tests', rule, {
           suggestions: [
             {
               messageId: 'suggestRemoveFocus',
-              output: 'it.concurrent()',
+              output: 'it.concurrent.each``()',
             },
           ],
         },
@@ -191,7 +189,7 @@ ruleTester.run('no-focused-tests', rule, {
       ],
     },
     {
-      code: 'test.concurrent.only()',
+      code: 'test.concurrent.only.each()()',
       errors: [
         {
           messageId: 'focusedTest',
@@ -200,7 +198,7 @@ ruleTester.run('no-focused-tests', rule, {
           suggestions: [
             {
               messageId: 'suggestRemoveFocus',
-              output: 'test.concurrent()',
+              output: 'test.concurrent.each()()',
             },
           ],
         },
