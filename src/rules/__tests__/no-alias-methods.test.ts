@@ -231,5 +231,20 @@ ruleTester.run('no-alias-methods', rule, {
         },
       ],
     },
+    {
+      code: 'expect(a).not["toThrowError"]()',
+      output: "expect(a).not['toThrow']()",
+      errors: [
+        {
+          messageId: 'replaceAlias',
+          data: {
+            alias: 'toThrowError',
+            canonical: 'toThrow',
+          },
+          column: 15,
+          line: 1,
+        },
+      ],
+    },
   ],
 });

@@ -1,3 +1,4 @@
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import { createRule, isExpectCall, parseExpectCall } from './utils';
 
 export default createRule({
@@ -56,7 +57,14 @@ export default createRule({
               canonical,
             },
             node: matcher.node.property,
-            fix: fixer => [fixer.replaceText(matcher.node.property, canonical)],
+            fix: fixer => [
+              fixer.replaceText(
+                matcher.node.property,
+                matcher.node.property.type === AST_NODE_TYPES.Identifier
+                  ? canonical
+                  : `'${canonical}'`,
+              ),
+            ],
           });
         }
       },
