@@ -278,35 +278,7 @@ ruleTester.run('switch statements', rule, {
     },
     {
       code: dedent`
-        it.concurrent.skip('foo', () => {
-          switch('bar') {}
-        })
-      `,
-      errors: [
-        {
-          messageId: 'conditionalInTest',
-          column: 3,
-          line: 2,
-        },
-      ],
-    },
-    {
-      code: dedent`
         it.only('foo', () => {
-          switch('bar') {}
-        })
-      `,
-      errors: [
-        {
-          messageId: 'conditionalInTest',
-          column: 3,
-          line: 2,
-        },
-      ],
-    },
-    {
-      code: dedent`
-        it.concurrent.only('foo', () => {
           switch('bar') {}
         })
       `,
@@ -362,7 +334,7 @@ ruleTester.run('switch statements', rule, {
     },
     {
       code: dedent`
-        test.concurrent.skip('foo', () => {
+        test.skip('foo', () => {
           switch('bar') {}
         })
       `,
@@ -376,7 +348,7 @@ ruleTester.run('switch statements', rule, {
     },
     {
       code: dedent`
-        test.concurrent.only('foo', () => {
+        test.only('foo', () => {
           switch('bar') {}
         })
       `,
@@ -698,35 +670,7 @@ ruleTester.run('if statements', rule, {
     },
     {
       code: dedent`
-        it.concurrent.skip('foo', () => {
-          if ('bar') {}
-        })
-      `,
-      errors: [
-        {
-          messageId: 'conditionalInTest',
-          column: 3,
-          line: 2,
-        },
-      ],
-    },
-    {
-      code: dedent`
         it.only('foo', () => {
-          if ('bar') {}
-        })
-      `,
-      errors: [
-        {
-          messageId: 'conditionalInTest',
-          column: 3,
-          line: 2,
-        },
-      ],
-    },
-    {
-      code: dedent`
-        it.concurrent.only('foo', () => {
           if ('bar') {}
         })
       `,
@@ -782,7 +726,7 @@ ruleTester.run('if statements', rule, {
     },
     {
       code: dedent`
-        test.concurrent.skip('foo', () => {
+        test.skip('foo', () => {
           if ('bar') {}
         })
       `,
@@ -796,7 +740,7 @@ ruleTester.run('if statements', rule, {
     },
     {
       code: dedent`
-        test.concurrent.only('foo', () => {
+        test.only('foo', () => {
           if ('bar') {}
         })
       `,

@@ -613,17 +613,6 @@ ruleTester.run('title-must-be-string', rule, {
       ],
     },
     {
-      code: 'test.concurrent.skip(123, () => {});',
-      options: [{ ignoreTypeOfDescribeName: true }],
-      errors: [
-        {
-          messageId: 'titleMustBeString',
-          column: 22,
-          line: 1,
-        },
-      ],
-    },
-    {
       code: 'describe(String(/.+/), () => {});',
       errors: [
         {
@@ -917,9 +906,9 @@ ruleTester.run('no-accidental-space', rule, {
       errors: [{ messageId: 'accidentalSpace', column: 5, line: 1 }],
     },
     {
-      code: 'it.concurrent.skip(" foo", function () {})',
-      output: 'it.concurrent.skip("foo", function () {})',
-      errors: [{ messageId: 'accidentalSpace', column: 20, line: 1 }],
+      code: 'it.skip(" foo", function () {})',
+      output: 'it.skip("foo", function () {})',
+      errors: [{ messageId: 'accidentalSpace', column: 9, line: 1 }],
     },
     {
       code: 'fit("foo ", function () {})',
@@ -927,9 +916,9 @@ ruleTester.run('no-accidental-space', rule, {
       errors: [{ messageId: 'accidentalSpace', column: 5, line: 1 }],
     },
     {
-      code: 'it.concurrent.skip("foo ", function () {})',
-      output: 'it.concurrent.skip("foo", function () {})',
-      errors: [{ messageId: 'accidentalSpace', column: 20, line: 1 }],
+      code: 'it.skip("foo ", function () {})',
+      output: 'it.skip("foo", function () {})',
+      errors: [{ messageId: 'accidentalSpace', column: 9, line: 1 }],
     },
     {
       code: dedent`
