@@ -1,4 +1,9 @@
-import { createRule, getNodeName, scopeHasLocalReference } from './utils';
+import {
+  createRule,
+  getAccessorValue,
+  parseJestFnCall,
+  scopeHasLocalReference,
+} from './utils';
 
 export default createRule({
   name: __filename,
@@ -10,8 +15,6 @@ export default createRule({
     },
     messages: {
       missingFunction: 'Test is missing function argument',
-      skippedTestSuite: 'Skipped test suite',
-      skippedTest: 'Skipped test',
       pending: 'Call to pending()',
       pendingSuite: 'Call to pending() within test suite',
       pendingTest: 'Call to pending() within test',
@@ -27,40 +30,49 @@ export default createRule({
     let testDepth = 0;
 
     return {
-      'CallExpression[callee.name="describe"]'() {
-        suiteDepth++;
-      },
-      'CallExpression[callee.name=/^(it|test)$/]'() {
-        testDepth++;
-      },
       'CallExpression[callee.name=/^(it|test)$/][arguments.length<2]'(node) {
         context.report({ messageId: 'missingFunction', node });
       },
       CallExpression(node) {
-        const functionName = getNodeName(node.callee);
+        const jestFnCall = parseJestFnCall(node, context.getScope());
 
-        // prevent duplicate warnings for it.each()()
-        if (node.callee.type === 'CallExpression') {
+        if (!jestFnCall) {
           return;
         }
 
-        switch (functionName) {
-          case 'describe.skip.each':
-          case 'xdescribe.each':
-          case 'describe.skip':
-            context.report({ messageId: 'skippedTestSuite', node });
-            break;
+        if (jestFnCall.type === 'describe') {
+          suiteDepth++;
+        }
 
-          case 'it.skip':
-          case 'it.concurrent.skip':
-          case 'test.skip':
-          case 'test.concurrent.skip':
-          case 'it.skip.each':
-          case 'test.skip.each':
-          case 'xit.each':
-          case 'xtest.each':
-            context.report({ messageId: 'skippedTest', node });
-            break;
+        if (jestFnCall.type === 'test') {
+          testDepth++;
+        }
+
+        if (
+          // the only jest functions that are with "x" are "xdescribe", "xtest", and "xit"
+          jestFnCall.name.startsWith('x') ||
+          jestFnCall.members.some(s => getAccessorValue(s) === 'skip')
+        ) {
+          context.report({
+            messageId:
+              jestFnCall.type === 'describe' ? 'disabledSuite' : 'disabledTest',
+            node,
+          });
+        }
+      },
+      'CallExpression:exit'(node) {
+        const jestFnCall = parseJestFnCall(node, context.getScope());
+
+        if (!jestFnCall) {
+          return;
+        }
+
+        if (jestFnCall.type === 'describe') {
+          suiteDepth--;
+        }
+
+        if (jestFnCall.type === 'test') {
+          testDepth--;
         }
       },
       'CallExpression[callee.name="pending"]'(node) {
@@ -75,18 +87,6 @@ export default createRule({
         } else {
           context.report({ messageId: 'pending', node });
         }
-      },
-      'CallExpression[callee.name="xdescribe"]'(node) {
-        context.report({ messageId: 'disabledSuite', node });
-      },
-      'CallExpression[callee.name=/^(xit|xtest)$/]'(node) {
-        context.report({ messageId: 'disabledTest', node });
-      },
-      'CallExpression[callee.name="describe"]:exit'() {
-        suiteDepth--;
-      },
-      'CallExpression[callee.name=/^(it|test)$/]:exit'() {
-        testDepth--;
       },
     };
   },

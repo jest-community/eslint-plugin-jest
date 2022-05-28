@@ -65,63 +65,63 @@ ruleTester.run('no-disabled-tests', rule, {
   invalid: [
     {
       code: 'describe.skip("foo", function () {})',
-      errors: [{ messageId: 'skippedTestSuite', column: 1, line: 1 }],
+      errors: [{ messageId: 'disabledSuite', column: 1, line: 1 }],
     },
     {
       code: 'describe.skip.each([1, 2, 3])("%s", (a, b) => {});',
-      errors: [{ messageId: 'skippedTestSuite', column: 1, line: 1 }],
+      errors: [{ messageId: 'disabledSuite', column: 1, line: 1 }],
     },
     {
       code: 'xdescribe.each([1, 2, 3])("%s", (a, b) => {});',
-      errors: [{ messageId: 'skippedTestSuite', column: 1, line: 1 }],
+      errors: [{ messageId: 'disabledSuite', column: 1, line: 1 }],
     },
     {
       code: 'describe[`skip`]("foo", function () {})',
-      errors: [{ messageId: 'skippedTestSuite', column: 1, line: 1 }],
+      errors: [{ messageId: 'disabledSuite', column: 1, line: 1 }],
     },
     {
       code: 'describe["skip"]("foo", function () {})',
-      errors: [{ messageId: 'skippedTestSuite', column: 1, line: 1 }],
+      errors: [{ messageId: 'disabledSuite', column: 1, line: 1 }],
     },
     {
       code: 'it.skip("foo", function () {})',
-      errors: [{ messageId: 'skippedTest', column: 1, line: 1 }],
+      errors: [{ messageId: 'disabledTest', column: 1, line: 1 }],
     },
     {
       code: 'it.concurrent.skip("foo", function () {})',
-      errors: [{ messageId: 'skippedTest', column: 1, line: 1 }],
+      errors: [{ messageId: 'disabledTest', column: 1, line: 1 }],
     },
     {
       code: 'it["skip"]("foo", function () {})',
-      errors: [{ messageId: 'skippedTest', column: 1, line: 1 }],
+      errors: [{ messageId: 'disabledTest', column: 1, line: 1 }],
     },
     {
       code: 'test.skip("foo", function () {})',
-      errors: [{ messageId: 'skippedTest', column: 1, line: 1 }],
+      errors: [{ messageId: 'disabledTest', column: 1, line: 1 }],
     },
     {
       code: 'it.skip.each``("foo", function () {})',
-      errors: [{ messageId: 'skippedTest', column: 1, line: 1 }],
+      errors: [{ messageId: 'disabledTest', column: 1, line: 1 }],
     },
     {
       code: 'test.skip.each``("foo", function () {})',
-      errors: [{ messageId: 'skippedTest', column: 1, line: 1 }],
+      errors: [{ messageId: 'disabledTest', column: 1, line: 1 }],
     },
     {
       code: 'it.skip.each([])("foo", function () {})',
-      errors: [{ messageId: 'skippedTest', column: 1, line: 1 }],
+      errors: [{ messageId: 'disabledTest', column: 1, line: 1 }],
     },
     {
       code: 'test.skip.each([])("foo", function () {})',
-      errors: [{ messageId: 'skippedTest', column: 1, line: 1 }],
+      errors: [{ messageId: 'disabledTest', column: 1, line: 1 }],
     },
     {
       code: 'test.concurrent.skip("foo", function () {})',
-      errors: [{ messageId: 'skippedTest', column: 1, line: 1 }],
+      errors: [{ messageId: 'disabledTest', column: 1, line: 1 }],
     },
     {
       code: 'test["skip"]("foo", function () {})',
-      errors: [{ messageId: 'skippedTest', column: 1, line: 1 }],
+      errors: [{ messageId: 'disabledTest', column: 1, line: 1 }],
     },
     {
       code: 'xdescribe("foo", function () {})',
@@ -137,19 +137,19 @@ ruleTester.run('no-disabled-tests', rule, {
     },
     {
       code: 'xit.each``("foo", function () {})',
-      errors: [{ messageId: 'skippedTest', column: 1, line: 1 }],
+      errors: [{ messageId: 'disabledTest', column: 1, line: 1 }],
     },
     {
       code: 'xtest.each``("foo", function () {})',
-      errors: [{ messageId: 'skippedTest', column: 1, line: 1 }],
+      errors: [{ messageId: 'disabledTest', column: 1, line: 1 }],
     },
     {
       code: 'xit.each([])("foo", function () {})',
-      errors: [{ messageId: 'skippedTest', column: 1, line: 1 }],
+      errors: [{ messageId: 'disabledTest', column: 1, line: 1 }],
     },
     {
       code: 'xtest.each([])("foo", function () {})',
-      errors: [{ messageId: 'skippedTest', column: 1, line: 1 }],
+      errors: [{ messageId: 'disabledTest', column: 1, line: 1 }],
     },
     {
       code: 'it("has title but no callback")',
