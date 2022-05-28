@@ -452,13 +452,11 @@ ruleTester.run('no-focused-tests (aliases)', rule, {
           messageId: 'focusedTest',
           column: 1,
           line: 3,
-          suggestions: [],
         },
         {
           messageId: 'focusedTest',
           column: 1,
           line: 4,
-          suggestions: [],
         },
       ],
     },
