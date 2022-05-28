@@ -534,96 +534,9 @@ export enum HookName {
   'afterEach' = 'afterEach',
 }
 
-export enum DescribeProperty {
-  'each' = 'each',
-  'only' = 'only',
-  'skip' = 'skip',
-}
-
-export enum TestCaseProperty {
-  'each' = 'each',
-  'concurrent' = 'concurrent',
-  'only' = 'only',
-  'skip' = 'skip',
-  'todo' = 'todo',
-}
-
-type JestFunctionName = DescribeAlias | TestCaseName | HookName;
-type JestPropertyName = DescribeProperty | TestCaseProperty;
-
-interface JestFunctionIdentifier<FunctionName extends JestFunctionName>
-  extends TSESTree.Identifier {
-  name: FunctionName;
-}
-
-interface JestFunctionMemberExpression<
-  FunctionName extends JestFunctionName,
-  PropertyName extends JestPropertyName = JestPropertyName,
-> extends KnownMemberExpression<PropertyName> {
-  object: JestFunctionIdentifier<FunctionName>;
-}
-
-interface JestFunctionCallExpressionWithMemberExpressionCallee<
-  FunctionName extends JestFunctionName,
-  PropertyName extends JestPropertyName = JestPropertyName,
-> extends TSESTree.CallExpression {
-  callee: JestFunctionMemberExpression<FunctionName, PropertyName>;
-}
-
-export interface JestFunctionCallExpressionWithIdentifierCallee<
-  FunctionName extends JestFunctionName,
-> extends TSESTree.CallExpression {
-  callee: JestFunctionIdentifier<FunctionName>;
-}
-
-interface JestEachMemberExpression<
-  TName extends Exclude<JestFunctionName, HookName>,
-> extends KnownMemberExpression<'each'> {
-  object:
-    | KnownIdentifier<TName>
-    | (KnownMemberExpression & { object: KnownIdentifier<TName> });
-}
-
-export interface JestCalledEachCallExpression<
-  TName extends Exclude<JestFunctionName, HookName>,
-> extends TSESTree.CallExpression {
-  callee: TSESTree.CallExpression & {
-    callee: JestEachMemberExpression<TName>;
-  };
-}
-
-export interface JestTaggedEachCallExpression<
-  TName extends Exclude<JestFunctionName, HookName>,
-> extends TSESTree.CallExpression {
-  callee: TSESTree.TaggedTemplateExpression & {
-    tag: JestEachMemberExpression<TName>;
-  };
-}
-
-type JestEachCallExpression<TName extends Exclude<JestFunctionName, HookName>> =
-  JestCalledEachCallExpression<TName> | JestTaggedEachCallExpression<TName>;
-
-export type JestFunctionCallExpression<
-  FunctionName extends Exclude<JestFunctionName, HookName> = Exclude<
-    JestFunctionName,
-    HookName
-  >,
-> =
-  | JestEachCallExpression<FunctionName>
-  | JestFunctionCallExpressionWithMemberExpressionCallee<FunctionName>
-  | JestFunctionCallExpressionWithIdentifierCallee<FunctionName>;
-
 const joinNames = (a: string | null, b: string | null): string | null =>
   a && b ? `${a}.${b}` : null;
 
-export function getNodeName(
-  node:
-    | JestFunctionCallExpression<DescribeAlias | TestCaseName>
-    | JestFunctionMemberExpression<JestFunctionName>
-    | JestFunctionIdentifier<JestFunctionName>
-    | TSESTree.TaggedTemplateExpression,
-): string;
-export function getNodeName(node: TSESTree.Node): string | null;
 export function getNodeName(node: TSESTree.Node): string | null {
   if (isSupportedAccessor(node)) {
     return getAccessorValue(node);
@@ -653,18 +566,15 @@ export const isFunction = (node: TSESTree.Node): node is FunctionExpression =>
 export const getTestCallExpressionsFromDeclaredVariables = (
   declaredVariables: readonly TSESLint.Scope.Variable[],
   scope: TSESLint.Scope.Scope,
-): Array<JestFunctionCallExpression<TestCaseName>> => {
-  return declaredVariables.reduce<
-    Array<JestFunctionCallExpression<TestCaseName>>
-  >(
+): TSESTree.CallExpression[] => {
+  return declaredVariables.reduce<TSESTree.CallExpression[]>(
     (acc, { references }) =>
       acc.concat(
         references
           .map(({ identifier }) => identifier.parent)
           .filter(
-            (node): node is JestFunctionCallExpression<TestCaseName> =>
-              !!node &&
-              node.type === AST_NODE_TYPES.CallExpression &&
+            (node): node is TSESTree.CallExpression =>
+              node?.type === AST_NODE_TYPES.CallExpression &&
               isTypeOfJestFnCall(node, scope, ['test']),
           ),
       ),
