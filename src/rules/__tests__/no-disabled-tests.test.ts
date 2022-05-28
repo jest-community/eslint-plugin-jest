@@ -60,6 +60,14 @@ ruleTester.run('no-disabled-tests', rule, {
         return {}
       }
     `,
+    {
+      code: dedent`
+        import { test } from './test-utils';
+
+        test('something');
+      `,
+      parserOptions: { sourceType: 'module' },
+    },
   ],
 
   invalid: [
@@ -170,6 +178,15 @@ ruleTester.run('no-disabled-tests', rule, {
     {
       code: 'describe("contains a call to pending", function () { pending() })',
       errors: [{ messageId: 'pendingSuite', column: 54, line: 1 }],
+    },
+    {
+      code: dedent`
+        import { test } from '@jest/globals';
+
+        test('something');
+      `,
+      parserOptions: { sourceType: 'module' },
+      errors: [{ messageId: 'missingFunction', column: 1, line: 3 }],
     },
   ],
 });
