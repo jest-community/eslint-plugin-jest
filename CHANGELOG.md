@@ -1,3 +1,10 @@
+# [26.3.0](https://github.com/jest-community/eslint-plugin-jest/compare/v26.2.2...v26.3.0) (2022-05-28)
+
+
+### Features
+
+* create `prefer-hooks-in-order` rule ([#1098](https://github.com/jest-community/eslint-plugin-jest/issues/1098)) ([384654c](https://github.com/jest-community/eslint-plugin-jest/commit/384654cf44b8f4bcf0e03eed11aaa726dcf6b680))
+
 ## [26.2.2](https://github.com/jest-community/eslint-plugin-jest/compare/v26.2.1...v26.2.2) (2022-05-14)
 
 
