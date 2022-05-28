@@ -30,9 +30,6 @@ export default createRule({
     let testDepth = 0;
 
     return {
-      'CallExpression[callee.name=/^(it|test)$/][arguments.length<2]'(node) {
-        context.report({ messageId: 'missingFunction', node });
-      },
       CallExpression(node) {
         const jestFnCall = parseJestFnCall(node, context.getScope());
 
@@ -46,6 +43,10 @@ export default createRule({
 
         if (jestFnCall.type === 'test') {
           testDepth++;
+
+          if (node.arguments.length < 2) {
+            context.report({ messageId: 'missingFunction', node });
+          }
         }
 
         if (
