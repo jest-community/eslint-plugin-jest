@@ -1,38 +1,5 @@
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import {
-  AccessorNode,
-  JestFunctionCallExpression,
-  createRule,
-  getNodeName,
-  isDescribeCall,
-  isSupportedAccessor,
-  isTestCaseCall,
-} from './utils';
-
-const findOnlyNode = (
-  node: JestFunctionCallExpression,
-): AccessorNode<'only'> | null => {
-  const callee =
-    node.callee.type === AST_NODE_TYPES.TaggedTemplateExpression
-      ? node.callee.tag
-      : node.callee.type === AST_NODE_TYPES.CallExpression
-      ? node.callee.callee
-      : node.callee;
-
-  if (callee.type === AST_NODE_TYPES.MemberExpression) {
-    if (callee.object.type === AST_NODE_TYPES.MemberExpression) {
-      if (isSupportedAccessor(callee.object.property, 'only')) {
-        return callee.object.property;
-      }
-    }
-
-    if (isSupportedAccessor(callee.property, 'only')) {
-      return callee.property;
-    }
-  }
-
-  return null;
-};
+import { createRule, getAccessorValue, parseJestFnCall } from './utils';
 
 export default createRule({
   name: __filename,
@@ -57,19 +24,30 @@ export default createRule({
       CallExpression(node) {
         const scope = context.getScope();
 
-        if (!isDescribeCall(node, scope) && !isTestCaseCall(node, scope)) {
+        const jestFnCall = parseJestFnCall(node, scope);
+
+        if (jestFnCall?.type !== 'test' && jestFnCall?.type !== 'describe') {
           return;
         }
 
-        if (getNodeName(node).startsWith('f')) {
+        if (jestFnCall.name.startsWith('f')) {
           context.report({
             messageId: 'focusedTest',
             node,
             suggest: [
               {
                 messageId: 'suggestRemoveFocus',
-                fix: fixer =>
-                  fixer.removeRange([node.range[0], node.range[0] + 1]),
+                fix(fixer) {
+                  // don't apply the fixer if we're an aliased import
+                  if (
+                    jestFnCall.head.type === 'import' &&
+                    jestFnCall.name !== jestFnCall.head.local
+                  ) {
+                    return null;
+                  }
+
+                  return fixer.removeRange([node.range[0], node.range[0] + 1]);
+                },
               },
             ],
           });
@@ -77,7 +55,9 @@ export default createRule({
           return;
         }
 
-        const onlyNode = findOnlyNode(node);
+        const onlyNode = jestFnCall.members.find(
+          s => getAccessorValue(s) === 'only',
+        );
 
         if (!onlyNode) {
           return;

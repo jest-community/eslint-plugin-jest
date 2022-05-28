@@ -61,6 +61,15 @@ ruleTester.run('require-top-level-describe', rule, {
         });
       });
     `,
+    {
+      code: dedent`
+        import { jest } from '@jest/globals';
+
+        jest.doMock('my-module');
+      `,
+      parserOptions: { sourceType: 'module' },
+    },
+    'jest.doMock("my-module")',
   ],
   invalid: [
     {
@@ -88,6 +97,16 @@ ruleTester.run('require-top-level-describe', rule, {
         describe("test suite", () => {});
         afterAll("my test", () => {})
       `,
+      errors: [{ messageId: 'unexpectedHook' }],
+    },
+    {
+      code: dedent`
+        import { describe, afterAll as onceEverythingIsDone } from '@jest/globals';
+
+        describe("test suite", () => {});
+        onceEverythingIsDone("my test", () => {})
+      `,
+      parserOptions: { sourceType: 'module' },
       errors: [{ messageId: 'unexpectedHook' }],
     },
     {
@@ -165,6 +184,33 @@ ruleTester.run(
         `,
         options: [{ maxNumberOfTopLevelDescribes: 2 }],
         errors: [{ messageId: 'tooManyDescribes', line: 10 }],
+      },
+      {
+        code: dedent`
+          import {
+            describe as describe1,
+            describe as describe2,
+            describe as describe3,
+          } from '@jest/globals';
+
+          describe1('one', () => {
+            describe('one (nested)', () => {});
+            describe('two (nested)', () => {});
+          });
+          describe2('two', () => {
+            describe('one (nested)', () => {});
+            describe('two (nested)', () => {});
+            describe('three (nested)', () => {});
+          });
+          describe3('three', () => {
+            describe('one (nested)', () => {});
+            describe('two (nested)', () => {});
+            describe('three (nested)', () => {});
+          });
+        `,
+        options: [{ maxNumberOfTopLevelDescribes: 2 }],
+        parserOptions: { sourceType: 'module' },
+        errors: [{ messageId: 'tooManyDescribes', line: 16 }],
       },
       {
         code: dedent`

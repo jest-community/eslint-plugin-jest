@@ -1,13 +1,12 @@
 import { AST_NODE_TYPES, TSESLint, TSESTree } from '@typescript-eslint/utils';
 import {
-  JestFunctionCallExpression,
-  TestCaseName,
+  ParsedJestFnCall,
   createRule,
-  getNodeName,
+  getAccessorValue,
   hasOnlyOneArgument,
   isFunction,
   isStringNode,
-  isTestCaseCall,
+  parseJestFnCall,
 } from './utils';
 
 function isEmptyFunction(node: TSESTree.CallExpressionArgument) {
@@ -21,22 +20,37 @@ function isEmptyFunction(node: TSESTree.CallExpressionArgument) {
 }
 
 function createTodoFixer(
-  node: JestFunctionCallExpression<TestCaseName>,
+  jestFnCall: ParsedJestFnCall,
   fixer: TSESLint.RuleFixer,
 ) {
-  const testName = getNodeName(node).split('.').shift();
+  const fixes = [
+    fixer.replaceText(jestFnCall.head.node, `${jestFnCall.head.local}.todo`),
+  ];
 
-  return fixer.replaceText(node.callee, `${testName}.todo`);
+  if (jestFnCall.members.length) {
+    fixes.unshift(
+      fixer.removeRange([
+        jestFnCall.head.node.range[1],
+        jestFnCall.members[0].range[1],
+      ]),
+    );
+  }
+
+  return fixes;
 }
 
-const isTargetedTestCase = (
-  node: TSESTree.CallExpression,
-  scope: TSESLint.Scope.Scope,
-): node is JestFunctionCallExpression<TestCaseName> =>
-  isTestCaseCall(node, scope) &&
-  [TestCaseName.it, TestCaseName.test, 'it.skip', 'test.skip'].includes(
-    getNodeName(node),
-  );
+const isTargetedTestCase = (jestFnCall: ParsedJestFnCall): boolean => {
+  if (jestFnCall.members.some(s => getAccessorValue(s) !== 'skip')) {
+    return false;
+  }
+
+  // todo: we should support this too (needs custom fixer)
+  if (jestFnCall.name.startsWith('x')) {
+    return false;
+  }
+
+  return !jestFnCall.name.startsWith('f');
+};
 
 export default createRule({
   name: __filename,
@@ -60,9 +74,12 @@ export default createRule({
       CallExpression(node) {
         const [title, callback] = node.arguments;
 
+        const jestFnCall = parseJestFnCall(node, context.getScope());
+
         if (
           !title ||
-          !isTargetedTestCase(node, context.getScope()) ||
+          jestFnCall?.type !== 'test' ||
+          !isTargetedTestCase(jestFnCall) ||
           !isStringNode(title)
         ) {
           return;
@@ -74,7 +91,7 @@ export default createRule({
             node,
             fix: fixer => [
               fixer.removeRange([title.range[1], callback.range[1]]),
-              createTodoFixer(node, fixer),
+              ...createTodoFixer(jestFnCall, fixer),
             ],
           });
         }
@@ -83,7 +100,7 @@ export default createRule({
           context.report({
             messageId: 'unimplementedTest',
             node,
-            fix: fixer => [createTodoFixer(node, fixer)],
+            fix: fixer => createTodoFixer(jestFnCall, fixer),
           });
         }
       },

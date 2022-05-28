@@ -9,7 +9,7 @@ import {
   getNodeName,
   getTestCallExpressionsFromDeclaredVariables,
   isSupportedAccessor,
-  isTestCaseCall,
+  isTypeOfJestFnCall,
 } from './utils';
 
 /**
@@ -114,7 +114,7 @@ export default createRule<
         const name = getNodeName(node.callee) ?? '';
 
         if (
-          isTestCaseCall(node, context.getScope()) ||
+          isTypeOfJestFnCall(node, context.getScope(), ['test']) ||
           additionalTestBlockFunctions.includes(name)
         ) {
           if (

@@ -1,4 +1,4 @@
-import { HookName, createRule, isHookCall } from './utils';
+import { HookName, createRule, parseJestFnCall } from './utils';
 
 export default createRule<
   [Partial<{ allow: readonly HookName[] }>],
@@ -32,14 +32,16 @@ export default createRule<
   create(context, [{ allow = [] }]) {
     return {
       CallExpression(node) {
+        const jestFnCall = parseJestFnCall(node, context.getScope());
+
         if (
-          isHookCall(node, context.getScope()) &&
-          !allow.includes(node.callee.name)
+          jestFnCall?.type === 'hook' &&
+          !allow.includes(jestFnCall.name as HookName)
         ) {
           context.report({
             node,
             messageId: 'unexpectedHook',
-            data: { hookName: node.callee.name },
+            data: { hookName: jestFnCall.name },
           });
         }
       },

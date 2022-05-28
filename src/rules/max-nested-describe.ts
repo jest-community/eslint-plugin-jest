@@ -1,5 +1,5 @@
 import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/utils';
-import { createRule, isDescribeCall } from './utils';
+import { createRule, isTypeOfJestFnCall } from './utils';
 
 export default createRule({
   name: __filename,
@@ -38,7 +38,7 @@ export default createRule({
 
       if (
         parent?.type !== AST_NODE_TYPES.CallExpression ||
-        !isDescribeCall(parent, context.getScope())
+        !isTypeOfJestFnCall(parent, context.getScope(), ['describe'])
       ) {
         return;
       }
@@ -61,7 +61,7 @@ export default createRule({
 
       if (
         parent?.type === AST_NODE_TYPES.CallExpression &&
-        isDescribeCall(parent, context.getScope())
+        isTypeOfJestFnCall(parent, context.getScope(), ['describe'])
       ) {
         describeCallbackStack.pop();
       }

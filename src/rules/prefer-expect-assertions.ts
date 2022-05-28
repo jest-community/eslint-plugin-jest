@@ -7,7 +7,7 @@ import {
   isExpectCall,
   isFunction,
   isSupportedAccessor,
-  isTestCaseCall,
+  isTypeOfJestFnCall,
 } from './utils';
 
 const isExpectAssertionsOrHasAssertionsCall = (
@@ -157,7 +157,7 @@ export default createRule<[RuleOptions], MessageIds>({
       ForOfStatement: enterForLoop,
       'ForOfStatement:exit': exitForLoop,
       CallExpression(node) {
-        if (isTestCaseCall(node, context.getScope())) {
+        if (isTypeOfJestFnCall(node, context.getScope(), ['test'])) {
           inTestCaseCall = true;
 
           return;
@@ -174,7 +174,7 @@ export default createRule<[RuleOptions], MessageIds>({
         }
       },
       'CallExpression:exit'(node: TSESTree.CallExpression) {
-        if (!isTestCaseCall(node, context.getScope())) {
+        if (!isTypeOfJestFnCall(node, context.getScope(), ['test'])) {
           return;
         }
 

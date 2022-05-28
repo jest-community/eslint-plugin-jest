@@ -2,9 +2,10 @@ import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/utils';
 import {
   TestCaseName,
   createRule,
+  getAccessorValue,
   getNodeName,
   getTestCallExpressionsFromDeclaredVariables,
-  isTestCaseCall,
+  parseJestFnCall,
 } from './utils';
 
 const testCaseNames = new Set<string | null>([
@@ -74,10 +75,12 @@ export default createRule({
 
     return {
       CallExpression(node) {
-        if (isTestCaseCall(node, context.getScope())) {
+        const jestFnCall = parseJestFnCall(node, context.getScope());
+
+        if (jestFnCall?.type === 'test') {
           stack.push(true);
 
-          if (getNodeName(node).endsWith('each')) {
+          if (jestFnCall.members.some(s => getAccessorValue(s) === 'each')) {
             stack.push(true);
           }
         }

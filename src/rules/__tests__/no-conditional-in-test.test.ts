@@ -31,6 +31,11 @@ ruleTester.run('conditional expressions', rule, {
         foo();
       });
     `,
+    dedent`
+      fit.concurrent('foo', () => {
+        switch('bar') {}
+      })
+    `,
   ],
   invalid: [
     {
@@ -343,20 +348,6 @@ ruleTester.run('switch statements', rule, {
     },
     {
       code: dedent`
-        fit.concurrent('foo', () => {
-          switch('bar') {}
-        })
-      `,
-      errors: [
-        {
-          messageId: 'conditionalInTest',
-          column: 3,
-          line: 2,
-        },
-      ],
-    },
-    {
-      code: dedent`
         test('foo', () => {
           switch('bar') {}
         })
@@ -616,6 +607,11 @@ ruleTester.run('if statements', rule, {
         });
       });
     `,
+    dedent`
+      fit.concurrent('foo', () => {
+        if ('bar') {}
+      })
+    `,
   ],
   invalid: [
     {
@@ -759,20 +755,6 @@ ruleTester.run('if statements', rule, {
     {
       code: dedent`
         fit('foo', () => {
-          if ('bar') {}
-        })
-      `,
-      errors: [
-        {
-          messageId: 'conditionalInTest',
-          column: 3,
-          line: 2,
-        },
-      ],
-    },
-    {
-      code: dedent`
-        fit.concurrent('foo', () => {
           if ('bar') {}
         })
       `,

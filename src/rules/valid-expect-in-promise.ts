@@ -9,8 +9,9 @@ import {
   isFunction,
   isIdentifier,
   isSupportedAccessor,
-  isTestCaseCall,
+  isTypeOfJestFnCall,
   parseExpectCall,
+  parseJestFnCall,
 } from './utils';
 
 type PromiseChainCallExpression = KnownCallExpression<
@@ -71,11 +72,15 @@ const isTestCaseCallWithCallbackArg = (
   node: TSESTree.CallExpression,
   scope: TSESLint.Scope.Scope,
 ): boolean => {
-  if (!isTestCaseCall(node, scope)) {
+  const jestCallFn = parseJestFnCall(node, scope);
+
+  if (jestCallFn?.type !== 'test') {
     return false;
   }
 
-  const isJestEach = getNodeName(node).endsWith('.each');
+  const isJestEach = jestCallFn.members.some(
+    s => getAccessorValue(s) === 'each',
+  );
 
   if (
     isJestEach &&
@@ -88,19 +93,15 @@ const isTestCaseCallWithCallbackArg = (
     return true;
   }
 
-  if (isJestEach || node.arguments.length >= 2) {
-    const [, callback] = node.arguments;
+  const [, callback] = node.arguments;
 
-    const callbackArgIndex = Number(isJestEach);
+  const callbackArgIndex = Number(isJestEach);
 
-    return (
-      callback &&
-      isFunction(callback) &&
-      callback.params.length === 1 + callbackArgIndex
-    );
-  }
-
-  return false;
+  return (
+    callback &&
+    isFunction(callback) &&
+    callback.params.length === 1 + callbackArgIndex
+  );
 };
 
 const isPromiseMethodThatUsesValue = (
@@ -331,9 +332,9 @@ const isDirectlyWithinTestCaseCall = (
     if (isFunction(parent)) {
       parent = parent.parent;
 
-      return !!(
+      return (
         parent?.type === AST_NODE_TYPES.CallExpression &&
-        isTestCaseCall(parent, scope)
+        isTypeOfJestFnCall(parent, scope, ['test'])
       );
     }
 
@@ -414,7 +415,7 @@ export default createRule({
         // make promises containing expects safe in a test for us to be able to
         // accurately check, so we just bail out completely if it's present
         if (inTestCaseWithDoneCallback) {
-          if (isTestCaseCall(node, context.getScope())) {
+          if (isTypeOfJestFnCall(node, context.getScope(), ['test'])) {
             inTestCaseWithDoneCallback = false;
           }
 

@@ -1590,5 +1590,28 @@ ruleTester.run('valid-expect-in-promise', rule, {
         },
       ],
     },
+    {
+      code: dedent`
+        import { it as promiseThatThis } from '@jest/globals';
+
+        promiseThatThis('is valid', async () => {
+          const promise = loadNumber().then(number => {
+            expect(typeof number).toBe('number');
+
+            return number + 1;
+          });
+
+          expect(anotherPromise).resolves.toBe(1);
+        });
+      `,
+      parserOptions: { sourceType: 'module' },
+      errors: [
+        {
+          messageId: 'expectInFloatingPromise',
+          line: 4,
+          column: 9,
+        },
+      ],
+    },
   ],
 });

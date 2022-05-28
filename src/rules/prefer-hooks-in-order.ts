@@ -1,11 +1,6 @@
-import { createRule, isHookCall } from './utils';
+import { createRule, isTypeOfJestFnCall, parseJestFnCall } from './utils';
 
-const HooksOrder = [
-  'beforeAll',
-  'beforeEach',
-  'afterEach',
-  'afterAll',
-] as const;
+const HooksOrder = ['beforeAll', 'beforeEach', 'afterEach', 'afterAll'];
 
 export default createRule({
   name: __filename,
@@ -33,7 +28,9 @@ export default createRule({
           return;
         }
 
-        if (!isHookCall(node, context.getScope())) {
+        const jestFnCall = parseJestFnCall(node, context.getScope());
+
+        if (jestFnCall?.type !== 'hook') {
           // Reset the previousHookIndex when encountering something different from a hook
           previousHookIndex = -1;
 
@@ -41,7 +38,7 @@ export default createRule({
         }
 
         inHook = true;
-        const currentHook = node.callee.name;
+        const currentHook = jestFnCall.name;
         const currentHookIndex = HooksOrder.indexOf(currentHook);
 
         if (currentHookIndex < previousHookIndex) {
@@ -60,7 +57,7 @@ export default createRule({
         previousHookIndex = currentHookIndex;
       },
       'CallExpression:exit'(node) {
-        if (isHookCall(node, context.getScope())) {
+        if (isTypeOfJestFnCall(node, context.getScope(), ['hook'])) {
           inHook = false;
 
           return;

@@ -1,10 +1,10 @@
 import {
   createRule,
-  getNodeName,
   getStringValue,
-  isDescribeCall,
   isStringNode,
-  isTestCaseCall,
+  isSupportedAccessor,
+  isTypeOfJestFnCall,
+  parseJestFnCall,
 } from './utils';
 
 interface DescribeContext {
@@ -43,11 +43,17 @@ export default createRule({
         const scope = context.getScope();
         const currentLayer = contexts[contexts.length - 1];
 
-        if (isDescribeCall(node, scope)) {
+        const jestFnCall = parseJestFnCall(node, scope);
+
+        if (!jestFnCall) {
+          return;
+        }
+
+        if (jestFnCall.type === 'describe') {
           contexts.push(newDescribeContext());
         }
 
-        if (getNodeName(node.callee)?.endsWith('.each')) {
+        if (jestFnCall.members.find(s => isSupportedAccessor(s, 'each'))) {
           return;
         }
 
@@ -59,7 +65,7 @@ export default createRule({
 
         const title = getStringValue(argument);
 
-        if (isTestCaseCall(node, scope)) {
+        if (jestFnCall.type === 'test') {
           if (currentLayer.testTitles.includes(title)) {
             context.report({
               messageId: 'multipleTestTitle',
@@ -69,7 +75,7 @@ export default createRule({
           currentLayer.testTitles.push(title);
         }
 
-        if (!isDescribeCall(node, scope)) {
+        if (jestFnCall.type !== 'describe') {
           return;
         }
         if (currentLayer.describeTitles.includes(title)) {
@@ -81,7 +87,7 @@ export default createRule({
         currentLayer.describeTitles.push(title);
       },
       'CallExpression:exit'(node) {
-        if (isDescribeCall(node, context.getScope())) {
+        if (isTypeOfJestFnCall(node, context.getScope(), ['describe'])) {
           contexts.pop();
         }
       },

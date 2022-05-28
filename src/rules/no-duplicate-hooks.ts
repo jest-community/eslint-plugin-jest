@@ -1,11 +1,4 @@
-import { createRule, isDescribeCall, isHookCall } from './utils';
-
-const newHookContext = () => ({
-  beforeAll: 0,
-  beforeEach: 0,
-  afterAll: 0,
-  afterEach: 0,
-});
+import { createRule, isTypeOfJestFnCall, parseJestFnCall } from './utils';
 
 export default createRule({
   name: __filename,
@@ -23,31 +16,36 @@ export default createRule({
   },
   defaultOptions: [],
   create(context) {
-    const hookContexts = [newHookContext()];
+    const hookContexts: Array<Record<string, number>> = [{}];
 
     return {
       CallExpression(node) {
         const scope = context.getScope();
 
-        if (isDescribeCall(node, scope)) {
-          hookContexts.push(newHookContext());
+        const jestFnCall = parseJestFnCall(node, scope);
+
+        if (jestFnCall?.type === 'describe') {
+          hookContexts.push({});
         }
 
-        if (isHookCall(node, scope)) {
-          const currentLayer = hookContexts[hookContexts.length - 1];
+        if (jestFnCall?.type !== 'hook') {
+          return;
+        }
 
-          currentLayer[node.callee.name] += 1;
-          if (currentLayer[node.callee.name] > 1) {
-            context.report({
-              messageId: 'noDuplicateHook',
-              data: { hook: node.callee.name },
-              node,
-            });
-          }
+        const currentLayer = hookContexts[hookContexts.length - 1];
+
+        currentLayer[jestFnCall.name] ||= 0;
+        currentLayer[jestFnCall.name] += 1;
+        if (currentLayer[jestFnCall.name] > 1) {
+          context.report({
+            messageId: 'noDuplicateHook',
+            data: { hook: jestFnCall.name },
+            node,
+          });
         }
       },
       'CallExpression:exit'(node) {
-        if (isDescribeCall(node, context.getScope())) {
+        if (isTypeOfJestFnCall(node, context.getScope(), ['describe'])) {
           hookContexts.pop();
         }
       },

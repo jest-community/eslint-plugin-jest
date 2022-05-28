@@ -2,22 +2,17 @@ import { AST_NODE_TYPES, TSESLint, TSESTree } from '@typescript-eslint/utils';
 import {
   createRule,
   getNodeName,
-  isDescribeCall,
   isFunction,
-  isHookCall,
   isIdentifier,
-  isTestCaseCall,
+  isTypeOfJestFnCall,
+  parseJestFnCall,
 } from './utils';
 
 const isJestFnCall = (
   node: TSESTree.CallExpression,
   scope: TSESLint.Scope.Scope,
 ): boolean => {
-  if (
-    isDescribeCall(node, scope) ||
-    isTestCaseCall(node, scope) ||
-    isHookCall(node, scope)
-  ) {
+  if (parseJestFnCall(node, scope)) {
     return true;
   }
 
@@ -114,7 +109,7 @@ export default createRule<
       },
       CallExpression(node) {
         if (
-          !isDescribeCall(node, context.getScope()) ||
+          !isTypeOfJestFnCall(node, context.getScope(), ['describe']) ||
           node.arguments.length < 2
         ) {
           return;
