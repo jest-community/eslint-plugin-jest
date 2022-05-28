@@ -673,3 +673,4 @@ export const getTestCallExpressionsFromDeclaredVariables = (
 };
 
 export * from './utils/parseJestFnCall';
+export * from './utils/detectJestVersion';
