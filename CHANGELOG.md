@@ -1,3 +1,11 @@
+## [26.4.2](https://github.com/jest-community/eslint-plugin-jest/compare/v26.4.1...v26.4.2) (2022-05-28)
+
+
+### Bug Fixes
+
+* don't consider `concurrent.skip` and `concurrent.only` valid test functions ([#1124](https://github.com/jest-community/eslint-plugin-jest/issues/1124)) ([0aa5eb6](https://github.com/jest-community/eslint-plugin-jest/commit/0aa5eb60f6ad53316b9ec9343c9d0240e7ff5f1d))
+* **no-disabled-tests:** use jest function call parser for checking number of args ([#1126](https://github.com/jest-community/eslint-plugin-jest/issues/1126)) ([b67e389](https://github.com/jest-community/eslint-plugin-jest/commit/b67e389b401ee6adb31fbfd0a7f903312544e5e8))
+
 ## [26.4.1](https://github.com/jest-community/eslint-plugin-jest/compare/v26.4.0...v26.4.1) (2022-05-28)
 
 
