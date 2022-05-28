@@ -58,5 +58,15 @@ ruleTester.run('prefer-todo', rule, {
       output: 'test.todo("i need to write this test");',
       errors: [{ messageId: 'emptyTest' }],
     },
+    {
+      code: `test["skip"]("i need to write this test", function() {});`,
+      output: 'test[\'todo\']("i need to write this test");',
+      errors: [{ messageId: 'emptyTest' }],
+    },
+    {
+      code: `test[\`skip\`]("i need to write this test", function() {});`,
+      output: 'test[\'todo\']("i need to write this test");',
+      errors: [{ messageId: 'emptyTest' }],
+    },
   ],
 });

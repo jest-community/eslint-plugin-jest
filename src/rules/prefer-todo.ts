@@ -23,20 +23,18 @@ function createTodoFixer(
   jestFnCall: ParsedJestFnCall,
   fixer: TSESLint.RuleFixer,
 ) {
-  const fixes = [
-    fixer.replaceText(jestFnCall.head.node, `${jestFnCall.head.local}.todo`),
-  ];
-
   if (jestFnCall.members.length) {
-    fixes.unshift(
-      fixer.removeRange([
-        jestFnCall.head.node.range[1],
-        jestFnCall.members[0].range[1],
-      ]),
-    );
+    const text =
+      jestFnCall.members[0].type === AST_NODE_TYPES.Identifier
+        ? 'todo'
+        : "'todo'";
+
+    return [fixer.replaceText(jestFnCall.members[0], text)];
   }
 
-  return fixes;
+  return [
+    fixer.replaceText(jestFnCall.head.node, `${jestFnCall.head.local}.todo`),
+  ];
 }
 
 const isTargetedTestCase = (jestFnCall: ParsedJestFnCall): boolean => {
