@@ -1,3 +1,10 @@
+# [26.4.0](https://github.com/jest-community/eslint-plugin-jest/compare/v26.3.0...v26.4.0) (2022-05-28)
+
+
+### Features
+
+* improve how jest function calls are resolved to account for import aliases ([#1122](https://github.com/jest-community/eslint-plugin-jest/issues/1122)) ([781f00e](https://github.com/jest-community/eslint-plugin-jest/commit/781f00e0120a02e992e213042e05c0c03da90330))
+
 # [26.3.0](https://github.com/jest-community/eslint-plugin-jest/compare/v26.2.2...v26.3.0) (2022-05-28)
 
 
