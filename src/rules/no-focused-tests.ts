@@ -24,13 +24,13 @@ export default createRule({
       CallExpression(node) {
         const scope = context.getScope();
 
-        const parsed = parseJestFnCall(node, scope);
+        const jestFnCall = parseJestFnCall(node, scope);
 
-        if (parsed?.type !== 'test' && parsed?.type !== 'describe') {
+        if (jestFnCall?.type !== 'test' && jestFnCall?.type !== 'describe') {
           return;
         }
 
-        if (parsed.name.startsWith('f')) {
+        if (jestFnCall.name.startsWith('f')) {
           context.report({
             messageId: 'focusedTest',
             node,
@@ -40,8 +40,8 @@ export default createRule({
                 fix(fixer) {
                   // don't apply the fixer if we're an aliased import
                   if (
-                    parsed.head.type === 'import' &&
-                    parsed.name !== parsed.head.local
+                    jestFnCall.head.type === 'import' &&
+                    jestFnCall.name !== jestFnCall.head.local
                   ) {
                     return null;
                   }
@@ -55,7 +55,7 @@ export default createRule({
           return;
         }
 
-        const onlyNode = parsed.members.find(
+        const onlyNode = jestFnCall.members.find(
           s => getAccessorValue(s) === 'only',
         );
 

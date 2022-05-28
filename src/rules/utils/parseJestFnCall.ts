@@ -16,9 +16,9 @@ export const isTypeOfJestFnCall = (
   scope: TSESLint.Scope.Scope,
   types: JestFnType[],
 ): boolean => {
-  const parsed = parseJestFnCall(node, scope);
+  const jestFnCall = parseJestFnCall(node, scope);
 
-  return parsed !== null && types.includes(parsed.type);
+  return jestFnCall !== null && types.includes(jestFnCall.type);
 };
 
 export function getNodeChain(node: TSESTree.Node): AccessorNode[] {
