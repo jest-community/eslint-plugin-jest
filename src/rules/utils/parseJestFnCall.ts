@@ -43,24 +43,30 @@ export interface ResolvedJestFnWithNode extends ResolvedJestFn {
   node: AccessorNode;
 }
 
-type JestFnType = 'hook' | 'describe' | 'test' | 'expect' | 'other';
+type JestFnType = 'hook' | 'describe' | 'test' | 'expect' | 'jest' | 'unknown';
 
 const determineJestFnType = (name: string): JestFnType => {
   if (name === 'expect') {
     return 'expect';
   }
 
+  if (name === 'jest') {
+    return 'jest';
+  }
+
   if (DescribeAlias.hasOwnProperty(name)) {
     return 'describe';
   }
+
   if (TestCaseName.hasOwnProperty(name)) {
     return 'test';
   }
+
   if (HookName.hasOwnProperty(name)) {
     return 'hook';
   }
 
-  return 'other';
+  return 'unknown';
 };
 
 export interface ParsedJestFnCall {
@@ -196,7 +202,7 @@ export const parseJestFnCall = (
 
   const links = [name, ...rest.map(link => getAccessorValue(link))];
 
-  if (!ValidJestFnCallChains.includes(links.join('.'))) {
+  if (name !== 'jest' && !ValidJestFnCallChains.includes(links.join('.'))) {
     return null;
   }
 

@@ -56,6 +56,15 @@ ruleTester.run('prefer-lowercase-title', rule, {
       describe.each()(1);
       describe.each()(2);
     `,
+    'jest.doMock("my-module")',
+    {
+      code: dedent`
+        import { jest } from '@jest/globals';
+
+        jest.doMock('my-module');
+      `,
+      parserOptions: { sourceType: 'module' },
+    },
     'describe(42)',
     {
       code: 'describe(42)',

@@ -61,6 +61,15 @@ ruleTester.run('require-top-level-describe', rule, {
         });
       });
     `,
+    {
+      code: dedent`
+        import { jest } from '@jest/globals';
+
+        jest.doMock('my-module');
+      `,
+      parserOptions: { sourceType: 'module' },
+    },
+    'jest.doMock("my-module")',
   ],
   invalid: [
     {
