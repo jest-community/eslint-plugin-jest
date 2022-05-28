@@ -204,13 +204,13 @@ ruleTester.run('mustMatch & mustNotMatch options', rule, {
           });
         });
       `,
-      parserOptions: { sourceType: 'module' },
       options: [
         {
           mustNotMatch: /(?:#(?!unit|e2e))\w+/u.source,
           mustMatch: /^[^#]+$|(?:#(?:unit|e2e))/u.source,
         },
       ],
+      parserOptions: { sourceType: 'module' },
       errors: [
         {
           messageId: 'mustNotMatch',
