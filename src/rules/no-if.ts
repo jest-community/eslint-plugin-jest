@@ -75,7 +75,7 @@ export default createRule({
 
     return {
       CallExpression(node) {
-        const jestFnCall = parseJestFnCall(node, context.getScope());
+        const jestFnCall = parseJestFnCall(node, context);
 
         if (jestFnCall?.type === 'test') {
           stack.push(true);
@@ -92,7 +92,7 @@ export default createRule({
         const declaredVariables = context.getDeclaredVariables(node);
         const testCallExpressions = getTestCallExpressionsFromDeclaredVariables(
           declaredVariables,
-          context.getScope(),
+          context,
         );
 
         stack.push(testCallExpressions.length > 0);

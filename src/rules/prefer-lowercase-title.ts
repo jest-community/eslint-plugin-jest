@@ -104,9 +104,7 @@ export default createRule<
 
     return {
       CallExpression(node: TSESTree.CallExpression) {
-        const scope = context.getScope();
-
-        const jestFnCall = parseJestFnCall(node, scope);
+        const jestFnCall = parseJestFnCall(node, context);
 
         if (!jestFnCall || !hasStringAsFirstArgument(node)) {
           return;
@@ -162,7 +160,7 @@ export default createRule<
         });
       },
       'CallExpression:exit'(node: TSESTree.CallExpression) {
-        if (isTypeOfJestFnCall(node, context.getScope(), ['describe'])) {
+        if (isTypeOfJestFnCall(node, context, ['describe'])) {
           numberOfDescribeBlocks--;
         }
       },

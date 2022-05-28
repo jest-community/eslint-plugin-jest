@@ -30,12 +30,12 @@ export default createRule({
 
     return {
       CallExpression(node: TSESTree.CallExpression) {
-        if (isTypeOfJestFnCall(node, context.getScope(), ['test'])) {
+        if (isTypeOfJestFnCall(node, context, ['test'])) {
           inTestCase = true;
         }
       },
       'CallExpression:exit'(node) {
-        if (isTypeOfJestFnCall(node, context.getScope(), ['test'])) {
+        if (isTypeOfJestFnCall(node, context, ['test'])) {
           inTestCase = false;
         }
       },

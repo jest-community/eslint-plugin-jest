@@ -106,17 +106,13 @@ export default createRule<[('always' | 'multi')?], keyof typeof messages>({
       ArrowFunctionExpression: enterExpression,
       'ArrowFunctionExpression:exit': exitExpression,
       'CallExpression:exit'(node) {
-        const scope = context.getScope();
-
-        if (isTypeOfJestFnCall(node, scope, ['describe', 'test'])) {
+        if (isTypeOfJestFnCall(node, context, ['describe', 'test'])) {
           /* istanbul ignore next */
           expressionDepth = depths.pop() ?? 0;
         }
       },
       CallExpression(node) {
-        const scope = context.getScope();
-
-        if (isTypeOfJestFnCall(node, scope, ['describe', 'test'])) {
+        if (isTypeOfJestFnCall(node, context, ['describe', 'test'])) {
           depths.push(expressionDepth);
           expressionDepth = 0;
         }

@@ -10,9 +10,9 @@ import {
 
 const isJestFnCall = (
   node: TSESTree.CallExpression,
-  scope: TSESLint.Scope.Scope,
+  context: TSESLint.RuleContext<string, unknown[]>,
 ): boolean => {
-  if (parseJestFnCall(node, scope)) {
+  if (parseJestFnCall(node, context)) {
     return true;
   }
 
@@ -28,15 +28,15 @@ const isNullOrUndefined = (node: TSESTree.Expression): boolean => {
 
 const shouldBeInHook = (
   node: TSESTree.Node,
-  scope: TSESLint.Scope.Scope,
+  context: TSESLint.RuleContext<string, unknown[]>,
   allowedFunctionCalls: readonly string[] = [],
 ): boolean => {
   switch (node.type) {
     case AST_NODE_TYPES.ExpressionStatement:
-      return shouldBeInHook(node.expression, scope, allowedFunctionCalls);
+      return shouldBeInHook(node.expression, context, allowedFunctionCalls);
     case AST_NODE_TYPES.CallExpression:
       return !(
-        isJestFnCall(node, scope) ||
+        isJestFnCall(node, context) ||
         allowedFunctionCalls.includes(getNodeName(node) as string)
       );
     case AST_NODE_TYPES.VariableDeclaration: {
@@ -92,9 +92,7 @@ export default createRule<
 
     const checkBlockBody = (body: TSESTree.BlockStatement['body']) => {
       for (const statement of body) {
-        if (
-          shouldBeInHook(statement, context.getScope(), allowedFunctionCalls)
-        ) {
+        if (shouldBeInHook(statement, context, allowedFunctionCalls)) {
           context.report({
             node: statement,
             messageId: 'useHook',
@@ -109,7 +107,7 @@ export default createRule<
       },
       CallExpression(node) {
         if (
-          !isTypeOfJestFnCall(node, context.getScope(), ['describe']) ||
+          !isTypeOfJestFnCall(node, context, ['describe']) ||
           node.arguments.length < 2
         ) {
           return;

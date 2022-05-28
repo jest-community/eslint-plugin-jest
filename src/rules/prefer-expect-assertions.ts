@@ -157,7 +157,7 @@ export default createRule<[RuleOptions], MessageIds>({
       ForOfStatement: enterForLoop,
       'ForOfStatement:exit': exitForLoop,
       CallExpression(node) {
-        if (isTypeOfJestFnCall(node, context.getScope(), ['test'])) {
+        if (isTypeOfJestFnCall(node, context, ['test'])) {
           inTestCaseCall = true;
 
           return;
@@ -174,7 +174,7 @@ export default createRule<[RuleOptions], MessageIds>({
         }
       },
       'CallExpression:exit'(node: TSESTree.CallExpression) {
-        if (!isTypeOfJestFnCall(node, context.getScope(), ['test'])) {
+        if (!isTypeOfJestFnCall(node, context, ['test'])) {
           return;
         }
 

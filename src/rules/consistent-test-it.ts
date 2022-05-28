@@ -72,8 +72,7 @@ export default createRule<
 
     return {
       CallExpression(node: TSESTree.CallExpression) {
-        const scope = context.getScope();
-        const jestFnCall = parseJestFnCall(node, scope);
+        const jestFnCall = parseJestFnCall(node, context);
 
         if (!jestFnCall) {
           return;
@@ -129,7 +128,7 @@ export default createRule<
         }
       },
       'CallExpression:exit'(node) {
-        if (isTypeOfJestFnCall(node, context.getScope(), ['describe'])) {
+        if (isTypeOfJestFnCall(node, context, ['describe'])) {
           describeNestingLevel--;
         }
       },

@@ -38,7 +38,7 @@ export default createRule({
 
       if (
         parent?.type !== AST_NODE_TYPES.CallExpression ||
-        !isTypeOfJestFnCall(parent, context.getScope(), ['describe'])
+        !isTypeOfJestFnCall(parent, context, ['describe'])
       ) {
         return;
       }
@@ -61,7 +61,7 @@ export default createRule({
 
       if (
         parent?.type === AST_NODE_TYPES.CallExpression &&
-        isTypeOfJestFnCall(parent, context.getScope(), ['describe'])
+        isTypeOfJestFnCall(parent, context, ['describe'])
       ) {
         describeCallbackStack.pop();
       }

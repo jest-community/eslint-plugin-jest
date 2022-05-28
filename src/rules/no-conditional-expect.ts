@@ -42,7 +42,7 @@ export default createRule({
         const declaredVariables = context.getDeclaredVariables(node);
         const testCallExpressions = getTestCallExpressionsFromDeclaredVariables(
           declaredVariables,
-          context.getScope(),
+          context,
         );
 
         if (testCallExpressions.length > 0) {
@@ -50,7 +50,7 @@ export default createRule({
         }
       },
       CallExpression(node: TSESTree.CallExpression) {
-        if (isTypeOfJestFnCall(node, context.getScope(), ['test'])) {
+        if (isTypeOfJestFnCall(node, context, ['test'])) {
           inTestCase = true;
         }
 
@@ -73,7 +73,7 @@ export default createRule({
         }
       },
       'CallExpression:exit'(node) {
-        if (isTypeOfJestFnCall(node, context.getScope(), ['test'])) {
+        if (isTypeOfJestFnCall(node, context, ['test'])) {
           inTestCase = false;
         }
 

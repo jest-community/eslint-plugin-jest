@@ -28,7 +28,7 @@ export default createRule({
           return;
         }
 
-        const jestFnCall = parseJestFnCall(node, context.getScope());
+        const jestFnCall = parseJestFnCall(node, context);
 
         if (jestFnCall?.type !== 'hook') {
           // Reset the previousHookIndex when encountering something different from a hook
@@ -57,7 +57,7 @@ export default createRule({
         previousHookIndex = currentHookIndex;
       },
       'CallExpression:exit'(node) {
-        if (isTypeOfJestFnCall(node, context.getScope(), ['hook'])) {
+        if (isTypeOfJestFnCall(node, context, ['hook'])) {
           inHook = false;
 
           return;

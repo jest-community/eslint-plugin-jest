@@ -59,6 +59,25 @@ doing:
 This is included in all configs shared by this plugin, so can be omitted if
 extending them.
 
+#### Aliased Jest globals
+
+You can tell this plugin about any global Jests you have aliased using the
+`globalAliases` setting:
+
+```json
+{
+  "settings": {
+    "jest": {
+      "globalAliases": {
+        "describe": ["context"],
+        "fdescribe": ["fcontext"],
+        "xdescribe": ["xcontext"]
+      }
+    }
+  }
+}
+```
+
 ### Running rules only on test-related files
 
 The rules provided by this plugin assume that the files they are checking are

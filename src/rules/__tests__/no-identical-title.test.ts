@@ -243,5 +243,15 @@ ruleTester.run('no-identical-title', rule, {
       `,
       errors: [{ messageId: 'multipleTestTitle', column: 6, line: 3 }],
     },
+    {
+      code: dedent`
+        context('foo', () => {
+          describe('foe', () => {});
+        });
+        describe('foo', () => {});
+      `,
+      errors: [{ messageId: 'multipleDescribeTitle', column: 10, line: 4 }],
+      settings: { jest: { globalAliases: { describe: ['context'] } } },
+    },
   ],
 });

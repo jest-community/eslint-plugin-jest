@@ -4,13 +4,13 @@ import { createRule, getNodeName, isFunction, parseJestFnCall } from './utils';
 const findCallbackArg = (
   node: TSESTree.CallExpression,
   isJestEach: boolean,
-  scope: TSESLint.Scope.Scope,
+  context: TSESLint.RuleContext<string, unknown[]>,
 ): TSESTree.CallExpression['arguments'][0] | null => {
   if (isJestEach) {
     return node.arguments[1];
   }
 
-  const jestFnCall = parseJestFnCall(node, scope);
+  const jestFnCall = parseJestFnCall(node, context);
 
   if (jestFnCall?.type === 'hook' && node.arguments.length >= 1) {
     return node.arguments[0];
@@ -60,7 +60,7 @@ export default createRule({
           return;
         }
 
-        const callback = findCallbackArg(node, isJestEach, context.getScope());
+        const callback = findCallbackArg(node, isJestEach, context);
         const callbackArgIndex = Number(isJestEach);
 
         if (

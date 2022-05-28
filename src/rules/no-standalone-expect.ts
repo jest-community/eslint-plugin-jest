@@ -10,7 +10,7 @@ import {
 
 const getBlockType = (
   statement: TSESTree.BlockStatement,
-  scope: TSESLint.Scope.Scope,
+  context: TSESLint.RuleContext<string, unknown[]>,
 ): 'function' | 'describe' | null => {
   const func = statement.parent;
 
@@ -37,7 +37,7 @@ const getBlockType = (
     // if it's not a variable, it will be callExpr, we only care about describe
     if (
       expr.type === AST_NODE_TYPES.CallExpression &&
-      isTypeOfJestFnCall(expr, scope, ['describe'])
+      isTypeOfJestFnCall(expr, context, ['describe'])
     ) {
       return 'describe';
     }
@@ -85,7 +85,7 @@ export default createRule<
       additionalTestBlockFunctions.includes(getNodeName(node) || '');
 
     const isTestBlock = (node: TSESTree.CallExpression): boolean =>
-      isTypeOfJestFnCall(node, context.getScope(), ['test']) ||
+      isTypeOfJestFnCall(node, context, ['test']) ||
       isCustomTestBlockFunction(node);
 
     return {
@@ -123,7 +123,7 @@ export default createRule<
       },
 
       BlockStatement(statement) {
-        const blockType = getBlockType(statement, context.getScope());
+        const blockType = getBlockType(statement, context);
 
         if (blockType) {
           callStack.push(blockType);
@@ -131,8 +131,7 @@ export default createRule<
       },
       'BlockStatement:exit'(statement: TSESTree.BlockStatement) {
         if (
-          callStack[callStack.length - 1] ===
-          getBlockType(statement, context.getScope())
+          callStack[callStack.length - 1] === getBlockType(statement, context)
         ) {
           callStack.pop();
         }

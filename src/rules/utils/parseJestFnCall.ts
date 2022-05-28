@@ -13,10 +13,10 @@ import {
 
 export const isTypeOfJestFnCall = (
   node: TSESTree.CallExpression,
-  scope: TSESLint.Scope.Scope,
+  context: TSESLint.RuleContext<string, unknown[]>,
   types: JestFnType[],
 ): boolean => {
-  const jestFnCall = parseJestFnCall(node, scope);
+  const jestFnCall = parseJestFnCall(node, context);
 
   return jestFnCall !== null && types.includes(jestFnCall.type);
 };
@@ -140,9 +140,35 @@ const ValidJestFnCallChains = [
   'xtest.failing',
 ];
 
+declare module '@typescript-eslint/utils/dist/ts-eslint' {
+  export interface SharedConfigurationSettings {
+    jest?: {
+      globalAliases?: Record<string, string[]>;
+      version?: number | string;
+    };
+  }
+}
+
+const resolvePossibleAliasedGlobal = (
+  global: string,
+  context: TSESLint.RuleContext<string, unknown[]>,
+) => {
+  const globalAliases = context.settings.jest?.globalAliases ?? {};
+
+  const alias = Object.entries(globalAliases).find(([, aliases]) =>
+    aliases.includes(global),
+  );
+
+  if (alias) {
+    return alias[0];
+  }
+
+  return null;
+};
+
 export const parseJestFnCall = (
   node: TSESTree.CallExpression,
-  scope: TSESLint.Scope.Scope,
+  context: TSESLint.RuleContext<string, unknown[]>,
 ): ParsedJestFnCall | null => {
   // ensure that we're at the "top" of the function call chain otherwise when
   // parsing e.g. x().y.z(), we'll incorrectly find & parse "x()" even though
@@ -190,7 +216,7 @@ export const parseJestFnCall = (
     return null;
   }
 
-  const resolved = resolveToJestFn(scope, getAccessorValue(first));
+  const resolved = resolveToJestFn(context, getAccessorValue(first));
 
   // we're not a jest function
   if (!resolved) {
@@ -364,10 +390,10 @@ interface ResolvedJestFn {
 }
 
 const resolveToJestFn = (
-  scope: TSESLint.Scope.Scope,
+  context: TSESLint.RuleContext<string, unknown[]>,
   identifier: string,
 ): ResolvedJestFn | null => {
-  const references = collectReferences(scope);
+  const references = collectReferences(context.getScope());
 
   const maybeImport = references.imports.get(identifier);
 
@@ -392,7 +418,7 @@ const resolveToJestFn = (
   }
 
   return {
-    original: null,
+    original: resolvePossibleAliasedGlobal(identifier, context),
     local: identifier,
     type: 'global',
   };

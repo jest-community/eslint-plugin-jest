@@ -20,14 +20,12 @@ export default createRule({
 
     return {
       CallExpression(node) {
-        const scope = context.getScope();
-
-        if (isTypeOfJestFnCall(node, scope, ['test'])) {
+        if (isTypeOfJestFnCall(node, context, ['test'])) {
           hooksContext[hooksContext.length - 1] = true;
         }
         if (
           hooksContext[hooksContext.length - 1] &&
-          isTypeOfJestFnCall(node, scope, ['hook'])
+          isTypeOfJestFnCall(node, context, ['hook'])
         ) {
           context.report({
             messageId: 'noHookOnTop',

@@ -22,9 +22,7 @@ export default createRule({
   create(context) {
     return {
       CallExpression(node) {
-        const scope = context.getScope();
-
-        const jestFnCall = parseJestFnCall(node, scope);
+        const jestFnCall = parseJestFnCall(node, context);
 
         if (jestFnCall?.type !== 'test' && jestFnCall?.type !== 'describe') {
           return;
