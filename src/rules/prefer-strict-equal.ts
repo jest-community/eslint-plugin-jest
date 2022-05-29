@@ -1,3 +1,4 @@
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import {
   EqualityMatcher,
   createRule,
@@ -46,7 +47,9 @@ export default createRule({
                 fix: fixer => [
                   fixer.replaceText(
                     matcher.node.property,
-                    EqualityMatcher.toStrictEqual,
+                    matcher.node.property.type === AST_NODE_TYPES.Identifier
+                      ? EqualityMatcher.toStrictEqual
+                      : `'${EqualityMatcher.toStrictEqual}'`,
                   ),
                 ],
               },
