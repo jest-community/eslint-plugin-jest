@@ -1,4 +1,9 @@
-import { createRule, isExpectCall, parseExpectCall } from './utils';
+import {
+  createRule,
+  isExpectCall,
+  parseExpectCall,
+  replaceAccessorFixer,
+} from './utils';
 
 export default createRule({
   name: __filename,
@@ -56,7 +61,9 @@ export default createRule({
               canonical,
             },
             node: matcher.node.property,
-            fix: fixer => [fixer.replaceText(matcher.node.property, canonical)],
+            fix: fixer => [
+              replaceAccessorFixer(fixer, matcher.node.property, canonical),
+            ],
           });
         }
       },

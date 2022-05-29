@@ -7,6 +7,7 @@ import {
   isFunction,
   isStringNode,
   parseJestFnCall,
+  replaceAccessorFixer,
 } from './utils';
 
 function isEmptyFunction(node: TSESTree.CallExpressionArgument) {
@@ -23,20 +24,14 @@ function createTodoFixer(
   jestFnCall: ParsedJestFnCall,
   fixer: TSESLint.RuleFixer,
 ) {
-  const fixes = [
-    fixer.replaceText(jestFnCall.head.node, `${jestFnCall.head.local}.todo`),
-  ];
-
   if (jestFnCall.members.length) {
-    fixes.unshift(
-      fixer.removeRange([
-        jestFnCall.head.node.range[1],
-        jestFnCall.members[0].range[1],
-      ]),
-    );
+    return replaceAccessorFixer(fixer, jestFnCall.members[0], 'todo');
   }
 
-  return fixes;
+  return fixer.replaceText(
+    jestFnCall.head.node,
+    `${jestFnCall.head.local}.todo`,
+  );
 }
 
 const isTargetedTestCase = (jestFnCall: ParsedJestFnCall): boolean => {
@@ -91,7 +86,7 @@ export default createRule({
             node,
             fix: fixer => [
               fixer.removeRange([title.range[1], callback.range[1]]),
-              ...createTodoFixer(jestFnCall, fixer),
+              createTodoFixer(jestFnCall, fixer),
             ],
           });
         }

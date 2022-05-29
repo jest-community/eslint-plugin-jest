@@ -12,6 +12,7 @@ import {
   isIdentifier,
   isParsedEqualityMatcherCall,
   parseExpectCall,
+  replaceAccessorFixer,
 } from './utils';
 
 const isNullLiteral = (node: TSESTree.Node): node is TSESTree.NullLiteral =>
@@ -70,7 +71,7 @@ const reportPreferToBe = (
     messageId: `useToBe${whatToBe}`,
     fix(fixer) {
       const fixes = [
-        fixer.replaceText(matcher.node.property, `toBe${whatToBe}`),
+        replaceAccessorFixer(fixer, matcher.node.property, `toBe${whatToBe}`),
       ];
 
       if (matcher.arguments?.length && whatToBe !== '') {

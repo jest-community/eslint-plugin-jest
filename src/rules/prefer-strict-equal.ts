@@ -4,6 +4,7 @@ import {
   isExpectCall,
   isParsedEqualityMatcherCall,
   parseExpectCall,
+  replaceAccessorFixer,
 } from './utils';
 
 export default createRule({
@@ -44,7 +45,8 @@ export default createRule({
               {
                 messageId: 'suggestReplaceWithStrictEqual',
                 fix: fixer => [
-                  fixer.replaceText(
+                  replaceAccessorFixer(
+                    fixer,
                     matcher.node.property,
                     EqualityMatcher.toStrictEqual,
                   ),
