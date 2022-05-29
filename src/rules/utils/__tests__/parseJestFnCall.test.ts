@@ -118,6 +118,9 @@ ruleTester.run('nonexistent methods', rule, {
     '"something".describe()',
     '[].describe()',
     'new describe().only()',
+    '``.test()',
+    'test.only``()',
+    'test``.only()',
   ],
   invalid: [],
 });
