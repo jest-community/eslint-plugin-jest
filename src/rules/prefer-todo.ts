@@ -7,6 +7,7 @@ import {
   isFunction,
   isStringNode,
   parseJestFnCall,
+  replaceAccessorFixer,
 } from './utils';
 
 function isEmptyFunction(node: TSESTree.CallExpressionArgument) {
@@ -24,12 +25,7 @@ function createTodoFixer(
   fixer: TSESLint.RuleFixer,
 ) {
   if (jestFnCall.members.length) {
-    const text =
-      jestFnCall.members[0].type === AST_NODE_TYPES.Identifier
-        ? 'todo'
-        : "'todo'";
-
-    return [fixer.replaceText(jestFnCall.members[0], text)];
+    return [replaceAccessorFixer(fixer, jestFnCall.members[0], 'todo')];
   }
 
   return [

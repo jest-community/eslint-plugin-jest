@@ -137,3 +137,20 @@ export const getTestCallExpressionsFromDeclaredVariables = (
     [],
   );
 };
+
+/**
+ * Replaces an accessor node with the given `text`, surrounding it in quotes if required.
+ *
+ * This ensures that fixes produce valid code when replacing both dot-based and
+ * bracket-based property accessors.
+ */
+export const replaceAccessorFixer = (
+  fixer: TSESLint.RuleFixer,
+  node: AccessorNode,
+  text: string,
+) => {
+  return fixer.replaceText(
+    node,
+    node.type === AST_NODE_TYPES.Identifier ? text : `'${text}'`,
+  );
+};

@@ -1,10 +1,10 @@
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import {
   EqualityMatcher,
   createRule,
   isExpectCall,
   isParsedEqualityMatcherCall,
   parseExpectCall,
+  replaceAccessorFixer,
 } from './utils';
 
 export default createRule({
@@ -45,11 +45,10 @@ export default createRule({
               {
                 messageId: 'suggestReplaceWithStrictEqual',
                 fix: fixer => [
-                  fixer.replaceText(
+                  replaceAccessorFixer(
+                    fixer,
                     matcher.node.property,
-                    matcher.node.property.type === AST_NODE_TYPES.Identifier
-                      ? EqualityMatcher.toStrictEqual
-                      : `'${EqualityMatcher.toStrictEqual}'`,
+                    EqualityMatcher.toStrictEqual,
                   ),
                 ],
               },
