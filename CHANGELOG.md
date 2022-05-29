@@ -1,3 +1,11 @@
+## [26.4.3](https://github.com/jest-community/eslint-plugin-jest/compare/v26.4.2...v26.4.3) (2022-05-29)
+
+
+### Bug Fixes
+
+* don't consider method calls on literals or `new` to be jest functions ([#1132](https://github.com/jest-community/eslint-plugin-jest/issues/1132)) ([379ceb3](https://github.com/jest-community/eslint-plugin-jest/commit/379ceb31467bb957f6988821c57611e475e59313))
+* produce valid code when when fixing properties accessed with square brackets ([#1131](https://github.com/jest-community/eslint-plugin-jest/issues/1131)) ([6cd600d](https://github.com/jest-community/eslint-plugin-jest/commit/6cd600dbd4846fcb7ba8c7756ac0cf4b8b0e0a4b))
+
 ## [26.4.2](https://github.com/jest-community/eslint-plugin-jest/compare/v26.4.1...v26.4.2) (2022-05-28)
 
 
