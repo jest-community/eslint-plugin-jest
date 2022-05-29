@@ -188,6 +188,14 @@ ruleTester.run('expect-expect', rule, {
 ruleTester.run('wildcards', rule, {
   valid: [
     {
+      code: "test('should pass *', () => expect404ToBeLoaded());",
+      options: [{ assertFunctionNames: ['expect*'] }],
+    },
+    {
+      code: "test('should pass *', () => expect.toHaveStatus404());",
+      options: [{ assertFunctionNames: ['expect.**'] }],
+    },
+    {
       code: "test('should pass', () => tester.foo().expect(123));",
       options: [{ assertFunctionNames: ['tester.*.expect'] }],
     },
