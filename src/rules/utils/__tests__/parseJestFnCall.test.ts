@@ -114,6 +114,10 @@ ruleTester.run('nonexistent methods', rule, {
     'describe.concurrent()()',
     'describe.concurrent``()',
     'describe.every``()',
+    '/regex/.test()',
+    '"something".describe()',
+    '[].describe()',
+    'new describe().only()',
   ],
   invalid: [],
 });

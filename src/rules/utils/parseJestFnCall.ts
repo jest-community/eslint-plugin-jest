@@ -21,7 +21,12 @@ export const isTypeOfJestFnCall = (
   return jestFnCall !== null && types.includes(jestFnCall.type);
 };
 
-export function getNodeChain(node: TSESTree.Node): AccessorNode[] {
+const joinChains = (
+  a: AccessorNode[] | null,
+  b: AccessorNode[] | null,
+): AccessorNode[] | null => (a && b ? [...a, ...b] : null);
+
+export function getNodeChain(node: TSESTree.Node): AccessorNode[] | null {
   if (isSupportedAccessor(node)) {
     return [node];
   }
@@ -30,13 +35,12 @@ export function getNodeChain(node: TSESTree.Node): AccessorNode[] {
     case AST_NODE_TYPES.TaggedTemplateExpression:
       return getNodeChain(node.tag);
     case AST_NODE_TYPES.MemberExpression:
-      return [...getNodeChain(node.object), ...getNodeChain(node.property)];
-    case AST_NODE_TYPES.NewExpression:
+      return joinChains(getNodeChain(node.object), getNodeChain(node.property));
     case AST_NODE_TYPES.CallExpression:
       return getNodeChain(node.callee);
   }
 
-  return [];
+  return null;
 }
 
 export interface ResolvedJestFnWithNode extends ResolvedJestFn {
@@ -152,7 +156,7 @@ export const parseJestFnCall = (
 
   const chain = getNodeChain(node);
 
-  if (chain.length === 0) {
+  if (!chain?.length) {
     return null;
   }
 
