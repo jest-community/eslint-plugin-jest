@@ -25,12 +25,13 @@ function createTodoFixer(
   fixer: TSESLint.RuleFixer,
 ) {
   if (jestFnCall.members.length) {
-    return [replaceAccessorFixer(fixer, jestFnCall.members[0], 'todo')];
+    return replaceAccessorFixer(fixer, jestFnCall.members[0], 'todo');
   }
 
-  return [
-    fixer.replaceText(jestFnCall.head.node, `${jestFnCall.head.local}.todo`),
-  ];
+  return fixer.replaceText(
+    jestFnCall.head.node,
+    `${jestFnCall.head.local}.todo`,
+  );
 }
 
 const isTargetedTestCase = (jestFnCall: ParsedJestFnCall): boolean => {
@@ -85,7 +86,7 @@ export default createRule({
             node,
             fix: fixer => [
               fixer.removeRange([title.range[1], callback.range[1]]),
-              ...createTodoFixer(jestFnCall, fixer),
+              createTodoFixer(jestFnCall, fixer),
             ],
           });
         }
