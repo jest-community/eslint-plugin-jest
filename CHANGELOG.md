@@ -1,3 +1,10 @@
+## [26.4.5](https://github.com/jest-community/eslint-plugin-jest/compare/v26.4.4...v26.4.5) (2022-05-29)
+
+
+### Bug Fixes
+
+* **expect-expect:** include numbers when matching assert function names with wildcards ([#1134](https://github.com/jest-community/eslint-plugin-jest/issues/1134)) ([2d0ef11](https://github.com/jest-community/eslint-plugin-jest/commit/2d0ef11137dc556f8b1e08a510d70c0dbea8a083))
+
 ## [26.4.4](https://github.com/jest-community/eslint-plugin-jest/compare/v26.4.3...v26.4.4) (2022-05-29)
 
 
