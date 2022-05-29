@@ -1,3 +1,10 @@
+## [26.4.4](https://github.com/jest-community/eslint-plugin-jest/compare/v26.4.3...v26.4.4) (2022-05-29)
+
+
+### Bug Fixes
+
+* don't consider template tags in the middle of a possible jest function chain to be valid ([#1133](https://github.com/jest-community/eslint-plugin-jest/issues/1133)) ([430de17](https://github.com/jest-community/eslint-plugin-jest/commit/430de17abc453da833a697c6ca425f2cc50febcc))
+
 ## [26.4.3](https://github.com/jest-community/eslint-plugin-jest/compare/v26.4.2...v26.4.3) (2022-05-29)
 
 
