@@ -160,27 +160,34 @@ export const parseJestFnCall = (
     return null;
   }
 
-  // ensure that the only call expression in the chain is at the end
+  // check that every link in the chain except the last is a member expression
   if (
     chain
       .slice(0, chain.length - 1)
-      .some(nod => nod.parent?.type === AST_NODE_TYPES.CallExpression)
+      .some(nod => nod.parent?.type !== AST_NODE_TYPES.MemberExpression)
   ) {
     return null;
   }
 
   const [first, ...rest] = chain;
 
-  const lastNode = chain[chain.length - 1];
+  const lastLink = getAccessorValue(chain[chain.length - 1]);
 
   // if we're an `each()`, ensure we're the outer CallExpression (i.e `.each()()`)
-  if (isSupportedAccessor(lastNode, 'each')) {
+  if (lastLink === 'each') {
     if (
       node.callee.type !== AST_NODE_TYPES.CallExpression &&
       node.callee.type !== AST_NODE_TYPES.TaggedTemplateExpression
     ) {
       return null;
     }
+  }
+
+  if (
+    node.callee.type === AST_NODE_TYPES.TaggedTemplateExpression &&
+    lastLink !== 'each'
+  ) {
+    return null;
   }
 
   const resolved = resolveToJestFn(scope, getAccessorValue(first));
