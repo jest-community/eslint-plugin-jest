@@ -44,7 +44,10 @@ export default createRule({
         if (jestFnCall.type === 'test') {
           testDepth++;
 
-          if (node.arguments.length < 2) {
+          if (
+            node.arguments.length < 2 &&
+            jestFnCall.members.every(s => getAccessorValue(s) !== 'todo')
+          ) {
             context.report({ messageId: 'missingFunction', node });
           }
         }
