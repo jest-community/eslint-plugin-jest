@@ -1,3 +1,10 @@
+## [26.4.6](https://github.com/jest-community/eslint-plugin-jest/compare/v26.4.5...v26.4.6) (2022-05-30)
+
+
+### Bug Fixes
+
+* **no-disabled-tests:** don't report on `it.todo` & `test.todo` ([#1137](https://github.com/jest-community/eslint-plugin-jest/issues/1137)) ([b651443](https://github.com/jest-community/eslint-plugin-jest/commit/b651443b820126cf05ad6803648c789afde0172f))
+
 ## [26.4.5](https://github.com/jest-community/eslint-plugin-jest/compare/v26.4.4...v26.4.5) (2022-05-29)
 
 
