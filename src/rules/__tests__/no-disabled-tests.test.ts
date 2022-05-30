@@ -23,6 +23,7 @@ ruleTester.run('no-disabled-tests', rule, {
     'test.only("foo", function () {})',
     'test.concurrent("foo", function () {})',
     'describe[`${"skip"}`]("foo", function () {})',
+    'it.todo("fill this later")',
     'var appliedSkip = describe.skip; appliedSkip.apply(describe)',
     'var calledSkip = it.skip; calledSkip.call(it)',
     '({ f: function () {} }).f()',
