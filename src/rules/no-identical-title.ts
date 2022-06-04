@@ -40,10 +40,9 @@ export default createRule({
 
     return {
       CallExpression(node) {
-        const scope = context.getScope();
         const currentLayer = contexts[contexts.length - 1];
 
-        const jestFnCall = parseJestFnCall(node, scope);
+        const jestFnCall = parseJestFnCall(node, context);
 
         if (!jestFnCall) {
           return;
@@ -87,7 +86,7 @@ export default createRule({
         currentLayer.describeTitles.push(title);
       },
       'CallExpression:exit'(node) {
-        if (isTypeOfJestFnCall(node, context.getScope(), ['describe'])) {
+        if (isTypeOfJestFnCall(node, context, ['describe'])) {
           contexts.pop();
         }
       },

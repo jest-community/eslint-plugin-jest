@@ -1613,5 +1613,26 @@ ruleTester.run('valid-expect-in-promise', rule, {
         },
       ],
     },
+    {
+      code: dedent`
+        promiseThatThis('is valid', async () => {
+          const promise = loadNumber().then(number => {
+            expect(typeof number).toBe('number');
+
+            return number + 1;
+          });
+
+          expect(anotherPromise).resolves.toBe(1);
+        });
+      `,
+      errors: [
+        {
+          messageId: 'expectInFloatingPromise',
+          line: 2,
+          column: 9,
+        },
+      ],
+      settings: { jest: { globalAliases: { xit: ['promiseThatThis'] } } },
+    },
   ],
 });

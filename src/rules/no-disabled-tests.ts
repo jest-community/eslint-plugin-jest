@@ -31,7 +31,7 @@ export default createRule({
 
     return {
       CallExpression(node) {
-        const jestFnCall = parseJestFnCall(node, context.getScope());
+        const jestFnCall = parseJestFnCall(node, context);
 
         if (!jestFnCall) {
           return;
@@ -65,7 +65,7 @@ export default createRule({
         }
       },
       'CallExpression:exit'(node) {
-        const jestFnCall = parseJestFnCall(node, context.getScope());
+        const jestFnCall = parseJestFnCall(node, context);
 
         if (!jestFnCall) {
           return;

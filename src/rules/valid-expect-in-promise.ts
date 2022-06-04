@@ -70,9 +70,9 @@ const findTopMostCallExpression = (
 
 const isTestCaseCallWithCallbackArg = (
   node: TSESTree.CallExpression,
-  scope: TSESLint.Scope.Scope,
+  context: TSESLint.RuleContext<string, unknown[]>,
 ): boolean => {
-  const jestCallFn = parseJestFnCall(node, scope);
+  const jestCallFn = parseJestFnCall(node, context);
 
   if (jestCallFn?.type !== 'test') {
     return false;
@@ -324,7 +324,7 @@ const findFirstBlockBodyUp = (
 
 const isDirectlyWithinTestCaseCall = (
   node: TSESTree.Node,
-  scope: TSESLint.Scope.Scope,
+  context: TSESLint.RuleContext<string, unknown[]>,
 ): boolean => {
   let parent: TSESTree.Node['parent'] = node;
 
@@ -334,7 +334,7 @@ const isDirectlyWithinTestCaseCall = (
 
       return (
         parent?.type === AST_NODE_TYPES.CallExpression &&
-        isTypeOfJestFnCall(parent, scope, ['test'])
+        isTypeOfJestFnCall(parent, context, ['test'])
       );
     }
 
@@ -390,7 +390,7 @@ export default createRule({
       CallExpression(node: TSESTree.CallExpression) {
         // there are too many ways that the done argument could be used with
         // promises that contain expect that would make the promise safe for us
-        if (isTestCaseCallWithCallbackArg(node, context.getScope())) {
+        if (isTestCaseCallWithCallbackArg(node, context)) {
           inTestCaseWithDoneCallback = true;
 
           return;
@@ -415,7 +415,7 @@ export default createRule({
         // make promises containing expects safe in a test for us to be able to
         // accurately check, so we just bail out completely if it's present
         if (inTestCaseWithDoneCallback) {
-          if (isTypeOfJestFnCall(node, context.getScope(), ['test'])) {
+          if (isTypeOfJestFnCall(node, context, ['test'])) {
             inTestCaseWithDoneCallback = false;
           }
 
@@ -442,10 +442,7 @@ export default createRule({
         // or our parent is not directly within the test case, we stop checking
         // because we're most likely in the body of a function being defined
         // within the test, which we can't track
-        if (
-          !parent ||
-          !isDirectlyWithinTestCaseCall(parent, context.getScope())
-        ) {
+        if (!parent || !isDirectlyWithinTestCaseCall(parent, context)) {
           return;
         }
 

@@ -121,7 +121,7 @@ export const isFunction = (node: TSESTree.Node): node is FunctionExpression =>
 
 export const getTestCallExpressionsFromDeclaredVariables = (
   declaredVariables: readonly TSESLint.Scope.Variable[],
-  scope: TSESLint.Scope.Scope,
+  context: TSESLint.RuleContext<string, unknown[]>,
 ): TSESTree.CallExpression[] => {
   return declaredVariables.reduce<TSESTree.CallExpression[]>(
     (acc, { references }) =>
@@ -131,7 +131,7 @@ export const getTestCallExpressionsFromDeclaredVariables = (
           .filter(
             (node): node is TSESTree.CallExpression =>
               node?.type === AST_NODE_TYPES.CallExpression &&
-              isTypeOfJestFnCall(node, scope, ['test']),
+              isTypeOfJestFnCall(node, context, ['test']),
           ),
       ),
     [],

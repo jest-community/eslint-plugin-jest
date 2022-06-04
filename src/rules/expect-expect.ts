@@ -96,7 +96,7 @@ export default createRule<
           const testCallExpressions =
             getTestCallExpressionsFromDeclaredVariables(
               declaredVariables,
-              context.getScope(),
+              context,
             );
 
           checkCallExpressionUsed(testCallExpressions);
@@ -114,7 +114,7 @@ export default createRule<
         const name = getNodeName(node.callee) ?? '';
 
         if (
-          isTypeOfJestFnCall(node, context.getScope(), ['test']) ||
+          isTypeOfJestFnCall(node, context, ['test']) ||
           additionalTestBlockFunctions.includes(name)
         ) {
           if (

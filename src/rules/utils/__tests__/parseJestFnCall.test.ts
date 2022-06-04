@@ -61,7 +61,7 @@ const rule = createRule({
   defaultOptions: [],
   create: context => ({
     CallExpression(node) {
-      const jestFnCall = parseJestFnCall(node, context.getScope());
+      const jestFnCall = parseJestFnCall(node, context);
 
       if (jestFnCall) {
         context.report({
@@ -329,6 +329,128 @@ ruleTester.run('cjs', rule, {
     },
   ],
   invalid: [],
+});
+
+ruleTester.run('global aliases', rule, {
+  valid: [
+    {
+      code: 'xcontext("skip this please", () => {});',
+      settings: { jest: { globalAliases: { describe: ['context'] } } },
+    },
+  ],
+  invalid: [
+    {
+      code: 'context("when there is an error", () => {})',
+      errors: [
+        {
+          messageId: 'details' as const,
+          data: expectedParsedJestFnCallResultData({
+            name: 'describe',
+            type: 'describe',
+            head: {
+              original: 'describe',
+              local: 'context',
+              type: 'global',
+              node: 'context',
+            },
+            members: [],
+          }),
+          column: 1,
+          line: 1,
+        },
+      ],
+      settings: { jest: { globalAliases: { describe: ['context'] } } },
+    },
+    {
+      code: 'context.skip("when there is an error", () => {})',
+      errors: [
+        {
+          messageId: 'details' as const,
+          data: expectedParsedJestFnCallResultData({
+            name: 'describe',
+            type: 'describe',
+            head: {
+              original: 'describe',
+              local: 'context',
+              type: 'global',
+              node: 'context',
+            },
+            members: ['skip'],
+          }),
+          column: 1,
+          line: 1,
+        },
+      ],
+      settings: { jest: { globalAliases: { describe: ['context'] } } },
+    },
+    {
+      code: dedent`
+        context("when there is an error", () => {})
+        xcontext("skip this please", () => {});
+      `,
+      errors: [
+        {
+          messageId: 'details' as const,
+          data: expectedParsedJestFnCallResultData({
+            name: 'xdescribe',
+            type: 'describe',
+            head: {
+              original: 'xdescribe',
+              local: 'xcontext',
+              type: 'global',
+              node: 'xcontext',
+            },
+            members: [],
+          }),
+          column: 1,
+          line: 2,
+        },
+      ],
+      settings: { jest: { globalAliases: { xdescribe: ['xcontext'] } } },
+    },
+    {
+      code: dedent`
+        context("when there is an error", () => {})
+        describe("when there is an error", () => {})
+        xcontext("skip this please", () => {});
+      `,
+      errors: [
+        {
+          messageId: 'details' as const,
+          data: expectedParsedJestFnCallResultData({
+            name: 'describe',
+            type: 'describe',
+            head: {
+              original: 'describe',
+              local: 'context',
+              type: 'global',
+              node: 'context',
+            },
+            members: [],
+          }),
+          column: 1,
+          line: 1,
+        },
+        {
+          messageId: 'details' as const,
+          data: expectedParsedJestFnCallResultData({
+            name: 'describe',
+            type: 'describe',
+            head: {
+              original: null,
+              local: 'describe',
+              type: 'global',
+              node: 'describe',
+            },
+            members: [],
+          }),
+          column: 1,
+          line: 2,
+        },
+      ],
+      settings: { jest: { globalAliases: { describe: ['context'] } } },
+    },
+  ],
 });
 
 ruleTester.run('typescript', rule, {

@@ -45,6 +45,23 @@ ruleTester.run('no-focused-tests', rule, {
       ],
     },
     {
+      code: 'context.only()',
+      errors: [
+        {
+          messageId: 'focusedTest',
+          column: 9,
+          line: 1,
+          suggestions: [
+            {
+              messageId: 'suggestRemoveFocus',
+              output: 'context()',
+            },
+          ],
+        },
+      ],
+      settings: { jest: { globalAliases: { describe: ['context'] } } },
+    },
+    {
       code: 'describe.only.each()()',
       errors: [
         {

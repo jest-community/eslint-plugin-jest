@@ -32,7 +32,7 @@ export default createRule<
   create(context, [{ allow = [] }]) {
     return {
       CallExpression(node) {
-        const jestFnCall = parseJestFnCall(node, context.getScope());
+        const jestFnCall = parseJestFnCall(node, context);
 
         if (
           jestFnCall?.type === 'hook' &&

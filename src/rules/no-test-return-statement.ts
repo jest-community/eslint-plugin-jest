@@ -38,7 +38,7 @@ export default createRule({
   create(context) {
     return {
       CallExpression(node) {
-        if (!isTypeOfJestFnCall(node, context.getScope(), ['test'])) {
+        if (!isTypeOfJestFnCall(node, context, ['test'])) {
           return;
         }
 
@@ -55,7 +55,7 @@ export default createRule({
         const declaredVariables = context.getDeclaredVariables(node);
         const testCallExpressions = getTestCallExpressionsFromDeclaredVariables(
           declaredVariables,
-          context.getScope(),
+          context,
         );
 
         if (testCallExpressions.length === 0) return;

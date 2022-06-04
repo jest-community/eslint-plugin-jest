@@ -179,9 +179,7 @@ export default createRule<[Options], MessageIds>({
 
     return {
       CallExpression(node: TSESTree.CallExpression) {
-        const scope = context.getScope();
-
-        const jestFnCall = parseJestFnCall(node, scope);
+        const jestFnCall = parseJestFnCall(node, context);
 
         if (jestFnCall?.type !== 'describe' && jestFnCall?.type !== 'test') {
           return;

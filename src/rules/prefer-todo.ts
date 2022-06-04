@@ -69,7 +69,7 @@ export default createRule({
       CallExpression(node) {
         const [title, callback] = node.arguments;
 
-        const jestFnCall = parseJestFnCall(node, context.getScope());
+        const jestFnCall = parseJestFnCall(node, context);
 
         if (
           !title ||
