@@ -1,5 +1,5 @@
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import { createRule, isExpectCall, parseExpectCall } from './utils';
+import { createRule, getAccessorValue, parseJestFnCall } from './utils';
 
 export default createRule({
   name: __filename,
@@ -19,11 +19,13 @@ export default createRule({
   create(context) {
     return {
       CallExpression(node) {
-        if (!isExpectCall(node)) {
+        const jestFnCall = parseJestFnCall(node, context);
+
+        if (jestFnCall?.type !== 'expect') {
           return;
         }
 
-        const { matcher } = parseExpectCall(node);
+        const matcher = jestFnCall.members[jestFnCall.members.length - 1];
 
         if (!matcher) {
           return;
@@ -33,10 +35,10 @@ export default createRule({
           [
             'toMatchInlineSnapshot',
             'toThrowErrorMatchingInlineSnapshot',
-          ].includes(matcher.name)
+          ].includes(getAccessorValue(matcher))
         ) {
           // Check all since the optional 'propertyMatchers' argument might be present
-          matcher.arguments?.forEach(argument => {
+          jestFnCall.args.forEach(argument => {
             if (
               argument.type === AST_NODE_TYPES.TemplateLiteral &&
               argument.expressions.length > 0

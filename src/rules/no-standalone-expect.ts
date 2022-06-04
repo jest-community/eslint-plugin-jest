@@ -3,7 +3,6 @@ import {
   DescribeAlias,
   createRule,
   getNodeName,
-  isExpectCall,
   isFunction,
   isTypeOfJestFnCall,
 } from './utils';
@@ -90,7 +89,7 @@ export default createRule<
 
     return {
       CallExpression(node) {
-        if (isExpectCall(node)) {
+        if (isTypeOfJestFnCall(node, context, ['expect'])) {
           const parent = callStack[callStack.length - 1];
 
           if (!parent || parent === DescribeAlias.describe) {

@@ -1,5 +1,4 @@
-import { TSESTree } from '@typescript-eslint/utils';
-import { createRule, isExpectCall, parseExpectCall } from './utils';
+import { createRule, getAccessorValue, parseJestFnCall } from './utils';
 
 export default createRule<
   [Record<string, string | null>],
@@ -28,77 +27,44 @@ export default createRule<
   },
   defaultOptions: [{}],
   create(context, [restrictedChains]) {
-    const reportIfRestricted = (
-      loc: TSESTree.SourceLocation,
-      chain: string,
-    ): boolean => {
-      if (!(chain in restrictedChains)) {
-        return false;
-      }
-
-      const message = restrictedChains[chain];
-
-      context.report({
-        messageId: message ? 'restrictedChainWithMessage' : 'restrictedChain',
-        data: { message, chain },
-        loc,
-      });
-
-      return true;
-    };
-
     return {
       CallExpression(node) {
-        if (!isExpectCall(node)) {
+        const jestFnCall = parseJestFnCall(node, context);
+
+        if (jestFnCall?.type !== 'expect') {
           return;
         }
 
-        const { matcher, modifier } = parseExpectCall(node);
+        const permutations = [jestFnCall.members];
 
-        if (
-          matcher &&
-          reportIfRestricted(matcher.node.property.loc, matcher.name)
-        ) {
-          return;
+        if (jestFnCall.members.length > 2) {
+          permutations.push([jestFnCall.members[0], jestFnCall.members[1]]);
+          permutations.push([jestFnCall.members[1], jestFnCall.members[2]]);
         }
 
-        if (modifier) {
-          if (reportIfRestricted(modifier.node.property.loc, modifier.name)) {
-            return;
-          }
-
-          if (modifier.negation) {
-            if (
-              reportIfRestricted(modifier.negation.property.loc, 'not') ||
-              reportIfRestricted(
-                {
-                  start: modifier.node.property.loc.start,
-                  end: modifier.negation.property.loc.end,
-                },
-                `${modifier.name}.not`,
-              )
-            ) {
-              return;
-            }
-          }
+        if (jestFnCall.members.length > 1) {
+          permutations.push(...jestFnCall.members.map(nod => [nod]));
         }
 
-        if (matcher && modifier) {
-          let chain: string = modifier.name;
+        for (const permutation of permutations) {
+          const chain = permutation.map(nod => getAccessorValue(nod)).join('.');
 
-          if (modifier.negation) {
-            chain += '.not';
+          if (chain in restrictedChains) {
+            const message = restrictedChains[chain];
+
+            context.report({
+              messageId: message
+                ? 'restrictedChainWithMessage'
+                : 'restrictedChain',
+              data: { message, chain },
+              loc: {
+                start: permutation[0].loc.start,
+                end: permutation[permutation.length - 1].loc.end,
+              },
+            });
+
+            break;
           }
-
-          chain += `.${matcher.name}`;
-
-          reportIfRestricted(
-            {
-              start: modifier.node.property.loc.start,
-              end: matcher.node.property.loc.end,
-            },
-            chain,
-          );
         }
       },
     };

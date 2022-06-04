@@ -3,9 +3,8 @@ import { AST_NODE_TYPES, TSESLint, TSESTree } from '@typescript-eslint/utils';
 import {
   createRule,
   getAccessorValue,
-  isExpectCall,
   isExpectMember,
-  parseExpectCall,
+  parseJestFnCall,
 } from './utils';
 
 interface RuleOptions {
@@ -112,24 +111,22 @@ export default createRule<[RuleOptions], MessageId>({
 
     return {
       CallExpression(node) {
-        if (!isExpectCall(node)) {
+        const jestFnCall = parseJestFnCall(node, context);
+
+        if (jestFnCall?.type !== 'expect') {
           return;
         }
 
-        const { matcher } = parseExpectCall(node);
-
-        if (matcher?.node.parent.type !== AST_NODE_TYPES.CallExpression) {
-          return;
-        }
+        const matcher = jestFnCall.members[jestFnCall.members.length - 1];
 
         if (
           [
             'toMatchInlineSnapshot',
             'toThrowErrorMatchingInlineSnapshot',
-          ].includes(matcher.name) &&
-          matcher.arguments?.length
+          ].includes(getAccessorValue(matcher)) &&
+          jestFnCall.args.length
         ) {
-          reportOnViolation(context, matcher.arguments[0], {
+          reportOnViolation(context, jestFnCall.args[0], {
             ...options,
             maxSize: options.inlineMaxSize ?? options.maxSize,
           });

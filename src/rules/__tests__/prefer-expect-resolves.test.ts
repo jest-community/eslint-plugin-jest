@@ -12,6 +12,7 @@ const ruleTester = new TSESLint.RuleTester({
 
 ruleTester.run('prefer-expect-resolves', rule, {
   valid: [
+    'expect.hasAssertions()',
     dedent`
       it('passes', async () => {
         await expect(someValue()).resolves.toBe(true);
