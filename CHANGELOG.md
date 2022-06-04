@@ -1,3 +1,10 @@
+## [26.4.7](https://github.com/jest-community/eslint-plugin-jest/compare/v26.4.6...v26.4.7) (2022-06-04)
+
+
+### Bug Fixes
+
+* **no-restricted-matchers:** allow restricting negated `resolves` and `rejects` modifiers ([#1142](https://github.com/jest-community/eslint-plugin-jest/issues/1142)) ([0950a96](https://github.com/jest-community/eslint-plugin-jest/commit/0950a968f3bc92cb6ed25cbbcbd6fc616245bf44))
+
 ## [26.4.6](https://github.com/jest-community/eslint-plugin-jest/compare/v26.4.5...v26.4.6) (2022-05-30)
 
 
