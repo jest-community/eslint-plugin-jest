@@ -100,6 +100,66 @@ ruleTester.run('no-restricted-matchers', rule, {
       ],
     },
     {
+      code: 'expect(a).resolves.toBe(b)',
+      options: [{ resolves: null }],
+      errors: [
+        {
+          messageId: 'restrictedChain',
+          data: {
+            message: null,
+            chain: 'resolves',
+          },
+          column: 11,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: 'expect(a).resolves.not.toBe(b)',
+      options: [{ not: null }],
+      errors: [
+        {
+          messageId: 'restrictedChain',
+          data: {
+            message: null,
+            chain: 'not',
+          },
+          column: 20,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: 'expect(a).resolves.not.toBe(b)',
+      options: [{ resolves: null }],
+      errors: [
+        {
+          messageId: 'restrictedChain',
+          data: {
+            message: null,
+            chain: 'resolves',
+          },
+          column: 11,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: 'expect(a).resolves.not.toBe(b)',
+      options: [{ 'resolves.not': null }],
+      errors: [
+        {
+          messageId: 'restrictedChain',
+          data: {
+            message: null,
+            chain: 'resolves.not',
+          },
+          column: 11,
+          line: 1,
+        },
+      ],
+    },
+    {
       code: 'expect(a).not.toBe(b)',
       options: [{ 'not.toBe': null }],
       errors: [
@@ -110,6 +170,22 @@ ruleTester.run('no-restricted-matchers', rule, {
             chain: 'not.toBe',
           },
           endColumn: 19,
+          column: 11,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: 'expect(a).resolves.not.toBe(b)',
+      options: [{ 'resolves.not.toBe': null }],
+      errors: [
+        {
+          messageId: 'restrictedChain',
+          data: {
+            message: null,
+            chain: 'resolves.not.toBe',
+          },
+          endColumn: 28,
           column: 11,
           line: 1,
         },

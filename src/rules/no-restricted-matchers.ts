@@ -1,3 +1,4 @@
+import { TSESTree } from '@typescript-eslint/utils';
 import { createRule, isExpectCall, parseExpectCall } from './utils';
 
 export default createRule<
@@ -27,6 +28,25 @@ export default createRule<
   },
   defaultOptions: [{}],
   create(context, [restrictedChains]) {
+    const reportIfRestricted = (
+      loc: TSESTree.SourceLocation,
+      chain: string,
+    ): boolean => {
+      if (!(chain in restrictedChains)) {
+        return false;
+      }
+
+      const message = restrictedChains[chain];
+
+      context.report({
+        messageId: message ? 'restrictedChainWithMessage' : 'restrictedChain',
+        data: { message, chain },
+        loc,
+      });
+
+      return true;
+    };
+
     return {
       CallExpression(node) {
         if (!isExpectCall(node)) {
@@ -35,61 +55,50 @@ export default createRule<
 
         const { matcher, modifier } = parseExpectCall(node);
 
-        if (matcher) {
-          const chain = matcher.name;
-
-          if (chain in restrictedChains) {
-            const message = restrictedChains[chain];
-
-            context.report({
-              messageId: message
-                ? 'restrictedChainWithMessage'
-                : 'restrictedChain',
-              data: { message, chain },
-              node: matcher.node.property,
-            });
-
-            return;
-          }
+        if (
+          matcher &&
+          reportIfRestricted(matcher.node.property.loc, matcher.name)
+        ) {
+          return;
         }
 
         if (modifier) {
-          const chain = modifier.name;
-
-          if (chain in restrictedChains) {
-            const message = restrictedChains[chain];
-
-            context.report({
-              messageId: message
-                ? 'restrictedChainWithMessage'
-                : 'restrictedChain',
-              data: { message, chain },
-              node: modifier.node.property,
-            });
-
+          if (reportIfRestricted(modifier.node.property.loc, modifier.name)) {
             return;
+          }
+
+          if (modifier.negation) {
+            if (
+              reportIfRestricted(modifier.negation.property.loc, 'not') ||
+              reportIfRestricted(
+                {
+                  start: modifier.node.property.loc.start,
+                  end: modifier.negation.property.loc.end,
+                },
+                `${modifier.name}.not`,
+              )
+            ) {
+              return;
+            }
           }
         }
 
         if (matcher && modifier) {
-          const chain = `${modifier.name}.${matcher.name}`;
+          let chain: string = modifier.name;
 
-          if (chain in restrictedChains) {
-            const message = restrictedChains[chain];
-
-            context.report({
-              messageId: message
-                ? 'restrictedChainWithMessage'
-                : 'restrictedChain',
-              data: { message, chain },
-              loc: {
-                start: modifier.node.property.loc.start,
-                end: matcher.node.property.loc.end,
-              },
-            });
-
-            return;
+          if (modifier.negation) {
+            chain += '.not';
           }
+
+          chain += `.${matcher.name}`;
+
+          reportIfRestricted(
+            {
+              start: modifier.node.property.loc.start,
+              end: matcher.node.property.loc.end,
+            },
+            chain,
+          );
         }
       },
     };
