@@ -1,3 +1,10 @@
+# [26.5.0](https://github.com/jest-community/eslint-plugin-jest/compare/v26.4.7...v26.5.0) (2022-06-04)
+
+
+### Features
+
+* support aliases for jest globals (e.g. `context`) ([#1129](https://github.com/jest-community/eslint-plugin-jest/issues/1129)) ([02ec945](https://github.com/jest-community/eslint-plugin-jest/commit/02ec945f0794949ce38a11addb0ef3ceafa1aed2))
+
 ## [26.4.7](https://github.com/jest-community/eslint-plugin-jest/compare/v26.4.6...v26.4.7) (2022-06-04)
 
 
