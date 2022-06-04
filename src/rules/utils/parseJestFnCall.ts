@@ -3,6 +3,7 @@ import {
   AccessorNode,
   DescribeAlias,
   HookName,
+  ModifierName,
   TestCaseName,
   getAccessorValue,
   getStringValue,
@@ -50,9 +51,9 @@ export interface ResolvedJestFnWithNode extends ResolvedJestFn {
 type JestFnType = 'hook' | 'describe' | 'test' | 'expect' | 'jest' | 'unknown';
 
 const determineJestFnType = (name: string): JestFnType => {
-  // if (name === 'expect') {
-  //   return 'expect';
-  // }
+  if (name === 'expect') {
+    return 'expect';
+  }
 
   if (name === 'jest') {
     return 'jest';
@@ -186,15 +187,6 @@ export const parseJestFnCall = (
     return null;
   }
 
-  // check that every link in the chain except the last is a member expression
-  if (
-    chain
-      .slice(0, chain.length - 1)
-      .some(nod => nod.parent?.type !== AST_NODE_TYPES.MemberExpression)
-  ) {
-    return null;
-  }
-
   const [first, ...rest] = chain;
 
   const lastLink = getAccessorValue(chain[chain.length - 1]);
@@ -227,7 +219,25 @@ export const parseJestFnCall = (
 
   const links = [name, ...rest.map(link => getAccessorValue(link))];
 
-  if (name !== 'jest' && !ValidJestFnCallChains.includes(links.join('.'))) {
+  if (
+    name !== 'jest' &&
+    name !== 'expect' &&
+    !ValidJestFnCallChains.includes(links.join('.'))
+  ) {
+    return null;
+  }
+
+  // check that every link in the chain except the last is a member expression
+  if (
+    name !== 'expect' &&
+    chain
+      .slice(0, chain.length - 1)
+      .some(nod => nod.parent?.type !== AST_NODE_TYPES.MemberExpression)
+  ) {
+    return null;
+  }
+
+  if (name === 'expect' && !isValidExpectCallChain(chain)) {
     return null;
   }
 
@@ -237,6 +247,92 @@ export const parseJestFnCall = (
     head: { ...resolved, node: first },
     members: rest,
   };
+};
+
+const describeNodeLineage = (node: TSESTree.Node): string => {
+  if (node.parent) {
+    return `${describeNodeLineage(node.parent)} > ${node.type}`;
+  }
+
+  return node.type;
+};
+
+const isValidExpectCallChain = (chain: AccessorNode[]): boolean => {
+  // const expectNode = chain[chain.length - 1];
+  const [expectNode, ...modifierNodes] = chain;
+  const matcherNode = modifierNodes.pop();
+
+  if (!matcherNode) {
+    console.log('no matcher node');
+
+    return false;
+  }
+
+  // ensure that the matcher node is called
+  if (
+    matcherNode.parent?.type !== AST_NODE_TYPES.MemberExpression ||
+    matcherNode.parent?.parent?.type !== AST_NODE_TYPES.CallExpression
+  ) {
+    console.log('matcher node not called', getAccessorValue(matcherNode));
+
+    return false;
+  }
+
+  console.log('modifiers', modifierNodes.length);
+  switch (modifierNodes.length) {
+    case 0:
+      break;
+    case 1:
+      if (!ModifierName.hasOwnProperty(getAccessorValue(modifierNodes[0]))) {
+        return false;
+      }
+      break;
+    case 2: {
+      // "not" is the only modifier that can be second in the chain
+      if (getAccessorValue(modifierNodes[1]) !== ModifierName.not) {
+        return false;
+      }
+
+      const firstModifier = getAccessorValue(modifierNodes[0]);
+
+      // the first modifier has to be either "resolves" or "rejects"
+      if (
+        firstModifier !== ModifierName.resolves &&
+        firstModifier !== ModifierName.rejects
+      ) {
+        return false;
+      }
+      break;
+    }
+    // expect doesn't support more than two modifiers
+    default:
+      return false;
+  }
+
+  // ensure that none of the modifiers are called
+  if (
+    modifierNodes.some(
+      nod =>
+        nod.parent?.type !== AST_NODE_TYPES.MemberExpression ||
+        nod.parent?.parent?.type === AST_NODE_TYPES.CallExpression,
+    )
+  ) {
+    return false;
+  }
+
+  // console.log(getAccessorValue(chain[0]), describeNodeLineage(chain[0]));
+  // console.log(
+  //   chain.map(nod => `${getAccessorValue(nod)} - ${nod.parent?.type}`),
+  // );
+  // if (
+  //   chain
+  //     .slice(0, chain.length - 1)
+  //     .some(nod => nod.parent?.type !== AST_NODE_TYPES.MemberExpression)
+  // ) {
+  //   return false;
+  // }
+
+  return true;
 };
 
 interface ImportDetails {

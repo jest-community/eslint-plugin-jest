@@ -125,6 +125,260 @@ ruleTester.run('nonexistent methods', rule, {
   invalid: [],
 });
 
+ruleTester.run('expect', rule, {
+  valid: [
+    {
+      code: dedent`
+        import { expect } from './test-utils';
+
+        expect(x).toBe(y);
+      `,
+      parserOptions: { sourceType: 'module' },
+    },
+    {
+      code: dedent`
+        import { expect } from '@jest/globals';
+
+        expect(x).not.resolves.toBe(x);
+      `,
+      parserOptions: { sourceType: 'module' },
+    },
+    {
+      code: dedent`
+        import { expect } from '@jest/globals';
+
+        expect(x).not().toBe(x);
+      `,
+      parserOptions: { sourceType: 'module' },
+    },
+    {
+      code: dedent`
+        import { expect } from '@jest/globals';
+
+        expect(x).is.toBe(x);
+      `,
+      parserOptions: { sourceType: 'module' },
+    },
+    {
+      code: dedent`
+        import { expect } from '@jest/globals';
+
+        expect;
+        expect(x);
+        expect(x).toBe;
+        expect(x).not.toBe;
+        expect(x).toBe(x).not();
+      `,
+      parserOptions: { sourceType: 'module' },
+    },
+  ],
+  invalid: [
+    {
+      code: 'expect(x).toBe(y);',
+      parserOptions: { sourceType: 'script' },
+      errors: [
+        {
+          messageId: 'details' as const,
+          data: expectedParsedJestFnCallResultData({
+            name: 'expect',
+            type: 'expect',
+            head: {
+              original: null,
+              local: 'expect',
+              type: 'global',
+              node: 'expect',
+            },
+            members: ['toBe'],
+          }),
+          column: 1,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        import { expect } from '@jest/globals';
+
+        expect.assertions();
+      `,
+      parserOptions: { sourceType: 'module' },
+      errors: [
+        {
+          messageId: 'details' as const,
+          data: expectedParsedJestFnCallResultData({
+            name: 'expect',
+            type: 'expect',
+            head: {
+              original: 'expect',
+              local: 'expect',
+              type: 'import',
+              node: 'expect',
+            },
+            members: ['assertions'],
+          }),
+          column: 1,
+          line: 3,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        import { expect } from '@jest/globals';
+
+        expect(x).toBe(y);
+      `,
+      parserOptions: { sourceType: 'module' },
+      errors: [
+        {
+          messageId: 'details' as const,
+          data: expectedParsedJestFnCallResultData({
+            name: 'expect',
+            type: 'expect',
+            head: {
+              original: 'expect',
+              local: 'expect',
+              type: 'import',
+              node: 'expect',
+            },
+            members: ['toBe'],
+          }),
+          column: 1,
+          line: 3,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        import { expect } from '@jest/globals';
+
+        expect(x).not(y);
+      `,
+      parserOptions: { sourceType: 'module' },
+      errors: [
+        {
+          messageId: 'details' as const,
+          data: expectedParsedJestFnCallResultData({
+            name: 'expect',
+            type: 'expect',
+            head: {
+              original: 'expect',
+              local: 'expect',
+              type: 'import',
+              node: 'expect',
+            },
+            members: ['not'],
+          }),
+          column: 1,
+          line: 3,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        import { expect } from '@jest/globals';
+
+        expect(x).not.toBe(y);
+      `,
+      parserOptions: { sourceType: 'module' },
+      errors: [
+        {
+          messageId: 'details' as const,
+          data: expectedParsedJestFnCallResultData({
+            name: 'expect',
+            type: 'expect',
+            head: {
+              original: 'expect',
+              local: 'expect',
+              type: 'import',
+              node: 'expect',
+            },
+            members: ['not', 'toBe'],
+          }),
+          column: 1,
+          line: 3,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        import { expect } from '@jest/globals';
+
+        expect.assertions();
+        expect.hasAssertions();
+        expect.anything();
+        expect.not.arrayContaining();
+      `,
+      parserOptions: { sourceType: 'module' },
+      errors: [
+        {
+          messageId: 'details' as const,
+          data: expectedParsedJestFnCallResultData({
+            name: 'expect',
+            type: 'expect',
+            head: {
+              original: 'expect',
+              local: 'expect',
+              type: 'import',
+              node: 'expect',
+            },
+            members: ['assertions'],
+          }),
+          column: 1,
+          line: 3,
+        },
+        {
+          messageId: 'details' as const,
+          data: expectedParsedJestFnCallResultData({
+            name: 'expect',
+            type: 'expect',
+            head: {
+              original: 'expect',
+              local: 'expect',
+              type: 'import',
+              node: 'expect',
+            },
+            members: ['hasAssertions'],
+          }),
+          column: 1,
+          line: 4,
+        },
+        {
+          messageId: 'details' as const,
+          data: expectedParsedJestFnCallResultData({
+            name: 'expect',
+            type: 'expect',
+            head: {
+              original: 'expect',
+              local: 'expect',
+              type: 'import',
+              node: 'expect',
+            },
+            members: ['anything'],
+          }),
+          column: 1,
+          line: 5,
+        },
+        {
+          messageId: 'details' as const,
+          data: expectedParsedJestFnCallResultData({
+            name: 'expect',
+            type: 'expect',
+            head: {
+              original: 'expect',
+              local: 'expect',
+              type: 'import',
+              node: 'expect',
+            },
+            members: ['not', 'arrayContaining'],
+          }),
+          column: 1,
+          line: 6,
+        },
+      ],
+    },
+  ],
+});
+
 ruleTester.run('esm', rule, {
   valid: [
     {
