@@ -2556,13 +2556,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/jest@npm:^27.0.0":
-  version: 27.5.1
-  resolution: "@types/jest@npm:27.5.1"
+"@types/jest@npm:^28.0.0":
+  version: 28.1.0
+  resolution: "@types/jest@npm:28.1.0"
   dependencies:
     jest-matcher-utils: ^27.0.0
     pretty-format: ^27.0.0
-  checksum: be20e39f7aaf17179109c0060d0a0489cec2034d4e2e28a631284c7ecd13c5ae52f62697a33a0e89b03b6cfe54e9d5e8c2bd387ab2bd90d6071d68c63b86d1e3
+  checksum: be4d887b2452e8c1367cd19b23906ba4b64af95e22ca871f81c7af5e945bd39b370e124086356aa9380c4543123b1387448bc2c00a604c6f0a92bc3e4a24e9ce
   languageName: node
   linkType: hard
 
@@ -4548,7 +4548,7 @@ __metadata:
     "@semantic-release/changelog": ^6.0.0
     "@semantic-release/git": ^10.0.0
     "@types/dedent": ^0.7.0
-    "@types/jest": ^27.0.0
+    "@types/jest": ^28.0.0
     "@types/node": ^16.0.0
     "@types/prettier": ^2.0.0
     "@typescript-eslint/eslint-plugin": ^5.0.0
