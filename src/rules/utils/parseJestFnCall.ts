@@ -76,7 +76,7 @@ const determineJestFnType = (name: string): JestFnType => {
   return 'unknown';
 };
 
-export interface ParsedJestFnCall {
+interface BaseParsedJestFnCall {
   /**
    * The name of the underlying Jest function that is being called.
    * This is the result of `(head.original ?? head.local)`.
@@ -86,6 +86,17 @@ export interface ParsedJestFnCall {
   head: ResolvedJestFnWithNode;
   members: AccessorNode[];
 }
+
+interface ParsedGeneralJestFnCall extends BaseParsedJestFnCall {
+  type: Exclude<JestFnType, 'expect'>;
+}
+
+interface ParsedExpectFnCall extends BaseParsedJestFnCall {
+  type: 'expect';
+  args: TSESTree.CallExpression['arguments'];
+}
+
+export type ParsedJestFnCall = ParsedGeneralJestFnCall | ParsedExpectFnCall;
 
 const ValidJestFnCallChains = [
   'afterAll',
@@ -227,9 +238,20 @@ export const parseJestFnCall = (
     return null;
   }
 
+  const parsedJestFnCall: Omit<ParsedJestFnCall, 'type'> = {
+    name,
+    head: { ...resolved, node: first },
+    members: rest,
+  };
+
+  const type = determineJestFnType(name);
+
+  if (type === 'expect') {
+    return parseJestExpectCall(parsedJestFnCall);
+  }
+
   // check that every link in the chain except the last is a member expression
   if (
-    name !== 'expect' &&
     chain
       .slice(0, chain.length - 1)
       .some(nod => nod.parent?.type !== AST_NODE_TYPES.MemberExpression)
@@ -237,35 +259,20 @@ export const parseJestFnCall = (
     return null;
   }
 
-  if (name === 'expect' && !isValidExpectCallChain(chain)) {
-    return null;
-  }
-
-  return {
-    name,
-    type: determineJestFnType(name),
-    head: { ...resolved, node: first },
-    members: rest,
-  };
+  return { ...parsedJestFnCall, type };
 };
 
-const describeNodeLineage = (node: TSESTree.Node): string => {
-  if (node.parent) {
-    return `${describeNodeLineage(node.parent)} > ${node.type}`;
-  }
-
-  return node.type;
-};
-
-const isValidExpectCallChain = (chain: AccessorNode[]): boolean => {
+const parseJestExpectCall = (
+  typelessParsedJestFnCall: Omit<ParsedJestFnCall, 'type'>,
+): ParsedExpectFnCall | null => {
   // const expectNode = chain[chain.length - 1];
-  const [expectNode, ...modifierNodes] = chain;
+  const [...modifierNodes] = typelessParsedJestFnCall.members;
   const matcherNode = modifierNodes.pop();
 
   if (!matcherNode) {
     console.log('no matcher node');
 
-    return false;
+    return null;
   }
 
   // ensure that the matcher node is called
@@ -275,7 +282,7 @@ const isValidExpectCallChain = (chain: AccessorNode[]): boolean => {
   ) {
     console.log('matcher node not called', getAccessorValue(matcherNode));
 
-    return false;
+    return null;
   }
 
   console.log('modifiers', modifierNodes.length);
@@ -284,13 +291,13 @@ const isValidExpectCallChain = (chain: AccessorNode[]): boolean => {
       break;
     case 1:
       if (!ModifierName.hasOwnProperty(getAccessorValue(modifierNodes[0]))) {
-        return false;
+        return null;
       }
       break;
     case 2: {
       // "not" is the only modifier that can be second in the chain
       if (getAccessorValue(modifierNodes[1]) !== ModifierName.not) {
-        return false;
+        return null;
       }
 
       const firstModifier = getAccessorValue(modifierNodes[0]);
@@ -300,13 +307,13 @@ const isValidExpectCallChain = (chain: AccessorNode[]): boolean => {
         firstModifier !== ModifierName.resolves &&
         firstModifier !== ModifierName.rejects
       ) {
-        return false;
+        return null;
       }
       break;
     }
     // expect doesn't support more than two modifiers
     default:
-      return false;
+      return null;
   }
 
   // ensure that none of the modifiers are called
@@ -317,22 +324,14 @@ const isValidExpectCallChain = (chain: AccessorNode[]): boolean => {
         nod.parent?.parent?.type === AST_NODE_TYPES.CallExpression,
     )
   ) {
-    return false;
+    return null;
   }
 
-  // console.log(getAccessorValue(chain[0]), describeNodeLineage(chain[0]));
-  // console.log(
-  //   chain.map(nod => `${getAccessorValue(nod)} - ${nod.parent?.type}`),
-  // );
-  // if (
-  //   chain
-  //     .slice(0, chain.length - 1)
-  //     .some(nod => nod.parent?.type !== AST_NODE_TYPES.MemberExpression)
-  // ) {
-  //   return false;
-  // }
-
-  return true;
+  return {
+    ...typelessParsedJestFnCall,
+    type: 'expect',
+    args: matcherNode.parent.parent.arguments,
+  };
 };
 
 interface ImportDetails {
