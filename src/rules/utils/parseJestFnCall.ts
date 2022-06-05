@@ -182,15 +182,28 @@ export const parseJestFnCall = (
   node: TSESTree.CallExpression,
   context: TSESLint.RuleContext<string, unknown[]>,
 ): ParsedJestFnCall | null => {
+  const jestFnCall = parseJestFnCallWithReason(node, context);
+
+  if (typeof jestFnCall === 'string') {
+    return null;
+  }
+
+  return jestFnCall;
+};
+
+export const parseJestFnCallWithReason = (
+  node: TSESTree.CallExpression,
+  context: TSESLint.RuleContext<string, unknown[]>,
+): ParsedJestFnCall | string | null => {
   // ensure that we're at the "top" of the function call chain otherwise when
   // parsing e.g. x().y.z(), we'll incorrectly find & parse "x()" even though
   // the full chain is not a valid jest function call chain
-  if (
-    node.parent?.type === AST_NODE_TYPES.CallExpression ||
-    node.parent?.type === AST_NODE_TYPES.MemberExpression
-  ) {
-    return null;
-  }
+  // if (
+  //   node.parent?.type === AST_NODE_TYPES.CallExpression ||
+  //   node.parent?.type === AST_NODE_TYPES.MemberExpression
+  // ) {
+  //   return null;
+  // }
 
   const chain = getNodeChain(node);
 
@@ -246,8 +259,80 @@ export const parseJestFnCall = (
 
   const type = determineJestFnType(name);
 
+  // if (
+  //   node.parent?.type === AST_NODE_TYPES.CallExpression
+  //   // node.parent?.type === AST_NODE_TYPES.MemberExpression
+  // ) {
+  //   return null;
+  // }
+
   if (type === 'expect') {
-    return parseJestExpectCall(parsedJestFnCall);
+    // const findTopMostMemberExpression = (
+    //   node: TSESTree.MemberExpression,
+    // ): TSESTree.MemberExpression => {
+    //   let topMostMemberExpression = node;
+    //   let { parent } = node;
+    //
+    //   while (parent) {
+    //     if (parent.type !== AST_NODE_TYPES.MemberExpression) {
+    //       break;
+    //     }
+    //
+    //     topMostMemberExpression = parent;
+    //     parent = parent.parent;
+    //   }
+    //
+    //   return topMostMemberExpression;
+    // };
+    const findTopMostCallExpression = (
+      node: TSESTree.CallExpression,
+    ): TSESTree.CallExpression => {
+      let topMostCallExpression = node;
+      let { parent } = node;
+
+      while (parent) {
+        if (parent.type === AST_NODE_TYPES.CallExpression) {
+          topMostCallExpression = parent;
+
+          parent = parent.parent;
+
+          continue;
+        }
+
+        if (parent.type !== AST_NODE_TYPES.MemberExpression) {
+          break;
+        }
+
+        parent = parent.parent;
+      }
+
+      return topMostCallExpression;
+    };
+
+    const result = parseJestExpectCall(parsedJestFnCall);
+
+    const topMost = findTopMostCallExpression(node);
+
+    // if (topMost !== node) {
+    //   return null;
+    // }
+
+    console.log(typeof result, 'topmost', topMost === node);
+    if (typeof result === 'string' && topMost !== node) {
+      return null;
+    }
+    // console.log(result);
+
+    // if (typeof result !== 'string') {
+    //   if (
+    //     node.parent?.type === AST_NODE_TYPES.CallExpression ||
+    //     node.parent?.type === AST_NODE_TYPES.MemberExpression
+    //   ) {
+    //     return null;
+    //   }
+    // }
+
+    return result;
   }
 
   // check that every link in the chain except the last is a member expression
@@ -259,78 +344,189 @@ export const parseJestFnCall = (
     return null;
   }
 
+  // ensure that we're at the "top" of the function call chain otherwise when
+  // parsing e.g. x().y.z(), we'll incorrectly find & parse "x()" even though
+  // the full chain is not a valid jest function call chain
+  if (
+    node.parent?.type === AST_NODE_TYPES.CallExpression ||
+    node.parent?.type === AST_NODE_TYPES.MemberExpression
+  ) {
+    return null;
+  }
+
   return { ...parsedJestFnCall, type };
 };
 
-const parseJestExpectCall = (
-  typelessParsedJestFnCall: Omit<ParsedJestFnCall, 'type'>,
-): ParsedExpectFnCall | null => {
-  // const expectNode = chain[chain.length - 1];
-  const [...modifierNodes] = typelessParsedJestFnCall.members;
-  const matcherNode = modifierNodes.pop();
+// type ReasonWhyNotJestFn = '';
 
-  if (!matcherNode) {
-    console.log('no matcher node');
+// interface NodeWithParent<TParent extends TSESTree.Node> extends TSESTree.Node {
+type NodeWithParent<
+  TNode extends TSESTree.Node,
+  TParent extends TSESTree.Node,
+> = TNode & { parent: TParent };
 
-    return null;
+interface ModifiersAndMatcher {
+  modifiers: AccessorNode[];
+  matcher: AccessorNode;
+  matcherArgs: TSESTree.CallExpression['arguments'];
+}
+
+const findModifiersAndMatcher = (
+  members: AccessorNode[],
+): ModifiersAndMatcher | string => {
+  const modifiers: AccessorNode[] = [];
+
+  if (members.length === 0) {
+    return 'matcher-not-found';
   }
 
-  // ensure that the matcher node is called
-  if (
-    matcherNode.parent?.type !== AST_NODE_TYPES.MemberExpression ||
-    matcherNode.parent?.parent?.type !== AST_NODE_TYPES.CallExpression
-  ) {
-    console.log('matcher node not called', getAccessorValue(matcherNode));
+  for (const member of members) {
+    // check if the member is being called, which means it is the matcher
+    // (and also the end of the entire "expect" call chain)
+    if (
+      member.parent?.type === AST_NODE_TYPES.MemberExpression &&
+      member.parent.parent?.type === AST_NODE_TYPES.CallExpression
+    ) {
+      return {
+        matcher: member,
+        matcherArgs: member.parent.parent.arguments,
+        modifiers,
+      };
+      // return 'matcher-not-called';
+    }
 
-    return null;
-  }
+    // otherwise, it should be a modifier
+    const name = getAccessorValue(member);
 
-  console.log('modifiers', modifierNodes.length);
-  switch (modifierNodes.length) {
-    case 0:
-      break;
-    case 1:
-      if (!ModifierName.hasOwnProperty(getAccessorValue(modifierNodes[0]))) {
-        return null;
+    if (modifiers.length === 0) {
+      // the first modifier can be any of the three modifiers
+      if (!ModifierName.hasOwnProperty(name)) {
+        return 'modifier-unknown';
       }
-      break;
-    case 2: {
-      // "not" is the only modifier that can be second in the chain
-      if (getAccessorValue(modifierNodes[1]) !== ModifierName.not) {
-        return null;
+    } else if (modifiers.length === 1) {
+      // the second modifier can only be "not"
+      if (name !== ModifierName.not) {
+        return 'modifier-unknown';
       }
 
-      const firstModifier = getAccessorValue(modifierNodes[0]);
+      const firstModifier = getAccessorValue(modifiers[0]);
 
-      // the first modifier has to be either "resolves" or "rejects"
+      // and the first modifier has to be either "resolves" or "rejects"
       if (
         firstModifier !== ModifierName.resolves &&
         firstModifier !== ModifierName.rejects
       ) {
-        return null;
+        return 'modifier-unknown';
       }
-      break;
+    } else {
+      return 'modifier-unknown';
     }
-    // expect doesn't support more than two modifiers
-    default:
-      return null;
+
+    modifiers.push(member);
   }
 
-  // ensure that none of the modifiers are called
-  if (
-    modifierNodes.some(
-      nod =>
-        nod.parent?.type !== AST_NODE_TYPES.MemberExpression ||
-        nod.parent?.parent?.type === AST_NODE_TYPES.CallExpression,
-    )
-  ) {
-    return null;
+  return 'matcher-not-called';
+};
+
+const parseJestExpectCall = (
+  typelessParsedJestFnCall: Omit<ParsedJestFnCall, 'type'>,
+): ParsedExpectFnCall | string => {
+  // const expectNode = chain[chain.length - 1];
+  const [...modifierNodes] = typelessParsedJestFnCall.members;
+  const members: AccessorNode[] = [];
+
+  const modifiersAndMatcher = findModifiersAndMatcher(
+    typelessParsedJestFnCall.members,
+  );
+
+  if (typeof modifiersAndMatcher === 'string') {
+    return modifiersAndMatcher;
   }
+
+  // // for each member
+  //
+  // for (const member of typelessParsedJestFnCall.members) {
+  //   // check if the member is being called, which means it is the matcher
+  //   // (and also the end of the entire "expect" call chain)
+  //   if (
+  //     member.parent?.type === AST_NODE_TYPES.MemberExpression &&
+  //     member.parent.parent?.type === AST_NODE_TYPES.CallExpression
+  //   ) {
+  //     // this should be the matcher since it's being called
+  //     members.push(member);
+  //     break;
+  //     // return 'matcher-not-called';
+  //   }
+  //
+  //   // otherwise, it should be a modifier
+  // }
+  // const matcherNode = modifierNodes.pop();
+  //
+  // if (!matcherNode) {
+  //   // console.log('no matcher node');
+  //
+  //   return 'no-matcher';
+  // }
+  //
+  // // ensure that the matcher node is called
+  // if (
+  //   matcherNode.parent?.type !== AST_NODE_TYPES.MemberExpression ||
+  //   matcherNode.parent?.parent?.type !== AST_NODE_TYPES.CallExpression
+  // ) {
+  //   // console.log('matcher node not called', getAccessorValue(matcherNode));
+  //
+  //   return 'matcher-not-called';
+  // }
+  //
+  // console.log('modifiers', modifierNodes.length);
+  // switch (modifierNodes.length) {
+  //   case 0:
+  //     break;
+  //   case 1:
+  //     if (!ModifierName.hasOwnProperty(getAccessorValue(modifierNodes[0]))) {
+  //       return 'modifier-unknown';
+  //     }
+  //     break;
+  //   case 2: {
+  //     console.log(getAccessorValue(modifierNodes[1]));
+  //     // "not" is the only modifier that can be second in the chain
+  //     if (getAccessorValue(modifierNodes[1]) !== ModifierName.not) {
+  //       return 'modifier-unknown';
+  //     }
+  //
+  //     const firstModifier = getAccessorValue(modifierNodes[0]);
+  //
+  //     console.log(firstModifier);
+  //
+  //     // the first modifier has to be either "resolves" or "rejects"
+  //     if (
+  //       firstModifier !== ModifierName.resolves &&
+  //       firstModifier !== ModifierName.rejects
+  //     ) {
+  //       return 'modifier-unknown';
+  //     }
+  //     break;
+  //   }
+  //   // // expect doesn't support more than two modifiers
+  //   // default:
+  //   //   return 'modifier-unknown';
+  // }
+  //
+  // // ensure that none of the modifiers are called
+  // if (
+  //   modifierNodes.some(
+  //     nod =>
+  //       nod.parent?.type !== AST_NODE_TYPES.MemberExpression ||
+  //       nod.parent?.parent?.type === AST_NODE_TYPES.CallExpression,
+  //   )
+  // ) {
+  //   return 'modifier-called';
+  // }
 
   return {
     ...typelessParsedJestFnCall,
     type: 'expect',
-    args: matcherNode.parent.parent.arguments,
+    args: modifiersAndMatcher.matcherArgs,
   };
 };
 

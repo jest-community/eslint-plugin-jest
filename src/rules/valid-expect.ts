@@ -12,6 +12,8 @@ import {
   isExpectMember,
   isSupportedAccessor,
   parseExpectCall,
+  parseJestFnCall,
+  parseJestFnCallWithReason,
 } from './utils';
 
 /**
@@ -199,37 +201,97 @@ export default createRule<[Options], MessageIds>({
 
     return {
       CallExpression(node) {
-        if (!isExpectCall(node)) {
+        const jestFnCall = parseJestFnCallWithReason(node, context);
+
+        if (typeof jestFnCall === 'string') {
+          if (jestFnCall === 'matcher-not-found') {
+            context.report({
+              messageId: 'matcherNotFound',
+              node,
+            });
+
+            return;
+          }
+
+          if (jestFnCall === 'matcher-not-called') {
+            context.report({
+              messageId: 'matcherNotCalled',
+              node,
+            });
+          }
+
+          if (jestFnCall === 'modifier-unknown') {
+            context.report({
+              messageId: 'modifierUnknown',
+              node,
+            });
+
+            return;
+          }
+          // if (!matcher) {
+          //   if (modifier) {
+          //     context.report({
+          //       messageId: 'matcherNotFound',
+          //       node: modifier.node.property,
+          //     });
+          //   }
+          //
+          //   return;
+          // }
+          //
+          // if (isExpectMember(matcher.node.parent)) {
+          //   context.report({
+          //     messageId: 'modifierUnknown',
+          //     data: { modifierName: matcher.name },
+          //     node: matcher.node.property,
+          //   });
+          //
+          //   return;
+          // }
+          //
+          // if (!matcher.arguments) {
+          //   context.report({
+          //     messageId: 'matcherNotCalled',
+          //     node: matcher.node.property,
+          //   });
+          // }
+
+          return;
+        } else if (jestFnCall?.type !== 'expect') {
           return;
         }
 
-        const { expect, modifier, matcher } = parseExpectCall(node);
+        const { parent: expect } = jestFnCall.head.node;
+
+        if (expect?.type !== AST_NODE_TYPES.CallExpression) {
+          return;
+        }
 
         if (expect.arguments.length < minArgs) {
-          const expectLength = getAccessorValue(expect.callee).length;
+          const expectLength = getAccessorValue(jestFnCall.head.node).length;
 
           const loc: TSESTree.SourceLocation = {
             start: {
-              column: node.loc.start.column + expectLength,
-              line: node.loc.start.line,
+              column: expect.loc.start.column + expectLength,
+              line: expect.loc.start.line,
             },
             end: {
-              column: node.loc.start.column + expectLength + 1,
-              line: node.loc.start.line,
+              column: expect.loc.start.column + expectLength + 1,
+              line: expect.loc.start.line,
             },
           };
 
           context.report({
             messageId: 'notEnoughArgs',
             data: { amount: minArgs, s: minArgs === 1 ? '' : 's' },
-            node,
+            node: expect,
             loc,
           });
         }
 
         if (expect.arguments.length > maxArgs) {
           const { start } = expect.arguments[maxArgs].loc;
-          const { end } = expect.arguments[node.arguments.length - 1].loc;
+          const { end } = expect.arguments[expect.arguments.length - 1].loc;
 
           const loc = {
             start,
@@ -242,46 +304,51 @@ export default createRule<[Options], MessageIds>({
           context.report({
             messageId: 'tooManyArgs',
             data: { amount: maxArgs, s: maxArgs === 1 ? '' : 's' },
-            node,
+            node: expect,
             loc,
           });
         }
 
         // something was called on `expect()`
-        if (!matcher) {
-          if (modifier) {
-            context.report({
-              messageId: 'matcherNotFound',
-              node: modifier.node.property,
-            });
-          }
 
-          return;
-        }
+        // if (!matcher) {
+        //   if (modifier) {
+        //     context.report({
+        //       messageId: 'matcherNotFound',
+        //       node: modifier.node.property,
+        //     });
+        //   }
+        //
+        //   return;
+        // }
+        //
+        // if (isExpectMember(matcher.node.parent)) {
+        //   context.report({
+        //     messageId: 'modifierUnknown',
+        //     data: { modifierName: matcher.name },
+        //     node: matcher.node.property,
+        //   });
+        //
+        //   return;
+        // }
+        //
+        // if (!matcher.arguments) {
+        //   context.report({
+        //     messageId: 'matcherNotCalled',
+        //     node: matcher.node.property,
+        //   });
+        // }
 
-        if (isExpectMember(matcher.node.parent)) {
-          context.report({
-            messageId: 'modifierUnknown',
-            data: { modifierName: matcher.name },
-            node: matcher.node.property,
-          });
+        const matcher = jestFnCall.members[jestFnCall.members.length - 1];
 
-          return;
-        }
-
-        if (!matcher.arguments) {
-          context.report({
-            messageId: 'matcherNotCalled',
-            node: matcher.node.property,
-          });
-        }
-
-        const parentNode = matcher.node.parent;
+        const parentNode = matcher.parent?.parent;
         const shouldBeAwaited =
-          (modifier && modifier.name !== ModifierName.not) ||
-          asyncMatchers.includes(matcher.name);
+          jestFnCall.members
+            .slice(0, -1)
+            .some(nod => getAccessorValue(nod) !== 'not') ||
+          asyncMatchers.includes(getAccessorValue(matcher));
 
-        if (!parentNode.parent || !shouldBeAwaited) {
+        if (!parentNode?.parent || !shouldBeAwaited) {
           return;
         }
         /**
@@ -327,9 +394,9 @@ export default createRule<[Options], MessageIds>({
 
       // nothing called on "expect()"
       'CallExpression:exit'(node: TSESTree.CallExpression) {
-        if (isExpectCall(node) && isNoAssertionsParentNode(node.parent)) {
-          context.report({ messageId: 'matcherNotFound', node });
-        }
+        // if (isExpectCall(node) && isNoAssertionsParentNode(node.parent)) {
+        //   context.report({ messageId: 'matcherNotFound', node });
+        // }
       },
     };
   },
