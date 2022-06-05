@@ -199,15 +199,38 @@ export default createRule<[Options], MessageIds>({
     const promiseArrayExceptionExists = (loc: TSESTree.SourceLocation) =>
       arrayExceptions.has(promiseArrayExceptionKey(loc));
 
+    const findTopMostMemberExpression = (
+      node: TSESTree.MemberExpression,
+    ): TSESTree.MemberExpression => {
+      let topMostMemberExpression = node;
+      let { parent } = node;
+
+      while (parent) {
+        if (parent.type !== AST_NODE_TYPES.MemberExpression) {
+          break;
+        }
+
+        topMostMemberExpression = parent;
+        parent = parent.parent;
+      }
+
+      return topMostMemberExpression;
+    };
+
     return {
       CallExpression(node) {
         const jestFnCall = parseJestFnCallWithReason(node, context);
 
         if (typeof jestFnCall === 'string') {
+          const reportingNode =
+            node.parent?.type === AST_NODE_TYPES.MemberExpression
+              ? findTopMostMemberExpression(node.parent).property
+              : node;
+
           if (jestFnCall === 'matcher-not-found') {
             context.report({
               messageId: 'matcherNotFound',
-              node,
+              node: reportingNode,
             });
 
             return;
@@ -215,15 +238,19 @@ export default createRule<[Options], MessageIds>({
 
           if (jestFnCall === 'matcher-not-called') {
             context.report({
-              messageId: 'matcherNotCalled',
-              node,
+              messageId:
+                isSupportedAccessor(reportingNode) &&
+                ModifierName.hasOwnProperty(getAccessorValue(reportingNode))
+                  ? 'matcherNotFound'
+                  : 'matcherNotCalled',
+              node: reportingNode,
             });
           }
 
           if (jestFnCall === 'modifier-unknown') {
             context.report({
               messageId: 'modifierUnknown',
-              node,
+              node: reportingNode,
             });
 
             return;

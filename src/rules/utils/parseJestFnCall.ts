@@ -317,7 +317,12 @@ export const parseJestFnCallWithReason = (
     //   return null;
     // }
 
-    console.log(typeof result, 'topmost', topMost === node);
+    // console.log(
+    //   typeof result,
+    //   'topmost',
+    //   topMost === node,
+    //   parsedJestFnCall.members.length,
+    // );
     if (typeof result === 'string' && topMost !== node) {
       return null;
     }
@@ -331,6 +336,12 @@ export const parseJestFnCallWithReason = (
     //     return null;
     //   }
     // }
+
+    if (result === 'matcher-not-found') {
+      if (node.parent?.type === AST_NODE_TYPES.MemberExpression) {
+        return 'matcher-not-called';
+      }
+    }
 
     return result;
   }
@@ -433,7 +444,15 @@ const parseJestExpectCall = (
 ): ParsedExpectFnCall | string => {
   // const expectNode = chain[chain.length - 1];
   const [...modifierNodes] = typelessParsedJestFnCall.members;
-  const members: AccessorNode[] = [];
+  const members: AccessorNode[] = [...modifierNodes];
+
+  // if (result === 'matcher-not-found') {
+  //   if(members.length === 0) {
+  //     if (typelessParsedJestFnCall.head.node.parent?.type === AST_NODE_TYPES.MemberExpression && ) {
+  //       return 'matcher-not-called';
+  //     }
+  //   }
+  // }
 
   const modifiersAndMatcher = findModifiersAndMatcher(
     typelessParsedJestFnCall.members,
