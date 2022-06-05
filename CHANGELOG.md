@@ -1,3 +1,10 @@
+## [26.5.1](https://github.com/jest-community/eslint-plugin-jest/compare/v26.5.0...v26.5.1) (2022-06-05)
+
+
+### Bug Fixes
+
+* **prefer-called-with:** handle `resolves` and `rejects` modifiers correctly ([#1143](https://github.com/jest-community/eslint-plugin-jest/issues/1143)) ([dff1cb4](https://github.com/jest-community/eslint-plugin-jest/commit/dff1cb4709941fe5538d2edf0a1cf4d3df508acf))
+
 # [26.5.0](https://github.com/jest-community/eslint-plugin-jest/compare/v26.4.7...v26.5.0) (2022-06-04)
 
 
