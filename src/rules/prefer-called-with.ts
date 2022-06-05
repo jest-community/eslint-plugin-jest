@@ -1,4 +1,9 @@
-import { createRule, isExpectCall, parseExpectCall } from './utils';
+import {
+  ModifierName,
+  createRule,
+  isExpectCall,
+  parseExpectCall,
+} from './utils';
 
 export default createRule({
   name: __filename,
@@ -25,15 +30,20 @@ export default createRule({
 
         const { modifier, matcher } = parseExpectCall(node);
 
-        // Could check resolves/rejects here but not a likely idiom.
-        if (matcher && !modifier) {
-          if (['toBeCalled', 'toHaveBeenCalled'].includes(matcher.name)) {
-            context.report({
-              data: { name: matcher.name }, // todo: rename to 'matcherName'
-              messageId: 'preferCalledWith',
-              node: matcher.node.property,
-            });
-          }
+        if (
+          !matcher ||
+          modifier?.name === ModifierName.not ||
+          modifier?.negation
+        ) {
+          return;
+        }
+
+        if (['toBeCalled', 'toHaveBeenCalled'].includes(matcher.name)) {
+          context.report({
+            data: { name: matcher.name },
+            messageId: 'preferCalledWith',
+            node: matcher.node.property,
+          });
         }
       },
     };
