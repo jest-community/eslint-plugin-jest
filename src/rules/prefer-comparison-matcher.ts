@@ -1,6 +1,7 @@
 import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/utils';
 import {
   MaybeTypeCast,
+  ModifierName,
   ParsedEqualityMatcherCall,
   ParsedExpectMatcher,
   createRule,
@@ -122,9 +123,15 @@ export default createRule({
           return;
         }
 
+        const negation = modifier?.negation
+          ? { node: modifier.negation }
+          : modifier?.name === ModifierName.not
+          ? modifier
+          : null;
+
         const preferredMatcher = determineMatcher(
           comparison.operator,
-          followTypeAssertionChain(matcher.arguments[0]).value === !!modifier,
+          followTypeAssertionChain(matcher.arguments[0]).value === !!negation,
         );
 
         if (!preferredMatcher) {
@@ -135,6 +142,12 @@ export default createRule({
           fix(fixer) {
             const sourceCode = context.getSourceCode();
 
+            // preserve the existing modifier if it's not a negation
+            const modifierText =
+              modifier && modifier?.node !== negation?.node
+                ? `.${modifier.name}`
+                : '';
+
             return [
               // replace the comparison argument with the left-hand side of the comparison
               fixer.replaceText(
@@ -144,7 +157,7 @@ export default createRule({
               // replace the current matcher & modifier with the preferred matcher
               fixer.replaceTextRange(
                 [expectCallEnd, matcher.node.range[1]],
-                `.${preferredMatcher}`,
+                `${modifierText}.${preferredMatcher}`,
               ),
               // replace the matcher argument with the right-hand side of the comparison
               fixer.replaceText(
@@ -155,7 +168,7 @@ export default createRule({
           },
           messageId: 'useToBeComparison',
           data: { preferredMatcher },
-          node: (modifier || matcher).node.property,
+          node: (negation || matcher).node.property,
         });
       },
     };
