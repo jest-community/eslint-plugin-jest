@@ -85,16 +85,32 @@ export default createRule({
           matcher.arguments[0],
         ).value;
 
+        const negation = modifier?.negation
+          ? { node: modifier.negation }
+          : modifier?.name === ModifierName.not
+          ? modifier
+          : null;
+
         // we need to negate the expectation if the current expected
         // value is itself negated by the "not" modifier
         const addNotModifier =
           (comparison.operator === '!==' ? !matcherValue : matcherValue) ===
-          !!modifier;
+          !!negation;
 
         const buildFixer =
           (equalityMatcher: string): TSESLint.ReportFixFunction =>
           fixer => {
             const sourceCode = context.getSourceCode();
+
+            // preserve the existing modifier if it's not a negation
+            let modifierText =
+              modifier && modifier?.node !== negation?.node
+                ? `.${modifier.name}`
+                : '';
+
+            if (addNotModifier) {
+              modifierText += `.${ModifierName.not}`;
+            }
 
             return [
               // replace the comparison argument with the left-hand side of the comparison
@@ -105,9 +121,7 @@ export default createRule({
               // replace the current matcher & modifier with the preferred matcher
               fixer.replaceTextRange(
                 [expectCallEnd, matcher.node.range[1]],
-                addNotModifier
-                  ? `.${ModifierName.not}.${equalityMatcher}`
-                  : `.${equalityMatcher}`,
+                `${modifierText}.${equalityMatcher}`,
               ),
               // replace the matcher argument with the right-hand side of the comparison
               fixer.replaceText(
@@ -126,7 +140,7 @@ export default createRule({
               fix: buildFixer(equalityMatcher),
             }),
           ),
-          node: (modifier || matcher).node.property,
+          node: (negation || matcher).node.property,
         });
       },
     };
