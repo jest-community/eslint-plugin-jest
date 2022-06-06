@@ -41,6 +41,18 @@ const generateInvalidCases = (
       ],
     },
     {
+      code: `expect(value ${operator} 1).resolves.${equalityMatcher}(true);`,
+      output: `expect(value).resolves.${preferredMatcher}(1);`,
+      errors: [
+        {
+          messageId: 'useToBeComparison',
+          data: { preferredMatcher },
+          column: 27 + operator.length,
+          line: 1,
+        },
+      ],
+    },
+    {
       code: `expect(value ${operator} 1).${equalityMatcher}(false);`,
       output: `expect(value).${preferredMatcherWhenNegated}(1);`,
       errors: [
@@ -60,6 +72,18 @@ const generateInvalidCases = (
           messageId: 'useToBeComparison',
           data: { preferredMatcher: preferredMatcherWhenNegated },
           column: 18 + operator.length,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: `expect(value ${operator} 1).resolves.${equalityMatcher}(false);`,
+      output: `expect(value).resolves.${preferredMatcherWhenNegated}(1);`,
+      errors: [
+        {
+          messageId: 'useToBeComparison',
+          data: { preferredMatcher: preferredMatcherWhenNegated },
+          column: 27 + operator.length,
           line: 1,
         },
       ],
@@ -89,6 +113,18 @@ const generateInvalidCases = (
       ],
     },
     {
+      code: `expect(value ${operator} 1).resolves.not.${equalityMatcher}(true);`,
+      output: `expect(value).resolves.${preferredMatcherWhenNegated}(1);`,
+      errors: [
+        {
+          messageId: 'useToBeComparison',
+          data: { preferredMatcher: preferredMatcherWhenNegated },
+          column: 27 + operator.length,
+          line: 1,
+        },
+      ],
+    },
+    {
       code: `expect(value ${operator} 1).not.${equalityMatcher}(false);`,
       output: `expect(value).${preferredMatcher}(1);`,
       errors: [
@@ -96,6 +132,54 @@ const generateInvalidCases = (
           messageId: 'useToBeComparison',
           data: { preferredMatcher },
           column: 18 + operator.length,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: `expect(value ${operator} 1).resolves.not.${equalityMatcher}(false);`,
+      output: `expect(value).resolves.${preferredMatcher}(1);`,
+      errors: [
+        {
+          messageId: 'useToBeComparison',
+          data: { preferredMatcher },
+          column: 27 + operator.length,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: `expect(value ${operator} 1)["resolves"].not.${equalityMatcher}(false);`,
+      output: `expect(value).resolves.${preferredMatcher}(1);`,
+      errors: [
+        {
+          messageId: 'useToBeComparison',
+          data: { preferredMatcher },
+          column: 30 + operator.length,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: `expect(value ${operator} 1)["resolves"]["not"].${equalityMatcher}(false);`,
+      output: `expect(value).resolves.${preferredMatcher}(1);`,
+      errors: [
+        {
+          messageId: 'useToBeComparison',
+          data: { preferredMatcher },
+          column: 30 + operator.length,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: `expect(value ${operator} 1)["resolves"]["not"]['${equalityMatcher}'](false);`,
+      output: `expect(value).resolves.${preferredMatcher}(1);`,
+      errors: [
+        {
+          messageId: 'useToBeComparison',
+          data: { preferredMatcher },
+          column: 30 + operator.length,
           line: 1,
         },
       ],
@@ -128,6 +212,8 @@ const generateValidStringLiteralCases = (operator: string, matcher: string) => {
       `expect(${b} ${operator} ${a}).not.${matcher}(true)`,
       `expect(${b} ${operator} ${a}).not.${matcher}(false)`,
       `expect(${b} ${operator} ${b}).not.${matcher}(false)`,
+      `expect(${b} ${operator} ${b}).resolves.not.${matcher}(false)`,
+      `expect(${b} ${operator} ${b}).resolves.${matcher}(false)`,
     ],
   ]);
 };
