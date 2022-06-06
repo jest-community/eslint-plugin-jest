@@ -64,6 +64,32 @@ ruleTester.run('prefer-equality-matcher: ===', rule, {
       ],
     },
     {
+      code: 'expect(a === b).resolves.toBe(true);',
+      errors: [
+        {
+          messageId: 'useEqualityMatcher',
+          suggestions: expectSuggestions(
+            equalityMatcher => `expect(a).resolves.${equalityMatcher}(b);`,
+          ),
+          column: 26,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: 'expect(a === b).resolves.toBe(false);',
+      errors: [
+        {
+          messageId: 'useEqualityMatcher',
+          suggestions: expectSuggestions(
+            equalityMatcher => `expect(a).resolves.not.${equalityMatcher}(b);`,
+          ),
+          column: 26,
+          line: 1,
+        },
+      ],
+    },
+    {
       code: 'expect(a === b).not.toBe(true);',
       errors: [
         {
@@ -85,6 +111,58 @@ ruleTester.run('prefer-equality-matcher: ===', rule, {
             equalityMatcher => `expect(a).${equalityMatcher}(b);`,
           ),
           column: 17,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: 'expect(a === b).resolves.not.toBe(true);',
+      errors: [
+        {
+          messageId: 'useEqualityMatcher',
+          suggestions: expectSuggestions(
+            equalityMatcher => `expect(a).resolves.not.${equalityMatcher}(b);`,
+          ),
+          column: 26,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: 'expect(a === b).resolves.not.toBe(false);',
+      errors: [
+        {
+          messageId: 'useEqualityMatcher',
+          suggestions: expectSuggestions(
+            equalityMatcher => `expect(a).resolves.${equalityMatcher}(b);`,
+          ),
+          column: 26,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: 'expect(a === b)["resolves"].not.toBe(false);',
+      errors: [
+        {
+          messageId: 'useEqualityMatcher',
+          suggestions: expectSuggestions(
+            equalityMatcher => `expect(a).resolves.${equalityMatcher}(b);`,
+          ),
+          column: 29,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: 'expect(a === b)["resolves"]["not"]["toBe"](false);',
+      errors: [
+        {
+          messageId: 'useEqualityMatcher',
+          suggestions: expectSuggestions(
+            equalityMatcher => `expect(a).resolves.${equalityMatcher}(b);`,
+          ),
+          column: 29,
           line: 1,
         },
       ],
@@ -126,6 +204,32 @@ ruleTester.run('prefer-equality-matcher: !==', rule, {
       ],
     },
     {
+      code: 'expect(a !== b).resolves.toBe(true);',
+      errors: [
+        {
+          messageId: 'useEqualityMatcher',
+          suggestions: expectSuggestions(
+            equalityMatcher => `expect(a).resolves.not.${equalityMatcher}(b);`,
+          ),
+          column: 26,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: 'expect(a !== b).resolves.toBe(false);',
+      errors: [
+        {
+          messageId: 'useEqualityMatcher',
+          suggestions: expectSuggestions(
+            equalityMatcher => `expect(a).resolves.${equalityMatcher}(b);`,
+          ),
+          column: 26,
+          line: 1,
+        },
+      ],
+    },
+    {
       code: 'expect(a !== b).not.toBe(true);',
       errors: [
         {
@@ -147,6 +251,32 @@ ruleTester.run('prefer-equality-matcher: !==', rule, {
             equalityMatcher => `expect(a).not.${equalityMatcher}(b);`,
           ),
           column: 17,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: 'expect(a !== b).resolves.not.toBe(true);',
+      errors: [
+        {
+          messageId: 'useEqualityMatcher',
+          suggestions: expectSuggestions(
+            equalityMatcher => `expect(a).resolves.${equalityMatcher}(b);`,
+          ),
+          column: 26,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: 'expect(a !== b).resolves.not.toBe(false);',
+      errors: [
+        {
+          messageId: 'useEqualityMatcher',
+          suggestions: expectSuggestions(
+            equalityMatcher => `expect(a).resolves.not.${equalityMatcher}(b);`,
+          ),
+          column: 26,
           line: 1,
         },
       ],
