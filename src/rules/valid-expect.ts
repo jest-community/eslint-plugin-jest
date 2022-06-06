@@ -8,11 +8,8 @@ import {
   ModifierName,
   createRule,
   getAccessorValue,
-  isExpectCall,
   isExpectMember,
   isSupportedAccessor,
-  parseExpectCall,
-  parseJestFnCall,
   parseJestFnCallWithReason,
 } from './utils';
 
@@ -93,12 +90,6 @@ const isAcceptableReturnNode = (
   ].includes(node.type);
 };
 
-const isNoAssertionsParentNode = (node: TSESTree.Node): boolean =>
-  node.type === AST_NODE_TYPES.ExpressionStatement ||
-  (node.type === AST_NODE_TYPES.AwaitExpression &&
-    node.parent !== undefined &&
-    node.parent.type === AST_NODE_TYPES.ExpressionStatement);
-
 const promiseArrayExceptionKey = ({ start, end }: TSESTree.SourceLocation) =>
   `${start.line}:${start.column}-${end.line}:${end.column}`;
 
@@ -131,7 +122,7 @@ export default createRule<[Options], MessageIds>({
     messages: {
       tooManyArgs: 'Expect takes at most {{ amount }} argument{{ s }}.',
       notEnoughArgs: 'Expect requires at least {{ amount }} argument{{ s }}.',
-      modifierUnknown: 'Expect has no modifier named "{{ modifierName }}".',
+      modifierUnknown: 'Expect has an unknown modifier.',
       matcherNotFound: 'Expect must have a corresponding matcher call.',
       matcherNotCalled: 'Matchers must be called to assert.',
       asyncMustBeAwaited: 'Async assertions must be awaited{{ orReturned }}.',
@@ -417,13 +408,6 @@ export default createRule<[Options], MessageIds>({
             pushPromiseArrayException(finalNode.loc);
           }
         }
-      },
-
-      // nothing called on "expect()"
-      'CallExpression:exit'(node: TSESTree.CallExpression) {
-        // if (isExpectCall(node) && isNoAssertionsParentNode(node.parent)) {
-        //   context.report({ messageId: 'matcherNotFound', node });
-        // }
       },
     };
   },

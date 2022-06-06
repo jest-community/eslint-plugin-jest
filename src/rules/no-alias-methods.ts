@@ -47,9 +47,9 @@ export default createRule({
 
         const matcher = jestFnCall.members[jestFnCall.members.length - 1];
 
-        if (!matcher) {
-          return;
-        }
+        // if (!matcher) {
+        //   return;
+        // }
 
         const alias = getAccessorValue(matcher);
 

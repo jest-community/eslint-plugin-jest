@@ -368,14 +368,6 @@ export const parseJestFnCallWithReason = (
   return { ...parsedJestFnCall, type };
 };
 
-// type ReasonWhyNotJestFn = '';
-
-// interface NodeWithParent<TParent extends TSESTree.Node> extends TSESTree.Node {
-type NodeWithParent<
-  TNode extends TSESTree.Node,
-  TParent extends TSESTree.Node,
-> = TNode & { parent: TParent };
-
 interface ModifiersAndMatcher {
   modifiers: AccessorNode[];
   matcher: AccessorNode;
@@ -442,18 +434,6 @@ const findModifiersAndMatcher = (
 const parseJestExpectCall = (
   typelessParsedJestFnCall: Omit<ParsedJestFnCall, 'type'>,
 ): ParsedExpectFnCall | string => {
-  // const expectNode = chain[chain.length - 1];
-  const [...modifierNodes] = typelessParsedJestFnCall.members;
-  const members: AccessorNode[] = [...modifierNodes];
-
-  // if (result === 'matcher-not-found') {
-  //   if(members.length === 0) {
-  //     if (typelessParsedJestFnCall.head.node.parent?.type === AST_NODE_TYPES.MemberExpression && ) {
-  //       return 'matcher-not-called';
-  //     }
-  //   }
-  // }
-
   const modifiersAndMatcher = findModifiersAndMatcher(
     typelessParsedJestFnCall.members,
   );
@@ -461,86 +441,6 @@ const parseJestExpectCall = (
   if (typeof modifiersAndMatcher === 'string') {
     return modifiersAndMatcher;
   }
-
-  // // for each member
-  //
-  // for (const member of typelessParsedJestFnCall.members) {
-  //   // check if the member is being called, which means it is the matcher
-  //   // (and also the end of the entire "expect" call chain)
-  //   if (
-  //     member.parent?.type === AST_NODE_TYPES.MemberExpression &&
-  //     member.parent.parent?.type === AST_NODE_TYPES.CallExpression
-  //   ) {
-  //     // this should be the matcher since it's being called
-  //     members.push(member);
-  //     break;
-  //     // return 'matcher-not-called';
-  //   }
-  //
-  //   // otherwise, it should be a modifier
-  // }
-  // const matcherNode = modifierNodes.pop();
-  //
-  // if (!matcherNode) {
-  //   // console.log('no matcher node');
-  //
-  //   return 'no-matcher';
-  // }
-  //
-  // // ensure that the matcher node is called
-  // if (
-  //   matcherNode.parent?.type !== AST_NODE_TYPES.MemberExpression ||
-  //   matcherNode.parent?.parent?.type !== AST_NODE_TYPES.CallExpression
-  // ) {
-  //   // console.log('matcher node not called', getAccessorValue(matcherNode));
-  //
-  //   return 'matcher-not-called';
-  // }
-  //
-  // console.log('modifiers', modifierNodes.length);
-  // switch (modifierNodes.length) {
-  //   case 0:
-  //     break;
-  //   case 1:
-  //     if (!ModifierName.hasOwnProperty(getAccessorValue(modifierNodes[0]))) {
-  //       return 'modifier-unknown';
-  //     }
-  //     break;
-  //   case 2: {
-  //     console.log(getAccessorValue(modifierNodes[1]));
-  //     // "not" is the only modifier that can be second in the chain
-  //     if (getAccessorValue(modifierNodes[1]) !== ModifierName.not) {
-  //       return 'modifier-unknown';
-  //     }
-  //
-  //     const firstModifier = getAccessorValue(modifierNodes[0]);
-  //
-  //     console.log(firstModifier);
-  //
-  //     // the first modifier has to be either "resolves" or "rejects"
-  //     if (
-  //       firstModifier !== ModifierName.resolves &&
-  //       firstModifier !== ModifierName.rejects
-  //     ) {
-  //       return 'modifier-unknown';
-  //     }
-  //     break;
-  //   }
-  //   // // expect doesn't support more than two modifiers
-  //   // default:
-  //   //   return 'modifier-unknown';
-  // }
-  //
-  // // ensure that none of the modifiers are called
-  // if (
-  //   modifierNodes.some(
-  //     nod =>
-  //       nod.parent?.type !== AST_NODE_TYPES.MemberExpression ||
-  //       nod.parent?.parent?.type === AST_NODE_TYPES.CallExpression,
-  //   )
-  // ) {
-  //   return 'modifier-called';
-  // }
 
   return {
     ...typelessParsedJestFnCall,

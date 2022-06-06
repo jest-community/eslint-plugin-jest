@@ -12,6 +12,8 @@ const ruleTester = new TSESLint.RuleTester({
 
 ruleTester.run('valid-expect', rule, {
   valid: [
+    'expect.hasAssertions',
+    'expect.hasAssertions()',
     'expect("something").toEqual("else");',
     'expect(true).toBeDefined();',
     'expect([1, 2, 3]).toEqual([1, 2, 3]);',
@@ -340,7 +342,16 @@ ruleTester.run('valid-expect', rule, {
           endColumn: 30,
           column: 19,
           messageId: 'matcherNotCalled',
-          data: { modifierName: 'nope' },
+        },
+      ],
+    },
+    {
+      code: 'expect(true).nope.toBeDefined();',
+      errors: [
+        {
+          endColumn: 32,
+          column: 1,
+          messageId: 'modifierUnknown',
         },
       ],
     },
