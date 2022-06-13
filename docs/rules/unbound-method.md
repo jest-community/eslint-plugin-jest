@@ -1,4 +1,4 @@
-# Enforces unbound methods are called with their expected scope (`unbound-method`)
+# Enforce unbound methods are called with their expected scope (`unbound-method`)
 
 ## Rule Details
 

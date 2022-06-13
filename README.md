@@ -267,9 +267,9 @@ as it extends the original `unbound-method` rule from that plugin.
 
 <!-- begin type rules list -->
 
-| Rule                                           | Description                                                   | Configurations | Fixable |
-| ---------------------------------------------- | ------------------------------------------------------------- | -------------- | ------- |
-| [unbound-method](docs/rules/unbound-method.md) | Enforces unbound methods are called with their expected scope |                |         |
+| Rule                                           | Description                                                  | Configurations | Fixable |
+| ---------------------------------------------- | ------------------------------------------------------------ | -------------- | ------- |
+| [unbound-method](docs/rules/unbound-method.md) | Enforce unbound methods are called with their expected scope |                |         |
 
 <!-- end type rules list -->
 
