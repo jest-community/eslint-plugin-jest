@@ -156,9 +156,7 @@
     ]
   },
   "resolutions": {
-    "@semantic-release/npm/npm": "7.20.6",
-    "@typescript-eslint/experimental-utils": "^5.0.0",
-    "fsevents/node-gyp": "^7.0.0"
+    "@typescript-eslint/experimental-utils": "^5.0.0"
   },
   "packageManager": "yarn@3.2.1"
 }
