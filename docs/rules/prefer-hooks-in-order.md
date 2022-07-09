@@ -131,4 +131,3 @@ describe('foo', () => {
 ## Further Reading
 
 - [Order of Execution](https://jestjs.io/docs/setup-teardown#order-of-execution)
-
