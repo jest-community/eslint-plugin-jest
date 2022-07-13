@@ -130,4 +130,4 @@ describe('foo', () => {
 
 ## Further Reading
 
-- [Order of execution of describe and test blocks](https://jestjs.io/docs/setup-teardown#order-of-execution-of-describe-and-test-blocks)
+- [Order of Execution](https://jestjs.io/docs/setup-teardown#order-of-execution)
