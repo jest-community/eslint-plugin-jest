@@ -68,7 +68,9 @@ export default createRule<Options, MessageIds>({
   name: __filename,
   meta: {
     messages: {
+      // eslint-disable-next-line eslint-plugin/no-unused-message-ids
       unbound: DEFAULT_MESSAGE,
+      // eslint-disable-next-line eslint-plugin/no-unused-message-ids
       unboundWithoutThisAnnotation: DEFAULT_MESSAGE,
     },
     schema: [],
