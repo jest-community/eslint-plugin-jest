@@ -25,7 +25,7 @@ export default createRule({
         properties: {
           max: {
             type: 'integer',
-            minimum: 0,
+            minimum: 1,
           },
         },
         additionalProperties: false,
