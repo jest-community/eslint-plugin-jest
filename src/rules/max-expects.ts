@@ -52,9 +52,12 @@ export default createRule({
       FunctionExpression: onFunctionExpressionEnter,
       ArrowFunctionExpression: onFunctionExpressionEnter,
       CallExpression(node) {
-        if (isExpectCall(node)) {
-          count += 1;
+        if (!isExpectCall(node)) {
+          return;
         }
+
+        count += 1;
+
         if (count > max && node) {
           context.report({
             node,

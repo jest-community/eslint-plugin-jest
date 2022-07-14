@@ -57,6 +57,38 @@ ruleTester.run('max-expects', rule, {
         expect(true).toBeDefined();
       });
     `,
+    dedent`
+      describe('test', () => {
+        test('should pass', () => {
+          expect(true).toBeDefined();
+          expect(true).toBeDefined();
+          expect(true).toBeDefined();
+          expect(true).toBeDefined();
+          expect(true).toBeDefined();
+        });
+      });
+    `,
+    dedent`
+      test.each(['should', 'pass'], () => {
+        expect(true).toBeDefined();
+        expect(true).toBeDefined();
+        expect(true).toBeDefined();
+        expect(true).toBeDefined();
+        expect(true).toBeDefined();
+      });
+    `,
+    dedent`
+      test('should pass', () => {
+        expect(true).toBeDefined();
+        expect(true).toBeDefined();
+        expect(true).toBeDefined();
+      });
+      test('should pass', () => {
+        expect(true).toBeDefined();
+        expect(true).toBeDefined();
+        expect(true).toBeDefined();
+      });
+    `,
     {
       code: dedent`
         test('should pass', () => {
@@ -140,6 +172,78 @@ ruleTester.run('max-expects', rule, {
     {
       code: dedent`
         it('should not pass', async () => {
+          expect(true).toBeDefined();
+          expect(true).toBeDefined();
+          expect(true).toBeDefined();
+          expect(true).toBeDefined();
+          expect(true).toBeDefined();
+          expect(true).toBeDefined();
+        });
+      `,
+      errors: [
+        {
+          messageId: 'exceededMaxAssertion',
+          line: 7,
+          column: 3,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        test('should not pass', () => {
+          expect(true).toBeDefined();
+          expect(true).toBeDefined();
+          expect(true).toBeDefined();
+          expect(true).toBeDefined();
+          expect(true).toBeDefined();
+          expect(true).toBeDefined();
+        });
+        test('should not pass', () => {
+          expect(true).toBeDefined();
+          expect(true).toBeDefined();
+          expect(true).toBeDefined();
+          expect(true).toBeDefined();
+          expect(true).toBeDefined();
+          expect(true).toBeDefined();
+        });
+      `,
+      errors: [
+        {
+          messageId: 'exceededMaxAssertion',
+          line: 7,
+          column: 3,
+        },
+        {
+          messageId: 'exceededMaxAssertion',
+          line: 15,
+          column: 3,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        describe('test', () => {
+          test('should not pass', () => {
+            expect(true).toBeDefined();
+            expect(true).toBeDefined();
+            expect(true).toBeDefined();
+            expect(true).toBeDefined();
+            expect(true).toBeDefined();
+            expect(true).toBeDefined();
+          });
+        });
+      `,
+      errors: [
+        {
+          messageId: 'exceededMaxAssertion',
+          line: 8,
+          column: 5,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        test.each(['should', 'not', 'pass'], () => {
           expect(true).toBeDefined();
           expect(true).toBeDefined();
           expect(true).toBeDefined();
