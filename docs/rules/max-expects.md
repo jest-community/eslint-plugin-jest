@@ -1,4 +1,4 @@
-# Enforces a maximum number of assertion calls in a test (`max-expects`)
+# Enforces a maximum number assertion calls in a test body (`max-expects`)
 
 As more assertions are made, there is a possible tendency for the test to be
 more likely to mix multiple objectives. To avoid this, this rule reports when

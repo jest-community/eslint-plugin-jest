@@ -11,7 +11,7 @@ export default createRule({
   meta: {
     docs: {
       category: 'Best Practices',
-      description: 'Enforces a maximum assertion calls in a test body',
+      description: 'Enforces a maximum number assertion calls in a test body',
       recommended: false,
     },
     messages: {
