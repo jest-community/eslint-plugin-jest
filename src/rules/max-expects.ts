@@ -55,9 +55,9 @@ export default createRule({
         if (isExpectCall(node)) {
           count += 1;
         }
-        if (count > max && node.parent) {
+        if (count > max && node) {
           context.report({
-            node: node.parent,
+            node,
             messageId: 'exceededMaxAssertion',
             data: { count, max },
           });
