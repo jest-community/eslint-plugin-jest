@@ -1,3 +1,10 @@
+# [26.6.0](https://github.com/jest-community/eslint-plugin-jest/compare/v26.5.3...v26.6.0) (2022-07-14)
+
+
+### Features
+
+* create `max-expects` rule ([#1166](https://github.com/jest-community/eslint-plugin-jest/issues/1166)) ([5b6fd20](https://github.com/jest-community/eslint-plugin-jest/commit/5b6fd20b37baee87779c9aef856f747e55e0f467))
+
 ## [26.5.3](https://github.com/jest-community/eslint-plugin-jest/compare/v26.5.2...v26.5.3) (2022-06-06)
 
 
