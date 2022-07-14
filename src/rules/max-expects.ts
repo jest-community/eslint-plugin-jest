@@ -51,27 +51,10 @@ export default createRule({
         return;
       }
     };
-    const onFunctionExpressionExit = (node: FunctionExpression) => {
-      if (!node?.parent) {
-        return;
-      }
-
-      const isTestFn =
-        node.parent.type !== AST_NODE_TYPES.CallExpression ||
-        isTypeOfJestFnCall(node.parent, context, ['test']);
-
-      if (isTestFn) {
-        count = count - 1;
-
-        return;
-      }
-    };
 
     return {
       FunctionExpression: onFunctionExpressionEnter,
-      'FunctionExpression:exit': onFunctionExpressionExit,
       ArrowFunctionExpression: onFunctionExpressionEnter,
-      'ArrowFunctionExpression:exit': onFunctionExpressionExit,
       CallExpression(node) {
         if (isExpectCall(node)) {
           count += 1;
