@@ -232,6 +232,7 @@ installations requiring long-term consistency.
 | [prefer-hooks-in-order](docs/rules/prefer-hooks-in-order.md)                 | Prefer having hooks in a consistent order                           |                  |              |
 | [prefer-hooks-on-top](docs/rules/prefer-hooks-on-top.md)                     | Suggest having hooks before any test cases                          |                  |              |
 | [prefer-lowercase-title](docs/rules/prefer-lowercase-title.md)               | Enforce lowercase test names                                        |                  | ![fixable][] |
+| [prefer-mock-promise-shorthand](docs/rules/prefer-mock-promise-shorthand.md) | Prefer mock resolved/rejected shorthands for promises               |                  | ![fixable][] |
 | [prefer-snapshot-hint](docs/rules/prefer-snapshot-hint.md)                   | Prefer including a hint with external snapshots                     |                  |              |
 | [prefer-spy-on](docs/rules/prefer-spy-on.md)                                 | Suggest using `jest.spyOn()`                                        |                  | ![fixable][] |
 | [prefer-strict-equal](docs/rules/prefer-strict-equal.md)                     | Suggest using `toStrictEqual()`                                     |                  | ![suggest][] |
