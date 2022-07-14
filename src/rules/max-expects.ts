@@ -37,12 +37,8 @@ export default createRule({
     let count = 0;
 
     const onFunctionExpressionEnter = (node: FunctionExpression) => {
-      if (!node?.parent) {
-        return;
-      }
-
       const isTestFn =
-        node.parent.type !== AST_NODE_TYPES.CallExpression ||
+        node.parent?.type !== AST_NODE_TYPES.CallExpression ||
         isTypeOfJestFnCall(node.parent, context, ['test']);
 
       if (isTestFn) {
