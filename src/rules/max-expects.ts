@@ -43,8 +43,6 @@ export default createRule({
 
       if (isTestFn) {
         count = 0;
-
-        return;
       }
     };
 
