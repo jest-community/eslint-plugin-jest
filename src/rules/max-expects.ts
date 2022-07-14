@@ -58,7 +58,7 @@ export default createRule({
 
         count += 1;
 
-        if (count > max && node) {
+        if (count > max) {
           context.report({
             node,
             messageId: 'exceededMaxAssertion',
