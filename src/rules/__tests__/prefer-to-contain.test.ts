@@ -1,10 +1,19 @@
 import { TSESLint } from '@typescript-eslint/utils';
 import rule from '../prefer-to-contain';
+import { espreeParser } from './test-utils';
 
-const ruleTester = new TSESLint.RuleTester();
+const ruleTester = new TSESLint.RuleTester({
+  parser: espreeParser,
+  parserOptions: {
+    ecmaVersion: 2015,
+  },
+});
 
 ruleTester.run('prefer-to-contain', rule, {
   valid: [
+    'expect.hasAssertions',
+    'expect.hasAssertions()',
+    'expect.assertions(1)',
     'expect().toBe(false);',
     'expect(a).toContain(b);',
     "expect(a.name).toBe('b');",
@@ -24,6 +33,8 @@ ruleTester.run('prefer-to-contain', rule, {
     `expect(a.test(b)).resolves.toEqual(true)`,
     `expect(a.test(b)).resolves.not.toEqual(true)`,
     `expect(a).not.toContain(b)`,
+    'expect(a.includes(...[])).toBe(true)',
+    'expect(a.includes(b)).toBe(...true)',
     'expect(a);',
   ],
   invalid: [

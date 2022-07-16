@@ -1,9 +1,8 @@
 import {
   EqualityMatcher,
   createRule,
-  isExpectCall,
-  isParsedEqualityMatcherCall,
-  parseExpectCall,
+  isSupportedAccessor,
+  parseJestFnCall,
   replaceAccessorFixer,
 } from './utils';
 
@@ -28,26 +27,25 @@ export default createRule({
   create(context) {
     return {
       CallExpression(node) {
-        if (!isExpectCall(node)) {
+        const jestFnCall = parseJestFnCall(node, context);
+
+        if (jestFnCall?.type !== 'expect') {
           return;
         }
 
-        const { matcher } = parseExpectCall(node);
+        const matcher = jestFnCall.members[jestFnCall.members.length - 1];
 
-        if (
-          matcher &&
-          isParsedEqualityMatcherCall(matcher, EqualityMatcher.toEqual)
-        ) {
+        if (matcher && isSupportedAccessor(matcher, 'toEqual')) {
           context.report({
             messageId: 'useToStrictEqual',
-            node: matcher.node.property,
+            node: matcher,
             suggest: [
               {
                 messageId: 'suggestReplaceWithStrictEqual',
                 fix: fixer => [
                   replaceAccessorFixer(
                     fixer,
-                    matcher.node.property,
+                    matcher,
                     EqualityMatcher.toStrictEqual,
                   ),
                 ],

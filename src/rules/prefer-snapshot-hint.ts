@@ -1,35 +1,35 @@
 import {
-  ParsedExpectMatcher,
+  ParsedExpectFnCall,
   createRule,
-  isExpectCall,
+  getAccessorValue,
   isStringNode,
+  isSupportedAccessor,
   isTypeOfJestFnCall,
-  parseExpectCall,
+  parseJestFnCall,
 } from './utils';
 
 const snapshotMatchers = ['toMatchSnapshot', 'toThrowErrorMatchingSnapshot'];
+const snapshotMatcherNames = snapshotMatchers;
 
-const isSnapshotMatcher = (matcher: ParsedExpectMatcher) => {
-  return snapshotMatchers.includes(matcher.name);
-};
-
-const isSnapshotMatcherWithoutHint = (matcher: ParsedExpectMatcher) => {
-  if (!matcher.arguments || matcher.arguments.length === 0) {
+const isSnapshotMatcherWithoutHint = (expectFnCall: ParsedExpectFnCall) => {
+  if (!expectFnCall.args || expectFnCall.args.length === 0) {
     return true;
   }
 
+  const matcher = expectFnCall.members[expectFnCall.members.length - 1];
+
   // this matcher only supports one argument which is the hint
-  if (matcher.name !== 'toMatchSnapshot') {
-    return matcher.arguments.length !== 1;
+  if (!isSupportedAccessor(matcher, 'toMatchSnapshot')) {
+    return expectFnCall.args.length !== 1;
   }
 
   // if we're being passed two arguments,
   // the second one should be the hint
-  if (matcher.arguments.length === 2) {
+  if (expectFnCall.args.length === 2) {
     return false;
   }
 
-  const [arg] = matcher.arguments;
+  const [arg] = expectFnCall.args;
 
   // the first argument to `toMatchSnapshot` can be _either_ a snapshot hint or
   // an object with asymmetric matchers, so we can't just assume that the first
@@ -60,16 +60,19 @@ export default createRule<[('always' | 'multi')?], keyof typeof messages>({
   },
   defaultOptions: ['multi'],
   create(context, [mode]) {
-    const snapshotMatchers: ParsedExpectMatcher[] = [];
+    const snapshotMatchers: ParsedExpectFnCall[] = [];
     const depths: number[] = [];
     let expressionDepth = 0;
 
     const reportSnapshotMatchersWithoutHints = () => {
       for (const snapshotMatcher of snapshotMatchers) {
         if (isSnapshotMatcherWithoutHint(snapshotMatcher)) {
+          const matcher =
+            snapshotMatcher.members[snapshotMatcher.members.length - 1];
+
           context.report({
             messageId: 'missingHint',
-            node: snapshotMatcher.node.property,
+            node: matcher,
           });
         }
       }
@@ -112,22 +115,27 @@ export default createRule<[('always' | 'multi')?], keyof typeof messages>({
         }
       },
       CallExpression(node) {
-        if (isTypeOfJestFnCall(node, context, ['describe', 'test'])) {
-          depths.push(expressionDepth);
-          expressionDepth = 0;
-        }
+        const jestFnCall = parseJestFnCall(node, context);
 
-        if (!isExpectCall(node)) {
+        if (jestFnCall?.type !== 'expect') {
+          if (jestFnCall?.type === 'describe' || jestFnCall?.type === 'test') {
+            depths.push(expressionDepth);
+            expressionDepth = 0;
+          }
+
           return;
         }
 
-        const { matcher } = parseExpectCall(node);
+        const matcher = jestFnCall.members[jestFnCall.members.length - 1];
 
-        if (!matcher || !isSnapshotMatcher(matcher)) {
+        if (
+          !matcher ||
+          !snapshotMatcherNames.includes(getAccessorValue(matcher))
+        ) {
           return;
         }
 
-        snapshotMatchers.push(matcher);
+        snapshotMatchers.push(jestFnCall);
       },
     };
   },

@@ -1,18 +1,16 @@
 import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/utils';
 import {
   CallExpressionWithSingleArgument,
+  EqualityMatcher,
   KnownCallExpression,
-  MaybeTypeCast,
   ModifierName,
-  ParsedEqualityMatcherCall,
-  ParsedExpectMatcher,
+  ParsedExpectFnCall,
   createRule,
   followTypeAssertionChain,
+  getAccessorValue,
   hasOnlyOneArgument,
-  isExpectCall,
-  isParsedEqualityMatcherCall,
   isSupportedAccessor,
-  parseExpectCall,
+  parseJestFnCall,
 } from './utils';
 
 const isBooleanLiteral = (
@@ -20,27 +18,15 @@ const isBooleanLiteral = (
 ): node is TSESTree.BooleanLiteral =>
   node.type === AST_NODE_TYPES.Literal && typeof node.value === 'boolean';
 
-type ParsedBooleanEqualityMatcherCall = ParsedEqualityMatcherCall<
-  MaybeTypeCast<TSESTree.BooleanLiteral>
->;
+const getFirstMatcherArg = (expectFnCall: ParsedExpectFnCall) => {
+  const [firstArg] = expectFnCall.args;
 
-/**
- * Checks if the given `ParsedExpectMatcher` is a call to one of the equality matchers,
- * with a boolean literal as the sole argument.
- *
- * @example javascript
- * toBe(true);
- * toEqual(false);
- *
- * @param {ParsedExpectMatcher} matcher
- *
- * @return {matcher is ParsedBooleanEqualityMatcher}
- */
-const isBooleanEqualityMatcher = (
-  matcher: ParsedExpectMatcher,
-): matcher is ParsedBooleanEqualityMatcherCall =>
-  isParsedEqualityMatcherCall(matcher) &&
-  isBooleanLiteral(followTypeAssertionChain(matcher.arguments[0]));
+  if (firstArg.type === AST_NODE_TYPES.SpreadElement) {
+    return firstArg;
+  }
+
+  return followTypeAssertionChain(firstArg);
+};
 
 type FixableIncludesCallExpression = KnownCallExpression<'includes'> &
   CallExpressionWithSingleArgument;
@@ -59,7 +45,8 @@ const isFixableIncludesCallExpression = (
   node.type === AST_NODE_TYPES.CallExpression &&
   node.callee.type === AST_NODE_TYPES.MemberExpression &&
   isSupportedAccessor(node.callee.property, 'includes') &&
-  hasOnlyOneArgument(node);
+  hasOnlyOneArgument(node) &&
+  node.arguments[0].type !== AST_NODE_TYPES.SpreadElement;
 
 // expect(array.includes(<value>)[not.]{toBe,toEqual}(<boolean>)
 export default createRule({
@@ -81,28 +68,43 @@ export default createRule({
   create(context) {
     return {
       CallExpression(node) {
-        if (!isExpectCall(node)) {
+        const jestFnCall = parseJestFnCall(node, context);
+
+        if (jestFnCall?.type !== 'expect' || jestFnCall.args.length === 0) {
+          return;
+        }
+
+        const { parent: expect } = jestFnCall.head.node;
+
+        if (expect?.type !== AST_NODE_TYPES.CallExpression) {
           return;
         }
 
         const {
-          expect: {
-            arguments: [includesCall],
-            range: [, expectCallEnd],
-          },
-          matcher,
-          modifier,
-        } = parseExpectCall(node);
+          arguments: [includesCall],
+          range: [, expectCallEnd],
+        } = expect;
+
+        const matcher = jestFnCall.members[jestFnCall.members.length - 1];
+        const arg = getFirstMatcherArg(jestFnCall);
 
         if (
           !matcher ||
           !includesCall ||
-          (modifier && modifier.name !== ModifierName.not) ||
-          !isBooleanEqualityMatcher(matcher) ||
+          arg.type === AST_NODE_TYPES.SpreadElement ||
+          jestFnCall.members
+            .slice(0, -1)
+            .some(nod => getAccessorValue(nod) !== 'not') ||
+          !EqualityMatcher.hasOwnProperty(getAccessorValue(matcher)) ||
+          !isBooleanLiteral(arg) ||
           !isFixableIncludesCallExpression(includesCall)
         ) {
           return;
         }
+
+        const hasNot = jestFnCall.members.some(
+          nod => getAccessorValue(nod) === 'not',
+        );
 
         context.report({
           fix(fixer) {
@@ -110,9 +112,7 @@ export default createRule({
 
             // we need to negate the expectation if the current expected
             // value is itself negated by the "not" modifier
-            const addNotModifier =
-              followTypeAssertionChain(matcher.arguments[0]).value ===
-              !!modifier;
+            const addNotModifier = arg.value === hasNot;
 
             return [
               // remove the "includes" call entirely
@@ -122,20 +122,20 @@ export default createRule({
               ]),
               // replace the current matcher with "toContain", adding "not" if needed
               fixer.replaceTextRange(
-                [expectCallEnd, matcher.node.range[1]],
+                [expectCallEnd, matcher.parent.range[1]],
                 addNotModifier
                   ? `.${ModifierName.not}.toContain`
                   : '.toContain',
               ),
               // replace the matcher argument with the value from the "includes"
               fixer.replaceText(
-                matcher.arguments[0],
+                jestFnCall.args[0],
                 sourceCode.getText(includesCall.arguments[0]),
               ),
             ];
           },
           messageId: 'useToContain',
-          node: matcher.node.property,
+          node: matcher,
         });
       },
     };

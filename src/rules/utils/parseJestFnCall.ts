@@ -3,6 +3,7 @@ import {
   AccessorNode,
   DescribeAlias,
   HookName,
+  KnownMemberExpression,
   ModifierName,
   TestCaseName,
   getAccessorValue,
@@ -84,14 +85,14 @@ interface BaseParsedJestFnCall {
   name: string;
   type: JestFnType;
   head: ResolvedJestFnWithNode;
-  members: AccessorNode[];
+  members: KnownMemberExpressionProperty[];
 }
 
 interface ParsedGeneralJestFnCall extends BaseParsedJestFnCall {
   type: Exclude<JestFnType, 'expect'>;
 }
 
-interface ParsedExpectFnCall extends BaseParsedJestFnCall {
+export interface ParsedExpectFnCall extends BaseParsedJestFnCall {
   type: 'expect';
   args: TSESTree.CallExpression['arguments'];
 }
@@ -254,7 +255,9 @@ export const parseJestFnCallWithReason = (
   const parsedJestFnCall: Omit<ParsedJestFnCall, 'type'> = {
     name,
     head: { ...resolved, node: first },
-    members: rest,
+    // every member node must have a member expression as their parent
+    // in order to be part of the call chain we're parsing
+    members: rest as KnownMemberExpressionProperty[],
   };
 
   const type = determineJestFnType(name);
@@ -368,16 +371,19 @@ export const parseJestFnCallWithReason = (
   return { ...parsedJestFnCall, type };
 };
 
+type KnownMemberExpressionProperty<Specifics extends string = string> =
+  AccessorNode<Specifics> & { parent: KnownMemberExpression<Specifics> };
+
 interface ModifiersAndMatcher {
-  modifiers: AccessorNode[];
-  matcher: AccessorNode;
+  modifiers: KnownMemberExpressionProperty[];
+  matcher: KnownMemberExpressionProperty;
   matcherArgs: TSESTree.CallExpression['arguments'];
 }
 
 const findModifiersAndMatcher = (
-  members: AccessorNode[],
+  members: KnownMemberExpressionProperty[],
 ): ModifiersAndMatcher | string => {
-  const modifiers: AccessorNode[] = [];
+  const modifiers: KnownMemberExpressionProperty[] = [];
 
   if (members.length === 0) {
     return 'matcher-not-found';

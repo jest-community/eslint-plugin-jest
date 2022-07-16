@@ -1,10 +1,5 @@
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import {
-  FunctionExpression,
-  createRule,
-  isExpectCall,
-  isTypeOfJestFnCall,
-} from './utils';
+import { FunctionExpression, createRule, isTypeOfJestFnCall } from './utils';
 
 export default createRule({
   name: __filename,
@@ -50,7 +45,7 @@ export default createRule({
       FunctionExpression: onFunctionExpressionEnter,
       ArrowFunctionExpression: onFunctionExpressionEnter,
       CallExpression(node) {
-        if (!isExpectCall(node)) {
+        if (!isTypeOfJestFnCall(node, context, ['expect'])) {
           return;
         }
 

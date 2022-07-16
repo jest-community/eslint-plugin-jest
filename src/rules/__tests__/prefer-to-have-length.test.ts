@@ -11,6 +11,8 @@ const ruleTester = new TSESLint.RuleTester({
 
 ruleTester.run('prefer-to-have-length', rule, {
   valid: [
+    'expect.hasAssertions',
+    'expect.hasAssertions()',
     'expect(files).toHaveLength(1);',
     "expect(files.name).toBe('file');",
     "expect(files[`name`]).toBe('file');",

@@ -1,5 +1,5 @@
-import { TSESLint, TSESTree } from '@typescript-eslint/utils';
-import { createRule, isExpectCall, parseExpectCall } from './utils';
+import { AST_NODE_TYPES, TSESLint, TSESTree } from '@typescript-eslint/utils';
+import { createRule, getAccessorValue, parseJestFnCall } from './utils';
 
 const toThrowMatchers = [
   'toThrow',
@@ -8,18 +8,29 @@ const toThrowMatchers = [
   'toThrowErrorMatchingInlineSnapshot',
 ];
 
-const isJestExpectToThrowCall = (node: TSESTree.CallExpression) => {
-  if (!isExpectCall(node)) {
-    return false;
+const findTopMostCallExpression = (
+  node: TSESTree.CallExpression,
+): TSESTree.CallExpression => {
+  let topMostCallExpression = node;
+  let { parent } = node;
+
+  while (parent) {
+    if (parent.type === AST_NODE_TYPES.CallExpression) {
+      topMostCallExpression = parent;
+
+      parent = parent.parent;
+
+      continue;
+    }
+
+    if (parent.type !== AST_NODE_TYPES.MemberExpression) {
+      break;
+    }
+
+    parent = parent.parent;
   }
 
-  const { matcher } = parseExpectCall(node);
-
-  if (!matcher) {
-    return false;
-  }
-
-  return !toThrowMatchers.includes(matcher.name);
+  return topMostCallExpression;
 };
 
 const baseRule = (() => {
@@ -92,21 +103,22 @@ export default createRule<Options, MessageIds>({
       return {};
     }
 
-    let inExpectToThrowCall = false;
-
     return {
       ...baseSelectors,
-      CallExpression(node: TSESTree.CallExpression): void {
-        inExpectToThrowCall = isJestExpectToThrowCall(node);
-      },
-      'CallExpression:exit'(node: TSESTree.CallExpression): void {
-        if (inExpectToThrowCall && isJestExpectToThrowCall(node)) {
-          inExpectToThrowCall = false;
-        }
-      },
       MemberExpression(node: TSESTree.MemberExpression): void {
-        if (inExpectToThrowCall) {
-          return;
+        if (node.parent?.type === AST_NODE_TYPES.CallExpression) {
+          const jestFnCall = parseJestFnCall(
+            findTopMostCallExpression(node.parent),
+            context,
+          );
+
+          if (jestFnCall?.type === 'expect' && jestFnCall.members.length > 0) {
+            const matcher = jestFnCall.members[jestFnCall.members.length - 1];
+
+            if (!toThrowMatchers.includes(getAccessorValue(matcher))) {
+              return;
+            }
+          }
         }
 
         baseSelectors.MemberExpression?.(node);

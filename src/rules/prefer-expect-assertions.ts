@@ -4,7 +4,6 @@ import {
   createRule,
   getAccessorValue,
   hasOnlyOneArgument,
-  isExpectCall,
   isFunction,
   isSupportedAccessor,
   isTypeOfJestFnCall,
@@ -163,7 +162,7 @@ export default createRule<[RuleOptions], MessageIds>({
           return;
         }
 
-        if (isExpectCall(node) && inTestCaseCall) {
+        if (isTypeOfJestFnCall(node, context, ['expect']) && inTestCaseCall) {
           if (inForLoop) {
             hasExpectInLoop = true;
           }
