@@ -2,8 +2,7 @@
 
 The `jest` object is automatically in scope within every test file. The methods
 in the `jest` object help create mocks and let you control Jest's overall
-behavior. It is therefore usually unnecessary to import in `jest`, as Jest
-doesn't export anything in the first place.
+behavior. It is therefore usually unnecessary to import in `jest`.
 
 ### Rule details
 
