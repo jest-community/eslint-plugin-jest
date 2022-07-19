@@ -11,7 +11,7 @@ export default createRule({
       recommended: 'error',
     },
     messages: {
-      unexpectedImport: `Jest is automatically in scope. Do not import "jest", as Jest doesn't export anything.`,
+      unexpectedImport: `Do not import "jest". Jest is automatically in scope within every test file.`,
     },
     schema: [],
   },
