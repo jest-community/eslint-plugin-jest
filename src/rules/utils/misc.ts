@@ -90,6 +90,18 @@ export enum HookName {
   'afterEach' = 'afterEach',
 }
 
+export enum ModifierName {
+  not = 'not',
+  rejects = 'rejects',
+  resolves = 'resolves',
+}
+
+export enum EqualityMatcher {
+  toBe = 'toBe',
+  toEqual = 'toEqual',
+  toStrictEqual = 'toStrictEqual',
+}
+
 const joinNames = (a: string | null, b: string | null): string | null =>
   a && b ? `${a}.${b}` : null;
 

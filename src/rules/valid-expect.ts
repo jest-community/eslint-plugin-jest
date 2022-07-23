@@ -8,7 +8,6 @@ import {
   ModifierName,
   createRule,
   getAccessorValue,
-  isExpectMember,
   isSupportedAccessor,
   parseJestFnCallWithReason,
 } from './utils';
@@ -55,7 +54,8 @@ const getParentIfThenified = (node: TSESTree.Node): TSESTree.Node => {
   if (
     grandParentNode &&
     grandParentNode.type === AST_NODE_TYPES.CallExpression &&
-    isExpectMember(grandParentNode.callee) &&
+    grandParentNode.callee.type === AST_NODE_TYPES.MemberExpression &&
+    isSupportedAccessor(grandParentNode.callee.property) &&
     ['then', 'catch'].includes(
       getAccessorValue(grandParentNode.callee.property),
     ) &&

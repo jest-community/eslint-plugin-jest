@@ -3,7 +3,7 @@ import { AST_NODE_TYPES, TSESLint, TSESTree } from '@typescript-eslint/utils';
 import {
   createRule,
   getAccessorValue,
-  isExpectMember,
+  isSupportedAccessor,
   parseJestFnCall,
 } from './utils';
 
@@ -39,7 +39,8 @@ const reportOnViolation = (
   if (
     node.type === AST_NODE_TYPES.ExpressionStatement &&
     'left' in node.expression &&
-    isExpectMember(node.expression.left)
+    node.expression.left.type === AST_NODE_TYPES.MemberExpression &&
+    isSupportedAccessor(node.expression.left.property)
   ) {
     const fileName = context.getFilename();
     const allowedSnapshotsInFile = allowedSnapshots[fileName];
