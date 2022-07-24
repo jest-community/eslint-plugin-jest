@@ -5,6 +5,7 @@ import {
   getNodeName,
   isFunction,
   isTypeOfJestFnCall,
+  parseJestFnCall,
 } from './utils';
 
 const getBlockType = (
@@ -83,13 +84,11 @@ export default createRule<
     ): boolean =>
       additionalTestBlockFunctions.includes(getNodeName(node) || '');
 
-    const isTestBlock = (node: TSESTree.CallExpression): boolean =>
-      isTypeOfJestFnCall(node, context, ['test']) ||
-      isCustomTestBlockFunction(node);
-
     return {
       CallExpression(node) {
-        if (isTypeOfJestFnCall(node, context, ['expect'])) {
+        const { type: jestFnCallType } = parseJestFnCall(node, context) ?? {};
+
+        if (jestFnCallType === 'expect') {
           const parent = callStack[callStack.length - 1];
 
           if (!parent || parent === DescribeAlias.describe) {
@@ -99,7 +98,7 @@ export default createRule<
           return;
         }
 
-        if (isTestBlock(node)) {
+        if (jestFnCallType === 'test' || isCustomTestBlockFunction(node)) {
           callStack.push('test');
         }
 
@@ -112,7 +111,8 @@ export default createRule<
 
         if (
           (top === 'test' &&
-            isTestBlock(node) &&
+            (isTypeOfJestFnCall(node, context, ['test']) ||
+              isCustomTestBlockFunction(node)) &&
             node.callee.type !== AST_NODE_TYPES.MemberExpression) ||
           (top === 'template' &&
             node.callee.type === AST_NODE_TYPES.TaggedTemplateExpression)
