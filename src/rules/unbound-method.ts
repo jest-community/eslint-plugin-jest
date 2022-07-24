@@ -1,5 +1,10 @@
 import { AST_NODE_TYPES, TSESLint, TSESTree } from '@typescript-eslint/utils';
-import { createRule, getAccessorValue, parseJestFnCall } from './utils';
+import {
+  createRule,
+  findTopMostCallExpression,
+  getAccessorValue,
+  parseJestFnCall,
+} from './utils';
 
 const toThrowMatchers = [
   'toThrow',
@@ -7,31 +12,6 @@ const toThrowMatchers = [
   'toThrowErrorMatchingSnapshot',
   'toThrowErrorMatchingInlineSnapshot',
 ];
-
-const findTopMostCallExpression = (
-  node: TSESTree.CallExpression,
-): TSESTree.CallExpression => {
-  let topMostCallExpression = node;
-  let { parent } = node;
-
-  while (parent) {
-    if (parent.type === AST_NODE_TYPES.CallExpression) {
-      topMostCallExpression = parent;
-
-      parent = parent.parent;
-
-      continue;
-    }
-
-    if (parent.type !== AST_NODE_TYPES.MemberExpression) {
-      break;
-    }
-
-    parent = parent.parent;
-  }
-
-  return topMostCallExpression;
-};
 
 const baseRule = (() => {
   try {
