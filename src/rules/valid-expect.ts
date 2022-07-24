@@ -246,33 +246,6 @@ export default createRule<[Options], MessageIds>({
 
             return;
           }
-          // if (!matcher) {
-          //   if (modifier) {
-          //     context.report({
-          //       messageId: 'matcherNotFound',
-          //       node: modifier.node.property,
-          //     });
-          //   }
-          //
-          //   return;
-          // }
-          //
-          // if (isExpectMember(matcher.node.parent)) {
-          //   context.report({
-          //     messageId: 'modifierUnknown',
-          //     data: { modifierName: matcher.name },
-          //     node: matcher.node.property,
-          //   });
-          //
-          //   return;
-          // }
-          //
-          // if (!matcher.arguments) {
-          //   context.report({
-          //     messageId: 'matcherNotCalled',
-          //     node: matcher.node.property,
-          //   });
-          // }
 
           return;
         } else if (jestFnCall?.type !== 'expect') {
@@ -326,36 +299,6 @@ export default createRule<[Options], MessageIds>({
             loc,
           });
         }
-
-        // something was called on `expect()`
-
-        // if (!matcher) {
-        //   if (modifier) {
-        //     context.report({
-        //       messageId: 'matcherNotFound',
-        //       node: modifier.node.property,
-        //     });
-        //   }
-        //
-        //   return;
-        // }
-        //
-        // if (isExpectMember(matcher.node.parent)) {
-        //   context.report({
-        //     messageId: 'modifierUnknown',
-        //     data: { modifierName: matcher.name },
-        //     node: matcher.node.property,
-        //   });
-        //
-        //   return;
-        // }
-        //
-        // if (!matcher.arguments) {
-        //   context.report({
-        //     messageId: 'matcherNotCalled',
-        //     node: matcher.node.property,
-        //   });
-        // }
 
         const matcher = jestFnCall.members[jestFnCall.members.length - 1];
 

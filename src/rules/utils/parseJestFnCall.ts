@@ -197,16 +197,6 @@ export const parseJestFnCallWithReason = (
   node: TSESTree.CallExpression,
   context: TSESLint.RuleContext<string, unknown[]>,
 ): ParsedJestFnCall | string | null => {
-  // ensure that we're at the "top" of the function call chain otherwise when
-  // parsing e.g. x().y.z(), we'll incorrectly find & parse "x()" even though
-  // the full chain is not a valid jest function call chain
-  // if (
-  //   node.parent?.type === AST_NODE_TYPES.CallExpression ||
-  //   node.parent?.type === AST_NODE_TYPES.MemberExpression
-  // ) {
-  //   return null;
-  // }
-
   const chain = getNodeChain(node);
 
   if (!chain?.length) {
@@ -263,58 +253,17 @@ export const parseJestFnCallWithReason = (
 
   const type = determineJestFnType(name);
 
-  // if (
-  //   node.parent?.type === AST_NODE_TYPES.CallExpression
-  //   // node.parent?.type === AST_NODE_TYPES.MemberExpression
-  // ) {
-  //   return null;
-  // }
-
   if (type === 'expect') {
-    // const findTopMostMemberExpression = (
-    //   node: TSESTree.MemberExpression,
-    // ): TSESTree.MemberExpression => {
-    //   let topMostMemberExpression = node;
-    //   let { parent } = node;
-    //
-    //   while (parent) {
-    //     if (parent.type !== AST_NODE_TYPES.MemberExpression) {
-    //       break;
-    //     }
-    //
-    //     topMostMemberExpression = parent;
-    //     parent = parent.parent;
-    //   }
-    //
-    //   return topMostMemberExpression;
-    // };
     const result = parseJestExpectCall(parsedJestFnCall);
 
-    const topMost = findTopMostCallExpression(node);
-
-    // if (topMost !== node) {
-    //   return null;
-    // }
-
-    // console.log(
-    //   typeof result,
-    //   'topmost',
-    //   topMost === node,
-    //   parsedJestFnCall.members.length,
-    // );
-    if (typeof result === 'string' && topMost !== node) {
+    // if the `expect` call chain is not valid, only report on the topmost node
+    // since all members in the chain are likely to get flagged for some reason
+    if (
+      typeof result === 'string' &&
+      findTopMostCallExpression(node) !== node
+    ) {
       return null;
     }
-    // console.log(result);
-
-    // if (typeof result !== 'string') {
-    //   if (
-    //     node.parent?.type === AST_NODE_TYPES.CallExpression ||
-    //     node.parent?.type === AST_NODE_TYPES.MemberExpression
-    //   ) {
-    //     return null;
-    //   }
-    // }
 
     if (result === 'matcher-not-found') {
       if (node.parent?.type === AST_NODE_TYPES.MemberExpression) {
@@ -361,10 +310,6 @@ const findModifiersAndMatcher = (
 ): ModifiersAndMatcher | string => {
   const modifiers: KnownMemberExpressionProperty[] = [];
 
-  if (members.length === 0) {
-    return 'matcher-not-found';
-  }
-
   for (const member of members) {
     // check if the member is being called, which means it is the matcher
     // (and also the end of the entire "expect" call chain)
@@ -377,7 +322,6 @@ const findModifiersAndMatcher = (
         matcherArgs: member.parent.parent.arguments,
         modifiers,
       };
-      // return 'matcher-not-called';
     }
 
     // otherwise, it should be a modifier
@@ -410,7 +354,8 @@ const findModifiersAndMatcher = (
     modifiers.push(member);
   }
 
-  return 'matcher-not-called';
+  // this will only really happen if there are no members
+  return 'matcher-not-found';
 };
 
 const parseJestExpectCall = (
