@@ -181,6 +181,8 @@ const resolvePossibleAliasedGlobal = (
   return null;
 };
 
+const parseJestFnCallCache = new WeakMap();
+
 export const parseJestFnCall = (
   node: TSESTree.CallExpression,
   context: TSESLint.RuleContext<string, unknown[]>,
@@ -195,6 +197,21 @@ export const parseJestFnCall = (
 };
 
 export const parseJestFnCallWithReason = (
+  node: TSESTree.CallExpression,
+  context: TSESLint.RuleContext<string, unknown[]>,
+): ParsedJestFnCall | string | null => {
+  if (parseJestFnCallCache.has(node)) {
+    return parseJestFnCallCache.get(node);
+  }
+
+  const parsedJestFnCall = parseJestFnCallWithReasonInner(node, context);
+
+  parseJestFnCallCache.set(node, parsedJestFnCall);
+
+  return parsedJestFnCall;
+};
+
+const parseJestFnCallWithReasonInner = (
   node: TSESTree.CallExpression,
   context: TSESLint.RuleContext<string, unknown[]>,
 ): ParsedJestFnCall | string | null => {
