@@ -4,8 +4,8 @@ import {
   EqualityMatcher,
   ParsedExpectFnCall,
   createRule,
-  followTypeAssertionChain,
   getAccessorValue,
+  getFirstMatcherArg,
   isIdentifier,
   parseJestFnCall,
   replaceAccessorFixer,
@@ -36,16 +36,6 @@ const shouldUseToBe = (expectFnCall: ParsedExpectFnCall): boolean => {
   }
 
   return firstArg.type === AST_NODE_TYPES.TemplateLiteral;
-};
-
-const getFirstMatcherArg = (expectFnCall: ParsedExpectFnCall) => {
-  const [firstArg] = expectFnCall.args;
-
-  if (firstArg.type === AST_NODE_TYPES.SpreadElement) {
-    return firstArg;
-  }
-
-  return followTypeAssertionChain(firstArg);
 };
 
 type MessageId =

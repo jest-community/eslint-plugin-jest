@@ -1,28 +1,13 @@
 import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/utils';
 import {
   EqualityMatcher,
-  ParsedExpectFnCall,
   createRule,
-  followTypeAssertionChain,
   getAccessorValue,
+  getFirstMatcherArg,
+  isBooleanLiteral,
   isStringNode,
   parseJestFnCall,
 } from './utils';
-
-const isBooleanLiteral = (
-  node: TSESTree.Node,
-): node is TSESTree.BooleanLiteral =>
-  node.type === AST_NODE_TYPES.Literal && typeof node.value === 'boolean';
-
-const getFirstMatcherArg = (expectFnCall: ParsedExpectFnCall) => {
-  const [firstArg] = expectFnCall.args;
-
-  if (firstArg.type === AST_NODE_TYPES.SpreadElement) {
-    return firstArg;
-  }
-
-  return followTypeAssertionChain(firstArg);
-};
 
 const isString = (node: TSESTree.Node) => {
   return isStringNode(node) || node.type === AST_NODE_TYPES.TemplateLiteral;

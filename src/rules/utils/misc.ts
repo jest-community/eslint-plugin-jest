@@ -11,7 +11,8 @@ import {
   getAccessorValue,
   isSupportedAccessor,
 } from './accessors';
-import { isTypeOfJestFnCall } from './parseJestFnCall';
+import { followTypeAssertionChain } from './followTypeAssertionChain';
+import { ParsedExpectFnCall, isTypeOfJestFnCall } from './parseJestFnCall';
 
 const REPO_URL = 'https://github.com/jest-community/eslint-plugin-jest';
 
@@ -190,4 +191,21 @@ export const findTopMostCallExpression = (
   }
 
   return topMostCallExpression;
+};
+
+export const isBooleanLiteral = (
+  node: TSESTree.Node,
+): node is TSESTree.BooleanLiteral =>
+  node.type === AST_NODE_TYPES.Literal && typeof node.value === 'boolean';
+
+export const getFirstMatcherArg = (
+  expectFnCall: ParsedExpectFnCall,
+): TSESTree.SpreadElement | TSESTree.Expression => {
+  const [firstArg] = expectFnCall.args;
+
+  if (firstArg.type === AST_NODE_TYPES.SpreadElement) {
+    return firstArg;
+  }
+
+  return followTypeAssertionChain(firstArg);
 };
