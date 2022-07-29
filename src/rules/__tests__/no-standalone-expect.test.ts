@@ -154,5 +154,14 @@ ruleTester.run('no-standalone-expect', rule, {
       code: 'describe.each([1, true])("trues", value => { expect(value).toBe(true); });',
       errors: [{ endColumn: 70, column: 46, messageId: 'unexpectedExpect' }],
     },
+    {
+      code: dedent`
+        import { expect as pleaseExpect } from '@jest/globals';
+
+        describe("a test", () => { pleaseExpect(1).toBe(1); });
+      `,
+      parserOptions: { sourceType: 'module' },
+      errors: [{ endColumn: 51, column: 28, messageId: 'unexpectedExpect' }],
+    },
   ],
 });

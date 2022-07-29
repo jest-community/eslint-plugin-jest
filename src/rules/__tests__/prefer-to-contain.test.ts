@@ -1,4 +1,5 @@
 import { TSESLint } from '@typescript-eslint/utils';
+import dedent from 'dedent';
 import rule from '../prefer-to-contain';
 import { espreeParser } from './test-utils';
 
@@ -187,6 +188,20 @@ ruleTester.run('prefer-to-contain', rule, {
       code: 'expect([{a:1}].includes({a:1})).not.toStrictEqual(false);',
       output: 'expect([{a:1}]).toContain({a:1});',
       errors: [{ messageId: 'useToContain', column: 37, line: 1 }],
+    },
+    {
+      code: dedent`
+        import { expect as pleaseExpect } from '@jest/globals';
+
+        pleaseExpect([{a:1}].includes({a:1})).not.toStrictEqual(false);
+      `,
+      output: dedent`
+        import { expect as pleaseExpect } from '@jest/globals';
+
+        pleaseExpect([{a:1}]).toContain({a:1});
+      `,
+      parserOptions: { sourceType: 'module' },
+      errors: [{ messageId: 'useToContain', column: 43, line: 3 }],
     },
   ],
 });

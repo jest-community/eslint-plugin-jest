@@ -62,5 +62,27 @@ ruleTester.run('prefer-expect-resolves', rule, {
       `,
       errors: [{ endColumn: 25, column: 10, messageId: 'expectResolves' }],
     },
+    {
+      code: dedent`
+        import { expect as pleaseExpect } from '@jest/globals';
+
+        it('is true', async () => {
+          const myPromise = Promise.resolve(true);
+
+          pleaseExpect(await myPromise).toBe(true);
+        });
+      `,
+      output: dedent`
+        import { expect as pleaseExpect } from '@jest/globals';
+
+        it('is true', async () => {
+          const myPromise = Promise.resolve(true);
+
+          await pleaseExpect(myPromise).resolves.toBe(true);
+        });
+      `,
+      parserOptions: { sourceType: 'module' },
+      errors: [{ endColumn: 31, column: 16, messageId: 'expectResolves' }],
+    },
   ],
 });
