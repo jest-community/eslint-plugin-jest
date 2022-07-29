@@ -5,7 +5,6 @@ const globals = require('./src/globals.json');
 module.exports = {
   parser: require.resolve('@typescript-eslint/parser'),
   extends: [
-    'plugin:eslint-config/rc',
     'plugin:eslint-plugin/recommended',
     'plugin:eslint-comments/recommended',
     'plugin:node/recommended',
@@ -13,7 +12,6 @@ module.exports = {
     'plugin:prettier/recommended',
   ],
   plugins: [
-    'eslint-config',
     'eslint-plugin',
     'eslint-comments',
     'node',
