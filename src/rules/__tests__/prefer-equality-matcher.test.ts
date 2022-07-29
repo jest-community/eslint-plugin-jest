@@ -97,7 +97,7 @@ ruleTester.run('prefer-equality-matcher: ===', rule, {
           suggestions: expectSuggestions(
             equalityMatcher => `expect(a).not.${equalityMatcher}(b);`,
           ),
-          column: 17,
+          column: 21,
           line: 1,
         },
       ],
@@ -110,7 +110,7 @@ ruleTester.run('prefer-equality-matcher: ===', rule, {
           suggestions: expectSuggestions(
             equalityMatcher => `expect(a).${equalityMatcher}(b);`,
           ),
-          column: 17,
+          column: 21,
           line: 1,
         },
       ],
@@ -123,7 +123,7 @@ ruleTester.run('prefer-equality-matcher: ===', rule, {
           suggestions: expectSuggestions(
             equalityMatcher => `expect(a).resolves.not.${equalityMatcher}(b);`,
           ),
-          column: 26,
+          column: 30,
           line: 1,
         },
       ],
@@ -136,7 +136,7 @@ ruleTester.run('prefer-equality-matcher: ===', rule, {
           suggestions: expectSuggestions(
             equalityMatcher => `expect(a).resolves.${equalityMatcher}(b);`,
           ),
-          column: 26,
+          column: 30,
           line: 1,
         },
       ],
@@ -149,7 +149,7 @@ ruleTester.run('prefer-equality-matcher: ===', rule, {
           suggestions: expectSuggestions(
             equalityMatcher => `expect(a).resolves.${equalityMatcher}(b);`,
           ),
-          column: 29,
+          column: 33,
           line: 1,
         },
       ],
@@ -162,7 +162,7 @@ ruleTester.run('prefer-equality-matcher: ===', rule, {
           suggestions: expectSuggestions(
             equalityMatcher => `expect(a).resolves.${equalityMatcher}(b);`,
           ),
-          column: 29,
+          column: 36,
           line: 1,
         },
       ],
@@ -237,7 +237,7 @@ ruleTester.run('prefer-equality-matcher: !==', rule, {
           suggestions: expectSuggestions(
             equalityMatcher => `expect(a).${equalityMatcher}(b);`,
           ),
-          column: 17,
+          column: 21,
           line: 1,
         },
       ],
@@ -250,7 +250,7 @@ ruleTester.run('prefer-equality-matcher: !==', rule, {
           suggestions: expectSuggestions(
             equalityMatcher => `expect(a).not.${equalityMatcher}(b);`,
           ),
-          column: 17,
+          column: 21,
           line: 1,
         },
       ],
@@ -263,7 +263,7 @@ ruleTester.run('prefer-equality-matcher: !==', rule, {
           suggestions: expectSuggestions(
             equalityMatcher => `expect(a).resolves.${equalityMatcher}(b);`,
           ),
-          column: 26,
+          column: 30,
           line: 1,
         },
       ],
@@ -276,7 +276,7 @@ ruleTester.run('prefer-equality-matcher: !==', rule, {
           suggestions: expectSuggestions(
             equalityMatcher => `expect(a).resolves.not.${equalityMatcher}(b);`,
           ),
-          column: 26,
+          column: 30,
           line: 1,
         },
       ],

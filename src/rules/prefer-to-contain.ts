@@ -135,7 +135,7 @@ export default createRule({
             ];
           },
           messageId: 'useToContain',
-          node: (modifier || matcher).node.property,
+          node: matcher.node.property,
         });
       },
     };

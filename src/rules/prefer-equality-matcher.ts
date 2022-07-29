@@ -140,7 +140,7 @@ export default createRule({
               fix: buildFixer(equalityMatcher),
             }),
           ),
-          node: (negation || matcher).node.property,
+          node: matcher.node.property,
         });
       },
     };

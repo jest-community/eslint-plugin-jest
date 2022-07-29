@@ -95,7 +95,7 @@ const generateInvalidCases = (
         {
           messageId: 'useToBeComparison',
           data: { preferredMatcher: preferredMatcherWhenNegated },
-          column: 18 + operator.length,
+          column: 22 + operator.length,
           line: 1,
         },
       ],
@@ -107,7 +107,7 @@ const generateInvalidCases = (
         {
           messageId: 'useToBeComparison',
           data: { preferredMatcher: preferredMatcherWhenNegated },
-          column: 18 + operator.length,
+          column: 25 + operator.length,
           line: 1,
         },
       ],
@@ -119,7 +119,7 @@ const generateInvalidCases = (
         {
           messageId: 'useToBeComparison',
           data: { preferredMatcher: preferredMatcherWhenNegated },
-          column: 27 + operator.length,
+          column: 31 + operator.length,
           line: 1,
         },
       ],
@@ -131,7 +131,7 @@ const generateInvalidCases = (
         {
           messageId: 'useToBeComparison',
           data: { preferredMatcher },
-          column: 18 + operator.length,
+          column: 22 + operator.length,
           line: 1,
         },
       ],
@@ -143,7 +143,7 @@ const generateInvalidCases = (
         {
           messageId: 'useToBeComparison',
           data: { preferredMatcher },
-          column: 27 + operator.length,
+          column: 31 + operator.length,
           line: 1,
         },
       ],
@@ -155,7 +155,7 @@ const generateInvalidCases = (
         {
           messageId: 'useToBeComparison',
           data: { preferredMatcher },
-          column: 30 + operator.length,
+          column: 34 + operator.length,
           line: 1,
         },
       ],
@@ -167,7 +167,7 @@ const generateInvalidCases = (
         {
           messageId: 'useToBeComparison',
           data: { preferredMatcher },
-          column: 30 + operator.length,
+          column: 37 + operator.length,
           line: 1,
         },
       ],
@@ -179,7 +179,7 @@ const generateInvalidCases = (
         {
           messageId: 'useToBeComparison',
           data: { preferredMatcher },
-          column: 30 + operator.length,
+          column: 37 + operator.length,
           line: 1,
         },
       ],
