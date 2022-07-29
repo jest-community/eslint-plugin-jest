@@ -33,8 +33,7 @@ const getPromiseCallExpressionNode = (node: TSESTree.Node) => {
   if (
     node.type === AST_NODE_TYPES.CallExpression &&
     node.callee.type === AST_NODE_TYPES.MemberExpression &&
-    isSupportedAccessor(node.callee.object) &&
-    getAccessorValue(node.callee.object) === 'Promise' &&
+    isSupportedAccessor(node.callee.object, 'Promise') &&
     node.parent
   ) {
     return node;
