@@ -118,13 +118,11 @@ export default createRule<[RuleOptions], MessageId>({
           return;
         }
 
-        const matcher = jestFnCall.members[jestFnCall.members.length - 1];
-
         if (
           [
             'toMatchInlineSnapshot',
             'toThrowErrorMatchingInlineSnapshot',
-          ].includes(getAccessorValue(matcher)) &&
+          ].includes(getAccessorValue(jestFnCall.matcher)) &&
           jestFnCall.args.length
         ) {
           reportOnViolation(context, jestFnCall.args[0], {

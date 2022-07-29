@@ -12,14 +12,12 @@ const snapshotMatchers = ['toMatchSnapshot', 'toThrowErrorMatchingSnapshot'];
 const snapshotMatcherNames = snapshotMatchers;
 
 const isSnapshotMatcherWithoutHint = (expectFnCall: ParsedExpectFnCall) => {
-  if (!expectFnCall.args || expectFnCall.args.length === 0) {
+  if (expectFnCall.args.length === 0) {
     return true;
   }
 
-  const matcher = expectFnCall.members[expectFnCall.members.length - 1];
-
   // this matcher only supports one argument which is the hint
-  if (!isSupportedAccessor(matcher, 'toMatchSnapshot')) {
+  if (!isSupportedAccessor(expectFnCall.matcher, 'toMatchSnapshot')) {
     return expectFnCall.args.length !== 1;
   }
 
@@ -67,12 +65,9 @@ export default createRule<[('always' | 'multi')?], keyof typeof messages>({
     const reportSnapshotMatchersWithoutHints = () => {
       for (const snapshotMatcher of snapshotMatchers) {
         if (isSnapshotMatcherWithoutHint(snapshotMatcher)) {
-          const matcher =
-            snapshotMatcher.members[snapshotMatcher.members.length - 1];
-
           context.report({
             messageId: 'missingHint',
-            node: matcher,
+            node: snapshotMatcher.matcher,
           });
         }
       }
@@ -126,12 +121,9 @@ export default createRule<[('always' | 'multi')?], keyof typeof messages>({
           return;
         }
 
-        const matcher = jestFnCall.members[jestFnCall.members.length - 1];
+        const matcherName = getAccessorValue(jestFnCall.matcher);
 
-        if (
-          !matcher ||
-          !snapshotMatcherNames.includes(getAccessorValue(matcher))
-        ) {
+        if (!snapshotMatcherNames.includes(matcherName)) {
           return;
         }
 

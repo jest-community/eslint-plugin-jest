@@ -53,12 +53,12 @@ const reportPreferToBe = (
   expectFnCall: ParsedExpectFnCall,
   modifierNode?: AccessorNode,
 ) => {
-  const matcher = expectFnCall.members[expectFnCall.members.length - 1];
-
   context.report({
     messageId: `useToBe${whatToBe}`,
     fix(fixer) {
-      const fixes = [replaceAccessorFixer(fixer, matcher, `toBe${whatToBe}`)];
+      const fixes = [
+        replaceAccessorFixer(fixer, expectFnCall.matcher, `toBe${whatToBe}`),
+      ];
 
       if (expectFnCall.args?.length && whatToBe !== '') {
         fixes.push(fixer.remove(expectFnCall.args[0]));
@@ -72,7 +72,7 @@ const reportPreferToBe = (
 
       return fixes;
     },
-    node: matcher,
+    node: expectFnCall.matcher,
   });
 };
 
@@ -105,10 +105,8 @@ export default createRule({
           return;
         }
 
-        const matcher = jestFnCall.members[jestFnCall.members.length - 1];
-
-        const matcherName = getAccessorValue(matcher);
-        const notModifier = jestFnCall.members.find(
+        const matcherName = getAccessorValue(jestFnCall.matcher);
+        const notModifier = jestFnCall.modifiers.find(
           nod => getAccessorValue(nod) === 'not',
         );
 

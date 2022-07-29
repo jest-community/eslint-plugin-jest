@@ -24,18 +24,18 @@ export default createRule({
           return;
         }
 
-        const matcher = jestFnCall.members[jestFnCall.members.length - 1];
+        const { matcher } = jestFnCall;
+        const matcherName = getAccessorValue(matcher);
 
         if (
-          matcher &&
           jestFnCall.args.length === 0 &&
-          ['toThrow', 'toThrowError'].includes(getAccessorValue(matcher)) &&
-          !jestFnCall.members.some(nod => getAccessorValue(nod) === 'not')
+          ['toThrow', 'toThrowError'].includes(matcherName) &&
+          !jestFnCall.modifiers.some(nod => getAccessorValue(nod) === 'not')
         ) {
           // Look for `toThrow` calls with no arguments.
           context.report({
             messageId: 'addErrorMessage',
-            data: { matcherName: getAccessorValue(matcher) },
+            data: { matcherName },
             node: matcher,
           });
         }

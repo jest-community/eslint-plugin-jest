@@ -93,9 +93,10 @@ interface ParsedGeneralJestFnCall extends BaseParsedJestFnCall {
   type: Exclude<JestFnType, 'expect'>;
 }
 
-export interface ParsedExpectFnCall extends BaseParsedJestFnCall {
+export interface ParsedExpectFnCall
+  extends BaseParsedJestFnCall,
+    ModifiersAndMatcher {
   type: 'expect';
-  args: TSESTree.CallExpression['arguments'];
 }
 
 export type ParsedJestFnCall = ParsedGeneralJestFnCall | ParsedExpectFnCall;
@@ -302,7 +303,8 @@ type KnownMemberExpressionProperty<Specifics extends string = string> =
 interface ModifiersAndMatcher {
   modifiers: KnownMemberExpressionProperty[];
   matcher: KnownMemberExpressionProperty;
-  matcherArgs: TSESTree.CallExpression['arguments'];
+  /** The arguments that are being passed to the `matcher` */
+  args: TSESTree.CallExpression['arguments'];
 }
 
 const findModifiersAndMatcher = (
@@ -319,7 +321,7 @@ const findModifiersAndMatcher = (
     ) {
       return {
         matcher: member,
-        matcherArgs: member.parent.parent.arguments,
+        args: member.parent.parent.arguments,
         modifiers,
       };
     }
@@ -372,7 +374,7 @@ const parseJestExpectCall = (
   return {
     ...typelessParsedJestFnCall,
     type: 'expect',
-    args: modifiersAndMatcher.matcherArgs,
+    ...modifiersAndMatcher,
   };
 };
 

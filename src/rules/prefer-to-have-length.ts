@@ -39,10 +39,9 @@ export default createRule({
         }
 
         const [argument] = expect.arguments;
-        const matcher = jestFnCall.members[jestFnCall.members.length - 1];
+        const { matcher } = jestFnCall;
 
         if (
-          !matcher ||
           !EqualityMatcher.hasOwnProperty(getAccessorValue(matcher)) ||
           argument?.type !== AST_NODE_TYPES.MemberExpression ||
           !isSupportedAccessor(argument.property, 'length')

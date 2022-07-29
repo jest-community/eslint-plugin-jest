@@ -300,13 +300,11 @@ export default createRule<[Options], MessageIds>({
           });
         }
 
-        const matcher = jestFnCall.members[jestFnCall.members.length - 1];
+        const { matcher } = jestFnCall;
 
-        const parentNode = matcher.parent?.parent;
+        const parentNode = matcher.parent.parent;
         const shouldBeAwaited =
-          jestFnCall.members
-            .slice(0, -1)
-            .some(nod => getAccessorValue(nod) !== 'not') ||
+          jestFnCall.modifiers.some(nod => getAccessorValue(nod) !== 'not') ||
           asyncMatchers.includes(getAccessorValue(matcher));
 
         if (!parentNode?.parent || !shouldBeAwaited) {
@@ -337,9 +335,7 @@ export default createRule<[Options], MessageIds>({
         ) {
           context.report({
             loc: finalNode.loc,
-            data: {
-              orReturned,
-            },
+            data: { orReturned },
             messageId:
               finalNode === targetNode
                 ? 'asyncMustBeAwaited'

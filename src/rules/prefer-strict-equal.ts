@@ -33,9 +33,9 @@ export default createRule({
           return;
         }
 
-        const matcher = jestFnCall.members[jestFnCall.members.length - 1];
+        const { matcher } = jestFnCall;
 
-        if (matcher && isSupportedAccessor(matcher, 'toEqual')) {
+        if (isSupportedAccessor(matcher, 'toEqual')) {
           context.report({
             messageId: 'useToStrictEqual',
             node: matcher,

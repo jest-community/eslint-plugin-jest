@@ -25,13 +25,11 @@ export default createRule({
           return;
         }
 
-        const matcher = jestFnCall.members[jestFnCall.members.length - 1];
-
         if (
           [
             'toMatchInlineSnapshot',
             'toThrowErrorMatchingInlineSnapshot',
-          ].includes(getAccessorValue(matcher))
+          ].includes(getAccessorValue(jestFnCall.matcher))
         ) {
           // Check all since the optional 'propertyMatchers' argument might be present
           jestFnCall.args.forEach(argument => {

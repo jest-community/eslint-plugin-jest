@@ -92,8 +92,8 @@ export default createRule<Options, MessageIds>({
             context,
           );
 
-          if (jestFnCall?.type === 'expect' && jestFnCall.members.length > 0) {
-            const matcher = jestFnCall.members[jestFnCall.members.length - 1];
+          if (jestFnCall?.type === 'expect') {
+            const { matcher } = jestFnCall;
 
             if (!toThrowMatchers.includes(getAccessorValue(matcher))) {
               return;

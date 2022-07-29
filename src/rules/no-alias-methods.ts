@@ -45,11 +45,7 @@ export default createRule({
           return;
         }
 
-        const matcher = jestFnCall.members[jestFnCall.members.length - 1];
-
-        // if (!matcher) {
-        //   return;
-        // }
+        const { matcher } = jestFnCall;
 
         const alias = getAccessorValue(matcher);
 
@@ -58,10 +54,7 @@ export default createRule({
 
           context.report({
             messageId: 'replaceAlias',
-            data: {
-              alias,
-              canonical,
-            },
+            data: { alias, canonical },
             node: matcher,
             fix: fixer => [replaceAccessorFixer(fixer, matcher, canonical)],
           });

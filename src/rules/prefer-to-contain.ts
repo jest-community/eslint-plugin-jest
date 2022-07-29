@@ -70,24 +70,20 @@ export default createRule({
           range: [, expectCallEnd],
         } = expect;
 
-        const matcher = jestFnCall.members[jestFnCall.members.length - 1];
-        const arg = getFirstMatcherArg(jestFnCall);
+        const { matcher } = jestFnCall;
+        const matcherArg = getFirstMatcherArg(jestFnCall);
 
         if (
-          !matcher ||
           !includesCall ||
-          arg.type === AST_NODE_TYPES.SpreadElement ||
-          jestFnCall.members
-            .slice(0, -1)
-            .some(nod => getAccessorValue(nod) !== 'not') ||
+          matcherArg.type === AST_NODE_TYPES.SpreadElement ||
           !EqualityMatcher.hasOwnProperty(getAccessorValue(matcher)) ||
-          !isBooleanLiteral(arg) ||
+          !isBooleanLiteral(matcherArg) ||
           !isFixableIncludesCallExpression(includesCall)
         ) {
           return;
         }
 
-        const hasNot = jestFnCall.members.some(
+        const hasNot = jestFnCall.modifiers.some(
           nod => getAccessorValue(nod) === 'not',
         );
 
@@ -97,7 +93,7 @@ export default createRule({
 
             // we need to negate the expectation if the current expected
             // value is itself negated by the "not" modifier
-            const addNotModifier = arg.value === hasNot;
+            const addNotModifier = matcherArg.value === hasNot;
 
             return [
               // remove the "includes" call entirely

@@ -25,15 +25,11 @@ export default createRule({
           return;
         }
 
-        const matcher = jestFnCall.members[jestFnCall.members.length - 1];
-
-        if (
-          !matcher ||
-          jestFnCall.members.some(nod => getAccessorValue(nod) === 'not')
-        ) {
+        if (jestFnCall.modifiers.some(nod => getAccessorValue(nod) === 'not')) {
           return;
         }
 
+        const { matcher } = jestFnCall;
         const matcherName = getAccessorValue(matcher);
 
         if (['toBeCalled', 'toHaveBeenCalled'].includes(matcherName)) {

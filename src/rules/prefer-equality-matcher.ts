@@ -47,11 +47,10 @@ export default createRule({
           range: [, expectCallEnd],
         } = expect;
 
-        const matcher = jestFnCall.members[jestFnCall.members.length - 1];
+        const { matcher } = jestFnCall;
         const matcherArg = getFirstMatcherArg(jestFnCall);
 
         if (
-          !matcher ||
           comparison?.type !== AST_NODE_TYPES.BinaryExpression ||
           (comparison.operator !== '===' && comparison.operator !== '!==') ||
           !EqualityMatcher.hasOwnProperty(getAccessorValue(matcher)) ||
@@ -62,8 +61,8 @@ export default createRule({
 
         const matcherValue = matcherArg.value;
 
-        const [modifier] = jestFnCall.members;
-        const hasNot = jestFnCall.members.some(
+        const [modifier] = jestFnCall.modifiers;
+        const hasNot = jestFnCall.modifiers.some(
           nod => getAccessorValue(nod) === 'not',
         );
 
@@ -80,7 +79,7 @@ export default createRule({
 
             // preserve the existing modifier if it's not a negation
             let modifierText =
-              modifier !== matcher && getAccessorValue(modifier) !== 'not'
+              modifier && getAccessorValue(modifier) !== 'not'
                 ? `.${getAccessorValue(modifier)}`
                 : '';
 
