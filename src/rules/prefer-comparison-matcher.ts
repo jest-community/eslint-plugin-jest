@@ -168,7 +168,7 @@ export default createRule({
           },
           messageId: 'useToBeComparison',
           data: { preferredMatcher },
-          node: (negation || matcher).node.property,
+          node: matcher.node.property,
         });
       },
     };
