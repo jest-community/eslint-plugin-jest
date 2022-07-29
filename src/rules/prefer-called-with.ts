@@ -15,7 +15,7 @@ export default createRule({
       recommended: false,
     },
     messages: {
-      preferCalledWith: 'Prefer {{name}}With(/* expected args */)',
+      preferCalledWith: 'Prefer {{ matcherName }}With(/* expected args */)',
     },
     type: 'suggestion',
     schema: [],
@@ -40,7 +40,7 @@ export default createRule({
 
         if (['toBeCalled', 'toHaveBeenCalled'].includes(matcher.name)) {
           context.report({
-            data: { name: matcher.name },
+            data: { matcherName: matcher.name },
             messageId: 'preferCalledWith',
             node: matcher.node.property,
           });
