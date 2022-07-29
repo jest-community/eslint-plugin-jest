@@ -1,3 +1,10 @@
+# [26.7.0](https://github.com/jest-community/eslint-plugin-jest/compare/v26.6.0...v26.7.0) (2022-07-29)
+
+
+### Features
+
+* create `prefer-mock-promise-shorthand` rule ([#1167](https://github.com/jest-community/eslint-plugin-jest/issues/1167)) ([d965592](https://github.com/jest-community/eslint-plugin-jest/commit/d965592bef6e120358b43fbc0a741bd5b516dae9))
+
 # [26.6.0](https://github.com/jest-community/eslint-plugin-jest/compare/v26.5.3...v26.6.0) (2022-07-14)
 
 
