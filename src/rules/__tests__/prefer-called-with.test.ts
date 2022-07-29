@@ -26,7 +26,7 @@ ruleTester.run('prefer-called-with', rule, {
       errors: [
         {
           messageId: 'preferCalledWith',
-          data: { name: 'toBeCalled' },
+          data: { matcherName: 'toBeCalled' },
           column: 12,
           line: 1,
         },
@@ -37,7 +37,7 @@ ruleTester.run('prefer-called-with', rule, {
       errors: [
         {
           messageId: 'preferCalledWith',
-          data: { name: 'toBeCalled' },
+          data: { matcherName: 'toBeCalled' },
           column: 21,
           line: 1,
         },
@@ -48,7 +48,7 @@ ruleTester.run('prefer-called-with', rule, {
       errors: [
         {
           messageId: 'preferCalledWith',
-          data: { name: 'toHaveBeenCalled' },
+          data: { matcherName: 'toHaveBeenCalled' },
           column: 12,
           line: 1,
         },
