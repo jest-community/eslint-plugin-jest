@@ -21,16 +21,16 @@
   ],
   "scripts": {
     "build": "babel --extensions .js,.ts src --out-dir lib --copy-files && rimraf lib/__tests__ 'lib/**/__tests__'",
+    "postinstall": "is-ci || husky install",
     "lint": "eslint . --ignore-pattern '!.eslintrc.js' --ext js,ts",
     "prepack": "rimraf lib && yarn build",
+    "prepublishOnly": "pinst --disable",
     "prettier:check": "prettier --check 'docs/**/*.md' README.md '.github/**' package.json tsconfig.json src/globals.json .yarnrc.yml",
     "prettier:write": "prettier --write 'docs/**/*.md' README.md '.github/**' package.json tsconfig.json src/globals.json .yarnrc.yml",
+    "postpublish": "pinst --enable",
     "test": "jest",
     "tools:regenerate-docs": "ts-node -T tools/regenerate-docs",
-    "typecheck": "tsc -p .",
-    "postinstall": "is-ci || husky install",
-    "prepublishOnly": "pinst --disable",
-    "postpublish": "pinst --enable"
+    "typecheck": "tsc -p ."
   },
   "commitlint": {
     "extends": [
@@ -47,6 +47,23 @@
     "proseWrap": "always",
     "singleQuote": true,
     "trailingComma": "all"
+  },
+  "release": {
+    "branches": [
+      "main",
+      {
+        "name": "next",
+        "prerelease": true
+      }
+    ],
+    "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/release-notes-generator",
+      "@semantic-release/changelog",
+      "@semantic-release/npm",
+      "@semantic-release/git",
+      "@semantic-release/github"
+    ]
   },
   "jest": {
     "coverageThreshold": {
@@ -134,25 +151,8 @@
       "optional": true
     }
   },
+  "packageManager": "yarn@3.2.2",
   "engines": {
     "node": "^12.22.0 || ^14.17.0 || >=16.0.0"
-  },
-  "release": {
-    "branches": [
-      "main",
-      {
-        "name": "next",
-        "prerelease": true
-      }
-    ],
-    "plugins": [
-      "@semantic-release/commit-analyzer",
-      "@semantic-release/release-notes-generator",
-      "@semantic-release/changelog",
-      "@semantic-release/npm",
-      "@semantic-release/git",
-      "@semantic-release/github"
-    ]
-  },
-  "packageManager": "yarn@3.2.2"
+  }
 }
