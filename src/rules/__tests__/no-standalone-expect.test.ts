@@ -59,11 +59,11 @@ ruleTester.run('no-standalone-expect', rule, {
   invalid: [
     {
       code: "(() => {})('testing', () => expect(true).toBe(false))",
-      errors: [{ column: 29, messageId: 'unexpectedExpect' }],
+      errors: [{ endColumn: 53, column: 29, messageId: 'unexpectedExpect' }],
     },
     {
       code: 'expect.hasAssertions()',
-      errors: [{ column: 1, messageId: 'unexpectedExpect' }],
+      errors: [{ endColumn: 23, column: 1, messageId: 'unexpectedExpect' }],
     },
     {
       code: dedent`
