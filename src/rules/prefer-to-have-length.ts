@@ -1,10 +1,10 @@
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import {
+  EqualityMatcher,
   createRule,
-  isExpectCall,
-  isParsedEqualityMatcherCall,
+  getAccessorValue,
   isSupportedAccessor,
-  parseExpectCall,
+  parseJestFnCall,
 } from './utils';
 
 export default createRule({
@@ -26,20 +26,23 @@ export default createRule({
   create(context) {
     return {
       CallExpression(node) {
-        if (!isExpectCall(node)) {
+        const jestFnCall = parseJestFnCall(node, context);
+
+        if (jestFnCall?.type !== 'expect') {
           return;
         }
 
-        const {
-          expect: {
-            arguments: [argument],
-          },
-          matcher,
-        } = parseExpectCall(node);
+        const { parent: expect } = jestFnCall.head.node;
+
+        if (expect?.type !== AST_NODE_TYPES.CallExpression) {
+          return;
+        }
+
+        const [argument] = expect.arguments;
+        const { matcher } = jestFnCall;
 
         if (
-          !matcher ||
-          !isParsedEqualityMatcherCall(matcher) ||
+          !EqualityMatcher.hasOwnProperty(getAccessorValue(matcher)) ||
           argument?.type !== AST_NODE_TYPES.MemberExpression ||
           !isSupportedAccessor(argument.property, 'length')
         ) {
@@ -56,13 +59,13 @@ export default createRule({
               ]),
               // replace the current matcher with "toHaveLength"
               fixer.replaceTextRange(
-                [matcher.node.object.range[1], matcher.node.range[1]],
+                [matcher.parent.object.range[1], matcher.parent.range[1]],
                 '.toHaveLength',
               ),
             ];
           },
           messageId: 'useToHaveLength',
-          node: matcher.node.property,
+          node: matcher,
         });
       },
     };

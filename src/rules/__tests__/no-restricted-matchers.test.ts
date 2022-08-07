@@ -70,7 +70,7 @@ ruleTester.run('no-restricted-matchers', rule, {
       ],
     },
     {
-      code: 'expect(a).not',
+      code: 'expect(a).not[x]()',
       options: [{ not: null }],
       errors: [
         {
@@ -155,6 +155,22 @@ ruleTester.run('no-restricted-matchers', rule, {
             chain: 'resolves.not',
           },
           column: 11,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: 'expect(a).resolves.not.toBe(b)',
+      options: [{ 'not.toBe': null }],
+      errors: [
+        {
+          messageId: 'restrictedChain',
+          data: {
+            message: null,
+            chain: 'not.toBe',
+          },
+          endColumn: 28,
+          column: 20,
           line: 1,
         },
       ],

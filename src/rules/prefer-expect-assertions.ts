@@ -4,10 +4,10 @@ import {
   createRule,
   getAccessorValue,
   hasOnlyOneArgument,
-  isExpectCall,
   isFunction,
   isSupportedAccessor,
   isTypeOfJestFnCall,
+  parseJestFnCall,
 } from './utils';
 
 const isExpectAssertionsOrHasAssertionsCall = (
@@ -157,13 +157,15 @@ export default createRule<[RuleOptions], MessageIds>({
       ForOfStatement: enterForLoop,
       'ForOfStatement:exit': exitForLoop,
       CallExpression(node) {
-        if (isTypeOfJestFnCall(node, context, ['test'])) {
+        const jestFnCall = parseJestFnCall(node, context);
+
+        if (jestFnCall?.type === 'test') {
           inTestCaseCall = true;
 
           return;
         }
 
-        if (isExpectCall(node) && inTestCaseCall) {
+        if (jestFnCall?.type === 'expect' && inTestCaseCall) {
           if (inForLoop) {
             hasExpectInLoop = true;
           }

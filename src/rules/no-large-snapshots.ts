@@ -3,9 +3,8 @@ import { AST_NODE_TYPES, TSESLint, TSESTree } from '@typescript-eslint/utils';
 import {
   createRule,
   getAccessorValue,
-  isExpectCall,
-  isExpectMember,
-  parseExpectCall,
+  isSupportedAccessor,
+  parseJestFnCall,
 } from './utils';
 
 interface RuleOptions {
@@ -40,7 +39,8 @@ const reportOnViolation = (
   if (
     node.type === AST_NODE_TYPES.ExpressionStatement &&
     'left' in node.expression &&
-    isExpectMember(node.expression.left)
+    node.expression.left.type === AST_NODE_TYPES.MemberExpression &&
+    isSupportedAccessor(node.expression.left.property)
   ) {
     const fileName = context.getFilename();
     const allowedSnapshotsInFile = allowedSnapshots[fileName];
@@ -112,13 +112,9 @@ export default createRule<[RuleOptions], MessageId>({
 
     return {
       CallExpression(node) {
-        if (!isExpectCall(node)) {
-          return;
-        }
+        const jestFnCall = parseJestFnCall(node, context);
 
-        const { matcher } = parseExpectCall(node);
-
-        if (matcher?.node.parent.type !== AST_NODE_TYPES.CallExpression) {
+        if (jestFnCall?.type !== 'expect') {
           return;
         }
 
@@ -126,10 +122,10 @@ export default createRule<[RuleOptions], MessageId>({
           [
             'toMatchInlineSnapshot',
             'toThrowErrorMatchingInlineSnapshot',
-          ].includes(matcher.name) &&
-          matcher.arguments?.length
+          ].includes(getAccessorValue(jestFnCall.matcher)) &&
+          jestFnCall.args.length
         ) {
-          reportOnViolation(context, matcher.arguments[0], {
+          reportOnViolation(context, jestFnCall.args[0], {
             ...options,
             maxSize: options.inlineMaxSize ?? options.maxSize,
           });

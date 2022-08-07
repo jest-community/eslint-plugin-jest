@@ -1,9 +1,4 @@
-import {
-  ModifierName,
-  createRule,
-  isExpectCall,
-  parseExpectCall,
-} from './utils';
+import { createRule, getAccessorValue, parseJestFnCall } from './utils';
 
 export default createRule({
   name: __filename,
@@ -24,25 +19,24 @@ export default createRule({
   create(context) {
     return {
       CallExpression(node) {
-        if (!isExpectCall(node)) {
+        const jestFnCall = parseJestFnCall(node, context);
+
+        if (jestFnCall?.type !== 'expect') {
           return;
         }
 
-        const { modifier, matcher } = parseExpectCall(node);
-
-        if (
-          !matcher ||
-          modifier?.name === ModifierName.not ||
-          modifier?.negation
-        ) {
+        if (jestFnCall.modifiers.some(nod => getAccessorValue(nod) === 'not')) {
           return;
         }
 
-        if (['toBeCalled', 'toHaveBeenCalled'].includes(matcher.name)) {
+        const { matcher } = jestFnCall;
+        const matcherName = getAccessorValue(matcher);
+
+        if (['toBeCalled', 'toHaveBeenCalled'].includes(matcherName)) {
           context.report({
-            data: { matcherName: matcher.name },
+            data: { matcherName },
             messageId: 'preferCalledWith',
-            node: matcher.node.property,
+            node: matcher,
           });
         }
       },

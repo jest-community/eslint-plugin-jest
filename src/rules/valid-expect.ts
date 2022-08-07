@@ -8,10 +8,8 @@ import {
   ModifierName,
   createRule,
   getAccessorValue,
-  isExpectCall,
-  isExpectMember,
   isSupportedAccessor,
-  parseExpectCall,
+  parseJestFnCallWithReason,
 } from './utils';
 
 /**
@@ -56,7 +54,8 @@ const getParentIfThenified = (node: TSESTree.Node): TSESTree.Node => {
   if (
     grandParentNode &&
     grandParentNode.type === AST_NODE_TYPES.CallExpression &&
-    isExpectMember(grandParentNode.callee) &&
+    grandParentNode.callee.type === AST_NODE_TYPES.MemberExpression &&
+    isSupportedAccessor(grandParentNode.callee.property) &&
     ['then', 'catch'].includes(
       getAccessorValue(grandParentNode.callee.property),
     ) &&
@@ -91,12 +90,6 @@ const isAcceptableReturnNode = (
   ].includes(node.type);
 };
 
-const isNoAssertionsParentNode = (node: TSESTree.Node): boolean =>
-  node.type === AST_NODE_TYPES.ExpressionStatement ||
-  (node.type === AST_NODE_TYPES.AwaitExpression &&
-    node.parent !== undefined &&
-    node.parent.type === AST_NODE_TYPES.ExpressionStatement);
-
 const promiseArrayExceptionKey = ({ start, end }: TSESTree.SourceLocation) =>
   `${start.line}:${start.column}-${end.line}:${end.column}`;
 
@@ -129,7 +122,7 @@ export default createRule<[Options], MessageIds>({
     messages: {
       tooManyArgs: 'Expect takes at most {{ amount }} argument{{ s }}.',
       notEnoughArgs: 'Expect requires at least {{ amount }} argument{{ s }}.',
-      modifierUnknown: 'Expect has no modifier named "{{ modifierName }}".',
+      modifierUnknown: 'Expect has an unknown modifier.',
       matcherNotFound: 'Expect must have a corresponding matcher call.',
       matcherNotCalled: 'Matchers must be called to assert.',
       asyncMustBeAwaited: 'Async assertions must be awaited{{ orReturned }}.',
@@ -197,39 +190,99 @@ export default createRule<[Options], MessageIds>({
     const promiseArrayExceptionExists = (loc: TSESTree.SourceLocation) =>
       arrayExceptions.has(promiseArrayExceptionKey(loc));
 
+    const findTopMostMemberExpression = (
+      node: TSESTree.MemberExpression,
+    ): TSESTree.MemberExpression => {
+      let topMostMemberExpression = node;
+      let { parent } = node;
+
+      while (parent) {
+        if (parent.type !== AST_NODE_TYPES.MemberExpression) {
+          break;
+        }
+
+        topMostMemberExpression = parent;
+        parent = parent.parent;
+      }
+
+      return topMostMemberExpression;
+    };
+
     return {
       CallExpression(node) {
-        if (!isExpectCall(node)) {
+        const jestFnCall = parseJestFnCallWithReason(node, context);
+
+        if (typeof jestFnCall === 'string') {
+          const reportingNode =
+            node.parent?.type === AST_NODE_TYPES.MemberExpression
+              ? findTopMostMemberExpression(node.parent).property
+              : node;
+
+          if (jestFnCall === 'matcher-not-found') {
+            context.report({
+              messageId: 'matcherNotFound',
+              node: reportingNode,
+            });
+
+            return;
+          }
+
+          if (jestFnCall === 'matcher-not-called') {
+            context.report({
+              messageId:
+                isSupportedAccessor(reportingNode) &&
+                ModifierName.hasOwnProperty(getAccessorValue(reportingNode))
+                  ? 'matcherNotFound'
+                  : 'matcherNotCalled',
+              node: reportingNode,
+            });
+          }
+
+          if (jestFnCall === 'modifier-unknown') {
+            context.report({
+              messageId: 'modifierUnknown',
+              node: reportingNode,
+            });
+
+            return;
+          }
+
+          return;
+        } else if (jestFnCall?.type !== 'expect') {
           return;
         }
 
-        const { expect, modifier, matcher } = parseExpectCall(node);
+        const { parent: expect } = jestFnCall.head.node;
+
+        if (expect?.type !== AST_NODE_TYPES.CallExpression) {
+          return;
+        }
 
         if (expect.arguments.length < minArgs) {
-          const expectLength = getAccessorValue(expect.callee).length;
+          const expectLength = getAccessorValue(jestFnCall.head.node).length;
 
           const loc: TSESTree.SourceLocation = {
             start: {
-              column: node.loc.start.column + expectLength,
-              line: node.loc.start.line,
+              column: expect.loc.start.column + expectLength,
+              line: expect.loc.start.line,
             },
             end: {
-              column: node.loc.start.column + expectLength + 1,
-              line: node.loc.start.line,
+              column: expect.loc.start.column + expectLength + 1,
+              line: expect.loc.start.line,
             },
           };
 
           context.report({
             messageId: 'notEnoughArgs',
             data: { amount: minArgs, s: minArgs === 1 ? '' : 's' },
-            node,
+            node: expect,
             loc,
           });
         }
 
         if (expect.arguments.length > maxArgs) {
           const { start } = expect.arguments[maxArgs].loc;
-          const { end } = expect.arguments[node.arguments.length - 1].loc;
+          const { end } = expect.arguments[expect.arguments.length - 1].loc;
 
           const loc = {
             start,
@@ -242,46 +295,19 @@ export default createRule<[Options], MessageIds>({
           context.report({
             messageId: 'tooManyArgs',
             data: { amount: maxArgs, s: maxArgs === 1 ? '' : 's' },
-            node,
+            node: expect,
             loc,
           });
         }
 
-        // something was called on `expect()`
-        if (!matcher) {
-          if (modifier) {
-            context.report({
-              messageId: 'matcherNotFound',
-              node: modifier.node.property,
-            });
-          }
+        const { matcher } = jestFnCall;
 
-          return;
-        }
-
-        if (isExpectMember(matcher.node.parent)) {
-          context.report({
-            messageId: 'modifierUnknown',
-            data: { modifierName: matcher.name },
-            node: matcher.node.property,
-          });
-
-          return;
-        }
-
-        if (!matcher.arguments) {
-          context.report({
-            messageId: 'matcherNotCalled',
-            node: matcher.node.property,
-          });
-        }
-
-        const parentNode = matcher.node.parent;
+        const parentNode = matcher.parent.parent;
         const shouldBeAwaited =
-          (modifier && modifier.name !== ModifierName.not) ||
-          asyncMatchers.includes(matcher.name);
+          jestFnCall.modifiers.some(nod => getAccessorValue(nod) !== 'not') ||
+          asyncMatchers.includes(getAccessorValue(matcher));
 
-        if (!parentNode.parent || !shouldBeAwaited) {
+        if (!parentNode?.parent || !shouldBeAwaited) {
           return;
         }
         /**
@@ -309,9 +335,7 @@ export default createRule<[Options], MessageIds>({
         ) {
           context.report({
             loc: finalNode.loc,
-            data: {
-              orReturned,
-            },
+            data: { orReturned },
             messageId:
               finalNode === targetNode
                 ? 'asyncMustBeAwaited'
@@ -322,13 +346,6 @@ export default createRule<[Options], MessageIds>({
           if (isParentArrayExpression) {
             pushPromiseArrayException(finalNode.loc);
           }
-        }
-      },
-
-      // nothing called on "expect()"
-      'CallExpression:exit'(node: TSESTree.CallExpression) {
-        if (isExpectCall(node) && isNoAssertionsParentNode(node.parent)) {
-          context.report({ messageId: 'matcherNotFound', node });
         }
       },
     };

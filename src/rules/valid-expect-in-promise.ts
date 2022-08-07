@@ -3,14 +3,13 @@ import {
   KnownCallExpression,
   ModifierName,
   createRule,
+  findTopMostCallExpression,
   getAccessorValue,
   getNodeName,
-  isExpectCall,
   isFunction,
   isIdentifier,
   isSupportedAccessor,
   isTypeOfJestFnCall,
-  parseExpectCall,
   parseJestFnCall,
 } from './utils';
 
@@ -41,31 +40,6 @@ const isPromiseChainCall = (
   }
 
   return false;
-};
-
-const findTopMostCallExpression = (
-  node: TSESTree.CallExpression,
-): TSESTree.CallExpression => {
-  let topMostCallExpression = node;
-  let { parent } = node;
-
-  while (parent) {
-    if (parent.type === AST_NODE_TYPES.CallExpression) {
-      topMostCallExpression = parent;
-
-      parent = parent.parent;
-
-      continue;
-    }
-
-    if (parent.type !== AST_NODE_TYPES.MemberExpression) {
-      break;
-    }
-
-    parent = parent.parent;
-  }
-
-  return topMostCallExpression;
 };
 
 const isTestCaseCallWithCallbackArg = (
@@ -229,6 +203,7 @@ const getLeftMostCallExpression = (
 const isValueAwaitedOrReturned = (
   identifier: TSESTree.Identifier,
   body: TSESTree.Statement[],
+  context: TSESLint.RuleContext<string, unknown[]>,
 ): boolean => {
   const { name } = identifier;
 
@@ -251,17 +226,19 @@ const isValueAwaitedOrReturned = (
         }
 
         const leftMostCall = getLeftMostCallExpression(node.expression);
+        const jestFnCall = parseJestFnCall(node.expression, context);
 
         if (
-          isExpectCall(leftMostCall) &&
+          jestFnCall?.type === 'expect' &&
           leftMostCall.arguments.length > 0 &&
           isIdentifier(leftMostCall.arguments[0], name)
         ) {
-          const { modifier } = parseExpectCall(leftMostCall);
-
           if (
-            modifier?.name === ModifierName.resolves ||
-            modifier?.name === ModifierName.rejects
+            jestFnCall.members.some(m => {
+              const v = getAccessorValue(m);
+
+              return v === ModifierName.resolves || v === ModifierName.rejects;
+            })
           ) {
             return true;
           }
@@ -294,7 +271,7 @@ const isValueAwaitedOrReturned = (
 
     if (
       node.type === AST_NODE_TYPES.BlockStatement &&
-      isValueAwaitedOrReturned(identifier, node.body)
+      isValueAwaitedOrReturned(identifier, node.body, context)
     ) {
       return true;
     }
@@ -346,6 +323,7 @@ const isDirectlyWithinTestCaseCall = (
 
 const isVariableAwaitedOrReturned = (
   variable: TSESTree.VariableDeclarator,
+  context: TSESLint.RuleContext<string, unknown[]>,
 ): boolean => {
   const body = findFirstBlockBodyUp(variable);
 
@@ -355,7 +333,7 @@ const isVariableAwaitedOrReturned = (
     return true;
   }
 
-  return isValueAwaitedOrReturned(variable.id, body);
+  return isValueAwaitedOrReturned(variable.id, body, context);
 };
 
 export default createRule({
@@ -406,7 +384,10 @@ export default createRule({
 
         // if we're within a promise chain, and this call expression looks like
         // an expect call, mark the deepest chain as having an expect call
-        if (chains.length > 0 && isExpectCall(node)) {
+        if (
+          chains.length > 0 &&
+          isTypeOfJestFnCall(node, context, ['expect'])
+        ) {
           chains[0] = true;
         }
       },
@@ -448,7 +429,7 @@ export default createRule({
 
         switch (parent.type) {
           case AST_NODE_TYPES.VariableDeclarator: {
-            if (isVariableAwaitedOrReturned(parent)) {
+            if (isVariableAwaitedOrReturned(parent, context)) {
               return;
             }
 
@@ -461,6 +442,7 @@ export default createRule({
               isValueAwaitedOrReturned(
                 parent.left,
                 findFirstBlockBodyUp(parent),
+                context,
               )
             ) {
               return;

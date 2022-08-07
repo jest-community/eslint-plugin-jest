@@ -1,7 +1,7 @@
 import {
   createRule,
-  isExpectCall,
-  parseExpectCall,
+  getAccessorValue,
+  parseJestFnCall,
   replaceAccessorFixer,
 } from './utils';
 
@@ -39,31 +39,24 @@ export default createRule({
 
     return {
       CallExpression(node) {
-        if (!isExpectCall(node)) {
+        const jestFnCall = parseJestFnCall(node, context);
+
+        if (jestFnCall?.type !== 'expect') {
           return;
         }
 
-        const { matcher } = parseExpectCall(node);
+        const { matcher } = jestFnCall;
 
-        if (!matcher) {
-          return;
-        }
-
-        const alias = matcher.name;
+        const alias = getAccessorValue(matcher);
 
         if (alias in methodNames) {
           const canonical = methodNames[alias];
 
           context.report({
             messageId: 'replaceAlias',
-            data: {
-              alias,
-              canonical,
-            },
-            node: matcher.node.property,
-            fix: fixer => [
-              replaceAccessorFixer(fixer, matcher.node.property, canonical),
-            ],
+            data: { alias, canonical },
+            node: matcher,
+            fix: fixer => [replaceAccessorFixer(fixer, matcher, canonical)],
           });
         }
       },

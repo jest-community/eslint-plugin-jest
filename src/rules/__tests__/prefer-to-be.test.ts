@@ -14,6 +14,7 @@ ruleTester.run('prefer-to-be', rule, {
     'expect(null).toBeNull();',
     'expect(null).not.toBeNull();',
     'expect(null).toBe(1);',
+    'expect(null).toBe(...1);',
     'expect(obj).toStrictEqual([ x, 1 ]);',
     'expect(obj).toStrictEqual({ x: 1 });',
     'expect(obj).not.toStrictEqual({ x: 1 });',

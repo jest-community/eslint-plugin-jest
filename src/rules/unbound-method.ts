@@ -1,5 +1,10 @@
-import { TSESLint, TSESTree } from '@typescript-eslint/utils';
-import { createRule, isExpectCall, parseExpectCall } from './utils';
+import { AST_NODE_TYPES, TSESLint, TSESTree } from '@typescript-eslint/utils';
+import {
+  createRule,
+  findTopMostCallExpression,
+  getAccessorValue,
+  parseJestFnCall,
+} from './utils';
 
 const toThrowMatchers = [
   'toThrow',
@@ -7,20 +12,6 @@ const toThrowMatchers = [
   'toThrowErrorMatchingSnapshot',
   'toThrowErrorMatchingInlineSnapshot',
 ];
-
-const isJestExpectToThrowCall = (node: TSESTree.CallExpression) => {
-  if (!isExpectCall(node)) {
-    return false;
-  }
-
-  const { matcher } = parseExpectCall(node);
-
-  if (!matcher) {
-    return false;
-  }
-
-  return !toThrowMatchers.includes(matcher.name);
-};
 
 const baseRule = (() => {
   try {
@@ -92,21 +83,22 @@ export default createRule<Options, MessageIds>({
       return {};
     }
 
-    let inExpectToThrowCall = false;
-
     return {
       ...baseSelectors,
-      CallExpression(node: TSESTree.CallExpression): void {
-        inExpectToThrowCall = isJestExpectToThrowCall(node);
-      },
-      'CallExpression:exit'(node: TSESTree.CallExpression): void {
-        if (inExpectToThrowCall && isJestExpectToThrowCall(node)) {
-          inExpectToThrowCall = false;
-        }
-      },
       MemberExpression(node: TSESTree.MemberExpression): void {
-        if (inExpectToThrowCall) {
-          return;
+        if (node.parent?.type === AST_NODE_TYPES.CallExpression) {
+          const jestFnCall = parseJestFnCall(
+            findTopMostCallExpression(node.parent),
+            context,
+          );
+
+          if (jestFnCall?.type === 'expect') {
+            const { matcher } = jestFnCall;
+
+            if (!toThrowMatchers.includes(getAccessorValue(matcher))) {
+              return;
+            }
+          }
         }
 
         baseSelectors.MemberExpression?.(node);

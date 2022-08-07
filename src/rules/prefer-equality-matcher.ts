@@ -1,42 +1,13 @@
-import { AST_NODE_TYPES, TSESLint, TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, TSESLint } from '@typescript-eslint/utils';
 import {
-  MaybeTypeCast,
+  EqualityMatcher,
   ModifierName,
-  ParsedEqualityMatcherCall,
-  ParsedExpectMatcher,
   createRule,
-  followTypeAssertionChain,
-  isExpectCall,
-  isParsedEqualityMatcherCall,
-  parseExpectCall,
+  getAccessorValue,
+  getFirstMatcherArg,
+  isBooleanLiteral,
+  parseJestFnCall,
 } from './utils';
-
-const isBooleanLiteral = (
-  node: TSESTree.Node,
-): node is TSESTree.BooleanLiteral =>
-  node.type === AST_NODE_TYPES.Literal && typeof node.value === 'boolean';
-
-type ParsedBooleanEqualityMatcherCall = ParsedEqualityMatcherCall<
-  MaybeTypeCast<TSESTree.BooleanLiteral>
->;
-
-/**
- * Checks if the given `ParsedExpectMatcher` is a call to one of the equality matchers,
- * with a boolean literal as the sole argument.
- *
- * @example javascript
- * toBe(true);
- * toEqual(false);
- *
- * @param {ParsedExpectMatcher} matcher
- *
- * @return {matcher is ParsedBooleanEqualityMatcher}
- */
-const isBooleanEqualityMatcher = (
-  matcher: ParsedExpectMatcher,
-): matcher is ParsedBooleanEqualityMatcherCall =>
-  isParsedEqualityMatcherCall(matcher) &&
-  isBooleanLiteral(followTypeAssertionChain(matcher.arguments[0]));
 
 export default createRule({
   name: __filename,
@@ -59,43 +30,47 @@ export default createRule({
   create(context) {
     return {
       CallExpression(node) {
-        if (!isExpectCall(node)) {
+        const jestFnCall = parseJestFnCall(node, context);
+
+        if (jestFnCall?.type !== 'expect' || jestFnCall.args.length === 0) {
+          return;
+        }
+
+        const { parent: expect } = jestFnCall.head.node;
+
+        if (expect?.type !== AST_NODE_TYPES.CallExpression) {
           return;
         }
 
         const {
-          expect: {
-            arguments: [comparison],
-            range: [, expectCallEnd],
-          },
-          matcher,
-          modifier,
-        } = parseExpectCall(node);
+          arguments: [comparison],
+          range: [, expectCallEnd],
+        } = expect;
+
+        const { matcher } = jestFnCall;
+        const matcherArg = getFirstMatcherArg(jestFnCall);
 
         if (
-          !matcher ||
           comparison?.type !== AST_NODE_TYPES.BinaryExpression ||
           (comparison.operator !== '===' && comparison.operator !== '!==') ||
-          !isBooleanEqualityMatcher(matcher)
+          !EqualityMatcher.hasOwnProperty(getAccessorValue(matcher)) ||
+          !isBooleanLiteral(matcherArg)
         ) {
           return;
         }
 
-        const matcherValue = followTypeAssertionChain(
-          matcher.arguments[0],
-        ).value;
+        const matcherValue = matcherArg.value;
 
-        const negation = modifier?.negation
-          ? { node: modifier.negation }
-          : modifier?.name === ModifierName.not
-          ? modifier
-          : null;
+        const [modifier] = jestFnCall.modifiers;
+        const hasNot = jestFnCall.modifiers.some(
+          nod => getAccessorValue(nod) === 'not',
+        );
 
         // we need to negate the expectation if the current expected
         // value is itself negated by the "not" modifier
         const addNotModifier =
           (comparison.operator === '!==' ? !matcherValue : matcherValue) ===
-          !!negation;
+          hasNot;
 
         const buildFixer =
           (equalityMatcher: string): TSESLint.ReportFixFunction =>
@@ -104,8 +79,8 @@ export default createRule({
 
             // preserve the existing modifier if it's not a negation
             let modifierText =
-              modifier && modifier?.node !== negation?.node
-                ? `.${modifier.name}`
+              modifier && getAccessorValue(modifier) !== 'not'
+                ? `.${getAccessorValue(modifier)}`
                 : '';
 
             if (addNotModifier) {
@@ -120,12 +95,12 @@ export default createRule({
               ),
               // replace the current matcher & modifier with the preferred matcher
               fixer.replaceTextRange(
-                [expectCallEnd, matcher.node.range[1]],
+                [expectCallEnd, matcher.parent.range[1]],
                 `${modifierText}.${equalityMatcher}`,
               ),
               // replace the matcher argument with the right-hand side of the comparison
               fixer.replaceText(
-                matcher.arguments[0],
+                matcherArg,
                 sourceCode.getText(comparison.right),
               ),
             ];
@@ -140,7 +115,7 @@ export default createRule({
               fix: buildFixer(equalityMatcher),
             }),
           ),
-          node: matcher.node.property,
+          node: matcher,
         });
       },
     };

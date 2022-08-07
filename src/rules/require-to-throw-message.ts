@@ -1,9 +1,4 @@
-import {
-  ModifierName,
-  createRule,
-  isExpectCall,
-  parseExpectCall,
-} from './utils';
+import { createRule, getAccessorValue, parseJestFnCall } from './utils';
 
 export default createRule({
   name: __filename,
@@ -23,23 +18,25 @@ export default createRule({
   create(context) {
     return {
       CallExpression(node) {
-        if (!isExpectCall(node)) {
+        const jestFnCall = parseJestFnCall(node, context);
+
+        if (jestFnCall?.type !== 'expect') {
           return;
         }
 
-        const { matcher, modifier } = parseExpectCall(node);
+        const { matcher } = jestFnCall;
+        const matcherName = getAccessorValue(matcher);
 
         if (
-          matcher?.arguments?.length === 0 &&
-          ['toThrow', 'toThrowError'].includes(matcher.name) &&
-          (!modifier ||
-            !(modifier.name === ModifierName.not || modifier.negation))
+          jestFnCall.args.length === 0 &&
+          ['toThrow', 'toThrowError'].includes(matcherName) &&
+          !jestFnCall.modifiers.some(nod => getAccessorValue(nod) === 'not')
         ) {
           // Look for `toThrow` calls with no arguments.
           context.report({
             messageId: 'addErrorMessage',
-            data: { matcherName: matcher.name },
-            node: matcher.node.property,
+            data: { matcherName },
+            node: matcher,
           });
         }
       },

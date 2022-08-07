@@ -20,7 +20,6 @@ ruleTester.run('no-standalone-expect', rule, {
     'it("an it", () => expect(1).toBe(1))',
     'const func = function(){ expect(1).toBe(1); };',
     'const func = () => expect(1).toBe(1);',
-    'expect.hasAssertions()',
     '{}',
     'it.each([1, true])("trues", value => { expect(value).toBe(true); });',
     'it.each([1, true])("trues", value => { expect(value).toBe(true); }); it("an it", () => { expect(1).toBe(1) });',
@@ -59,27 +58,31 @@ ruleTester.run('no-standalone-expect', rule, {
   ],
   invalid: [
     {
-      code: "(() => {})('testing', () => expect(true))",
-      errors: [{ endColumn: 41, column: 29, messageId: 'unexpectedExpect' }],
+      code: "(() => {})('testing', () => expect(true).toBe(false))",
+      errors: [{ endColumn: 53, column: 29, messageId: 'unexpectedExpect' }],
+    },
+    {
+      code: 'expect.hasAssertions()',
+      errors: [{ endColumn: 23, column: 1, messageId: 'unexpectedExpect' }],
     },
     {
       code: dedent`
         describe('scenario', () => {
           const t = Math.random() ? it.only : it;
-          t('testing', () => expect(true));
+          t('testing', () => expect(true).toBe(false));
         });
       `,
-      errors: [{ endColumn: 34, column: 22, messageId: 'unexpectedExpect' }],
+      errors: [{ endColumn: 46, column: 22, messageId: 'unexpectedExpect' }],
     },
     {
       code: dedent`
         describe('scenario', () => {
           const t = Math.random() ? it.only : it;
-          t('testing', () => expect(true));
+          t('testing', () => expect(true).toBe(false));
         });
       `,
       options: [{ additionalTestBlockFunctions: undefined }],
-      errors: [{ endColumn: 34, column: 22, messageId: 'unexpectedExpect' }],
+      errors: [{ endColumn: 46, column: 22, messageId: 'unexpectedExpect' }],
     },
     {
       code: dedent`
@@ -91,7 +94,7 @@ ruleTester.run('no-standalone-expect', rule, {
           expect(a + b).toBe(expected);
         });
       `,
-      errors: [{ endColumn: 16, column: 3, messageId: 'unexpectedExpect' }],
+      errors: [{ endColumn: 31, column: 3, messageId: 'unexpectedExpect' }],
     },
     {
       code: dedent`
@@ -104,7 +107,7 @@ ruleTester.run('no-standalone-expect', rule, {
         });
       `,
       options: [{ additionalTestBlockFunctions: ['each'] }],
-      errors: [{ endColumn: 16, column: 3, messageId: 'unexpectedExpect' }],
+      errors: [{ endColumn: 31, column: 3, messageId: 'unexpectedExpect' }],
     },
     {
       code: dedent`
@@ -117,43 +120,48 @@ ruleTester.run('no-standalone-expect', rule, {
         });
       `,
       options: [{ additionalTestBlockFunctions: ['test'] }],
-      errors: [{ endColumn: 16, column: 3, messageId: 'unexpectedExpect' }],
+      errors: [{ endColumn: 31, column: 3, messageId: 'unexpectedExpect' }],
     },
     {
       code: 'describe("a test", () => { expect(1).toBe(1); });',
-      errors: [{ endColumn: 37, column: 28, messageId: 'unexpectedExpect' }],
+      errors: [{ endColumn: 45, column: 28, messageId: 'unexpectedExpect' }],
     },
     {
       code: 'describe("a test", () => expect(1).toBe(1));',
-      errors: [{ endColumn: 35, column: 26, messageId: 'unexpectedExpect' }],
+      errors: [{ endColumn: 43, column: 26, messageId: 'unexpectedExpect' }],
     },
     {
       code: 'describe("a test", () => { const func = () => { expect(1).toBe(1); }; expect(1).toBe(1); });',
-      errors: [{ endColumn: 80, column: 71, messageId: 'unexpectedExpect' }],
+      errors: [{ endColumn: 88, column: 71, messageId: 'unexpectedExpect' }],
     },
     {
       code: 'describe("a test", () => {  it(() => { expect(1).toBe(1); }); expect(1).toBe(1); });',
-      errors: [{ endColumn: 72, column: 63, messageId: 'unexpectedExpect' }],
+      errors: [{ endColumn: 80, column: 63, messageId: 'unexpectedExpect' }],
     },
     {
       code: 'expect(1).toBe(1);',
-      errors: [{ endColumn: 10, column: 1, messageId: 'unexpectedExpect' }],
-    },
-    {
-      code: 'expect(1).toBe',
-      errors: [{ endColumn: 10, column: 1, messageId: 'unexpectedExpect' }],
+      errors: [{ endColumn: 18, column: 1, messageId: 'unexpectedExpect' }],
     },
     {
       code: '{expect(1).toBe(1)}',
-      errors: [{ endColumn: 11, column: 2, messageId: 'unexpectedExpect' }],
+      errors: [{ endColumn: 19, column: 2, messageId: 'unexpectedExpect' }],
     },
     {
       code: 'it.each([1, true])("trues", value => { expect(value).toBe(true); }); expect(1).toBe(1);',
-      errors: [{ endColumn: 79, column: 70, messageId: 'unexpectedExpect' }],
+      errors: [{ endColumn: 87, column: 70, messageId: 'unexpectedExpect' }],
     },
     {
       code: 'describe.each([1, true])("trues", value => { expect(value).toBe(true); });',
-      errors: [{ endColumn: 59, column: 46, messageId: 'unexpectedExpect' }],
+      errors: [{ endColumn: 70, column: 46, messageId: 'unexpectedExpect' }],
+    },
+    {
+      code: dedent`
+        import { expect as pleaseExpect } from '@jest/globals';
+
+        describe("a test", () => { pleaseExpect(1).toBe(1); });
+      `,
+      parserOptions: { sourceType: 'module' },
+      errors: [{ endColumn: 51, column: 28, messageId: 'unexpectedExpect' }],
     },
   ],
 });

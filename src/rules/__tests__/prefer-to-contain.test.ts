@@ -1,10 +1,20 @@
 import { TSESLint } from '@typescript-eslint/utils';
+import dedent from 'dedent';
 import rule from '../prefer-to-contain';
+import { espreeParser } from './test-utils';
 
-const ruleTester = new TSESLint.RuleTester();
+const ruleTester = new TSESLint.RuleTester({
+  parser: espreeParser,
+  parserOptions: {
+    ecmaVersion: 2015,
+  },
+});
 
 ruleTester.run('prefer-to-contain', rule, {
   valid: [
+    'expect.hasAssertions',
+    'expect.hasAssertions()',
+    'expect.assertions(1)',
     'expect().toBe(false);',
     'expect(a).toContain(b);',
     "expect(a.name).toBe('b');",
@@ -24,6 +34,8 @@ ruleTester.run('prefer-to-contain', rule, {
     `expect(a.test(b)).resolves.toEqual(true)`,
     `expect(a.test(b)).resolves.not.toEqual(true)`,
     `expect(a).not.toContain(b)`,
+    'expect(a.includes(...[])).toBe(true)',
+    'expect(a.includes(b)).toBe(...true)',
     'expect(a);',
   ],
   invalid: [
@@ -176,6 +188,20 @@ ruleTester.run('prefer-to-contain', rule, {
       code: 'expect([{a:1}].includes({a:1})).not.toStrictEqual(false);',
       output: 'expect([{a:1}]).toContain({a:1});',
       errors: [{ messageId: 'useToContain', column: 37, line: 1 }],
+    },
+    {
+      code: dedent`
+        import { expect as pleaseExpect } from '@jest/globals';
+
+        pleaseExpect([{a:1}].includes({a:1})).not.toStrictEqual(false);
+      `,
+      output: dedent`
+        import { expect as pleaseExpect } from '@jest/globals';
+
+        pleaseExpect([{a:1}]).toContain({a:1});
+      `,
+      parserOptions: { sourceType: 'module' },
+      errors: [{ messageId: 'useToContain', column: 43, line: 3 }],
     },
   ],
 });

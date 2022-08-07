@@ -11,7 +11,8 @@ import {
   getAccessorValue,
   isSupportedAccessor,
 } from './accessors';
-import { isTypeOfJestFnCall } from './parseJestFnCall';
+import { followTypeAssertionChain } from './followTypeAssertionChain';
+import { ParsedExpectFnCall, isTypeOfJestFnCall } from './parseJestFnCall';
 
 const REPO_URL = 'https://github.com/jest-community/eslint-plugin-jest';
 
@@ -53,7 +54,7 @@ interface CalledKnownMemberExpression<Name extends string = string>
  * Represents a `CallExpression` with a single argument.
  */
 export interface CallExpressionWithSingleArgument<
-  Argument extends TSESTree.Expression = TSESTree.Expression,
+  Argument extends TSESTree.CallExpression['arguments'][number] = TSESTree.CallExpression['arguments'][number],
 > extends TSESTree.CallExpression {
   arguments: [Argument];
 }
@@ -88,6 +89,18 @@ export enum HookName {
   'beforeEach' = 'beforeEach',
   'afterAll' = 'afterAll',
   'afterEach' = 'afterEach',
+}
+
+export enum ModifierName {
+  not = 'not',
+  rejects = 'rejects',
+  resolves = 'resolves',
+}
+
+export enum EqualityMatcher {
+  toBe = 'toBe',
+  toEqual = 'toEqual',
+  toStrictEqual = 'toStrictEqual',
 }
 
 const joinNames = (a: string | null, b: string | null): string | null =>
@@ -153,4 +166,46 @@ export const replaceAccessorFixer = (
     node,
     node.type === AST_NODE_TYPES.Identifier ? text : `'${text}'`,
   );
+};
+
+export const findTopMostCallExpression = (
+  node: TSESTree.CallExpression,
+): TSESTree.CallExpression => {
+  let topMostCallExpression = node;
+  let { parent } = node;
+
+  while (parent) {
+    if (parent.type === AST_NODE_TYPES.CallExpression) {
+      topMostCallExpression = parent;
+
+      parent = parent.parent;
+
+      continue;
+    }
+
+    if (parent.type !== AST_NODE_TYPES.MemberExpression) {
+      break;
+    }
+
+    parent = parent.parent;
+  }
+
+  return topMostCallExpression;
+};
+
+export const isBooleanLiteral = (
+  node: TSESTree.Node,
+): node is TSESTree.BooleanLiteral =>
+  node.type === AST_NODE_TYPES.Literal && typeof node.value === 'boolean';
+
+export const getFirstMatcherArg = (
+  expectFnCall: ParsedExpectFnCall,
+): TSESTree.SpreadElement | TSESTree.Expression => {
+  const [firstArg] = expectFnCall.args;
+
+  if (firstArg.type === AST_NODE_TYPES.SpreadElement) {
+    return firstArg;
+  }
+
+  return followTypeAssertionChain(firstArg);
 };

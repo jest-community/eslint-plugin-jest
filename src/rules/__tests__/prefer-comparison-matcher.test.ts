@@ -263,6 +263,10 @@ testComparisonOperator('<=', 'toBeLessThanOrEqual', 'toBeGreaterThan');
 
 ruleTester.run(`prefer-to-be-comparison`, rule, {
   valid: [
+    'expect.hasAssertions',
+    'expect.hasAssertions()',
+    'expect.assertions(1)',
+    'expect(true).toBe(...true)',
     'expect()',
     'expect({}).toStrictEqual({})',
     'expect(a === b).toBe(true)',

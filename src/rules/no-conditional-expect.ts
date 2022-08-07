@@ -3,9 +3,9 @@ import {
   KnownCallExpression,
   createRule,
   getTestCallExpressionsFromDeclaredVariables,
-  isExpectCall,
   isSupportedAccessor,
   isTypeOfJestFnCall,
+  parseJestFnCall,
 } from './utils';
 
 const isCatchCall = (
@@ -50,7 +50,9 @@ export default createRule({
         }
       },
       CallExpression(node: TSESTree.CallExpression) {
-        if (isTypeOfJestFnCall(node, context, ['test'])) {
+        const { type: jestFnCallType } = parseJestFnCall(node, context) ?? {};
+
+        if (jestFnCallType === 'test') {
           inTestCase = true;
         }
 
@@ -58,14 +60,14 @@ export default createRule({
           inPromiseCatch = true;
         }
 
-        if (inTestCase && isExpectCall(node) && conditionalDepth > 0) {
+        if (inTestCase && jestFnCallType === 'expect' && conditionalDepth > 0) {
           context.report({
             messageId: 'conditionalExpect',
             node,
           });
         }
 
-        if (inPromiseCatch && isExpectCall(node)) {
+        if (inPromiseCatch && jestFnCallType === 'expect') {
           context.report({
             messageId: 'conditionalExpect',
             node,
