@@ -1,3 +1,10 @@
+# [26.8.0](https://github.com/jest-community/eslint-plugin-jest/compare/v26.7.0...v26.8.0) (2022-08-07)
+
+
+### Features
+
+* resolve `expect` based on scope ([#1173](https://github.com/jest-community/eslint-plugin-jest/issues/1173)) ([aa4be21](https://github.com/jest-community/eslint-plugin-jest/commit/aa4be21dc4ad9be0d2f27a95f25c10555c653a4b))
+
 # [26.7.0](https://github.com/jest-community/eslint-plugin-jest/compare/v26.6.0...v26.7.0) (2022-07-29)
 
 
