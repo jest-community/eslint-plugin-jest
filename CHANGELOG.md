@@ -1,3 +1,10 @@
+## [26.8.1](https://github.com/jest-community/eslint-plugin-jest/compare/v26.8.0...v26.8.1) (2022-08-08)
+
+
+### Bug Fixes
+
+* **no-standalone-expect:** only report on `expect.hasAssertions` & `expect.assertions` member calls ([#1191](https://github.com/jest-community/eslint-plugin-jest/issues/1191)) ([4bf9eea](https://github.com/jest-community/eslint-plugin-jest/commit/4bf9eea3985a4855e7d3b575bd65f70fa62b9e0a))
+
 # [26.8.0](https://github.com/jest-community/eslint-plugin-jest/compare/v26.7.0...v26.8.0) (2022-08-07)
 
 
