@@ -2,6 +2,7 @@ import { AST_NODE_TYPES, TSESLint, TSESTree } from '@typescript-eslint/utils';
 import {
   DescribeAlias,
   createRule,
+  getAccessorValue,
   getNodeName,
   isFunction,
   isTypeOfJestFnCall,
@@ -86,9 +87,20 @@ export default createRule<
 
     return {
       CallExpression(node) {
-        const { type: jestFnCallType } = parseJestFnCall(node, context) ?? {};
+        const jestFnCall = parseJestFnCall(node, context);
 
-        if (jestFnCallType === 'expect') {
+        if (jestFnCall?.type === 'expect') {
+          if (
+            jestFnCall.head.node.parent?.type ===
+              AST_NODE_TYPES.MemberExpression &&
+            jestFnCall.members.length === 1 &&
+            !['assertions', 'hasAssertions'].includes(
+              getAccessorValue(jestFnCall.members[0]),
+            )
+          ) {
+            return;
+          }
+
           const parent = callStack[callStack.length - 1];
 
           if (!parent || parent === DescribeAlias.describe) {
@@ -98,7 +110,7 @@ export default createRule<
           return;
         }
 
-        if (jestFnCallType === 'test' || isCustomTestBlockFunction(node)) {
+        if (jestFnCall?.type === 'test' || isCustomTestBlockFunction(node)) {
           callStack.push('test');
         }
 
