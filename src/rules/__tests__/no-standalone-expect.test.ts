@@ -12,6 +12,8 @@ const ruleTester = new TSESLint.RuleTester({
 
 ruleTester.run('no-standalone-expect', rule, {
   valid: [
+    'expect.any(String)',
+    'expect.extend({})',
     'describe("a test", () => { it("an it", () => {expect(1).toBe(1); }); });',
     'describe("a test", () => { it("an it", () => { const func = () => { expect(1).toBe(1); }; }); });',
     'describe("a test", () => { const func = () => { expect(1).toBe(1); }; });',
@@ -64,6 +66,10 @@ ruleTester.run('no-standalone-expect', rule, {
     {
       code: 'expect.hasAssertions()',
       errors: [{ endColumn: 23, column: 1, messageId: 'unexpectedExpect' }],
+    },
+    {
+      code: 'expect().hasAssertions()',
+      errors: [{ endColumn: 25, column: 1, messageId: 'unexpectedExpect' }],
     },
     {
       code: dedent`
@@ -162,6 +168,15 @@ ruleTester.run('no-standalone-expect', rule, {
       `,
       parserOptions: { sourceType: 'module' },
       errors: [{ endColumn: 51, column: 28, messageId: 'unexpectedExpect' }],
+    },
+    {
+      code: dedent`
+        import { expect as pleaseExpect } from '@jest/globals';
+
+        beforeEach(() => pleaseExpect.hasAssertions());
+      `,
+      parserOptions: { sourceType: 'module' },
+      errors: [{ endColumn: 46, column: 18, messageId: 'unexpectedExpect' }],
     },
   ],
 });
