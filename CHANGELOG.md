@@ -1,3 +1,10 @@
+## [26.8.2](https://github.com/jest-community/eslint-plugin-jest/compare/v26.8.1...v26.8.2) (2022-08-09)
+
+
+### Bug Fixes
+
+* **max-expects:** don't count `expect.<member>()` calls towards max ([#1194](https://github.com/jest-community/eslint-plugin-jest/issues/1194)) ([75a0ff2](https://github.com/jest-community/eslint-plugin-jest/commit/75a0ff2d74abca9cffe3c9135f16469116c73633))
+
 ## [26.8.1](https://github.com/jest-community/eslint-plugin-jest/compare/v26.8.0...v26.8.1) (2022-08-08)
 
 
