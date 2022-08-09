@@ -58,6 +58,37 @@ ruleTester.run('max-expects', rule, {
       });
     `,
     dedent`
+      test('should pass', async () => {
+        expect.hasAssertions();
+
+        expect(true).toBeDefined();
+        expect(true).toBeDefined();
+        expect(true).toBeDefined();
+        expect(true).toBeDefined();
+        expect(true).toBeDefined();
+      });
+    `,
+    dedent`
+      test('should pass', async () => {
+        expect(true).toBeDefined();
+        expect(true).toBeDefined();
+        expect(true).toBeDefined();
+        expect(true).toBeDefined();
+        expect(true).toEqual(expect.any(Boolean));
+      });
+    `,
+    dedent`
+      test('should pass', async () => {
+        expect.hasAssertions();
+
+        expect(true).toBeDefined();
+        expect(true).toBeDefined();
+        expect(true).toBeDefined();
+        expect(true).toBeDefined();
+        expect(true).toEqual(expect.any(Boolean));
+      });
+    `,
+    dedent`
       describe('test', () => {
         test('should pass', () => {
           expect(true).toBeDefined();
