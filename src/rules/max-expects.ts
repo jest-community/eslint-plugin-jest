@@ -1,5 +1,10 @@
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import { FunctionExpression, createRule, isTypeOfJestFnCall } from './utils';
+import {
+  FunctionExpression,
+  createRule,
+  isTypeOfJestFnCall,
+  parseJestFnCall,
+} from './utils';
 
 export default createRule({
   name: __filename,
@@ -45,7 +50,12 @@ export default createRule({
       FunctionExpression: onFunctionExpressionEnter,
       ArrowFunctionExpression: onFunctionExpressionEnter,
       CallExpression(node) {
-        if (!isTypeOfJestFnCall(node, context, ['expect'])) {
+        const jestFnCall = parseJestFnCall(node, context);
+
+        if (
+          jestFnCall?.type !== 'expect' ||
+          jestFnCall.head.node.parent?.type === AST_NODE_TYPES.MemberExpression
+        ) {
           return;
         }
 
