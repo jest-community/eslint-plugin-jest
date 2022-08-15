@@ -1,3 +1,10 @@
+## [26.8.3](https://github.com/jest-community/eslint-plugin-jest/compare/v26.8.2...v26.8.3) (2022-08-15)
+
+
+### Performance Improvements
+
+* cache jest fn call parsing results ([#1187](https://github.com/jest-community/eslint-plugin-jest/issues/1187)) ([525631e](https://github.com/jest-community/eslint-plugin-jest/commit/525631ebddbb0ebbfe9415c330b3751100bee6a5))
+
 ## [26.8.2](https://github.com/jest-community/eslint-plugin-jest/compare/v26.8.1...v26.8.2) (2022-08-09)
 
 
