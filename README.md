@@ -1,6 +1,6 @@
 <div align="center">
   <a href="https://eslint.org/">
-    <img width="150" height="150" src="https://eslint.org/assets/images/logo/eslint-logo-color.svg">
+    <img height="150" src="https://eslint.org/assets/images/logo/eslint-logo-color.svg">
   </a>
   <a href="https://facebook.github.io/jest/">
     <img width="150" height="150" vspace="" hspace="25" src="https://jestjs.io/img/jest.png">
