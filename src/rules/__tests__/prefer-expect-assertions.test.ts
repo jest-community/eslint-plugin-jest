@@ -88,6 +88,20 @@ ruleTester.run('prefer-expect-assertions', rule, {
       `,
       options: [{ onlyFunctionsWithAsyncKeyword: true }],
     },
+    {
+      code: dedent`
+        import { expect as pleaseExpect } from '@jest/globals';
+
+        it("returns numbers that are greater than four", function() {
+          pleaseExpect.assertions(2);
+  
+          for(let thing in things) {
+            pleaseExpect(number).toBeGreaterThan(4);
+          }
+        });
+      `,
+      parserOptions: { sourceType: 'module' },
+    },
   ],
   invalid: [
     {
@@ -120,11 +134,11 @@ ruleTester.run('prefer-expect-assertions', rule, {
           suggestions: [
             {
               messageId: 'suggestAddingHasAssertions',
-              output: 'it("it1", () => { expect.hasAssertions();foo()})',
+              output: 'it("it1", () => {expect.hasAssertions(); foo()})',
             },
             {
               messageId: 'suggestAddingAssertions',
-              output: 'it("it1", () => { expect.assertions();foo()})',
+              output: 'it("it1", () => {expect.assertions(); foo()})',
             },
           ],
         },
@@ -146,8 +160,8 @@ ruleTester.run('prefer-expect-assertions', rule, {
             {
               messageId: 'suggestAddingHasAssertions',
               output: dedent`
-                it("it1", function() {
-                  expect.hasAssertions();someFunctionToDo();
+                it("it1", function() {expect.hasAssertions();
+                  someFunctionToDo();
                   someFunctionToDo2();
                 });
               `,
@@ -155,8 +169,8 @@ ruleTester.run('prefer-expect-assertions', rule, {
             {
               messageId: 'suggestAddingAssertions',
               output: dedent`
-                it("it1", function() {
-                  expect.assertions();someFunctionToDo();
+                it("it1", function() {expect.assertions();
+                  someFunctionToDo();
                   someFunctionToDo2();
                 });
               `,
@@ -1179,6 +1193,19 @@ ruleTester.run('prefer-expect-assertions (callbacks)', rule, {
           line: 9,
         },
       ],
+    },
+    {
+      code: dedent`
+        it("returns numbers that are greater than four", function(expect) {
+          expect.assertions(2);
+
+          for(let thing in things) {
+            expect(number).toBeGreaterThan(4);
+          }
+        });
+      `,
+      parserOptions: { sourceType: 'module' },
+      errors: [{ endColumn: 3, column: 1, messageId: 'haveExpectAssertions' }],
     },
   ],
 });
