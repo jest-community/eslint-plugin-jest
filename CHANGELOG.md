@@ -1,3 +1,10 @@
+## [26.8.4](https://github.com/jest-community/eslint-plugin-jest/compare/v26.8.3...v26.8.4) (2022-08-19)
+
+
+### Bug Fixes
+
+* **prefer-mock-promise-shorthand:** ignore `mockImplementation` functions that have parameters ([#1199](https://github.com/jest-community/eslint-plugin-jest/issues/1199)) ([78ccbef](https://github.com/jest-community/eslint-plugin-jest/commit/78ccbefc01720f5c44ae439389cb27afda0315c2))
+
 ## [26.8.3](https://github.com/jest-community/eslint-plugin-jest/compare/v26.8.2...v26.8.3) (2022-08-15)
 
 
