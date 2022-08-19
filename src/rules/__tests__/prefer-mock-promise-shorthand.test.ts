@@ -39,6 +39,7 @@ ruleTester.run('prefer-mock-shorthand', rule, {
     'aVariable.mockReturnValue(Promise.reject().then(() => 1))',
     'aVariable.mockReturnValue(new Promise(resolve => resolve(1)))',
     'aVariable.mockReturnValue(new Promise((_, reject) => reject(1)))',
+    "jest.spyOn(Thingy, 'method').mockImplementation(param => Promise.resolve(param));",
     dedent`
       aVariable.mockImplementation(() => {
         const value = new Date();
