@@ -112,7 +112,7 @@ export default createRule({
         } else if (mockFnName === withOnce('mockImplementation', isOnce)) {
           const [arg] = node.arguments;
 
-          if (!isFunction(arg)) {
+          if (!isFunction(arg) || arg.params.length !== 0) {
             return;
           }
 
