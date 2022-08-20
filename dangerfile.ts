@@ -10,7 +10,7 @@ const createOrAddLabelSafely = async (name: string, color: string) => {
   try {
     await danger.github.utils.createOrAddLabel({
       name,
-      color,
+      color: color.replace('#', ''),
       description: '',
     });
   } catch (error) {
