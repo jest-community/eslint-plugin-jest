@@ -1,3 +1,10 @@
+## [26.8.5](https://github.com/jest-community/eslint-plugin-jest/compare/v26.8.4...v26.8.5) (2022-08-20)
+
+
+### Bug Fixes
+
+* **prefer-expect-assertions:** use scoped based jest fn call parser for `expect` checks ([#1201](https://github.com/jest-community/eslint-plugin-jest/issues/1201)) ([fd54ca1](https://github.com/jest-community/eslint-plugin-jest/commit/fd54ca15575692c56a0caa28cb6227e0fb4aa4e2))
+
 ## [26.8.4](https://github.com/jest-community/eslint-plugin-jest/compare/v26.8.3...v26.8.4) (2022-08-19)
 
 
