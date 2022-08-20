@@ -282,6 +282,14 @@ as it extends the original `unbound-method` rule from that plugin.
 
 ## Related Projects
 
+### eslint-plugin-jest-extended
+
+This is a sister plugin to `eslint-plugin-jest` that provides support for the
+matchers provided by
+[`jest-extended`](https://github.com/jest-community/jest-extended).
+
+https://github.com/jest-community/eslint-plugin-jest-extended
+
 ### eslint-plugin-jest-formatting
 
 This project aims to provide formatting rules (auto-fixable where possible) to
