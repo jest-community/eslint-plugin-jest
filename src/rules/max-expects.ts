@@ -36,7 +36,7 @@ export default createRule({
   create(context, [{ max }]) {
     let count = 0;
 
-    const onFunctionExpressionEnter = (node: FunctionExpression) => {
+    const maybeResetCount = (node: FunctionExpression) => {
       const isTestFn =
         node.parent?.type !== AST_NODE_TYPES.CallExpression ||
         isTypeOfJestFnCall(node.parent, context, ['test']);
@@ -47,8 +47,10 @@ export default createRule({
     };
 
     return {
-      FunctionExpression: onFunctionExpressionEnter,
-      ArrowFunctionExpression: onFunctionExpressionEnter,
+      FunctionExpression: maybeResetCount,
+      'FunctionExpression:exit': maybeResetCount,
+      ArrowFunctionExpression: maybeResetCount,
+      'ArrowFunctionExpression:exit': maybeResetCount,
       CallExpression(node) {
         const jestFnCall = parseJestFnCall(node, context);
 
