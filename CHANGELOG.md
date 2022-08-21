@@ -1,3 +1,10 @@
+## [26.8.6](https://github.com/jest-community/eslint-plugin-jest/compare/v26.8.5...v26.8.6) (2022-08-21)
+
+
+### Bug Fixes
+
+* **max-expect:** reset `expect` counter when entering and exiting test function calls ([#1206](https://github.com/jest-community/eslint-plugin-jest/issues/1206)) ([3908ab8](https://github.com/jest-community/eslint-plugin-jest/commit/3908ab8c4bf7453d70a5ed04e22bf3ed90834576))
+
 ## [26.8.5](https://github.com/jest-community/eslint-plugin-jest/compare/v26.8.4...v26.8.5) (2022-08-20)
 
 
