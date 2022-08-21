@@ -52,10 +52,10 @@ type MessageIds =
   | 'suggestAddingAssertions'
   | 'suggestRemovingExtraArguments';
 
-const suggestions: Array<[MessageIds, string]> = [
-  ['suggestAddingHasAssertions', 'expect.hasAssertions();'],
-  ['suggestAddingAssertions', 'expect.assertions();'],
-];
+// const suggestions: Array<[MessageIds, string]> = [
+//   ['suggestAddingHasAssertions', 'expect.hasAssertions();'],
+//   ['suggestAddingAssertions', 'expect.assertions();'],
+// ];
 
 export default createRule<[RuleOptions], MessageIds>({
   name: __filename,
@@ -248,14 +248,7 @@ export default createRule<[RuleOptions], MessageIds>({
 
         const [, testFn] = node.arguments;
 
-        if (
-          !isFunction(testFn) ||
-          testFn.body.type !== AST_NODE_TYPES.BlockStatement
-        ) {
-          return;
-        }
-
-        if (!shouldCheckFunction(testFn)) {
+        if (!isFunction(testFn) || !shouldCheckFunction(testFn)) {
           return;
         }
 
@@ -266,6 +259,15 @@ export default createRule<[RuleOptions], MessageIds>({
           hasExpectAssertionsAsFirstStatement = false;
 
           return;
+        }
+
+        const suggestions: Array<[MessageIds, string]> = [];
+
+        if (testFn.body.type === AST_NODE_TYPES.BlockStatement) {
+          suggestions.push(
+            ['suggestAddingHasAssertions', 'expect.hasAssertions();'],
+            ['suggestAddingAssertions', 'expect.assertions();'],
+          );
         }
 
         context.report({

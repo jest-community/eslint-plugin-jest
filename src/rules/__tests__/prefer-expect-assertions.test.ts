@@ -105,6 +105,17 @@ ruleTester.run('prefer-expect-assertions', rule, {
   ],
   invalid: [
     {
+      code: 'it("it1", () => foo())',
+      errors: [
+        {
+          messageId: 'haveExpectAssertions',
+          column: 1,
+          line: 1,
+          suggestions: null,
+        },
+      ],
+    },
+    {
       code: 'it("it1", () => {})',
       errors: [
         {
