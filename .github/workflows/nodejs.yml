@@ -67,7 +67,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version: [12.x, 14.x, 16.x, 17.x, 18.x]
+        node-version: [14.x, 16.x, 18.x]
         eslint-version: [6, 7, 8]
     runs-on: ubuntu-latest
 
