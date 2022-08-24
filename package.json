@@ -151,7 +151,7 @@
       "optional": true
     }
   },
-  "packageManager": "yarn@3.2.2",
+  "packageManager": "yarn@3.2.3",
   "engines": {
     "node": "^12.22.0 || ^14.17.0 || >=16.0.0"
   }
