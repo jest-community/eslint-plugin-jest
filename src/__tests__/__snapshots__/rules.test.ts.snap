@@ -1,15 +1,15 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`rules should export configs that refer to actual rules 1`] = `
-Object {
-  "all": Object {
-    "env": Object {
+{
+  "all": {
+    "env": {
       "jest/globals": true,
     },
-    "plugins": Array [
+    "plugins": [
       "jest",
     ],
-    "rules": Object {
+    "rules": {
       "jest/consistent-test-it": "error",
       "jest/expect-expect": "error",
       "jest/max-expects": "error",
@@ -61,14 +61,14 @@ Object {
       "jest/valid-title": "error",
     },
   },
-  "recommended": Object {
-    "env": Object {
+  "recommended": {
+    "env": {
       "jest/globals": true,
     },
-    "plugins": Array [
+    "plugins": [
       "jest",
     ],
-    "rules": Object {
+    "rules": {
       "jest/expect-expect": "warn",
       "jest/no-commented-out-tests": "warn",
       "jest/no-conditional-expect": "error",
@@ -90,11 +90,11 @@ Object {
       "jest/valid-title": "error",
     },
   },
-  "style": Object {
-    "plugins": Array [
+  "style": {
+    "plugins": [
       "jest",
     ],
-    "rules": Object {
+    "rules": {
       "jest/no-alias-methods": "warn",
       "jest/prefer-to-be": "error",
       "jest/prefer-to-contain": "error",
