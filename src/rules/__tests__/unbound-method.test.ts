@@ -182,25 +182,6 @@ describe('error handling', () => {
       },
     );
   });
-
-  describe('when "project" is not set', () => {
-    const ruleTester = new ESLintUtils.RuleTester({
-      parser: '@typescript-eslint/parser',
-      parserOptions: {
-        sourceType: 'module',
-        tsconfigRootDir: rootPath,
-      },
-    });
-
-    ruleTester.run(
-      'unbound-method jest edition without "project" property',
-      requireRule(false),
-      {
-        valid: validTestCases.concat(invalidTestCases.map(({ code }) => code)),
-        invalid: [],
-      },
-    );
-  });
 });
 
 ruleTester.run('unbound-method jest edition', requireRule(false), {

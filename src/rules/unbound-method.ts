@@ -33,16 +33,6 @@ const baseRule = (() => {
   }
 })();
 
-const tryCreateBaseRule = (
-  context: Readonly<TSESLint.RuleContext<MessageIds, Options>>,
-) => {
-  try {
-    return baseRule?.create(context);
-  } catch {
-    return null;
-  }
-};
-
 interface Config {
   ignoreStatic: boolean;
 }
@@ -75,7 +65,7 @@ export default createRule<Options, MessageIds>({
     },
   },
   create(context) {
-    const baseSelectors = tryCreateBaseRule(context);
+    const baseSelectors = baseRule?.create(context);
 
     if (!baseSelectors) {
       return {};
