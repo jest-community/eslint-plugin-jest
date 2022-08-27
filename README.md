@@ -217,7 +217,6 @@ installations requiring long-term consistency.
 | [no-identical-title](docs/rules/no-identical-title.md)                       | Disallow identical titles                                           | ![recommended][] |              |
 | [no-interpolation-in-snapshots](docs/rules/no-interpolation-in-snapshots.md) | Disallow string interpolation inside snapshots                      | ![recommended][] |              |
 | [no-jasmine-globals](docs/rules/no-jasmine-globals.md)                       | Disallow Jasmine globals                                            | ![recommended][] | ![fixable][] |
-| [no-jest-import](docs/rules/no-jest-import.md)                               | Disallow importing Jest                                             | ![recommended][] |              |
 | [no-large-snapshots](docs/rules/no-large-snapshots.md)                       | disallow large snapshots                                            |                  |              |
 | [no-mocks-import](docs/rules/no-mocks-import.md)                             | Disallow manually importing from `__mocks__`                        | ![recommended][] |              |
 | [no-restricted-matchers](docs/rules/no-restricted-matchers.md)               | Disallow specific matchers & modifiers                              |                  |              |
