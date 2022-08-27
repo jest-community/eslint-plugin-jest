@@ -37,6 +37,7 @@ Object {
       "jest/no-test-return-statement": "error",
       "jest/prefer-called-with": "error",
       "jest/prefer-comparison-matcher": "error",
+      "jest/prefer-each": "error",
       "jest/prefer-equality-matcher": "error",
       "jest/prefer-expect-assertions": "error",
       "jest/prefer-expect-resolves": "error",
