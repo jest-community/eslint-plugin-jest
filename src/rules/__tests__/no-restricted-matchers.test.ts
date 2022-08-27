@@ -37,6 +37,26 @@ ruleTester.run('no-restricted-matchers', rule, {
       code: 'expect(a)["toBe"](b)',
       options: [{ 'not.toBe': null }],
     },
+    {
+      code: 'expect(a).resolves.not.toBe(b)',
+      options: [{ not: null }],
+    },
+    {
+      code: 'expect(a).resolves.not.toBe(b)',
+      options: [{ 'not.toBe': null }],
+    },
+    {
+      code: "expect(uploadFileMock).resolves.toHaveBeenCalledWith('file.name')",
+      options: [
+        { 'not.toHaveBeenCalledWith': 'Use not.toHaveBeenCalled instead' },
+      ],
+    },
+    {
+      code: "expect(uploadFileMock).resolves.not.toHaveBeenCalledWith('file.name')",
+      options: [
+        { 'not.toHaveBeenCalledWith': 'Use not.toHaveBeenCalled instead' },
+      ],
+    },
   ],
   invalid: [
     {
@@ -47,7 +67,7 @@ ruleTester.run('no-restricted-matchers', rule, {
           messageId: 'restrictedChain',
           data: {
             message: null,
-            chain: 'toBe',
+            restriction: 'toBe',
           },
           column: 11,
           line: 1,
@@ -62,7 +82,7 @@ ruleTester.run('no-restricted-matchers', rule, {
           messageId: 'restrictedChain',
           data: {
             message: null,
-            chain: 'toBe',
+            restriction: 'toBe',
           },
           column: 11,
           line: 1,
@@ -77,7 +97,7 @@ ruleTester.run('no-restricted-matchers', rule, {
           messageId: 'restrictedChain',
           data: {
             message: null,
-            chain: 'not',
+            restriction: 'not',
           },
           column: 11,
           line: 1,
@@ -92,7 +112,7 @@ ruleTester.run('no-restricted-matchers', rule, {
           messageId: 'restrictedChain',
           data: {
             message: null,
-            chain: 'not',
+            restriction: 'not',
           },
           column: 11,
           line: 1,
@@ -107,24 +127,9 @@ ruleTester.run('no-restricted-matchers', rule, {
           messageId: 'restrictedChain',
           data: {
             message: null,
-            chain: 'resolves',
+            restriction: 'resolves',
           },
           column: 11,
-          line: 1,
-        },
-      ],
-    },
-    {
-      code: 'expect(a).resolves.not.toBe(b)',
-      options: [{ not: null }],
-      errors: [
-        {
-          messageId: 'restrictedChain',
-          data: {
-            message: null,
-            chain: 'not',
-          },
-          column: 20,
           line: 1,
         },
       ],
@@ -137,7 +142,7 @@ ruleTester.run('no-restricted-matchers', rule, {
           messageId: 'restrictedChain',
           data: {
             message: null,
-            chain: 'resolves',
+            restriction: 'resolves',
           },
           column: 11,
           line: 1,
@@ -152,25 +157,9 @@ ruleTester.run('no-restricted-matchers', rule, {
           messageId: 'restrictedChain',
           data: {
             message: null,
-            chain: 'resolves.not',
+            restriction: 'resolves.not',
           },
           column: 11,
-          line: 1,
-        },
-      ],
-    },
-    {
-      code: 'expect(a).resolves.not.toBe(b)',
-      options: [{ 'not.toBe': null }],
-      errors: [
-        {
-          messageId: 'restrictedChain',
-          data: {
-            message: null,
-            chain: 'not.toBe',
-          },
-          endColumn: 28,
-          column: 20,
           line: 1,
         },
       ],
@@ -183,7 +172,7 @@ ruleTester.run('no-restricted-matchers', rule, {
           messageId: 'restrictedChain',
           data: {
             message: null,
-            chain: 'not.toBe',
+            restriction: 'not.toBe',
           },
           endColumn: 19,
           column: 11,
@@ -199,7 +188,7 @@ ruleTester.run('no-restricted-matchers', rule, {
           messageId: 'restrictedChain',
           data: {
             message: null,
-            chain: 'resolves.not.toBe',
+            restriction: 'resolves.not.toBe',
           },
           endColumn: 28,
           column: 11,
@@ -215,7 +204,7 @@ ruleTester.run('no-restricted-matchers', rule, {
           messageId: 'restrictedChainWithMessage',
           data: {
             message: 'Prefer `toStrictEqual` instead',
-            chain: 'toBe',
+            restriction: 'toBe',
           },
           column: 11,
           line: 1,
@@ -234,25 +223,25 @@ ruleTester.run('no-restricted-matchers', rule, {
           messageId: 'restrictedChainWithMessage',
           data: {
             message: 'Use `expect(await promise)` instead.',
-            chain: 'resolves',
+            restriction: 'resolves',
           },
-          endColumn: 52,
+          endColumn: 57,
           column: 44,
         },
       ],
     },
     {
       code: 'expect(Promise.resolve({})).rejects.toBeFalsy()',
-      options: [{ toBeFalsy: null }],
+      options: [{ 'rejects.toBeFalsy': null }],
       errors: [
         {
           messageId: 'restrictedChain',
           data: {
             message: null,
-            chain: 'toBeFalsy',
+            restriction: 'rejects.toBeFalsy',
           },
           endColumn: 46,
-          column: 37,
+          column: 29,
         },
       ],
     },
@@ -266,7 +255,7 @@ ruleTester.run('no-restricted-matchers', rule, {
           messageId: 'restrictedChainWithMessage',
           data: {
             message: 'Use not.toHaveBeenCalled instead',
-            chain: 'not.toHaveBeenCalledWith',
+            restriction: 'not.toHaveBeenCalledWith',
           },
           endColumn: 48,
           column: 24,
