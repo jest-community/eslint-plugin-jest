@@ -21,7 +21,7 @@ export default createRule<
       },
     ],
     messages: {
-      restrictedChain: 'Use of `{{ chain }}` is disallowed',
+      restrictedChain: 'Use of `{{ restriction }}` is disallowed',
       restrictedChainWithMessage: '{{ message }}',
     },
   },
@@ -35,31 +35,20 @@ export default createRule<
           return;
         }
 
-        const permutations = [jestFnCall.members];
+        const chain = jestFnCall.members
+          .map(nod => getAccessorValue(nod))
+          .join('.');
 
-        if (jestFnCall.members.length > 2) {
-          permutations.push([jestFnCall.members[0], jestFnCall.members[1]]);
-          permutations.push([jestFnCall.members[1], jestFnCall.members[2]]);
-        }
-
-        if (jestFnCall.members.length > 1) {
-          permutations.push(...jestFnCall.members.map(nod => [nod]));
-        }
-
-        for (const permutation of permutations) {
-          const chain = permutation.map(nod => getAccessorValue(nod)).join('.');
-
-          if (chain in restrictedChains) {
-            const message = restrictedChains[chain];
-
+        for (const [restriction, message] of Object.entries(restrictedChains)) {
+          if (chain.startsWith(restriction)) {
             context.report({
               messageId: message
                 ? 'restrictedChainWithMessage'
                 : 'restrictedChain',
-              data: { message, chain },
+              data: { message, restriction },
               loc: {
-                start: permutation[0].loc.start,
-                end: permutation[permutation.length - 1].loc.end,
+                start: jestFnCall.members[0].loc.start,
+                end: jestFnCall.members[jestFnCall.members.length - 1].loc.end,
               },
             });
 
