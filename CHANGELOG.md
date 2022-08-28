@@ -1,3 +1,10 @@
+## [27.0.1](https://github.com/jest-community/eslint-plugin-jest/compare/v27.0.0...v27.0.1) (2022-08-28)
+
+
+### Bug Fixes
+
+* **prefer-expect-assertions:** report on concise arrow functions with `expect` call ([#1225](https://github.com/jest-community/eslint-plugin-jest/issues/1225)) ([64ec9c1](https://github.com/jest-community/eslint-plugin-jest/commit/64ec9c10b0b67a19893e09f4462d5b1a1e984baf))
+
 # [27.0.0](https://github.com/jest-community/eslint-plugin-jest/compare/v26.9.0...v27.0.0) (2022-08-28)
 
 
