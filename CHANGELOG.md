@@ -1,3 +1,10 @@
+# [26.9.0](https://github.com/jest-community/eslint-plugin-jest/compare/v26.8.7...v26.9.0) (2022-08-28)
+
+
+### Features
+
+* create `prefer-each` rule ([#1222](https://github.com/jest-community/eslint-plugin-jest/issues/1222)) ([574eaed](https://github.com/jest-community/eslint-plugin-jest/commit/574eaed9fafcdc4ed5624451f792c8951eb49f0a))
+
 ## [26.8.7](https://github.com/jest-community/eslint-plugin-jest/compare/v26.8.6...v26.8.7) (2022-08-21)
 
 
