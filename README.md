@@ -203,7 +203,7 @@ installations requiring long-term consistency.
 | [expect-expect](docs/rules/expect-expect.md)                                 | Enforce assertion to be made in a test body                         | ![recommended][] |              |
 | [max-expects](docs/rules/max-expects.md)                                     | Enforces a maximum number assertion calls in a test body            |                  |              |
 | [max-nested-describe](docs/rules/max-nested-describe.md)                     | Enforces a maximum depth to nested describe calls                   |                  |              |
-| [no-alias-methods](docs/rules/no-alias-methods.md)                           | Disallow alias methods                                              | ![style][]       | ![fixable][] |
+| [no-alias-methods](docs/rules/no-alias-methods.md)                           | Disallow alias methods                                              | ![recommended][] | ![fixable][] |
 | [no-commented-out-tests](docs/rules/no-commented-out-tests.md)               | Disallow commented out tests                                        | ![recommended][] |              |
 | [no-conditional-expect](docs/rules/no-conditional-expect.md)                 | Prevent calling `expect` conditionally                              | ![recommended][] |              |
 | [no-conditional-in-test](docs/rules/no-conditional-in-test.md)               | Disallow conditional logic in tests                                 |                  |              |
@@ -217,7 +217,6 @@ installations requiring long-term consistency.
 | [no-identical-title](docs/rules/no-identical-title.md)                       | Disallow identical titles                                           | ![recommended][] |              |
 | [no-interpolation-in-snapshots](docs/rules/no-interpolation-in-snapshots.md) | Disallow string interpolation inside snapshots                      | ![recommended][] |              |
 | [no-jasmine-globals](docs/rules/no-jasmine-globals.md)                       | Disallow Jasmine globals                                            | ![recommended][] | ![fixable][] |
-| [no-jest-import](docs/rules/no-jest-import.md)                               | Disallow importing Jest                                             | ![recommended][] |              |
 | [no-large-snapshots](docs/rules/no-large-snapshots.md)                       | disallow large snapshots                                            |                  |              |
 | [no-mocks-import](docs/rules/no-mocks-import.md)                             | Disallow manually importing from `__mocks__`                        | ![recommended][] |              |
 | [no-restricted-matchers](docs/rules/no-restricted-matchers.md)               | Disallow specific matchers & modifiers                              |                  |              |

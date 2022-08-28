@@ -8,8 +8,9 @@ alternatives.
 Bans are expressed in the form of a map, with the value being either a string
 message to be shown, or `null` if the default rule message should be used.
 
-Both matchers, modifiers, and chains of the two are checked, allowing for
-specific variations of a matcher to be banned if desired.
+Bans are checked against the start of the `expect` chain - this means that to
+ban a specific matcher entirely you must specify all six permutations, but
+allows you to ban modifiers as well.
 
 By default, this map is empty, meaning no matchers or modifiers are banned.
 
@@ -22,7 +23,12 @@ For example:
     {
       "toBeFalsy": null,
       "resolves": "Use `expect(await promise)` instead.",
-      "not.toHaveBeenCalledWith": null
+      "toHaveBeenCalledWith": null,
+      "not.toHaveBeenCalledWith": null,
+      "resolves.toHaveBeenCalledWith": null,
+      "rejects.toHaveBeenCalledWith": null,
+      "resolves.not.toHaveBeenCalledWith": null,
+      "rejects.not.toHaveBeenCalledWith": null
     }
   ]
 }
@@ -32,15 +38,18 @@ Examples of **incorrect** code for this rule with the above configuration
 
 ```js
 it('is false', () => {
+  // if this has a modifer (i.e. `not.toBeFalsy`), it would be considered fine
   expect(a).toBeFalsy();
 });
 
 it('resolves', async () => {
+  // all uses of this modifier are disallowed, regardless of matcher
   await expect(myPromise()).resolves.toBe(true);
 });
 
 describe('when an error happens', () => {
   it('does not upload the file', async () => {
+    // all uses of this matcher are disallowed
     expect(uploadFileMock).not.toHaveBeenCalledWith('file.name');
   });
 });
