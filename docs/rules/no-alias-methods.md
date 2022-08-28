@@ -1,5 +1,8 @@
 # Disallow alias methods (`no-alias-methods`)
 
+> These aliases are going to be removed in the next major version of Jest - see
+> https://github.com/facebook/jest/issues/13164 for more
+
 Several Jest methods have alias names, such as `toThrow` having the alias of
 `toThrowError`. This rule ensures that only the canonical name as used in the
 Jest documentation is used in the code. This makes it easier to search for all
