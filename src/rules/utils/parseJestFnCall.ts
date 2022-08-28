@@ -50,7 +50,13 @@ export interface ResolvedJestFnWithNode extends ResolvedJestFn {
   node: AccessorNode;
 }
 
-type JestFnType = 'hook' | 'describe' | 'test' | 'expect' | 'jest' | 'unknown';
+export type JestFnType =
+  | 'hook'
+  | 'describe'
+  | 'test'
+  | 'expect'
+  | 'jest'
+  | 'unknown';
 
 const determineJestFnType = (name: string): JestFnType => {
   if (name === 'expect') {
