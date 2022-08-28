@@ -16,6 +16,12 @@ const isFirstStatement = (node: TSESTree.CallExpression): boolean => {
       return parent.parent.body[0] === parent;
     }
 
+    // if we've hit an arrow function, then it must have a single expression
+    // as its body, as otherwise we would have hit the block statement already
+    if (parent.parent?.type === AST_NODE_TYPES.ArrowFunctionExpression) {
+      return true;
+    }
+
     parent = parent.parent;
   }
 
@@ -51,11 +57,6 @@ type MessageIds =
   | 'suggestAddingHasAssertions'
   | 'suggestAddingAssertions'
   | 'suggestRemovingExtraArguments';
-
-// const suggestions: Array<[MessageIds, string]> = [
-//   ['suggestAddingHasAssertions', 'expect.hasAssertions();'],
-//   ['suggestAddingAssertions', 'expect.assertions();'],
-// ];
 
 export default createRule<[RuleOptions], MessageIds>({
   name: __filename,

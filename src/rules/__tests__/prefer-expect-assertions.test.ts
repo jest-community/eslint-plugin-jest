@@ -116,6 +116,28 @@ ruleTester.run('prefer-expect-assertions', rule, {
       ],
     },
     {
+      code: "it('resolves', () => expect(staged()).toBe(true));",
+      errors: [
+        {
+          messageId: 'haveExpectAssertions',
+          column: 1,
+          line: 1,
+          suggestions: null,
+        },
+      ],
+    },
+    {
+      code: "it('resolves', async () => expect(await staged()).toBe(true));",
+      errors: [
+        {
+          messageId: 'haveExpectAssertions',
+          column: 1,
+          line: 1,
+          suggestions: null,
+        },
+      ],
+    },
+    {
       code: 'it("it1", () => {})',
       errors: [
         {
