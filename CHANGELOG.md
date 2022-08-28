@@ -1,3 +1,29 @@
+# [27.0.0](https://github.com/jest-community/eslint-plugin-jest/compare/v26.9.0...v27.0.0) (2022-08-28)
+
+
+### Bug Fixes
+
+* **unbound-method:** don't suppress errors from base rule ([#1219](https://github.com/jest-community/eslint-plugin-jest/issues/1219)) ([7c1389e](https://github.com/jest-community/eslint-plugin-jest/commit/7c1389e3d8c59e283de37ed86f3f4c12fb38c3ff))
+
+
+### Features
+
+* drop support for `eslint@6` ([#1212](https://github.com/jest-community/eslint-plugin-jest/issues/1212)) ([21fc2fe](https://github.com/jest-community/eslint-plugin-jest/commit/21fc2feea67a8fd9f6673fd6a1e91ca1f5bdda11))
+* drop support for Node versions 12 and 17 ([#1211](https://github.com/jest-community/eslint-plugin-jest/issues/1211)) ([4c987f5](https://github.com/jest-community/eslint-plugin-jest/commit/4c987f5f566398d95584668bd2bc18bfdf438e40))
+* make `no-alias-methods` recommended ([#1221](https://github.com/jest-community/eslint-plugin-jest/issues/1221)) ([914b24a](https://github.com/jest-community/eslint-plugin-jest/commit/914b24a0bc12a151e6f7ecec37a440769b555b94))
+* **no-jest-import:** remove rule ([#1220](https://github.com/jest-community/eslint-plugin-jest/issues/1220)) ([918873b](https://github.com/jest-community/eslint-plugin-jest/commit/918873beb15d4a698fe5150d826d44b696283683))
+* **no-restricted-matchers:** match based on start of chain, requiring each permutation to be set ([#1218](https://github.com/jest-community/eslint-plugin-jest/issues/1218)) ([f4dd97a](https://github.com/jest-community/eslint-plugin-jest/commit/f4dd97a7ec3b985d0f7e42a5a6331bc0c65a7d56))
+
+
+### BREAKING CHANGES
+
+* `no-alias-methods` is now recommended as the methods themselves will be removed in the next major version of Jest
+* **no-jest-import:** removed `no-jest-import` rule
+* **unbound-method:** errors thrown by the `unbound-method` base rule are no longer suppressed - really this means that if you don't specify `project` when this rule is enabled and `@typescript-eslint/eslint-plugin` is present, that error will no longer be suppressed instead of silently doing nothing; it will still not throw if this rule is enabled without the base rule being present
+* **no-restricted-matchers:** `no-restricted-matchers` now checks against the start of the expect chain, meaning you have to explicitly list each possible matcher & modifier permutations that you want to restrict
+* Support for ESLint version 6 is removed
+* Node versions 12 and 17 are no longer supported
+
 # [27.0.0-next.2](https://github.com/jest-community/eslint-plugin-jest/compare/v27.0.0-next.1...v27.0.0-next.2) (2022-08-28)
 
 
