@@ -1,5 +1,8 @@
 # Disallow identical titles (`no-identical-title`)
 
+<!-- prettier-ignore -->
+💼 This rule is enabled in the following [configs](https://github.com/jest-community/eslint-plugin-jest#shareable-configurations): `all`, `recommended`.
+
 Having identical titles for two different tests or test suites may create
 confusion. For example, when a test with the same title as another test in the
 same test suite fails, it is harder to know which one failed and thus harder to

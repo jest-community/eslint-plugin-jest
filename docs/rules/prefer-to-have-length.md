@@ -1,9 +1,15 @@
 # Suggest using `toHaveLength()` (`prefer-to-have-length`)
 
+<!-- prettier-ignore -->
+💼 This rule is enabled in the following [configs](https://github.com/jest-community/eslint-plugin-jest#shareable-configurations): `all`, `style`.
+
+<!-- prettier-ignore -->
+🔧 This rule is automatically fixable using the `--fix` [option](https://eslint.org/docs/latest/user-guide/command-line-interface#--fix) on the command line.
+
 In order to have a better failure message, `toHaveLength()` should be used upon
 asserting expectations on objects length property.
 
-## Rule details
+## Rule Details
 
 This rule triggers a warning if `toBe()`, `toEqual()` or `toStrictEqual()` is
 used to assert objects length property.

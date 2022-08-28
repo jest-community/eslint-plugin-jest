@@ -1,6 +1,6 @@
 # Disallow conditional logic (`no-if`)
 
-## Deprecated
+❌ This rule is deprecated.
 
 This rule has been deprecated in favor of
 [`no-conditional-in-test`](no-conditional-in-test.md).

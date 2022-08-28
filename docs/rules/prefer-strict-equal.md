@@ -1,11 +1,17 @@
 # Suggest using `toStrictEqual()` (`prefer-strict-equal`)
 
+<!-- prettier-ignore -->
+💼 This rule is enabled in the following [configs](https://github.com/jest-community/eslint-plugin-jest#shareable-configurations): `all`.
+
+<!-- prettier-ignore -->
+💡 This rule is manually fixable by editor [suggestions](https://eslint.org/docs/developer-guide/working-with-rules#providing-suggestions).
+
 `toStrictEqual` not only checks that two objects contain the same data but also
 that they have the same structure. It is common to expect objects to not only
 have identical values but also to have identical keys. A stricter equality will
 catch cases where two objects do not have identical keys.
 
-## Rule details
+## Rule Details
 
 This rule triggers a warning if `toEqual()` is used to assert equality.
 

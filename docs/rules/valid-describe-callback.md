@@ -1,5 +1,8 @@
 # Enforce valid `describe()` callback (`valid-describe-callback`)
 
+<!-- prettier-ignore -->
+💼 This rule is enabled in the following [configs](https://github.com/jest-community/eslint-plugin-jest#shareable-configurations): `all`, `recommended`.
+
 Using an improper `describe()` callback function can lead to unexpected test
 errors.
 

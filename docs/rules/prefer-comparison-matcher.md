@@ -1,9 +1,15 @@
 # Suggest using the built-in comparison matchers (`prefer-comparison-matcher`)
 
+<!-- prettier-ignore -->
+💼 This rule is enabled in the following [configs](https://github.com/jest-community/eslint-plugin-jest#shareable-configurations): `all`.
+
+<!-- prettier-ignore -->
+🔧 This rule is automatically fixable using the `--fix` [option](https://eslint.org/docs/latest/user-guide/command-line-interface#--fix) on the command line.
+
 Jest has a number of built-in matchers for comparing numbers, which allow for
 more readable tests and error messages if an expectation fails.
 
-## Rule details
+## Rule Details
 
 This rule checks for comparisons in tests that could be replaced with one of the
 following built-in comparison matchers:

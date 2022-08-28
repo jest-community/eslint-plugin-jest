@@ -1,5 +1,8 @@
 # Disallow using `exports` in files containing tests (`no-export`)
 
+<!-- prettier-ignore -->
+💼 This rule is enabled in the following [configs](https://github.com/jest-community/eslint-plugin-jest#shareable-configurations): `all`, `recommended`.
+
 Prevents using `exports` if a file has one or more tests in it.
 
 ## Rule Details

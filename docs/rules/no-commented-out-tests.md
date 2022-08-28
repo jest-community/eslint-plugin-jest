@@ -1,5 +1,8 @@
 # Disallow commented out tests (`no-commented-out-tests`)
 
+<!-- prettier-ignore -->
+💼 This rule is enabled in the following [configs](https://github.com/jest-community/eslint-plugin-jest#shareable-configurations): `all`.
+
 This rule raises a warning about commented out tests. It's similar to
 no-disabled-tests rule.
 

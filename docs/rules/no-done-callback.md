@@ -1,5 +1,11 @@
 # Avoid using a callback in asynchronous tests and hooks (`no-done-callback`)
 
+<!-- prettier-ignore -->
+💼 This rule is enabled in the following [configs](https://github.com/jest-community/eslint-plugin-jest#shareable-configurations): `all`, `recommended`.
+
+<!-- prettier-ignore -->
+💡 This rule is manually fixable by editor [suggestions](https://eslint.org/docs/developer-guide/working-with-rules#providing-suggestions).
+
 When calling asynchronous code in hooks and tests, `jest` needs to know when the
 asynchronous work is complete to progress the current run.
 
@@ -49,7 +55,7 @@ test('the data is peanut butter', async () => {
 });
 ```
 
-## Rule details
+## Rule Details
 
 This rule checks the function parameter of hooks & tests for use of the `done`
 argument, suggesting you return a promise instead.

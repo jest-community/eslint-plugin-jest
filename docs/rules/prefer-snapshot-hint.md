@@ -1,5 +1,8 @@
 # Prefer including a hint with external snapshots (`prefer-snapshot-hint`)
 
+<!-- prettier-ignore -->
+💼 This rule is enabled in the following [configs](https://github.com/jest-community/eslint-plugin-jest#shareable-configurations): `all`.
+
 When working with external snapshot matchers it's considered best practice to
 provide a hint (as the last argument to the matcher) describing the expected
 snapshot content that will be included in the snapshots name by Jest.
@@ -8,7 +11,7 @@ This makes it easier for reviewers to verify the snapshots during review, and
 for anyone to know whether an outdated snapshot is the correct behavior before
 updating.
 
-## Rule details
+## Rule Details
 
 This rule looks for any use of an external snapshot matcher (e.g.
 `toMatchSnapshot` and `toThrowErrorMatchingSnapshot`) and checks if they include

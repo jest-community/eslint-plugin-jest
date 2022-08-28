@@ -1,5 +1,8 @@
 # Require test cases and hooks to be inside a `describe` block (`require-top-level-describe`)
 
+<!-- prettier-ignore -->
+💼 This rule is enabled in the following [configs](https://github.com/jest-community/eslint-plugin-jest#shareable-configurations): `all`.
+
 Jest allows you to organise your test files the way you want it. However, the
 more your codebase grows, the more it becomes hard to navigate in your test
 files. This rule makes sure you provide at least a top-level `describe` block in
@@ -46,6 +49,8 @@ describe('test suite', () => {
   });
 });
 ```
+
+## Options
 
 You can also enforce a limit on the number of describes allowed at the top-level
 using the `maxNumberOfTopLevelDescribes` option:

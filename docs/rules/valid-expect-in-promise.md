@@ -1,8 +1,11 @@
 # Ensure promises that have expectations in their chain are valid (`valid-expect-in-promise`)
 
+<!-- prettier-ignore -->
+💼 This rule is enabled in the following [configs](https://github.com/jest-community/eslint-plugin-jest#shareable-configurations): `all`, `recommended`.
+
 Ensure promises that include expectations are returned or awaited.
 
-## Rule details
+## Rule Details
 
 This rule flags any promises within the body of a test that include expectations
 that have either not been returned or awaited.

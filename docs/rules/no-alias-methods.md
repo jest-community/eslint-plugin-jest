@@ -1,5 +1,11 @@
 # Disallow alias methods (`no-alias-methods`)
 
+<!-- prettier-ignore -->
+💼 This rule is enabled in the following [configs](https://github.com/jest-community/eslint-plugin-jest#shareable-configurations): `all`, `recommended`.
+
+<!-- prettier-ignore -->
+🔧 This rule is automatically fixable using the `--fix` [option](https://eslint.org/docs/latest/user-guide/command-line-interface#--fix) on the command line.
+
 > These aliases are going to be removed in the next major version of Jest - see
 > https://github.com/facebook/jest/issues/13164 for more
 
@@ -9,7 +15,7 @@ Jest documentation is used in the code. This makes it easier to search for all
 occurrences of the method within code, and it ensures consistency among the
 method names used.
 
-## Rule details
+## Rule Details
 
 This rule triggers a warning if the alias name, rather than the canonical name,
 of a method is used.

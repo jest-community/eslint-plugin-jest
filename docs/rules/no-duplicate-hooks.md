@@ -1,5 +1,8 @@
 # Disallow duplicate setup and teardown hooks (`no-duplicate-hooks`)
 
+<!-- prettier-ignore -->
+💼 This rule is enabled in the following [configs](https://github.com/jest-community/eslint-plugin-jest#shareable-configurations): `all`.
+
 A `describe` block should not contain duplicate hooks.
 
 ## Rule Details

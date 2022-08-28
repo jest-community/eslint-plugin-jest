@@ -1,14 +1,22 @@
 # Have control over `test` and `it` usages (`consistent-test-it`)
 
+<!-- prettier-ignore -->
+💼 This rule is enabled in the following [configs](https://github.com/jest-community/eslint-plugin-jest#shareable-configurations): `all`.
+
+<!-- prettier-ignore -->
+🔧 This rule is automatically fixable using the `--fix` [option](https://eslint.org/docs/latest/user-guide/command-line-interface#--fix) on the command line.
+
 Jest allows you to choose how you want to define your tests, using the `it` or
 the `test` keywords, with multiple permutations for each:
 
 - **it:** `it`, `xit`, `fit`, `it.only`, `it.skip`.
 - **test:** `test`, `xtest`, `test.only`, `test.skip`.
 
+## Rule Details
+
 This rule gives you control over the usage of these keywords in your codebase.
 
-## Rule Details
+## Options
 
 This rule can be configured as follows
 

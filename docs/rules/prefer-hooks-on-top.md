@@ -1,5 +1,8 @@
 # Suggest having hooks before any test cases (`prefer-hooks-on-top`)
 
+<!-- prettier-ignore -->
+💼 This rule is enabled in the following [configs](https://github.com/jest-community/eslint-plugin-jest#shareable-configurations): `all`.
+
 While hooks can be setup anywhere in a test file, they are always called in a
 specific order, which means it can be confusing if they're intermixed with test
 cases.

@@ -1,5 +1,8 @@
 # Disallow setup and teardown hooks (`no-hooks`)
 
+<!-- prettier-ignore -->
+💼 This rule is enabled in the following [configs](https://github.com/jest-community/eslint-plugin-jest#shareable-configurations): `all`.
+
 Jest provides global functions for setup and teardown tasks, which are called
 before/after each test case and each test suite. The use of these hooks promotes
 shared state between tests.

@@ -1,9 +1,15 @@
 # Suggest using `expect.assertions()` OR `expect.hasAssertions()` (`prefer-expect-assertions`)
 
+<!-- prettier-ignore -->
+💼 This rule is enabled in the following [configs](https://github.com/jest-community/eslint-plugin-jest#shareable-configurations): `all`.
+
+<!-- prettier-ignore -->
+💡 This rule is manually fixable by editor [suggestions](https://eslint.org/docs/developer-guide/working-with-rules#providing-suggestions).
+
 Ensure every test to have either `expect.assertions(<number of assertions>)` OR
 `expect.hasAssertions()` as its first expression.
 
-## Rule details
+## Rule Details
 
 This rule triggers a warning if,
 

@@ -1,5 +1,11 @@
 # Use `.only` and `.skip` over `f` and `x` (`no-test-prefixes`)
 
+<!-- prettier-ignore -->
+💼 This rule is enabled in the following [configs](https://github.com/jest-community/eslint-plugin-jest#shareable-configurations): `all`, `recommended`.
+
+<!-- prettier-ignore -->
+🔧 This rule is automatically fixable using the `--fix` [option](https://eslint.org/docs/latest/user-guide/command-line-interface#--fix) on the command line.
+
 Jest allows you to choose how you want to define focused and skipped tests, with
 multiple permutations for each:
 
@@ -9,7 +15,7 @@ multiple permutations for each:
 
 This rule enforces usages from the **only & skip** list.
 
-## Rule details
+## Rule Details
 
 This rule triggers a warning if you use one of the keywords from the **'f' &
 'x'** list to focus/skip a test.

@@ -1,5 +1,8 @@
 # Prefer having hooks in a consistent order (`prefer-hooks-in-order`)
 
+<!-- prettier-ignore -->
+💼 This rule is enabled in the following [configs](https://github.com/jest-community/eslint-plugin-jest#shareable-configurations): `all`.
+
 While hooks can be setup in any order, they're always called by `jest` in this
 specific order:
 

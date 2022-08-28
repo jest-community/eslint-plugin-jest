@@ -1,5 +1,11 @@
 # Prefer `await expect(...).resolves` over `expect(await ...)` syntax (`prefer-expect-resolves`)
 
+<!-- prettier-ignore -->
+💼 This rule is enabled in the following [configs](https://github.com/jest-community/eslint-plugin-jest#shareable-configurations): `all`.
+
+<!-- prettier-ignore -->
+🔧 This rule is automatically fixable using the `--fix` [option](https://eslint.org/docs/latest/user-guide/command-line-interface#--fix) on the command line.
+
 When working with promises, there are two primary ways you can test the resolved
 value:
 
@@ -15,7 +21,7 @@ behaviour and output from `jest`.
 Additionally, favoring the first style ensures consistency with its `rejects`
 counterpart, as there is no way of "awaiting" a rejection.
 
-## Rule details
+## Rule Details
 
 This rule triggers a warning if an `await` is done within an `expect`, and
 recommends using `resolves` instead.

@@ -1,5 +1,8 @@
 # Enforces a maximum depth to nested describe calls (`max-nested-describe`)
 
+<!-- prettier-ignore -->
+💼 This rule is enabled in the following [configs](https://github.com/jest-community/eslint-plugin-jest#shareable-configurations): `all`.
+
 While it's useful to be able to group your tests together within the same file
 using `describe()`, having too many levels of nesting throughout your tests make
 them difficult to read.

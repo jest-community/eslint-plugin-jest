@@ -1,5 +1,8 @@
 # Require setup and teardown code to be within a hook (`require-hook`)
 
+<!-- prettier-ignore -->
+💼 This rule is enabled in the following [configs](https://github.com/jest-community/eslint-plugin-jest#shareable-configurations): `all`.
+
 Often while writing tests you have some setup work that needs to happen before
 tests run, and you have some finishing work that needs to happen after tests
 run. Jest provides helper functions to handle this.
@@ -12,7 +15,7 @@ executes any of the actual tests, it's important to ensure setup and teardown
 work is done inside `before*` and `after*` handlers respectively, rather than
 inside the `describe` blocks.
 
-## Rule details
+## Rule Details
 
 This rule flags any expression that is either at the toplevel of a test file or
 directly within the body of a `describe`, _except_ for the following:

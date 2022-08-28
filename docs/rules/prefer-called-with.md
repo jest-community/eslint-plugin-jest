@@ -1,5 +1,8 @@
 # Suggest using `toBeCalledWith()` or `toHaveBeenCalledWith()` (`prefer-called-with`)
 
+<!-- prettier-ignore -->
+💼 This rule is enabled in the following [configs](https://github.com/jest-community/eslint-plugin-jest#shareable-configurations): `all`.
+
 The `toBeCalled()` matcher is used to assert that a mock function has been
 called one or more times, without checking the arguments passed. The assertion
 is stronger when arguments are also validated using the `toBeCalledWith()`
@@ -9,7 +12,7 @@ matcher. When some arguments are difficult to check, using generic match like
 This rule warns if the form without argument checking is used, except for `.not`
 enforcing a function has never been called.
 
-## Rule details
+## Rule Details
 
 The following patterns are warnings:
 

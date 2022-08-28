@@ -1,9 +1,16 @@
 # Disallow specific matchers & modifiers (`no-restricted-matchers`)
 
+<!-- prettier-ignore -->
+💼 This rule is enabled in the following [configs](https://github.com/jest-community/eslint-plugin-jest#shareable-configurations): `all`.
+
+You may want to ban specific matchers & modifiers from being used.
+
+## Rule Details
+
 This rule bans specific matchers & modifiers from being used, and can suggest
 alternatives.
 
-## Rule Details
+## Options
 
 Bans are expressed in the form of a map, with the value being either a string
 message to be shown, or `null` if the default rule message should be used.

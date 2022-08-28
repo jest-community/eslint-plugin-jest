@@ -1,5 +1,8 @@
 # Disallow conditional logic in tests (`no-conditional-in-test`)
 
+<!-- prettier-ignore -->
+💼 This rule is enabled in the following [configs](https://github.com/jest-community/eslint-plugin-jest#shareable-configurations): `all`.
+
 Conditional logic in tests is usually an indication that a test is attempting to
 cover too much, and not testing the logic it intends to. Each branch of code
 executing within a conditional statement will usually be better served by a test

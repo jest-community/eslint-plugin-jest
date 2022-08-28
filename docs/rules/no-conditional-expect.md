@@ -1,5 +1,8 @@
 # Prevent calling `expect` conditionally (`no-conditional-expect`)
 
+<!-- prettier-ignore -->
+💼 This rule is enabled in the following [configs](https://github.com/jest-community/eslint-plugin-jest#shareable-configurations): `all`, `recommended`.
+
 This rule prevents the use of `expect` in conditional blocks, such as `if`s &
 `catch`s.
 

@@ -1,6 +1,12 @@
 # Enforce lowercase test names (`prefer-lowercase-title`)
 
-## Rule details
+<!-- prettier-ignore -->
+💼 This rule is enabled in the following [configs](https://github.com/jest-community/eslint-plugin-jest#shareable-configurations): `all`.
+
+<!-- prettier-ignore -->
+🔧 This rule is automatically fixable using the `--fix` [option](https://eslint.org/docs/latest/user-guide/command-line-interface#--fix) on the command line.
+
+## Rule Details
 
 Enforce `it`, `test` and `describe` to have descriptions that begin with a
 lowercase letter. This provides more readable test failures. This rule is not

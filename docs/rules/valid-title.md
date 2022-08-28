@@ -1,5 +1,11 @@
 # Enforce valid titles (`valid-title`)
 
+<!-- prettier-ignore -->
+💼 This rule is enabled in the following [configs](https://github.com/jest-community/eslint-plugin-jest#shareable-configurations): `all`, `recommended`.
+
+<!-- prettier-ignore -->
+🔧 This rule is automatically fixable using the `--fix` [option](https://eslint.org/docs/latest/user-guide/command-line-interface#--fix) on the command line.
+
 Checks that the title of Jest blocks are valid by ensuring that titles are:
 
 - not empty,

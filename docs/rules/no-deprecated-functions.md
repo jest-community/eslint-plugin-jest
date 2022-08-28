@@ -1,5 +1,11 @@
 # Disallow use of deprecated functions (`no-deprecated-functions`)
 
+<!-- prettier-ignore -->
+💼 This rule is enabled in the following [configs](https://github.com/jest-community/eslint-plugin-jest#shareable-configurations): `all`, `recommended`.
+
+<!-- prettier-ignore -->
+🔧 This rule is automatically fixable using the `--fix` [option](https://eslint.org/docs/latest/user-guide/command-line-interface#--fix) on the command line.
+
 Over the years Jest has accrued some debt in the form of functions that have
 either been renamed for clarity, or replaced with more powerful APIs.
 
@@ -11,7 +17,7 @@ This rule requires knowing which version of Jest you're using - see
 on how that is obtained automatically and how you can explicitly provide a
 version if needed.
 
-## Rule details
+## Rule Details
 
 This rule warns about calls to deprecated functions, and provides details on
 what to replace them with, based on the version of Jest that is installed.

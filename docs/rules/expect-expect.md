@@ -1,8 +1,11 @@
 # Enforce assertion to be made in a test body (`expect-expect`)
 
+<!-- prettier-ignore -->
+💼 This rule is enabled in the following [configs](https://github.com/jest-community/eslint-plugin-jest#shareable-configurations): `all`.
+
 Ensure that there is at least one `expect` call made in a test.
 
-## Rule details
+## Rule Details
 
 This rule triggers when there is no call made to `expect` in a test, to prevent
 users from forgetting to add assertions.

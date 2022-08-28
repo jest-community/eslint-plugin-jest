@@ -1,8 +1,11 @@
 # Prefer using `.each` rather than manual loops (`prefer-each`)
 
+<!-- prettier-ignore -->
+💼 This rule is enabled in the following [configs](https://github.com/jest-community/eslint-plugin-jest#shareable-configurations): `all`.
+
 Reports where you might be able to use `.each` instead of native loops.
 
-## Rule details
+## Rule Details
 
 This rule triggers a warning if you use test case functions like `describe`,
 `test`, and `it`, in a native loop - generally you should be able to use `.each`

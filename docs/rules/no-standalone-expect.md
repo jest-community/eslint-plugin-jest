@@ -1,5 +1,8 @@
 # Disallow using `expect` outside of `it` or `test` blocks (`no-standalone-expect`)
 
+<!-- prettier-ignore -->
+💼 This rule is enabled in the following [configs](https://github.com/jest-community/eslint-plugin-jest#shareable-configurations): `all`, `recommended`.
+
 Prevents `expect` statements outside of a `test` or `it` block. An `expect`
 within a helper function (but outside of a `test` or `it` block) will not
 trigger this rule.

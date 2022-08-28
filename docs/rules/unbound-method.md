@@ -1,5 +1,8 @@
 # Enforce unbound methods are called with their expected scope (`unbound-method`)
 
+<!-- prettier-ignore -->
+💼 This rule is enabled in the following [configs](https://github.com/jest-community/eslint-plugin-jest#shareable-configurations): `all`.
+
 ## Rule Details
 
 This rule extends the base [`@typescript-eslint/unbound-method`][original-rule]

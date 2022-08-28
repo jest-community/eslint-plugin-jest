@@ -1,5 +1,8 @@
 # disallow large snapshots (`no-large-snapshots`)
 
+<!-- prettier-ignore -->
+💼 This rule is enabled in the following [configs](https://github.com/jest-community/eslint-plugin-jest#shareable-configurations): `all`.
+
 When using Jest's snapshot capability one should be mindful of the size of
 created snapshots. As a general best practice snapshots should be limited in
 size in order to be more manageable and reviewable. A stored snapshot is only as

@@ -1,5 +1,11 @@
 # Suggest using `toBe()` for primitive literals (`prefer-to-be`)
 
+<!-- prettier-ignore -->
+💼 This rule is enabled in the following [configs](https://github.com/jest-community/eslint-plugin-jest#shareable-configurations): `all`, `style`.
+
+<!-- prettier-ignore -->
+🔧 This rule is automatically fixable using the `--fix` [option](https://eslint.org/docs/latest/user-guide/command-line-interface#--fix) on the command line.
+
 When asserting against primitive literals such as numbers and strings, the
 equality matchers all operate the same, but read slightly differently in code.
 
@@ -8,7 +14,7 @@ the most grammatically natural sentence. For `null`, `undefined`, and `NaN` this
 rule recommends using their specific `toBe` matchers, as they give better error
 messages as well.
 
-## Rule details
+## Rule Details
 
 This rule triggers a warning if `toEqual()` or `toStrictEqual()` are used to
 assert a primitive literal value such as numbers, strings, and booleans.

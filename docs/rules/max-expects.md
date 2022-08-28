@@ -1,5 +1,8 @@
 # Enforces a maximum number assertion calls in a test body (`max-expects`)
 
+<!-- prettier-ignore -->
+💼 This rule is enabled in the following [configs](https://github.com/jest-community/eslint-plugin-jest#shareable-configurations): `all`.
+
 As more assertions are made, there is a possible tendency for the test to be
 more likely to mix multiple objectives. To avoid this, this rule reports when
 the maximum number of assertions is exceeded.

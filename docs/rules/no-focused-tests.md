@@ -1,5 +1,11 @@
 # Disallow focused tests (`no-focused-tests`)
 
+<!-- prettier-ignore -->
+💼 This rule is enabled in the following [configs](https://github.com/jest-community/eslint-plugin-jest#shareable-configurations): `all`, `recommended`.
+
+<!-- prettier-ignore -->
+💡 This rule is manually fixable by editor [suggestions](https://eslint.org/docs/developer-guide/working-with-rules#providing-suggestions).
+
 Jest has a feature that allows you to focus tests by appending `.only` or
 prepending `f` to a test-suite or a test-case. This feature is really helpful to
 debug a failing test, so you don’t have to execute all of your tests. After you

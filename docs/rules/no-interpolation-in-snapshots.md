@@ -1,5 +1,8 @@
 # Disallow string interpolation inside snapshots (`no-interpolation-in-snapshots`)
 
+<!-- prettier-ignore -->
+💼 This rule is enabled in the following [configs](https://github.com/jest-community/eslint-plugin-jest#shareable-configurations): `all`, `recommended`.
+
 Prevents the use of string interpolations in snapshots.
 
 ## Rule Details
