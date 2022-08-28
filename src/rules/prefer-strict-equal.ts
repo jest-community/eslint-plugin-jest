@@ -13,7 +13,6 @@ export default createRule({
       category: 'Best Practices',
       description: 'Suggest using `toStrictEqual()`',
       recommended: false,
-      suggestion: true,
     },
     messages: {
       useToStrictEqual: 'Use `toStrictEqual()` instead',

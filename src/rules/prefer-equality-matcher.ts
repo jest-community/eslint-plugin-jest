@@ -16,7 +16,6 @@ export default createRule({
       category: 'Best Practices',
       description: 'Suggest using the built-in equality matchers',
       recommended: false,
-      suggestion: true,
     },
     messages: {
       useEqualityMatcher: 'Prefer using one of the equality matchers instead',
