@@ -8,7 +8,6 @@ export default createRule({
       category: 'Best Practices',
       description: 'Disallow focused tests',
       recommended: 'error',
-      suggestion: true,
     },
     messages: {
       focusedTest: 'Unexpected focused test.',
