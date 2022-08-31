@@ -9,8 +9,8 @@ const ruleTester = new TSESLint.RuleTester({
   },
 });
 
-type RuleMessages<TRuleModule extends TSESLint.RuleModule<string>> =
-  TRuleModule extends TSESLint.RuleModule<infer TMessageIds>
+type RuleMessages<TRuleModule extends TSESLint.RuleModule<string, unknown[]>> =
+  TRuleModule extends TSESLint.RuleModule<infer TMessageIds, unknown[]>
     ? TMessageIds
     : never;
 
