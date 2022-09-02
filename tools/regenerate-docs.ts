@@ -5,7 +5,12 @@ import * as path from 'path';
 import { TSESLint } from '@typescript-eslint/utils';
 import prettier, { Options } from 'prettier';
 import { prettier as prettierRC } from '../package.json';
-import config from '../src/index';
+import plugin from '../src/index';
+import {
+  RULE_NOTICE_MARK_END,
+  RULE_NOTICE_MARK_START,
+  getRuleNoticeLines,
+} from './rule-notices';
 
 const pathTo = {
   readme: path.resolve(__dirname, '../README.md'),
@@ -23,6 +28,7 @@ interface RuleDetails {
   description: string;
   fixable: FixType | false;
   requiresTypeChecking: boolean;
+  deprecated: boolean;
 }
 
 type RuleModule = TSESLint.RuleModule<string, unknown[]> & {
@@ -35,12 +41,16 @@ const staticElements = {
 };
 
 const getConfigurationColumnValueForRule = (rule: RuleDetails): string => {
-  if (`jest/${rule.name}` in config.configs.recommended.rules) {
+  if (`jest/${rule.name}` in plugin.configs.recommended.rules) {
     return '![recommended][]';
   }
 
-  if (`jest/${rule.name}` in config.configs.style.rules) {
+  if (`jest/${rule.name}` in plugin.configs.style.rules) {
     return '![style][]';
+  }
+
+  if (rule.deprecated) {
+    return '![deprecated][]';
   }
 
   return '';
@@ -89,6 +99,30 @@ const updateRulesList = (
   ].join('\n');
 };
 
+const updateRuleNotices = (contents, ruleName) => {
+  // Determine where to insert rule notices.
+  let ruleNoticeMarkStartLine = contents.findIndex(
+    line => line === RULE_NOTICE_MARK_START,
+  );
+  let ruleNoticeMarkEndLine = contents.findIndex(
+    line => line === RULE_NOTICE_MARK_END,
+  );
+
+  // Add rule notice markers if they don't exist
+  if (ruleNoticeMarkStartLine === -1) {
+    contents.splice(2, 0, RULE_NOTICE_MARK_START, RULE_NOTICE_MARK_END);
+    ruleNoticeMarkStartLine = 2;
+    ruleNoticeMarkEndLine = 3;
+  }
+
+  // Insert rule notices between markers.
+  contents.splice(
+    ruleNoticeMarkStartLine + 1,
+    ruleNoticeMarkEndLine - ruleNoticeMarkStartLine - 1,
+    ...getRuleNoticeLines(ruleName),
+  );
+};
+
 // copied from https://github.com/babel/babel/blob/d8da63c929f2d28c401571e2a43166678c555bc4/packages/babel-helpers/src/helpers.js#L602-L606
 /* istanbul ignore next */
 const interopRequireDefault = (obj: any): { default: any } =>
@@ -101,12 +135,11 @@ const importDefault = (moduleName: string) =>
 const requireJestRule = (name: string): RuleModule =>
   importDefault(path.join(pathTo.rules, name)) as RuleModule;
 
-const details: RuleDetails[] = Object.keys(config.configs.all.rules)
-  .map(name => name.split('/')[1])
+const details: RuleDetails[] = Object.keys(plugin.rules)
   .map(name => [name, requireJestRule(name)] as const)
   .filter(
     (nameAndRule): nameAndRule is [string, Required<RuleModule>] =>
-      !!nameAndRule[1].meta && !nameAndRule[1].meta.deprecated,
+      !!nameAndRule[1].meta,
   )
   .map(
     ([name, rule]): RuleDetails => ({
@@ -118,6 +151,7 @@ const details: RuleDetails[] = Object.keys(config.configs.all.rules)
         ? 'suggest'
         : false,
       requiresTypeChecking: rule.meta.docs.requiresTypeChecking ?? false,
+      deprecated: rule.meta.deprecated ?? false,
     }),
   );
 
@@ -126,7 +160,10 @@ details.forEach(({ name, description }) => {
 
   const contents = fs.readFileSync(pathToDoc).toString().split('\n');
 
+  // Replace the title.
   contents[0] = `# ${description} (\`${name}\`)`;
+
+  updateRuleNotices(contents, name);
 
   fs.writeFileSync(pathToDoc, format(contents.join('\n')));
 });
