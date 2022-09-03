@@ -19,7 +19,7 @@ export const MESSAGES = {
   [MESSAGE_TYPE.FIXABLE]:
     '🔧 This rule is automatically fixable using the `--fix` [option](https://eslint.org/docs/latest/user-guide/command-line-interface#--fix) on the command line.',
   [MESSAGE_TYPE.HAS_SUGGESTIONS]:
-    '💡 This rule is manually fixable by editor [suggestions](https://eslint.org/docs/developer-guide/working-with-rules#providing-suggestions).',
+    '💡 This rule provides [suggestions](https://eslint.org/docs/developer-guide/working-with-rules#providing-suggestions) that can be applied manually.',
 };
 
 const PRETTIER_MAX_LINE_LENGTH = 80;
