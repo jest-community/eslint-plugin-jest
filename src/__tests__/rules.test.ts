@@ -108,11 +108,9 @@ describe('rules', () => {
       // Ensure that unexpected notices are not present.
       const { unexpectedNotices } = getNoticesForRule(rule);
 
-      unexpectedNotices.forEach(unexpectedNotice => {
-        expect(
-          documentContents.includes(MESSAGES[unexpectedNotice]),
-        ).toStrictEqual(false);
-      });
+      unexpectedNotices.forEach(unexpectedNotice =>
+        expect(documentContents).not.toContain(MESSAGES[unexpectedNotice]),
+      );
 
       // Check for Rule details section.
       expect(documentContents).toContain('## Rule details');
@@ -127,8 +125,8 @@ describe('rules', () => {
         expect(documentContents).toContain('## Options');
       } else {
         // Should NOT have any options section header:
-        expect(documentContents.includes('## Options')).toStrictEqual(false);
-        expect(documentContents.includes('## Config')).toStrictEqual(false);
+        expect(documentContents).not.toContain('## Options');
+        expect(documentContents).not.toContain('## Config');
       }
     });
   });
