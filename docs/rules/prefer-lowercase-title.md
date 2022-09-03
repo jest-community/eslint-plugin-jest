@@ -10,7 +10,7 @@
 
 <!-- /RULE_NOTICE -->
 
-## Rule Details
+## Rule details
 
 Enforce `it`, `test` and `describe` to have descriptions that begin with a
 lowercase letter. This provides more readable test failures. This rule is not

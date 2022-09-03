@@ -13,7 +13,7 @@
 Ensure every test to have either `expect.assertions(<number of assertions>)` OR
 `expect.hasAssertions()` as its first expression.
 
-## Rule Details
+## Rule details
 
 This rule triggers a warning if,
 

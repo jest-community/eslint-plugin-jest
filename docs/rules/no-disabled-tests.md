@@ -14,7 +14,7 @@ running.
 
 This rule raises a warning about disabled tests.
 
-## Rule Details
+## Rule details
 
 There are a number of ways to disable tests in Jest:
 

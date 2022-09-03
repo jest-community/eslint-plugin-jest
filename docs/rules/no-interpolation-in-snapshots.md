@@ -9,7 +9,7 @@
 
 Prevents the use of string interpolations in snapshots.
 
-## Rule Details
+## Rule details
 
 Interpolation prevents snapshots from being updated. Instead, properties should
 be overloaded with a matcher by using

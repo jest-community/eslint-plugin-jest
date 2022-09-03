@@ -13,7 +13,7 @@
 When test cases are empty then it is better to mark them as `test.todo` as it
 will be highlighted in the summary output.
 
-## Rule Details
+## Rule details
 
 This rule triggers a warning if empty test cases are used without 'test.todo'.
 

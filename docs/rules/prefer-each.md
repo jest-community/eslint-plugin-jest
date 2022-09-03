@@ -9,7 +9,7 @@
 
 Reports where you might be able to use `.each` instead of native loops.
 
-## Rule Details
+## Rule details
 
 This rule triggers a warning if you use test case functions like `describe`,
 `test`, and `it`, in a native loop - generally you should be able to use `.each`

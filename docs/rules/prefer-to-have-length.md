@@ -13,7 +13,7 @@
 In order to have a better failure message, `toHaveLength()` should be used upon
 asserting expectations on objects length property.
 
-## Rule Details
+## Rule details
 
 This rule triggers a warning if `toBe()`, `toEqual()` or `toStrictEqual()` is
 used to assert objects length property.

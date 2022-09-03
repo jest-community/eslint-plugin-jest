@@ -25,7 +25,7 @@ behaviour and output from `jest`.
 Additionally, favoring the first style ensures consistency with its `rejects`
 counterpart, as there is no way of "awaiting" a rejection.
 
-## Rule Details
+## Rule details
 
 This rule triggers a warning if an `await` is done within an `expect`, and
 recommends using `resolves` instead.

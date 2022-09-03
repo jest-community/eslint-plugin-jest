@@ -12,7 +12,7 @@ Tests in Jest should be void and not return values.
 If you are returning Promises then you should update the test to use
 `async/await`.
 
-## Rule Details
+## Rule details
 
 This rule triggers a warning if you use a return statement inside a test body.
 

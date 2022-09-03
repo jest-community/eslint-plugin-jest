@@ -15,7 +15,7 @@ This makes it easier for reviewers to verify the snapshots during review, and
 for anyone to know whether an outdated snapshot is the correct behavior before
 updating.
 
-## Rule Details
+## Rule details
 
 This rule looks for any use of an external snapshot matcher (e.g.
 `toMatchSnapshot` and `toThrowErrorMatchingSnapshot`) and checks if they include

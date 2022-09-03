@@ -13,7 +13,7 @@ This rule prevents the use of `expect` in conditional blocks, such as `if`s &
 This includes using `expect` in callbacks to functions named `catch`, which are
 assumed to be promises.
 
-## Rule Details
+## Rule details
 
 Jest only considers a test to have failed if it throws an error, meaning if
 calls to assertion functions like `expect` occur in conditional code such as a

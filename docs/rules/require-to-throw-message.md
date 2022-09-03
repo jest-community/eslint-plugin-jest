@@ -12,7 +12,7 @@ thrown by a function call, such as in `expect(() => a()).toThrow()`. However, if
 no message is defined, then the test will pass for any thrown error. Requiring a
 message ensures that the intended error is thrown.
 
-## Rule Details
+## Rule details
 
 This rule triggers a warning if `toThrow()` or `toThrowError()` is used without
 an error message.

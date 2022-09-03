@@ -9,7 +9,7 @@
 
 A `describe` block should not contain duplicate hooks.
 
-## Rule Details
+## Rule details
 
 Examples of **incorrect** code for this rule
 

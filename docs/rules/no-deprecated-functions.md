@@ -21,7 +21,7 @@ This rule requires knowing which version of Jest you're using - see
 on how that is obtained automatically and how you can explicitly provide a
 version if needed.
 
-## Rule Details
+## Rule details
 
 This rule warns about calls to deprecated functions, and provides details on
 what to replace them with, based on the version of Jest that is installed.

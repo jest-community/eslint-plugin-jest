@@ -9,7 +9,7 @@
 
 You may want to ban specific matchers & modifiers from being used.
 
-## Rule Details
+## Rule details
 
 This rule bans specific matchers & modifiers from being used, and can suggest
 alternatives.

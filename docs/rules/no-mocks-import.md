@@ -21,7 +21,7 @@ test('x', () => {
 });
 ```
 
-## Rule Details
+## Rule details
 
 This rule reports imports from a path containing a `__mocks__` component.
 

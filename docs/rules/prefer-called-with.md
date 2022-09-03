@@ -16,7 +16,7 @@ matcher. When some arguments are difficult to check, using generic match like
 This rule warns if the form without argument checking is used, except for `.not`
 enforcing a function has never been called.
 
-## Rule Details
+## Rule details
 
 The following patterns are warnings:
 

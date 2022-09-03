@@ -114,8 +114,8 @@ describe('rules', () => {
         ).toStrictEqual(false);
       });
 
-      // Check for Rule Details section.
-      expect(documentContents).toContain('## Rule Details');
+      // Check for Rule details section.
+      expect(documentContents).toContain('## Rule details');
 
       // Check if the rule has configuration options.
       if (

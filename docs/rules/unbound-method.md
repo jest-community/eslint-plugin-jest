@@ -7,7 +7,7 @@
 
 <!-- /RULE_NOTICE -->
 
-## Rule Details
+## Rule details
 
 This rule extends the base [`@typescript-eslint/unbound-method`][original-rule]
 rule, meaning you must depend on `@typescript-eslint/eslint-plugin` for it to

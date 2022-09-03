@@ -59,7 +59,7 @@ test('the data is peanut butter', async () => {
 });
 ```
 
-## Rule Details
+## Rule details
 
 This rule checks the function parameter of hooks & tests for use of the `done`
 argument, suggesting you return a promise instead.

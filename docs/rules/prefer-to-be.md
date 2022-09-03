@@ -18,7 +18,7 @@ the most grammatically natural sentence. For `null`, `undefined`, and `NaN` this
 rule recommends using their specific `toBe` matchers, as they give better error
 messages as well.
 
-## Rule Details
+## Rule details
 
 This rule triggers a warning if `toEqual()` or `toStrictEqual()` are used to
 assert a primitive literal value such as numbers, strings, and booleans.

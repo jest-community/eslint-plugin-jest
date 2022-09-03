@@ -13,7 +13,7 @@
 In order to have a better failure message, `toContain()` should be used upon
 asserting expectations on an array containing an object.
 
-## Rule Details
+## Rule details
 
 This rule triggers a warning if `toBe()`, `toEqual()` or `toStrictEqual()` is
 used to assert object inclusion in an array

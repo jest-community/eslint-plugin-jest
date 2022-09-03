@@ -12,7 +12,7 @@ more your codebase grows, the more it becomes hard to navigate in your test
 files. This rule makes sure you provide at least a top-level `describe` block in
 your test file.
 
-## Rule Details
+## Rule details
 
 This rule triggers a warning if a test case (`test` and `it`) or a hook
 (`beforeAll`, `beforeEach`, `afterEach`, `afterAll`) is not located in a

@@ -17,7 +17,7 @@ Checks that the title of Jest blocks are valid by ensuring that titles are:
 - not prefixed with their block name,
 - have no leading or trailing spaces
 
-## Rule Details
+## Rule details
 
 **emptyTitle**
 

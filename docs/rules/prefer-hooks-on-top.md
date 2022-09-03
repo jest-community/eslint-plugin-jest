@@ -13,7 +13,7 @@ cases.
 
 This rule helps to ensure that hooks are always defined before test cases.
 
-## Rule Details
+## Rule details
 
 Examples of **incorrect** code for this rule
 

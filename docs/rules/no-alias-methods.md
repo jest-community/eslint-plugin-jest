@@ -19,7 +19,7 @@ Jest documentation is used in the code. This makes it easier to search for all
 occurrences of the method within code, and it ensures consistency among the
 method names used.
 
-## Rule Details
+## Rule details
 
 This rule triggers a warning if the alias name, rather than the canonical name,
 of a method is used.

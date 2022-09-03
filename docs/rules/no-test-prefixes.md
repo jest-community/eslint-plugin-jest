@@ -19,7 +19,7 @@ multiple permutations for each:
 
 This rule enforces usages from the **only & skip** list.
 
-## Rule Details
+## Rule details
 
 This rule triggers a warning if you use one of the keywords from the **'f' &
 'x'** list to focus/skip a test.

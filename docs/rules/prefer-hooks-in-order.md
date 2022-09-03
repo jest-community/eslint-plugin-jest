@@ -18,7 +18,7 @@ specific order:
 This rule aims to make that more obvious by enforcing grouped hooks be setup in
 that order within tests.
 
-## Rule Details
+## Rule details
 
 Examples of **incorrect** code for this rule
 

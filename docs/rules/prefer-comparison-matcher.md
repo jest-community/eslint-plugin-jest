@@ -13,7 +13,7 @@
 Jest has a number of built-in matchers for comparing numbers, which allow for
 more readable tests and error messages if an expectation fails.
 
-## Rule Details
+## Rule details
 
 This rule checks for comparisons in tests that could be replaced with one of the
 following built-in comparison matchers:

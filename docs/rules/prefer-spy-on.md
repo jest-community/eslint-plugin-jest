@@ -29,7 +29,7 @@ jest.spyOn(Date, 'now').mockImplementation(() => 10); // Will always return 10
 jest.spyOn(Date, 'now').mockReturnValue(10); // Will always return 10
 ```
 
-## Rule Details
+## Rule details
 
 This rule triggers a warning if an object's property is overwritten with a jest
 mock.

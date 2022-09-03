@@ -29,7 +29,7 @@ module.exports = {
 };
 ```
 
-## Rule Details
+## Rule details
 
 This rule looks at all Jest inline and external snapshots (files with `.snap`
 extension) and validates that each stored snapshot within those files does not

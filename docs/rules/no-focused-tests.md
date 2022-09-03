@@ -20,7 +20,7 @@ have fixed your test and before committing the changes you have to remove
 This rule reminds you to remove `.only` from your tests by raising a warning
 whenever you are using the exclusivity feature.
 
-## Rule Details
+## Rule details
 
 This rule looks for every `describe.only`, `it.only`, `test.only`, `fdescribe`,
 and `fit` occurrences within the source code. Of course there are some

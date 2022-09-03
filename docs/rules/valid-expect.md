@@ -10,7 +10,7 @@
 Ensure `expect()` is called with a single argument and there is an actual
 expectation made.
 
-## Rule Details
+## Rule details
 
 This rule triggers a warning if `expect()` is called with more than one argument
 or without arguments. It would also issue a warning if there is nothing called

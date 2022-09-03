@@ -17,7 +17,7 @@ to it.
 Conditionals are often used to satisfy the typescript type checker. In these
 cases, using the non-null assertion operator (!) would be best.
 
-## Rule Details
+## Rule details
 
 This rule prevents the use of if/ else statements and conditional (ternary)
 operations in tests.

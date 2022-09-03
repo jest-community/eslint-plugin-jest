@@ -9,7 +9,7 @@
 
 Prevents using `exports` if a file has one or more tests in it.
 
-## Rule Details
+## Rule details
 
 This rule aims to eliminate duplicate runs of tests by exporting things from
 test files. If you import from a test file, then all the tests in that file will

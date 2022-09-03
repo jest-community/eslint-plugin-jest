@@ -10,7 +10,7 @@
 Using an improper `describe()` callback function can lead to unexpected test
 errors.
 
-## Rule Details
+## Rule details
 
 This rule validates that the second parameter of a `describe()` function is a
 callback function. This callback function:

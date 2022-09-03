@@ -17,7 +17,7 @@ the Jasmine globals will stop working in the future. Developers should therefore
 migrate to Jest's documented API instead of relying on the undocumented Jasmine
 API.
 
-## Rule Details
+## Rule details
 
 This rule reports on any usage of Jasmine globals, which is not ported to Jest,
 and suggests alternatives from Jest's own API.

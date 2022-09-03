@@ -11,7 +11,7 @@ As more assertions are made, there is a possible tendency for the test to be
 more likely to mix multiple objectives. To avoid this, this rule reports when
 the maximum number of assertions is exceeded.
 
-## Rule Details
+## Rule details
 
 This rule enforces a maximum number of `expect()` calls.
 

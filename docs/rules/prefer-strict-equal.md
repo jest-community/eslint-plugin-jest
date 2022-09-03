@@ -15,7 +15,7 @@ that they have the same structure. It is common to expect objects to not only
 have identical values but also to have identical keys. A stricter equality will
 catch cases where two objects do not have identical keys.
 
-## Rule Details
+## Rule details
 
 This rule triggers a warning if `toEqual()` is used to assert equality.
 

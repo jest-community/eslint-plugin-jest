@@ -9,7 +9,7 @@
 
 Ensure that there is at least one `expect` call made in a test.
 
-## Rule Details
+## Rule details
 
 This rule triggers when there is no call made to `expect` in a test, to prevent
 users from forgetting to add assertions.

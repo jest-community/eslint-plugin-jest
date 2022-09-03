@@ -15,7 +15,7 @@ API sugar functions to reduce the amount of boilerplate you have to write.
 
 These methods should be preferred when possible.
 
-## Rule Details
+## Rule details
 
 The following patterns are warnings:
 

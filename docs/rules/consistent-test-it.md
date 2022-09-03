@@ -16,7 +16,7 @@ the `test` keywords, with multiple permutations for each:
 - **it:** `it`, `xit`, `fit`, `it.only`, `it.skip`.
 - **test:** `test`, `xtest`, `test.only`, `test.skip`.
 
-## Rule Details
+## Rule details
 
 This rule gives you control over the usage of these keywords in your codebase.
 

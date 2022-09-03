@@ -9,7 +9,7 @@
 
 Ensure promises that include expectations are returned or awaited.
 
-## Rule Details
+## Rule details
 
 This rule flags any promises within the body of a test that include expectations
 that have either not been returned or awaited.

@@ -19,7 +19,7 @@ executes any of the actual tests, it's important to ensure setup and teardown
 work is done inside `before*` and `after*` handlers respectively, rather than
 inside the `describe` blocks.
 
-## Rule Details
+## Rule details
 
 This rule flags any expression that is either at the toplevel of a test file or
 directly within the body of a `describe`, _except_ for the following:
