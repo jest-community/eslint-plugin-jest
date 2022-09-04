@@ -257,7 +257,7 @@ that are powered by type-checking information provided by TypeScript.
 
 In order to use these rules, you must be using `@typescript-eslint/parser` &
 adjust your eslint config as outlined
-[here](https://github.com/typescript-eslint/typescript-eslint/blob/master/docs/getting-started/linting/TYPED_LINTING.md)
+[here](https://github.com/typescript-eslint/typescript-eslint/blob/main/docs/linting/TYPED_LINTING.md).
 
 Note that unlike the type-checking rules in `@typescript-eslint/eslint-plugin`,
 the rules here will fallback to doing nothing if type information is not
