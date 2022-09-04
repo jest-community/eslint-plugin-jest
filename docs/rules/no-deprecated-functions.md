@@ -20,13 +20,12 @@ This rule can also autofix a number of these deprecations for you.
 
 ### `jest.resetModuleRegistry`
 
-This function was renamed to `resetModules` in Jest 15, and is scheduled for
-removal in Jest 27.
+This function was renamed to `resetModules` in Jest 15 and removed in Jest 27.
 
 ### `jest.addMatchers`
 
-This function was replaced with `expect.extend` in Jest 17, and is scheduled for
-removal in Jest 27.
+This function was replaced with `expect.extend` in Jest 17 and removed in
+Jest 27.
 
 ### `require.requireActual` & `require.requireMock`
 
@@ -41,10 +40,10 @@ the release of Jest 26 saw them removed from the `require` function altogether.
 
 ### `jest.runTimersToTime`
 
-This function was renamed to `advanceTimersByTime` in Jest 22, and is scheduled
-for removal in Jest 27.
+This function was renamed to `advanceTimersByTime` in Jest 22 and removed in
+Jest 27.
 
 ### `jest.genMockFromModule`
 
 This function was renamed to `createMockFromModule` in Jest 26, and is scheduled
-for removal in a future version of Jest.
+for removal in Jest 30.
