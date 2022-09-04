@@ -24,7 +24,8 @@ This function was renamed to `resetModules` in Jest 15 and removed in Jest 27.
 
 ### `jest.addMatchers`
 
-This function was replaced with `expect.extend` in Jest 17 and removed in Jest 27.
+This function was replaced with `expect.extend` in Jest 17 and removed in
+Jest 27.
 
 ### `require.requireActual` & `require.requireMock`
 
@@ -39,7 +40,8 @@ the release of Jest 26 saw them removed from the `require` function altogether.
 
 ### `jest.runTimersToTime`
 
-This function was renamed to `advanceTimersByTime` in Jest 22 and removed in Jest 27.
+This function was renamed to `advanceTimersByTime` in Jest 22 and removed in
+Jest 27.
 
 ### `jest.genMockFromModule`
 
