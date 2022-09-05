@@ -17,13 +17,12 @@ export const MESSAGES = {
     '💡 This rule provides [suggestions](https://eslint.org/docs/developer-guide/working-with-rules#providing-suggestions) that can be applied manually.',
 };
 
-type RuleName = keyof typeof plugin.rules;
-type Rule = typeof plugin.rules[RuleName];
+type Rule = typeof plugin.rules[string];
 
 /**
  * Get config names that a given rule belongs to.
  */
-function getConfigsForRule(ruleName: RuleName) {
+function getConfigsForRule(ruleName: string) {
   const { configs } = plugin;
   const configNames: Array<keyof typeof configs> = [];
   let configName: keyof typeof configs;
@@ -84,7 +83,7 @@ export function getNoticesForRule(rule: Rule) {
 /**
  * Get the lines for the notice section at the top of a rule doc.
  */
-export function getRuleNoticeLines(ruleName: RuleName) {
+export function getRuleNoticeLines(ruleName: string) {
   const lines: string[] = [];
 
   const { expectedNotices } = getNoticesForRule(plugin.rules[ruleName]);
