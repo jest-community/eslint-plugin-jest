@@ -104,15 +104,14 @@ const updateRulesList = (
  * @param name - rule name
  * @returns {string[]} - lines for new header including marker
  */
-const generateRuleHeaderLines = (description, name) => {
-  const lines = [`# ${description} (\`${name}\`)`];
-
-  lines.push(...getRuleNoticeLines(name));
-
-  lines.push(END_RULE_HEADER_MARKER);
-
-  return lines;
-};
+const generateRuleHeaderLines = (
+  description: string,
+  name: string,
+): string[] => [
+  `# ${description} (\`${name}\`)`,
+  ...getRuleNoticeLines(name),
+  END_RULE_HEADER_MARKER,
+];
 
 /**
  * Replace the header of a doc up to and including the specified marker.
@@ -121,7 +120,11 @@ const generateRuleHeaderLines = (description, name) => {
  * @param newHeaderLines - lines of new header including marker
  * @param marker - marker to indicate end of header
  */
-const replaceOrCreateHeader = (lines, newHeaderLines, marker) => {
+const replaceOrCreateHeader = (
+  lines: string[],
+  newHeaderLines: string[],
+  marker: string,
+) => {
   const markerLineIndex = lines.findIndex(line => line === marker);
 
   // Replace header section (or create at top if missing).

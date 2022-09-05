@@ -89,7 +89,7 @@ export function getRuleNoticeLines(ruleName: RuleName) {
 
   const { expectedNotices } = getNoticesForRule(plugin.rules[ruleName]);
 
-  expectedNotices.forEach(expectedNotice => {
+  for (const expectedNotice of expectedNotices) {
     lines.push(''); // Blank line first.
 
     if (expectedNotice === MESSAGE_TYPE.CONFIGS) {
@@ -103,7 +103,7 @@ export function getRuleNoticeLines(ruleName: RuleName) {
     } else {
       lines.push(MESSAGES[expectedNotice]);
     }
-  });
+  }
 
   return lines;
 }
