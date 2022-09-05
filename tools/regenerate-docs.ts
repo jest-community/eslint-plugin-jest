@@ -99,6 +99,12 @@ const updateRulesList = (
   ].join('\n');
 };
 
+/**
+ * Generate a rule doc header for a particular rule.
+ * @param description - rule description
+ * @param name - rule name
+ * @returns {string[]} - lines for new header including marker
+ */
 const generateRuleHeaderLines = (description, name) => {
   const lines = [`# ${description} (\`${name}\`)`];
 
@@ -109,6 +115,13 @@ const generateRuleHeaderLines = (description, name) => {
   return lines;
 };
 
+/**
+ * Replace the header of a doc up to and including the specified marker.
+ * Insert at beginning if header doesn't exist.
+ * @param lines - lines of doc
+ * @param newHeaderLines - lines of new header including marker
+ * @param marker - marker to indicate end of header
+ */
 const replaceOrCreateHeader = (lines, newHeaderLines, marker) => {
   const markerLineIndex = lines.findIndex(line => line === marker);
 

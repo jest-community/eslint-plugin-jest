@@ -20,6 +20,9 @@ export const MESSAGES = {
 type RuleName = keyof typeof plugin.rules;
 type Rule = typeof plugin.rules[RuleName];
 
+/**
+ * Get config names that a given rule belongs to.
+ */
 function getConfigsForRule(ruleName: RuleName) {
   const { configs } = plugin;
   const configNames: Array<keyof typeof configs> = [];
@@ -40,6 +43,9 @@ function getConfigsForRule(ruleName: RuleName) {
   return configNames.sort();
 }
 
+/**
+ * Convert list of configs to formatted string list.
+ */
 function configNamesToList(configNames: string[]) {
   return `\`${configNames.join('`, `')}\``;
 }
