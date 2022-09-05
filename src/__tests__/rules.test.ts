@@ -1,12 +1,7 @@
 import { existsSync, readFileSync } from 'fs';
-import { EOL } from 'os';
 import { join, resolve } from 'path';
 import plugin from '../';
-import {
-  MESSAGES,
-  getNoticesForRule,
-  getRuleNoticeLines,
-} from '../../tools/rule-notices';
+import { MESSAGES, getNoticesForRule } from '../../tools/rule-notices';
 
 const numberOfRules = 50;
 const ruleNames = Object.keys(plugin.rules);
@@ -88,22 +83,6 @@ describe('rules', () => {
       const rule = plugin.rules[ruleName];
       const documentPath = join('docs', 'rules', `${ruleName}.md`);
       const documentContents = readFileSync(documentPath, 'utf8');
-      const documentLines = documentContents.split(EOL);
-
-      // Check title.
-      const expectedTitle = `# ${rule.meta.docs.description} (\`${ruleName}\`)`;
-
-      expect(documentLines[0]).toStrictEqual(expectedTitle);
-
-      // Ensure that expected notices are present in the correct order.
-      const noticeLines = getRuleNoticeLines(ruleName);
-      const NOTICE_START_LINE = 3;
-
-      noticeLines.forEach((noticeLine, index) =>
-        expect(documentLines[index + NOTICE_START_LINE]).toStrictEqual(
-          noticeLine,
-        ),
-      );
 
       // Ensure that unexpected notices are not present.
       const { unexpectedNotices } = getNoticesForRule(rule);
@@ -112,7 +91,7 @@ describe('rules', () => {
         expect(documentContents).not.toContain(MESSAGES[unexpectedNotice]),
       );
 
-      // Check for Rule details section.
+      // Check for a "Rule details" section.
       expect(documentContents).toContain('## Rule details');
 
       // Check if the rule has configuration options.
@@ -121,7 +100,7 @@ describe('rules', () => {
         (typeof rule.meta.schema === 'object' &&
           Object.keys(rule.meta.schema).length > 0)
       ) {
-        // Should have an options section header:
+        // Should have an "Options" section header:
         expect(documentContents).toContain('## Options');
       } else {
         // Should NOT have any options section header:
