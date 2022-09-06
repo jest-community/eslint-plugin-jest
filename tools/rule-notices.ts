@@ -43,10 +43,17 @@ function getConfigsForRule(ruleName: string) {
 }
 
 /**
- * Convert list of configs to formatted string list.
+ * Convert list of configs to string list of formatted names.
  */
-function configNamesToList(configNames: string[]) {
+function configNamesToList(configNames: readonly string[]) {
   return `\`${configNames.join('`, `')}\``;
+}
+
+/**
+ * Convert list of rule names to string list of links.
+ */
+function rulesNamesToList(ruleNames: readonly string[]) {
+  return ruleNames.map(ruleName => `[${ruleName}](${ruleName}.md)`).join(', ');
 }
 
 /**
@@ -71,7 +78,8 @@ export function getNoticesForRule(rule: Rule) {
 export function getRuleNoticeLines(ruleName: string) {
   const lines: string[] = [];
 
-  const notices = getNoticesForRule(plugin.rules[ruleName]);
+  const rule = plugin.rules[ruleName];
+  const notices = getNoticesForRule(rule);
   let messageType: keyof typeof notices;
 
   for (messageType in notices) {
@@ -90,6 +98,15 @@ export function getRuleNoticeLines(ruleName: string) {
       const message = `${MESSAGES[MESSAGE_TYPE.CONFIGS]} ${configNamesToList(
         configsEnabled,
       )}.`;
+
+      lines.push(message);
+    } else if (messageType === MESSAGE_TYPE.DEPRECATED) {
+      // This notice should include links to the replacement rule(s) if available.
+      const message = rule.meta.replacedBy
+        ? `${MESSAGES[messageType]} It was replaced by ${rulesNamesToList(
+            rule.meta.replacedBy,
+          )}.`
+        : MESSAGES[messageType];
 
       lines.push(message);
     } else {
