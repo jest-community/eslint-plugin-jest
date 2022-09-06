@@ -28,6 +28,7 @@ interface RuleDetails {
   fixable: FixType | false;
   requiresTypeChecking: boolean;
   deprecated: boolean;
+  schema: any;
 }
 
 type RuleModule = TSESLint.RuleModule<string, unknown[]> & {
@@ -131,6 +132,30 @@ const replaceOrCreateHeader = (
   lines.splice(0, markerLineIndex + 1, ...newHeaderLines);
 };
 
+/**
+ * Ensure a rule doc contains (or doesn't contain) some particular content.
+ * Upon failure, output the failure and exit with failure.
+ * @param ruleName - which rule we are checking
+ * @param contents - the rule doc's contents
+ * @param content - the content we are checking for
+ * @param expected - whether the content should be present or not present
+ */
+const expectContent = (
+  ruleName: string,
+  contents: string,
+  content: string,
+  expected: boolean,
+) => {
+  if (contents.includes(content) !== expected) {
+    console.error(
+      `\`${ruleName}\` rule doc should ${
+        expected ? '' : 'not '
+      }have included: ${content}`,
+    );
+    process.exitCode = 1;
+  }
+};
+
 // copied from https://github.com/babel/babel/blob/d8da63c929f2d28c401571e2a43166678c555bc4/packages/babel-helpers/src/helpers.js#L602-L606
 /* istanbul ignore next */
 const interopRequireDefault = (obj: any): { default: any } =>
@@ -160,13 +185,14 @@ const details: RuleDetails[] = Object.keys(plugin.rules)
         : false,
       requiresTypeChecking: rule.meta.docs.requiresTypeChecking ?? false,
       deprecated: rule.meta.deprecated ?? false,
+      schema: rule.meta.schema,
     }),
   );
 
-details.forEach(({ name, description }) => {
+details.forEach(({ name, description, schema }) => {
   const pathToDoc = path.join(pathTo.docs, 'rules', `${name}.md`);
-
-  const lines = fs.readFileSync(pathToDoc).toString().split('\n');
+  const contents = fs.readFileSync(pathToDoc).toString();
+  const lines = contents.split('\n');
 
   // Regenerate the header (title/notices) of each rule doc.
   const newHeaderLines = generateRuleHeaderLines(description, name);
@@ -174,6 +200,15 @@ details.forEach(({ name, description }) => {
   replaceOrCreateHeader(lines, newHeaderLines, END_RULE_HEADER_MARKER);
 
   fs.writeFileSync(pathToDoc, format(lines.join('\n')));
+
+  // Check for potential issues with the rule doc.
+
+  const hasOptions =
+    (Array.isArray(schema) && schema.length > 0) ||
+    (typeof schema === 'object' && Object.keys(schema).length > 0);
+
+  expectContent(name, contents, '## Rule details', true);
+  expectContent(name, contents, '## Options', hasOptions);
 });
 
 const [baseRules, typeRules] = details.reduce<[RuleDetails[], RuleDetails[]]>(

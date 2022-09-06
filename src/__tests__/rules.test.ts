@@ -1,5 +1,5 @@
-import { existsSync, readFileSync } from 'fs';
-import { join, resolve } from 'path';
+import { existsSync } from 'fs';
+import { resolve } from 'path';
 import plugin from '../';
 
 const numberOfRules = 50;
@@ -74,31 +74,6 @@ describe('rules', () => {
       expect(ruleNames).toContain(ruleName);
       // eslint-disable-next-line @typescript-eslint/no-require-imports
       expect(() => require(`../rules/${ruleName}`)).not.toThrow();
-    });
-  });
-
-  describe('rule documentation files have the correct content', () => {
-    it.each(ruleNames)('%s', ruleName => {
-      const rule = plugin.rules[ruleName];
-      const documentPath = join('docs', 'rules', `${ruleName}.md`);
-      const documentContents = readFileSync(documentPath, 'utf8');
-
-      // Check for a "Rule details" section.
-      expect(documentContents).toContain('## Rule details');
-
-      // Check if the rule has configuration options.
-      if (
-        (Array.isArray(rule.meta.schema) && rule.meta.schema.length > 0) ||
-        (typeof rule.meta.schema === 'object' &&
-          Object.keys(rule.meta.schema).length > 0)
-      ) {
-        // Should have an "Options" section header:
-        expect(documentContents).toContain('## Options');
-      } else {
-        // Should NOT have any options section header:
-        expect(documentContents).not.toContain('## Options');
-        expect(documentContents).not.toContain('## Config');
-      }
     });
   });
 });
