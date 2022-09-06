@@ -1,10 +1,10 @@
 import plugin from '../src';
 
 enum MESSAGE_TYPE {
-  CONFIGS = 1,
-  DEPRECATED = 2,
-  FIXABLE = 3,
-  HAS_SUGGESTIONS = 4,
+  CONFIGS = 'configs',
+  DEPRECATED = 'deprecated',
+  FIXABLE = 'fixable',
+  HAS_SUGGESTIONS = 'hasSuggestions',
 }
 
 export const MESSAGES = {
@@ -53,31 +53,16 @@ function configNamesToList(configNames: string[]) {
  * Determine which notices should and should not be included at the top of a rule doc.
  */
 export function getNoticesForRule(rule: Rule) {
-  const expectedNotices: MESSAGE_TYPE[] = [];
-  const unexpectedNotices: MESSAGE_TYPE[] = [];
-
-  if (rule.meta.deprecated) {
-    expectedNotices.push(MESSAGE_TYPE.DEPRECATED);
-    unexpectedNotices.push(MESSAGE_TYPE.CONFIGS);
-  } else {
-    unexpectedNotices.push(MESSAGE_TYPE.DEPRECATED);
-    expectedNotices.push(MESSAGE_TYPE.CONFIGS);
-  }
-  if (rule.meta.fixable) {
-    expectedNotices.push(MESSAGE_TYPE.FIXABLE);
-  } else {
-    unexpectedNotices.push(MESSAGE_TYPE.FIXABLE);
-  }
-  if (rule.meta.hasSuggestions) {
-    expectedNotices.push(MESSAGE_TYPE.HAS_SUGGESTIONS);
-  } else {
-    unexpectedNotices.push(MESSAGE_TYPE.HAS_SUGGESTIONS);
-  }
-
-  return {
-    expectedNotices,
-    unexpectedNotices,
+  const notices: {
+    [key in MESSAGE_TYPE]: boolean;
+  } = {
+    [MESSAGE_TYPE.CONFIGS]: !rule.meta.deprecated,
+    [MESSAGE_TYPE.DEPRECATED]: rule.meta.deprecated || false,
+    [MESSAGE_TYPE.FIXABLE]: Boolean(rule.meta.fixable),
+    [MESSAGE_TYPE.HAS_SUGGESTIONS]: rule.meta.hasSuggestions || false,
   };
+
+  return notices;
 }
 
 /**
@@ -86,12 +71,20 @@ export function getNoticesForRule(rule: Rule) {
 export function getRuleNoticeLines(ruleName: string) {
   const lines: string[] = [];
 
-  const { expectedNotices } = getNoticesForRule(plugin.rules[ruleName]);
+  const notices = getNoticesForRule(plugin.rules[ruleName]);
+  let messageType: keyof typeof notices;
 
-  for (const expectedNotice of expectedNotices) {
+  for (messageType in notices) {
+    const expected = notices[messageType];
+
+    if (!expected) {
+      // This notice should not be included.
+      continue;
+    }
+
     lines.push(''); // Blank line first.
 
-    if (expectedNotice === MESSAGE_TYPE.CONFIGS) {
+    if (messageType === MESSAGE_TYPE.CONFIGS) {
       // This notice should have a list of the rule's configs.
       const configsEnabled = getConfigsForRule(ruleName);
       const message = `${MESSAGES[MESSAGE_TYPE.CONFIGS]} ${configNamesToList(
@@ -100,7 +93,7 @@ export function getRuleNoticeLines(ruleName: string) {
 
       lines.push(message);
     } else {
-      lines.push(MESSAGES[expectedNotice]);
+      lines.push(MESSAGES[messageType]);
     }
   }
 

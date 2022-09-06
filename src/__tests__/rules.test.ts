@@ -1,7 +1,6 @@
 import { existsSync, readFileSync } from 'fs';
 import { join, resolve } from 'path';
 import plugin from '../';
-import { MESSAGES, getNoticesForRule } from '../../tools/rule-notices';
 
 const numberOfRules = 50;
 const ruleNames = Object.keys(plugin.rules);
@@ -83,13 +82,6 @@ describe('rules', () => {
       const rule = plugin.rules[ruleName];
       const documentPath = join('docs', 'rules', `${ruleName}.md`);
       const documentContents = readFileSync(documentPath, 'utf8');
-
-      // Ensure that unexpected notices are not present.
-      const { unexpectedNotices } = getNoticesForRule(rule);
-
-      unexpectedNotices.forEach(unexpectedNotice =>
-        expect(documentContents).not.toContain(MESSAGES[unexpectedNotice]),
-      );
 
       // Check for a "Rule details" section.
       expect(documentContents).toContain('## Rule details');
