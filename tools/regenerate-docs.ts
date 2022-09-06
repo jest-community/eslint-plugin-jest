@@ -134,7 +134,7 @@ const replaceOrCreateHeader = (
 
 /**
  * Ensure a rule doc contains (or doesn't contain) some particular content.
- * Upon failure, output the failure and exit with failure.
+ * Upon failure, output the failure and set a failure exit code.
  * @param ruleName - which rule we are checking
  * @param contents - the rule doc's contents
  * @param content - the content we are checking for
