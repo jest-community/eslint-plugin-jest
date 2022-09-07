@@ -9,7 +9,7 @@ enum MESSAGE_TYPE {
 
 export const MESSAGES = {
   [MESSAGE_TYPE.CONFIGS]:
-    '💼 This rule is enabled in the following [configs](https://github.com/jest-community/eslint-plugin-jest#shareable-configurations):',
+    '💼 This rule is enabled in the following [configs](https://github.com/jest-community/eslint-plugin-jest/blob/main/README.md#shareable-configurations):',
   [MESSAGE_TYPE.DEPRECATED]: '❌ This rule is deprecated.',
   [MESSAGE_TYPE.FIXABLE]:
     '🔧 This rule is automatically fixable using the `--fix` [option](https://eslint.org/docs/latest/user-guide/command-line-interface#--fix) on the command line.',

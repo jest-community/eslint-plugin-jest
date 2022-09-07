@@ -1,7 +1,7 @@
 # Avoid using a callback in asynchronous tests and hooks (`no-done-callback`)
 
 💼 This rule is enabled in the following
-[configs](https://github.com/jest-community/eslint-plugin-jest#shareable-configurations):
+[configs](https://github.com/jest-community/eslint-plugin-jest/blob/main/README.md#shareable-configurations):
 `all`, `recommended`.
 
 💡 This rule provides

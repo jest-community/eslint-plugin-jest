@@ -1,7 +1,7 @@
 # Require test cases and hooks to be inside a `describe` block (`require-top-level-describe`)
 
 💼 This rule is enabled in the following
-[configs](https://github.com/jest-community/eslint-plugin-jest#shareable-configurations):
+[configs](https://github.com/jest-community/eslint-plugin-jest/blob/main/README.md#shareable-configurations):
 `all`.
 
 <!-- end rule header -->

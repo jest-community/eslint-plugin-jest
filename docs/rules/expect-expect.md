@@ -1,7 +1,7 @@
 # Enforce assertion to be made in a test body (`expect-expect`)
 
 💼 This rule is enabled in the following
-[configs](https://github.com/jest-community/eslint-plugin-jest#shareable-configurations):
+[configs](https://github.com/jest-community/eslint-plugin-jest/blob/main/README.md#shareable-configurations):
 `all`.
 
 <!-- end rule header -->

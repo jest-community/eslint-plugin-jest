@@ -1,7 +1,7 @@
 # Suggest using `toStrictEqual()` (`prefer-strict-equal`)
 
 💼 This rule is enabled in the following
-[configs](https://github.com/jest-community/eslint-plugin-jest#shareable-configurations):
+[configs](https://github.com/jest-community/eslint-plugin-jest/blob/main/README.md#shareable-configurations):
 `all`.
 
 💡 This rule provides

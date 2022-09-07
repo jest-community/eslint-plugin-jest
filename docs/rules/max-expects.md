@@ -1,7 +1,7 @@
 # Enforces a maximum number assertion calls in a test body (`max-expects`)
 
 💼 This rule is enabled in the following
-[configs](https://github.com/jest-community/eslint-plugin-jest#shareable-configurations):
+[configs](https://github.com/jest-community/eslint-plugin-jest/blob/main/README.md#shareable-configurations):
 `all`.
 
 <!-- end rule header -->
