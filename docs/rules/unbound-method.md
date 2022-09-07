@@ -52,7 +52,8 @@ which should be applied to the rest of your codebase.
 
 ## Options
 
-See [`@typescript-eslint/unbound-method`][original-rule] options.
+See [`@typescript-eslint/unbound-method`][original-rule] options (e.g.
+`ignoreStatic`).
 
 <sup>Taken with ❤️ [from `@typescript-eslint` core][original-rule]</sup>
 

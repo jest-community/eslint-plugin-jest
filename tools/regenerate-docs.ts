@@ -2,7 +2,7 @@
 
 import * as fs from 'fs';
 import * as path from 'path';
-import { TSESLint } from '@typescript-eslint/utils';
+import { JSONSchema, TSESLint } from '@typescript-eslint/utils';
 import prettier, { Options } from 'prettier';
 import { prettier as prettierRC } from '../package.json';
 import plugin from '../src/index';
@@ -156,6 +156,40 @@ const expectContent = (
   }
 };
 
+/**
+ * Gather a list of named options from a rule schema.
+ * @param jsonSchema - the JSON schema to check
+ * @returns - list of named options we could detect from the schema
+ */
+const getAllNamedOptions = (jsonSchema: JSONSchema.JSONSchema4): string[] => {
+  if (!jsonSchema) {
+    return [];
+  }
+
+  if (Array.isArray(jsonSchema)) {
+    return jsonSchema.flatMap(getAllNamedOptions);
+  }
+
+  if (jsonSchema.items) {
+    return getAllNamedOptions(jsonSchema.items);
+  }
+
+  if (jsonSchema.properties) {
+    return Object.keys(jsonSchema.properties);
+  }
+
+  return [];
+};
+
+/**
+ * Check if a rule schema is non-blank/empty and thus has actual options.
+ * @param jsonSchema - the JSON schema to check
+ * @returns - whether the schema has options
+ */
+const hasOptions = (jsonSchema: JSONSchema.JSONSchema4): boolean =>
+  (Array.isArray(jsonSchema) && jsonSchema.length > 0) ||
+  (typeof jsonSchema === 'object' && Object.keys(jsonSchema).length > 0);
+
 // copied from https://github.com/babel/babel/blob/d8da63c929f2d28c401571e2a43166678c555bc4/packages/babel-helpers/src/helpers.js#L602-L606
 /* istanbul ignore next */
 const interopRequireDefault = (obj: any): { default: any } =>
@@ -203,12 +237,14 @@ details.forEach(({ name, description, schema }) => {
 
   // Check for potential issues with the rule doc.
 
-  const hasOptions =
-    (Array.isArray(schema) && schema.length > 0) ||
-    (typeof schema === 'object' && Object.keys(schema).length > 0);
-
+  // "Rule details" section.
   expectContent(name, contents, '## Rule details', true);
-  expectContent(name, contents, '## Options', hasOptions);
+
+  // "Options" section.
+  expectContent(name, contents, '## Options', hasOptions(schema));
+  for (const namedOption of getAllNamedOptions(schema)) {
+    expectContent(name, contents, namedOption, true); // Each rule option is mentioned.
+  }
 });
 
 const [baseRules, typeRules] = details.reduce<[RuleDetails[], RuleDetails[]]>(
