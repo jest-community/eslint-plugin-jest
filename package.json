@@ -81,9 +81,6 @@
           "<rootDir>/lib/.*",
           "<rootDir>/src/rules/__tests__/fixtures/*",
           "<rootDir>/src/rules/__tests__/test-utils.ts"
-        ],
-        "coveragePathIgnorePatterns": [
-          "<rootDir>/tools/"
         ]
       },
       {
