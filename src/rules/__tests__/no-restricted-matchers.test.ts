@@ -34,6 +34,10 @@ ruleTester.run('no-restricted-matchers', rule, {
       options: [{ 'not.toBe': null }],
     },
     {
+      code: 'expect(a).toBeUndefined(b)',
+      options: [{ toBe: null }],
+    },
+    {
       code: 'expect(a)["toBe"](b)',
       options: [{ 'not.toBe': null }],
     },
