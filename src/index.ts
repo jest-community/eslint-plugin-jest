@@ -68,15 +68,12 @@ export = {
   configs: {
     all: createConfig(allRules),
     recommended: createConfig(recommendedRules),
-    style: {
-      plugins: ['jest'],
-      rules: {
-        'jest/no-alias-methods': 'warn',
-        'jest/prefer-to-be': 'error',
-        'jest/prefer-to-contain': 'error',
-        'jest/prefer-to-have-length': 'error',
-      },
-    },
+    style: createConfig({
+      'jest/no-alias-methods': 'warn',
+      'jest/prefer-to-be': 'error',
+      'jest/prefer-to-contain': 'error',
+      'jest/prefer-to-have-length': 'error',
+    }),
   },
   environments: {
     globals: {

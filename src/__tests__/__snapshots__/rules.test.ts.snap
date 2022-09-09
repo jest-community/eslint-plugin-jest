@@ -91,6 +91,9 @@ exports[`rules should export configs that refer to actual rules 1`] = `
     },
   },
   "style": {
+    "env": {
+      "jest/globals": true,
+    },
     "plugins": [
       "jest",
     ],
