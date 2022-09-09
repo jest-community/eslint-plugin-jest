@@ -28,7 +28,7 @@ interface RuleDetails {
   fixable: FixType | false;
   requiresTypeChecking: boolean;
   deprecated: boolean;
-  schema: any;
+  schema: JSONSchema.JSONSchema4;
 }
 
 type RuleModule = TSESLint.RuleModule<string, unknown[]> & {
