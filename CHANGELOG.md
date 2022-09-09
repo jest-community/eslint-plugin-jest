@@ -1,3 +1,10 @@
+## [27.0.2](https://github.com/jest-community/eslint-plugin-jest/compare/v27.0.1...v27.0.2) (2022-09-08)
+
+
+### Bug Fixes
+
+* **no-restricted-matchers:** improve check to not be solely based on the start of the matcher chain ([#1236](https://github.com/jest-community/eslint-plugin-jest/issues/1236)) ([5fe4568](https://github.com/jest-community/eslint-plugin-jest/commit/5fe45680c93ff50745fc8f8f271607c21d9cae87)), closes [#1235](https://github.com/jest-community/eslint-plugin-jest/issues/1235)
+
 ## [27.0.1](https://github.com/jest-community/eslint-plugin-jest/compare/v27.0.0...v27.0.1) (2022-08-28)
 
 
