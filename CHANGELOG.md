@@ -1,3 +1,10 @@
+## [27.0.3](https://github.com/jest-community/eslint-plugin-jest/compare/v27.0.2...v27.0.3) (2022-09-09)
+
+
+### Bug Fixes
+
+* ensure jest globals are enabled in `styles` config ([#1241](https://github.com/jest-community/eslint-plugin-jest/issues/1241)) ([a165e98](https://github.com/jest-community/eslint-plugin-jest/commit/a165e98b2a8728c427d6c484122dc9e64629052b))
+
 ## [27.0.2](https://github.com/jest-community/eslint-plugin-jest/compare/v27.0.1...v27.0.2) (2022-09-08)
 
 
