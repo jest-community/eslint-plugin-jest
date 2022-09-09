@@ -27,6 +27,11 @@ const config: Config = {
       },
     },
     extends: ['plugin:jest/all'],
+    rules: {
+      // this requires type information, which is not really feasible when
+      // linting a bunch of randomly picked open-source js & ts projects
+      'jest/unbound-method': 'off',
+    },
   },
 };
 
