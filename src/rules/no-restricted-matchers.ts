@@ -1,4 +1,20 @@
-import { createRule, getAccessorValue, parseJestFnCall } from './utils';
+import {
+  ModifierName,
+  createRule,
+  getAccessorValue,
+  parseJestFnCall,
+} from './utils';
+
+const isChainRestricted = (chain: string, restriction: string): boolean => {
+  if (
+    ModifierName.hasOwnProperty(restriction) ||
+    restriction.endsWith('.not')
+  ) {
+    return chain.startsWith(restriction);
+  }
+
+  return chain === restriction;
+};
 
 export default createRule<
   [Record<string, string | null>],
@@ -40,7 +56,7 @@ export default createRule<
           .join('.');
 
         for (const [restriction, message] of Object.entries(restrictedChains)) {
-          if (chain.startsWith(restriction)) {
+          if (isChainRestricted(chain, restriction)) {
             context.report({
               messageId: message
                 ? 'restrictedChainWithMessage'
