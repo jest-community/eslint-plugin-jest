@@ -1,3 +1,10 @@
+## [27.0.4](https://github.com/jest-community/eslint-plugin-jest/compare/v27.0.3...v27.0.4) (2022-09-10)
+
+
+### Bug Fixes
+
+* consistent rule doc notices and sections ([#1226](https://github.com/jest-community/eslint-plugin-jest/issues/1226)) ([2580563](https://github.com/jest-community/eslint-plugin-jest/commit/25805639edf59b5d8825cd4245e1fa66aff56382))
+
 ## [27.0.3](https://github.com/jest-community/eslint-plugin-jest/compare/v27.0.2...v27.0.3) (2022-09-09)
 
 
