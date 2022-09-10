@@ -2506,7 +2506,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tsconfig/node14@npm:^1.0.0":
+"@tsconfig/node14@npm:^1.0.0, @tsconfig/node14@npm:^1.0.3":
   version: 1.0.3
   resolution: "@tsconfig/node14@npm:1.0.3"
   checksum: 19275fe80c4c8d0ad0abed6a96dbf00642e88b220b090418609c4376e1cef81bf16237bf170ad1b341452feddb8115d8dd2e5acdfdea1b27422071163dc9ba9d
@@ -4570,6 +4570,7 @@ __metadata:
     "@schemastore/package": ^0.0.6
     "@semantic-release/changelog": ^6.0.0
     "@semantic-release/git": ^10.0.0
+    "@tsconfig/node14": ^1.0.3
     "@types/dedent": ^0.7.0
     "@types/jest": ^29.0.0
     "@types/node": ^14.18.26

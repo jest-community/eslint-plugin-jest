@@ -2,7 +2,7 @@
 
 import * as fs from 'fs';
 import * as path from 'path';
-import { JSONSchema, TSESLint } from '@typescript-eslint/utils';
+import type { JSONSchema, TSESLint } from '@typescript-eslint/utils';
 import prettier, { Options } from 'prettier';
 import { prettier as prettierRC } from '../package.json';
 import plugin from '../src/index';
