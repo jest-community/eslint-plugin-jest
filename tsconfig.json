@@ -1,15 +1,25 @@
 {
+  "extends": "@tsconfig/node14/tsconfig.json",
   "compilerOptions": {
-    "target": "es2015",
-    "module": "commonjs",
-    "moduleResolution": "node",
-    "lib": ["es2018"],
     "noEmit": true,
+    "importsNotUsedAsValues": "error",
+    "stripInternal": true,
+
+    /* Additional Checks */
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitOverride": true,
     "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+
+    "moduleResolution": "node",
     "strict": true,
     "esModuleInterop": true,
     "resolveJsonModule": true,
+    "isolatedModules": true,
+    "skipLibCheck": false,
     "forceConsistentCasingInFileNames": true
   },
-  "include": ["src/**/*", "tools/**/*"]
+  "include": ["src/**/*", "tools/**/*"],
+  "exclude": ["src/rules/__tests__/fixtures/**/*"]
 }
