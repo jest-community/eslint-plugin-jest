@@ -29,8 +29,6 @@ function getConfigsForRule(ruleName: string) {
 
   for (configName in configs) {
     const config = configs[configName];
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- we don't have a static type for rule names
-    // @ts-ignore
     const value = config.rules[`jest/${ruleName}`];
     const isEnabled = [2, 'error'].includes(value);
 
