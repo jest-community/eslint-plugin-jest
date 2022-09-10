@@ -1,5 +1,15 @@
 # Suggest using `jest.spyOn()` (`prefer-spy-on`)
 
+💼 This rule is enabled in the following
+[configs](https://github.com/jest-community/eslint-plugin-jest/blob/main/README.md#shareable-configurations):
+`all`.
+
+🔧 This rule is automatically fixable using the `--fix`
+[option](https://eslint.org/docs/latest/user-guide/command-line-interface#--fix)
+on the command line.
+
+<!-- end rule header -->
+
 When mocking a function by overwriting a property you have to manually restore
 the original implementation when cleaning up. When using `jest.spyOn()` Jest
 keeps track of changes, and they can be restored with `jest.restoreAllMocks()`,

@@ -1,5 +1,16 @@
 # Disallow focused tests (`no-focused-tests`)
 
+💼 This rule is enabled in the following
+[configs](https://github.com/jest-community/eslint-plugin-jest/blob/main/README.md#shareable-configurations):
+`all`, `recommended`.
+
+💡 This rule provides
+[suggestions](https://eslint.org/docs/developer-guide/working-with-rules#providing-suggestions)
+that can be applied manually.
+
+<!-- end rule header -->
+
+<!-- prettier-ignore -->
 Jest has a feature that allows you to focus tests by appending `.only` or
 prepending `f` to a test-suite or a test-case. This feature is really helpful to
 debug a failing test, so you don’t have to execute all of your tests. After you
@@ -9,7 +20,7 @@ have fixed your test and before committing the changes you have to remove
 This rule reminds you to remove `.only` from your tests by raising a warning
 whenever you are using the exclusivity feature.
 
-## Rule Details
+## Rule details
 
 This rule looks for every `describe.only`, `it.only`, `test.only`, `fdescribe`,
 and `fit` occurrences within the source code. Of course there are some

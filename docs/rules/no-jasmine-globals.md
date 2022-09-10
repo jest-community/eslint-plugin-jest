@@ -1,5 +1,15 @@
 # Disallow Jasmine globals (`no-jasmine-globals`)
 
+💼 This rule is enabled in the following
+[configs](https://github.com/jest-community/eslint-plugin-jest/blob/main/README.md#shareable-configurations):
+`all`, `recommended`.
+
+🔧 This rule is automatically fixable using the `--fix`
+[option](https://eslint.org/docs/latest/user-guide/command-line-interface#--fix)
+on the command line.
+
+<!-- end rule header -->
+
 `jest` uses `jasmine` as a test runner. A side effect of this is that both a
 `jasmine` object, and some jasmine-specific globals, are exposed to the test
 environment. Most functionality offered by Jasmine has been ported to Jest, and
@@ -7,7 +17,7 @@ the Jasmine globals will stop working in the future. Developers should therefore
 migrate to Jest's documented API instead of relying on the undocumented Jasmine
 API.
 
-### Rule details
+## Rule details
 
 This rule reports on any usage of Jasmine globals, which is not ported to Jest,
 and suggests alternatives from Jest's own API.

@@ -2,10 +2,14 @@
 
 import * as fs from 'fs';
 import * as path from 'path';
-import type { TSESLint } from '@typescript-eslint/utils';
+import type { JSONSchema, TSESLint } from '@typescript-eslint/utils';
 import prettier, { Options } from 'prettier';
 import { prettier as prettierRC } from '../package.json';
-import config from '../src/index';
+import plugin from '../src/index';
+import { getRuleNoticeLines } from './rule-notices';
+
+// Marker so that rule doc header (title/notices) can be automatically updated.
+export const END_RULE_HEADER_MARKER = '<!-- end rule header -->';
 
 const pathTo = {
   readme: path.resolve(__dirname, '../README.md'),
@@ -23,6 +27,8 @@ interface RuleDetails {
   description: string;
   fixable: FixType | false;
   requiresTypeChecking: boolean;
+  deprecated: boolean;
+  schema: JSONSchema.JSONSchema4;
 }
 
 type RuleModule = TSESLint.RuleModule<string, unknown[]> & {
@@ -35,12 +41,16 @@ const staticElements = {
 };
 
 const getConfigurationColumnValueForRule = (rule: RuleDetails): string => {
-  if (`jest/${rule.name}` in config.configs.recommended.rules) {
+  if (`jest/${rule.name}` in plugin.configs.recommended.rules) {
     return '![recommended][]';
   }
 
-  if (`jest/${rule.name}` in config.configs.style.rules) {
+  if (`jest/${rule.name}` in plugin.configs.style.rules) {
     return '![style][]';
+  }
+
+  if (rule.deprecated) {
+    return '![deprecated][]';
   }
 
   return '';
@@ -89,6 +99,97 @@ const updateRulesList = (
   ].join('\n');
 };
 
+/**
+ * Generate a rule doc header for a particular rule.
+ * @param description - rule description
+ * @param name - rule name
+ * @returns {string[]} - lines for new header including marker
+ */
+const generateRuleHeaderLines = (
+  description: string,
+  name: string,
+): string[] => [
+  `# ${description} (\`${name}\`)`,
+  ...getRuleNoticeLines(name),
+  END_RULE_HEADER_MARKER,
+];
+
+/**
+ * Replace the header of a doc up to and including the specified marker.
+ * Insert at beginning if header doesn't exist.
+ * @param lines - lines of doc
+ * @param newHeaderLines - lines of new header including marker
+ * @param marker - marker to indicate end of header
+ */
+const replaceOrCreateHeader = (
+  lines: string[],
+  newHeaderLines: string[],
+  marker: string,
+) => {
+  const markerLineIndex = lines.findIndex(line => line === marker);
+
+  // Replace header section (or create at top if missing).
+  lines.splice(0, markerLineIndex + 1, ...newHeaderLines);
+};
+
+/**
+ * Ensure a rule doc contains (or doesn't contain) some particular content.
+ * Upon failure, output the failure and set a failure exit code.
+ * @param ruleName - which rule we are checking
+ * @param contents - the rule doc's contents
+ * @param content - the content we are checking for
+ * @param expected - whether the content should be present or not present
+ */
+const expectContent = (
+  ruleName: string,
+  contents: string,
+  content: string,
+  expected: boolean,
+) => {
+  if (contents.includes(content) !== expected) {
+    console.error(
+      `\`${ruleName}\` rule doc should ${
+        expected ? '' : 'not '
+      }have included: ${content}`,
+    );
+    process.exitCode = 1;
+  }
+};
+
+/**
+ * Gather a list of named options from a rule schema.
+ * @param jsonSchema - the JSON schema to check
+ * @returns - list of named options we could detect from the schema
+ */
+const getAllNamedOptions = (jsonSchema: JSONSchema.JSONSchema4): string[] => {
+  if (!jsonSchema) {
+    return [];
+  }
+
+  if (Array.isArray(jsonSchema)) {
+    return jsonSchema.flatMap(getAllNamedOptions);
+  }
+
+  if (jsonSchema.items) {
+    return getAllNamedOptions(jsonSchema.items);
+  }
+
+  if (jsonSchema.properties) {
+    return Object.keys(jsonSchema.properties);
+  }
+
+  return [];
+};
+
+/**
+ * Check if a rule schema is non-blank/empty and thus has actual options.
+ * @param jsonSchema - the JSON schema to check
+ * @returns - whether the schema has options
+ */
+const hasOptions = (jsonSchema: JSONSchema.JSONSchema4): boolean =>
+  (Array.isArray(jsonSchema) && jsonSchema.length > 0) ||
+  (typeof jsonSchema === 'object' && Object.keys(jsonSchema).length > 0);
+
 // copied from https://github.com/babel/babel/blob/d8da63c929f2d28c401571e2a43166678c555bc4/packages/babel-helpers/src/helpers.js#L602-L606
 /* istanbul ignore next */
 const interopRequireDefault = (obj: any): { default: any } =>
@@ -101,12 +202,11 @@ const importDefault = (moduleName: string) =>
 const requireJestRule = (name: string): RuleModule =>
   importDefault(path.join(pathTo.rules, name)) as RuleModule;
 
-const details: RuleDetails[] = Object.keys(config.configs.all.rules)
-  .map(name => name.split('/')[1])
+const details: RuleDetails[] = Object.keys(plugin.rules)
   .map(name => [name, requireJestRule(name)] as const)
   .filter(
     (nameAndRule): nameAndRule is [string, Required<RuleModule>] =>
-      !!nameAndRule[1].meta && !nameAndRule[1].meta.deprecated,
+      !!nameAndRule[1].meta,
   )
   .map(
     ([name, rule]): RuleDetails => ({
@@ -118,17 +218,33 @@ const details: RuleDetails[] = Object.keys(config.configs.all.rules)
         ? 'suggest'
         : false,
       requiresTypeChecking: rule.meta.docs.requiresTypeChecking ?? false,
+      deprecated: rule.meta.deprecated ?? false,
+      schema: rule.meta.schema,
     }),
   );
 
-details.forEach(({ name, description }) => {
+details.forEach(({ name, description, schema }) => {
   const pathToDoc = path.join(pathTo.docs, 'rules', `${name}.md`);
+  const contents = fs.readFileSync(pathToDoc).toString();
+  const lines = contents.split('\n');
 
-  const contents = fs.readFileSync(pathToDoc).toString().split('\n');
+  // Regenerate the header (title/notices) of each rule doc.
+  const newHeaderLines = generateRuleHeaderLines(description, name);
 
-  contents[0] = `# ${description} (\`${name}\`)`;
+  replaceOrCreateHeader(lines, newHeaderLines, END_RULE_HEADER_MARKER);
 
-  fs.writeFileSync(pathToDoc, format(contents.join('\n')));
+  fs.writeFileSync(pathToDoc, format(lines.join('\n')));
+
+  // Check for potential issues with the rule doc.
+
+  // "Rule details" section.
+  expectContent(name, contents, '## Rule details', true);
+
+  // "Options" section.
+  expectContent(name, contents, '## Options', hasOptions(schema));
+  for (const namedOption of getAllNamedOptions(schema)) {
+    expectContent(name, contents, namedOption, true); // Each rule option is mentioned.
+  }
 });
 
 const [baseRules, typeRules] = details.reduce<[RuleDetails[], RuleDetails[]]>(

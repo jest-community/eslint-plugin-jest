@@ -1,12 +1,18 @@
 # Suggest having hooks before any test cases (`prefer-hooks-on-top`)
 
+💼 This rule is enabled in the following
+[configs](https://github.com/jest-community/eslint-plugin-jest/blob/main/README.md#shareable-configurations):
+`all`.
+
+<!-- end rule header -->
+
 While hooks can be setup anywhere in a test file, they are always called in a
 specific order, which means it can be confusing if they're intermixed with test
 cases.
 
 This rule helps to ensure that hooks are always defined before test cases.
 
-## Rule Details
+## Rule details
 
 Examples of **incorrect** code for this rule
 

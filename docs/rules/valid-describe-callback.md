@@ -1,9 +1,15 @@
 # Enforce valid `describe()` callback (`valid-describe-callback`)
 
+💼 This rule is enabled in the following
+[configs](https://github.com/jest-community/eslint-plugin-jest/blob/main/README.md#shareable-configurations):
+`all`, `recommended`.
+
+<!-- end rule header -->
+
 Using an improper `describe()` callback function can lead to unexpected test
 errors.
 
-## Rule Details
+## Rule details
 
 This rule validates that the second parameter of a `describe()` function is a
 callback function. This callback function:

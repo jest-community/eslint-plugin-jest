@@ -1,5 +1,15 @@
 # Suggest using `toHaveLength()` (`prefer-to-have-length`)
 
+💼 This rule is enabled in the following
+[configs](https://github.com/jest-community/eslint-plugin-jest/blob/main/README.md#shareable-configurations):
+`all`, `style`.
+
+🔧 This rule is automatically fixable using the `--fix`
+[option](https://eslint.org/docs/latest/user-guide/command-line-interface#--fix)
+on the command line.
+
+<!-- end rule header -->
+
 In order to have a better failure message, `toHaveLength()` should be used upon
 asserting expectations on objects length property.
 

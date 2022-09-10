@@ -1,5 +1,15 @@
 # Enforce lowercase test names (`prefer-lowercase-title`)
 
+💼 This rule is enabled in the following
+[configs](https://github.com/jest-community/eslint-plugin-jest/blob/main/README.md#shareable-configurations):
+`all`.
+
+🔧 This rule is automatically fixable using the `--fix`
+[option](https://eslint.org/docs/latest/user-guide/command-line-interface#--fix)
+on the command line.
+
+<!-- end rule header -->
+
 ## Rule details
 
 Enforce `it`, `test` and `describe` to have descriptions that begin with a

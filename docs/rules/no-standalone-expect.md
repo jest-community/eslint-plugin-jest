@@ -1,10 +1,16 @@
 # Disallow using `expect` outside of `it` or `test` blocks (`no-standalone-expect`)
 
+💼 This rule is enabled in the following
+[configs](https://github.com/jest-community/eslint-plugin-jest/blob/main/README.md#shareable-configurations):
+`all`, `recommended`.
+
+<!-- end rule header -->
+
 Prevents `expect` statements outside of a `test` or `it` block. An `expect`
 within a helper function (but outside of a `test` or `it` block) will not
 trigger this rule.
 
-## Rule Details
+## Rule details
 
 This rule aims to eliminate `expect` statements that will not be executed. An
 `expect` inside of a `describe` block but outside of a `test` or `it` block or

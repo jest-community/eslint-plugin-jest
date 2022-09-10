@@ -1,11 +1,21 @@
 # Prefer mock resolved/rejected shorthands for promises (`prefer-mock-promise-shorthand`)
 
+💼 This rule is enabled in the following
+[configs](https://github.com/jest-community/eslint-plugin-jest/blob/main/README.md#shareable-configurations):
+`all`.
+
+🔧 This rule is automatically fixable using the `--fix`
+[option](https://eslint.org/docs/latest/user-guide/command-line-interface#--fix)
+on the command line.
+
+<!-- end rule header -->
+
 When working with mocks of functions that return promises, Jest provides some
 API sugar functions to reduce the amount of boilerplate you have to write.
 
 These methods should be preferred when possible.
 
-## Rule Details
+## Rule details
 
 The following patterns are warnings:
 

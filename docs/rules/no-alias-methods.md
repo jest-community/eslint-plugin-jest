@@ -1,5 +1,15 @@
 # Disallow alias methods (`no-alias-methods`)
 
+💼 This rule is enabled in the following
+[configs](https://github.com/jest-community/eslint-plugin-jest/blob/main/README.md#shareable-configurations):
+`all`, `recommended`.
+
+🔧 This rule is automatically fixable using the `--fix`
+[option](https://eslint.org/docs/latest/user-guide/command-line-interface#--fix)
+on the command line.
+
+<!-- end rule header -->
+
 > These aliases are going to be removed in the next major version of Jest - see
 > https://github.com/facebook/jest/issues/13164 for more
 

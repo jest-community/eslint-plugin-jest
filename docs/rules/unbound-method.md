@@ -1,6 +1,12 @@
 # Enforce unbound methods are called with their expected scope (`unbound-method`)
 
-## Rule Details
+💼 This rule is enabled in the following
+[configs](https://github.com/jest-community/eslint-plugin-jest/blob/main/README.md#shareable-configurations):
+`all`.
+
+<!-- end rule header -->
+
+## Rule details
 
 This rule extends the base [`@typescript-eslint/unbound-method`][original-rule]
 rule, meaning you must depend on `@typescript-eslint/eslint-plugin` for it to
@@ -46,7 +52,8 @@ which should be applied to the rest of your codebase.
 
 ## Options
 
-See [`@typescript-eslint/unbound-method`][original-rule] options.
+See [`@typescript-eslint/unbound-method`][original-rule] options (e.g.
+`ignoreStatic`).
 
 <sup>Taken with ❤️ [from `@typescript-eslint` core][original-rule]</sup>
 

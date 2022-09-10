@@ -1,8 +1,14 @@
 # Disallow using `exports` in files containing tests (`no-export`)
 
+💼 This rule is enabled in the following
+[configs](https://github.com/jest-community/eslint-plugin-jest/blob/main/README.md#shareable-configurations):
+`all`, `recommended`.
+
+<!-- end rule header -->
+
 Prevents using `exports` if a file has one or more tests in it.
 
-## Rule Details
+## Rule details
 
 This rule aims to eliminate duplicate runs of tests by exporting things from
 test files. If you import from a test file, then all the tests in that file will

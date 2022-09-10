@@ -1,5 +1,11 @@
 # Require a message for `toThrow()` (`require-to-throw-message`)
 
+💼 This rule is enabled in the following
+[configs](https://github.com/jest-community/eslint-plugin-jest/blob/main/README.md#shareable-configurations):
+`all`.
+
+<!-- end rule header -->
+
 `toThrow()` (and its alias `toThrowError()`) is used to check if an error is
 thrown by a function call, such as in `expect(() => a()).toThrow()`. However, if
 no message is defined, then the test will pass for any thrown error. Requiring a

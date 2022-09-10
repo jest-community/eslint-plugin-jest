@@ -1,8 +1,14 @@
 # Disallow string interpolation inside snapshots (`no-interpolation-in-snapshots`)
 
+💼 This rule is enabled in the following
+[configs](https://github.com/jest-community/eslint-plugin-jest/blob/main/README.md#shareable-configurations):
+`all`, `recommended`.
+
+<!-- end rule header -->
+
 Prevents the use of string interpolations in snapshots.
 
-## Rule Details
+## Rule details
 
 Interpolation prevents snapshots from being updated. Instead, properties should
 be overloaded with a matcher by using

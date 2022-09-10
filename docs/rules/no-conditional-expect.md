@@ -1,12 +1,18 @@
 # Prevent calling `expect` conditionally (`no-conditional-expect`)
 
+💼 This rule is enabled in the following
+[configs](https://github.com/jest-community/eslint-plugin-jest/blob/main/README.md#shareable-configurations):
+`all`, `recommended`.
+
+<!-- end rule header -->
+
 This rule prevents the use of `expect` in conditional blocks, such as `if`s &
 `catch`s.
 
 This includes using `expect` in callbacks to functions named `catch`, which are
 assumed to be promises.
 
-## Rule Details
+## Rule details
 
 Jest only considers a test to have failed if it throws an error, meaning if
 calls to assertion functions like `expect` occur in conditional code such as a

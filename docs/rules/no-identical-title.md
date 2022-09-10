@@ -1,11 +1,17 @@
 # Disallow identical titles (`no-identical-title`)
 
+💼 This rule is enabled in the following
+[configs](https://github.com/jest-community/eslint-plugin-jest/blob/main/README.md#shareable-configurations):
+`all`, `recommended`.
+
+<!-- end rule header -->
+
 Having identical titles for two different tests or test suites may create
 confusion. For example, when a test with the same title as another test in the
 same test suite fails, it is harder to know which one failed and thus harder to
 fix.
 
-## Rule Details
+## Rule details
 
 This rule looks at the title of every test and test suite. It will report when
 two test suites or two test cases at the same level of a test suite have the

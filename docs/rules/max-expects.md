@@ -1,10 +1,16 @@
 # Enforces a maximum number assertion calls in a test body (`max-expects`)
 
+💼 This rule is enabled in the following
+[configs](https://github.com/jest-community/eslint-plugin-jest/blob/main/README.md#shareable-configurations):
+`all`.
+
+<!-- end rule header -->
+
 As more assertions are made, there is a possible tendency for the test to be
 more likely to mix multiple objectives. To avoid this, this rule reports when
 the maximum number of assertions is exceeded.
 
-## Rule Details
+## Rule details
 
 This rule enforces a maximum number of `expect()` calls.
 

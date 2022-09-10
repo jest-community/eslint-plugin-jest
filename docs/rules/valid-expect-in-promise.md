@@ -1,5 +1,11 @@
 # Ensure promises that have expectations in their chain are valid (`valid-expect-in-promise`)
 
+💼 This rule is enabled in the following
+[configs](https://github.com/jest-community/eslint-plugin-jest/blob/main/README.md#shareable-configurations):
+`all`, `recommended`.
+
+<!-- end rule header -->
+
 Ensure promises that include expectations are returned or awaited.
 
 ## Rule details

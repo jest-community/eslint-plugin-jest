@@ -1,9 +1,9 @@
 # Disallow conditional logic (`no-if`)
 
-## Deprecated
+❌ This rule is deprecated. It was replaced by
+[no-conditional-in-test](no-conditional-in-test.md).
 
-This rule has been deprecated in favor of
-[`no-conditional-in-test`](no-conditional-in-test.md).
+<!-- end rule header -->
 
 Conditional logic in tests is usually an indication that a test is attempting to
 cover too much, and not testing the logic it intends to. Each branch of code
@@ -13,7 +13,7 @@ to it.
 Conditionals are often used to satisfy the typescript type checker. In these
 cases, using the non-null assertion operator (!) would be best.
 
-## Rule Details
+## Rule details
 
 This rule prevents the use of if/ else statements and conditional (ternary)
 operations in tests.

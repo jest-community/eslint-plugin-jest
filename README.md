@@ -215,6 +215,7 @@ installations requiring long-term consistency.
 | [no-focused-tests](docs/rules/no-focused-tests.md)                           | Disallow focused tests                                              | ![recommended][] | ![suggest][] |
 | [no-hooks](docs/rules/no-hooks.md)                                           | Disallow setup and teardown hooks                                   |                  |              |
 | [no-identical-title](docs/rules/no-identical-title.md)                       | Disallow identical titles                                           | ![recommended][] |              |
+| [no-if](docs/rules/no-if.md)                                                 | Disallow conditional logic                                          | ![deprecated][]  |              |
 | [no-interpolation-in-snapshots](docs/rules/no-interpolation-in-snapshots.md) | Disallow string interpolation inside snapshots                      | ![recommended][] |              |
 | [no-jasmine-globals](docs/rules/no-jasmine-globals.md)                       | Disallow Jasmine globals                                            | ![recommended][] | ![fixable][] |
 | [no-large-snapshots](docs/rules/no-large-snapshots.md)                       | disallow large snapshots                                            |                  |              |
@@ -308,4 +309,5 @@ https://github.com/istanbuljs/eslint-plugin-istanbul
 [suggest]: https://img.shields.io/badge/-suggest-yellow.svg
 [fixable]: https://img.shields.io/badge/-fixable-green.svg
 [style]: https://img.shields.io/badge/-style-blue.svg
+[deprecated]: https://img.shields.io/badge/-deprecated-red.svg
 [`no-deprecated-functions`]: docs/rules/no-deprecated-functions.md

@@ -1,5 +1,15 @@
 # Suggest using `toBe()` for primitive literals (`prefer-to-be`)
 
+💼 This rule is enabled in the following
+[configs](https://github.com/jest-community/eslint-plugin-jest/blob/main/README.md#shareable-configurations):
+`all`, `style`.
+
+🔧 This rule is automatically fixable using the `--fix`
+[option](https://eslint.org/docs/latest/user-guide/command-line-interface#--fix)
+on the command line.
+
+<!-- end rule header -->
+
 When asserting against primitive literals such as numbers and strings, the
 equality matchers all operate the same, but read slightly differently in code.
 
