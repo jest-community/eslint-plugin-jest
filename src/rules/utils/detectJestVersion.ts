@@ -1,4 +1,4 @@
-import { JSONSchemaForNPMPackageJsonFiles } from '@schemastore/package';
+import type { JSONSchemaForNPMPackageJsonFiles } from '@schemastore/package';
 
 export type JestVersion =
   | 14

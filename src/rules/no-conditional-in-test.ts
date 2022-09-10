@@ -1,4 +1,4 @@
-import { TSESTree } from '@typescript-eslint/utils';
+import type { TSESTree } from '@typescript-eslint/utils';
 import { createRule, isTypeOfJestFnCall } from './utils';
 
 export default createRule({

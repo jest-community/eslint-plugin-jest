@@ -1,4 +1,4 @@
-import { JSONSchemaForNPMPackageJsonFiles } from '@schemastore/package';
+import type { JSONSchemaForNPMPackageJsonFiles } from '@schemastore/package';
 import { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import dedent from 'dedent';
 import { espreeParser } from '../../__tests__/test-utils';
@@ -76,7 +76,7 @@ const rule = createRule({
           messageId: 'details',
           node,
           data: {
-            data: JSON.stringify(sorted, (key, value) => {
+            data: JSON.stringify(sorted, (_key, value) => {
               if (isNode(value)) {
                 if (isSupportedAccessor(value)) {
                   return getAccessorValue(value);

@@ -1,6 +1,6 @@
 import { readdirSync } from 'fs';
 import { join, parse } from 'path';
-import { TSESLint } from '@typescript-eslint/utils';
+import type { TSESLint } from '@typescript-eslint/utils';
 import globals from './globals.json';
 import * as snapshotProcessor from './processors/snapshot-processor';
 

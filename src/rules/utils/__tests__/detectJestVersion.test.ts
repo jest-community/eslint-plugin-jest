@@ -2,7 +2,7 @@ import { spawnSync } from 'child_process';
 import * as fs from 'fs';
 import * as os from 'os';
 import * as path from 'path';
-import { JSONSchemaForNPMPackageJsonFiles } from '@schemastore/package';
+import type { JSONSchemaForNPMPackageJsonFiles } from '@schemastore/package';
 import { create } from 'ts-node';
 import { detectJestVersion } from '../detectJestVersion';
 
