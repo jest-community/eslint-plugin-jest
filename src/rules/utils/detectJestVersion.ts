@@ -15,6 +15,8 @@ export type JestVersion =
   | 25
   | 26
   | 27
+  | 28
+  | 29
   | number;
 
 let cachedJestVersion: JestVersion | null = null;
