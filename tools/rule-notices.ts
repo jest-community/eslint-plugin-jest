@@ -1,4 +1,4 @@
-import plugin from '../src';
+import plugin from '../src/legacy';
 
 enum MESSAGE_TYPE {
   CONFIGS = 'configs',

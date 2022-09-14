@@ -14,7 +14,17 @@
     "email": "hello@jkimbo.com",
     "url": "jkimbo.com"
   },
-  "main": "lib/",
+  "main": "lib/legacy.js",
+  "exports": {
+    ".": {
+      "import": "./lib/index.js",
+      "require": "./lib/legacy.js"
+    },
+    "./new": "./lib/index.js",
+    "./recommended": "./lib/configs/recommended.js",
+    "./style": "./lib/configs/style.js",
+    "./all": "./lib/configs/style.js"
+  },
   "files": [
     "docs/",
     "lib/"

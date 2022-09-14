@@ -5,7 +5,7 @@ import * as path from 'path';
 import type { JSONSchema, TSESLint } from '@typescript-eslint/utils';
 import prettier, { Options } from 'prettier';
 import { prettier as prettierRC } from '../package.json';
-import plugin from '../src/index';
+import plugin from '../src/legacy';
 import { getRuleNoticeLines } from './rule-notices';
 
 // Marker so that rule doc header (title/notices) can be automatically updated.
