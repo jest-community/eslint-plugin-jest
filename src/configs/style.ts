@@ -1,22 +1,12 @@
-import globals from '../globals.json';
-import jest from '../index';
 import legacy from '../legacy';
+import all from './all';
+
+const [snap, test] = all;
 
 export default [
+  snap,
   {
-    files: ['**/*.snap'],
-    plugins: {
-      jest,
-    },
-    processor: 'jest/.snap',
-  },
-  {
-    languageOptions: {
-      globals,
-    },
-    plugins: {
-      jest,
-    },
+    ...test,
     rules: legacy.configs.style.rules,
   },
 ];

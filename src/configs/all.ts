@@ -11,6 +11,10 @@ export default [
     processor: 'jest/.snap',
   },
   {
+    files: [
+      '**/*.{test,spec}.{js,cjs,mjs,jsx,ts,tsx}',
+      '**/__tests__/*.{js,cjs,mjs,jsx,ts,tsx}',
+    ],
     languageOptions: {
       globals,
     },
