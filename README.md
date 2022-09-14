@@ -20,7 +20,7 @@ yarn add --dev eslint eslint-plugin-jest
 **Note:** If you installed ESLint globally then you must also install
 `eslint-plugin-jest` globally.
 
-## Usage
+## Usage (legacy: `.eslintrc*`)
 
 Add `jest` to the plugins section of your `.eslintrc` configuration file. You
 can omit the `eslint-plugin-` prefix:
@@ -59,7 +59,7 @@ doing:
 This is included in all configs shared by this plugin, so can be omitted if
 extending them.
 
-#### Aliased Jest globals
+### Aliased Jest globals
 
 You can tell this plugin about any global Jests you have aliased using the
 `globalAliases` setting:
@@ -143,7 +143,66 @@ module.exports = {
 };
 ```
 
-## Shareable configurations
+## Usage (new: `eslint.config.js`)
+
+From [`v8.21.0`](https://github.com/eslint/eslint/releases/tag/v8.21.0), eslint
+announced a new config system. In the new system, `.eslintrc*` is no longer
+used. `eslint.config.js` would be the default config file name. In eslint `v8`,
+the legacy system (`.eslintrc*`) would still be supported, while in eslint `v9`,
+only the new system would be supported.
+
+And from [`v8.23.0`](https://github.com/eslint/eslint/releases/tag/v8.23.0),
+eslint CLI starts to look up `eslint.config.js`. **So, if your eslint is
+`>=8.23.0`, you're 100% ready to use the new config system.**
+
+You might want to check out the official blog posts,
+
+- <https://eslint.org/blog/2022/08/new-config-system-part-1/>
+- <https://eslint.org/blog/2022/08/new-config-system-part-2/>
+- <https://eslint.org/blog/2022/08/new-config-system-part-3/>
+
+and the
+[official docs](https://eslint.org/docs/latest/user-guide/configuring/configuration-files-new).
+
+The default export of `eslint-plugin-jest` is a plugin object.
+
+```js
+import jest from 'eslint-plugin-jest';
+import jestGlobals from 'eslint-plugin-jest/globals';
+
+export default [
+  {
+    // A config for source code (non-test files)
+    files: ['**/*.test.{js,jsx}'],
+    // ...
+  },
+  // --- snip ---
+  {
+    // The config in case you use jest snapshot test
+    files: ['**/*.snap'],
+    plugins: {
+      jest,
+    },
+    processor: 'jest/.snap',
+  },
+  {
+    // A config for test files (non-source-code)
+    files: ['**/*.test.{js,jsx}'],
+    languageOptions: {
+      globals: jestGlobals,
+    },
+    plugins: {
+      jest,
+    },
+    rules: {
+      // rules you want
+      'jest/better-regex': 'warn',
+    },
+  },
+];
+```
+
+## Shareable configurations (legacy: `.eslintrc*`)
 
 ### Recommended
 
@@ -192,6 +251,39 @@ If you want to enable all rules instead of only some you can do so by adding the
 While the `recommended` and `style` configurations only change in major versions
 the `all` configuration may change in any release and is thus unsuited for
 installations requiring long-term consistency.
+
+## Shareable configurations (new: `eslint.config.js`)
+
+If you use the new config system (`eslint.config.js`), there're 3 shareable
+configs.
+
+- `eslint-plugin-jest/all`
+- `eslint-plugin-jest/recommended`
+- `eslint-plugin-jest/style`
+
+**Note**: Shareable configs will enable the
+[`languageOptions.globals`](https://eslint.org/docs/latest/user-guide/configuring/configuration-files-new#configuration-objects).
+
+In the new config system, `plugin:` protocol(e.g. `plugin:jest/recommended`) is
+no longer valid. As eslint does not automatically import the preset config
+(shareable config), you explicitly do it by yourself.
+
+**Note**: The new plugin object does not have `configs` property as well.
+
+```js
+import jest from 'eslint-plugin-jest/all';
+
+export default [
+  {
+    // A config for source code (non-test files)
+    files: ['**/*.test.{js,jsx}'],
+    // ...
+  },
+  // --- snip ---
+  ...jest, // This is not a plugin object, but a shareable config object(array)
+  // --- snip ---
+];
+```
 
 ## Rules
 
