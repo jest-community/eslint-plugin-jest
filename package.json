@@ -21,9 +21,9 @@
       "require": "./lib/legacy.js"
     },
     "./new": "./lib/index.js",
+    "./all": "./lib/configs/all.js",
     "./recommended": "./lib/configs/recommended.js",
     "./style": "./lib/configs/style.js",
-    "./all": "./lib/configs/style.js",
     "./globals": "./lib/globals.json",
     "./globals.json": "./lib/globals.json"
   },
