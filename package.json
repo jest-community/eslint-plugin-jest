@@ -14,7 +14,19 @@
     "email": "hello@jkimbo.com",
     "url": "jkimbo.com"
   },
-  "main": "lib/index.js",
+  "main": "lib/legacy.js",
+  "exports": {
+    ".": {
+      "import": "./lib/index.js",
+      "require": "./lib/legacy.js"
+    },
+    "./new": "./lib/index.js",
+    "./all": "./lib/configs/all.js",
+    "./recommended": "./lib/configs/recommended.js",
+    "./style": "./lib/configs/style.js",
+    "./globals": "./lib/globals.json",
+    "./globals.json": "./lib/globals.json"
+  },
   "files": [
     "docs/",
     "lib/"
