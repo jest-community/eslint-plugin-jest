@@ -2569,6 +2569,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/eslint@npm:^8.4.6":
+  version: 8.4.6
+  resolution: "@types/eslint@npm:8.4.6"
+  dependencies:
+    "@types/estree": "*"
+    "@types/json-schema": "*"
+  checksum: bfaf27b00031b2238139003965475d023306119e467947f7a43a41e380918e365618e2ae6a6ae638697f6421a6bb1571db078695ff5e548f23618000b38acd23
+  languageName: node
+  linkType: hard
+
+"@types/estree@npm:*":
+  version: 1.0.0
+  resolution: "@types/estree@npm:1.0.0"
+  checksum: 910d97fb7092c6738d30a7430ae4786a38542023c6302b95d46f49420b797f21619cdde11fa92b338366268795884111c2eb10356e4bd2c8ad5b92941e9e6443
+  languageName: node
+  linkType: hard
+
 "@types/graceful-fs@npm:^4.1.3":
   version: 4.1.5
   resolution: "@types/graceful-fs@npm:4.1.5"
@@ -2613,7 +2630,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/json-schema@npm:^7.0.9":
+"@types/json-schema@npm:*, @types/json-schema@npm:^7.0.9":
   version: 7.0.11
   resolution: "@types/json-schema@npm:7.0.11"
   checksum: 527bddfe62db9012fccd7627794bd4c71beb77601861055d87e3ee464f2217c85fca7a4b56ae677478367bbd248dbde13553312b7d4dbc702a2f2bbf60c4018d
@@ -4572,6 +4589,7 @@ __metadata:
     "@semantic-release/git": ^10.0.0
     "@tsconfig/node14": ^1.0.3
     "@types/dedent": ^0.7.0
+    "@types/eslint": ^8.4.6
     "@types/jest": ^29.0.0
     "@types/node": ^14.18.26
     "@types/prettier": ^2.0.0

@@ -20,6 +20,7 @@
     "skipLibCheck": false,
     "forceConsistentCasingInFileNames": true
   },
+  "files": ["eslint-remote-tester.config.ts"],
   "include": ["src/**/*", "tools/**/*"],
   "exclude": ["src/rules/__tests__/fixtures/**/*"]
 }

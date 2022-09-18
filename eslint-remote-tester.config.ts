@@ -1,6 +1,6 @@
 'use strict';
 
-import { Config } from 'eslint-remote-tester';
+import type { Config } from 'eslint-remote-tester';
 import {
   getPathIgnorePattern,
   getRepositories,
