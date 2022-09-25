@@ -5,8 +5,16 @@ on:
     - cron: '0 0 * * SUN'
   workflow_dispatch:
 
+permissions:
+  contents: read # to fetch code (actions/checkout)
+
 jobs:
   test:
+    permissions:
+      contents: read # to fetch code (actions/checkout)
+      issues: write # to create comment
+      pull-requests: read # for searching pull requests
+
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
