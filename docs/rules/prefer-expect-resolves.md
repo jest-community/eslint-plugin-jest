@@ -58,6 +58,8 @@ it('is true', async () => {
 });
 
 it('errors', async () => {
-  await expect(Promise.rejects('oh noes!')).rejects.toThrow('oh noes!');
+  await expect(Promise.reject(new Error('oh noes!'))).rejects.toThrowError(
+    'oh noes!',
+  );
 });
 ```
