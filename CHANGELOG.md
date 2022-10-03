@@ -1,3 +1,10 @@
+# [27.1.0](https://github.com/jest-community/eslint-plugin-jest/compare/v27.0.4...v27.1.0) (2022-10-03)
+
+
+### Features
+
+* create `no-restricted-jest-methods` rule ([#1257](https://github.com/jest-community/eslint-plugin-jest/issues/1257)) ([b8e61b1](https://github.com/jest-community/eslint-plugin-jest/commit/b8e61b192ac79971575a3a250df2c54056eadc90))
+
 ## [27.0.4](https://github.com/jest-community/eslint-plugin-jest/compare/v27.0.3...v27.0.4) (2022-09-10)
 
 
