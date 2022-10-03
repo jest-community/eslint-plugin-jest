@@ -220,6 +220,7 @@ installations requiring long-term consistency.
 | [no-jasmine-globals](docs/rules/no-jasmine-globals.md)                       | Disallow Jasmine globals                                            | ![recommended][] | ![fixable][] |
 | [no-large-snapshots](docs/rules/no-large-snapshots.md)                       | disallow large snapshots                                            |                  |              |
 | [no-mocks-import](docs/rules/no-mocks-import.md)                             | Disallow manually importing from `__mocks__`                        | ![recommended][] |              |
+| [no-restricted-jest-methods](docs/rules/no-restricted-jest-methods.md)       | Disallow specific `jest.` methods                                   |                  |              |
 | [no-restricted-matchers](docs/rules/no-restricted-matchers.md)               | Disallow specific matchers & modifiers                              |                  |              |
 | [no-standalone-expect](docs/rules/no-standalone-expect.md)                   | Disallow using `expect` outside of `it` or `test` blocks            | ![recommended][] |              |
 | [no-test-prefixes](docs/rules/no-test-prefixes.md)                           | Use `.only` and `.skip` over `f` and `x`                            | ![recommended][] | ![fixable][] |
