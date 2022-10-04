@@ -11,7 +11,7 @@ You may wish to restrict the use of specific `jest` methods.
 ## Rule details
 
 This rule checks for the usage of specific methods on the `jest` object, which
-can be used to disallow curtain patterns such as spies and mocks.
+can be used to disallow certain patterns such as spies and mocks.
 
 ## Options
 
