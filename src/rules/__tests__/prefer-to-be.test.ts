@@ -14,6 +14,7 @@ ruleTester.run('prefer-to-be', rule, {
     'expect(null).toBeNull();',
     'expect(null).not.toBeNull();',
     'expect(null).toBe(1);',
+    'expect(null).toBe(-1);',
     'expect(null).toBe(...1);',
     'expect(obj).toStrictEqual([ x, 1 ]);',
     'expect(obj).toStrictEqual({ x: 1 });',
@@ -39,6 +40,11 @@ ruleTester.run('prefer-to-be', rule, {
     {
       code: 'expect(value).toStrictEqual(1);',
       output: 'expect(value).toBe(1);',
+      errors: [{ messageId: 'useToBe', column: 15, line: 1 }],
+    },
+    {
+      code: 'expect(value).toStrictEqual(-1);',
+      output: 'expect(value).toBe(-1);',
       errors: [{ messageId: 'useToBe', column: 15, line: 1 }],
     },
     {
@@ -309,6 +315,11 @@ new TSESLint.RuleTester({
     {
       code: 'expect(null).toEqual(1 as unknown as string as unknown as any);',
       output: 'expect(null).toBe(1 as unknown as string as unknown as any);',
+      errors: [{ messageId: 'useToBe', column: 14, line: 1 }],
+    },
+    {
+      code: 'expect(null).toEqual(-1 as unknown as string as unknown as any);',
+      output: 'expect(null).toBe(-1 as unknown as string as unknown as any);',
       errors: [{ messageId: 'useToBe', column: 14, line: 1 }],
     },
     {

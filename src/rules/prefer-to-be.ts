@@ -27,7 +27,14 @@ const isFirstArgumentIdentifier = (
 ) => isIdentifier(getFirstMatcherArg(expectFnCall), name);
 
 const shouldUseToBe = (expectFnCall: ParsedExpectFnCall): boolean => {
-  const firstArg = getFirstMatcherArg(expectFnCall);
+  let firstArg = getFirstMatcherArg(expectFnCall);
+
+  if (
+    firstArg.type === AST_NODE_TYPES.UnaryExpression &&
+    firstArg.operator === '-'
+  ) {
+    firstArg = firstArg.argument;
+  }
 
   if (firstArg.type === AST_NODE_TYPES.Literal) {
     // regex literals are classed as literals, but they're actually objects
