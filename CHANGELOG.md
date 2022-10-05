@@ -1,3 +1,10 @@
+## [27.1.1](https://github.com/jest-community/eslint-plugin-jest/compare/v27.1.0...v27.1.1) (2022-10-05)
+
+
+### Bug Fixes
+
+* **prefer-to-be:** support negative numbers ([#1260](https://github.com/jest-community/eslint-plugin-jest/issues/1260)) ([557dd39](https://github.com/jest-community/eslint-plugin-jest/commit/557dd394a4535276a4c6fa046bfb525f4c412800))
+
 # [27.1.0](https://github.com/jest-community/eslint-plugin-jest/compare/v27.0.4...v27.1.0) (2022-10-03)
 
 
