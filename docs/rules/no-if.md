@@ -1,9 +1,9 @@
 # Disallow conditional logic (`no-if`)
 
 ❌ This rule is deprecated. It was replaced by
-[no-conditional-in-test](no-conditional-in-test.md).
+[`no-conditional-in-test`](no-conditional-in-test.md).
 
-<!-- end rule header -->
+<!-- end auto-generated rule header -->
 
 Conditional logic in tests is usually an indication that a test is attempting to
 cover too much, and not testing the logic it intends to. Each branch of code

@@ -1,14 +1,9 @@
 # Suggest using `jest.spyOn()` (`prefer-spy-on`)
 
-💼 This rule is enabled in the following
-[configs](https://github.com/jest-community/eslint-plugin-jest/blob/main/README.md#shareable-configurations):
-`all`.
+🔧 This rule is automatically fixable by the
+[`--fix` CLI option](https://eslint.org/docs/latest/user-guide/command-line-interface#--fix).
 
-🔧 This rule is automatically fixable using the `--fix`
-[option](https://eslint.org/docs/latest/user-guide/command-line-interface#--fix)
-on the command line.
-
-<!-- end rule header -->
+<!-- end auto-generated rule header -->
 
 When mocking a function by overwriting a property you have to manually restore
 the original implementation when cleaning up. When using `jest.spyOn()` Jest
@@ -33,8 +28,6 @@ jest.spyOn(Date, 'now').mockReturnValue(10); // Will always return 10
 
 This rule triggers a warning if an object's property is overwritten with a jest
 mock.
-
-### Default configuration
 
 The following patterns are considered warnings:
 

@@ -1,10 +1,6 @@
 # Prefer including a hint with external snapshots (`prefer-snapshot-hint`)
 
-💼 This rule is enabled in the following
-[configs](https://github.com/jest-community/eslint-plugin-jest/blob/main/README.md#shareable-configurations):
-`all`.
-
-<!-- end rule header -->
+<!-- end auto-generated rule header -->
 
 When working with external snapshot matchers it's considered best practice to
 provide a hint (as the last argument to the matcher) describing the expected

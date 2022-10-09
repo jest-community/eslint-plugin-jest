@@ -1,10 +1,9 @@
 # Enforce valid `expect()` usage (`valid-expect`)
 
-💼 This rule is enabled in the following
-[configs](https://github.com/jest-community/eslint-plugin-jest/blob/main/README.md#shareable-configurations):
-`all`, `recommended`.
+💼 This rule is enabled in the ✅ `recommended`
+[config](https://github.com/jest-community/eslint-plugin-jest/blob/main/README.md#shareable-configurations).
 
-<!-- end rule header -->
+<!-- end auto-generated rule header -->
 
 Ensure `expect()` is called with a single argument and there is an actual
 expectation made.
@@ -108,8 +107,6 @@ arguments supported by vanilla `expect`.
 This is useful when you're using libraries that increase the number of arguments
 supported by `expect`, such as
 [`jest-expect-message`](https://www.npmjs.com/package/jest-expect-message).
-
-### Default configuration
 
 The following patterns are considered warnings:
 

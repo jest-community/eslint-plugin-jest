@@ -1,14 +1,9 @@
 # Suggest using the built-in equality matchers (`prefer-equality-matcher`)
 
-💼 This rule is enabled in the following
-[configs](https://github.com/jest-community/eslint-plugin-jest/blob/main/README.md#shareable-configurations):
-`all`.
+💡 This rule is manually fixable by
+[editor suggestions](https://eslint.org/docs/developer-guide/working-with-rules#providing-suggestions).
 
-💡 This rule provides
-[suggestions](https://eslint.org/docs/developer-guide/working-with-rules#providing-suggestions)
-that can be applied manually.
-
-<!-- end rule header -->
+<!-- end auto-generated rule header -->
 
 Jest has built-in matchers for expecting equality, which allow for more readable
 tests and error messages if an expectation fails.

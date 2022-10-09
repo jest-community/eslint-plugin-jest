@@ -32,6 +32,10 @@ module.exports = {
     '@typescript-eslint/ban-types': 'error',
     '@typescript-eslint/no-unused-vars': 'error',
     'eslint-comments/no-unused-disable': 'error',
+    'eslint-plugin/require-meta-docs-description': [
+      'error',
+      { pattern: '^(Enforce|Require|Disallow|Suggest|Prefer)' },
+    ],
     'eslint-plugin/test-case-property-ordering': 'error',
     'no-else-return': 'error',
     'no-negated-condition': 'error',

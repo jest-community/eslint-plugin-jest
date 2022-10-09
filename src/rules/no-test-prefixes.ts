@@ -6,7 +6,7 @@ export default createRule({
   meta: {
     docs: {
       category: 'Best Practices',
-      description: 'Use `.only` and `.skip` over `f` and `x`',
+      description: 'Require using `.only` and `.skip` over `f` and `x`',
       recommended: 'error',
     },
     messages: {

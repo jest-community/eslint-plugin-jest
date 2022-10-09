@@ -1,10 +1,9 @@
 # Disallow manually importing from `__mocks__` (`no-mocks-import`)
 
-💼 This rule is enabled in the following
-[configs](https://github.com/jest-community/eslint-plugin-jest/blob/main/README.md#shareable-configurations):
-`all`, `recommended`.
+💼 This rule is enabled in the ✅ `recommended`
+[config](https://github.com/jest-community/eslint-plugin-jest/blob/main/README.md#shareable-configurations).
 
-<!-- end rule header -->
+<!-- end auto-generated rule header -->
 
 When using `jest.mock`, your tests (just like the code being tested) should
 import from `./x`, not `./__mocks__/x`. Not following this rule can lead to

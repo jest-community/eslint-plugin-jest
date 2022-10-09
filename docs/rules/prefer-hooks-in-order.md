@@ -1,10 +1,6 @@
 # Prefer having hooks in a consistent order (`prefer-hooks-in-order`)
 
-💼 This rule is enabled in the following
-[configs](https://github.com/jest-community/eslint-plugin-jest/blob/main/README.md#shareable-configurations):
-`all`.
-
-<!-- end rule header -->
+<!-- end auto-generated rule header -->
 
 While hooks can be setup in any order, they're always called by `jest` in this
 specific order:

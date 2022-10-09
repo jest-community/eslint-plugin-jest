@@ -1,10 +1,9 @@
 # Disallow disabled tests (`no-disabled-tests`)
 
-💼 This rule is enabled in the following
-[configs](https://github.com/jest-community/eslint-plugin-jest/blob/main/README.md#shareable-configurations):
-`all`.
+⚠️ This rule _warns_ in the ✅ `recommended`
+[config](https://github.com/jest-community/eslint-plugin-jest/blob/main/README.md#shareable-configurations).
 
-<!-- end rule header -->
+<!-- end auto-generated rule header -->
 
 Jest has a feature that allows you to temporarily mark tests as disabled. This
 feature is often helpful while debugging or to create placeholders for future

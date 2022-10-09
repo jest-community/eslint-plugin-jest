@@ -1,14 +1,12 @@
 # Enforce valid titles (`valid-title`)
 
-💼 This rule is enabled in the following
-[configs](https://github.com/jest-community/eslint-plugin-jest/blob/main/README.md#shareable-configurations):
-`all`, `recommended`.
+💼 This rule is enabled in the ✅ `recommended`
+[config](https://github.com/jest-community/eslint-plugin-jest/blob/main/README.md#shareable-configurations).
 
-🔧 This rule is automatically fixable using the `--fix`
-[option](https://eslint.org/docs/latest/user-guide/command-line-interface#--fix)
-on the command line.
+🔧 This rule is automatically fixable by the
+[`--fix` CLI option](https://eslint.org/docs/latest/user-guide/command-line-interface#--fix).
 
-<!-- end rule header -->
+<!-- end auto-generated rule header -->
 
 Checks that the title of Jest blocks are valid by ensuring that titles are:
 

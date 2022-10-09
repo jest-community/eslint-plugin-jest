@@ -1,10 +1,6 @@
-# disallow large snapshots (`no-large-snapshots`)
+# Disallow large snapshots (`no-large-snapshots`)
 
-💼 This rule is enabled in the following
-[configs](https://github.com/jest-community/eslint-plugin-jest/blob/main/README.md#shareable-configurations):
-`all`.
-
-<!-- end rule header -->
+<!-- end auto-generated rule header -->
 
 When using Jest's snapshot capability one should be mindful of the size of
 created snapshots. As a general best practice snapshots should be limited in

@@ -28,7 +28,7 @@ export default createRule({
   meta: {
     docs: {
       category: 'Best Practices',
-      description: 'Avoid using a callback in asynchronous tests and hooks',
+      description: 'Disallow using a callback in asynchronous tests and hooks',
       recommended: 'error',
     },
     messages: {

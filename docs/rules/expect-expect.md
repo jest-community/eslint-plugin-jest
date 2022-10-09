@@ -1,10 +1,9 @@
 # Enforce assertion to be made in a test body (`expect-expect`)
 
-💼 This rule is enabled in the following
-[configs](https://github.com/jest-community/eslint-plugin-jest/blob/main/README.md#shareable-configurations):
-`all`.
+⚠️ This rule _warns_ in the ✅ `recommended`
+[config](https://github.com/jest-community/eslint-plugin-jest/blob/main/README.md#shareable-configurations).
 
-<!-- end rule header -->
+<!-- end auto-generated rule header -->
 
 Ensure that there is at least one `expect` call made in a test.
 

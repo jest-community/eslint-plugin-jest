@@ -35,7 +35,7 @@ export default createRule<
   meta: {
     docs: {
       category: 'Best Practices',
-      description: 'Have control over `test` and `it` usages',
+      description: 'Enforce `test` and `it` usage conventions',
       recommended: false,
     },
     fixable: 'code',
