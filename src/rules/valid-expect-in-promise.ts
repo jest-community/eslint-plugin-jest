@@ -347,7 +347,7 @@ export default createRule({
     },
     messages: {
       expectInFloatingPromise:
-        "This promise should either be returned or awaited to ensure the expects in it's chain are called",
+        'This promise should either be returned or awaited to ensure the expects in its chain are called',
     },
     type: 'suggestion',
     schema: [],
