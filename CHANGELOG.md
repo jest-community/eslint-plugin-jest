@@ -1,3 +1,10 @@
+## [27.1.2](https://github.com/jest-community/eslint-plugin-jest/compare/v27.1.1...v27.1.2) (2022-10-14)
+
+
+### Bug Fixes
+
+* **valid-expect-in-promise:** adjust grammer in rule message ([#1264](https://github.com/jest-community/eslint-plugin-jest/issues/1264)) ([4494ed2](https://github.com/jest-community/eslint-plugin-jest/commit/4494ed21686edeb1bc4535cb2159989f87a7493e))
+
 ## [27.1.1](https://github.com/jest-community/eslint-plugin-jest/compare/v27.1.0...v27.1.1) (2022-10-05)
 
 
