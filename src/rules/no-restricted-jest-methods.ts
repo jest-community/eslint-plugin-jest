@@ -33,7 +33,7 @@ export default createRule<
       CallExpression(node) {
         const jestFnCall = parseJestFnCall(node, context);
 
-        if (jestFnCall?.type !== 'jest') {
+        if (jestFnCall?.type !== 'jest' || jestFnCall.members.length === 0) {
           return;
         }
 
