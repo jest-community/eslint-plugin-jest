@@ -13,6 +13,7 @@ const ruleTester = new TSESLint.RuleTester({
 ruleTester.run('no-restricted-jest-methods', rule, {
   valid: [
     'jest',
+    'jest()',
     'jest.mock()',
     'expect(a).rejects;',
     'expect(a);',
