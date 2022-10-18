@@ -1,3 +1,10 @@
+## [27.1.3](https://github.com/jest-community/eslint-plugin-jest/compare/v27.1.2...v27.1.3) (2022-10-18)
+
+
+### Bug Fixes
+
+* **no-restricted-jest-methods:** don't crash on `jest()` ([#1269](https://github.com/jest-community/eslint-plugin-jest/issues/1269)) ([4450daa](https://github.com/jest-community/eslint-plugin-jest/commit/4450daa17ae542bbfed85d16845c5dac1c310dea))
+
 ## [27.1.2](https://github.com/jest-community/eslint-plugin-jest/compare/v27.1.1...v27.1.2) (2022-10-14)
 
 
