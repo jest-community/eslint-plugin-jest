@@ -514,42 +514,6 @@ const describePossibleImportDef = (def: TSESLint.Scope.Definition) => {
   return null;
 };
 
-const collectReferences = (scope: TSESLint.Scope.Scope) => {
-  const locals = new Set();
-  const imports = new Map<string, ImportDetails>();
-  const unresolved = new Set();
-
-  let currentScope: TSESLint.Scope.Scope | null = scope;
-
-  while (currentScope !== null) {
-    for (const ref of currentScope.variables) {
-      if (ref.defs.length === 0) {
-        continue;
-      }
-
-      const def = ref.defs[ref.defs.length - 1];
-
-      const importDetails = describePossibleImportDef(def);
-
-      if (importDetails) {
-        imports.set(importDetails.local, importDetails);
-
-        continue;
-      }
-
-      locals.add(ref.name);
-    }
-
-    for (const ref of currentScope.through) {
-      unresolved.add(ref.identifier.name);
-    }
-
-    currentScope = currentScope.upper;
-  }
-
-  return { locals, imports, unresolved };
-};
-
 const resolveScope = (scope: TSESLint.Scope.Scope, identifier: string) => {
   let currentScope: TSESLint.Scope.Scope | null = scope;
 
@@ -621,15 +585,29 @@ export const scopeHasLocalReference = (
   scope: TSESLint.Scope.Scope,
   referenceName: string,
 ) => {
-  const references = collectReferences(scope);
+  let currentScope: TSESLint.Scope.Scope | null = scope;
 
-  return (
-    // referenceName was found as a local variable or function declaration.
-    references.locals.has(referenceName) ||
-    // referenceName was found as an imported identifier
-    references.imports.has(referenceName) ||
-    // referenceName was not found as an unresolved reference,
-    // meaning it is likely not an implicit global reference.
-    !references.unresolved.has(referenceName)
-  );
+  while (currentScope !== null) {
+    for (const ref of currentScope.variables) {
+      if (ref.defs.length === 0) {
+        continue;
+      }
+
+      const def = ref.defs[ref.defs.length - 1];
+
+      const importDetails = describePossibleImportDef(def);
+
+      // referenceName was found as an imported identifier
+      if (importDetails?.local === referenceName) {
+        return true;
+      }
+
+      // referenceName was found as a local variable or function declaration.
+      return ref.name === referenceName;
+    }
+
+    currentScope = currentScope.upper;
+  }
+
+  return false;
 };
