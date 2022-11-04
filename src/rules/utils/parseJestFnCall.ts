@@ -603,15 +603,7 @@ export const scopeHasLocalReference = (
       }
 
       // referenceName was found as a local variable or function declaration.
-      if (ref.name === referenceName) {
-        return true;
-      }
-    }
-
-    if (
-      currentScope.through.every(ref => ref.identifier.name !== referenceName)
-    ) {
-      return true;
+      return ref.name === referenceName;
     }
 
     currentScope = currentScope.upper;
