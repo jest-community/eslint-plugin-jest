@@ -550,6 +550,34 @@ const collectReferences = (scope: TSESLint.Scope.Scope) => {
   return { locals, imports, unresolved };
 };
 
+const resolveScope = (scope: TSESLint.Scope.Scope, identifier: string) => {
+  let currentScope: TSESLint.Scope.Scope | null = scope;
+
+  while (currentScope !== null) {
+    for (const ref of currentScope.variables) {
+      if (ref.defs.length === 0) {
+        continue;
+      }
+
+      const def = ref.defs[ref.defs.length - 1];
+
+      const importDetails = describePossibleImportDef(def);
+
+      if (importDetails?.local === identifier) {
+        return importDetails;
+      }
+
+      if (ref.name === identifier) {
+        return 'local';
+      }
+    }
+
+    currentScope = currentScope.upper;
+  }
+
+  return null;
+};
+
 interface ResolvedJestFn {
   original: string | null;
   local: string;
@@ -560,9 +588,13 @@ const resolveToJestFn = (
   context: TSESLint.RuleContext<string, unknown[]>,
   identifier: string,
 ): ResolvedJestFn | null => {
-  const references = collectReferences(context.getScope());
+  const maybeImport = resolveScope(context.getScope(), identifier);
 
-  const maybeImport = references.imports.get(identifier);
+  // the identifier was found as a local variable or function declaration
+  // meaning it's not a function from jest
+  if (maybeImport === 'local') {
+    return null;
+  }
 
   if (maybeImport) {
     // the identifier is imported from @jest/globals,
@@ -575,12 +607,6 @@ const resolveToJestFn = (
       };
     }
 
-    return null;
-  }
-
-  // the identifier was found as a local variable or function declaration
-  // meaning it's not a function from jest
-  if (references.locals.has(identifier)) {
     return null;
   }
 
