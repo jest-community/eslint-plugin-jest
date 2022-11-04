@@ -585,7 +585,6 @@ export const scopeHasLocalReference = (
   scope: TSESLint.Scope.Scope,
   referenceName: string,
 ) => {
-  let unresolved = false;
   let currentScope: TSESLint.Scope.Scope | null = scope;
 
   while (currentScope !== null) {
@@ -609,14 +608,14 @@ export const scopeHasLocalReference = (
       }
     }
 
-    if (!unresolved) {
-      for (const ref of currentScope.through) {
-        unresolved = ref.identifier.name !== referenceName;
-      }
+    if (
+      currentScope.through.every(ref => ref.identifier.name !== referenceName)
+    ) {
+      return true;
     }
 
     currentScope = currentScope.upper;
   }
 
-  return unresolved;
+  return false;
 };
