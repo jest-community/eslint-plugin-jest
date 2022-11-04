@@ -1,10 +1,9 @@
-# Prevent calling `expect` conditionally (`no-conditional-expect`)
+# Disallow calling `expect` conditionally (`no-conditional-expect`)
 
-💼 This rule is enabled in the following
-[configs](https://github.com/jest-community/eslint-plugin-jest/blob/main/README.md#shareable-configurations):
-`all`, `recommended`.
+💼 This rule is enabled in the ✅ `recommended`
+[config](https://github.com/jest-community/eslint-plugin-jest/blob/main/README.md#shareable-configurations).
 
-<!-- end rule header -->
+<!-- end auto-generated rule header -->
 
 This rule prevents the use of `expect` in conditional blocks, such as `if`s &
 `catch`s.

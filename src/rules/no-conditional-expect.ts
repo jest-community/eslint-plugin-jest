@@ -18,7 +18,7 @@ export default createRule({
   name: __filename,
   meta: {
     docs: {
-      description: 'Prevent calling `expect` conditionally',
+      description: 'Disallow calling `expect` conditionally',
       category: 'Best Practices',
       recommended: 'error',
     },

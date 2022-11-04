@@ -1,14 +1,9 @@
 # Prefer `await expect(...).resolves` over `expect(await ...)` syntax (`prefer-expect-resolves`)
 
-💼 This rule is enabled in the following
-[configs](https://github.com/jest-community/eslint-plugin-jest/blob/main/README.md#shareable-configurations):
-`all`.
+🔧 This rule is automatically fixable by the
+[`--fix` CLI option](https://eslint.org/docs/latest/user-guide/command-line-interface#--fix).
 
-🔧 This rule is automatically fixable using the `--fix`
-[option](https://eslint.org/docs/latest/user-guide/command-line-interface#--fix)
-on the command line.
-
-<!-- end rule header -->
+<!-- end auto-generated rule header -->
 
 When working with promises, there are two primary ways you can test the resolved
 value:

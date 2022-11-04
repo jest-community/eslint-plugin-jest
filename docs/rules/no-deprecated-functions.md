@@ -1,14 +1,12 @@
 # Disallow use of deprecated functions (`no-deprecated-functions`)
 
-💼 This rule is enabled in the following
-[configs](https://github.com/jest-community/eslint-plugin-jest/blob/main/README.md#shareable-configurations):
-`all`, `recommended`.
+💼 This rule is enabled in the ✅ `recommended`
+[config](https://github.com/jest-community/eslint-plugin-jest/blob/main/README.md#shareable-configurations).
 
-🔧 This rule is automatically fixable using the `--fix`
-[option](https://eslint.org/docs/latest/user-guide/command-line-interface#--fix)
-on the command line.
+🔧 This rule is automatically fixable by the
+[`--fix` CLI option](https://eslint.org/docs/latest/user-guide/command-line-interface#--fix).
 
-<!-- end rule header -->
+<!-- end auto-generated rule header -->
 
 Over the years Jest has accrued some debt in the form of functions that have
 either been renamed for clarity, or replaced with more powerful APIs.

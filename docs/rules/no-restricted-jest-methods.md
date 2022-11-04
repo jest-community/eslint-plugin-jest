@@ -1,10 +1,6 @@
 # Disallow specific `jest.` methods (`no-restricted-jest-methods`)
 
-💼 This rule is enabled in the following
-[configs](https://github.com/jest-community/eslint-plugin-jest/blob/main/README.md#shareable-configurations):
-`all`.
-
-<!-- end rule header -->
+<!-- end auto-generated rule header -->
 
 You may wish to restrict the use of specific `jest` methods.
 

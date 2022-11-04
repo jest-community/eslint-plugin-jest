@@ -1,10 +1,6 @@
 # Disallow specific matchers & modifiers (`no-restricted-matchers`)
 
-💼 This rule is enabled in the following
-[configs](https://github.com/jest-community/eslint-plugin-jest/blob/main/README.md#shareable-configurations):
-`all`.
-
-<!-- end rule header -->
+<!-- end auto-generated rule header -->
 
 You may want to ban specific matchers & modifiers from being used.
 

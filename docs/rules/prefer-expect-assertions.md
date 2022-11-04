@@ -1,14 +1,9 @@
 # Suggest using `expect.assertions()` OR `expect.hasAssertions()` (`prefer-expect-assertions`)
 
-💼 This rule is enabled in the following
-[configs](https://github.com/jest-community/eslint-plugin-jest/blob/main/README.md#shareable-configurations):
-`all`.
+💡 This rule is manually fixable by
+[editor suggestions](https://eslint.org/docs/developer-guide/working-with-rules#providing-suggestions).
 
-💡 This rule provides
-[suggestions](https://eslint.org/docs/developer-guide/working-with-rules#providing-suggestions)
-that can be applied manually.
-
-<!-- end rule header -->
+<!-- end auto-generated rule header -->
 
 Ensure every test to have either `expect.assertions(<number of assertions>)` OR
 `expect.hasAssertions()` as its first expression.
@@ -36,8 +31,6 @@ test('my test', () => {
   expect(someThing()).toEqual('foo');
 });
 ```
-
-### Default configuration
 
 The following patterns are considered warnings:
 

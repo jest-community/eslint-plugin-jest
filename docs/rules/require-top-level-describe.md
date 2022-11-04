@@ -1,10 +1,6 @@
 # Require test cases and hooks to be inside a `describe` block (`require-top-level-describe`)
 
-💼 This rule is enabled in the following
-[configs](https://github.com/jest-community/eslint-plugin-jest/blob/main/README.md#shareable-configurations):
-`all`.
-
-<!-- end rule header -->
+<!-- end auto-generated rule header -->
 
 Jest allows you to organise your test files the way you want it. However, the
 more your codebase grows, the more it becomes hard to navigate in your test

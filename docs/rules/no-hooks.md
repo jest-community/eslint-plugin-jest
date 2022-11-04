@@ -1,10 +1,6 @@
 # Disallow setup and teardown hooks (`no-hooks`)
 
-💼 This rule is enabled in the following
-[configs](https://github.com/jest-community/eslint-plugin-jest/blob/main/README.md#shareable-configurations):
-`all`.
-
-<!-- end rule header -->
+<!-- end auto-generated rule header -->
 
 Jest provides global functions for setup and teardown tasks, which are called
 before/after each test case and each test suite. The use of these hooks promotes

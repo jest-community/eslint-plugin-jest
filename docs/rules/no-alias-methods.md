@@ -1,17 +1,17 @@
 # Disallow alias methods (`no-alias-methods`)
 
-💼 This rule is enabled in the following
-[configs](https://github.com/jest-community/eslint-plugin-jest/blob/main/README.md#shareable-configurations):
-`all`, `recommended`.
+💼⚠️ This rule is enabled in the ✅ `recommended`
+[config](https://github.com/jest-community/eslint-plugin-jest/blob/main/README.md#shareable-configurations).
+This rule _warns_ in the 🎨 `style`
+[config](https://github.com/jest-community/eslint-plugin-jest/blob/main/README.md#shareable-configurations).
 
-🔧 This rule is automatically fixable using the `--fix`
-[option](https://eslint.org/docs/latest/user-guide/command-line-interface#--fix)
-on the command line.
+🔧 This rule is automatically fixable by the
+[`--fix` CLI option](https://eslint.org/docs/latest/user-guide/command-line-interface#--fix).
 
-<!-- end rule header -->
+<!-- end auto-generated rule header -->
 
 > These aliases are going to be removed in the next major version of Jest - see
-> https://github.com/facebook/jest/issues/13164 for more
+> <https://github.com/facebook/jest/issues/13164> for more
 
 Several Jest methods have alias names, such as `toThrow` having the alias of
 `toThrowError`. This rule ensures that only the canonical name as used in the
@@ -23,8 +23,6 @@ method names used.
 
 This rule triggers a warning if the alias name, rather than the canonical name,
 of a method is used.
-
-### Default configuration
 
 The following patterns are considered warnings:
 

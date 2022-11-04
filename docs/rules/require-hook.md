@@ -1,10 +1,6 @@
 # Require setup and teardown code to be within a hook (`require-hook`)
 
-💼 This rule is enabled in the following
-[configs](https://github.com/jest-community/eslint-plugin-jest/blob/main/README.md#shareable-configurations):
-`all`.
-
-<!-- end rule header -->
+<!-- end auto-generated rule header -->
 
 Often while writing tests you have some setup work that needs to happen before
 tests run, and you have some finishing work that needs to happen after tests

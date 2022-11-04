@@ -1,14 +1,12 @@
 # Disallow focused tests (`no-focused-tests`)
 
-💼 This rule is enabled in the following
-[configs](https://github.com/jest-community/eslint-plugin-jest/blob/main/README.md#shareable-configurations):
-`all`, `recommended`.
+💼 This rule is enabled in the ✅ `recommended`
+[config](https://github.com/jest-community/eslint-plugin-jest/blob/main/README.md#shareable-configurations).
 
-💡 This rule provides
-[suggestions](https://eslint.org/docs/developer-guide/working-with-rules#providing-suggestions)
-that can be applied manually.
+💡 This rule is manually fixable by
+[editor suggestions](https://eslint.org/docs/developer-guide/working-with-rules#providing-suggestions).
 
-<!-- end rule header -->
+<!-- end auto-generated rule header -->
 
 <!-- prettier-ignore -->
 Jest has a feature that allows you to focus tests by appending `.only` or

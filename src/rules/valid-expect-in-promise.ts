@@ -342,7 +342,7 @@ export default createRule({
     docs: {
       category: 'Best Practices',
       description:
-        'Ensure promises that have expectations in their chain are valid',
+        'Require promises that have expectations in their chain to be valid',
       recommended: 'error',
     },
     messages: {

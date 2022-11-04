@@ -1,10 +1,8 @@
 # Enforce unbound methods are called with their expected scope (`unbound-method`)
 
-💼 This rule is enabled in the following
-[configs](https://github.com/jest-community/eslint-plugin-jest/blob/main/README.md#shareable-configurations):
-`all`.
+💭 This rule requires type information.
 
-<!-- end rule header -->
+<!-- end auto-generated rule header -->
 
 ## Rule details
 

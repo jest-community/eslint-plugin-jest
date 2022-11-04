@@ -72,7 +72,7 @@ export default createRule<[RuleOptions], MessageId>({
   meta: {
     docs: {
       category: 'Best Practices',
-      description: 'disallow large snapshots',
+      description: 'Disallow large snapshots',
       recommended: false,
     },
     messages: {

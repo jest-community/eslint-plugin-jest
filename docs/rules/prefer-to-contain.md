@@ -1,14 +1,12 @@
 # Suggest using `toContain()` (`prefer-to-contain`)
 
-💼 This rule is enabled in the following
-[configs](https://github.com/jest-community/eslint-plugin-jest/blob/main/README.md#shareable-configurations):
-`all`, `style`.
+💼 This rule is enabled in the 🎨 `style`
+[config](https://github.com/jest-community/eslint-plugin-jest/blob/main/README.md#shareable-configurations).
 
-🔧 This rule is automatically fixable using the `--fix`
-[option](https://eslint.org/docs/latest/user-guide/command-line-interface#--fix)
-on the command line.
+🔧 This rule is automatically fixable by the
+[`--fix` CLI option](https://eslint.org/docs/latest/user-guide/command-line-interface#--fix).
 
-<!-- end rule header -->
+<!-- end auto-generated rule header -->
 
 In order to have a better failure message, `toContain()` should be used upon
 asserting expectations on an array containing an object.
@@ -29,8 +27,6 @@ expect(a.includes(b)).not.toBe(true);
 ```js
 expect(a.includes(b)).toBe(false);
 ```
-
-### Default configuration
 
 The following patterns are considered warnings:
 
