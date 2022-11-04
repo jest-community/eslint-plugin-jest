@@ -130,6 +130,8 @@ jobs:
   release:
     permissions:
       contents: write # for semantic-release
+      issues: write # to create comment
+      pull-requests: write # to create comment
 
     if:
       # prettier-ignore

@@ -1,6 +1,9 @@
 name: Lint
 on: [pull_request]
 
+permissions:
+  contents: read # to fetch code (actions/checkout)
+
 jobs:
   commitlint:
     runs-on: ubuntu-latest
@@ -14,6 +17,10 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   danger:
+    permissions:
+      contents: read # to fetch code (actions/checkout)
+      issues: write # to create comment
+      pull-requests: write # to create comment
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
