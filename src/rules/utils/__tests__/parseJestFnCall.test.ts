@@ -441,6 +441,14 @@ ruleTester.run('esm', rule, {
       `,
       parserOptions: { sourceType: 'module' },
     },
+    {
+      code: dedent`
+        import ByDefault from './myfile';
+
+        ByDefault.sayHello();
+      `,
+      parserOptions: { sourceType: 'module' },
+    },
   ],
   invalid: [],
 });
