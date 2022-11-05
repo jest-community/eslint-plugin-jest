@@ -10,7 +10,7 @@ import {
 } from './utils';
 
 const trimFXprefix = (word: string) =>
-  ['f', 'x'].includes(word.charAt(0)) ? word.substr(1) : word;
+  ['f', 'x'].includes(word.charAt(0)) ? word.substring(1) : word;
 
 const doesBinaryExpressionContainStringNode = (
   binaryExp: TSESTree.BinaryExpression,
