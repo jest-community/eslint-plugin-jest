@@ -3,7 +3,7 @@ import {
   createRule,
   getNodeName,
   isSupportedAccessor,
-  scopeHasLocalReference,
+  resolveScope,
 } from './utils';
 
 export default createRule({
@@ -46,7 +46,7 @@ export default createRule({
           calleeName === 'fail' ||
           calleeName === 'pending'
         ) {
-          if (scopeHasLocalReference(context.getScope(), calleeName)) {
+          if (resolveScope(context.getScope(), calleeName)) {
             // It's a local variable, not a jasmine global.
             return;
           }
