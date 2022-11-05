@@ -449,6 +449,15 @@ ruleTester.run('esm', rule, {
       `,
       parserOptions: { sourceType: 'module' },
     },
+    {
+      code: dedent`
+        async function doSomething() {
+          const build = await rollup(config);
+          build.generate();
+        }
+      `,
+      parserOptions: { sourceType: 'module', ecmaVersion: 2017 },
+    },
   ],
   invalid: [],
 });

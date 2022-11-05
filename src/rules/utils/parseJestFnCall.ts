@@ -449,14 +449,11 @@ const findImportSourceNode = (
   node: TSESTree.Expression,
 ): TSESTree.Node | null => {
   if (node.type === AST_NODE_TYPES.AwaitExpression) {
-    /* istanbul ignore if */
-    if (node.argument.type !== AST_NODE_TYPES.ImportExpression) {
-      throw new Error(
-        `Did not expect a ${node.argument.type} here - please file a github issue at https://github.com/jest-community/eslint-plugin-jest`,
-      );
+    if (node.argument.type === AST_NODE_TYPES.ImportExpression) {
+      return node.argument.source;
     }
 
-    return node.argument.source;
+    return null;
   }
 
   if (
