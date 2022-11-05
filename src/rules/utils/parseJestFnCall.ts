@@ -415,12 +415,18 @@ interface ImportDetails {
 const describeImportDefAsImport = (
   def: TSESLint.Scope.Definitions.ImportBindingDefinition,
 ): ImportDetails | null => {
+  /* istanbul ignore if */
   if (def.parent.type === AST_NODE_TYPES.TSImportEqualsDeclaration) {
-    return null;
+    throw new Error(
+      `Did not expect a ${def.parent.type} here - please file a github issue at https://github.com/jest-community/eslint-plugin-jest`,
+    );
   }
 
+  /* istanbul ignore if */
   if (def.node.type !== AST_NODE_TYPES.ImportSpecifier) {
-    return null;
+    throw new Error(
+      `Did not expect a ${def.node.type} here - please file a github issue at https://github.com/jest-community/eslint-plugin-jest`,
+    );
   }
 
   // we only care about value imports
@@ -446,11 +452,14 @@ const findImportSourceNode = (
   node: TSESTree.Expression,
 ): TSESTree.Node | null => {
   if (node.type === AST_NODE_TYPES.AwaitExpression) {
-    if (node.argument.type === AST_NODE_TYPES.ImportExpression) {
-      return (node.argument as TSESTree.ImportExpression).source;
+    /* istanbul ignore if */
+    if (node.argument.type !== AST_NODE_TYPES.ImportExpression) {
+      throw new Error(
+        `Did not expect a ${node.argument.type} here - please file a github issue at https://github.com/jest-community/eslint-plugin-jest`,
+      );
     }
 
-    return null;
+    return node.argument.source;
   }
 
   if (
@@ -518,11 +527,9 @@ const resolveScope = (scope: TSESLint.Scope.Scope, identifier: string) => {
   let currentScope: TSESLint.Scope.Scope | null = scope;
 
   while (currentScope !== null) {
-    for (const ref of currentScope.variables) {
-      if (ref.defs.length === 0) {
-        continue;
-      }
+    const ref = currentScope.set.get(identifier);
 
+    if (ref && ref.defs.length > 0) {
       const def = ref.defs[ref.defs.length - 1];
 
       const importDetails = describePossibleImportDef(def);
@@ -531,9 +538,7 @@ const resolveScope = (scope: TSESLint.Scope.Scope, identifier: string) => {
         return importDetails;
       }
 
-      if (ref.name === identifier) {
-        return 'local';
-      }
+      return 'local';
     }
 
     currentScope = currentScope.upper;
@@ -588,11 +593,9 @@ export const scopeHasLocalReference = (
   let currentScope: TSESLint.Scope.Scope | null = scope;
 
   while (currentScope !== null) {
-    for (const ref of currentScope.variables) {
-      if (ref.defs.length === 0) {
-        continue;
-      }
+    const ref = currentScope.set.get(referenceName);
 
+    if (ref && ref.defs.length > 0) {
       const def = ref.defs[ref.defs.length - 1];
 
       const importDetails = describePossibleImportDef(def);
