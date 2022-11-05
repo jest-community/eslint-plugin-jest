@@ -799,6 +799,14 @@ ruleTester.run('typescript', rule, {
       parser: require.resolve('@typescript-eslint/parser'),
       parserOptions: { sourceType: 'module' },
     },
+    {
+      code: dedent`
+        import dedent = require('dedent');
+
+        dedent();
+      `,
+      parser: require.resolve('@typescript-eslint/parser'),
+    },
   ],
   invalid: [
     {

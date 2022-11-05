@@ -415,11 +415,8 @@ interface ImportDetails {
 const describeImportDefAsImport = (
   def: TSESLint.Scope.Definitions.ImportBindingDefinition,
 ): ImportDetails | null => {
-  /* istanbul ignore if */
   if (def.parent.type === AST_NODE_TYPES.TSImportEqualsDeclaration) {
-    throw new Error(
-      `Did not expect a ${def.parent.type} here - please file a github issue at https://github.com/jest-community/eslint-plugin-jest`,
-    );
+    return null;
   }
 
   if (def.node.type !== AST_NODE_TYPES.ImportSpecifier) {
