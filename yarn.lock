@@ -2641,14 +2641,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*":
+"@types/node@npm:*, @types/node@npm:^18.0.0":
   version: 18.11.9
   resolution: "@types/node@npm:18.11.9"
   checksum: cc0aae109e9b7adefc32eecb838d6fad931663bb06484b5e9cbbbf74865c721b03d16fd8d74ad90e31dbe093d956a7c2c306ba5429ba0c00f3f7505103d7a496
   languageName: node
   linkType: hard
 
-"@types/node@npm:^14.0.0, @types/node@npm:^14.18.26":
+"@types/node@npm:^14.0.0":
   version: 14.18.33
   resolution: "@types/node@npm:14.18.33"
   checksum: 4e23f95186d8ae1d38c999bc6b46fe94e790da88744b0a3bfeedcbd0d9ffe2cb0ff39e85f43014f6739e5270292c1a1f6f97a1fc606fd573a0c17fda9a1d42de
@@ -4616,7 +4616,7 @@ __metadata:
     "@types/dedent": ^0.7.0
     "@types/eslint": ^8.4.6
     "@types/jest": ^29.0.0
-    "@types/node": ^14.18.26
+    "@types/node": ^18.0.0
     "@types/prettier": ^2.0.0
     "@typescript-eslint/eslint-plugin": ^5.0.0
     "@typescript-eslint/parser": ^5.0.0
