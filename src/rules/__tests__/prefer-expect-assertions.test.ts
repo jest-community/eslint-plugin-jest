@@ -254,7 +254,23 @@ ruleTester.run('prefer-expect-assertions', rule, {
           suggestions: [
             {
               messageId: 'suggestRemovingExtraArguments',
-              output: 'it("it1", function() {expect.assertions(1);})',
+              output: 'it("it1", function() {expect.assertions(1,);})',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: 'it("it1", function() {expect.assertions(1,2,);})',
+      errors: [
+        {
+          messageId: 'assertionsRequiresOneArgument',
+          column: 43,
+          line: 1,
+          suggestions: [
+            {
+              messageId: 'suggestRemovingExtraArguments',
+              output: 'it("it1", function() {expect.assertions(1,);})',
             },
           ],
         },
@@ -273,6 +289,22 @@ ruleTester.run('prefer-expect-assertions', rule, {
     },
     {
       code: 'it("it1", function() {expect.hasAssertions("1");})',
+      errors: [
+        {
+          messageId: 'hasAssertionsTakesNoArguments',
+          column: 30,
+          line: 1,
+          suggestions: [
+            {
+              messageId: 'suggestRemovingExtraArguments',
+              output: 'it("it1", function() {expect.hasAssertions();})',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: 'it("it1", function() {expect.hasAssertions("1",);})',
       errors: [
         {
           messageId: 'hasAssertionsTakesNoArguments',

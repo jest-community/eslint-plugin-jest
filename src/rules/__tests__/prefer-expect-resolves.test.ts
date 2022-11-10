@@ -37,12 +37,12 @@ ruleTester.run('prefer-expect-resolves', rule, {
     {
       code: dedent`
         it('passes', async () => {
-          expect(await someValue()).toBe(true);
+          expect(await someValue(),).toBe(true);
         });
       `,
       output: dedent`
         it('passes', async () => {
-          await expect(someValue()).resolves.toBe(true);
+          await expect(someValue(),).resolves.toBe(true);
         });
       `,
       errors: [{ endColumn: 27, column: 10, messageId: 'expectResolves' }],

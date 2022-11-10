@@ -6,6 +6,7 @@ import {
   isFunction,
   isTypeOfJestFnCall,
   parseJestFnCall,
+  removeExtraArgumentsFixer,
 } from './utils';
 
 const isFirstStatement = (node: TSESTree.CallExpression): boolean => {
@@ -32,15 +33,12 @@ const isFirstStatement = (node: TSESTree.CallExpression): boolean => {
 };
 
 const suggestRemovingExtraArguments = (
-  args: TSESTree.CallExpression['arguments'],
-  extraArgsStartAt: number,
+  context: TSESLint.RuleContext<string, unknown[]>,
+  func: TSESTree.CallExpression,
+  from: number,
 ): TSESLint.ReportSuggestionArray<MessageIds>[0] => ({
   messageId: 'suggestRemovingExtraArguments',
-  fix: fixer =>
-    fixer.removeRange([
-      args[extraArgsStartAt].range[0] - Math.sign(extraArgsStartAt),
-      args[args.length - 1].range[1],
-    ]),
+  fix: fixer => removeExtraArgumentsFixer(fixer, context, func, from),
 });
 
 interface RuleOptions {
@@ -139,13 +137,16 @@ export default createRule<[RuleOptions], MessageIds>({
       return false;
     };
 
-    const checkExpectHasAssertions = (expectFnCall: ParsedExpectFnCall) => {
+    const checkExpectHasAssertions = (
+      expectFnCall: ParsedExpectFnCall,
+      func: TSESTree.CallExpression,
+    ) => {
       if (getAccessorValue(expectFnCall.members[0]) === 'hasAssertions') {
         if (expectFnCall.args.length) {
           context.report({
             messageId: 'hasAssertionsTakesNoArguments',
             node: expectFnCall.matcher,
-            suggest: [suggestRemovingExtraArguments(expectFnCall.args, 0)],
+            suggest: [suggestRemovingExtraArguments(context, func, 0)],
           });
         }
 
@@ -158,7 +159,7 @@ export default createRule<[RuleOptions], MessageIds>({
 
         if (expectFnCall.args.length) {
           loc = expectFnCall.args[1].loc;
-          suggest.push(suggestRemovingExtraArguments(expectFnCall.args, 1));
+          suggest.push(suggestRemovingExtraArguments(context, func, 1));
         }
 
         context.report({
@@ -222,7 +223,7 @@ export default createRule<[RuleOptions], MessageIds>({
               getAccessorValue(jestFnCall.members[0]),
             )
           ) {
-            checkExpectHasAssertions(jestFnCall);
+            checkExpectHasAssertions(jestFnCall, node);
             hasExpectAssertionsAsFirstStatement = true;
           }
 

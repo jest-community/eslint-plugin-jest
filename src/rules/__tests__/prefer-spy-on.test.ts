@@ -74,8 +74,9 @@ ruleTester.run('prefer-spy-on', rule, {
       ],
     },
     {
-      code: 'obj.a = jest.fn(() => 10)',
+      code: 'obj.a = jest.fn(() => 10,)',
       output: "jest.spyOn(obj, 'a').mockImplementation(() => 10)",
+      parserOptions: { ecmaVersion: 2017 },
       errors: [
         {
           messageId: 'useJestSpyOn',

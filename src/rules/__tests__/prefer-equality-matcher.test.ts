@@ -55,6 +55,20 @@ ruleTester.run('prefer-equality-matcher: ===', rule, {
       ],
     },
     {
+      code: 'expect(a === b,).toBe(true,);',
+      parserOptions: { ecmaVersion: 2017 },
+      errors: [
+        {
+          messageId: 'useEqualityMatcher',
+          suggestions: expectSuggestions(
+            equalityMatcher => `expect(a,).${equalityMatcher}(b,);`,
+          ),
+          column: 18,
+          line: 1,
+        },
+      ],
+    },
+    {
       code: 'expect(a === b).toBe(false);',
       errors: [
         {

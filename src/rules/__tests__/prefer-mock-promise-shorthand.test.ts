@@ -128,6 +128,19 @@ ruleTester.run('prefer-mock-shorthand', rule, {
       ],
     },
     {
+      code: 'aVariable.mockImplementation(() => Promise.reject(42),)',
+      output: 'aVariable.mockRejectedValue(42,)',
+      parserOptions: { ecmaVersion: 2017 },
+      errors: [
+        {
+          messageId: 'useMockShorthand',
+          data: { replacement: 'mockRejectedValue' },
+          column: 11,
+          line: 1,
+        },
+      ],
+    },
+    {
       code: 'aVariable.mockImplementationOnce(() => Promise.resolve(42))',
       output: 'aVariable.mockResolvedValueOnce(42)',
       errors: [
