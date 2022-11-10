@@ -2,7 +2,7 @@ import {
   createRule,
   getAccessorValue,
   parseJestFnCall,
-  scopeHasLocalReference,
+  resolveScope,
 } from './utils';
 
 export default createRule({
@@ -80,7 +80,7 @@ export default createRule({
         }
       },
       'CallExpression[callee.name="pending"]'(node) {
-        if (scopeHasLocalReference(context.getScope(), 'pending')) {
+        if (resolveScope(context.getScope(), 'pending')) {
           return;
         }
 

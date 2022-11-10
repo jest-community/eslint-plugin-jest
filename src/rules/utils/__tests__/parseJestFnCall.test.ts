@@ -441,6 +441,23 @@ ruleTester.run('esm', rule, {
       `,
       parserOptions: { sourceType: 'module' },
     },
+    {
+      code: dedent`
+        import ByDefault from './myfile';
+
+        ByDefault.sayHello();
+      `,
+      parserOptions: { sourceType: 'module' },
+    },
+    {
+      code: dedent`
+        async function doSomething() {
+          const build = await rollup(config);
+          build.generate();
+        }
+      `,
+      parserOptions: { sourceType: 'module', ecmaVersion: 2017 },
+    },
   ],
   invalid: [],
 });
@@ -781,6 +798,14 @@ ruleTester.run('typescript', rule, {
       `,
       parser: require.resolve('@typescript-eslint/parser'),
       parserOptions: { sourceType: 'module' },
+    },
+    {
+      code: dedent`
+        import dedent = require('dedent');
+
+        dedent();
+      `,
+      parser: require.resolve('@typescript-eslint/parser'),
     },
   ],
   invalid: [
