@@ -3978,7 +3978,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cosmiconfig@npm:^7.0.0, cosmiconfig@npm:^7.1.0":
+"cosmiconfig@npm:^7.0.0":
   version: 7.1.0
   resolution: "cosmiconfig@npm:7.1.0"
   dependencies:
@@ -3988,6 +3988,18 @@ __metadata:
     path-type: ^4.0.0
     yaml: ^1.10.0
   checksum: c53bf7befc1591b2651a22414a5e786cd5f2eeaa87f3678a3d49d6069835a9d8d1aef223728e98aa8fec9a95bf831120d245096db12abe019fecb51f5696c96f
+  languageName: node
+  linkType: hard
+
+"cosmiconfig@npm:^8.0.0":
+  version: 8.0.0
+  resolution: "cosmiconfig@npm:8.0.0"
+  dependencies:
+    import-fresh: ^3.2.1
+    js-yaml: ^4.1.0
+    parse-json: ^5.0.0
+    path-type: ^4.0.0
+  checksum: ff4cdf89ac1ae52e7520816622c21a9e04380d04b82d653f5139ec581aa4f7f29e096d46770bc76c4a63c225367e88a1dfa233ea791669a35101f5f9b972c7d1
   languageName: node
   linkType: hard
 
@@ -4507,15 +4519,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-doc-generator@npm:^0.23.0":
-  version: 0.23.0
-  resolution: "eslint-doc-generator@npm:0.23.0"
+"eslint-doc-generator@npm:^0.26.0":
+  version: 0.26.0
+  resolution: "eslint-doc-generator@npm:0.26.0"
   dependencies:
     "@typescript-eslint/utils": ^5.38.1
     ajv: ^8.11.2
     camelcase: ^7.0.0
     commander: ^9.4.0
-    cosmiconfig: ^7.1.0
+    cosmiconfig: ^8.0.0
     deepmerge: ^4.2.2
     jest-diff: ^29.2.1
     markdown-table: ^3.0.2
@@ -4524,7 +4536,7 @@ __metadata:
     eslint: ">= 7"
   bin:
     eslint-doc-generator: dist/bin/eslint-doc-generator.js
-  checksum: bd8d5d541db70144e0e8412f2d681c8f05085a2e856739b3a5f4b37b3fd5da6c1156e9d3edec301d0d67b3221132be45d8a9c102ab605ed78afdb6f594a8d17f
+  checksum: c781ef1db1e544bea4ae0f44c236497aa50fd908c6c64eb3886abfd1a9e5d1121eefbf5524fea8a9b8cf0485722d5dac4dbaf3a03ed95cc69964b5b11fd34c6b
   languageName: node
   linkType: hard
 
@@ -4636,7 +4648,7 @@ __metadata:
     dedent: ^0.7.0
     eslint: ^6.0.0 || ^7.0.0 || ^8.0.0
     eslint-config-prettier: ^8.3.0
-    eslint-doc-generator: ^0.23.0
+    eslint-doc-generator: ^0.26.0
     eslint-plugin-eslint-comments: ^3.1.2
     eslint-plugin-eslint-plugin: ^5.0.6
     eslint-plugin-import: ^2.25.1
