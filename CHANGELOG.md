@@ -1,3 +1,10 @@
+## [27.1.6](https://github.com/jest-community/eslint-plugin-jest/compare/v27.1.5...v27.1.6) (2022-11-24)
+
+
+### Bug Fixes
+
+* ensure rule fixes produce valid code when function params and args have trailing commas ([#1282](https://github.com/jest-community/eslint-plugin-jest/issues/1282)) ([8eca0b7](https://github.com/jest-community/eslint-plugin-jest/commit/8eca0b78920011d62eee35b42a90663082862131))
+
 ## [27.1.5](https://github.com/jest-community/eslint-plugin-jest/compare/v27.1.4...v27.1.5) (2022-11-10)
 
 
