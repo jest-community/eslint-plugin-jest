@@ -8,6 +8,7 @@ import {
   getFirstMatcherArg,
   isIdentifier,
   parseJestFnCall,
+  removeExtraArgumentsFixer,
   replaceAccessorFixer,
 } from './utils';
 
@@ -58,6 +59,7 @@ const reportPreferToBe = (
   context: TSESLint.RuleContext<MessageId, unknown[]>,
   whatToBe: ToBeWhat,
   expectFnCall: ParsedExpectFnCall,
+  func: TSESTree.CallExpression,
   modifierNode?: AccessorNode,
 ) => {
   context.report({
@@ -68,7 +70,7 @@ const reportPreferToBe = (
       ];
 
       if (expectFnCall.args?.length && whatToBe !== '') {
-        fixes.push(fixer.remove(expectFnCall.args[0]));
+        fixes.push(removeExtraArgumentsFixer(fixer, context, func, 0));
       }
 
       if (modifierNode) {
@@ -125,6 +127,7 @@ export default createRule({
             context,
             matcherName === 'toBeDefined' ? 'Undefined' : 'Defined',
             jestFnCall,
+            node,
             notModifier,
           );
 
@@ -139,7 +142,7 @@ export default createRule({
         }
 
         if (isNullEqualityMatcher(jestFnCall)) {
-          reportPreferToBe(context, 'Null', jestFnCall);
+          reportPreferToBe(context, 'Null', jestFnCall, node);
 
           return;
         }
@@ -147,19 +150,19 @@ export default createRule({
         if (isFirstArgumentIdentifier(jestFnCall, 'undefined')) {
           const name = notModifier ? 'Defined' : 'Undefined';
 
-          reportPreferToBe(context, name, jestFnCall, notModifier);
+          reportPreferToBe(context, name, jestFnCall, node, notModifier);
 
           return;
         }
 
         if (isFirstArgumentIdentifier(jestFnCall, 'NaN')) {
-          reportPreferToBe(context, 'NaN', jestFnCall);
+          reportPreferToBe(context, 'NaN', jestFnCall, node);
 
           return;
         }
 
         if (shouldUseToBe(jestFnCall) && matcherName !== EqualityMatcher.toBe) {
-          reportPreferToBe(context, '', jestFnCall);
+          reportPreferToBe(context, '', jestFnCall, node);
         }
       },
     };

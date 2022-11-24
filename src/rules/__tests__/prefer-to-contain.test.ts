@@ -45,6 +45,12 @@ ruleTester.run('prefer-to-contain', rule, {
       errors: [{ messageId: 'useToContain', column: 23, line: 1 }],
     },
     {
+      code: 'expect(a.includes(b,),).toEqual(true,);',
+      output: 'expect(a,).toContain(b,);',
+      parserOptions: { ecmaVersion: 2017 },
+      errors: [{ messageId: 'useToContain', column: 25, line: 1 }],
+    },
+    {
       code: "expect(a['includes'](b)).toEqual(true);",
       output: 'expect(a).toContain(b);',
       errors: [{ messageId: 'useToContain', column: 26, line: 1 }],

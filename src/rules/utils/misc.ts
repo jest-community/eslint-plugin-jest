@@ -168,6 +168,25 @@ export const replaceAccessorFixer = (
   );
 };
 
+export const removeExtraArgumentsFixer = (
+  fixer: TSESLint.RuleFixer,
+  context: TSESLint.RuleContext<string, unknown[]>,
+  func: TSESTree.CallExpression,
+  from: number,
+): TSESLint.RuleFix => {
+  const firstArg = func.arguments[from];
+  const lastArg = func.arguments[func.arguments.length - 1];
+
+  const sourceCode = context.getSourceCode();
+  let tokenAfterLastParam = sourceCode.getTokenAfter(lastArg)!;
+
+  if (tokenAfterLastParam.value === ',') {
+    tokenAfterLastParam = sourceCode.getTokenAfter(tokenAfterLastParam)!;
+  }
+
+  return fixer.removeRange([firstArg.range[0], tokenAfterLastParam.range[0]]);
+};
+
 export const findTopMostCallExpression = (
   node: TSESTree.CallExpression,
 ): TSESTree.CallExpression => {

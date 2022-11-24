@@ -29,6 +29,19 @@ const generateInvalidCases = (
       ],
     },
     {
+      code: `expect(value ${operator} 1,).${equalityMatcher}(true,);`,
+      output: `expect(value,).${preferredMatcher}(1,);`,
+      parserOptions: { ecmaVersion: 2017 },
+      errors: [
+        {
+          messageId: 'useToBeComparison',
+          data: { preferredMatcher },
+          column: 19 + operator.length,
+          line: 1,
+        },
+      ],
+    },
+    {
       code: `expect(value ${operator} 1)['${equalityMatcher}'](true);`,
       output: `expect(value).${preferredMatcher}(1);`,
       errors: [

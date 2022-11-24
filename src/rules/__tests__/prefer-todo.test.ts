@@ -34,6 +34,12 @@ ruleTester.run('prefer-todo', rule, {
       errors: [{ messageId: 'unimplementedTest' }],
     },
     {
+      code: `test("i need to write this test",);`,
+      output: 'test.todo("i need to write this test",);',
+      parserOptions: { ecmaVersion: 2017 },
+      errors: [{ messageId: 'unimplementedTest' }],
+    },
+    {
       code: 'test(`i need to write this test`);',
       output: 'test.todo(`i need to write this test`);',
       errors: [{ messageId: 'unimplementedTest' }],

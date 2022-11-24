@@ -98,41 +98,49 @@ export default createRule({
               messageId: 'suggestWrappingInPromise',
               data: { callback: argument.name },
               fix(fixer) {
-                const { body } = callback;
+                const { body, params } = callback;
 
                 const sourceCode = context.getSourceCode();
                 const firstBodyToken = sourceCode.getFirstToken(body);
                 const lastBodyToken = sourceCode.getLastToken(body);
-                const tokenBeforeArgument = sourceCode.getTokenBefore(argument);
-                const tokenAfterArgument = sourceCode.getTokenAfter(argument);
+
+                const [firstParam] = params;
+                const lastParam = params[params.length - 1];
+
+                const tokenBeforeFirstParam =
+                  sourceCode.getTokenBefore(firstParam);
+                let tokenAfterLastParam = sourceCode.getTokenAfter(lastParam);
+
+                if (tokenAfterLastParam?.value === ',') {
+                  tokenAfterLastParam =
+                    sourceCode.getTokenAfter(tokenAfterLastParam);
+                }
 
                 /* istanbul ignore if */
                 if (
                   !firstBodyToken ||
                   !lastBodyToken ||
-                  !tokenBeforeArgument ||
-                  !tokenAfterArgument
+                  !tokenBeforeFirstParam ||
+                  !tokenAfterLastParam
                 ) {
                   throw new Error(
                     `Unexpected null when attempting to fix ${context.getFilename()} - please file a github issue at https://github.com/jest-community/eslint-plugin-jest`,
                   );
                 }
 
-                const argumentInParens =
-                  tokenBeforeArgument.value === '(' &&
-                  tokenAfterArgument.value === ')';
+                let argumentFix = fixer.replaceText(firstParam, '()');
 
-                let argumentFix = fixer.replaceText(argument, '()');
-
-                if (argumentInParens) {
-                  argumentFix = fixer.remove(argument);
+                if (
+                  tokenBeforeFirstParam.value === '(' &&
+                  tokenAfterLastParam.value === ')'
+                ) {
+                  argumentFix = fixer.removeRange([
+                    tokenBeforeFirstParam.range[1],
+                    tokenAfterLastParam.range[0],
+                  ]);
                 }
 
-                let newCallback = argument.name;
-
-                if (argumentInParens) {
-                  newCallback = `(${newCallback})`;
-                }
+                const newCallback = argument.name;
 
                 let beforeReplacement = `new Promise(${newCallback} => `;
                 let afterReplacement = ')';

@@ -60,6 +60,24 @@ ruleTester.run('no-done-callback', rule, {
       ],
     },
     {
+      code: 'test("something", (done,) => {done();})',
+      errors: [
+        {
+          messageId: 'noDoneCallback',
+          line: 1,
+          column: 20,
+          suggestions: [
+            {
+              messageId: 'suggestWrappingInPromise',
+              data: { callback: 'done' },
+              output:
+                'test("something", () => {return new Promise(done => {done();})})',
+            },
+          ],
+        },
+      ],
+    },
+    {
       code: 'test("something", finished => {finished();})',
       errors: [
         {
@@ -89,7 +107,7 @@ ruleTester.run('no-done-callback', rule, {
               messageId: 'suggestWrappingInPromise',
               data: { callback: 'done' },
               output:
-                'test("something", () => {return new Promise((done) => {done();})})',
+                'test("something", () => {return new Promise(done => {done();})})',
             },
           ],
         },
@@ -123,7 +141,7 @@ ruleTester.run('no-done-callback', rule, {
             {
               messageId: 'suggestWrappingInPromise',
               data: { callback: 'done' },
-              output: 'test("something", () => new Promise((done) => done()))',
+              output: 'test("something", () => new Promise(done => done()))',
             },
           ],
         },
@@ -141,7 +159,7 @@ ruleTester.run('no-done-callback', rule, {
               messageId: 'suggestWrappingInPromise',
               data: { callback: 'done' },
               output:
-                'test("something", function() {return new Promise((done) => {done();})})',
+                'test("something", function() {return new Promise(done => {done();})})',
             },
           ],
         },
@@ -159,7 +177,7 @@ ruleTester.run('no-done-callback', rule, {
               messageId: 'suggestWrappingInPromise',
               data: { callback: 'done' },
               output:
-                'test("something", function () {return new Promise((done) => {done();})})',
+                'test("something", function () {return new Promise(done => {done();})})',
             },
           ],
         },
@@ -203,7 +221,7 @@ ruleTester.run('no-done-callback', rule, {
               messageId: 'suggestWrappingInPromise',
               data: { callback: 'done' },
               output: dedent`
-                test('something', () => {return new Promise((done) => {
+                test('something', () => {return new Promise(done => {
                   done();
                 })});
               `,
@@ -270,7 +288,7 @@ ruleTester.run('no-done-callback', rule, {
               messageId: 'suggestWrappingInPromise',
               data: { callback: 'done' },
               output:
-                'beforeEach(() => {return new Promise((done) => {done();})})',
+                'beforeEach(() => {return new Promise(done => {done();})})',
             },
           ],
         },
@@ -304,7 +322,7 @@ ruleTester.run('no-done-callback', rule, {
             {
               messageId: 'suggestWrappingInPromise',
               data: { callback: 'done' },
-              output: 'afterEach(() => new Promise((done) => done()))',
+              output: 'afterEach(() => new Promise(done => done()))',
             },
           ],
         },
@@ -322,7 +340,7 @@ ruleTester.run('no-done-callback', rule, {
               messageId: 'suggestWrappingInPromise',
               data: { callback: 'done' },
               output:
-                'beforeAll(function() {return new Promise((done) => {done();})})',
+                'beforeAll(function() {return new Promise(done => {done();})})',
             },
           ],
         },
@@ -340,7 +358,7 @@ ruleTester.run('no-done-callback', rule, {
               messageId: 'suggestWrappingInPromise',
               data: { callback: 'done' },
               output:
-                'afterEach(function () {return new Promise((done) => {done();})})',
+                'afterEach(function () {return new Promise(done => {done();})})',
             },
           ],
         },
@@ -383,7 +401,7 @@ ruleTester.run('no-done-callback', rule, {
               messageId: 'suggestWrappingInPromise',
               data: { callback: 'done' },
               output: dedent`
-                beforeEach(() => {return new Promise((done) => {
+                beforeEach(() => {return new Promise(done => {
                   done();
                 })});
               `,
@@ -413,7 +431,7 @@ ruleTester.run('no-done-callback', rule, {
               output: dedent`
                 import { beforeEach } from '@jest/globals';
 
-                beforeEach(() => {return new Promise((done) => {
+                beforeEach(() => {return new Promise(done => {
                   done();
                 })});
               `,
@@ -443,7 +461,7 @@ ruleTester.run('no-done-callback', rule, {
               output: dedent`
                 import { beforeEach as atTheStartOfEachTest } from '@jest/globals';
 
-                atTheStartOfEachTest(() => {return new Promise((done) => {
+                atTheStartOfEachTest(() => {return new Promise(done => {
                   done();
                 })});
               `,

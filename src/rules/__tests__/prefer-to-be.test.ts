@@ -43,6 +43,12 @@ ruleTester.run('prefer-to-be', rule, {
       errors: [{ messageId: 'useToBe', column: 15, line: 1 }],
     },
     {
+      code: 'expect(value).toStrictEqual(1,);',
+      output: 'expect(value).toBe(1,);',
+      parserOptions: { ecmaVersion: 2017 },
+      errors: [{ messageId: 'useToBe', column: 15, line: 1 }],
+    },
+    {
       code: 'expect(value).toStrictEqual(-1);',
       output: 'expect(value).toBe(-1);',
       errors: [{ messageId: 'useToBe', column: 15, line: 1 }],
@@ -113,6 +119,12 @@ ruleTester.run('prefer-to-be: null', rule, {
     {
       code: 'expect(null).toEqual(null);',
       output: 'expect(null).toBeNull();',
+      errors: [{ messageId: 'useToBeNull', column: 14, line: 1 }],
+    },
+    {
+      code: 'expect(null).toEqual(null,);',
+      output: 'expect(null).toBeNull();',
+      parserOptions: { ecmaVersion: 2017 },
       errors: [{ messageId: 'useToBeNull', column: 14, line: 1 }],
     },
     {
