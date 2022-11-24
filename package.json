@@ -29,7 +29,7 @@
     "prettier:write": "prettier --write 'docs/**/*.md' README.md '.github/**' package.json tsconfig.json src/globals.json .yarnrc.yml",
     "postpublish": "pinst --enable",
     "test": "jest",
-    "tools:regenerate-docs": "yarn prepack && eslint-doc-generator --ignore-config all --rule-doc-title-format desc-parens-name --rule-doc-section-include \"Rule details\" --rule-list-columns name,description,configsError,configsWarn,configsOff,fixable,hasSuggestions,deprecated --split-by meta.docs.requiresTypeChecking --url-configs \"https://github.com/jest-community/eslint-plugin-jest/blob/main/README.md#shareable-configurations\" && yarn prettier:write",
+    "tools:regenerate-docs": "yarn prepack && eslint-doc-generator && yarn prettier:write",
     "typecheck": "tsc -p ."
   },
   "commitlint": {
