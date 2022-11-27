@@ -4519,9 +4519,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-doc-generator@npm:^0.26.0":
-  version: 0.26.0
-  resolution: "eslint-doc-generator@npm:0.26.0"
+"eslint-doc-generator@npm:^0.27.0":
+  version: 0.27.0
+  resolution: "eslint-doc-generator@npm:0.27.0"
   dependencies:
     "@typescript-eslint/utils": ^5.38.1
     ajv: ^8.11.2
@@ -4536,7 +4536,7 @@ __metadata:
     eslint: ">= 7"
   bin:
     eslint-doc-generator: dist/bin/eslint-doc-generator.js
-  checksum: c781ef1db1e544bea4ae0f44c236497aa50fd908c6c64eb3886abfd1a9e5d1121eefbf5524fea8a9b8cf0485722d5dac4dbaf3a03ed95cc69964b5b11fd34c6b
+  checksum: 6c555d01b688be5605991da56537faa50c8550c3d4b65f730a9c3d4ea37fc54f8ebdaf0240c9891a33dc25662b906c4e6b544c9f4df1bd7dc48eb8fae38732d8
   languageName: node
   linkType: hard
 
@@ -4648,7 +4648,7 @@ __metadata:
     dedent: ^0.7.0
     eslint: ^6.0.0 || ^7.0.0 || ^8.0.0
     eslint-config-prettier: ^8.3.0
-    eslint-doc-generator: ^0.26.0
+    eslint-doc-generator: ^0.27.0
     eslint-plugin-eslint-comments: ^3.1.2
     eslint-plugin-eslint-plugin: ^5.0.6
     eslint-plugin-import: ^2.25.1
