@@ -12,8 +12,8 @@ const config = {
     'fixable',
     'hasSuggestions',
     'deprecated',
-  ].join(),
-  splitBy: 'meta.docs.requiresTypeChecking',
+  ],
+  ruleListSplit: 'meta.docs.requiresTypeChecking',
   urlConfigs: `https://github.com/jest-community/eslint-plugin-jest/blob/main/README.md#shareable-configurations`,
 };
 
