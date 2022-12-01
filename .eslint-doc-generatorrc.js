@@ -1,3 +1,6 @@
+const { format } = require('prettier');
+const { prettier: prettierRC } = require('./package.json');
+
 /** @type {import('eslint-doc-generator/dist/lib/options').GenerateOptions} */
 const config = {
   ignoreConfig: ['all'],
@@ -15,6 +18,7 @@ const config = {
   ],
   ruleListSplit: 'meta.docs.requiresTypeChecking',
   urlConfigs: `https://github.com/jest-community/eslint-plugin-jest/blob/main/README.md#shareable-configurations`,
+  postprocess: doc => format(doc, { ...prettierRC, parser: 'markdown' }),
 };
 
 module.exports = config;
