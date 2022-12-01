@@ -1,7 +1,7 @@
 const { format } = require('prettier');
 const { prettier: prettierRC } = require('./package.json');
 
-/** @type {import('eslint-doc-generator/dist/lib/options').GenerateOptions} */
+/** @type {import('eslint-doc-generator').GenerateOptions} */
 const config = {
   ignoreConfig: ['all'],
   ruleDocTitleFormat: 'desc-parens-name',
