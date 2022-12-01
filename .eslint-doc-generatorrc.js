@@ -1,4 +1,7 @@
-/** @type {import('eslint-doc-generator/dist/lib/options').GenerateOptions} */
+const { format } = require('prettier');
+const { prettier: prettierRC } = require('./package.json');
+
+/** @type {import('eslint-doc-generator').GenerateOptions} */
 const config = {
   ignoreConfig: ['all'],
   ruleDocTitleFormat: 'desc-parens-name',
@@ -12,9 +15,10 @@ const config = {
     'fixable',
     'hasSuggestions',
     'deprecated',
-  ].join(),
-  splitBy: 'meta.docs.requiresTypeChecking',
+  ],
+  ruleListSplit: 'meta.docs.requiresTypeChecking',
   urlConfigs: `https://github.com/jest-community/eslint-plugin-jest/blob/main/README.md#shareable-configurations`,
+  postprocess: doc => format(doc, { ...prettierRC, parser: 'markdown' }),
 };
 
 module.exports = config;
