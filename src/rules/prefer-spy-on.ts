@@ -1,4 +1,4 @@
-import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { createRule, getNodeName } from './utils';
 
 const findNodeObject = (
@@ -39,6 +39,27 @@ const getJestFnCall = (node: TSESTree.Node): TSESTree.CallExpression | null => {
   return getJestFnCall(obj);
 };
 
+const getAutoFixMockImplementation = (
+  jestFnCall: TSESTree.CallExpression,
+  context: TSESLint.RuleContext<'useJestSpyOn', unknown[]>,
+): string => {
+  const hasMockImplementationAlready =
+    jestFnCall.parent?.type === AST_NODE_TYPES.MemberExpression &&
+    jestFnCall.parent.property.type === AST_NODE_TYPES.Identifier &&
+    jestFnCall.parent.property.name === 'mockImplementation';
+
+  if (hasMockImplementationAlready) {
+    return '';
+  }
+
+  const [arg] = jestFnCall.arguments;
+  const argSource = arg && context.getSourceCode().getText(arg);
+
+  return argSource
+    ? `.mockImplementation(${argSource})`
+    : '.mockImplementation()';
+};
+
 export default createRule({
   name: __filename,
   meta: {
@@ -71,12 +92,13 @@ export default createRule({
           messageId: 'useJestSpyOn',
           fix(fixer) {
             const leftPropQuote =
-              left.property.type === AST_NODE_TYPES.Identifier ? "'" : '';
-            const [arg] = jestFnCall.arguments;
-            const argSource = arg && context.getSourceCode().getText(arg);
-            const mockImplementation = argSource
-              ? `.mockImplementation(${argSource})`
-              : '.mockImplementation()';
+              left.property.type === AST_NODE_TYPES.Identifier && !left.computed
+                ? "'"
+                : '';
+            const mockImplementation = getAutoFixMockImplementation(
+              jestFnCall,
+              context,
+            );
 
             return [
               fixer.insertTextBefore(left, `jest.spyOn(`),
