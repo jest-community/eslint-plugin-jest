@@ -1,3 +1,10 @@
+## [27.1.7](https://github.com/jest-community/eslint-plugin-jest/compare/v27.1.6...v27.1.7) (2022-12-15)
+
+
+### Bug Fixes
+
+* **prefer-spy-on:** improve autofix ([#1308](https://github.com/jest-community/eslint-plugin-jest/issues/1308)) ([5d1b7a7](https://github.com/jest-community/eslint-plugin-jest/commit/5d1b7a76dbc07eb52b5c9111213c32b09e3bec9b))
+
 ## [27.1.6](https://github.com/jest-community/eslint-plugin-jest/compare/v27.1.5...v27.1.6) (2022-11-24)
 
 
