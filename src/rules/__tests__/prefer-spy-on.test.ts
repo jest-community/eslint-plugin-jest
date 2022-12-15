@@ -106,5 +106,38 @@ ruleTester.run('prefer-spy-on', rule, {
         },
       ],
     },
+    {
+      // https://github.com/jest-community/eslint-plugin-jest/issues/1304
+      code: 'foo[bar] = jest.fn().mockReturnValue(undefined)',
+      output:
+        'jest.spyOn(foo, bar).mockImplementation().mockReturnValue(undefined)',
+      errors: [
+        {
+          messageId: 'useJestSpyOn',
+          type: AST_NODE_TYPES.AssignmentExpression,
+        },
+      ],
+    },
+    {
+      // https://github.com/jest-community/eslint-plugin-jest/issues/1307
+      code: `
+        foo.bar = jest.fn().mockImplementation(baz => baz)
+        foo.bar = jest.fn(a => b).mockImplementation(baz => baz)
+      `,
+      output: `
+        jest.spyOn(foo, 'bar').mockImplementation(baz => baz)
+        jest.spyOn(foo, 'bar').mockImplementation(baz => baz)
+      `,
+      errors: [
+        {
+          messageId: 'useJestSpyOn',
+          type: AST_NODE_TYPES.AssignmentExpression,
+        },
+        {
+          messageId: 'useJestSpyOn',
+          type: AST_NODE_TYPES.AssignmentExpression,
+        },
+      ],
+    },
   ],
 });
