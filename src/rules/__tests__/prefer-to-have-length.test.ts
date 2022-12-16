@@ -5,7 +5,7 @@ import { espreeParser } from './test-utils';
 const ruleTester = new TSESLint.RuleTester({
   parser: espreeParser,
   parserOptions: {
-    ecmaVersion: 2015,
+    ecmaVersion: 2020,
   },
 });
 
@@ -16,6 +16,7 @@ ruleTester.run('prefer-to-have-length', rule, {
     'expect(files).toHaveLength(1);',
     "expect(files.name).toBe('file');",
     "expect(files[`name`]).toBe('file');",
+    'expect(users[0]?.permissions?.length).toBe(1);',
     'expect(result).toBe(true);',
     `expect(user.getUserName(5)).resolves.toEqual('Paul')`,
     `expect(user.getUserName(5)).rejects.toEqual('Paul')`,
