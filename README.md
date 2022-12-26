@@ -273,7 +273,7 @@ set to warn in.\
 
 In order to use the rules powered by TypeScript type-checking, you must be using
 `@typescript-eslint/parser` & adjust your eslint config as outlined
-[here](https://typescript-eslint.io/docs/linting/typed-linting).
+[here](https://typescript-eslint.io/linting/typed-linting).
 
 Note that unlike the type-checking rules in `@typescript-eslint/eslint-plugin`,
 the rules here will fallback to doing nothing if type information is not
