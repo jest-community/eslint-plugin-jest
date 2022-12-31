@@ -1,3 +1,10 @@
+# [27.2.0](https://github.com/jest-community/eslint-plugin-jest/compare/v27.1.7...v27.2.0) (2022-12-31)
+
+
+### Features
+
+* create `require-typed-module-mocks` rule ([#1314](https://github.com/jest-community/eslint-plugin-jest/issues/1314)) ([ee43c3f](https://github.com/jest-community/eslint-plugin-jest/commit/ee43c3f4d5de5e6935d0242cc846f1dec43af20d))
+
 ## [27.1.7](https://github.com/jest-community/eslint-plugin-jest/compare/v27.1.6...v27.1.7) (2022-12-15)
 
 
