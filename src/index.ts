@@ -27,36 +27,27 @@ const importDefault = (moduleName: string) =>
 const rulesDir = join(__dirname, 'rules');
 const excludedFiles = ['__tests__', 'detectJestVersion', 'utils'];
 
-const rules = readdirSync(rulesDir)
-  .map(rule => parse(rule).name)
-  .filter(rule => !excludedFiles.includes(rule))
-  .reduce<Record<string, RuleModule>>(
-    (acc, curr) => ({
-      ...acc,
-      [curr]: importDefault(join(rulesDir, curr)) as RuleModule,
-    }),
-    {},
-  );
+const rules = Object.fromEntries(
+  readdirSync(rulesDir)
+    .map(rule => parse(rule).name)
+    .filter(rule => !excludedFiles.includes(rule))
+    .map(rule => [rule, importDefault(join(rulesDir, rule)) as RuleModule]),
+);
 
-const recommendedRules = Object.entries(rules)
-  .filter(([, rule]) => rule.meta.docs.recommended)
-  .reduce(
-    (acc, [name, rule]) => ({
-      ...acc,
-      [`jest/${name}`]: rule.meta.docs.recommended,
-    }),
-    {},
-  );
+const recommendedRules = Object.fromEntries(
+  Object.entries(rules)
+    .filter(([, rule]) => rule.meta.docs.recommended)
+    .map(([name, rule]) => [
+      `jest/${name}`,
+      rule.meta.docs.recommended as TSESLint.Linter.RuleLevel,
+    ]),
+);
 
-const allRules = Object.entries(rules)
-  .filter(([, rule]) => !rule.meta.deprecated)
-  .reduce(
-    (acc, [name]) => ({
-      ...acc,
-      [`jest/${name}`]: 'error',
-    }),
-    {},
-  );
+const allRules = Object.fromEntries<TSESLint.Linter.RuleLevel>(
+  Object.entries(rules)
+    .filter(([, rule]) => !rule.meta.deprecated)
+    .map(([name]) => [`jest/${name}`, 'error']),
+);
 
 const createConfig = (rules: Record<string, TSESLint.Linter.RuleLevel>) => ({
   plugins: ['jest'],
