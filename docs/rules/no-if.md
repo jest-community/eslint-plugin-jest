@@ -1,7 +1,7 @@
 # Disallow conditional logic (`no-if`)
 
 ❌ This rule is deprecated. It was replaced by
-[`jest/no-conditional-in-test`](../../docs/rules/no-conditional-in-test.md).
+[`jest/no-conditional-in-test`](no-conditional-in-test.md).
 
 <!-- end auto-generated rule header -->
 
