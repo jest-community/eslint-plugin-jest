@@ -3,7 +3,7 @@ import { createRule, getNodeName } from './utils';
 
 const findNodeObject = (
   node: TSESTree.CallExpression | TSESTree.MemberExpression,
-): TSESTree.LeftHandSideExpression | null => {
+): TSESTree.Expression | null => {
   if ('object' in node) {
     return node.object;
   }

@@ -131,6 +131,17 @@ ruleTester.run('valid-expect-in-promise', rule, {
           return number + 1;
         });
 
+        expect([,,await promise,,]).toHaveLength(1);
+      });
+    `,
+    dedent`
+      it('is valid', async () => {
+        const promise = loadNumber().then(number => {
+          expect(typeof number).toBe('number');
+
+          return number + 1;
+        });
+
         expect([[await promise]]).toHaveLength(1);
       });
     `,
