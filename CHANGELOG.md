@@ -1,3 +1,10 @@
+## [27.2.1](https://github.com/jest-community/eslint-plugin-jest/compare/v27.2.0...v27.2.1) (2023-01-06)
+
+
+### Bug Fixes
+
+* **valid-expect-in-promise:** handle sparse arrays ([#1325](https://github.com/jest-community/eslint-plugin-jest/issues/1325)) ([21e72c9](https://github.com/jest-community/eslint-plugin-jest/commit/21e72c9d94ed66c1006212e5da78bac8b62fa8c7))
+
 # [27.2.0](https://github.com/jest-community/eslint-plugin-jest/compare/v27.1.7...v27.2.0) (2022-12-31)
 
 
