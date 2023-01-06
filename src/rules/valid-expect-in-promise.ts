@@ -99,7 +99,7 @@ const isPromiseMethodThatUsesValue = (
 
       if (
         firstArg.type === AST_NODE_TYPES.ArrayExpression &&
-        firstArg.elements.some(nod => isIdentifier(nod, name))
+        firstArg.elements.some(nod => nod && isIdentifier(nod, name))
       ) {
         return true;
       }
@@ -128,14 +128,14 @@ const isValueAwaitedInElements = (
 ): boolean => {
   for (const element of elements) {
     if (
-      element.type === AST_NODE_TYPES.AwaitExpression &&
+      element?.type === AST_NODE_TYPES.AwaitExpression &&
       isIdentifier(element.argument, name)
     ) {
       return true;
     }
 
     if (
-      element.type === AST_NODE_TYPES.ArrayExpression &&
+      element?.type === AST_NODE_TYPES.ArrayExpression &&
       isValueAwaitedInElements(name, element.elements)
     ) {
       return true;
