@@ -2,10 +2,6 @@
 
 <!-- end auto-generated rule header -->
 
-Often while writing tests you have some setup work that needs to happen before
-tests run, and you have some finishing work that needs to happen after tests
-run. Jest provides helper functions to handle this.
-
 It's common when writing tests to need to perform setup work that needs to
 happen before tests run, and finishing work after tests run.
 
