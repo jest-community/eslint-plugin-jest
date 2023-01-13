@@ -137,7 +137,7 @@
     "markdown-link-check": "^3.10.2",
     "pinst": "^3.0.0",
     "prettier": "^2.0.5",
-    "rimraf": "^3.0.0",
+    "rimraf": "^4.0.0",
     "semantic-release": "^20.0.0",
     "semver": "^7.3.5",
     "ts-node": "^10.2.1",
