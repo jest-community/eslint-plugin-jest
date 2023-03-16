@@ -76,7 +76,7 @@ test('test1', async () => {
 });
 ```
 
-Examples of **correct** code for the `{ "alwaysAwait": **true** }` option:
+Examples of **correct** code for the `{ "alwaysAwait": true }` option:
 
 ```js
 // alwaysAwait: true
