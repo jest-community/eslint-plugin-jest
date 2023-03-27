@@ -66,7 +66,7 @@ This rule is enabled by default.
 Enforces to use `await` inside block statements. Using `return` will trigger a
 warning. Returning one line statements with arrow functions is _always allowed_.
 
-Examples of **incorrect** code for the { "alwaysAwait": **true** } option:
+Examples of **incorrect** code for the `{ "alwaysAwait": true }` option:
 
 ```js
 // alwaysAwait: true
@@ -76,7 +76,7 @@ test('test1', async () => {
 });
 ```
 
-Examples of **correct** code for the { "alwaysAwait": **true** } option:
+Examples of **correct** code for the `{ "alwaysAwait": true }` option:
 
 ```js
 // alwaysAwait: true
