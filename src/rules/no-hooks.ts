@@ -1,4 +1,4 @@
-import { HookName, createRule, parseJestFnCall } from './utils';
+import { type HookName, createRule, parseJestFnCall } from './utils';
 
 export default createRule<
   [Partial<{ allow: readonly HookName[] }>],

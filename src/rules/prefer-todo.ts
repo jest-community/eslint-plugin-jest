@@ -1,6 +1,10 @@
-import { AST_NODE_TYPES, TSESLint, TSESTree } from '@typescript-eslint/utils';
 import {
-  ParsedJestFnCall,
+  AST_NODE_TYPES,
+  type TSESLint,
+  type TSESTree,
+} from '@typescript-eslint/utils';
+import {
+  type ParsedJestFnCall,
   createRule,
   getAccessorValue,
   hasOnlyOneArgument,

@@ -1,6 +1,6 @@
-import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, type TSESTree } from '@typescript-eslint/utils';
 import {
-  KnownCallExpression,
+  type KnownCallExpression,
   createRule,
   getTestCallExpressionsFromDeclaredVariables,
   isSupportedAccessor,

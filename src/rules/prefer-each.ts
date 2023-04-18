@@ -1,5 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
-import { JestFnType, createRule, parseJestFnCall } from './utils';
+import { type JestFnType, createRule, parseJestFnCall } from './utils';
 
 export default createRule({
   name: __filename,

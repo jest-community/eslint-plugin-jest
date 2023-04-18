@@ -1,7 +1,7 @@
-import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, type TSESTree } from '@typescript-eslint/utils';
 import {
-  AccessorNode,
-  FunctionExpression,
+  type AccessorNode,
+  type FunctionExpression,
   createRule,
   getAccessorValue,
   getNodeName,

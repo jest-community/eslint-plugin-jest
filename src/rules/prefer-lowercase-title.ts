@@ -1,8 +1,8 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import {
-  CallExpressionWithSingleArgument,
+  type CallExpressionWithSingleArgument,
   DescribeAlias,
-  StringNode,
+  type StringNode,
   TestCaseName,
   createRule,
   getStringValue,

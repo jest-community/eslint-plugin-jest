@@ -1,7 +1,11 @@
-import { AST_NODE_TYPES, JSONSchema, TSESTree } from '@typescript-eslint/utils';
+import {
+  AST_NODE_TYPES,
+  type JSONSchema,
+  type TSESTree,
+} from '@typescript-eslint/utils';
 import {
   DescribeAlias,
-  StringNode,
+  type StringNode,
   TestCaseName,
   createRule,
   getStringValue,
