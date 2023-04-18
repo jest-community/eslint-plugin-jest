@@ -3,7 +3,6 @@
   "compilerOptions": {
     "moduleResolution": "node",
     "noEmit": true,
-    "importsNotUsedAsValues": "error",
     "stripInternal": true,
 
     /* Additional Checks */

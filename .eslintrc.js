@@ -30,6 +30,11 @@ module.exports = {
     '@typescript-eslint/no-require-imports': 'error',
     '@typescript-eslint/ban-ts-comment': 'warn',
     '@typescript-eslint/ban-types': 'error',
+    '@typescript-eslint/consistent-type-imports': [
+      'error',
+      { disallowTypeAnnotations: false, fixStyle: 'inline-type-imports' },
+    ],
+    '@typescript-eslint/no-import-type-side-effects': 'error',
     '@typescript-eslint/no-unused-vars': 'error',
     'eslint-comments/no-unused-disable': 'error',
     'eslint-plugin/require-meta-docs-description': [

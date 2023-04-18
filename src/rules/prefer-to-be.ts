@@ -1,8 +1,12 @@
-import { AST_NODE_TYPES, TSESLint, TSESTree } from '@typescript-eslint/utils';
 import {
-  AccessorNode,
+  AST_NODE_TYPES,
+  type TSESLint,
+  type TSESTree,
+} from '@typescript-eslint/utils';
+import {
+  type AccessorNode,
   EqualityMatcher,
-  ParsedExpectFnCall,
+  type ParsedExpectFnCall,
   createRule,
   getAccessorValue,
   getFirstMatcherArg,

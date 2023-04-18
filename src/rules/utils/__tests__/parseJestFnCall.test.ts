@@ -1,10 +1,10 @@
 import type { JSONSchemaForNPMPackageJsonFiles } from '@schemastore/package';
-import { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import { TSESLint, type TSESTree } from '@typescript-eslint/utils';
 import dedent from 'dedent';
 import { espreeParser } from '../../__tests__/test-utils';
 import {
-  ParsedJestFnCall,
-  ResolvedJestFnWithNode,
+  type ParsedJestFnCall,
+  type ResolvedJestFnWithNode,
   createRule,
   getAccessorValue,
   isSupportedAccessor,

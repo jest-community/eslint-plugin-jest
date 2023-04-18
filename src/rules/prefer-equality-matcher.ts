@@ -1,4 +1,4 @@
-import { AST_NODE_TYPES, TSESLint } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, type TSESLint } from '@typescript-eslint/utils';
 import {
   EqualityMatcher,
   ModifierName,

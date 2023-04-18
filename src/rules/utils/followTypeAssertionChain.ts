@@ -1,4 +1,4 @@
-import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, type TSESTree } from '@typescript-eslint/utils';
 
 export type MaybeTypeCast<Expression extends TSESTree.Expression> =
   | TSTypeCastExpression<Expression>

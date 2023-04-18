@@ -1,5 +1,5 @@
 import {
-  ParsedExpectFnCall,
+  type ParsedExpectFnCall,
   createRule,
   getAccessorValue,
   isStringNode,

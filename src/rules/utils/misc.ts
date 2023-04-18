@@ -2,17 +2,17 @@ import { parse as parsePath } from 'path';
 import {
   AST_NODE_TYPES,
   ESLintUtils,
-  TSESLint,
-  TSESTree,
+  type TSESLint,
+  type TSESTree,
 } from '@typescript-eslint/utils';
 import { version } from '../../../package.json';
 import {
-  AccessorNode,
+  type AccessorNode,
   getAccessorValue,
   isSupportedAccessor,
 } from './accessors';
 import { followTypeAssertionChain } from './followTypeAssertionChain';
-import { ParsedExpectFnCall, isTypeOfJestFnCall } from './parseJestFnCall';
+import { type ParsedExpectFnCall, isTypeOfJestFnCall } from './parseJestFnCall';
 
 const REPO_URL = 'https://github.com/jest-community/eslint-plugin-jest';
 

@@ -1,8 +1,8 @@
-import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, type TSESTree } from '@typescript-eslint/utils';
 import {
-  CallExpressionWithSingleArgument,
+  type CallExpressionWithSingleArgument,
   EqualityMatcher,
-  KnownCallExpression,
+  type KnownCallExpression,
   ModifierName,
   createRule,
   getAccessorValue,

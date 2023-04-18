@@ -1,6 +1,6 @@
-import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, type TSESTree } from '@typescript-eslint/utils';
 import {
-  JestVersion,
+  type JestVersion,
   createRule,
   detectJestVersion,
   getNodeName,
