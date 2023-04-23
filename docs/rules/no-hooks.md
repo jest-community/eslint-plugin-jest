@@ -173,4 +173,4 @@ safely disable this rule.
 
 ## Further Reading
 
-- [Jest docs - Setup and Teardown](https://facebook.github.io/jest/docs/en/setup-teardown.html)
+- [Jest docs - Setup and Teardown](https://jestjs.io/docs/setup-teardown)

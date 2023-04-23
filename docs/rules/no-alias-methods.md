@@ -11,7 +11,7 @@ This rule _warns_ in the 🎨 `style`
 <!-- end auto-generated rule header -->
 
 > These aliases are going to be removed in the next major version of Jest - see
-> <https://github.com/facebook/jest/issues/13164> for more
+> <https://github.com/jestjs/jest/issues/13164> for more
 
 Several Jest methods have alias names, such as `toThrow` having the alias of
 `toThrowError`. This rule ensures that only the canonical name as used in the

@@ -2,7 +2,7 @@
   <a href="https://eslint.org/">
     <img height="150" src="https://eslint.org/assets/images/logo/eslint-logo-color.svg">
   </a>
-  <a href="https://facebook.github.io/jest/">
+  <a href="https://jestjs.io/">
     <img width="150" height="150" vspace="" hspace="25" src="https://jestjs.io/img/jest.png">
   </a>
   <h1>eslint-plugin-jest</h1>
