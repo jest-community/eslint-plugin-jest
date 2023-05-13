@@ -24,6 +24,10 @@ module.exports = {
 };
 ```
 
+In order to check external snapshots, you must also have `eslint` check files
+with the `.snap` extension by either passing `--ext snap` on the command line or
+by explicitly specifying `.snap` in `overrides`.
+
 ## Rule details
 
 This rule looks at all Jest inline and external snapshots (files with `.snap`
