@@ -145,7 +145,8 @@
   },
   "peerDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.0.0",
-    "eslint": "^7.0.0 || ^8.0.0"
+    "eslint": "^7.0.0 || ^8.0.0",
+    "jest": "*"
   },
   "peerDependenciesMeta": {
     "@typescript-eslint/eslint-plugin": {
