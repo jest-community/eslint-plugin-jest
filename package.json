@@ -20,7 +20,7 @@
     "lib/"
   ],
   "scripts": {
-    "build": "babel --extensions .js,.ts src --out-dir lib --copy-files && rimraf lib/__tests__ 'lib/**/__tests__'",
+    "build": "babel --extensions .js,.ts src --out-dir lib --copy-files && rimraf --glob lib/__tests__ 'lib/**/__tests__'",
     "postinstall": "is-ci || husky install",
     "lint": "eslint . --ignore-pattern '!.eslintrc.js' --ext js,ts",
     "prepack": "rimraf lib && yarn build",
