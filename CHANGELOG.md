@@ -1,3 +1,10 @@
+## [27.2.2](https://github.com/jest-community/eslint-plugin-jest/compare/v27.2.1...v27.2.2) (2023-06-19)
+
+
+### Bug Fixes
+
+* add missing (optional) peer dependency on Jest ([#1384](https://github.com/jest-community/eslint-plugin-jest/issues/1384)) ([34c3d32](https://github.com/jest-community/eslint-plugin-jest/commit/34c3d32cab726c88dc385a9e7a8998c727f4720c))
+
 ## [27.2.1](https://github.com/jest-community/eslint-plugin-jest/compare/v27.2.0...v27.2.1) (2023-01-06)
 
 
