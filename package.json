@@ -108,7 +108,7 @@
     "@schemastore/package": "^0.0.8",
     "@semantic-release/changelog": "^6.0.0",
     "@semantic-release/git": "^10.0.0",
-    "@tsconfig/node14": "^1.0.3",
+    "@tsconfig/node14": "^14.1.0",
     "@types/dedent": "^0.7.0",
     "@types/eslint": "^8.4.6",
     "@types/jest": "^29.0.0",
