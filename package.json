@@ -117,7 +117,7 @@
     "babel-jest": "^29.0.0",
     "babel-plugin-replace-ts-export-assignment": "^0.0.2",
     "dedent": "^1.0.1",
-    "eslint": "^6.0.0 || ^7.0.0 || ^8.0.0",
+    "eslint": "^7.0.0 || ^8.0.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-doc-generator": "^1.0.0",
     "eslint-plugin-eslint-comments": "^3.1.2",
