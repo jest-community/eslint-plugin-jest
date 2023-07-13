@@ -156,7 +156,7 @@
       "optional": true
     }
   },
-  "packageManager": "yarn@3.6.0",
+  "packageManager": "yarn@3.6.1",
   "engines": {
     "node": "^14.15.0 || ^16.10.0 || >=18.0.0"
   },
