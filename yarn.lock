@@ -4961,7 +4961,7 @@ __metadata:
     ts-node: ^10.2.1
     typescript: ^5.0.4
   peerDependencies:
-    "@typescript-eslint/eslint-plugin": ^5.0.0
+    "@typescript-eslint/eslint-plugin": ^5.0.0 || ^6.0.0
     eslint: ^7.0.0 || ^8.0.0
     jest: "*"
   peerDependenciesMeta:
