@@ -54,7 +54,8 @@ interface CalledKnownMemberExpression<Name extends string = string>
  * Represents a `CallExpression` with a single argument.
  */
 export interface CallExpressionWithSingleArgument<
-  Argument extends TSESTree.CallExpression['arguments'][number] = TSESTree.CallExpression['arguments'][number],
+  Argument extends
+    TSESTree.CallExpression['arguments'][number] = TSESTree.CallExpression['arguments'][number],
 > extends TSESTree.CallExpression {
   arguments: [Argument];
 }
