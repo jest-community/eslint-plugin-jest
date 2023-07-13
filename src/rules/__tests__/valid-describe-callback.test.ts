@@ -43,7 +43,7 @@ ruleTester.run('valid-describe-callback', rule, {
     dedent`
       describe.each\`
         foo  | foe
-        ${1} | ${2}
+        ${'1'} | ${'2'}
       \`('$something', ({ foo, foe }) => {});
     `,
   ],
