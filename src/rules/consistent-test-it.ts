@@ -16,15 +16,12 @@ const buildFixer =
     nodeName: string,
     preferredTestKeyword: TestCaseName.test | TestCaseName.it,
   ) =>
-  (fixer: TSESLint.RuleFixer) =>
-    [
-      fixer.replaceText(
-        callee.type === AST_NODE_TYPES.MemberExpression
-          ? callee.object
-          : callee,
-        getPreferredNodeName(nodeName, preferredTestKeyword),
-      ),
-    ];
+  (fixer: TSESLint.RuleFixer) => [
+    fixer.replaceText(
+      callee.type === AST_NODE_TYPES.MemberExpression ? callee.object : callee,
+      getPreferredNodeName(nodeName, preferredTestKeyword),
+    ),
+  ];
 
 export default createRule<
   [

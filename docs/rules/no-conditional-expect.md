@@ -118,7 +118,7 @@ thrown by the wrapped function:
 ```typescript
 class NoErrorThrownError extends Error {}
 
-const getError = async <TError>(call: () => unknown): Promise<TError> => {
+const getError = async <TError,>(call: () => unknown): Promise<TError> => {
   try {
     await call();
 

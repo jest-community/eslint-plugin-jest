@@ -45,8 +45,7 @@
     "arrowParens": "avoid",
     "endOfLine": "auto",
     "proseWrap": "always",
-    "singleQuote": true,
-    "trailingComma": "all"
+    "singleQuote": true
   },
   "release": {
     "branches": [
@@ -126,7 +125,7 @@
     "eslint-plugin-eslint-plugin": "^5.0.6",
     "eslint-plugin-import": "^2.25.1",
     "eslint-plugin-node": "^11.0.0",
-    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-prettier": "^5.0.0",
     "eslint-remote-tester": "^3.0.0",
     "eslint-remote-tester-repositories": "~1.0.0",
     "husky": "^8.0.1",
@@ -136,7 +135,7 @@
     "lint-staged": "^13.0.3",
     "markdown-link-check": "^3.10.2",
     "pinst": "^3.0.0",
-    "prettier": "^2.0.5",
+    "prettier": "^3.0.0",
     "rimraf": "^5.0.0",
     "semantic-release": "^21.0.0",
     "semver": "^7.3.5",
