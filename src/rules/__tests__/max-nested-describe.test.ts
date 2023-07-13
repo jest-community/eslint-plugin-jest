@@ -96,7 +96,7 @@ ruleTester.run('max-nested-describe', rule, {
       describe('foo', () => {
         describe.each\`
         foo  | bar
-        ${1} | ${2}
+        ${'1'} | ${'2'}
         \`('$foo $bar', ({ foo, bar }) => {});
       });
     `,
@@ -212,7 +212,7 @@ ruleTester.run('max-nested-describe', rule, {
         describe('foo', () => {
           describe.each\`
           foo  | bar
-          ${1} | ${2}
+          ${'1'} | ${'2'}
           \`('$foo $bar', ({ foo, bar }) => {});
         });
       `,
