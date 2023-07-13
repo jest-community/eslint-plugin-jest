@@ -74,7 +74,7 @@ const compileMatcherPatterns = (
 type CompiledMatcherAndMessage = [matcher: RegExp, message?: string];
 type MatcherAndMessage = [matcher: string, message?: string];
 
-const MatcherAndMessageSchema: JSONSchema.JSONSchema7 = {
+const MatcherAndMessageSchema: JSONSchema.JSONSchema4 = {
   type: 'array',
   items: { type: 'string' },
   minItems: 1,
@@ -113,9 +113,7 @@ export default createRule<[Options], MessageIds>({
   name: __filename,
   meta: {
     docs: {
-      category: 'Best Practices',
       description: 'Enforce valid titles',
-      recommended: 'error',
     },
     messages: {
       titleMustBeString: 'Title must be a string',

@@ -9,7 +9,12 @@ function getFixturesRootDir(): string {
 
 const rootPath = getFixturesRootDir();
 
-const ruleTester = new ESLintUtils.RuleTester({
+const RuleTester =
+  ESLintUtils.RuleTester ??
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  require('@typescript-eslint/rule-tester').RuleTester;
+
+const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
   parserOptions: {
     sourceType: 'module',
@@ -164,7 +169,7 @@ describe('error handling', () => {
   });
 
   describe('when @typescript-eslint/eslint-plugin is not available', () => {
-    const ruleTester = new ESLintUtils.RuleTester({
+    const ruleTester = new RuleTester({
       parser: '@typescript-eslint/parser',
       parserOptions: {
         sourceType: 'module',

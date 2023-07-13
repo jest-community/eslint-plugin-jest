@@ -13,9 +13,7 @@ export default createRule({
   name: __filename,
   meta: {
     docs: {
-      category: 'Best Practices',
       description: 'Suggest using the built-in equality matchers',
-      recommended: false,
     },
     messages: {
       useEqualityMatcher: 'Prefer using one of the equality matchers instead',

@@ -10,9 +10,7 @@ export default createRule({
   name: __filename,
   meta: {
     docs: {
-      category: 'Best Practices',
       description: 'Disallow Jasmine globals',
-      recommended: 'error',
     },
     messages: {
       illegalGlobal:

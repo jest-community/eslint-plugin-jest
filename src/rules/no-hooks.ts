@@ -7,9 +7,7 @@ export default createRule<
   name: __filename,
   meta: {
     docs: {
-      category: 'Best Practices',
       description: 'Disallow setup and teardown hooks',
-      recommended: false,
     },
     messages: {
       unexpectedHook: "Unexpected '{{ hookName }}' hook",

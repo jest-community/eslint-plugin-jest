@@ -38,9 +38,7 @@ export default createRule({
   name: __filename,
   meta: {
     docs: {
-      category: 'Best Practices',
       description: 'Suggest using `toContain()`',
-      recommended: false,
     },
     messages: {
       useToContain: 'Use toContain() instead',

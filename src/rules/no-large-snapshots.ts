@@ -75,9 +75,7 @@ export default createRule<[RuleOptions], MessageId>({
   name: __filename,
   meta: {
     docs: {
-      category: 'Best Practices',
       description: 'Disallow large snapshots',
-      recommended: false,
     },
     messages: {
       noSnapshot: '`{{ lineCount }}`s should begin with lowercase',

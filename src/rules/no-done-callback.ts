@@ -31,9 +31,7 @@ export default createRule({
   name: __filename,
   meta: {
     docs: {
-      category: 'Best Practices',
       description: 'Disallow using a callback in asynchronous tests and hooks',
-      recommended: 'error',
     },
     messages: {
       noDoneCallback:

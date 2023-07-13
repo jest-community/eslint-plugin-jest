@@ -21,10 +21,8 @@ export default createRule({
   name: __filename,
   meta: {
     docs: {
-      category: 'Best Practices',
       description:
         'Disallow using `jest.mock()` factories without an explicit type parameter',
-      recommended: false,
     },
     messages: {
       addTypeParameterToModuleMock:
@@ -38,7 +36,7 @@ export default createRule({
   create(context) {
     return {
       CallExpression(node: TSESTree.CallExpression): void {
-        const { callee, typeParameters } = node;
+        const { callee } = node;
 
         if (callee.type !== AST_NODE_TYPES.MemberExpression) {
           return;
@@ -53,6 +51,9 @@ export default createRule({
           ['mock', 'doMock'].includes(getAccessorValue(property))
         ) {
           const [nameNode, factoryNode] = node.arguments;
+
+          // this will still emit a deprecation warning as `typeArguments` might be nullish on v6
+          const typeParameters = node.typeArguments ?? node.typeParameters;
 
           const hasTypeParameter =
             typeParameters !== undefined && typeParameters.params.length > 0;

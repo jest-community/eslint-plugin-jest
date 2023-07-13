@@ -52,9 +52,7 @@ export default createRule<
   name: __filename,
   meta: {
     docs: {
-      category: 'Best Practices',
       description: 'Enforce assertion to be made in a test body',
-      recommended: 'warn',
     },
     messages: {
       noAssertions: 'Test has no assertions',

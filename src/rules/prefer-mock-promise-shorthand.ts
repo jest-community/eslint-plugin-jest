@@ -31,9 +31,7 @@ export default createRule({
   name: __filename,
   meta: {
     docs: {
-      category: 'Best Practices',
       description: 'Prefer mock resolved/rejected shorthands for promises',
-      recommended: false,
     },
     messages: {
       useMockShorthand: 'Prefer {{ replacement }}',

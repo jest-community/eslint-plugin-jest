@@ -8,13 +8,6 @@ type RuleModule = TSESLint.RuleModule<string, unknown[]> & {
   meta: Required<Pick<TSESLint.RuleMetaData<string>, 'docs'>>;
 };
 
-// v5 of `@typescript-eslint/experimental-utils` removed this
-declare module '@typescript-eslint/utils/dist/ts-eslint/Rule' {
-  export interface RuleMetaDataDocs {
-    category: 'Best Practices' | 'Possible Errors';
-  }
-}
-
 // copied from https://github.com/babel/babel/blob/d8da63c929f2d28c401571e2a43166678c555bc4/packages/babel-helpers/src/helpers.js#L602-L606
 /* istanbul ignore next */
 const interopRequireDefault = (obj: any): { default: any } =>
