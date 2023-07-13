@@ -1,3 +1,10 @@
+## [27.2.3](https://github.com/jest-community/eslint-plugin-jest/compare/v27.2.2...v27.2.3) (2023-07-13)
+
+
+### Bug Fixes
+
+* allow `@typescript-eslint/eslint-plugin` v6 as peer dep ([#1400](https://github.com/jest-community/eslint-plugin-jest/issues/1400)) ([04b2bf2](https://github.com/jest-community/eslint-plugin-jest/commit/04b2bf29bf086f8ce8173a9c3bc15ce31915dbe2)), closes [#1398](https://github.com/jest-community/eslint-plugin-jest/issues/1398)
+
 ## [27.2.2](https://github.com/jest-community/eslint-plugin-jest/compare/v27.2.1...v27.2.2) (2023-06-19)
 
 
