@@ -126,7 +126,7 @@ const requireRule = (throwWhenRequiring: boolean) => {
 
   TSESLintPluginRef.throwWhenRequiring = throwWhenRequiring;
 
-  // eslint-disable-next-line @typescript-eslint/no-require-imports,node/no-missing-require
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
   return require('../unbound-method').default;
 };
 
@@ -158,7 +158,7 @@ describe('error handling', () => {
 
       jest.resetModules();
 
-      // eslint-disable-next-line @typescript-eslint/no-require-imports,node/no-missing-require
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
       expect(() => require('../unbound-method').default).toThrow(/oh noes!/iu);
     });
   });
