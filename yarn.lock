@@ -2457,10 +2457,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@schemastore/package@npm:^0.0.8":
-  version: 0.0.8
-  resolution: "@schemastore/package@npm:0.0.8"
-  checksum: 4457996c88cb65ea495a09d2ce1b96dfbd31e2b2d5b72638fe7a4da8d45f1af953bd3cb8e41d4a5b040d2db82a7e877ccfcaa11185142116c6943df723fa16ff
+"@schemastore/package@npm:^0.0.10":
+  version: 0.0.10
+  resolution: "@schemastore/package@npm:0.0.10"
+  checksum: 285a524697b0412e3575132a8031bb990163d9ba40da0d68a4a2890789121f8ce4d16a0cef9a352d2ee4bbd127dd79ef8f8da72ba8cc932e06519735736d8803
   languageName: node
   linkType: hard
 
@@ -4989,7 +4989,7 @@ __metadata:
     "@babel/preset-typescript": ^7.3.3
     "@commitlint/cli": ^17.0.3
     "@commitlint/config-conventional": ^17.0.3
-    "@schemastore/package": ^0.0.8
+    "@schemastore/package": ^0.0.10
     "@semantic-release/changelog": ^6.0.0
     "@semantic-release/git": ^10.0.0
     "@tsconfig/node14": ^14.1.0
