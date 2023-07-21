@@ -104,7 +104,7 @@
     "@babel/preset-typescript": "^7.3.3",
     "@commitlint/cli": "^17.0.3",
     "@commitlint/config-conventional": "^17.0.3",
-    "@schemastore/package": "^0.0.8",
+    "@schemastore/package": "^0.0.10",
     "@semantic-release/changelog": "^6.0.0",
     "@semantic-release/git": "^10.0.0",
     "@tsconfig/node14": "^14.1.0",
