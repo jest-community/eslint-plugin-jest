@@ -220,6 +220,7 @@ set to warn in.\
 | [no-commented-out-tests](docs/rules/no-commented-out-tests.md)               | Disallow commented out tests                                              |     | ✅  |     |     |     |
 | [no-conditional-expect](docs/rules/no-conditional-expect.md)                 | Disallow calling `expect` conditionally                                   | ✅  |     |     |     |     |
 | [no-conditional-in-test](docs/rules/no-conditional-in-test.md)               | Disallow conditional logic in tests                                       |     |     |     |     |     |
+| [no-confusing-set-timeout](docs/rules/no-confusing-set-timeout.md)           | Disallow using confusing setTimeout in test                               |     |     |     |     |     |
 | [no-deprecated-functions](docs/rules/no-deprecated-functions.md)             | Disallow use of deprecated functions                                      | ✅  |     | 🔧  |     |     |
 | [no-disabled-tests](docs/rules/no-disabled-tests.md)                         | Disallow disabled tests                                                   |     | ✅  |     |     |     |
 | [no-done-callback](docs/rules/no-done-callback.md)                           | Disallow using a callback in asynchronous tests and hooks                 | ✅  |     |     | 💡  |     |

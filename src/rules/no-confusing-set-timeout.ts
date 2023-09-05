@@ -1,44 +1,13 @@
-import { AST_NODE_TYPES, type TSESTree } from '@typescript-eslint/utils';
-import type { Scope } from '@typescript-eslint/utils/dist/ts-eslint';
-import { createRule, getNodeName } from './utils';
+import type { TSESTree } from '@typescript-eslint/utils';
+import { createRule, getNodeName, parseJestFnCall } from './utils';
 
 interface ErrorType {
-  messageId: 'globalSetTimeout' | 'onlyOneSetTimeout' | 'topSetTimeout';
+  messageId: 'globalSetTimeout' | 'multipleSetTimeouts' | 'orderSetTimeout';
   node: TSESTree.Node;
 }
 
 function isJestSetTimeout(node: TSESTree.Node) {
-  if (node.type === AST_NODE_TYPES.ExpressionStatement) {
-    return getNodeName(node.expression) === 'jest.setTimeout';
-  }
-
   return getNodeName(node) === 'jest.setTimeout';
-}
-
-function checkIsGlobal(scope: Scope.Scope) {
-  // for ESModule Case
-  if (scope.type === 'module' && scope.upper.type === 'global') return true;
-  if (scope.type === 'global') return true;
-
-  return false;
-}
-
-function isTestsuiteFunction(node: TSESTree.Node) {
-  if (node.type !== AST_NODE_TYPES.ExpressionStatement) return false;
-
-  const name = getNodeName(node.expression);
-
-  if (!name) return false;
-
-  return [
-    'describe',
-    'test',
-    'it',
-    'beforeEach',
-    'afterEach',
-    'before',
-    'after',
-  ].includes(name);
 }
 
 export default createRule({
@@ -51,9 +20,10 @@ export default createRule({
     },
     messages: {
       globalSetTimeout: '`jest.setTimeout` should be call in `global` scope.',
-      onlyOneSetTimeout: 'Only the last one `jest.setTimeout` call work.',
-      topSetTimeout:
-        'The `jest.setTimout` should be placed before all of testsuite methods.',
+      multipleSetTimeouts:
+        'Do not call `jest.setTimeout` multiple times, as only the last call will have an effect.',
+      orderSetTimeout:
+        '`jest.setTimeout` should be placed before any other jest methods',
     },
     type: 'problem',
     schema: [],
@@ -61,46 +31,49 @@ export default createRule({
   defaultOptions: [],
   create(context) {
     const errors: ErrorType[] = [];
-    let jestTimeoutcount = 0;
+    let callJestTimeout = 0;
     let nonJestTimeout = 0;
 
     return {
-      Program(node) {
-        const { body } = node;
-
-        body.forEach((n, index) => {
-          if (isJestSetTimeout(n)) {
-            if (nonJestTimeout > 0) {
-              errors.push({
-                messageId: 'topSetTimeout',
-                node: node.body[index],
-              });
-            }
-          } else if (isTestsuiteFunction(n)) {
-            nonJestTimeout += 1;
-          }
-        });
-      },
-      MemberExpression(node) {
+      CallExpression(node) {
         const scope = context.getScope();
+        const jestFnCall = parseJestFnCall(node, context);
 
-        if (!isJestSetTimeout(node)) return;
+        if (!jestFnCall) return;
 
-        jestTimeoutcount += 1;
-
-        if (!checkIsGlobal(scope)) {
-          errors.push({ messageId: 'globalSetTimeout', node });
+        if (
+          jestFnCall.type === 'describe' ||
+          jestFnCall.type === 'test' ||
+          jestFnCall.type === 'expect' ||
+          jestFnCall.type === 'hook' ||
+          (jestFnCall.type === 'jest' && !isJestSetTimeout(node))
+        ) {
+          nonJestTimeout += 1;
         }
 
-        if (jestTimeoutcount > 1) {
-          errors.push({ messageId: 'onlyOneSetTimeout', node });
+        if (isJestSetTimeout(node)) {
+          if (!['global', 'module'].includes(scope.type)) {
+            errors.push({ messageId: 'globalSetTimeout', node });
+          }
+
+          if (nonJestTimeout > 0) {
+            errors.push({ messageId: 'orderSetTimeout', node });
+          }
+
+          if (callJestTimeout >= 1) {
+            errors.push({ messageId: 'multipleSetTimeouts', node });
+          } else {
+            callJestTimeout += 1;
+          }
         }
       },
-      'Program:exit'() {
-        if (errors.length > 0) {
-          errors.forEach((error: ErrorType) => {
+      'CallExpression:exit'() {
+        while (errors.length > 0) {
+          const error = errors.shift();
+
+          if (error) {
             context.report(error);
-          });
+          }
         }
       },
     };

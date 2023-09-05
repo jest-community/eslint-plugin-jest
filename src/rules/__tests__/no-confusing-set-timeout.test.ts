@@ -20,9 +20,17 @@ ruleTester.run('no-confusing-set-timeout', rule, {
         it('A.2', async () => { await new Promise(resolve => { setTimeout(resolve, 10000).unref(); });});
       });
     `,
+    dedent`
+      jest.setTimeout(1000);
+      window.setTimeout(6000)
+      describe('A', () => {
+        beforeEach(async () => { await new Promise(resolve => { setTimeout(resolve, 10000).unref(); });});
+        it('test foo', async () => { await new Promise(resolve => { setTimeout(resolve, 10000).unref(); });});
+      });
+    `,
     {
       code: dedent`
-        import { jest } from '@jest/globals';
+        import { handler } from 'dep/mod';
         jest.setTimeout(800);
         describe('A', () => {
           beforeEach(async () => { await new Promise(resolve => { setTimeout(resolve, 10000).unref(); });});
@@ -42,12 +50,33 @@ ruleTester.run('no-confusing-set-timeout', rule, {
       });
     `,
     dedent`
-      const jest = require('@jest/globals');
+      const { handler } = require('dep/mod');
       jest.setTimeout(800);
       describe('A', () => {
         beforeEach(async () => { await new Promise(resolve => { setTimeout(resolve, 10000).unref(); });});
         it('A.1', async () => { await new Promise(resolve => { setTimeout(resolve, 10000).unref(); });});
         it('A.2', async () => { await new Promise(resolve => { setTimeout(resolve, 10000).unref(); });});
+      });
+    `,
+    dedent`
+      jest.setTimeout(1000);
+      window.setTimeout(60000);
+    `,
+    'window.setTimeout(60000);',
+    'setTimeout(1000);',
+    dedent`
+      jest.setTimeout(1000);
+      test('test case', () => {
+        setTimeout(() => {
+          Promise.resolv();
+        }, 5000);
+      });
+    `,
+    dedent`
+      test('test case', () => {
+        setTimeout(() => {
+          Promise.resolv();
+        }, 5000);
       });
     `,
   ],
@@ -66,12 +95,12 @@ ruleTester.run('no-confusing-set-timeout', rule, {
       `,
       errors: [
         {
-          messageId: 'topSetTimeout',
+          messageId: 'orderSetTimeout',
           line: 9,
           column: 1,
         },
         {
-          messageId: 'onlyOneSetTimeout',
+          messageId: 'multipleSetTimeouts',
           line: 9,
           column: 1,
         },
@@ -89,6 +118,11 @@ ruleTester.run('no-confusing-set-timeout', rule, {
       errors: [
         {
           messageId: 'globalSetTimeout',
+          line: 2,
+          column: 3,
+        },
+        {
+          messageId: 'orderSetTimeout',
           line: 2,
           column: 3,
         },
@@ -114,6 +148,11 @@ ruleTester.run('no-confusing-set-timeout', rule, {
           line: 4,
           column: 7,
         },
+        {
+          messageId: 'orderSetTimeout',
+          line: 4,
+          column: 7,
+        },
       ],
     },
     {
@@ -125,6 +164,11 @@ ruleTester.run('no-confusing-set-timeout', rule, {
       errors: [
         {
           messageId: 'globalSetTimeout',
+          line: 2,
+          column: 3,
+        },
+        {
+          messageId: 'orderSetTimeout',
           line: 2,
           column: 3,
         },
@@ -141,7 +185,7 @@ ruleTester.run('no-confusing-set-timeout', rule, {
       `,
       errors: [
         {
-          messageId: 'topSetTimeout',
+          messageId: 'orderSetTimeout',
           line: 6,
           column: 1,
         },
@@ -165,6 +209,32 @@ ruleTester.run('no-confusing-set-timeout', rule, {
           messageId: 'globalSetTimeout',
           line: 3,
           column: 3,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        jest.setTimeout(800);
+        jest.setTimeout(900);
+      `,
+      errors: [
+        {
+          messageId: 'multipleSetTimeouts',
+          line: 2,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        expect(1 + 2).toEqual(3);
+        jest.setTimeout(800);
+      `,
+      errors: [
+        {
+          messageId: 'orderSetTimeout',
+          line: 2,
+          column: 1,
         },
       ],
     },

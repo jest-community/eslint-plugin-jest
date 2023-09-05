@@ -2,7 +2,9 @@
 
 <!-- end auto-generated rule header -->
 
-This rule will raise a warning about confusing `jest-setTimeout` in test.
+`jest.setTimeout` can be called multiple times anywhere within a single test
+file. However, only the last call will have an effect, and it will actually be
+invoked before any other jest functions.
 
 ## Rule details
 
@@ -17,25 +19,25 @@ recommend in Jest:
 Examples of **incorrect** code for this rule:
 
 ```js
-describe('A', () => {
+describe('test foo', () => {
   jest.setTimeout(1000);
   it('test-description', () => {
     // test logic;
   });
 });
 
-describe('B', () => {
+describe('test bar', () => {
   it('test-description', () => {
     jest.setTimeout(1000);
     // test logic;
   });
 });
 
-test('C', () => {
+test('foo-bar', () => {
   jest.setTimeout(1000);
 });
 
-describe('D', () => {
+describe('unit test', () => {
   beforeEach(() => {
     jest.setTimeout(1000);
   });
@@ -46,14 +48,14 @@ Examples of **correct** code for this rule:
 
 ```js
 jest.setTimeout(500);
-test('A', () => {
+test('test test', () => {
   // do some stuff
 });
 ```
 
 ```js
 jest.setTimeout(1000);
-describe('B', () => {
+describe('test bar bar', () => {
   it('test-description', () => {
     // test logic;
   });
