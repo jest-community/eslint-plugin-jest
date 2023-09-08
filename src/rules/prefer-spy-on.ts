@@ -85,11 +85,15 @@ export default createRule({
       AssignmentExpression(node) {
         const { left, right } = node;
 
-        if (left.type !== AST_NODE_TYPES.MemberExpression) return;
+        if (left.type !== AST_NODE_TYPES.MemberExpression) {
+          return;
+        }
 
         const jestFnCall = getJestFnCall(right);
 
-        if (!jestFnCall) return;
+        if (!jestFnCall) {
+          return;
+        }
 
         context.report({
           node,

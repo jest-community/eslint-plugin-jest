@@ -84,6 +84,7 @@ module.exports = {
     'prefer-rest-params': 'error',
     'prefer-const': ['error', { destructuring: 'all' }],
     'no-var': 'error',
+    curly: 'error',
   },
   overrides: [
     {
