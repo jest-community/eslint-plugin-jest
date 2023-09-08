@@ -28,7 +28,9 @@ function matchesAssertFunctionName(
       `^${p
         .split('.')
         .map(x => {
-          if (x === '**') return '[a-z\\d\\.]*';
+          if (x === '**') {
+            return '[a-z\\d\\.]*';
+          }
 
           return x.replace(/\*/gu, '[a-z\\d]*');
         })

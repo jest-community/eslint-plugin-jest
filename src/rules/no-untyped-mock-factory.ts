@@ -70,7 +70,9 @@ export default createRule({
             data: { moduleName: moduleName?.raw ?? './module-name' },
             node,
             fix(fixer) {
-              if (!moduleName) return [];
+              if (!moduleName) {
+                return [];
+              }
 
               return [
                 fixer.insertTextAfter(
