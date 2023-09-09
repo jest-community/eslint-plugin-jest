@@ -47,7 +47,9 @@ export default createRule({
           t => t.type === AST_NODE_TYPES.ReturnStatement,
         );
 
-        if (!returnStmt) return;
+        if (!returnStmt) {
+          return;
+        }
 
         context.report({ messageId: 'noReturnValue', node: returnStmt });
       },
@@ -58,13 +60,17 @@ export default createRule({
           context,
         );
 
-        if (testCallExpressions.length === 0) return;
+        if (testCallExpressions.length === 0) {
+          return;
+        }
 
         const returnStmt = node.body.body.find(
           t => t.type === AST_NODE_TYPES.ReturnStatement,
         );
 
-        if (!returnStmt) return;
+        if (!returnStmt) {
+          return;
+        }
 
         context.report({ messageId: 'noReturnValue', node: returnStmt });
       },
