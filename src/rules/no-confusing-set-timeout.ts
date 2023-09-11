@@ -1,8 +1,16 @@
-import type { TSESTree } from '@typescript-eslint/utils';
-import { createRule, getNodeName, parseJestFnCall } from './utils';
+import {
+  type ParsedJestFnCall,
+  createRule,
+  isIdentifier,
+  parseJestFnCall,
+} from './utils';
 
-function isJestSetTimeout(node: TSESTree.Node) {
-  return getNodeName(node) === 'jest.setTimeout';
+function isJestSetTimeout(jestFnCall: ParsedJestFnCall) {
+  return (
+    jestFnCall.type === 'jest' &&
+    jestFnCall.members.length === 1 &&
+    isIdentifier(jestFnCall.members[0], 'setTimeout')
+  );
 }
 
 export default createRule({
@@ -10,13 +18,13 @@ export default createRule({
   meta: {
     docs: {
       category: 'Best Practices',
-      description: 'Disallow using confusing setTimeout in test',
+      description: 'Disallow confusing usages of jest.setTimeout',
       recommended: false,
     },
     messages: {
-      globalSetTimeout: '`jest.setTimeout` should be call in `global` scope.',
+      globalSetTimeout: '`jest.setTimeout` should be call in `global` scope',
       multipleSetTimeouts:
-        'Do not call `jest.setTimeout` multiple times, as only the last call will have an effect.',
+        'Do not call `jest.setTimeout` multiple times, as only the last call will have an effect',
       orderSetTimeout:
         '`jest.setTimeout` should be placed before any other jest methods',
     },
@@ -37,12 +45,10 @@ export default createRule({
           return;
         }
 
-        const result = isJestSetTimeout(node);
+        const thisIsJestSetTimeoutCall = isJestSetTimeout(jestFnCall);
 
-        if (!result) {
-          if (jestFnCall.type !== 'unknown') {
-            shouldEmitOrderSetTimeout = true;
-          }
+        if (!thisIsJestSetTimeoutCall) {
+          shouldEmitOrderSetTimeout = true;
 
           return;
         }
@@ -58,7 +64,7 @@ export default createRule({
         if (seenJestTimeout) {
           context.report({ messageId: 'multipleSetTimeouts', node });
         } else {
-          seenJestTimeout = result;
+          seenJestTimeout = thisIsJestSetTimeoutCall;
         }
       },
     };

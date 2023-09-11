@@ -238,5 +238,21 @@ ruleTester.run('no-confusing-set-timeout', rule, {
         },
       ],
     },
+    {
+      code: dedent`
+        import { jest as Jest } from '@jest/globals';
+        {
+          Jest.setTimeout(800);
+        }
+      `,
+      parserOptions: { sourceType: 'module' },
+      errors: [
+        {
+          messageId: 'globalSetTimeout',
+          line: 3,
+          column: 3,
+        },
+      ],
+    },
   ],
 });

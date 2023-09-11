@@ -2,19 +2,18 @@
 
 <!-- end auto-generated rule header -->
 
-`jest.setTimeout` can be called multiple times anywhere within a single test
-file. However, only the last call will have an effect, and it will actually be
-invoked before any other jest functions.
+While `jest.setTimeout` can be called multiple times anywhere within a single
+test file only the last call before any test functions run will have an effect.
 
 ## Rule details
 
-This rule describes some tricky ways about `jest.setTimeout` that should not
-recommend in Jest:
+his rule checks for several confusing usages of `jest.setTimeout` that looks
+like it applies to specific tests within the same file, such as:
 
-- should set `jest.setTimeout` in any testsuite methods before(such as
-  `describe`, `test` or `it`);
-- should set `jest.setTimeout` in global scope.
-- should only call `jest.setTimeout` once in a single test file;
+- being called anywhere other than in global scope
+- being called multiple times
+- being called after other Jest functions like hooks, `describe`, `test`, or
+  `it`
 
 Examples of **incorrect** code for this rule:
 
