@@ -45,9 +45,7 @@ export default createRule({
           return;
         }
 
-        const thisIsJestSetTimeoutCall = isJestSetTimeout(jestFnCall);
-
-        if (!thisIsJestSetTimeoutCall) {
+        if (!isJestSetTimeout(jestFnCall)) {
           shouldEmitOrderSetTimeout = true;
 
           return;
@@ -63,9 +61,9 @@ export default createRule({
 
         if (seenJestTimeout) {
           context.report({ messageId: 'multipleSetTimeouts', node });
-        } else {
-          seenJestTimeout = thisIsJestSetTimeoutCall;
         }
+
+        seenJestTimeout = true;
       },
     };
   },

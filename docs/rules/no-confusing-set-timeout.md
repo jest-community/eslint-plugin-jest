@@ -7,7 +7,7 @@ test file only the last call before any test functions run will have an effect.
 
 ## Rule details
 
-his rule checks for several confusing usages of `jest.setTimeout` that looks
+this rule checks for several confusing usages of `jest.setTimeout` that looks
 like it applies to specific tests within the same file, such as:
 
 - being called anywhere other than in global scope
