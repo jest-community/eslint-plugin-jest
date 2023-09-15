@@ -1,3 +1,10 @@
+# [27.4.0](https://github.com/jest-community/eslint-plugin-jest/compare/v27.3.0...v27.4.0) (2023-09-15)
+
+
+### Features
+
+* **valid-title:** support ignoring leading and trailing whitespace ([#1433](https://github.com/jest-community/eslint-plugin-jest/issues/1433)) ([bc96473](https://github.com/jest-community/eslint-plugin-jest/commit/bc96473488e004885d8926dc716ef96f889c3d1b))
+
 # [27.3.0](https://github.com/jest-community/eslint-plugin-jest/compare/v27.2.3...v27.3.0) (2023-09-15)
 
 
