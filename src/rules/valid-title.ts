@@ -85,6 +85,7 @@ const MatcherAndMessageSchema: JSONSchema.JSONSchema7 = {
 type MatcherGroups = 'describe' | 'test' | 'it';
 
 interface Options {
+  ignoreSpaces?: boolean;
   ignoreTypeOfDescribeName?: boolean;
   disallowedWords?: string[];
   mustNotMatch?:
@@ -132,6 +133,10 @@ export default createRule<[Options], MessageIds>({
       {
         type: 'object',
         properties: {
+          ignoreSpaces: {
+            type: 'boolean',
+            default: false,
+          },
           ignoreTypeOfDescribeName: {
             type: 'boolean',
             default: false,
@@ -161,11 +166,16 @@ export default createRule<[Options], MessageIds>({
     ],
     fixable: 'code',
   },
-  defaultOptions: [{ ignoreTypeOfDescribeName: false, disallowedWords: [] }],
+  defaultOptions: [{ 
+    ignoreSpaces: false,
+    ignoreTypeOfDescribeName: false,
+    disallowedWords: [],
+  }],
   create(
     context,
     [
       {
+        ignoreSpaces,
         ignoreTypeOfDescribeName,
         disallowedWords = [],
         mustNotMatch,
@@ -247,7 +257,7 @@ export default createRule<[Options], MessageIds>({
           }
         }
 
-        if (title.trim().length !== title.length) {
+        if (ignoreSpaces === false && title.trim().length !== title.length) {
           context.report({
             messageId: 'accidentalSpace',
             node: argument,
