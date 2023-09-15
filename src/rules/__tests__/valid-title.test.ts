@@ -848,6 +848,10 @@ ruleTester.run('no-accidental-space', rule, {
         it('bar', () => {})
       })
     `,
+    {
+      code: 'it(`GIVEN... \n  `, () => {});',
+      options: [{ ignoreSpaces: true }],
+    },
   ],
   invalid: [
     {
