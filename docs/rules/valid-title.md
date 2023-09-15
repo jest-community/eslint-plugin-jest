@@ -125,8 +125,8 @@ describe('foo', () => {
 
 **accidentalSpace**
 
-A `describe` / `test` block should not contain accidentalSpace, but can be turned off via
-the `ignoreSpaces` option:
+A `describe` / `test` block should not contain accidentalSpace, but can be
+turned off via the `ignoreSpaces` option:
 
 Examples of **incorrect** code for this rule
 

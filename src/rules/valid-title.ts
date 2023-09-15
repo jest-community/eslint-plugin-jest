@@ -166,11 +166,13 @@ export default createRule<[Options], MessageIds>({
     ],
     fixable: 'code',
   },
-  defaultOptions: [{ 
-    ignoreSpaces: false,
-    ignoreTypeOfDescribeName: false,
-    disallowedWords: [],
-  }],
+  defaultOptions: [
+    {
+      ignoreSpaces: false,
+      ignoreTypeOfDescribeName: false,
+      disallowedWords: [],
+    },
+  ],
   create(
     context,
     [
