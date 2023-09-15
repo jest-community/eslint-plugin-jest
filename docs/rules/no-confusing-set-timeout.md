@@ -1,4 +1,4 @@
-# Disallow using confusing setTimeout in test (`no-confusing-set-timeout`)
+# Disallow confusing usages of jest.setTimeout (`no-confusing-set-timeout`)
 
 <!-- end auto-generated rule header -->
 
