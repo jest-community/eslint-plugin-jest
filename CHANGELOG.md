@@ -1,3 +1,10 @@
+# [27.3.0](https://github.com/jest-community/eslint-plugin-jest/compare/v27.2.3...v27.3.0) (2023-09-15)
+
+
+### Features
+
+* add `no-confusing-set-time` rule ([#1425](https://github.com/jest-community/eslint-plugin-jest/issues/1425)) ([ff8e482](https://github.com/jest-community/eslint-plugin-jest/commit/ff8e482380b36bf8423dac7f9fb6340aca8ae313))
+
 ## [27.2.3](https://github.com/jest-community/eslint-plugin-jest/compare/v27.2.2...v27.2.3) (2023-07-13)
 
 
