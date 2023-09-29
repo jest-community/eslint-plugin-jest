@@ -1,3 +1,10 @@
+## [27.4.2](https://github.com/jest-community/eslint-plugin-jest/compare/v27.4.1...v27.4.2) (2023-09-29)
+
+
+### Bug Fixes
+
+* make rule message punctuation consistent ([#1444](https://github.com/jest-community/eslint-plugin-jest/issues/1444)) ([84121ee](https://github.com/jest-community/eslint-plugin-jest/commit/84121eee018cc8cc32e6c7a267fc27efd3a4a0a0))
+
 ## [27.4.1](https://github.com/jest-community/eslint-plugin-jest/compare/v27.4.0...v27.4.1) (2023-09-29)
 
 
