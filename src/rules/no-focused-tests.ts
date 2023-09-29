@@ -31,6 +31,7 @@ export default createRule({
           context.report({
             messageId: 'focusedTest',
             node,
+            loc: jestFnCall.head.node.loc,
             suggest: [
               {
                 messageId: 'suggestRemoveFocus',
@@ -63,6 +64,7 @@ export default createRule({
         context.report({
           messageId: 'focusedTest',
           node: onlyNode,
+          loc: onlyNode.loc,
           suggest: [
             {
               messageId: 'suggestRemoveFocus',
