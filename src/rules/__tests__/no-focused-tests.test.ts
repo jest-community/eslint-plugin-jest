@@ -32,9 +32,11 @@ ruleTester.run('no-focused-tests', rule, {
       code: 'describe.only()',
       errors: [
         {
-          messageId: 'focusedTest',
-          column: 10,
           line: 1,
+          column: 10,
+          endLine: 1,
+          endColumn: 14,
+          messageId: 'focusedTest',
           suggestions: [
             {
               messageId: 'suggestRemoveFocus',
@@ -48,9 +50,11 @@ ruleTester.run('no-focused-tests', rule, {
       code: 'context.only()',
       errors: [
         {
-          messageId: 'focusedTest',
-          column: 9,
           line: 1,
+          column: 9,
+          endLine: 1,
+          endColumn: 13,
+          messageId: 'focusedTest',
           suggestions: [
             {
               messageId: 'suggestRemoveFocus',
@@ -65,9 +69,11 @@ ruleTester.run('no-focused-tests', rule, {
       code: 'describe.only.each()()',
       errors: [
         {
-          messageId: 'focusedTest',
-          column: 10,
           line: 1,
+          column: 10,
+          endLine: 1,
+          endColumn: 14,
+          messageId: 'focusedTest',
           suggestions: [
             {
               messageId: 'suggestRemoveFocus',
@@ -81,9 +87,11 @@ ruleTester.run('no-focused-tests', rule, {
       code: 'describe.only.each`table`()',
       errors: [
         {
-          messageId: 'focusedTest',
-          column: 10,
           line: 1,
+          column: 10,
+          endLine: 1,
+          endColumn: 14,
+          messageId: 'focusedTest',
           suggestions: [
             {
               messageId: 'suggestRemoveFocus',
@@ -97,9 +105,11 @@ ruleTester.run('no-focused-tests', rule, {
       code: 'describe["only"]()',
       errors: [
         {
-          messageId: 'focusedTest',
-          column: 10,
           line: 1,
+          column: 10,
+          endLine: 1,
+          endColumn: 16,
+          messageId: 'focusedTest',
           suggestions: [
             {
               messageId: 'suggestRemoveFocus',
@@ -113,9 +123,11 @@ ruleTester.run('no-focused-tests', rule, {
       code: 'it.only()',
       errors: [
         {
-          messageId: 'focusedTest',
-          column: 4,
           line: 1,
+          column: 4,
+          endLine: 1,
+          endColumn: 8,
+          messageId: 'focusedTest',
           suggestions: [
             {
               messageId: 'suggestRemoveFocus',
@@ -129,9 +141,11 @@ ruleTester.run('no-focused-tests', rule, {
       code: 'it.concurrent.only.each``()',
       errors: [
         {
-          messageId: 'focusedTest',
-          column: 15,
           line: 1,
+          column: 15,
+          endLine: 1,
+          endColumn: 19,
+          messageId: 'focusedTest',
           suggestions: [
             {
               messageId: 'suggestRemoveFocus',
@@ -145,9 +159,11 @@ ruleTester.run('no-focused-tests', rule, {
       code: 'it.only.each()()',
       errors: [
         {
-          messageId: 'focusedTest',
-          column: 4,
           line: 1,
+          column: 4,
+          endLine: 1,
+          endColumn: 8,
+          messageId: 'focusedTest',
           suggestions: [
             {
               messageId: 'suggestRemoveFocus',
@@ -161,9 +177,11 @@ ruleTester.run('no-focused-tests', rule, {
       code: 'it.only.each`table`()',
       errors: [
         {
-          messageId: 'focusedTest',
-          column: 4,
           line: 1,
+          column: 4,
+          endLine: 1,
+          endColumn: 8,
+          messageId: 'focusedTest',
           suggestions: [
             {
               messageId: 'suggestRemoveFocus',
@@ -177,9 +195,11 @@ ruleTester.run('no-focused-tests', rule, {
       code: 'it["only"]()',
       errors: [
         {
-          messageId: 'focusedTest',
-          column: 4,
           line: 1,
+          column: 4,
+          endLine: 1,
+          endColumn: 10,
+          messageId: 'focusedTest',
           suggestions: [
             {
               messageId: 'suggestRemoveFocus',
@@ -193,9 +213,11 @@ ruleTester.run('no-focused-tests', rule, {
       code: 'test.only()',
       errors: [
         {
-          messageId: 'focusedTest',
-          column: 6,
           line: 1,
+          column: 6,
+          endLine: 1,
+          endColumn: 10,
+          messageId: 'focusedTest',
           suggestions: [
             {
               messageId: 'suggestRemoveFocus',
@@ -209,9 +231,11 @@ ruleTester.run('no-focused-tests', rule, {
       code: 'test.concurrent.only.each()()',
       errors: [
         {
-          messageId: 'focusedTest',
-          column: 17,
           line: 1,
+          column: 17,
+          endLine: 1,
+          endColumn: 21,
+          messageId: 'focusedTest',
           suggestions: [
             {
               messageId: 'suggestRemoveFocus',
@@ -225,9 +249,11 @@ ruleTester.run('no-focused-tests', rule, {
       code: 'test.only.each()()',
       errors: [
         {
-          messageId: 'focusedTest',
-          column: 6,
           line: 1,
+          column: 6,
+          endLine: 1,
+          endColumn: 10,
+          messageId: 'focusedTest',
           suggestions: [
             {
               messageId: 'suggestRemoveFocus',
@@ -241,9 +267,11 @@ ruleTester.run('no-focused-tests', rule, {
       code: 'test.only.each`table`()',
       errors: [
         {
-          messageId: 'focusedTest',
-          column: 6,
           line: 1,
+          column: 6,
+          endLine: 1,
+          endColumn: 10,
+          messageId: 'focusedTest',
           suggestions: [
             {
               messageId: 'suggestRemoveFocus',
@@ -257,9 +285,11 @@ ruleTester.run('no-focused-tests', rule, {
       code: 'test["only"]()',
       errors: [
         {
-          messageId: 'focusedTest',
-          column: 6,
           line: 1,
+          column: 6,
+          endLine: 1,
+          endColumn: 12,
+          messageId: 'focusedTest',
           suggestions: [
             {
               messageId: 'suggestRemoveFocus',
@@ -273,9 +303,11 @@ ruleTester.run('no-focused-tests', rule, {
       code: 'fdescribe()',
       errors: [
         {
-          messageId: 'focusedTest',
-          column: 1,
           line: 1,
+          column: 1,
+          endLine: 1,
+          endColumn: 10,
+          messageId: 'focusedTest',
           suggestions: [
             {
               messageId: 'suggestRemoveFocus',
@@ -289,9 +321,11 @@ ruleTester.run('no-focused-tests', rule, {
       code: 'fit()',
       errors: [
         {
-          messageId: 'focusedTest',
-          column: 1,
           line: 1,
+          column: 1,
+          endLine: 1,
+          endColumn: 4,
+          messageId: 'focusedTest',
           suggestions: [
             {
               messageId: 'suggestRemoveFocus',
@@ -305,9 +339,11 @@ ruleTester.run('no-focused-tests', rule, {
       code: 'fit.each()()',
       errors: [
         {
-          messageId: 'focusedTest',
-          column: 1,
           line: 1,
+          column: 1,
+          endLine: 1,
+          endColumn: 4,
+          messageId: 'focusedTest',
           suggestions: [
             {
               messageId: 'suggestRemoveFocus',
@@ -321,9 +357,11 @@ ruleTester.run('no-focused-tests', rule, {
       code: 'fit.each`table`()',
       errors: [
         {
-          messageId: 'focusedTest',
-          column: 1,
           line: 1,
+          column: 1,
+          endLine: 1,
+          endColumn: 4,
+          messageId: 'focusedTest',
           suggestions: [
             {
               messageId: 'suggestRemoveFocus',
@@ -357,9 +395,11 @@ ruleTester.run('no-focused-tests (with imports)', rule, {
       `,
       errors: [
         {
-          messageId: 'focusedTest',
-          column: 10,
           line: 3,
+          column: 10,
+          endLine: 3,
+          endColumn: 14,
+          messageId: 'focusedTest',
           suggestions: [
             {
               messageId: 'suggestRemoveFocus',
@@ -382,9 +422,11 @@ ruleTester.run('no-focused-tests (with imports)', rule, {
       parserOptions: { sourceType: 'module' },
       errors: [
         {
-          messageId: 'focusedTest',
-          column: 14,
           line: 3,
+          column: 14,
+          endLine: 3,
+          endColumn: 18,
+          messageId: 'focusedTest',
           suggestions: [
             {
               messageId: 'suggestRemoveFocus',
@@ -406,9 +448,11 @@ ruleTester.run('no-focused-tests (with imports)', rule, {
       `,
       errors: [
         {
-          messageId: 'focusedTest',
-          column: 1,
           line: 3,
+          column: 1,
+          endLine: 3,
+          endColumn: 10,
+          messageId: 'focusedTest',
           suggestions: [
             {
               messageId: 'suggestRemoveFocus',
@@ -438,9 +482,11 @@ ruleTester.run('no-focused-tests (aliases)', rule, {
       parserOptions: { sourceType: 'module' },
       errors: [
         {
-          messageId: 'focusedTest',
-          column: 14,
           line: 3,
+          column: 14,
+          endLine: 3,
+          endColumn: 18,
+          messageId: 'focusedTest',
           suggestions: [
             {
               messageId: 'suggestRemoveFocus',
@@ -464,14 +510,18 @@ ruleTester.run('no-focused-tests (aliases)', rule, {
       parserOptions: { sourceType: 'module' },
       errors: [
         {
-          messageId: 'focusedTest',
-          column: 1,
           line: 3,
+          column: 1,
+          endLine: 3,
+          endColumn: 17,
+          messageId: 'focusedTest',
         },
         {
-          messageId: 'focusedTest',
-          column: 1,
           line: 4,
+          column: 1,
+          endLine: 4,
+          endColumn: 17,
+          messageId: 'focusedTest',
         },
       ],
     },
@@ -484,9 +534,11 @@ ruleTester.run('no-focused-tests (aliases)', rule, {
       parserOptions: { sourceType: 'module' },
       errors: [
         {
-          messageId: 'focusedTest',
-          column: 9,
           line: 3,
+          column: 9,
+          endLine: 3,
+          endColumn: 13,
+          messageId: 'focusedTest',
           suggestions: [
             {
               messageId: 'suggestRemoveFocus',

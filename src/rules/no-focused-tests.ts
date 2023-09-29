@@ -30,7 +30,7 @@ export default createRule({
         if (jestFnCall.name.startsWith('f')) {
           context.report({
             messageId: 'focusedTest',
-            node,
+            node: jestFnCall.head.node,
             suggest: [
               {
                 messageId: 'suggestRemoveFocus',
