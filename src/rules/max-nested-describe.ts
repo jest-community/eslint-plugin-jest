@@ -11,7 +11,7 @@ export default createRule({
     },
     messages: {
       exceededMaxDepth:
-        'Too many nested describe calls ({{ depth }}). Maximum allowed is {{ max }}.',
+        'Too many nested describe calls ({{ depth }}) - maximum allowed is {{ max }}',
     },
     type: 'suggestion',
     schema: [

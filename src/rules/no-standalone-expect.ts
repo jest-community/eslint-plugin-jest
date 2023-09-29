@@ -65,7 +65,7 @@ export default createRule<
       recommended: 'error',
     },
     messages: {
-      unexpectedExpect: 'Expect must be inside of a test block.',
+      unexpectedExpect: 'Expect must be inside of a test block',
     },
     type: 'suggestion',
     schema: [

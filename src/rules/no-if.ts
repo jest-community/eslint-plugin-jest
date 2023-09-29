@@ -43,7 +43,7 @@ export default createRule({
       recommended: false,
     },
     messages: {
-      conditionalInTest: 'Test should not contain {{ condition }} statements.',
+      conditionalInTest: 'Test should not contain {{ condition }} statements',
     },
     deprecated: true,
     replacedBy: ['no-conditional-in-test'],

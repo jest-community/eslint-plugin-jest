@@ -10,7 +10,7 @@ export default createRule({
       recommended: 'error',
     },
     messages: {
-      unexpectedExport: `Do not export from a test file.`,
+      unexpectedExport: `Do not export from a test file`,
     },
     type: 'suggestion',
     schema: [],

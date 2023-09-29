@@ -27,9 +27,9 @@ export default createRule({
     },
     messages: {
       multipleTestTitle:
-        'Test title is used multiple times in the same describe block.',
+        'Test title is used multiple times in the same describe block',
       multipleDescribeTitle:
-        'Describe block title is used multiple times in the same describe block.',
+        'Describe block title is used multiple times in the same describe block',
     },
     schema: [],
     type: 'suggestion',
