@@ -73,7 +73,7 @@ export default createRule({
       recommended: false,
     },
     messages: {
-      useJestSpyOn: 'Use jest.spyOn() instead.',
+      useJestSpyOn: 'Use jest.spyOn() instead',
     },
     fixable: 'code',
     schema: [],

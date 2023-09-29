@@ -122,7 +122,7 @@ export default createRule<[Options], MessageIds>({
       emptyTitle: '{{ jestFunctionName }} should not have an empty title',
       duplicatePrefix: 'should not have duplicate prefix',
       accidentalSpace: 'should not have leading or trailing spaces',
-      disallowedWord: '"{{ word }}" is not allowed in test titles.',
+      disallowedWord: '"{{ word }}" is not allowed in test titles',
       mustNotMatch: '{{ jestFunctionName }} should not match {{ pattern }}',
       mustMatch: '{{ jestFunctionName }} should match {{ pattern }}',
       mustNotMatchCustom: '{{ message }}',

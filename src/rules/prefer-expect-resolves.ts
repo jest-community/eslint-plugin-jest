@@ -12,7 +12,7 @@ export default createRule({
     },
     fixable: 'code',
     messages: {
-      expectResolves: 'Use `await expect(...).resolves instead.',
+      expectResolves: 'Use `await expect(...).resolves instead',
     },
     schema: [],
     type: 'suggestion',

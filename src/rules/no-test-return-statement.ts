@@ -29,7 +29,7 @@ export default createRule({
       recommended: false,
     },
     messages: {
-      noReturnValue: 'Jest tests should not return a value.',
+      noReturnValue: 'Jest tests should not return a value',
     },
     schema: [],
     type: 'suggestion',

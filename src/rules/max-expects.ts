@@ -16,7 +16,7 @@ export default createRule({
     },
     messages: {
       exceededMaxAssertion:
-        'Too many assertion calls ({{ count }}). Maximum allowed is {{ max }}.',
+        'Too many assertion calls ({{ count }}) - maximum allowed is {{ max }}',
     },
     type: 'suggestion',
     schema: [

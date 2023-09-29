@@ -22,7 +22,7 @@ export default createRule({
       recommended: 'error',
     },
     messages: {
-      noManualImport: `Mocks should not be manually imported from a ${mocksDirName} directory. Instead use \`jest.mock\` and import from the original module path.`,
+      noManualImport: `Mocks should not be manually imported from a ${mocksDirName} directory. Instead use \`jest.mock\` and import from the original module path`,
     },
     schema: [],
   },

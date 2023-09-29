@@ -10,8 +10,8 @@ export default createRule({
       recommended: 'error',
     },
     messages: {
-      focusedTest: 'Unexpected focused test.',
-      suggestRemoveFocus: 'Remove focus from test.',
+      focusedTest: 'Unexpected focused test',
+      suggestRemoveFocus: 'Remove focus from test',
     },
     schema: [],
     type: 'suggestion',
