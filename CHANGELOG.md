@@ -1,3 +1,10 @@
+## [27.4.1](https://github.com/jest-community/eslint-plugin-jest/compare/v27.4.0...v27.4.1) (2023-09-29)
+
+
+### Bug Fixes
+
+* **no-focused-tests:** make reporting location consistent ([#1443](https://github.com/jest-community/eslint-plugin-jest/issues/1443)) ([a871775](https://github.com/jest-community/eslint-plugin-jest/commit/a87177504430d1c469af70d6fc3b674a388291d8))
+
 # [27.4.0](https://github.com/jest-community/eslint-plugin-jest/compare/v27.3.0...v27.4.0) (2023-09-15)
 
 
