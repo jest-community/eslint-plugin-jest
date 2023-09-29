@@ -1,4 +1,4 @@
-import { AST_NODE_TYPES, type TSESTree } from '@typescript-eslint/utils';
+import type { TSESTree } from '@typescript-eslint/utils';
 import { createRule, isTypeOfJestFnCall } from './utils';
 
 export default createRule({
@@ -29,49 +29,27 @@ export default createRule({
   },
   defaultOptions: [{ max: 5 }],
   create(context, [{ max }]) {
-    const describeCallbackStack: number[] = [];
-
-    function pushDescribeCallback(
-      node: TSESTree.ArrowFunctionExpression | TSESTree.FunctionExpression,
-    ) {
-      const { parent } = node;
-
-      if (
-        parent?.type !== AST_NODE_TYPES.CallExpression ||
-        !isTypeOfJestFnCall(parent, context, ['describe'])
-      ) {
-        return;
-      }
-
-      describeCallbackStack.push(0);
-
-      if (describeCallbackStack.length > max) {
-        context.report({
-          node: parent,
-          messageId: 'exceededMaxDepth',
-          data: { depth: describeCallbackStack.length, max },
-        });
-      }
-    }
-
-    function popDescribeCallback(
-      node: TSESTree.ArrowFunctionExpression | TSESTree.FunctionExpression,
-    ) {
-      const { parent } = node;
-
-      if (
-        parent?.type === AST_NODE_TYPES.CallExpression &&
-        isTypeOfJestFnCall(parent, context, ['describe'])
-      ) {
-        describeCallbackStack.pop();
-      }
-    }
+    const describes: TSESTree.CallExpression[] = [];
 
     return {
-      FunctionExpression: pushDescribeCallback,
-      'FunctionExpression:exit': popDescribeCallback,
-      ArrowFunctionExpression: pushDescribeCallback,
-      'ArrowFunctionExpression:exit': popDescribeCallback,
+      CallExpression(node) {
+        if (isTypeOfJestFnCall(node, context, ['describe'])) {
+          describes.unshift(node);
+
+          if (describes.length > max) {
+            context.report({
+              node,
+              messageId: 'exceededMaxDepth',
+              data: { depth: describes.length, max },
+            });
+          }
+        }
+      },
+      'CallExpression:exit'(node) {
+        if (describes[0] === node) {
+          describes.shift();
+        }
+      },
     };
   },
 });
