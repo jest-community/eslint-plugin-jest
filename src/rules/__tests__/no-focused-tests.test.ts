@@ -306,7 +306,7 @@ ruleTester.run('no-focused-tests', rule, {
           line: 1,
           column: 1,
           endLine: 1,
-          endColumn: 12,
+          endColumn: 10,
           messageId: 'focusedTest',
           suggestions: [
             {
@@ -324,7 +324,7 @@ ruleTester.run('no-focused-tests', rule, {
           line: 1,
           column: 1,
           endLine: 1,
-          endColumn: 6,
+          endColumn: 4,
           messageId: 'focusedTest',
           suggestions: [
             {
@@ -342,7 +342,7 @@ ruleTester.run('no-focused-tests', rule, {
           line: 1,
           column: 1,
           endLine: 1,
-          endColumn: 13,
+          endColumn: 4,
           messageId: 'focusedTest',
           suggestions: [
             {
@@ -360,7 +360,7 @@ ruleTester.run('no-focused-tests', rule, {
           line: 1,
           column: 1,
           endLine: 1,
-          endColumn: 18,
+          endColumn: 4,
           messageId: 'focusedTest',
           suggestions: [
             {
@@ -451,7 +451,7 @@ ruleTester.run('no-focused-tests (with imports)', rule, {
           line: 3,
           column: 1,
           endLine: 3,
-          endColumn: 12,
+          endColumn: 10,
           messageId: 'focusedTest',
           suggestions: [
             {
@@ -513,14 +513,14 @@ ruleTester.run('no-focused-tests (aliases)', rule, {
           line: 3,
           column: 1,
           endLine: 3,
-          endColumn: 19,
+          endColumn: 17,
           messageId: 'focusedTest',
         },
         {
           line: 4,
           column: 1,
           endLine: 4,
-          endColumn: 26,
+          endColumn: 17,
           messageId: 'focusedTest',
         },
       ],
