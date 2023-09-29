@@ -9,6 +9,7 @@ module.exports = {
     'plugin:eslint-comments/recommended',
     'plugin:node/recommended',
     'plugin:@typescript-eslint/eslint-recommended',
+    'plugin:jest/recommended',
     'plugin:prettier/recommended',
   ],
   plugins: [
@@ -17,6 +18,7 @@ module.exports = {
     'node',
     'import',
     '@typescript-eslint',
+    'jest', // so we can test locally in the playground dir
   ],
   parserOptions: {
     ecmaVersion: 2018,

@@ -5205,6 +5205,12 @@ __metadata:
   languageName: node
   linkType: hard
 
+"eslint-plugin-jest@link:./lib::locator=eslint-plugin-jest%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "eslint-plugin-jest@link:./lib::locator=eslint-plugin-jest%40workspace%3A."
+  languageName: node
+  linkType: soft
+
 "eslint-plugin-jest@workspace:.":
   version: 0.0.0-use.local
   resolution: "eslint-plugin-jest@workspace:."
@@ -5234,6 +5240,7 @@ __metadata:
     eslint-plugin-eslint-comments: ^3.1.2
     eslint-plugin-eslint-plugin: ^5.0.6
     eslint-plugin-import: ^2.25.1
+    eslint-plugin-jest: "link:./lib"
     eslint-plugin-node: ^11.0.0
     eslint-plugin-prettier: ^5.0.0
     eslint-remote-tester: ^3.0.0
