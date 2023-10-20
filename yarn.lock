@@ -5095,6 +5095,7 @@ __metadata:
     rimraf: ^5.0.0
     semantic-release: ^22.0.0
     semver: ^7.3.5
+    strip-ansi: ^6.0.0
     ts-node: ^10.2.1
     typescript: ^5.0.4
   peerDependencies:

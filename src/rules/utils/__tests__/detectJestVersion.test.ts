@@ -3,6 +3,7 @@ import * as fs from 'fs';
 import * as os from 'os';
 import * as path from 'path';
 import type { JSONSchemaForNPMPackageJsonFiles } from '@schemastore/package';
+import stripAnsi from 'strip-ansi';
 import { create } from 'ts-node';
 import { detectJestVersion } from '../detectJestVersion';
 
@@ -18,10 +19,13 @@ const compiledFn = compileFnCode(require.resolve('../detectJestVersion.ts'));
 const relativePathToFn = 'eslint-plugin-jest/lib/rules/detectJestVersion.js';
 
 const runNodeScript = (cwd: string, script: string) => {
-  return spawnSync('node', ['-e', script.split('\n').join(' ')], {
-    cwd,
-    encoding: 'utf-8',
-  });
+  const { stdout, stderr } = spawnSync(
+    'node',
+    ['-e', script.split('\n').join(' ')],
+    { cwd, encoding: 'utf-8' },
+  );
+
+  return { stdout: stripAnsi(stdout.trim()), stderr: stripAnsi(stderr.trim()) };
 };
 
 const runDetectJestVersion = (cwd: string) => {
@@ -120,8 +124,8 @@ describe('detectJestVersion', () => {
 
       const { stdout, stderr } = runDetectJestVersion(projectDir);
 
-      expect(stdout.trim()).toBe('21');
-      expect(stderr.trim()).toBe('');
+      expect(stdout).toBe('21');
+      expect(stderr).toBe('');
     });
   });
 
@@ -140,8 +144,8 @@ describe('detectJestVersion', () => {
 
       const { stdout, stderr } = runDetectJestVersion(projectDir);
 
-      expect(stdout.trim()).toBe('19');
-      expect(stderr.trim()).toBe('');
+      expect(stdout).toBe('19');
+      expect(stderr).toBe('');
     });
   });
 
@@ -165,14 +169,14 @@ describe('detectJestVersion', () => {
       const { stdout: stdoutBackend, stderr: stderrBackend } =
         runDetectJestVersion(path.join(projectDir, 'backend'));
 
-      expect(stdoutBackend.trim()).toBe('24');
-      expect(stderrBackend.trim()).toBe('');
+      expect(stdoutBackend).toBe('24');
+      expect(stderrBackend).toBe('');
 
       const { stdout: stdoutFrontend, stderr: stderrFrontend } =
         runDetectJestVersion(path.join(projectDir, 'frontend'));
 
-      expect(stdoutFrontend.trim()).toBe('15');
-      expect(stderrFrontend.trim()).toBe('');
+      expect(stdoutFrontend).toBe('15');
+      expect(stderrFrontend).toBe('');
     });
   });
 
@@ -186,8 +190,8 @@ describe('detectJestVersion', () => {
 
       const { stdout, stderr } = runDetectJestVersion(projectDir);
 
-      expect(stdout.trim()).toBe('');
-      expect(stderr.trim()).toContain('Unable to detect Jest version');
+      expect(stdout).toBe('');
+      expect(stderr).toContain('Unable to detect Jest version');
     });
   });
 
@@ -221,7 +225,7 @@ describe('detectJestVersion', () => {
 
       expect(firstCall).toBe('26');
       expect(secondCall).toBe('26');
-      expect(stderr.trim()).toBe('');
+      expect(stderr).toBe('');
     });
   });
 });
