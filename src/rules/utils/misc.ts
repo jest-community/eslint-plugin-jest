@@ -230,6 +230,14 @@ export const getFirstMatcherArg = (
   return followTypeAssertionChain(firstArg);
 };
 
+export const getFilename = (
+  context: TSESLint.RuleContext<string, unknown[]>,
+) => {
+  return 'filename' in context
+    ? (context.filename as string)
+    : context.getFilename();
+};
+
 export const getSourceCode = (
   context: TSESLint.RuleContext<string, unknown[]>,
 ) => {
