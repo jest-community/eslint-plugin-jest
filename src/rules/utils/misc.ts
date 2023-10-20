@@ -229,3 +229,16 @@ export const getFirstMatcherArg = (
 
   return followTypeAssertionChain(firstArg);
 };
+
+export const getScope = (
+  context: TSESLint.RuleContext<string, unknown[]>,
+  node: TSESTree.Node,
+) => {
+  const sourceCode = context.getSourceCode();
+
+  if ('getScope' in sourceCode) {
+    return sourceCode.getScope(node);
+  }
+
+  return context.getScope();
+};

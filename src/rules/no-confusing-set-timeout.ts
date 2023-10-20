@@ -1,6 +1,7 @@
 import {
   type ParsedJestFnCall,
   createRule,
+  getScope,
   isIdentifier,
   parseJestFnCall,
 } from './utils';
@@ -38,7 +39,6 @@ export default createRule({
 
     return {
       CallExpression(node) {
-        const scope = context.getScope();
         const jestFnCall = parseJestFnCall(node, context);
 
         if (!jestFnCall) {
@@ -51,7 +51,7 @@ export default createRule({
           return;
         }
 
-        if (!['global', 'module'].includes(scope.type)) {
+        if (!['global', 'module'].includes(getScope(context, node).type)) {
           context.report({ messageId: 'globalSetTimeout', node });
         }
 

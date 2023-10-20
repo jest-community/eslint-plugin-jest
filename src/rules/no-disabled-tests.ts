@@ -1,6 +1,7 @@
 import {
   createRule,
   getAccessorValue,
+  getScope,
   parseJestFnCall,
   resolveScope,
 } from './utils';
@@ -80,7 +81,7 @@ export default createRule({
         }
       },
       'CallExpression[callee.name="pending"]'(node) {
-        if (resolveScope(context.getScope(), 'pending')) {
+        if (resolveScope(getScope(context, node), 'pending')) {
           return;
         }
 
