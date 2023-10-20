@@ -1,3 +1,10 @@
+## [27.4.3](https://github.com/jest-community/eslint-plugin-jest/compare/v27.4.2...v27.4.3) (2023-10-20)
+
+
+### Bug Fixes
+
+* **expect-expert:** change reporting node ([#1452](https://github.com/jest-community/eslint-plugin-jest/issues/1452)) ([64d5cda](https://github.com/jest-community/eslint-plugin-jest/commit/64d5cda7e64df7c73cde03ca057dfb71e87f50c4))
+
 ## [27.4.2](https://github.com/jest-community/eslint-plugin-jest/compare/v27.4.1...v27.4.2) (2023-09-29)
 
 
