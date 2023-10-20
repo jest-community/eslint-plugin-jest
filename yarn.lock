@@ -5096,7 +5096,7 @@ __metadata:
     rimraf: ^5.0.0
     semantic-release: ^22.0.0
     semver: ^7.3.5
-    strip-ansi: ^6.0.0
+    strip-ansi: ^7.0.0
     ts-node: ^10.2.1
     typescript: ^5.0.4
   peerDependencies:
@@ -10530,7 +10530,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"strip-ansi@npm:^7.0.1":
+"strip-ansi@npm:^7.0.0, strip-ansi@npm:^7.0.1":
   version: 7.1.0
   resolution: "strip-ansi@npm:7.1.0"
   dependencies:
