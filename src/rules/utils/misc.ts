@@ -242,3 +242,29 @@ export const getScope = (
 
   return context.getScope();
 };
+
+export const getAncestors = (
+  context: TSESLint.RuleContext<string, unknown[]>,
+  node: TSESTree.Node,
+) => {
+  const sourceCode = context.getSourceCode();
+
+  if ('getAncestors' in sourceCode) {
+    return sourceCode.getAncestors(node);
+  }
+
+  return context.getAncestors();
+};
+
+export const getDeclaredVariables = (
+  context: TSESLint.RuleContext<string, unknown[]>,
+  node: TSESTree.Node,
+) => {
+  const sourceCode = context.getSourceCode();
+
+  if ('getDeclaredVariables' in sourceCode) {
+    return sourceCode.getDeclaredVariables(node);
+  }
+
+  return context.getDeclaredVariables(node);
+};
