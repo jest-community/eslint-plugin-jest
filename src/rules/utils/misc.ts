@@ -178,7 +178,7 @@ export const removeExtraArgumentsFixer = (
   const firstArg = func.arguments[from];
   const lastArg = func.arguments[func.arguments.length - 1];
 
-  const sourceCode = context.getSourceCode();
+  const sourceCode = getSourceCode(context);
   let tokenAfterLastParam = sourceCode.getTokenAfter(lastArg)!;
 
   if (tokenAfterLastParam.value === ',') {
@@ -230,11 +230,19 @@ export const getFirstMatcherArg = (
   return followTypeAssertionChain(firstArg);
 };
 
+export const getSourceCode = (
+  context: TSESLint.RuleContext<string, unknown[]>,
+) => {
+  return 'sourceCode' in context
+    ? (context.sourceCode as TSESLint.SourceCode)
+    : context.getSourceCode();
+};
+
 export const getScope = (
   context: TSESLint.RuleContext<string, unknown[]>,
   node: TSESTree.Node,
 ) => {
-  const sourceCode = context.getSourceCode();
+  const sourceCode = getSourceCode(context);
 
   if ('getScope' in sourceCode) {
     return sourceCode.getScope(node);
@@ -247,7 +255,7 @@ export const getAncestors = (
   context: TSESLint.RuleContext<string, unknown[]>,
   node: TSESTree.Node,
 ) => {
-  const sourceCode = context.getSourceCode();
+  const sourceCode = getSourceCode(context);
 
   if ('getAncestors' in sourceCode) {
     return sourceCode.getAncestors(node);
@@ -260,7 +268,7 @@ export const getDeclaredVariables = (
   context: TSESLint.RuleContext<string, unknown[]>,
   node: TSESTree.Node,
 ) => {
-  const sourceCode = context.getSourceCode();
+  const sourceCode = getSourceCode(context);
 
   if ('getDeclaredVariables' in sourceCode) {
     return sourceCode.getDeclaredVariables(node);

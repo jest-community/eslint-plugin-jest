@@ -7,6 +7,7 @@ import {
   createRule,
   getAccessorValue,
   getFirstMatcherArg,
+  getSourceCode,
   hasOnlyOneArgument,
   isBooleanLiteral,
   isSupportedAccessor,
@@ -89,7 +90,7 @@ export default createRule({
 
         context.report({
           fix(fixer) {
-            const sourceCode = context.getSourceCode();
+            const sourceCode = getSourceCode(context);
 
             // we need to negate the expectation if the current expected
             // value is itself negated by the "not" modifier

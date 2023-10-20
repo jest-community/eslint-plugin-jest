@@ -1,5 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
-import { createRule } from './utils';
+import { createRule, getSourceCode } from './utils';
 
 function hasTests(node: TSESTree.Comment) {
   return /^\s*[xf]?(test|it|describe)(\.\w+|\[['"]\w+['"]\])?\s*\(/mu.test(
@@ -23,7 +23,7 @@ export default createRule({
   },
   defaultOptions: [],
   create(context) {
-    const sourceCode = context.getSourceCode();
+    const sourceCode = getSourceCode(context);
 
     function checkNode(node: TSESTree.Comment) {
       if (!hasTests(node)) {

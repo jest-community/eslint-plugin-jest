@@ -5,6 +5,7 @@ import {
   createRule,
   getAccessorValue,
   getNodeName,
+  getSourceCode,
   isFunction,
   isSupportedAccessor,
 } from './utils';
@@ -70,7 +71,7 @@ export default createRule({
         messageId: 'useMockShorthand',
         data: { replacement },
         fix(fixer) {
-          const sourceCode = context.getSourceCode();
+          const sourceCode = getSourceCode(context);
 
           // there shouldn't be more than one argument, but if there is don't try
           // fixing since we have no idea what to do with the extra arguments

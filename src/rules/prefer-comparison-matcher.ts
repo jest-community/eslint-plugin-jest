@@ -4,6 +4,7 @@ import {
   createRule,
   getAccessorValue,
   getFirstMatcherArg,
+  getSourceCode,
   isBooleanLiteral,
   isStringNode,
   parseJestFnCall,
@@ -116,7 +117,7 @@ export default createRule({
 
         context.report({
           fix(fixer) {
-            const sourceCode = context.getSourceCode();
+            const sourceCode = getSourceCode(context);
 
             // preserve the existing modifier if it's not a negation
             const modifierText =
