@@ -1,6 +1,10 @@
 import { readdirSync } from 'fs';
 import { join, parse } from 'path';
 import type { TSESLint } from '@typescript-eslint/utils';
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../package.json';
 import globals from './globals.json';
 import * as snapshotProcessor from './processors/snapshot-processor';
 
@@ -56,6 +60,7 @@ const createConfig = (rules: Record<string, TSESLint.Linter.RuleLevel>) => ({
 });
 
 export = {
+  meta: { name: packageName, version: packageVersion },
   configs: {
     all: createConfig(allRules),
     recommended: createConfig(recommendedRules),
