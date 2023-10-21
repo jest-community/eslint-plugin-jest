@@ -230,6 +230,7 @@ export const getFirstMatcherArg = (
   return followTypeAssertionChain(firstArg);
 };
 
+/* istanbul ignore next */
 export const getFilename = (
   context: TSESLint.RuleContext<string, unknown[]>,
 ) => {
@@ -238,6 +239,7 @@ export const getFilename = (
     : context.getFilename();
 };
 
+/* istanbul ignore next */
 export const getSourceCode = (
   context: TSESLint.RuleContext<string, unknown[]>,
 ) => {
@@ -246,6 +248,7 @@ export const getSourceCode = (
     : context.getSourceCode();
 };
 
+/* istanbul ignore next */
 export const getScope = (
   context: TSESLint.RuleContext<string, unknown[]>,
   node: TSESTree.Node,
@@ -259,6 +262,7 @@ export const getScope = (
   return context.getScope();
 };
 
+/* istanbul ignore next */
 export const getAncestors = (
   context: TSESLint.RuleContext<string, unknown[]>,
   node: TSESTree.Node,
@@ -272,6 +276,7 @@ export const getAncestors = (
   return context.getAncestors();
 };
 
+/* istanbul ignore next */
 export const getDeclaredVariables = (
   context: TSESLint.RuleContext<string, unknown[]>,
   node: TSESTree.Node,
