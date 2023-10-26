@@ -522,6 +522,14 @@ ruleTester.run('title-must-be-string', rule, {
       options: [{ ignoreTypeOfDescribeName: true }],
     },
     {
+      code: 'it(String(/.+/), () => {});',
+      options: [{ ignoreTypeOfTestName: true }],
+    },
+    {
+      code: 'const foo = "my-title"; it(foo, () => {});',
+      options: [{ ignoreTypeOfTestName: true }],
+    },
+    {
       code: 'describe(myFunction, () => {});',
       options: [{ ignoreTypeOfDescribeName: true }],
     },
@@ -537,6 +545,28 @@ ruleTester.run('title-must-be-string', rule, {
         {
           messageId: 'titleMustBeString',
           column: 13,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: 'it(String(/.+/), () => {});',
+      options: [{ ignoreTypeOfTestName: false }],
+      errors: [
+        {
+          messageId: 'titleMustBeString',
+          column: 4,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: 'const foo = "my-title"; it(foo, () => {});',
+      options: [{ ignoreTypeOfTestName: false }],
+      errors: [
+        {
+          messageId: 'titleMustBeString',
+          column: 28,
           line: 1,
         },
       ],

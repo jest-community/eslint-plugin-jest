@@ -87,6 +87,7 @@ type MatcherGroups = 'describe' | 'test' | 'it';
 interface Options {
   ignoreSpaces?: boolean;
   ignoreTypeOfDescribeName?: boolean;
+  ignoreTypeOfTestName?: boolean;
   disallowedWords?: string[];
   mustNotMatch?:
     | Partial<Record<MatcherGroups, string | MatcherAndMessage>>
@@ -141,6 +142,10 @@ export default createRule<[Options], MessageIds>({
             type: 'boolean',
             default: false,
           },
+          ignoreTypeOfTestName: {
+            type: 'boolean',
+            default: false,
+          },
           disallowedWords: {
             type: 'array',
             items: { type: 'string' },
@@ -170,6 +175,7 @@ export default createRule<[Options], MessageIds>({
     {
       ignoreSpaces: false,
       ignoreTypeOfDescribeName: false,
+      ignoreTypeOfTestName: false,
       disallowedWords: [],
     },
   ],
@@ -179,6 +185,7 @@ export default createRule<[Options], MessageIds>({
       {
         ignoreSpaces,
         ignoreTypeOfDescribeName,
+        ignoreTypeOfTestName,
         disallowedWords = [],
         mustNotMatch,
         mustMatch,
@@ -216,8 +223,11 @@ export default createRule<[Options], MessageIds>({
           }
 
           if (
-            argument.type !== AST_NODE_TYPES.TemplateLiteral &&
-            !(ignoreTypeOfDescribeName && jestFnCall.type === 'describe')
+            !(
+              (jestFnCall.type === 'describe' && ignoreTypeOfDescribeName) ||
+              (jestFnCall.type === 'test' && ignoreTypeOfTestName)
+            ) &&
+            argument.type !== AST_NODE_TYPES.TemplateLiteral
           ) {
             context.report({
               messageId: 'titleMustBeString',
