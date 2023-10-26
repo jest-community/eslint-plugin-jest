@@ -1,3 +1,10 @@
+# [27.6.0](https://github.com/jest-community/eslint-plugin-jest/compare/v27.5.0...v27.6.0) (2023-10-26)
+
+
+### Features
+
+* include plugin `meta` information for ESLint v9 ([#1454](https://github.com/jest-community/eslint-plugin-jest/issues/1454)) ([4d57146](https://github.com/jest-community/eslint-plugin-jest/commit/4d571467631a407a038d5b4d61bc45f4622954f1))
+
 # [27.5.0](https://github.com/jest-community/eslint-plugin-jest/compare/v27.4.3...v27.5.0) (2023-10-26)
 
 
