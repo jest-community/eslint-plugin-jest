@@ -1,8 +1,6 @@
 {
   "extends": "@tsconfig/node14/tsconfig.json",
   "compilerOptions": {
-    "moduleResolution": "node",
-    "module": "commonjs",
     "noEmit": true,
     "stripInternal": true,
 
