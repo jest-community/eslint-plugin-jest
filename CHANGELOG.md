@@ -1,3 +1,10 @@
+# [27.5.0](https://github.com/jest-community/eslint-plugin-jest/compare/v27.4.3...v27.5.0) (2023-10-26)
+
+
+### Features
+
+* **valid-title:** allow ignoring tests with non-string titles ([#1460](https://github.com/jest-community/eslint-plugin-jest/issues/1460)) ([ea89da9](https://github.com/jest-community/eslint-plugin-jest/commit/ea89da9b4e726980d80f97b69d31a4c4f81ff562))
+
 ## [27.4.3](https://github.com/jest-community/eslint-plugin-jest/compare/v27.4.2...v27.4.3) (2023-10-20)
 
 
