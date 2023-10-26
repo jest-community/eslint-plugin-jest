@@ -122,7 +122,7 @@
     "eslint-plugin-eslint-comments": "^3.1.2",
     "eslint-plugin-eslint-plugin": "^5.0.6",
     "eslint-plugin-import": "^2.25.1",
-    "eslint-plugin-node": "^11.0.0",
+    "eslint-plugin-n": "^15.0.0",
     "eslint-plugin-prettier": "^5.0.0",
     "eslint-remote-tester": "^3.0.0",
     "eslint-remote-tester-repositories": "~1.0.0",
