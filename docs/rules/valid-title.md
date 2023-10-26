@@ -54,7 +54,7 @@ xtest('foo', () => {});
 Titles for test blocks should always be a string.
 
 This is also applied to `describe` blocks by default, but can be turned off via
-the `ignoreTypeOfDescribeName` option:
+the `ignoreTypeOfDescribeName` or `ignoreTypeOfTestName` options:
 
 Examples of **incorrect** code for this rule:
 
@@ -91,6 +91,18 @@ describe(String(/.+/), () => {});
 describe(myFunction, () => {});
 xdescribe(myFunction, () => {});
 describe(6, function () {});
+```
+
+Examples of **correct** code when `ignoreTypeOfTestName` is `true`:
+
+```js
+const myTestName = 'is a string';
+
+it(String(/.+/), () => {});
+it(myFunction, () => {});
+it(myTestName, () => {});
+xit(myFunction, () => {});
+it(6, function () {});
 ```
 
 **duplicatePrefix**
