@@ -51,10 +51,9 @@ xtest('foo', () => {});
 
 **titleMustBeString**
 
-Titles for test blocks should always be a string.
-
-This is also applied to `describe` blocks by default, but can be turned off via
-the `ignoreTypeOfDescribeName` or `ignoreTypeOfTestName` options:
+Titles for `describe`, `test`, and `it` blocks should always be a string; you
+can disable this with the `ignoreTypeOfDescribeName` and `ignoreTypeOfTestName`
+options.
 
 Examples of **incorrect** code for this rule:
 
