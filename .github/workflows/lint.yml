@@ -22,6 +22,7 @@ jobs:
       contents: read # to fetch code (actions/checkout)
       issues: write # to create comment
       pull-requests: write # to create comment
+      statuses: write # to set PR status
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
