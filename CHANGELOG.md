@@ -1,3 +1,10 @@
+## [27.6.1](https://github.com/jest-community/eslint-plugin-jest/compare/v27.6.0...v27.6.1) (2024-01-01)
+
+
+### Bug Fixes
+
+* include plugin `meta` information with snapshot processor for ESLint v9 ([#1484](https://github.com/jest-community/eslint-plugin-jest/issues/1484)) ([067e246](https://github.com/jest-community/eslint-plugin-jest/commit/067e246864813fa88933f06628b6ca0ff31ca863))
+
 # [27.6.0](https://github.com/jest-community/eslint-plugin-jest/compare/v27.5.0...v27.6.0) (2023-10-26)
 
 
