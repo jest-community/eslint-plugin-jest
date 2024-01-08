@@ -160,8 +160,5 @@
   },
   "publishConfig": {
     "provenance": true
-  },
-  "resolutions": {
-    "typescript": "~5.2.2"
   }
 }
