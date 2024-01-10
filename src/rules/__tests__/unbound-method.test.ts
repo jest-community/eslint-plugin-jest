@@ -380,8 +380,6 @@ function foo(instance: ContainsMethods | null) {
   instance?.bound();
   instance?.unbound();
 
-  instance?.bound++;
-
   if (instance?.bound) {
   }
   if (instance?.unbound) {
