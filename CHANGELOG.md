@@ -1,3 +1,10 @@
+## [27.6.2](https://github.com/jest-community/eslint-plugin-jest/compare/v27.6.1...v27.6.2) (2024-01-10)
+
+
+### Reverts
+
+* Revert "chore: use relative path to parent `tsconfig.json` (#1476)" ([5e6199d](https://github.com/jest-community/eslint-plugin-jest/commit/5e6199d62154e21ccc732bc09d8bbb87bd3ef748)), closes [#1476](https://github.com/jest-community/eslint-plugin-jest/issues/1476)
+
 ## [27.6.1](https://github.com/jest-community/eslint-plugin-jest/compare/v27.6.0...v27.6.1) (2024-01-01)
 
 
