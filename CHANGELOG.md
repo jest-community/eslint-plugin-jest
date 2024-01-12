@@ -1,3 +1,10 @@
+## [27.6.3](https://github.com/jest-community/eslint-plugin-jest/compare/v27.6.2...v27.6.3) (2024-01-12)
+
+
+### Bug Fixes
+
+* replace use of deprecated methods ([#1453](https://github.com/jest-community/eslint-plugin-jest/issues/1453)) ([9204a51](https://github.com/jest-community/eslint-plugin-jest/commit/9204a51b4a43541e5e59c6c7fb3a3da1e2d49c2b))
+
 ## [27.6.2](https://github.com/jest-community/eslint-plugin-jest/compare/v27.6.1...v27.6.2) (2024-01-10)
 
 
