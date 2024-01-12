@@ -3,7 +3,7 @@ import {
   type TSESLint,
   type TSESTree,
 } from '@typescript-eslint/utils';
-import { createRule, getNodeName } from './utils';
+import { createRule, getNodeName, getSourceCode } from './utils';
 
 const findNodeObject = (
   node: TSESTree.CallExpression | TSESTree.MemberExpression,
@@ -57,7 +57,7 @@ const getAutoFixMockImplementation = (
   }
 
   const [arg] = jestFnCall.arguments;
-  const argSource = arg && context.getSourceCode().getText(arg);
+  const argSource = arg && getSourceCode(context).getText(arg);
 
   return argSource
     ? `.mockImplementation(${argSource})`

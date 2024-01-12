@@ -3,7 +3,13 @@ import {
   type TSESLint,
   type TSESTree,
 } from '@typescript-eslint/utils';
-import { createRule, getNodeName, isFunction, parseJestFnCall } from './utils';
+import {
+  createRule,
+  getNodeName,
+  getSourceCode,
+  isFunction,
+  parseJestFnCall,
+} from './utils';
 
 const findCallbackArg = (
   node: TSESTree.CallExpression,
@@ -104,7 +110,7 @@ export default createRule({
               fix(fixer) {
                 const { body, params } = callback;
 
-                const sourceCode = context.getSourceCode();
+                const sourceCode = getSourceCode(context);
                 const firstBodyToken = sourceCode.getFirstToken(body);
                 const lastBodyToken = sourceCode.getLastToken(body);
 

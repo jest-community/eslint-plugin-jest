@@ -12,6 +12,7 @@ import {
   TestCaseName,
   findTopMostCallExpression,
   getAccessorValue,
+  getScope,
   getStringValue,
   isIdentifier,
   isStringNode,
@@ -257,7 +258,7 @@ const parseJestFnCallWithReasonInner = (
     return null;
   }
 
-  const resolved = resolveToJestFn(context, getAccessorValue(first));
+  const resolved = resolveToJestFn(context, first);
 
   // we're not a jest function
   if (!resolved) {
@@ -553,9 +554,10 @@ interface ResolvedJestFn {
 
 const resolveToJestFn = (
   context: TSESLint.RuleContext<string, unknown[]>,
-  identifier: string,
+  accessor: AccessorNode,
 ): ResolvedJestFn | null => {
-  const maybeImport = resolveScope(context.getScope(), identifier);
+  const identifier = getAccessorValue(accessor);
+  const maybeImport = resolveScope(getScope(context, accessor), identifier);
 
   // the identifier was found as a local variable or function declaration
   // meaning it's not a function from jest

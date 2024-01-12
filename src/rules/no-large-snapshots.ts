@@ -7,6 +7,7 @@ import {
 import {
   createRule,
   getAccessorValue,
+  getFilename,
   isSupportedAccessor,
   parseJestFnCall,
 } from './utils';
@@ -46,7 +47,7 @@ const reportOnViolation = (
     node.expression.left.type === AST_NODE_TYPES.MemberExpression &&
     isSupportedAccessor(node.expression.left.property)
   ) {
-    const fileName = context.getFilename();
+    const fileName = getFilename(context);
     const allowedSnapshotsInFile = allowedSnapshots[fileName];
 
     if (allowedSnapshotsInFile) {

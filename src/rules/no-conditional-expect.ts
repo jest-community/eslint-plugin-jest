@@ -2,6 +2,7 @@ import { AST_NODE_TYPES, type TSESTree } from '@typescript-eslint/utils';
 import {
   type KnownCallExpression,
   createRule,
+  getDeclaredVariables,
   getTestCallExpressionsFromDeclaredVariables,
   isSupportedAccessor,
   isTypeOfJestFnCall,
@@ -39,7 +40,7 @@ export default createRule({
 
     return {
       FunctionDeclaration(node) {
-        const declaredVariables = context.getDeclaredVariables(node);
+        const declaredVariables = getDeclaredVariables(context, node);
         const testCallExpressions = getTestCallExpressionsFromDeclaredVariables(
           declaredVariables,
           context,

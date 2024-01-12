@@ -3,6 +3,7 @@ import {
   TestCaseName,
   createRule,
   getAccessorValue,
+  getDeclaredVariables,
   getNodeName,
   getTestCallExpressionsFromDeclaredVariables,
   parseJestFnCall,
@@ -89,7 +90,7 @@ export default createRule({
         stack.push(isTestFunctionExpression(node));
       },
       FunctionDeclaration(node) {
-        const declaredVariables = context.getDeclaredVariables(node);
+        const declaredVariables = getDeclaredVariables(context, node);
         const testCallExpressions = getTestCallExpressionsFromDeclaredVariables(
           declaredVariables,
           context,
