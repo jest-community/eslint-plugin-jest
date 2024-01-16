@@ -45,6 +45,7 @@ exports[`rules should export configs that refer to actual rules 1`] = `
       "jest/prefer-expect-resolves": "error",
       "jest/prefer-hooks-in-order": "error",
       "jest/prefer-hooks-on-top": "error",
+      "jest/prefer-importing-jest-globals": "error",
       "jest/prefer-lowercase-title": "error",
       "jest/prefer-mock-promise-shorthand": "error",
       "jest/prefer-snapshot-hint": "error",
