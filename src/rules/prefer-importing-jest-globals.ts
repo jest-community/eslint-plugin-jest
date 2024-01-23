@@ -1,5 +1,16 @@
-import globalsJson from '../globals.json';
+import type { Literal } from 'estree';
 import { createRule, parseJestFnCall } from './utils';
+
+const createFixerImports = (
+  usesImport: boolean,
+  functionsToImport: string[],
+) => {
+  const allImportsFormatted = functionsToImport.filter(Boolean).join(', ');
+
+  return usesImport
+    ? `import { ${allImportsFormatted} } from '@jest/globals';`
+    : `const { ${allImportsFormatted} } = require('@jest/globals');`;
+};
 
 export default createRule({
   name: __filename,
@@ -18,7 +29,6 @@ export default createRule({
   },
   defaultOptions: [],
   create(context) {
-    const jestGlobalFunctions = Object.keys(globalsJson);
     const importedJestFunctions: string[] = [];
     const usedJestFunctions = new Set<string>();
 
@@ -29,10 +39,8 @@ export default createRule({
         if (!jestFnCall) {
           return;
         }
-        if (
-          jestFnCall.head.type === 'import' &&
-          jestGlobalFunctions.includes(jestFnCall.name)
-        ) {
+
+        if (jestFnCall.head.type === 'import') {
           importedJestFunctions.push(jestFnCall.name);
         }
 
@@ -53,9 +61,117 @@ export default createRule({
             messageId: 'preferImportingJestGlobal',
             data: { jestFunctions: jestFunctionsToImportFormatted },
             fix(fixer) {
+              const sourceCode = context.getSourceCode();
+              const usesImport = sourceCode.ast.body.some(
+                node => node.type === 'ImportDeclaration',
+              );
+              const [firstNode] = sourceCode.ast.body;
+
+              let firstNodeValue;
+
+              if (firstNode.type === 'ExpressionStatement') {
+                const firstExpression = firstNode.expression as Literal;
+                const { value } = firstExpression;
+
+                firstNodeValue = value;
+              }
+
+              const useStrictDirectiveExists =
+                firstNode.type === 'ExpressionStatement' &&
+                firstNodeValue === 'use strict';
+
+              if (useStrictDirectiveExists) {
+                return fixer.insertTextAfter(
+                  firstNode,
+                  `\n${createFixerImports(usesImport, jestFunctionsToImport)}`,
+                );
+              }
+
+              const importNode = sourceCode.ast.body.find(
+                node =>
+                  node.type === 'ImportDeclaration' &&
+                  node.source.value === '@jest/globals',
+              );
+
+              if (importNode && importNode.type === 'ImportDeclaration') {
+                const existingImports = importNode.specifiers.map(specifier => {
+                  /* istanbul ignore else */
+                  if (specifier.type === 'ImportSpecifier') {
+                    return specifier.imported?.name;
+                  }
+
+                  // istanbul ignore next
+                  return null;
+                });
+                const allImports = [
+                  ...new Set([
+                    ...existingImports.filter(
+                      (imp): imp is string => imp !== null,
+                    ),
+                    ...jestFunctionsToImport,
+                  ]),
+                ];
+
+                return fixer.replaceText(
+                  importNode,
+                  createFixerImports(usesImport, allImports),
+                );
+              }
+
+              const requireNode = sourceCode.ast.body.find(
+                node =>
+                  node.type === 'VariableDeclaration' &&
+                  node.declarations.some(
+                    declaration =>
+                      declaration.init &&
+                      (declaration.init as any).callee &&
+                      (declaration.init as any).callee.name === 'require' &&
+                      (declaration.init as any).arguments?.[0]?.type ===
+                        'Literal' &&
+                      (declaration.init as any).arguments?.[0]?.value ===
+                        '@jest/globals',
+                  ),
+              );
+
+              if (requireNode && requireNode.type === 'VariableDeclaration') {
+                const existingImports =
+                  requireNode.declarations[0]?.id.type === 'ObjectPattern'
+                    ? requireNode.declarations[0]?.id.properties?.map(
+                        property => {
+                          /* istanbul ignore else */
+                          if (property.type === 'Property') {
+                            /* istanbul ignore else */
+                            if (property.key.type === 'Identifier') {
+                              return property.key.name;
+                            }
+                          }
+
+                          // istanbul ignore next
+                          return null;
+                        },
+                      ) ||
+                      // istanbul ignore next
+                      []
+                    : // istanbul ignore next
+                      [];
+                const allImports = [
+                  ...new Set([
+                    ...existingImports.filter(
+                      (imp): imp is string => imp !== null,
+                    ),
+                    ...jestFunctionsToImport,
+                  ]),
+                ];
+
+                return fixer.replaceText(
+                  requireNode,
+                  `${createFixerImports(usesImport, allImports)}`,
+                );
+              }
+
               return fixer.insertTextBefore(
                 node,
-                `import { ${jestFunctionsToImportFormatted} } from '@jest/globals';\n`,
+                `${createFixerImports(usesImport, jestFunctionsToImport)}\n`,
               );
             },
           });
