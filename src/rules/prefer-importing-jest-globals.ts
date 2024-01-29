@@ -1,13 +1,11 @@
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import type { Literal } from 'estree';
-import { createRule, parseJestFnCall } from './utils';
+import { type ParsedJestFnCall, createRule, parseJestFnCall } from './utils';
 
-const createFixerImports = (
-  usesImport: boolean,
-  functionsToImport: string[],
-) => {
+const createFixerImports = (isModule: boolean, functionsToImport: string[]) => {
   const allImportsFormatted = functionsToImport.filter(Boolean).join(', ');
 
-  return usesImport
+  return isModule
     ? `import { ${allImportsFormatted} } from '@jest/globals';`
     : `const { ${allImportsFormatted} } = require('@jest/globals');`;
 };
@@ -30,7 +28,7 @@ export default createRule({
   defaultOptions: [],
   create(context) {
     const importedJestFunctions: string[] = [];
-    const usedJestFunctions = new Set<string>();
+    const usedJestFunctions: ParsedJestFnCall[] = [];
 
     return {
       CallExpression(node) {
@@ -44,138 +42,140 @@ export default createRule({
           importedJestFunctions.push(jestFnCall.name);
         }
 
-        usedJestFunctions.add(jestFnCall.name);
+        usedJestFunctions.push(jestFnCall);
       },
       'Program:exit'() {
-        const jestFunctionsToImport = Array.from(usedJestFunctions).filter(
-          jestFunction => !importedJestFunctions.includes(jestFunction),
+        const jestFunctionsToReport = usedJestFunctions.filter(
+          jestFunction => !importedJestFunctions.includes(jestFunction.name),
         );
 
-        if (jestFunctionsToImport.length > 0) {
-          const node = context.getSourceCode().ast;
-          const jestFunctionsToImportFormatted =
-            jestFunctionsToImport.join(', ');
+        if (!jestFunctionsToReport.length) {
+          return;
+        }
+        const jestFunctionsToImport = jestFunctionsToReport.map(
+          jestFunction => jestFunction.name,
+        );
+        const reportingNode = jestFunctionsToReport[0].head.node;
 
-          context.report({
-            node,
-            messageId: 'preferImportingJestGlobal',
-            data: { jestFunctions: jestFunctionsToImportFormatted },
-            fix(fixer) {
-              const sourceCode = context.getSourceCode();
-              const usesImport = sourceCode.ast.body.some(
-                node => node.type === 'ImportDeclaration',
+        const jestFunctionsToImportFormatted = jestFunctionsToImport.join(', ');
+
+        const isModule = context.parserOptions.sourceType === 'module';
+
+        context.report({
+          node: reportingNode,
+          messageId: 'preferImportingJestGlobal',
+          data: { jestFunctions: jestFunctionsToImportFormatted },
+          fix(fixer) {
+            const sourceCode = context.getSourceCode();
+            const [firstNode] = sourceCode.ast.body;
+
+            const useStrictDirectiveExists =
+              firstNode.type === AST_NODE_TYPES.ExpressionStatement &&
+              (firstNode.expression as Literal).value === 'use strict';
+
+            if (useStrictDirectiveExists) {
+              return fixer.insertTextAfter(
+                firstNode,
+                `\n${createFixerImports(isModule, jestFunctionsToImport)}`,
               );
-              const [firstNode] = sourceCode.ast.body;
+            }
 
-              let firstNodeValue;
+            const importNode = sourceCode.ast.body.find(
+              node =>
+                node.type === AST_NODE_TYPES.ImportDeclaration &&
+                node.source.value === '@jest/globals',
+            );
 
-              if (firstNode.type === 'ExpressionStatement') {
-                const firstExpression = firstNode.expression as Literal;
-                const { value } = firstExpression;
-
-                firstNodeValue = value;
-              }
-
-              const useStrictDirectiveExists =
-                firstNode.type === 'ExpressionStatement' &&
-                firstNodeValue === 'use strict';
-
-              if (useStrictDirectiveExists) {
-                return fixer.insertTextAfter(
-                  firstNode,
-                  `\n${createFixerImports(usesImport, jestFunctionsToImport)}`,
-                );
-              }
-
-              const importNode = sourceCode.ast.body.find(
-                node =>
-                  node.type === 'ImportDeclaration' &&
-                  node.source.value === '@jest/globals',
-              );
-
-              if (importNode && importNode.type === 'ImportDeclaration') {
-                const existingImports = importNode.specifiers.map(specifier => {
+            if (
+              importNode &&
+              importNode.type === AST_NODE_TYPES.ImportDeclaration
+            ) {
+              const existingImports = importNode.specifiers.reduce(
+                (imports, specifier) => {
                   /* istanbul ignore else */
-                  if (specifier.type === 'ImportSpecifier') {
-                    return specifier.imported?.name;
+                  if (
+                    specifier.type === AST_NODE_TYPES.ImportSpecifier &&
+                    specifier.imported?.name
+                  ) {
+                    imports.push(specifier.imported.name);
                   }
 
-                  // istanbul ignore next
-                  return null;
-                });
-                const allImports = [
-                  ...new Set([
-                    ...existingImports.filter(
-                      (imp): imp is string => imp !== null,
-                    ),
-                    ...jestFunctionsToImport,
-                  ]),
-                ];
-
-                return fixer.replaceText(
-                  importNode,
-                  createFixerImports(usesImport, allImports),
-                );
-              }
-
-              const requireNode = sourceCode.ast.body.find(
-                node =>
-                  node.type === 'VariableDeclaration' &&
-                  node.declarations.some(
-                    declaration =>
-                      declaration.init &&
-                      (declaration.init as any).callee &&
-                      (declaration.init as any).callee.name === 'require' &&
-                      (declaration.init as any).arguments?.[0]?.type ===
-                        'Literal' &&
-                      (declaration.init as any).arguments?.[0]?.value ===
-                        '@jest/globals',
-                  ),
+                  return imports;
+                },
+                [] as string[],
               );
 
-              if (requireNode && requireNode.type === 'VariableDeclaration') {
-                const existingImports =
-                  requireNode.declarations[0]?.id.type === 'ObjectPattern'
-                    ? requireNode.declarations[0]?.id.properties?.map(
-                        property => {
+              const allImports = [
+                ...new Set([...existingImports, ...jestFunctionsToImport]),
+              ];
+
+              return fixer.replaceText(
+                importNode,
+                createFixerImports(isModule, allImports),
+              );
+            }
+
+            const requireNode = sourceCode.ast.body.find(
+              node =>
+                node.type === AST_NODE_TYPES.VariableDeclaration &&
+                node.declarations.some(
+                  declaration =>
+                    declaration.init &&
+                    (declaration.init as any).callee &&
+                    (declaration.init as any).callee.name === 'require' &&
+                    (declaration.init as any).arguments?.[0]?.type ===
+                      'Literal' &&
+                    (declaration.init as any).arguments?.[0]?.value ===
+                      '@jest/globals',
+                ),
+            );
+
+            if (
+              requireNode &&
+              requireNode.type === AST_NODE_TYPES.VariableDeclaration
+            ) {
+              const existingImports =
+                requireNode.declarations[0]?.id.type ===
+                AST_NODE_TYPES.ObjectPattern
+                  ? requireNode.declarations[0]?.id.properties?.map(
+                      property => {
+                        /* istanbul ignore else */
+                        if (property.type === AST_NODE_TYPES.Property) {
                           /* istanbul ignore else */
-                          if (property.type === 'Property') {
-                            /* istanbul ignore else */
-                            if (property.key.type === 'Identifier') {
-                              return property.key.name;
-                            }
+                          if (property.key.type === AST_NODE_TYPES.Identifier) {
+                            return property.key.name;
                           }
+                        }
 
-                          // istanbul ignore next
-                          return null;
-                        },
-                      ) ||
-                      // istanbul ignore next
-                      []
-                    : // istanbul ignore next
-                      [];
-                const allImports = [
-                  ...new Set([
-                    ...existingImports.filter(
-                      (imp): imp is string => imp !== null,
-                    ),
-                    ...jestFunctionsToImport,
-                  ]),
-                ];
+                        // istanbul ignore next
+                        return null;
+                      },
+                    ) ||
+                    // istanbul ignore next
+                    []
+                  : // istanbul ignore next
+                    [];
+              const allImports = [
+                ...new Set([
+                  ...existingImports.filter(
+                    (imp): imp is string => imp !== null,
+                  ),
+                  ...jestFunctionsToImport,
+                ]),
+              ];
 
-                return fixer.replaceText(
-                  requireNode,
-                  `${createFixerImports(usesImport, allImports)}`,
-                );
-              }
-
-              return fixer.insertTextBefore(
-                node,
-                `${createFixerImports(usesImport, jestFunctionsToImport)}\n`,
+              return fixer.replaceText(
+                requireNode,
+                `${createFixerImports(isModule, allImports)}`,
               );
-            },
-          });
-        }
+            }
+
+            return fixer.insertTextBefore(
+              reportingNode,
+              `${createFixerImports(isModule, jestFunctionsToImport)}\n`,
+            );
+          },
+        });
       },
     };
   },

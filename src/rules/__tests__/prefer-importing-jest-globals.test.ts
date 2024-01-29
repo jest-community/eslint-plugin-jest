@@ -7,7 +7,6 @@ const ruleTester = new TSESLint.RuleTester({
   parser: espreeParser,
   parserOptions: {
     ecmaVersion: 2015,
-    sourceType: 'module',
   },
 });
 
@@ -31,7 +30,6 @@ ruleTester.run('prefer-importing-jest-globals', rule, {
             expect(true).toBeDefined();
         });
         `,
-      parserOptions: { sourceType: 'module' },
     },
     {
       code: dedent`
@@ -45,7 +43,6 @@ ruleTester.run('prefer-importing-jest-globals', rule, {
         const { test } = require('@jest/globals');
         test("foo");
       `,
-      parserOptions: { sourceType: 'module' },
     },
   ],
   invalid: [
@@ -65,9 +62,9 @@ ruleTester.run('prefer-importing-jest-globals', rule, {
           expect(true).toBeDefined();
         })
     `,
-      parserOptions: { sourceType: 'module' },
+      parserOptions: { sourceType: 'script' },
       errors: [
-        { endColumn: 3, column: 1, messageId: 'preferImportingJestGlobal' },
+        { endColumn: 9, column: 1, messageId: 'preferImportingJestGlobal' },
       ],
     },
     {
@@ -86,9 +83,8 @@ ruleTester.run('prefer-importing-jest-globals', rule, {
           expect(true).toBeDefined();
         })
     `,
-      parserOptions: { sourceType: 'module' },
       errors: [
-        { endColumn: 3, column: 1, messageId: 'preferImportingJestGlobal' },
+        { endColumn: 9, column: 1, messageId: 'preferImportingJestGlobal' },
       ],
     },
     {
@@ -107,21 +103,28 @@ ruleTester.run('prefer-importing-jest-globals', rule, {
           expect(true).toBeDefined();
         })
     `,
-      parserOptions: { sourceType: 'module' },
       errors: [
-        { endColumn: 3, column: 1, messageId: 'preferImportingJestGlobal' },
+        { endColumn: 9, column: 1, messageId: 'preferImportingJestGlobal' },
       ],
     },
     {
       code: dedent`
+        import React from 'react';
+        import { yourFunction } from './yourFile';
+        import something from "something";
         import { test } from '@jest/globals';
+        import { xit } from '@jest/globals';
         describe("suite", () => {
           test("foo");
           expect(true).toBeDefined();
         })
       `,
       output: dedent`
+        import React from 'react';
+        import { yourFunction } from './yourFile';
+        import something from "something";
         import { test, describe, expect } from '@jest/globals';
+        import { xit } from '@jest/globals';
         describe("suite", () => {
           test("foo");
           expect(true).toBeDefined();
@@ -129,27 +132,26 @@ ruleTester.run('prefer-importing-jest-globals', rule, {
     `,
       parserOptions: { sourceType: 'module' },
       errors: [
-        { endColumn: 3, column: 1, messageId: 'preferImportingJestGlobal' },
+        { endColumn: 9, column: 1, messageId: 'preferImportingJestGlobal' },
       ],
     },
     {
       code: dedent`
         const { test } = require('@jest/globals');
-        describe("suite", () => { 
-          test("foo"); 
+        describe("suite", () => {
+          test("foo");
           expect(true).toBeDefined();
         })
       `,
       output: dedent`
         const { test, describe, expect } = require('@jest/globals');
-        describe("suite", () => { 
-          test("foo"); 
+        describe("suite", () => {
+          test("foo");
           expect(true).toBeDefined();
         })
     `,
-      parserOptions: { sourceType: 'module' },
       errors: [
-        { endColumn: 3, column: 1, messageId: 'preferImportingJestGlobal' },
+        { endColumn: 9, column: 1, messageId: 'preferImportingJestGlobal' },
       ],
     },
     {
@@ -160,15 +162,14 @@ ruleTester.run('prefer-importing-jest-globals', rule, {
         });
       `,
       output: dedent`
-        const { describe, test } = require('@jest/globals');
         const { pending } = require('actions');
+        const { describe, test } = require('@jest/globals');
         describe('foo', () => {
           test.each(['hello', 'world'])("%s", (a) => {});
         });
     `,
-      parserOptions: { sourceType: 'module' },
       errors: [
-        { endColumn: 4, column: 1, messageId: 'preferImportingJestGlobal' },
+        { endColumn: 9, column: 1, messageId: 'preferImportingJestGlobal' },
       ],
     },
   ],
