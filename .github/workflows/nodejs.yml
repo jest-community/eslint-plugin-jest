@@ -102,6 +102,8 @@ jobs:
           CI: true
       - uses: codecov/codecov-action@v4
         if: ${{ matrix.eslint-version >= 8 }}
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
   test-ubuntu:
     uses: ./.github/workflows/test.yml
     needs: prepare-yarn-cache-ubuntu
