@@ -44,6 +44,12 @@ ruleTester.run('prefer-importing-jest-globals', rule, {
         test("foo");
       `,
     },
+    {
+      code: dedent`
+        const { test } = require('my-test-library');
+        test("foo");
+      `,
+    },
   ],
   invalid: [
     {
@@ -137,14 +143,39 @@ ruleTester.run('prefer-importing-jest-globals', rule, {
     },
     {
       code: dedent`
-        const { test } = require('@jest/globals');
+        console.log('hello');
+        const fs = require('fs');
+        const { test, 'describe': describe } = require('@jest/globals');
         describe("suite", () => {
           test("foo");
           expect(true).toBeDefined();
         })
       `,
       output: dedent`
+        console.log('hello');
+        const fs = require('fs');
         const { test, describe, expect } = require('@jest/globals');
+        describe("suite", () => {
+          test("foo");
+          expect(true).toBeDefined();
+        })
+    `,
+      errors: [
+        { endColumn: 9, column: 3, messageId: 'preferImportingJestGlobal' },
+      ],
+    },
+    {
+      code: dedent`
+        console.log('hello');
+        const jestGlobals = require('@jest/globals');
+        describe("suite", () => {
+          test("foo");
+          expect(true).toBeDefined();
+        })
+      `,
+      output: dedent`
+        console.log('hello');
+        const { describe, test, expect } = require('@jest/globals');
         describe("suite", () => {
           test("foo");
           expect(true).toBeDefined();
@@ -167,6 +198,24 @@ ruleTester.run('prefer-importing-jest-globals', rule, {
         describe('foo', () => {
           test.each(['hello', 'world'])("%s", (a) => {});
         });
+    `,
+      errors: [
+        { endColumn: 9, column: 1, messageId: 'preferImportingJestGlobal' },
+      ],
+    },
+    {
+      code: dedent`
+        describe("suite", () => {
+          test("foo");
+          expect(true).toBeDefined();
+        })
+      `,
+      output: dedent`
+        const { describe, test, expect } = require('@jest/globals');
+        describe("suite", () => {
+          test("foo");
+          expect(true).toBeDefined();
+        })
     `,
       errors: [
         { endColumn: 9, column: 1, messageId: 'preferImportingJestGlobal' },

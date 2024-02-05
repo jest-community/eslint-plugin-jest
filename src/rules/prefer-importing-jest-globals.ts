@@ -3,7 +3,7 @@ import type { Literal } from 'estree';
 import { type ParsedJestFnCall, createRule, parseJestFnCall } from './utils';
 
 const createFixerImports = (isModule: boolean, functionsToImport: string[]) => {
-  const allImportsFormatted = functionsToImport.filter(Boolean).join(', ');
+  const allImportsFormatted = functionsToImport.join(', ');
 
   return isModule
     ? `import { ${allImportsFormatted} } from '@jest/globals';`
@@ -137,24 +137,26 @@ export default createRule({
               const existingImports =
                 requireNode.declarations[0]?.id.type ===
                 AST_NODE_TYPES.ObjectPattern
-                  ? requireNode.declarations[0]?.id.properties?.map(
-                      property => {
-                        /* istanbul ignore else */
-                        if (property.type === AST_NODE_TYPES.Property) {
-                          /* istanbul ignore else */
-                          if (property.key.type === AST_NODE_TYPES.Identifier) {
-                            return property.key.name;
-                          }
-                        }
+                  ? requireNode.declarations[0]?.id.properties.map(property => {
+                      if (
+                        property.type === AST_NODE_TYPES.Property &&
+                        property.key.type === AST_NODE_TYPES.Identifier
+                      ) {
+                        return property.key.name;
+                      }
+                      /* istanbul ignore else */
+                      if (
+                        property.type === AST_NODE_TYPES.Property &&
+                        property.key.type === AST_NODE_TYPES.Literal
+                      ) {
+                        return property.key.value;
+                      }
 
-                        // istanbul ignore next
-                        return null;
-                      },
-                    ) ||
-                    // istanbul ignore next
-                    []
-                  : // istanbul ignore next
-                    [];
+                      // istanbul ignore next
+                      return null;
+                    })
+                  : [];
+
               const allImports = [
                 ...new Set([
                   ...existingImports.filter(
