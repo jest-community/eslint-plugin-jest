@@ -35,9 +35,7 @@ export default createRule<
   name: __filename,
   meta: {
     docs: {
-      category: 'Best Practices',
       description: 'Enforce `test` and `it` usage conventions',
-      recommended: false,
     },
     fixable: 'code',
     messages: {

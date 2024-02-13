@@ -21,10 +21,8 @@ export default createRule({
   name: __filename,
   meta: {
     docs: {
-      category: 'Best Practices',
       description:
         'Disallow using `jest.mock()` factories without an explicit type parameter',
-      recommended: false,
     },
     messages: {
       addTypeParameterToModuleMock:
