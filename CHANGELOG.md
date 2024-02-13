@@ -1,3 +1,10 @@
+# [27.8.0](https://github.com/jest-community/eslint-plugin-jest/compare/v27.7.0...v27.8.0) (2024-02-13)
+
+
+### Features
+
+* support `failing.each` ([#1499](https://github.com/jest-community/eslint-plugin-jest/issues/1499)) ([9e9cf83](https://github.com/jest-community/eslint-plugin-jest/commit/9e9cf8302ae182402da853a11b05e1560ccc63ee))
+
 # [27.7.0](https://github.com/jest-community/eslint-plugin-jest/compare/v27.6.3...v27.7.0) (2024-02-13)
 
 
