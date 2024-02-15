@@ -12,7 +12,7 @@ describe('snapshot-processor', () => {
     it('should pass on untouched source code to source array', () => {
       const { preprocess } = snapshotProcessor;
       const sourceCode = "const name = 'johnny bravo';";
-      const result = preprocess(sourceCode);
+      const result = preprocess(sourceCode, 'my-file.snap');
 
       expect(result).toEqual([sourceCode]);
     });
@@ -21,13 +21,35 @@ describe('snapshot-processor', () => {
   describe('postprocess function', () => {
     it('should only return messages about snapshot specific rules', () => {
       const { postprocess } = snapshotProcessor;
-      const result = postprocess([
-        ['no-console', 'global-require', 'jest/no-large-snapshots'].map(
-          ruleId => ({ ruleId }),
-        ),
-      ]);
 
-      expect(result).toEqual([{ ruleId: 'jest/no-large-snapshots' }]);
+      const result = postprocess(
+        [
+          ['no-console', 'global-require', 'jest/no-large-snapshots'].map(
+            ruleId => ({
+              ruleId,
+              column: 1,
+              line: 1,
+              source: null,
+              nodeType: 'Program',
+              message: 'something is not right about this...',
+              severity: 1,
+            }),
+          ),
+        ],
+        'my-file.snap',
+      );
+
+      expect(result).toEqual([
+        {
+          ruleId: 'jest/no-large-snapshots',
+          column: 1,
+          line: 1,
+          source: null,
+          nodeType: 'Program',
+          message: 'something is not right about this...',
+          severity: 1,
+        },
+      ]);
     });
   });
 });
