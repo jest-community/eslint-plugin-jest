@@ -12,6 +12,14 @@ type RuleModule = TSESLint.RuleModule<string, unknown[]> & {
   meta: Required<Pick<TSESLint.RuleMetaData<string>, 'docs'>>;
 };
 
+declare module '@typescript-eslint/utils/dist/ts-eslint/Linter' {
+  namespace Linter {
+    export interface Plugin {
+      meta: { name: string; version: string };
+    }
+  }
+}
+
 // v5 of `@typescript-eslint/experimental-utils` removed this
 declare module '@typescript-eslint/utils/dist/ts-eslint/Rule' {
   export interface RuleMetaDataDocs {
@@ -79,26 +87,12 @@ const allRules = Object.fromEntries<TSESLint.Linter.RuleLevel>(
     .map(([name]) => [`jest/${name}`, 'error']),
 );
 
-const createConfig = (rules: Record<string, TSESLint.Linter.RuleLevel>) => ({
-  plugins: ['jest'],
-  env: { 'jest/globals': true },
-  rules,
-});
-
-export = {
+const plugin = {
   meta: { name: packageName, version: packageVersion },
-  configs: {
-    all: createConfig(allRules),
-    recommended: createConfig(recommendedRules),
-    style: createConfig({
-      'jest/no-alias-methods': 'warn',
-      'jest/prefer-to-be': 'error',
-      'jest/prefer-to-contain': 'error',
-      'jest/prefer-to-have-length': 'error',
-    }),
-  },
+  configs: {},
   environments: {
     globals: {
+      // @ts-expect-error pretty sure these types are wrong but we've too many major versions behind to fix them
       globals,
     },
   },
@@ -106,4 +100,39 @@ export = {
     '.snap': snapshotProcessor,
   },
   rules,
+} satisfies TSESLint.Linter.Plugin;
+
+const createRCConfig = (rules: Record<string, TSESLint.Linter.RuleLevel>) => ({
+  plugins: ['jest'],
+  env: { 'jest/globals': true },
+  rules,
+});
+
+const createFlatConfig = (
+  rules: Record<string, TSESLint.Linter.RuleLevel>,
+) => ({
+  plugins: { jest: plugin },
+  languageOptions: { globals },
+  rules,
+});
+
+plugin.configs = {
+  all: createRCConfig(allRules),
+  recommended: createRCConfig(recommendedRules),
+  style: createRCConfig({
+    'jest/no-alias-methods': 'warn',
+    'jest/prefer-to-be': 'error',
+    'jest/prefer-to-contain': 'error',
+    'jest/prefer-to-have-length': 'error',
+  }),
+  'flat/all': createFlatConfig(allRules),
+  'flat/recommended': createFlatConfig(recommendedRules),
+  'flat/style': createFlatConfig({
+    'jest/no-alias-methods': 'warn',
+    'jest/prefer-to-be': 'error',
+    'jest/prefer-to-contain': 'error',
+    'jest/prefer-to-have-length': 'error',
+  }),
 };
+
+export = plugin;
