@@ -96,7 +96,7 @@ const plugin = {
   environments: {
     globals: {
       globals,
-    } as Required<TSESLint.Linter.Environment>['globals'],
+    },
   },
   processors: {
     snapshots: snapshotProcessor,
