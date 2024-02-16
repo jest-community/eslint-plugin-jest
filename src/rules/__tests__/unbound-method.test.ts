@@ -1,4 +1,5 @@
 import path from 'path';
+import { version as rawTypeScriptESLintPluginVersion } from '@typescript-eslint/eslint-plugin/package.json';
 import { TSESLint } from '@typescript-eslint/utils';
 import dedent from 'dedent';
 import type { MessageIds, Options } from '../unbound-method';
@@ -252,7 +253,9 @@ ruleTester.run('unbound-method', requireRule(false), {
     "['1', '2', '3'].map(Number.parseInt);",
     '[5.2, 7.1, 3.6].map(Math.floor);',
     'const x = console.log;',
-    'const x = Object.defineProperty;',
+    ...(parseInt(rawTypeScriptESLintPluginVersion.split('.')[0], 10) >= 6
+      ? ['const x = Object.defineProperty;']
+      : []),
     ...[
       'instance.bound();',
       'instance.unbound();',
