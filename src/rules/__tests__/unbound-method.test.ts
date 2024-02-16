@@ -20,12 +20,22 @@ const ruleTester = new TSESLint.RuleTester({
 
 const fixtureFilename = path.join(rootPath, 'file.ts');
 
-const addFixtureFilename = (
-  code: TSESLint.ValidTestCase<unknown[]> | string,
-): TSESLint.ValidTestCase<unknown[]> => {
-  const test = typeof code === 'string' ? { code } : code;
+const withFixtureFilename = <
+  T extends Array<
+    | (TSESLint.ValidTestCase<Options> | string)
+    | TSESLint.InvalidTestCase<MessageIds, Options>
+  >,
+>(
+  cases: T,
+): T extends Array<TSESLint.InvalidTestCase<MessageIds, Options>>
+  ? Array<TSESLint.InvalidTestCase<MessageIds, Options>>
+  : Array<TSESLint.ValidTestCase<Options>> => {
+  // @ts-expect-error this is fine, and will go away later once we upgrade
+  return cases.map(code => {
+    const test = typeof code === 'string' ? { code } : code;
 
-  return { filename: fixtureFilename, ...test };
+    return { filename: fixtureFilename, ...test };
+  });
 };
 
 const ConsoleClassAndVariableCode = dedent`
@@ -187,7 +197,9 @@ describe('error handling', () => {
       'unbound-method jest edition without type service',
       requireRule(true),
       {
-        valid: validTestCases.concat(invalidTestCases.map(({ code }) => code)),
+        valid: withFixtureFilename(
+          validTestCases.concat(invalidTestCases.map(({ code }) => code)),
+        ),
         invalid: [],
       },
     );
@@ -195,8 +207,8 @@ describe('error handling', () => {
 });
 
 ruleTester.run('unbound-method jest edition', requireRule(false), {
-  valid: validTestCases.map(addFixtureFilename),
-  invalid: invalidTestCases,
+  valid: withFixtureFilename(validTestCases),
+  invalid: withFixtureFilename(invalidTestCases),
 });
 
 function addContainsMethodsClass(code: string): string {
@@ -235,7 +247,7 @@ function addContainsMethodsClassInvalid(
 }
 
 ruleTester.run('unbound-method', requireRule(false), {
-  valid: [
+  valid: withFixtureFilename([
     'Promise.resolve().then(console.log);',
     "['1', '2', '3'].map(Number.parseInt);",
     '[5.2, 7.1, 3.6].map(Math.floor);',
@@ -466,8 +478,8 @@ class OtherClass extends BaseClass {
 const oc = new OtherClass();
 oc.superLogThis();
     `,
-  ].map(addFixtureFilename),
-  invalid: [
+  ]),
+  invalid: withFixtureFilename([
     {
       code: `
 class Console {
@@ -827,5 +839,5 @@ const { b, a } = values;
         },
       ],
     },
-  ],
+  ]),
 });
