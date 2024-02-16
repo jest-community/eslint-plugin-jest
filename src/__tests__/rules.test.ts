@@ -48,9 +48,21 @@ describe('rules', () => {
   });
 
   it('should export configs that refer to actual rules', () => {
+    const expectJestPlugin = expect.objectContaining({
+      meta: {
+        name: 'eslint-plugin-jest',
+        version: '27.8.0',
+      },
+    });
+
     const recommendedConfigs = plugin.configs;
 
-    expect(recommendedConfigs).toMatchSnapshot();
+    expect(recommendedConfigs).toMatchSnapshot({
+      'flat/recommended': { plugins: { jest: expectJestPlugin } },
+      'flat/style': { plugins: { jest: expectJestPlugin } },
+      'flat/all': { plugins: { jest: expectJestPlugin } },
+      'flat/snapshots': { plugins: { jest: expectJestPlugin } },
+    });
     expect(Object.keys(recommendedConfigs)).toEqual([
       'all',
       'recommended',
