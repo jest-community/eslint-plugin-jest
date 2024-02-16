@@ -49,9 +49,11 @@ export default createRule<
         type: 'object',
         properties: {
           fn: {
+            type: 'string',
             enum: [TestCaseName.it, TestCaseName.test],
           },
           withinDescribe: {
+            type: 'string',
             enum: [TestCaseName.it, TestCaseName.test],
           },
         },

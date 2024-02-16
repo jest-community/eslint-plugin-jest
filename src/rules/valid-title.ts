@@ -74,7 +74,7 @@ const compileMatcherPatterns = (
 type CompiledMatcherAndMessage = [matcher: RegExp, message?: string];
 type MatcherAndMessage = [matcher: string, message?: string];
 
-const MatcherAndMessageSchema: JSONSchema.JSONSchema7 = {
+const MatcherAndMessageSchema: JSONSchema.JSONSchema4 = {
   type: 'array',
   items: { type: 'string' },
   minItems: 1,
@@ -156,6 +156,7 @@ export default createRule<[Options], MessageIds>({
               MatcherAndMessageSchema,
               {
                 type: 'object',
+                // @ts-expect-error https://github.com/eslint/eslint/discussions/17573
                 propertyNames: { enum: ['describe', 'test', 'it'] },
                 additionalProperties: {
                   oneOf: [{ type: 'string' }, MatcherAndMessageSchema],

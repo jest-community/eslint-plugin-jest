@@ -68,6 +68,7 @@ export default createRule<
     type: 'suggestion',
     schema: [
       {
+        type: 'object',
         properties: {
           additionalTestBlockFunctions: {
             type: 'array',
