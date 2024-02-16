@@ -3,7 +3,13 @@ const { prettier: prettierRC } = require('./package.json');
 
 /** @type {import('eslint-doc-generator').GenerateOptions} */
 const config = {
-  ignoreConfig: ['all'],
+  ignoreConfig: [
+    'all',
+    'flat/all',
+    'flat/recommended',
+    'flat/style',
+    'flat/snapshots',
+  ],
   ruleDocTitleFormat: 'desc-parens-name',
   ruleDocSectionInclude: ['Rule details'],
   ruleListColumns: [
