@@ -22,6 +22,15 @@ yarn add --dev eslint eslint-plugin-jest
 
 ## Usage
 
+> [!NOTE]
+>
+> `eslint.config.js` is supported, though most of the plugin documentation still
+> currently uses `.eslintrc` syntax.
+>
+> Refer to the
+> [ESLint documentation on the new configuration file format](https://eslint.org/docs/latest/use/configure/configuration-files-new)
+> for more.
+
 Add `jest` to the plugins section of your `.eslintrc` configuration file. You
 can omit the `eslint-plugin-` prefix:
 
@@ -85,7 +94,7 @@ test-related. This means it's generally not suitable to include them in your
 top-level configuration as that applies to all files being linted which can
 include source files.
 
-You can use
+For `.eslintrc` configs you can use
 [overrides](https://eslint.org/docs/user-guide/configuring/configuration-files#how-do-overrides-work)
 to have ESLint apply additional rules to specific files:
 
@@ -104,6 +113,30 @@ to have ESLint apply additional rules to specific files:
     "indent": ["error", 2]
   }
 }
+```
+
+For `eslint.config.js` you can use
+[`files` and `ignores`](https://eslint.org/docs/latest/use/configure/configuration-files-new#specifying-files-and-ignores):
+
+```js
+const jest = require('eslint-plugin-jest');
+
+module.exports = [
+  ...require('@eslint/js').configs.recommended,
+  {
+    files: ['test/**'],
+    ...jest.configs['flat/recommended'],
+    rules: {
+      ...jest.configs['flat/recommended'],
+      'jest/prefer-expect-assertions': 'off',
+    },
+  },
+  // you can also configure jest rules in other objects, so long as some of the `files` match
+  {
+    files: ['test/**'],
+    rules: { 'jest/prefer-expect-assertions': 'off' },
+  },
+];
 ```
 
 ### Jest `version` setting
@@ -145,18 +178,39 @@ module.exports = {
 
 ## Shareable configurations
 
+> [!NOTE]
+>
+> `eslint.config.js` compatible versions of configs are available prefixed with
+> `flat/` and may be subject to small breaking changes while ESLint v9 is being
+> finalized.
+
 ### Recommended
 
 This plugin exports a recommended configuration that enforces good testing
 practices.
 
-To enable this configuration use the `extends` property in your `.eslintrc`
-config file:
+To enable this configuration with `.eslintrc`, use the `extends` property:
 
 ```json
 {
   "extends": ["plugin:jest/recommended"]
 }
+```
+
+To enable this configuration with `eslint.config.js`, use
+`jest.configs['flat/recommended']`:
+
+```js
+const jest = require('eslint-plugin-jest');
+
+module.exports = [
+  {
+    files: [
+      /* glob matching your test files */
+    ],
+    ...jest.configs['flat/recommended'],
+  },
+];
 ```
 
 ### Style
@@ -174,9 +228,21 @@ config file:
 }
 ```
 
-See
-[ESLint documentation](https://eslint.org/docs/user-guide/configuring/configuration-files#extending-configuration-files)
-for more information about extending configuration files.
+To enable this configuration with `eslint.config.js`, use
+`jest.configs['flat/style']`:
+
+```js
+const jest = require('eslint-plugin-jest');
+
+module.exports = [
+  {
+    files: [
+      /* glob matching your test files */
+    ],
+    ...jest.configs['flat/style'],
+  },
+];
+```
 
 ### All
 
@@ -187,6 +253,22 @@ If you want to enable all rules instead of only some you can do so by adding the
 {
   "extends": ["plugin:jest/all"]
 }
+```
+
+To enable this configuration with `eslint.config.js`, use
+`jest.configs['flat/all']`:
+
+```js
+const jest = require('eslint-plugin-jest');
+
+module.exports = [
+  {
+    files: [
+      /* glob matching your test files */
+    ],
+    ...jest.configs['flat/all'],
+  },
+];
 ```
 
 While the `recommended` and `style` configurations only change in major versions
