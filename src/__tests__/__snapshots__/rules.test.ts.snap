@@ -86,7 +86,7 @@ exports[`rules should export configs that refer to actual rules 1`] = `
       "jest": ObjectContaining {
         "meta": {
           "name": "eslint-plugin-jest",
-          "version": "27.8.0",
+          "version": Any<String>,
         },
       },
     },
@@ -167,7 +167,7 @@ exports[`rules should export configs that refer to actual rules 1`] = `
       "jest": ObjectContaining {
         "meta": {
           "name": "eslint-plugin-jest",
-          "version": "27.8.0",
+          "version": Any<String>,
         },
       },
     },
@@ -201,7 +201,7 @@ exports[`rules should export configs that refer to actual rules 1`] = `
       "jest": ObjectContaining {
         "meta": {
           "name": "eslint-plugin-jest",
-          "version": "27.8.0",
+          "version": Any<String>,
         },
       },
     },
@@ -229,7 +229,7 @@ exports[`rules should export configs that refer to actual rules 1`] = `
       "jest": ObjectContaining {
         "meta": {
           "name": "eslint-plugin-jest",
-          "version": "27.8.0",
+          "version": Any<String>,
         },
       },
     },
