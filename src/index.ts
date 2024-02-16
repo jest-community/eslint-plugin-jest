@@ -12,14 +12,6 @@ type RuleModule = TSESLint.RuleModule<string, unknown[]> & {
   meta: Required<Pick<TSESLint.RuleMetaData<string>, 'docs'>>;
 };
 
-declare module '@typescript-eslint/utils/dist/ts-eslint/Linter' {
-  namespace Linter {
-    export interface Plugin {
-      meta: { name: string; version: string };
-    }
-  }
-}
-
 // v5 of `@typescript-eslint/experimental-utils` removed this
 declare module '@typescript-eslint/utils/dist/ts-eslint/Rule' {
   export interface RuleMetaDataDocs {
@@ -89,18 +81,27 @@ const allRules = Object.fromEntries<TSESLint.Linter.RuleLevel>(
 
 const plugin = {
   meta: { name: packageName, version: packageVersion },
-  configs: {},
+  // ugly cast for now to keep TypeScript happy since
+  // we don't have types for flat config yet
+  configs: {} as Record<
+    | 'all'
+    | 'recommended'
+    | 'style'
+    | 'flat/all'
+    | 'flat/recommended'
+    | 'flat/style',
+    Pick<Required<TSESLint.Linter.Config>, 'rules'>
+  >,
   environments: {
     globals: {
-      // @ts-expect-error pretty sure these types are wrong but we've too many major versions behind to fix them
       globals,
-    },
+    } as Required<TSESLint.Linter.Environment>['globals'],
   },
   processors: {
     '.snap': snapshotProcessor,
   },
   rules,
-} satisfies TSESLint.Linter.Plugin;
+};
 
 const createRCConfig = (rules: Record<string, TSESLint.Linter.RuleLevel>) => ({
   plugins: ['jest'],

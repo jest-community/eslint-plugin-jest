@@ -55,8 +55,14 @@ describe('rules', () => {
       'all',
       'recommended',
       'style',
+      'flat/all',
+      'flat/recommended',
+      'flat/style',
     ]);
     expect(Object.keys(recommendedConfigs.all.rules)).toHaveLength(
+      ruleNames.length - deprecatedRules.length,
+    );
+    expect(Object.keys(recommendedConfigs['flat/all'].rules)).toHaveLength(
       ruleNames.length - deprecatedRules.length,
     );
     const allConfigRules = Object.values(recommendedConfigs)
