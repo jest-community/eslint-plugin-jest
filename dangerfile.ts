@@ -7,6 +7,12 @@ if (danger.github.pr.body.length === 0) {
 }
 
 const createOrAddLabelSafely = async (name: string, color: string) => {
+  if (danger.github.issue.labels.find(label => label.name === name)) {
+    console.info(`Issue is already labelled with "${name}"`);
+
+    return;
+  }
+
   try {
     await danger.github.utils.createOrAddLabel({
       name,
