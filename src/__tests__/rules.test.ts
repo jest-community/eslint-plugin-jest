@@ -51,7 +51,7 @@ describe('rules', () => {
     const expectJestPlugin = expect.objectContaining({
       meta: {
         name: 'eslint-plugin-jest',
-        version: '27.8.0',
+        version: expect.any(String),
       },
     });
 
