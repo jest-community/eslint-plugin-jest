@@ -230,6 +230,7 @@ ruleTester.run('unbound-method', requireRule(false), {
     "['1', '2', '3'].map(Number.parseInt);",
     '[5.2, 7.1, 3.6].map(Math.floor);',
     'const x = console.log;',
+    'const x = Object.defineProperty;',
     ...[
       'instance.bound();',
       'instance.unbound();',
@@ -758,6 +759,60 @@ class OtherClass extends BaseClass {
         {
           line: 9,
           column: 9,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
+    {
+      code: `
+const values = {
+  a() {},
+  b: () => {},
+};
+
+const { a, b } = values;
+      `,
+      errors: [
+        {
+          line: 7,
+          column: 9,
+          endColumn: 10,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
+    {
+      code: `
+const values = {
+  a() {},
+  b: () => {},
+};
+
+const { a: c } = values;
+      `,
+      errors: [
+        {
+          line: 7,
+          column: 9,
+          endColumn: 10,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
+    {
+      code: `
+const values = {
+  a() {},
+  b: () => {},
+};
+
+const { b, a } = values;
+      `,
+      errors: [
+        {
+          line: 7,
+          column: 12,
+          endColumn: 13,
           messageId: 'unboundWithoutThisAnnotation',
         },
       ],
