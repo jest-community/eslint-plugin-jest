@@ -79,31 +79,69 @@ const allRules = Object.fromEntries<TSESLint.Linter.RuleLevel>(
     .map(([name]) => [`jest/${name}`, 'error']),
 );
 
-const createConfig = (rules: Record<string, TSESLint.Linter.RuleLevel>) => ({
-  plugins: ['jest'],
-  env: { 'jest/globals': true },
-  rules,
-});
-
-export = {
+const plugin = {
   meta: { name: packageName, version: packageVersion },
-  configs: {
-    all: createConfig(allRules),
-    recommended: createConfig(recommendedRules),
-    style: createConfig({
-      'jest/no-alias-methods': 'warn',
-      'jest/prefer-to-be': 'error',
-      'jest/prefer-to-contain': 'error',
-      'jest/prefer-to-have-length': 'error',
-    }),
-  },
+  // ugly cast for now to keep TypeScript happy since
+  // we don't have types for flat config yet
+  configs: {} as Record<
+    | 'all'
+    | 'recommended'
+    | 'style'
+    | 'flat/all'
+    | 'flat/recommended'
+    | 'flat/style'
+    | 'flat/snapshots',
+    Pick<Required<TSESLint.Linter.Config>, 'rules'>
+  >,
   environments: {
     globals: {
       globals,
     },
   },
   processors: {
+    snapshots: snapshotProcessor,
     '.snap': snapshotProcessor,
   },
   rules,
 };
+
+const createRCConfig = (rules: Record<string, TSESLint.Linter.RuleLevel>) => ({
+  plugins: ['jest'],
+  env: { 'jest/globals': true },
+  rules,
+});
+
+const createFlatConfig = (
+  rules: Record<string, TSESLint.Linter.RuleLevel>,
+) => ({
+  plugins: { jest: plugin },
+  languageOptions: { globals },
+  rules,
+});
+
+plugin.configs = {
+  all: createRCConfig(allRules),
+  recommended: createRCConfig(recommendedRules),
+  style: createRCConfig({
+    'jest/no-alias-methods': 'warn',
+    'jest/prefer-to-be': 'error',
+    'jest/prefer-to-contain': 'error',
+    'jest/prefer-to-have-length': 'error',
+  }),
+  'flat/all': createFlatConfig(allRules),
+  'flat/recommended': createFlatConfig(recommendedRules),
+  'flat/style': createFlatConfig({
+    'jest/no-alias-methods': 'warn',
+    'jest/prefer-to-be': 'error',
+    'jest/prefer-to-contain': 'error',
+    'jest/prefer-to-have-length': 'error',
+  }),
+  'flat/snapshots': {
+    // @ts-expect-error this is introduced in flat config
+    files: ['**/*.snap'],
+    plugins: { jest: plugin },
+    processor: 'jest/snapshots',
+  },
+};
+
+export = plugin;
