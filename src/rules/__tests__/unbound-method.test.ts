@@ -1,5 +1,5 @@
 import path from 'path';
-import { ESLintUtils, type TSESLint } from '@typescript-eslint/utils';
+import { TSESLint } from '@typescript-eslint/utils';
 import dedent from 'dedent';
 import type { MessageIds, Options } from '../unbound-method';
 
@@ -9,14 +9,24 @@ function getFixturesRootDir(): string {
 
 const rootPath = getFixturesRootDir();
 
-const ruleTester = new ESLintUtils.RuleTester({
-  parser: '@typescript-eslint/parser',
+const ruleTester = new TSESLint.RuleTester({
+  parser: require.resolve('@typescript-eslint/parser'),
   parserOptions: {
     sourceType: 'module',
     tsconfigRootDir: rootPath,
     project: './tsconfig.json',
   },
 });
+
+const fixtureFilename = path.join(rootPath, 'file.ts');
+
+const addFixtureFilename = (
+  code: TSESLint.ValidTestCase<unknown[]> | string,
+): TSESLint.ValidTestCase<unknown[]> => {
+  const test = typeof code === 'string' ? { code } : code;
+
+  return { filename: fixtureFilename, ...test };
+};
 
 const ConsoleClassAndVariableCode = dedent`
   class Console {
@@ -164,8 +174,8 @@ describe('error handling', () => {
   });
 
   describe('when @typescript-eslint/eslint-plugin is not available', () => {
-    const ruleTester = new ESLintUtils.RuleTester({
-      parser: '@typescript-eslint/parser',
+    const ruleTester = new TSESLint.RuleTester({
+      parser: require.resolve('@typescript-eslint/parser'),
       parserOptions: {
         sourceType: 'module',
         tsconfigRootDir: rootPath,
@@ -185,7 +195,7 @@ describe('error handling', () => {
 });
 
 ruleTester.run('unbound-method jest edition', requireRule(false), {
-  valid: validTestCases,
+  valid: validTestCases.map(addFixtureFilename),
   invalid: invalidTestCases,
 });
 
@@ -456,7 +466,7 @@ class OtherClass extends BaseClass {
 const oc = new OtherClass();
 oc.superLogThis();
     `,
-  ],
+  ].map(addFixtureFilename),
   invalid: [
     {
       code: `
