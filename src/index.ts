@@ -89,7 +89,8 @@ const plugin = {
     | 'style'
     | 'flat/all'
     | 'flat/recommended'
-    | 'flat/style',
+    | 'flat/style'
+    | 'flat/snapshots',
     Pick<Required<TSESLint.Linter.Config>, 'rules'>
   >,
   environments: {
@@ -98,6 +99,7 @@ const plugin = {
     } as Required<TSESLint.Linter.Environment>['globals'],
   },
   processors: {
+    snapshots: snapshotProcessor,
     '.snap': snapshotProcessor,
   },
   rules,
@@ -134,6 +136,12 @@ plugin.configs = {
     'jest/prefer-to-contain': 'error',
     'jest/prefer-to-have-length': 'error',
   }),
+  'flat/snapshots': {
+    // @ts-expect-error this is introduced in flat config
+    files: ['**/*.snap'],
+    plugins: { jest: plugin },
+    processor: 'jest/snapshots',
+  },
 };
 
 export = plugin;

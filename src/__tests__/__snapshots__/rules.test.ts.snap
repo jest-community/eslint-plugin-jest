@@ -117,6 +117,14 @@ exports[`rules should export configs that refer to actual rules 1`] = `
             "postprocess": [Function],
             "preprocess": [Function],
           },
+          "snapshots": {
+            "meta": {
+              "name": "eslint-plugin-jest",
+              "version": "27.8.0",
+            },
+            "postprocess": [Function],
+            "preprocess": [Function],
+          },
         },
         "rules": {
           "consistent-test-it": {
@@ -1597,6 +1605,14 @@ If your function does not access \`this\`, you can annotate it with \`this: void
             "postprocess": [Function],
             "preprocess": [Function],
           },
+          "snapshots": {
+            "meta": {
+              "name": "eslint-plugin-jest",
+              "version": "27.8.0",
+            },
+            "postprocess": [Function],
+            "preprocess": [Function],
+          },
         },
         "rules": {
           "consistent-test-it": {
@@ -2991,6 +3007,1427 @@ If your function does not access \`this\`, you can annotate it with \`this: void
       "jest/valid-title": "error",
     },
   },
+  "flat/snapshots": {
+    "files": [
+      "**/*.snap",
+    ],
+    "plugins": {
+      "jest": {
+        "configs": [Circular],
+        "environments": {
+          "globals": {
+            "globals": {
+              "afterAll": false,
+              "afterEach": false,
+              "beforeAll": false,
+              "beforeEach": false,
+              "describe": false,
+              "expect": false,
+              "fit": false,
+              "it": false,
+              "jest": false,
+              "test": false,
+              "xdescribe": false,
+              "xit": false,
+              "xtest": false,
+            },
+          },
+        },
+        "meta": {
+          "name": "eslint-plugin-jest",
+          "version": "27.8.0",
+        },
+        "processors": {
+          ".snap": {
+            "meta": {
+              "name": "eslint-plugin-jest",
+              "version": "27.8.0",
+            },
+            "postprocess": [Function],
+            "preprocess": [Function],
+          },
+          "snapshots": {
+            "meta": {
+              "name": "eslint-plugin-jest",
+              "version": "27.8.0",
+            },
+            "postprocess": [Function],
+            "preprocess": [Function],
+          },
+        },
+        "rules": {
+          "consistent-test-it": {
+            "create": [Function],
+            "defaultOptions": [
+              {
+                "fn": "test",
+                "withinDescribe": "it",
+              },
+            ],
+            "meta": {
+              "docs": {
+                "category": "Best Practices",
+                "description": "Enforce \`test\` and \`it\` usage conventions",
+                "recommended": false,
+                "url": "https://github.com/jest-community/eslint-plugin-jest/blob/v27.8.0/docs/rules/consistent-test-it.md",
+              },
+              "fixable": "code",
+              "messages": {
+                "consistentMethod": "Prefer using '{{ testKeyword }}' instead of '{{ oppositeTestKeyword }}'",
+                "consistentMethodWithinDescribe": "Prefer using '{{ testKeywordWithinDescribe }}' instead of '{{ oppositeTestKeyword }}' within describe",
+              },
+              "schema": [
+                {
+                  "additionalProperties": false,
+                  "properties": {
+                    "fn": {
+                      "enum": [
+                        "it",
+                        "test",
+                      ],
+                    },
+                    "withinDescribe": {
+                      "enum": [
+                        "it",
+                        "test",
+                      ],
+                    },
+                  },
+                  "type": "object",
+                },
+              ],
+              "type": "suggestion",
+            },
+          },
+          "expect-expect": {
+            "create": [Function],
+            "defaultOptions": [
+              {
+                "additionalTestBlockFunctions": [],
+                "assertFunctionNames": [
+                  "expect",
+                ],
+              },
+            ],
+            "meta": {
+              "docs": {
+                "category": "Best Practices",
+                "description": "Enforce assertion to be made in a test body",
+                "recommended": "warn",
+                "url": "https://github.com/jest-community/eslint-plugin-jest/blob/v27.8.0/docs/rules/expect-expect.md",
+              },
+              "messages": {
+                "noAssertions": "Test has no assertions",
+              },
+              "schema": [
+                {
+                  "additionalProperties": false,
+                  "properties": {
+                    "additionalTestBlockFunctions": {
+                      "items": {
+                        "type": "string",
+                      },
+                      "type": "array",
+                    },
+                    "assertFunctionNames": {
+                      "items": [
+                        {
+                          "type": "string",
+                        },
+                      ],
+                      "type": "array",
+                    },
+                  },
+                  "type": "object",
+                },
+              ],
+              "type": "suggestion",
+            },
+          },
+          "max-expects": {
+            "create": [Function],
+            "defaultOptions": [
+              {
+                "max": 5,
+              },
+            ],
+            "meta": {
+              "docs": {
+                "category": "Best Practices",
+                "description": "Enforces a maximum number assertion calls in a test body",
+                "recommended": false,
+                "url": "https://github.com/jest-community/eslint-plugin-jest/blob/v27.8.0/docs/rules/max-expects.md",
+              },
+              "messages": {
+                "exceededMaxAssertion": "Too many assertion calls ({{ count }}) - maximum allowed is {{ max }}",
+              },
+              "schema": [
+                {
+                  "additionalProperties": false,
+                  "properties": {
+                    "max": {
+                      "minimum": 1,
+                      "type": "integer",
+                    },
+                  },
+                  "type": "object",
+                },
+              ],
+              "type": "suggestion",
+            },
+          },
+          "max-nested-describe": {
+            "create": [Function],
+            "defaultOptions": [
+              {
+                "max": 5,
+              },
+            ],
+            "meta": {
+              "docs": {
+                "category": "Best Practices",
+                "description": "Enforces a maximum depth to nested describe calls",
+                "recommended": false,
+                "url": "https://github.com/jest-community/eslint-plugin-jest/blob/v27.8.0/docs/rules/max-nested-describe.md",
+              },
+              "messages": {
+                "exceededMaxDepth": "Too many nested describe calls ({{ depth }}) - maximum allowed is {{ max }}",
+              },
+              "schema": [
+                {
+                  "additionalProperties": false,
+                  "properties": {
+                    "max": {
+                      "minimum": 0,
+                      "type": "integer",
+                    },
+                  },
+                  "type": "object",
+                },
+              ],
+              "type": "suggestion",
+            },
+          },
+          "no-alias-methods": {
+            "create": [Function],
+            "defaultOptions": [],
+            "meta": {
+              "docs": {
+                "category": "Best Practices",
+                "description": "Disallow alias methods",
+                "recommended": "error",
+                "url": "https://github.com/jest-community/eslint-plugin-jest/blob/v27.8.0/docs/rules/no-alias-methods.md",
+              },
+              "fixable": "code",
+              "messages": {
+                "replaceAlias": "Replace {{ alias }}() with its canonical name of {{ canonical }}()",
+              },
+              "schema": [],
+              "type": "suggestion",
+            },
+          },
+          "no-commented-out-tests": {
+            "create": [Function],
+            "defaultOptions": [],
+            "meta": {
+              "docs": {
+                "category": "Best Practices",
+                "description": "Disallow commented out tests",
+                "recommended": "warn",
+                "url": "https://github.com/jest-community/eslint-plugin-jest/blob/v27.8.0/docs/rules/no-commented-out-tests.md",
+              },
+              "messages": {
+                "commentedTests": "Some tests seem to be commented",
+              },
+              "schema": [],
+              "type": "suggestion",
+            },
+          },
+          "no-conditional-expect": {
+            "create": [Function],
+            "defaultOptions": [],
+            "meta": {
+              "docs": {
+                "category": "Best Practices",
+                "description": "Disallow calling \`expect\` conditionally",
+                "recommended": "error",
+                "url": "https://github.com/jest-community/eslint-plugin-jest/blob/v27.8.0/docs/rules/no-conditional-expect.md",
+              },
+              "messages": {
+                "conditionalExpect": "Avoid calling \`expect\` conditionally\`",
+              },
+              "schema": [],
+              "type": "problem",
+            },
+          },
+          "no-conditional-in-test": {
+            "create": [Function],
+            "defaultOptions": [],
+            "meta": {
+              "docs": {
+                "category": "Best Practices",
+                "description": "Disallow conditional logic in tests",
+                "recommended": false,
+                "url": "https://github.com/jest-community/eslint-plugin-jest/blob/v27.8.0/docs/rules/no-conditional-in-test.md",
+              },
+              "messages": {
+                "conditionalInTest": "Avoid having conditionals in tests",
+              },
+              "schema": [],
+              "type": "problem",
+            },
+          },
+          "no-confusing-set-timeout": {
+            "create": [Function],
+            "defaultOptions": [],
+            "meta": {
+              "docs": {
+                "category": "Best Practices",
+                "description": "Disallow confusing usages of jest.setTimeout",
+                "recommended": false,
+                "url": "https://github.com/jest-community/eslint-plugin-jest/blob/v27.8.0/docs/rules/no-confusing-set-timeout.md",
+              },
+              "messages": {
+                "globalSetTimeout": "\`jest.setTimeout\` should be call in \`global\` scope",
+                "multipleSetTimeouts": "Do not call \`jest.setTimeout\` multiple times, as only the last call will have an effect",
+                "orderSetTimeout": "\`jest.setTimeout\` should be placed before any other jest methods",
+              },
+              "schema": [],
+              "type": "problem",
+            },
+          },
+          "no-deprecated-functions": {
+            "create": [Function],
+            "defaultOptions": [],
+            "meta": {
+              "docs": {
+                "category": "Best Practices",
+                "description": "Disallow use of deprecated functions",
+                "recommended": "error",
+                "url": "https://github.com/jest-community/eslint-plugin-jest/blob/v27.8.0/docs/rules/no-deprecated-functions.md",
+              },
+              "fixable": "code",
+              "messages": {
+                "deprecatedFunction": "\`{{ deprecation }}\` has been deprecated in favor of \`{{ replacement }}\`",
+              },
+              "schema": [],
+              "type": "suggestion",
+            },
+          },
+          "no-disabled-tests": {
+            "create": [Function],
+            "defaultOptions": [],
+            "meta": {
+              "docs": {
+                "category": "Best Practices",
+                "description": "Disallow disabled tests",
+                "recommended": "warn",
+                "url": "https://github.com/jest-community/eslint-plugin-jest/blob/v27.8.0/docs/rules/no-disabled-tests.md",
+              },
+              "messages": {
+                "disabledSuite": "Disabled test suite",
+                "disabledTest": "Disabled test",
+                "missingFunction": "Test is missing function argument",
+                "pending": "Call to pending()",
+                "pendingSuite": "Call to pending() within test suite",
+                "pendingTest": "Call to pending() within test",
+              },
+              "schema": [],
+              "type": "suggestion",
+            },
+          },
+          "no-done-callback": {
+            "create": [Function],
+            "defaultOptions": [],
+            "meta": {
+              "docs": {
+                "category": "Best Practices",
+                "description": "Disallow using a callback in asynchronous tests and hooks",
+                "recommended": "error",
+                "url": "https://github.com/jest-community/eslint-plugin-jest/blob/v27.8.0/docs/rules/no-done-callback.md",
+              },
+              "hasSuggestions": true,
+              "messages": {
+                "noDoneCallback": "Return a Promise instead of relying on callback parameter",
+                "suggestWrappingInPromise": "Wrap in \`new Promise({{ callback }} => ...\`",
+                "useAwaitInsteadOfCallback": "Use await instead of callback in async functions",
+              },
+              "schema": [],
+              "type": "suggestion",
+            },
+          },
+          "no-duplicate-hooks": {
+            "create": [Function],
+            "defaultOptions": [],
+            "meta": {
+              "docs": {
+                "category": "Best Practices",
+                "description": "Disallow duplicate setup and teardown hooks",
+                "recommended": false,
+                "url": "https://github.com/jest-community/eslint-plugin-jest/blob/v27.8.0/docs/rules/no-duplicate-hooks.md",
+              },
+              "messages": {
+                "noDuplicateHook": "Duplicate {{hook}} in describe block",
+              },
+              "schema": [],
+              "type": "suggestion",
+            },
+          },
+          "no-export": {
+            "create": [Function],
+            "defaultOptions": [],
+            "meta": {
+              "docs": {
+                "category": "Best Practices",
+                "description": "Disallow using \`exports\` in files containing tests",
+                "recommended": "error",
+                "url": "https://github.com/jest-community/eslint-plugin-jest/blob/v27.8.0/docs/rules/no-export.md",
+              },
+              "messages": {
+                "unexpectedExport": "Do not export from a test file",
+              },
+              "schema": [],
+              "type": "suggestion",
+            },
+          },
+          "no-focused-tests": {
+            "create": [Function],
+            "defaultOptions": [],
+            "meta": {
+              "docs": {
+                "category": "Best Practices",
+                "description": "Disallow focused tests",
+                "recommended": "error",
+                "url": "https://github.com/jest-community/eslint-plugin-jest/blob/v27.8.0/docs/rules/no-focused-tests.md",
+              },
+              "hasSuggestions": true,
+              "messages": {
+                "focusedTest": "Unexpected focused test",
+                "suggestRemoveFocus": "Remove focus from test",
+              },
+              "schema": [],
+              "type": "suggestion",
+            },
+          },
+          "no-hooks": {
+            "create": [Function],
+            "defaultOptions": [
+              {
+                "allow": [],
+              },
+            ],
+            "meta": {
+              "docs": {
+                "category": "Best Practices",
+                "description": "Disallow setup and teardown hooks",
+                "recommended": false,
+                "url": "https://github.com/jest-community/eslint-plugin-jest/blob/v27.8.0/docs/rules/no-hooks.md",
+              },
+              "messages": {
+                "unexpectedHook": "Unexpected '{{ hookName }}' hook",
+              },
+              "schema": [
+                {
+                  "additionalProperties": false,
+                  "properties": {
+                    "allow": {
+                      "contains": [
+                        "beforeAll",
+                        "beforeEach",
+                        "afterAll",
+                        "afterEach",
+                      ],
+                      "type": "array",
+                    },
+                  },
+                  "type": "object",
+                },
+              ],
+              "type": "suggestion",
+            },
+          },
+          "no-identical-title": {
+            "create": [Function],
+            "defaultOptions": [],
+            "meta": {
+              "docs": {
+                "category": "Best Practices",
+                "description": "Disallow identical titles",
+                "recommended": "error",
+                "url": "https://github.com/jest-community/eslint-plugin-jest/blob/v27.8.0/docs/rules/no-identical-title.md",
+              },
+              "messages": {
+                "multipleDescribeTitle": "Describe block title is used multiple times in the same describe block",
+                "multipleTestTitle": "Test title is used multiple times in the same describe block",
+              },
+              "schema": [],
+              "type": "suggestion",
+            },
+          },
+          "no-if": {
+            "create": [Function],
+            "defaultOptions": [],
+            "meta": {
+              "deprecated": true,
+              "docs": {
+                "category": "Best Practices",
+                "description": "Disallow conditional logic",
+                "recommended": false,
+                "url": "https://github.com/jest-community/eslint-plugin-jest/blob/v27.8.0/docs/rules/no-if.md",
+              },
+              "messages": {
+                "conditionalInTest": "Test should not contain {{ condition }} statements",
+              },
+              "replacedBy": [
+                "no-conditional-in-test",
+              ],
+              "schema": [],
+              "type": "suggestion",
+            },
+          },
+          "no-interpolation-in-snapshots": {
+            "create": [Function],
+            "defaultOptions": [],
+            "meta": {
+              "docs": {
+                "category": "Best Practices",
+                "description": "Disallow string interpolation inside snapshots",
+                "recommended": "error",
+                "url": "https://github.com/jest-community/eslint-plugin-jest/blob/v27.8.0/docs/rules/no-interpolation-in-snapshots.md",
+              },
+              "messages": {
+                "noInterpolation": "Do not use string interpolation inside of snapshots",
+              },
+              "schema": [],
+              "type": "problem",
+            },
+          },
+          "no-jasmine-globals": {
+            "create": [Function],
+            "defaultOptions": [],
+            "meta": {
+              "docs": {
+                "category": "Best Practices",
+                "description": "Disallow Jasmine globals",
+                "recommended": "error",
+                "url": "https://github.com/jest-community/eslint-plugin-jest/blob/v27.8.0/docs/rules/no-jasmine-globals.md",
+              },
+              "fixable": "code",
+              "messages": {
+                "illegalFail": "Illegal usage of \`fail\`, prefer throwing an error, or the \`done.fail\` callback",
+                "illegalGlobal": "Illegal usage of global \`{{ global }}\`, prefer \`{{ replacement }}\`",
+                "illegalJasmine": "Illegal usage of jasmine global",
+                "illegalMethod": "Illegal usage of \`{{ method }}\`, prefer \`{{ replacement }}\`",
+                "illegalPending": "Illegal usage of \`pending\`, prefer explicitly skipping a test using \`test.skip\`",
+              },
+              "schema": [],
+              "type": "suggestion",
+            },
+          },
+          "no-large-snapshots": {
+            "create": [Function],
+            "defaultOptions": [
+              {},
+            ],
+            "meta": {
+              "docs": {
+                "category": "Best Practices",
+                "description": "Disallow large snapshots",
+                "recommended": false,
+                "url": "https://github.com/jest-community/eslint-plugin-jest/blob/v27.8.0/docs/rules/no-large-snapshots.md",
+              },
+              "messages": {
+                "noSnapshot": "\`{{ lineCount }}\`s should begin with lowercase",
+                "tooLongSnapshots": "Expected Jest snapshot to be smaller than {{ lineLimit }} lines but was {{ lineCount }} lines long",
+              },
+              "schema": [
+                {
+                  "additionalProperties": false,
+                  "properties": {
+                    "allowedSnapshots": {
+                      "additionalProperties": {
+                        "type": "array",
+                      },
+                      "type": "object",
+                    },
+                    "inlineMaxSize": {
+                      "type": "number",
+                    },
+                    "maxSize": {
+                      "type": "number",
+                    },
+                  },
+                  "type": "object",
+                },
+              ],
+              "type": "suggestion",
+            },
+          },
+          "no-mocks-import": {
+            "create": [Function],
+            "defaultOptions": [],
+            "meta": {
+              "docs": {
+                "category": "Best Practices",
+                "description": "Disallow manually importing from \`__mocks__\`",
+                "recommended": "error",
+                "url": "https://github.com/jest-community/eslint-plugin-jest/blob/v27.8.0/docs/rules/no-mocks-import.md",
+              },
+              "messages": {
+                "noManualImport": "Mocks should not be manually imported from a __mocks__ directory. Instead use \`jest.mock\` and import from the original module path",
+              },
+              "schema": [],
+              "type": "problem",
+            },
+          },
+          "no-restricted-jest-methods": {
+            "create": [Function],
+            "defaultOptions": [
+              {},
+            ],
+            "meta": {
+              "docs": {
+                "category": "Best Practices",
+                "description": "Disallow specific \`jest.\` methods",
+                "recommended": false,
+                "url": "https://github.com/jest-community/eslint-plugin-jest/blob/v27.8.0/docs/rules/no-restricted-jest-methods.md",
+              },
+              "messages": {
+                "restrictedJestMethod": "Use of \`{{ restriction }}\` is disallowed",
+                "restrictedJestMethodWithMessage": "{{ message }}",
+              },
+              "schema": [
+                {
+                  "additionalProperties": {
+                    "type": [
+                      "string",
+                      "null",
+                    ],
+                  },
+                  "type": "object",
+                },
+              ],
+              "type": "suggestion",
+            },
+          },
+          "no-restricted-matchers": {
+            "create": [Function],
+            "defaultOptions": [
+              {},
+            ],
+            "meta": {
+              "docs": {
+                "category": "Best Practices",
+                "description": "Disallow specific matchers & modifiers",
+                "recommended": false,
+                "url": "https://github.com/jest-community/eslint-plugin-jest/blob/v27.8.0/docs/rules/no-restricted-matchers.md",
+              },
+              "messages": {
+                "restrictedChain": "Use of \`{{ restriction }}\` is disallowed",
+                "restrictedChainWithMessage": "{{ message }}",
+              },
+              "schema": [
+                {
+                  "additionalProperties": {
+                    "type": [
+                      "string",
+                      "null",
+                    ],
+                  },
+                  "type": "object",
+                },
+              ],
+              "type": "suggestion",
+            },
+          },
+          "no-standalone-expect": {
+            "create": [Function],
+            "defaultOptions": [
+              {
+                "additionalTestBlockFunctions": [],
+              },
+            ],
+            "meta": {
+              "docs": {
+                "category": "Best Practices",
+                "description": "Disallow using \`expect\` outside of \`it\` or \`test\` blocks",
+                "recommended": "error",
+                "url": "https://github.com/jest-community/eslint-plugin-jest/blob/v27.8.0/docs/rules/no-standalone-expect.md",
+              },
+              "messages": {
+                "unexpectedExpect": "Expect must be inside of a test block",
+              },
+              "schema": [
+                {
+                  "additionalProperties": false,
+                  "properties": {
+                    "additionalTestBlockFunctions": {
+                      "items": {
+                        "type": "string",
+                      },
+                      "type": "array",
+                    },
+                  },
+                },
+              ],
+              "type": "suggestion",
+            },
+          },
+          "no-test-prefixes": {
+            "create": [Function],
+            "defaultOptions": [],
+            "meta": {
+              "docs": {
+                "category": "Best Practices",
+                "description": "Require using \`.only\` and \`.skip\` over \`f\` and \`x\`",
+                "recommended": "error",
+                "url": "https://github.com/jest-community/eslint-plugin-jest/blob/v27.8.0/docs/rules/no-test-prefixes.md",
+              },
+              "fixable": "code",
+              "messages": {
+                "usePreferredName": "Use "{{ preferredNodeName }}" instead",
+              },
+              "schema": [],
+              "type": "suggestion",
+            },
+          },
+          "no-test-return-statement": {
+            "create": [Function],
+            "defaultOptions": [],
+            "meta": {
+              "docs": {
+                "category": "Best Practices",
+                "description": "Disallow explicitly returning from tests",
+                "recommended": false,
+                "url": "https://github.com/jest-community/eslint-plugin-jest/blob/v27.8.0/docs/rules/no-test-return-statement.md",
+              },
+              "messages": {
+                "noReturnValue": "Jest tests should not return a value",
+              },
+              "schema": [],
+              "type": "suggestion",
+            },
+          },
+          "no-untyped-mock-factory": {
+            "create": [Function],
+            "defaultOptions": [],
+            "meta": {
+              "docs": {
+                "category": "Best Practices",
+                "description": "Disallow using \`jest.mock()\` factories without an explicit type parameter",
+                "recommended": false,
+                "url": "https://github.com/jest-community/eslint-plugin-jest/blob/v27.8.0/docs/rules/no-untyped-mock-factory.md",
+              },
+              "fixable": "code",
+              "messages": {
+                "addTypeParameterToModuleMock": "Add a type parameter to the mock factory such as \`typeof import({{ moduleName }})\`",
+              },
+              "schema": [],
+              "type": "suggestion",
+            },
+          },
+          "prefer-called-with": {
+            "create": [Function],
+            "defaultOptions": [],
+            "meta": {
+              "docs": {
+                "category": "Best Practices",
+                "description": "Suggest using \`toBeCalledWith()\` or \`toHaveBeenCalledWith()\`",
+                "recommended": false,
+                "url": "https://github.com/jest-community/eslint-plugin-jest/blob/v27.8.0/docs/rules/prefer-called-with.md",
+              },
+              "messages": {
+                "preferCalledWith": "Prefer {{ matcherName }}With(/* expected args */)",
+              },
+              "schema": [],
+              "type": "suggestion",
+            },
+          },
+          "prefer-comparison-matcher": {
+            "create": [Function],
+            "defaultOptions": [],
+            "meta": {
+              "docs": {
+                "category": "Best Practices",
+                "description": "Suggest using the built-in comparison matchers",
+                "recommended": false,
+                "url": "https://github.com/jest-community/eslint-plugin-jest/blob/v27.8.0/docs/rules/prefer-comparison-matcher.md",
+              },
+              "fixable": "code",
+              "messages": {
+                "useToBeComparison": "Prefer using \`{{ preferredMatcher }}\` instead",
+              },
+              "schema": [],
+              "type": "suggestion",
+            },
+          },
+          "prefer-each": {
+            "create": [Function],
+            "defaultOptions": [],
+            "meta": {
+              "docs": {
+                "category": "Best Practices",
+                "description": "Prefer using \`.each\` rather than manual loops",
+                "recommended": false,
+                "url": "https://github.com/jest-community/eslint-plugin-jest/blob/v27.8.0/docs/rules/prefer-each.md",
+              },
+              "messages": {
+                "preferEach": "prefer using \`{{ fn }}.each\` rather than a manual loop",
+              },
+              "schema": [],
+              "type": "suggestion",
+            },
+          },
+          "prefer-equality-matcher": {
+            "create": [Function],
+            "defaultOptions": [],
+            "meta": {
+              "docs": {
+                "category": "Best Practices",
+                "description": "Suggest using the built-in equality matchers",
+                "recommended": false,
+                "url": "https://github.com/jest-community/eslint-plugin-jest/blob/v27.8.0/docs/rules/prefer-equality-matcher.md",
+              },
+              "hasSuggestions": true,
+              "messages": {
+                "suggestEqualityMatcher": "Use \`{{ equalityMatcher }}\`",
+                "useEqualityMatcher": "Prefer using one of the equality matchers instead",
+              },
+              "schema": [],
+              "type": "suggestion",
+            },
+          },
+          "prefer-expect-assertions": {
+            "create": [Function],
+            "defaultOptions": [
+              {
+                "onlyFunctionsWithAsyncKeyword": false,
+                "onlyFunctionsWithExpectInCallback": false,
+                "onlyFunctionsWithExpectInLoop": false,
+              },
+            ],
+            "meta": {
+              "docs": {
+                "category": "Best Practices",
+                "description": "Suggest using \`expect.assertions()\` OR \`expect.hasAssertions()\`",
+                "recommended": false,
+                "url": "https://github.com/jest-community/eslint-plugin-jest/blob/v27.8.0/docs/rules/prefer-expect-assertions.md",
+              },
+              "hasSuggestions": true,
+              "messages": {
+                "assertionsRequiresNumberArgument": "This argument should be a number",
+                "assertionsRequiresOneArgument": "\`expect.assertions\` excepts a single argument of type number",
+                "hasAssertionsTakesNoArguments": "\`expect.hasAssertions\` expects no arguments",
+                "haveExpectAssertions": "Every test should have either \`expect.assertions(<number of assertions>)\` or \`expect.hasAssertions()\` as its first expression",
+                "suggestAddingAssertions": "Add \`expect.assertions(<number of assertions>)\`",
+                "suggestAddingHasAssertions": "Add \`expect.hasAssertions()\`",
+                "suggestRemovingExtraArguments": "Remove extra arguments",
+              },
+              "schema": [
+                {
+                  "additionalProperties": false,
+                  "properties": {
+                    "onlyFunctionsWithAsyncKeyword": {
+                      "type": "boolean",
+                    },
+                    "onlyFunctionsWithExpectInCallback": {
+                      "type": "boolean",
+                    },
+                    "onlyFunctionsWithExpectInLoop": {
+                      "type": "boolean",
+                    },
+                  },
+                  "type": "object",
+                },
+              ],
+              "type": "suggestion",
+            },
+          },
+          "prefer-expect-resolves": {
+            "create": [Function],
+            "defaultOptions": [],
+            "meta": {
+              "docs": {
+                "category": "Best Practices",
+                "description": "Prefer \`await expect(...).resolves\` over \`expect(await ...)\` syntax",
+                "recommended": false,
+                "url": "https://github.com/jest-community/eslint-plugin-jest/blob/v27.8.0/docs/rules/prefer-expect-resolves.md",
+              },
+              "fixable": "code",
+              "messages": {
+                "expectResolves": "Use \`await expect(...).resolves instead",
+              },
+              "schema": [],
+              "type": "suggestion",
+            },
+          },
+          "prefer-hooks-in-order": {
+            "create": [Function],
+            "defaultOptions": [],
+            "meta": {
+              "docs": {
+                "category": "Best Practices",
+                "description": "Prefer having hooks in a consistent order",
+                "recommended": false,
+                "url": "https://github.com/jest-community/eslint-plugin-jest/blob/v27.8.0/docs/rules/prefer-hooks-in-order.md",
+              },
+              "messages": {
+                "reorderHooks": "\`{{ currentHook }}\` hooks should be before any \`{{ previousHook }}\` hooks",
+              },
+              "schema": [],
+              "type": "suggestion",
+            },
+          },
+          "prefer-hooks-on-top": {
+            "create": [Function],
+            "defaultOptions": [],
+            "meta": {
+              "docs": {
+                "category": "Best Practices",
+                "description": "Suggest having hooks before any test cases",
+                "recommended": false,
+                "url": "https://github.com/jest-community/eslint-plugin-jest/blob/v27.8.0/docs/rules/prefer-hooks-on-top.md",
+              },
+              "messages": {
+                "noHookOnTop": "Hooks should come before test cases",
+              },
+              "schema": [],
+              "type": "suggestion",
+            },
+          },
+          "prefer-lowercase-title": {
+            "create": [Function],
+            "defaultOptions": [
+              {
+                "allowedPrefixes": [],
+                "ignore": [],
+                "ignoreTopLevelDescribe": false,
+              },
+            ],
+            "meta": {
+              "docs": {
+                "category": "Best Practices",
+                "description": "Enforce lowercase test names",
+                "recommended": false,
+                "url": "https://github.com/jest-community/eslint-plugin-jest/blob/v27.8.0/docs/rules/prefer-lowercase-title.md",
+              },
+              "fixable": "code",
+              "messages": {
+                "unexpectedLowercase": "\`{{ method }}\`s should begin with lowercase",
+              },
+              "schema": [
+                {
+                  "additionalProperties": false,
+                  "properties": {
+                    "allowedPrefixes": {
+                      "additionalItems": false,
+                      "items": {
+                        "type": "string",
+                      },
+                      "type": "array",
+                    },
+                    "ignore": {
+                      "additionalItems": false,
+                      "items": {
+                        "enum": [
+                          "describe",
+                          "test",
+                          "it",
+                        ],
+                      },
+                      "type": "array",
+                    },
+                    "ignoreTopLevelDescribe": {
+                      "default": false,
+                      "type": "boolean",
+                    },
+                  },
+                  "type": "object",
+                },
+              ],
+              "type": "suggestion",
+            },
+          },
+          "prefer-mock-promise-shorthand": {
+            "create": [Function],
+            "defaultOptions": [],
+            "meta": {
+              "docs": {
+                "category": "Best Practices",
+                "description": "Prefer mock resolved/rejected shorthands for promises",
+                "recommended": false,
+                "url": "https://github.com/jest-community/eslint-plugin-jest/blob/v27.8.0/docs/rules/prefer-mock-promise-shorthand.md",
+              },
+              "fixable": "code",
+              "messages": {
+                "useMockShorthand": "Prefer {{ replacement }}",
+              },
+              "schema": [],
+              "type": "suggestion",
+            },
+          },
+          "prefer-snapshot-hint": {
+            "create": [Function],
+            "defaultOptions": [
+              "multi",
+            ],
+            "meta": {
+              "docs": {
+                "category": "Best Practices",
+                "description": "Prefer including a hint with external snapshots",
+                "recommended": false,
+                "url": "https://github.com/jest-community/eslint-plugin-jest/blob/v27.8.0/docs/rules/prefer-snapshot-hint.md",
+              },
+              "messages": {
+                "missingHint": "You should provide a hint for this snapshot",
+              },
+              "schema": [
+                {
+                  "enum": [
+                    "always",
+                    "multi",
+                  ],
+                  "type": "string",
+                },
+              ],
+              "type": "suggestion",
+            },
+          },
+          "prefer-spy-on": {
+            "create": [Function],
+            "defaultOptions": [],
+            "meta": {
+              "docs": {
+                "category": "Best Practices",
+                "description": "Suggest using \`jest.spyOn()\`",
+                "recommended": false,
+                "url": "https://github.com/jest-community/eslint-plugin-jest/blob/v27.8.0/docs/rules/prefer-spy-on.md",
+              },
+              "fixable": "code",
+              "messages": {
+                "useJestSpyOn": "Use jest.spyOn() instead",
+              },
+              "schema": [],
+              "type": "suggestion",
+            },
+          },
+          "prefer-strict-equal": {
+            "create": [Function],
+            "defaultOptions": [],
+            "meta": {
+              "docs": {
+                "category": "Best Practices",
+                "description": "Suggest using \`toStrictEqual()\`",
+                "recommended": false,
+                "url": "https://github.com/jest-community/eslint-plugin-jest/blob/v27.8.0/docs/rules/prefer-strict-equal.md",
+              },
+              "hasSuggestions": true,
+              "messages": {
+                "suggestReplaceWithStrictEqual": "Replace with \`toStrictEqual()\`",
+                "useToStrictEqual": "Use \`toStrictEqual()\` instead",
+              },
+              "schema": [],
+              "type": "suggestion",
+            },
+          },
+          "prefer-to-be": {
+            "create": [Function],
+            "defaultOptions": [],
+            "meta": {
+              "docs": {
+                "category": "Best Practices",
+                "description": "Suggest using \`toBe()\` for primitive literals",
+                "recommended": false,
+                "url": "https://github.com/jest-community/eslint-plugin-jest/blob/v27.8.0/docs/rules/prefer-to-be.md",
+              },
+              "fixable": "code",
+              "messages": {
+                "useToBe": "Use \`toBe\` when expecting primitive literals",
+                "useToBeDefined": "Use \`toBeDefined\` instead",
+                "useToBeNaN": "Use \`toBeNaN\` instead",
+                "useToBeNull": "Use \`toBeNull\` instead",
+                "useToBeUndefined": "Use \`toBeUndefined\` instead",
+              },
+              "schema": [],
+              "type": "suggestion",
+            },
+          },
+          "prefer-to-contain": {
+            "create": [Function],
+            "defaultOptions": [],
+            "meta": {
+              "docs": {
+                "category": "Best Practices",
+                "description": "Suggest using \`toContain()\`",
+                "recommended": false,
+                "url": "https://github.com/jest-community/eslint-plugin-jest/blob/v27.8.0/docs/rules/prefer-to-contain.md",
+              },
+              "fixable": "code",
+              "messages": {
+                "useToContain": "Use toContain() instead",
+              },
+              "schema": [],
+              "type": "suggestion",
+            },
+          },
+          "prefer-to-have-length": {
+            "create": [Function],
+            "defaultOptions": [],
+            "meta": {
+              "docs": {
+                "category": "Best Practices",
+                "description": "Suggest using \`toHaveLength()\`",
+                "recommended": false,
+                "url": "https://github.com/jest-community/eslint-plugin-jest/blob/v27.8.0/docs/rules/prefer-to-have-length.md",
+              },
+              "fixable": "code",
+              "messages": {
+                "useToHaveLength": "Use toHaveLength() instead",
+              },
+              "schema": [],
+              "type": "suggestion",
+            },
+          },
+          "prefer-todo": {
+            "create": [Function],
+            "defaultOptions": [],
+            "meta": {
+              "docs": {
+                "category": "Best Practices",
+                "description": "Suggest using \`test.todo\`",
+                "recommended": false,
+                "url": "https://github.com/jest-community/eslint-plugin-jest/blob/v27.8.0/docs/rules/prefer-todo.md",
+              },
+              "fixable": "code",
+              "messages": {
+                "emptyTest": "Prefer todo test case over empty test case",
+                "unimplementedTest": "Prefer todo test case over unimplemented test case",
+              },
+              "schema": [],
+              "type": "layout",
+            },
+          },
+          "require-hook": {
+            "create": [Function],
+            "defaultOptions": [
+              {
+                "allowedFunctionCalls": [],
+              },
+            ],
+            "meta": {
+              "docs": {
+                "category": "Best Practices",
+                "description": "Require setup and teardown code to be within a hook",
+                "recommended": false,
+                "url": "https://github.com/jest-community/eslint-plugin-jest/blob/v27.8.0/docs/rules/require-hook.md",
+              },
+              "messages": {
+                "useHook": "This should be done within a hook",
+              },
+              "schema": [
+                {
+                  "additionalProperties": false,
+                  "properties": {
+                    "allowedFunctionCalls": {
+                      "items": {
+                        "type": "string",
+                      },
+                      "type": "array",
+                    },
+                  },
+                  "type": "object",
+                },
+              ],
+              "type": "suggestion",
+            },
+          },
+          "require-to-throw-message": {
+            "create": [Function],
+            "defaultOptions": [],
+            "meta": {
+              "docs": {
+                "category": "Best Practices",
+                "description": "Require a message for \`toThrow()\`",
+                "recommended": false,
+                "url": "https://github.com/jest-community/eslint-plugin-jest/blob/v27.8.0/docs/rules/require-to-throw-message.md",
+              },
+              "messages": {
+                "addErrorMessage": "Add an error message to {{ matcherName }}()",
+              },
+              "schema": [],
+              "type": "suggestion",
+            },
+          },
+          "require-top-level-describe": {
+            "create": [Function],
+            "defaultOptions": [
+              {},
+            ],
+            "meta": {
+              "docs": {
+                "category": "Best Practices",
+                "description": "Require test cases and hooks to be inside a \`describe\` block",
+                "recommended": false,
+                "url": "https://github.com/jest-community/eslint-plugin-jest/blob/v27.8.0/docs/rules/require-top-level-describe.md",
+              },
+              "messages": {
+                "tooManyDescribes": "There should not be more than {{ max }} describe{{ s }} at the top level",
+                "unexpectedHook": "All hooks must be wrapped in a describe block.",
+                "unexpectedTestCase": "All test cases must be wrapped in a describe block.",
+              },
+              "schema": [
+                {
+                  "additionalProperties": false,
+                  "properties": {
+                    "maxNumberOfTopLevelDescribes": {
+                      "minimum": 1,
+                      "type": "number",
+                    },
+                  },
+                  "type": "object",
+                },
+              ],
+              "type": "suggestion",
+            },
+          },
+          "unbound-method": {
+            "create": [Function],
+            "defaultOptions": [
+              {
+                "ignoreStatic": false,
+              },
+            ],
+            "meta": {
+              "docs": {
+                "category": "Best Practices",
+                "description": "Enforce unbound methods are called with their expected scope",
+                "recommended": false,
+                "requiresTypeChecking": true,
+                "url": "https://github.com/jest-community/eslint-plugin-jest/blob/v27.8.0/docs/rules/unbound-method.md",
+              },
+              "messages": {
+                "unbound": "Avoid referencing unbound methods which may cause unintentional scoping of \`this\`.",
+                "unboundWithoutThisAnnotation": "Avoid referencing unbound methods which may cause unintentional scoping of \`this\`.
+If your function does not access \`this\`, you can annotate it with \`this: void\`, or consider using an arrow function instead.",
+              },
+              "schema": [
+                {
+                  "additionalProperties": false,
+                  "properties": {
+                    "ignoreStatic": {
+                      "description": "Whether to skip checking whether \`static\` methods are correctly bound.",
+                      "type": "boolean",
+                    },
+                  },
+                  "type": "object",
+                },
+              ],
+              "type": "problem",
+            },
+          },
+          "valid-describe-callback": {
+            "create": [Function],
+            "defaultOptions": [],
+            "meta": {
+              "docs": {
+                "category": "Possible Errors",
+                "description": "Enforce valid \`describe()\` callback",
+                "recommended": "error",
+                "url": "https://github.com/jest-community/eslint-plugin-jest/blob/v27.8.0/docs/rules/valid-describe-callback.md",
+              },
+              "messages": {
+                "nameAndCallback": "Describe requires name and callback arguments",
+                "noAsyncDescribeCallback": "No async describe callback",
+                "secondArgumentMustBeFunction": "Second argument must be function",
+                "unexpectedDescribeArgument": "Unexpected argument(s) in describe callback",
+                "unexpectedReturnInDescribe": "Unexpected return statement in describe callback",
+              },
+              "schema": [],
+              "type": "problem",
+            },
+          },
+          "valid-expect": {
+            "create": [Function],
+            "defaultOptions": [
+              {
+                "alwaysAwait": false,
+                "asyncMatchers": [
+                  "toReject",
+                  "toResolve",
+                ],
+                "maxArgs": 1,
+                "minArgs": 1,
+              },
+            ],
+            "meta": {
+              "docs": {
+                "category": "Best Practices",
+                "description": "Enforce valid \`expect()\` usage",
+                "recommended": "error",
+                "url": "https://github.com/jest-community/eslint-plugin-jest/blob/v27.8.0/docs/rules/valid-expect.md",
+              },
+              "messages": {
+                "asyncMustBeAwaited": "Async assertions must be awaited{{ orReturned }}",
+                "matcherNotCalled": "Matchers must be called to assert",
+                "matcherNotFound": "Expect must have a corresponding matcher call",
+                "modifierUnknown": "Expect has an unknown modifier",
+                "notEnoughArgs": "Expect requires at least {{ amount }} argument{{ s }}",
+                "promisesWithAsyncAssertionsMustBeAwaited": "Promises which return async assertions must be awaited{{ orReturned }}",
+                "tooManyArgs": "Expect takes at most {{ amount }} argument{{ s }}",
+              },
+              "schema": [
+                {
+                  "additionalProperties": false,
+                  "properties": {
+                    "alwaysAwait": {
+                      "default": false,
+                      "type": "boolean",
+                    },
+                    "asyncMatchers": {
+                      "items": {
+                        "type": "string",
+                      },
+                      "type": "array",
+                    },
+                    "maxArgs": {
+                      "minimum": 1,
+                      "type": "number",
+                    },
+                    "minArgs": {
+                      "minimum": 1,
+                      "type": "number",
+                    },
+                  },
+                  "type": "object",
+                },
+              ],
+              "type": "suggestion",
+            },
+          },
+          "valid-expect-in-promise": {
+            "create": [Function],
+            "defaultOptions": [],
+            "meta": {
+              "docs": {
+                "category": "Best Practices",
+                "description": "Require promises that have expectations in their chain to be valid",
+                "recommended": "error",
+                "url": "https://github.com/jest-community/eslint-plugin-jest/blob/v27.8.0/docs/rules/valid-expect-in-promise.md",
+              },
+              "messages": {
+                "expectInFloatingPromise": "This promise should either be returned or awaited to ensure the expects in its chain are called",
+              },
+              "schema": [],
+              "type": "suggestion",
+            },
+          },
+          "valid-title": {
+            "create": [Function],
+            "defaultOptions": [
+              {
+                "disallowedWords": [],
+                "ignoreSpaces": false,
+                "ignoreTypeOfDescribeName": false,
+                "ignoreTypeOfTestName": false,
+              },
+            ],
+            "meta": {
+              "docs": {
+                "category": "Best Practices",
+                "description": "Enforce valid titles",
+                "recommended": "error",
+                "url": "https://github.com/jest-community/eslint-plugin-jest/blob/v27.8.0/docs/rules/valid-title.md",
+              },
+              "fixable": "code",
+              "messages": {
+                "accidentalSpace": "should not have leading or trailing spaces",
+                "disallowedWord": ""{{ word }}" is not allowed in test titles",
+                "duplicatePrefix": "should not have duplicate prefix",
+                "emptyTitle": "{{ jestFunctionName }} should not have an empty title",
+                "mustMatch": "{{ jestFunctionName }} should match {{ pattern }}",
+                "mustMatchCustom": "{{ message }}",
+                "mustNotMatch": "{{ jestFunctionName }} should not match {{ pattern }}",
+                "mustNotMatchCustom": "{{ message }}",
+                "titleMustBeString": "Title must be a string",
+              },
+              "schema": [
+                {
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^must(?:Not)?Match$": {
+                      "oneOf": [
+                        {
+                          "type": "string",
+                        },
+                        {
+                          "additionalItems": false,
+                          "items": {
+                            "type": "string",
+                          },
+                          "maxItems": 2,
+                          "minItems": 1,
+                          "type": "array",
+                        },
+                        {
+                          "additionalProperties": {
+                            "oneOf": [
+                              {
+                                "type": "string",
+                              },
+                              {
+                                "additionalItems": false,
+                                "items": {
+                                  "type": "string",
+                                },
+                                "maxItems": 2,
+                                "minItems": 1,
+                                "type": "array",
+                              },
+                            ],
+                          },
+                          "propertyNames": {
+                            "enum": [
+                              "describe",
+                              "test",
+                              "it",
+                            ],
+                          },
+                          "type": "object",
+                        },
+                      ],
+                    },
+                  },
+                  "properties": {
+                    "disallowedWords": {
+                      "items": {
+                        "type": "string",
+                      },
+                      "type": "array",
+                    },
+                    "ignoreSpaces": {
+                      "default": false,
+                      "type": "boolean",
+                    },
+                    "ignoreTypeOfDescribeName": {
+                      "default": false,
+                      "type": "boolean",
+                    },
+                    "ignoreTypeOfTestName": {
+                      "default": false,
+                      "type": "boolean",
+                    },
+                  },
+                  "type": "object",
+                },
+              ],
+              "type": "suggestion",
+            },
+          },
+        },
+      },
+    },
+    "processor": "jest/snapshots",
+  },
   "flat/style": {
     "languageOptions": {
       "globals": {
@@ -3037,6 +4474,14 @@ If your function does not access \`this\`, you can annotate it with \`this: void
         },
         "processors": {
           ".snap": {
+            "meta": {
+              "name": "eslint-plugin-jest",
+              "version": "27.8.0",
+            },
+            "postprocess": [Function],
+            "preprocess": [Function],
+          },
+          "snapshots": {
             "meta": {
               "name": "eslint-plugin-jest",
               "version": "27.8.0",

@@ -275,6 +275,35 @@ While the `recommended` and `style` configurations only change in major versions
 the `all` configuration may change in any release and is thus unsuited for
 installations requiring long-term consistency.
 
+## Snapshot processing
+
+> [!NOTE]
+>
+> This is only relevant for `eslint.config.js`
+
+This plugin provides a
+[custom processor](https://eslint.org/docs/latest/extend/custom-processors) to
+allow rules to "lint" snapshot files.
+
+For `.eslintrc` based configs, this is automatically enabled out of the box but
+must be opted into for `eslint.config.js` using the `flat/snapshots` config:
+
+```js
+const jest = require('eslint-plugin-jest');
+
+module.exports = [
+  {
+    ...jest.configs['flat/snapshots'],
+    rules: {
+      'jest/no-large-snapshots': ['error', { maxSize: 1 }],
+    },
+  },
+];
+```
+
+Unlike other configs, this includes a `files` array that matches `.snap` files
+meaning you can use it directly
+
 ## Rules
 
 <!-- begin auto-generated rules list -->
