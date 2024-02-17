@@ -4977,7 +4977,7 @@ __metadata:
     babel-jest: ^29.0.0
     babel-plugin-replace-ts-export-assignment: ^0.0.2
     dedent: ^1.5.0
-    eslint: ^7.0.0 || ^8.0.0
+    eslint: ^8.0.0
     eslint-config-prettier: ^9.0.0
     eslint-doc-generator: ^1.0.0
     eslint-plugin-eslint-comments: ^3.1.2
@@ -5003,7 +5003,7 @@ __metadata:
     typescript: ^5.0.4
   peerDependencies:
     "@typescript-eslint/eslint-plugin": ^5.0.0 || ^6.0.0 || ^7.0.0
-    eslint: ^7.0.0 || ^8.0.0
+    eslint: ^8.0.0
     jest: "*"
   peerDependenciesMeta:
     "@typescript-eslint/eslint-plugin":
@@ -5142,7 +5142,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint@npm:^7.0.0 || ^8.0.0":
+"eslint@npm:^8.0.0":
   version: 8.56.0
   resolution: "eslint@npm:8.56.0"
   dependencies:
