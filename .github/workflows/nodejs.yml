@@ -5,10 +5,12 @@ on:
     branches:
       - main
       - next
+      - next-next
   pull_request:
     branches:
       - main
       - next
+      - next-next
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
