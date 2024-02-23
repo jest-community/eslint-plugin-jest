@@ -1,3 +1,24 @@
+# [27.9.0](https://github.com/jest-community/eslint-plugin-jest/compare/v27.8.0...v27.9.0) (2024-02-16)
+
+
+### Features
+
+* add should-be-fine support for flat configs ([#1505](https://github.com/jest-community/eslint-plugin-jest/issues/1505)) ([4cc2a1b](https://github.com/jest-community/eslint-plugin-jest/commit/4cc2a1b680507ff006b5d2b02fa6d262584bb263))
+
+# [27.8.0](https://github.com/jest-community/eslint-plugin-jest/compare/v27.7.0...v27.8.0) (2024-02-13)
+
+
+### Features
+
+* support `failing.each` ([#1499](https://github.com/jest-community/eslint-plugin-jest/issues/1499)) ([9e9cf83](https://github.com/jest-community/eslint-plugin-jest/commit/9e9cf8302ae182402da853a11b05e1560ccc63ee))
+
+# [27.7.0](https://github.com/jest-community/eslint-plugin-jest/compare/v27.6.3...v27.7.0) (2024-02-13)
+
+
+### Features
+
+* allow `[@typescript-eslint](https://github.com/typescript-eslint)` v7 ([#1500](https://github.com/jest-community/eslint-plugin-jest/issues/1500)) ([6be2928](https://github.com/jest-community/eslint-plugin-jest/commit/6be2928816c69afca88a598e302910b113068ee9))
+
 ## [27.6.3](https://github.com/jest-community/eslint-plugin-jest/compare/v27.6.2...v27.6.3) (2024-01-12)
 
 

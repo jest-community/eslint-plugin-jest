@@ -1,6 +1,10 @@
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import type { Literal } from 'estree';
-import { type ParsedJestFnCall, createRule, parseJestFnCall } from './utils';
+import {
+  type ParsedJestFnCall,
+  createRule,
+  getSourceCode,
+  parseJestFnCall,
+} from './utils';
 
 const createFixerImports = (isModule: boolean, functionsToImport: string[]) => {
   const allImportsFormatted = functionsToImport.join(', ');
@@ -66,14 +70,15 @@ export default createRule({
           messageId: 'preferImportingJestGlobal',
           data: { jestFunctions: jestFunctionsToImportFormatted },
           fix(fixer) {
-            const sourceCode = context.getSourceCode();
+            const sourceCode = getSourceCode(context);
             const [firstNode] = sourceCode.ast.body;
 
-            const useStrictDirectiveExists =
+            // check if "use strict" directive exists
+            if (
               firstNode.type === AST_NODE_TYPES.ExpressionStatement &&
-              (firstNode.expression as Literal).value === 'use strict';
-
-            if (useStrictDirectiveExists) {
+              firstNode.expression.type === AST_NODE_TYPES.Literal &&
+              firstNode.expression.value === 'use strict'
+            ) {
               return fixer.insertTextAfter(
                 firstNode,
                 `\n${createFixerImports(isModule, jestFunctionsToImport)}`,
@@ -90,9 +95,8 @@ export default createRule({
               importNode &&
               importNode.type === AST_NODE_TYPES.ImportDeclaration
             ) {
-              const existingImports = importNode.specifiers.reduce(
+              const existingImports = importNode.specifiers.reduce<string[]>(
                 (imports, specifier) => {
-                  /* istanbul ignore else */
                   if (
                     specifier.type === AST_NODE_TYPES.ImportSpecifier &&
                     specifier.imported?.name
@@ -100,9 +104,15 @@ export default createRule({
                     imports.push(specifier.imported.name);
                   }
 
+                  if (
+                    specifier.type === AST_NODE_TYPES.ImportDefaultSpecifier
+                  ) {
+                    imports.push(specifier.local.name);
+                  }
+
                   return imports;
                 },
-                [] as string[],
+                [],
               );
 
               const allImports = [
@@ -121,19 +131,18 @@ export default createRule({
                 node.declarations.some(
                   declaration =>
                     declaration.init &&
-                    (declaration.init as any).callee &&
-                    (declaration.init as any).callee.name === 'require' &&
-                    (declaration.init as any).arguments?.[0]?.type ===
-                      'Literal' &&
-                    (declaration.init as any).arguments?.[0]?.value ===
-                      '@jest/globals',
+                    declaration.init.type === AST_NODE_TYPES.CallExpression &&
+                    declaration.init.callee.type ===
+                      AST_NODE_TYPES.Identifier &&
+                    declaration.init.callee.name === 'require' &&
+                    declaration.init.arguments[0]?.type === 'Literal' &&
+                    declaration.init.arguments[0]?.value === '@jest/globals' &&
+                    (declaration.id.type === AST_NODE_TYPES.Identifier ||
+                      declaration.id.type === AST_NODE_TYPES.ObjectPattern),
                 ),
             );
 
-            if (
-              requireNode &&
-              requireNode.type === AST_NODE_TYPES.VariableDeclaration
-            ) {
+            if (requireNode?.type === AST_NODE_TYPES.VariableDeclaration) {
               const existingImports =
                 requireNode.declarations[0]?.id.type ===
                 AST_NODE_TYPES.ObjectPattern
@@ -144,7 +153,7 @@ export default createRule({
                       ) {
                         return property.key.name;
                       }
-                      /* istanbul ignore else */
+
                       if (
                         property.type === AST_NODE_TYPES.Property &&
                         property.key.type === AST_NODE_TYPES.Literal
@@ -152,7 +161,6 @@ export default createRule({
                         return property.key.value;
                       }
 
-                      // istanbul ignore next
                       return null;
                     })
                   : [];
