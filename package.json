@@ -1,6 +1,6 @@
 {
   "name": "eslint-plugin-jest",
-  "version": "27.6.3",
+  "version": "27.9.0",
   "description": "ESLint rules for Jest",
   "keywords": [
     "eslint",
@@ -135,14 +135,14 @@
     "pinst": "^3.0.0",
     "prettier": "^3.0.0",
     "rimraf": "^5.0.0",
-    "semantic-release": "^22.0.0",
+    "semantic-release": "^23.0.0",
     "semver": "^7.3.5",
     "strip-ansi": "^6.0.0",
     "ts-node": "^10.2.1",
     "typescript": "^5.0.4"
   },
   "peerDependencies": {
-    "@typescript-eslint/eslint-plugin": "^5.0.0 || ^6.0.0",
+    "@typescript-eslint/eslint-plugin": "^5.0.0 || ^6.0.0 || ^7.0.0",
     "eslint": "^7.0.0 || ^8.0.0",
     "jest": "*"
   },
@@ -154,7 +154,7 @@
       "optional": true
     }
   },
-  "packageManager": "yarn@3.7.0",
+  "packageManager": "yarn@3.8.0",
   "engines": {
     "node": "^14.15.0 || ^16.10.0 || >=18.0.0"
   },
