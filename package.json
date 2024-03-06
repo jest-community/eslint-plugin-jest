@@ -162,6 +162,6 @@
     "provenance": true
   },
   "resolutions": {
-    "typescript": "~5.2.2"
+    "typescript": "~5.4.0"
   }
 }
