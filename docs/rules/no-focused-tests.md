@@ -4,7 +4,7 @@
 [config](https://github.com/jest-community/eslint-plugin-jest/blob/main/README.md#shareable-configurations).
 
 💡 This rule is manually fixable by
-[editor suggestions](https://eslint.org/docs/developer-guide/working-with-rules#providing-suggestions).
+[editor suggestions](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions).
 
 <!-- end auto-generated rule header -->
 
