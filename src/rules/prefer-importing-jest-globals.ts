@@ -1,4 +1,5 @@
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, type TSESTree } from '@typescript-eslint/utils';
+import jestFnNames from '../globals.json';
 import {
   type ParsedJestFnCall,
   createRule,
@@ -31,11 +32,42 @@ export default createRule({
   },
   defaultOptions: [],
   create(context) {
+    const jestFunctionNames: string[] = Object.keys(jestFnNames);
     const importedJestFunctions: string[] = [];
+    const importedFunctionsWithSource: Record<string, string> = {};
     const usedJestFunctions: ParsedJestFnCall[] = [];
 
     return {
-      CallExpression(node) {
+      ImportDeclaration(node: TSESTree.ImportDeclaration) {
+        node.specifiers.forEach(specifier => {
+          if (specifier.type === 'ImportSpecifier') {
+            importedFunctionsWithSource[specifier.local.name] =
+              node.source.value;
+          }
+        });
+      },
+      CallExpression(node: TSESTree.CallExpression) {
+        if (
+          node.type === AST_NODE_TYPES.CallExpression &&
+          node.callee.type === AST_NODE_TYPES.Identifier &&
+          jestFunctionNames.includes(node.callee.name) &&
+          importedFunctionsWithSource[node.callee.name] === '@jest/globals'
+        ) {
+          const jestFnCall: ParsedJestFnCall = {
+            head: {
+              type: 'import',
+              node: node.callee,
+              original: node.callee.name,
+              local: node.callee.name,
+            },
+            name: node.callee.name,
+            type: 'jest',
+            members: [],
+          };
+
+          usedJestFunctions.push(jestFnCall);
+        }
+
         const jestFnCall = parseJestFnCall(node, context);
 
         if (!jestFnCall) {
@@ -56,8 +88,8 @@ export default createRule({
         if (!jestFunctionsToReport.length) {
           return;
         }
-        const jestFunctionsToImport = jestFunctionsToReport.map(
-          jestFunction => jestFunction.name,
+        const jestFunctionsToImport = Array.from(
+          new Set(jestFunctionsToReport.map(jestFunction => jestFunction.name)),
         );
         const reportingNode = jestFunctionsToReport[0].head.node;
 
@@ -142,47 +174,45 @@ export default createRule({
                 ),
             );
 
-            if (requireNode?.type === AST_NODE_TYPES.VariableDeclaration) {
-              const existingImports =
-                requireNode.declarations[0]?.id.type ===
-                AST_NODE_TYPES.ObjectPattern
-                  ? requireNode.declarations[0]?.id.properties.map(property => {
-                      if (
-                        property.type === AST_NODE_TYPES.Property &&
-                        property.key.type === AST_NODE_TYPES.Identifier
-                      ) {
-                        return property.key.name;
-                      }
-
-                      if (
-                        property.type === AST_NODE_TYPES.Property &&
-                        property.key.type === AST_NODE_TYPES.Literal
-                      ) {
-                        return property.key.value;
-                      }
-
-                      return null;
-                    })
-                  : [];
-
-              const allImports = [
-                ...new Set([
-                  ...existingImports.filter(
-                    (imp): imp is string => imp !== null,
-                  ),
-                  ...jestFunctionsToImport,
-                ]),
-              ];
-
-              return fixer.replaceText(
-                requireNode,
-                `${createFixerImports(isModule, allImports)}`,
+            if (requireNode?.type !== AST_NODE_TYPES.VariableDeclaration) {
+              return fixer.insertTextBefore(
+                reportingNode,
+                `${createFixerImports(isModule, jestFunctionsToImport)}\n`,
               );
             }
 
-            return fixer.insertTextBefore(
-              reportingNode,
-              `${createFixerImports(isModule, jestFunctionsToImport)}\n`,
+            const existingImports =
+              requireNode.declarations[0]?.id.type ===
+              AST_NODE_TYPES.ObjectPattern
+                ? requireNode.declarations[0]?.id.properties.map(property => {
+                    if (
+                      property.type === AST_NODE_TYPES.Property &&
+                      property.key.type === AST_NODE_TYPES.Identifier
+                    ) {
+                      return property.key.name;
+                    }
+
+                    if (
+                      property.type === AST_NODE_TYPES.Property &&
+                      property.key.type === AST_NODE_TYPES.Literal
+                    ) {
+                      return property.key.value;
+                    }
+
+                    return null;
+                  })
+                : [];
+
+            const allImports = [
+              ...new Set([
+                ...existingImports.filter((imp): imp is string => imp !== null),
+                ...jestFunctionsToImport,
+              ]),
+            ];
+
+            return fixer.replaceText(
+              requireNode,
+              `${createFixerImports(isModule, allImports)}`,
             );
           },
         });

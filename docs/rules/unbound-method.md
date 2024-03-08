@@ -1,6 +1,7 @@
 # Enforce unbound methods are called with their expected scope (`unbound-method`)
 
-💭 This rule requires type information.
+💭 This rule requires
+[type information](https://typescript-eslint.io/linting/typed-linting).
 
 <!-- end auto-generated rule header -->
 
