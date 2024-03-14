@@ -8080,8 +8080,8 @@ __metadata:
   linkType: hard
 
 "markdown-link-check@npm:^3.10.2":
-  version: 3.12.0
-  resolution: "markdown-link-check@npm:3.12.0"
+  version: 3.12.1
+  resolution: "markdown-link-check@npm:3.12.1"
   dependencies:
     async: ^3.2.5
     chalk: ^5.2.0
@@ -8094,7 +8094,7 @@ __metadata:
     proxy-agent: ^6.4.0
   bin:
     markdown-link-check: markdown-link-check
-  checksum: 81ff9ec12160d55afba11d3fd75db17543c5d4ae3568722b51bc65cb7ca71923cf2be99ed644f0d142715e40b84154743a273036c908d3064bb8f26674dc4d0f
+  checksum: 02ca58b9f32f9cfde52f5b756f5da1129703f2da2b68cd176f78e8be556995957bfef56767dd21a67abb161ba95bb4d7d01e0f0d43aca94cd062c17145f3e825
   languageName: node
   linkType: hard
 
