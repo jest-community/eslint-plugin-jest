@@ -162,6 +162,6 @@
     "provenance": true
   },
   "resolutions": {
-    "typescript": "~5.2.2"
+    "@typescript-eslint/typescript-estree@5.62.0": "patch:@typescript-eslint/typescript-estree@npm:^5.62.0#./.yarn/patches/@typescript-eslint-typescript-estree-npm-5.62.0-5d1ea132a9.patch"
   }
 }
