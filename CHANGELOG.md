@@ -1,3 +1,15 @@
+# [28.0.0-next.1](https://github.com/jest-community/eslint-plugin-jest/compare/v27.9.0...v28.0.0-next.1) (2024-03-21)
+
+
+### Features
+
+* remove `no-if` rule ([#1528](https://github.com/jest-community/eslint-plugin-jest/issues/1528)) ([f976fc8](https://github.com/jest-community/eslint-plugin-jest/commit/f976fc8c71fc5e9f55cd5ae09092f15ee277fd2c))
+
+
+### BREAKING CHANGES
+
+* removed `no-if` in favor of `no-conditional-in-test`
+
 # [27.9.0](https://github.com/jest-community/eslint-plugin-jest/compare/v27.8.0...v27.9.0) (2024-02-16)
 
 
