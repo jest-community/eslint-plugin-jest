@@ -36,12 +36,7 @@ export default createRule({
   create(context) {
     return {
       CallExpression(node: TSESTree.CallExpression): void {
-        let { callee, typeArguments } = node;
-
-        /* istanbul ignore next */
-        if (!('typeArguments' in node)) {
-          typeArguments = (node as TSESTree.CallExpression).typeParameters;
-        }
+        const { callee, typeArguments } = node;
 
         if (callee.type !== AST_NODE_TYPES.MemberExpression) {
           return;
