@@ -71,16 +71,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version: [14.x, 16.x, 18.x, 19.x, 20.x, 21.x]
+        node-version: [16.x, 18.x, 19.x, 20.x, 21.x]
         eslint-version: [7, 8]
         ts-eslint-plugin-version: [5, 6, 7]
         exclude:
-          # ts-eslint/plugin@6 doesn't support node@14
-          - node-version: 14.x
-            ts-eslint-plugin-version: 6
-          # ts-eslint/plugin@7 doesn't support node@14
-          - node-version: 14.x
-            ts-eslint-plugin-version: 7
           # ts-eslint/plugin@7 doesn't support node@16
           - node-version: 16.x
             ts-eslint-plugin-version: 7
