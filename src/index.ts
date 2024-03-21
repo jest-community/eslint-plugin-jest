@@ -64,14 +64,34 @@ const rules = Object.fromEntries(
     .map(rule => [rule, importDefault(join(rulesDir, rule)) as RuleModule]),
 );
 
-const recommendedRules = Object.fromEntries(
-  Object.entries(rules)
-    .filter(([, rule]) => rule.meta.docs.recommended)
-    .map(([name, rule]) => [
-      `jest/${name}`,
-      rule.meta.docs.recommended as TSESLint.Linter.RuleLevel,
-    ]),
-);
+const recommendedRules = {
+  'jest/expect-expect': 'warn',
+  'jest/no-alias-methods': 'error',
+  'jest/no-commented-out-tests': 'warn',
+  'jest/no-conditional-expect': 'error',
+  'jest/no-deprecated-functions': 'error',
+  'jest/no-disabled-tests': 'warn',
+  'jest/no-done-callback': 'error',
+  'jest/no-export': 'error',
+  'jest/no-focused-tests': 'error',
+  'jest/no-identical-title': 'error',
+  'jest/no-interpolation-in-snapshots': 'error',
+  'jest/no-jasmine-globals': 'error',
+  'jest/no-mocks-import': 'error',
+  'jest/no-standalone-expect': 'error',
+  'jest/no-test-prefixes': 'error',
+  'jest/valid-describe-callback': 'error',
+  'jest/valid-expect': 'error',
+  'jest/valid-expect-in-promise': 'error',
+  'jest/valid-title': 'error',
+} satisfies Record<string, TSESLint.Linter.RuleLevel>;
+
+const styleRules = {
+  'jest/no-alias-methods': 'warn',
+  'jest/prefer-to-be': 'error',
+  'jest/prefer-to-contain': 'error',
+  'jest/prefer-to-have-length': 'error',
+} satisfies Record<string, TSESLint.Linter.RuleLevel>;
 
 const allRules = Object.fromEntries<TSESLint.Linter.RuleLevel>(
   Object.entries(rules)
@@ -122,20 +142,10 @@ const createFlatConfig = (
 plugin.configs = {
   all: createRCConfig(allRules),
   recommended: createRCConfig(recommendedRules),
-  style: createRCConfig({
-    'jest/no-alias-methods': 'warn',
-    'jest/prefer-to-be': 'error',
-    'jest/prefer-to-contain': 'error',
-    'jest/prefer-to-have-length': 'error',
-  }),
+  style: createRCConfig(styleRules),
   'flat/all': createFlatConfig(allRules),
   'flat/recommended': createFlatConfig(recommendedRules),
-  'flat/style': createFlatConfig({
-    'jest/no-alias-methods': 'warn',
-    'jest/prefer-to-be': 'error',
-    'jest/prefer-to-contain': 'error',
-    'jest/prefer-to-have-length': 'error',
-  }),
+  'flat/style': createFlatConfig(styleRules),
   'flat/snapshots': {
     // @ts-expect-error this is introduced in flat config
     files: ['**/*.snap'],
