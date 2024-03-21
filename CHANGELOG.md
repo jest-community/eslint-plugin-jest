@@ -1,3 +1,15 @@
+# [28.0.0-next.2](https://github.com/jest-community/eslint-plugin-jest/compare/v28.0.0-next.1...v28.0.0-next.2) (2024-03-21)
+
+
+### Features
+
+* drop support for Node v14 ([#1527](https://github.com/jest-community/eslint-plugin-jest/issues/1527)) ([df5e580](https://github.com/jest-community/eslint-plugin-jest/commit/df5e58081d1bd15fbed8bd22f6c03d5f350d73b6))
+
+
+### BREAKING CHANGES
+
+* dropped support for Node v14
+
 # [28.0.0-next.1](https://github.com/jest-community/eslint-plugin-jest/compare/v27.9.0...v28.0.0-next.1) (2024-03-21)
 
 
