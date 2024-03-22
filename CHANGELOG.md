@@ -1,3 +1,10 @@
+# [28.0.0-next.3](https://github.com/jest-community/eslint-plugin-jest/compare/v28.0.0-next.2...v28.0.0-next.3) (2024-03-22)
+
+
+### Features
+
+* upgrade `@typescript-eslint/utils` to v6 ([#1508](https://github.com/jest-community/eslint-plugin-jest/issues/1508)) ([dc6e8cd](https://github.com/jest-community/eslint-plugin-jest/commit/dc6e8cd249817de585b50e473c2146e1542dd146))
+
 # [28.0.0-next.2](https://github.com/jest-community/eslint-plugin-jest/compare/v28.0.0-next.1...v28.0.0-next.2) (2024-03-21)
 
 
