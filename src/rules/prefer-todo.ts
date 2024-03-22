@@ -55,9 +55,7 @@ export default createRule({
   name: __filename,
   meta: {
     docs: {
-      category: 'Best Practices',
       description: 'Suggest using `test.todo`',
-      recommended: false,
     },
     messages: {
       emptyTest: 'Prefer todo test case over empty test case',

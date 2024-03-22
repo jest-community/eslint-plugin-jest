@@ -5,9 +5,7 @@ export default createRule({
   name: __filename,
   meta: {
     docs: {
-      category: 'Best Practices',
       description: 'Enforces a maximum depth to nested describe calls',
-      recommended: false,
     },
     messages: {
       exceededMaxDepth:

@@ -11,9 +11,7 @@ export default createRule({
   name: __filename,
   meta: {
     docs: {
-      category: 'Best Practices',
       description: 'Disallow commented out tests',
-      recommended: 'warn',
     },
     messages: {
       commentedTests: 'Some tests seem to be commented',

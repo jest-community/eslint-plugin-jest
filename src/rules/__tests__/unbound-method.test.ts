@@ -1,5 +1,6 @@
 import path from 'path';
-import { ESLintUtils, type TSESLint } from '@typescript-eslint/utils';
+import { version as rawTypeScriptESLintPluginVersion } from '@typescript-eslint/eslint-plugin/package.json';
+import { TSESLint } from '@typescript-eslint/utils';
 import dedent from 'dedent';
 import type { MessageIds, Options } from '../unbound-method';
 
@@ -9,14 +10,34 @@ function getFixturesRootDir(): string {
 
 const rootPath = getFixturesRootDir();
 
-const ruleTester = new ESLintUtils.RuleTester({
-  parser: '@typescript-eslint/parser',
+const ruleTester = new TSESLint.RuleTester({
+  parser: require.resolve('@typescript-eslint/parser'),
   parserOptions: {
     sourceType: 'module',
     tsconfigRootDir: rootPath,
     project: './tsconfig.json',
   },
 });
+
+const fixtureFilename = path.join(rootPath, 'file.ts');
+
+const withFixtureFilename = <
+  T extends Array<
+    | (TSESLint.ValidTestCase<Options> | string)
+    | TSESLint.InvalidTestCase<MessageIds, Options>
+  >,
+>(
+  cases: T,
+): T extends Array<TSESLint.InvalidTestCase<MessageIds, Options>>
+  ? Array<TSESLint.InvalidTestCase<MessageIds, Options>>
+  : Array<TSESLint.ValidTestCase<Options>> => {
+  // @ts-expect-error this is fine, and will go away later once we upgrade
+  return cases.map(code => {
+    const test = typeof code === 'string' ? { code } : code;
+
+    return { filename: fixtureFilename, ...test };
+  });
+};
 
 const ConsoleClassAndVariableCode = dedent`
   class Console {
@@ -164,8 +185,8 @@ describe('error handling', () => {
   });
 
   describe('when @typescript-eslint/eslint-plugin is not available', () => {
-    const ruleTester = new ESLintUtils.RuleTester({
-      parser: '@typescript-eslint/parser',
+    const ruleTester = new TSESLint.RuleTester({
+      parser: require.resolve('@typescript-eslint/parser'),
       parserOptions: {
         sourceType: 'module',
         tsconfigRootDir: rootPath,
@@ -177,7 +198,9 @@ describe('error handling', () => {
       'unbound-method jest edition without type service',
       requireRule(true),
       {
-        valid: validTestCases.concat(invalidTestCases.map(({ code }) => code)),
+        valid: withFixtureFilename(
+          validTestCases.concat(invalidTestCases.map(({ code }) => code)),
+        ),
         invalid: [],
       },
     );
@@ -185,8 +208,8 @@ describe('error handling', () => {
 });
 
 ruleTester.run('unbound-method jest edition', requireRule(false), {
-  valid: validTestCases,
-  invalid: invalidTestCases,
+  valid: withFixtureFilename(validTestCases),
+  invalid: withFixtureFilename(invalidTestCases),
 });
 
 function addContainsMethodsClass(code: string): string {
@@ -225,11 +248,14 @@ function addContainsMethodsClassInvalid(
 }
 
 ruleTester.run('unbound-method', requireRule(false), {
-  valid: [
+  valid: withFixtureFilename([
     'Promise.resolve().then(console.log);',
     "['1', '2', '3'].map(Number.parseInt);",
     '[5.2, 7.1, 3.6].map(Math.floor);',
     'const x = console.log;',
+    ...(parseInt(rawTypeScriptESLintPluginVersion.split('.')[0], 10) >= 6
+      ? ['const x = Object.defineProperty;']
+      : []),
     ...[
       'instance.bound();',
       'instance.unbound();',
@@ -455,8 +481,8 @@ class OtherClass extends BaseClass {
 const oc = new OtherClass();
 oc.superLogThis();
     `,
-  ],
-  invalid: [
+  ]),
+  invalid: withFixtureFilename([
     {
       code: `
 class Console {
@@ -762,5 +788,59 @@ class OtherClass extends BaseClass {
         },
       ],
     },
-  ],
+    {
+      code: `
+const values = {
+  a() {},
+  b: () => {},
+};
+
+const { a, b } = values;
+      `,
+      errors: [
+        {
+          line: 7,
+          column: 9,
+          endColumn: 10,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
+    {
+      code: `
+const values = {
+  a() {},
+  b: () => {},
+};
+
+const { a: c } = values;
+      `,
+      errors: [
+        {
+          line: 7,
+          column: 9,
+          endColumn: 10,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
+    {
+      code: `
+const values = {
+  a() {},
+  b: () => {},
+};
+
+const { b, a } = values;
+      `,
+      errors: [
+        {
+          line: 7,
+          column: 12,
+          endColumn: 13,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
+  ]),
 });

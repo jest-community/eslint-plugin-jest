@@ -10,9 +10,7 @@ export default createRule({
   name: __filename,
   meta: {
     docs: {
-      category: 'Best Practices',
       description: 'Suggest using `toStrictEqual()`',
-      recommended: false,
     },
     messages: {
       useToStrictEqual: 'Use `toStrictEqual()` instead',
