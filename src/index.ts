@@ -6,7 +6,6 @@ import {
   version as packageVersion,
 } from '../package.json';
 import globals from './globals.json';
-import * as snapshotProcessor from './processors/snapshot-processor';
 
 type RuleModule = TSESLint.RuleModule<string, unknown[]> & {
   meta: Required<Pick<TSESLint.RuleMetaData<string>, 'docs'>>;
@@ -76,18 +75,13 @@ const plugin = {
     | 'style'
     | 'flat/all'
     | 'flat/recommended'
-    | 'flat/style'
-    | 'flat/snapshots',
+    | 'flat/style',
     Pick<Required<TSESLint.Linter.Config>, 'rules'>
   >,
   environments: {
     globals: {
       globals,
     },
-  },
-  processors: {
-    snapshots: snapshotProcessor,
-    '.snap': snapshotProcessor,
   },
   rules,
 };
@@ -113,12 +107,6 @@ plugin.configs = {
   'flat/all': createFlatConfig(allRules),
   'flat/recommended': createFlatConfig(recommendedRules),
   'flat/style': createFlatConfig(styleRules),
-  'flat/snapshots': {
-    // @ts-expect-error this is introduced in flat config
-    files: ['**/*.snap'],
-    plugins: { jest: plugin },
-    processor: 'jest/snapshots',
-  },
 };
 
 export = plugin;
