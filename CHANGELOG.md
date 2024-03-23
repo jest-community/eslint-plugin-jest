@@ -1,3 +1,15 @@
+# [28.0.0-next.4](https://github.com/jest-community/eslint-plugin-jest/compare/v28.0.0-next.3...v28.0.0-next.4) (2024-03-23)
+
+
+### Features
+
+* drop support for `@typescript-eslint/eslint-plugin` v5 ([#1530](https://github.com/jest-community/eslint-plugin-jest/issues/1530)) ([150e355](https://github.com/jest-community/eslint-plugin-jest/commit/150e3558a637b49ddd76d362f88332b30f78dc5c))
+
+
+### BREAKING CHANGES
+
+* dropped support for `@typescript-eslint/eslint-plugin` v5
+
 # [28.0.0-next.3](https://github.com/jest-community/eslint-plugin-jest/compare/v28.0.0-next.2...v28.0.0-next.3) (2024-03-22)
 
 
