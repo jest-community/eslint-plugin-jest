@@ -1,20 +1,22 @@
 import { TSESLint } from '@typescript-eslint/utils';
 import rule from '../no-mocks-import';
-import { espreeParser } from './test-utils';
+import { espreeParser, flatCompat } from './test-utils';
 
-const ruleTester = new TSESLint.RuleTester({
-  parser: espreeParser,
-  parserOptions: {
-    ecmaVersion: 2015,
-  },
-});
+const ruleTester = new TSESLint.RuleTester(
+  flatCompat({
+    parser: espreeParser,
+    parserOptions: {
+      ecmaVersion: 2015,
+    },
+  }),
+);
 
 ruleTester.run('no-mocks-import', rule, {
   valid: [
-    {
+    flatCompat({
       code: 'import something from "something"',
       parserOptions: { sourceType: 'module' },
-    },
+    }),
     'require("somethingElse")',
     'require("./__mocks__.js")',
     'require("./__mocks__x")',
@@ -50,10 +52,10 @@ ruleTester.run('no-mocks-import', rule, {
       code: 'require("__mocks__/index")',
       errors: [{ endColumn: 26, column: 9, messageId: 'noManualImport' }],
     },
-    {
+    flatCompat({
       code: 'import thing from "./__mocks__/index"',
       parserOptions: { sourceType: 'module' },
       errors: [{ endColumn: 38, column: 1, messageId: 'noManualImport' }],
-    },
+    }),
   ],
 });
