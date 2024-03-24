@@ -1,5 +1,5 @@
 import rule from '../no-mocks-import';
-import { espreeParser, flatCompat, FlatCompatRuleTester } from './test-utils';
+import { FlatCompatRuleTester, espreeParser, flatCompat } from './test-utils';
 
 const ruleTester = new FlatCompatRuleTester(
   flatCompat({

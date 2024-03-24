@@ -1,7 +1,7 @@
 import dedent from 'dedent';
 import rule from '../no-hooks';
 import { HookName } from '../utils';
-import { espreeParser, FlatCompatRuleTester } from './test-utils';
+import { FlatCompatRuleTester, espreeParser } from './test-utils';
 
 const ruleTester = new FlatCompatRuleTester({
   parser: espreeParser,

@@ -1,8 +1,8 @@
 import { TSESLint } from '@typescript-eslint/utils';
 import rule from '../no-deprecated-functions';
 import {
-  detectJestVersion,
   type JestVersion,
+  detectJestVersion,
 } from '../utils/detectJestVersion';
 import { FlatCompatRuleTester } from './test-utils';
 

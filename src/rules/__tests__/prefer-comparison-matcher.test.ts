@@ -1,6 +1,6 @@
-import { TSESLint } from '@typescript-eslint/utils';
+import type { TSESLint } from '@typescript-eslint/utils';
 import rule from '../prefer-comparison-matcher';
-import { espreeParser, FlatCompatRuleTester } from './test-utils';
+import { FlatCompatRuleTester, espreeParser } from './test-utils';
 
 const ruleTester = new FlatCompatRuleTester({
   parser: espreeParser,
@@ -205,27 +205,30 @@ const generateValidStringLiteralCases = (operator: string, matcher: string) => {
     ['x', "'y'"],
     ['x', '`y`'],
     ['x', '`y${z}`'],
-  ].reduce((cases, [a, b]) => [
-    ...cases,
-    ...[
-      `expect(${a} ${operator} ${b}).${matcher}(true)`,
-      `expect(${a} ${operator} ${b}).${matcher}(false)`,
-      `expect(${a} ${operator} ${b}).not.${matcher}(true)`,
-      `expect(${a} ${operator} ${b}).not.${matcher}(false)`,
-      `expect(${a} ${operator} ${b}).resolves.${matcher}(true)`,
-      `expect(${a} ${operator} ${b}).resolves.${matcher}(false)`,
-      `expect(${a} ${operator} ${b}).resolves.not.${matcher}(true)`,
-      `expect(${a} ${operator} ${b}).resolves.not.${matcher}(false)`,
-      `expect(${b} ${operator} ${a}).resolves.not.${matcher}(false)`,
-      `expect(${b} ${operator} ${a}).resolves.not.${matcher}(true)`,
-      `expect(${b} ${operator} ${a}).resolves.${matcher}(false)`,
-      `expect(${b} ${operator} ${a}).resolves.${matcher}(true)`,
-      `expect(${b} ${operator} ${a}).not.${matcher}(false)`,
-      `expect(${b} ${operator} ${a}).not.${matcher}(true)`,
-      `expect(${b} ${operator} ${a}).${matcher}(true)`,
-      `expect(${b} ${operator} ${a}).${matcher}(false)`,
+  ].reduce(
+    (cases, [a, b]) => [
+      ...cases,
+      ...[
+        `expect(${a} ${operator} ${b}).${matcher}(true)`,
+        `expect(${a} ${operator} ${b}).${matcher}(false)`,
+        `expect(${a} ${operator} ${b}).not.${matcher}(true)`,
+        `expect(${a} ${operator} ${b}).not.${matcher}(false)`,
+        `expect(${a} ${operator} ${b}).resolves.${matcher}(true)`,
+        `expect(${a} ${operator} ${b}).resolves.${matcher}(false)`,
+        `expect(${a} ${operator} ${b}).resolves.not.${matcher}(true)`,
+        `expect(${a} ${operator} ${b}).resolves.not.${matcher}(false)`,
+        `expect(${b} ${operator} ${a}).resolves.not.${matcher}(false)`,
+        `expect(${b} ${operator} ${a}).resolves.not.${matcher}(true)`,
+        `expect(${b} ${operator} ${a}).resolves.${matcher}(false)`,
+        `expect(${b} ${operator} ${a}).resolves.${matcher}(true)`,
+        `expect(${b} ${operator} ${a}).not.${matcher}(false)`,
+        `expect(${b} ${operator} ${a}).not.${matcher}(true)`,
+        `expect(${b} ${operator} ${a}).${matcher}(true)`,
+        `expect(${b} ${operator} ${a}).${matcher}(false)`,
+      ],
     ],
-  ], []);
+    [],
+  );
 };
 
 const testComparisonOperator = (

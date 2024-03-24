@@ -1,5 +1,4 @@
 import rule from '../no-alias-methods';
-
 import { FlatCompatRuleTester } from './test-utils';
 
 const ruleTester = new FlatCompatRuleTester();

@@ -1,6 +1,6 @@
 import { TSESLint } from '@typescript-eslint/utils';
 import rule from '../prefer-to-be';
-import { espreeParser, FlatCompatRuleTester } from './test-utils';
+import { FlatCompatRuleTester, espreeParser } from './test-utils';
 
 const ruleTester = new FlatCompatRuleTester({
   parser: espreeParser,

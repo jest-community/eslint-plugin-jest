@@ -1,6 +1,5 @@
 import dedent from 'dedent';
 import rule from '../no-test-prefixes';
-
 import { FlatCompatRuleTester } from './test-utils';
 
 const ruleTester = new FlatCompatRuleTester();

@@ -1,6 +1,6 @@
 import dedent from 'dedent';
 import rule from '../prefer-hooks-on-top';
-import { espreeParser, FlatCompatRuleTester } from './test-utils';
+import { FlatCompatRuleTester, espreeParser } from './test-utils';
 
 const ruleTester = new FlatCompatRuleTester({
   parser: espreeParser,

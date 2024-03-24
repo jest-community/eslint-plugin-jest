@@ -1,5 +1,5 @@
 import path from 'path';
-import { TSESLint } from '@typescript-eslint/utils';
+import type { TSESLint } from '@typescript-eslint/utils';
 import dedent from 'dedent';
 import type { MessageIds, Options } from '../unbound-method';
 import { FlatCompatRuleTester } from './test-utils';
@@ -185,7 +185,7 @@ describe('error handling', () => {
   });
 
   describe('when @typescript-eslint/eslint-plugin is not available', () => {
-const ruleTester = new FlatCompatRuleTester({
+    const ruleTester = new FlatCompatRuleTester({
       parser: require.resolve('@typescript-eslint/parser'),
       parserOptions: {
         sourceType: 'module',

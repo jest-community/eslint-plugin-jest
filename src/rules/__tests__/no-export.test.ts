@@ -1,6 +1,6 @@
 import dedent from 'dedent';
 import rule from '../no-export';
-import { espreeParser, flatCompat, FlatCompatRuleTester } from './test-utils';
+import { FlatCompatRuleTester, espreeParser, flatCompat } from './test-utils';
 
 const ruleTester = new FlatCompatRuleTester(
   flatCompat({

@@ -13,7 +13,14 @@ export class FlatCompatRuleTester extends TSESLint.RuleTester {
     super(flatCompat(testerConfig));
   }
 
-  public override run<TMessageIds extends string, TOptions extends Readonly<unknown[]>>(ruleName: string, rule: TSESLint.RuleModule<TMessageIds, TOptions>, tests: TSESLint.RunTests<TMessageIds, TOptions>) {
+  public override run<
+    TMessageIds extends string,
+    TOptions extends Readonly<unknown[]>,
+  >(
+    ruleName: string,
+    rule: TSESLint.RuleModule<TMessageIds, TOptions>,
+    tests: TSESLint.RunTests<TMessageIds, TOptions>,
+  ) {
     super.run(ruleName, rule, {
       valid: tests.valid.map(t => flatCompat(t)),
       invalid: tests.invalid.map(t => flatCompat(t)),
@@ -31,7 +38,11 @@ export const flatCompat = <
 >(
   config: T,
 ): T => {
-  if (!config || semver.major(eslintVersion) < 9 || typeof config === 'string') {
+  if (
+    !config ||
+    semver.major(eslintVersion) < 9 ||
+    typeof config === 'string'
+  ) {
     return config;
   }
 
