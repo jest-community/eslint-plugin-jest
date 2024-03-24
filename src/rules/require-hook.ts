@@ -65,9 +65,7 @@ export default createRule<
   name: __filename,
   meta: {
     docs: {
-      category: 'Best Practices',
       description: 'Require setup and teardown code to be within a hook',
-      recommended: false,
     },
     messages: {
       useHook: 'This should be done within a hook',

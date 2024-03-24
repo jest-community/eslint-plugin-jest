@@ -4,10 +4,8 @@ export default createRule({
   name: __filename,
   meta: {
     docs: {
-      category: 'Best Practices',
       description:
         'Suggest using `toBeCalledWith()` or `toHaveBeenCalledWith()`',
-      recommended: false,
     },
     messages: {
       preferCalledWith: 'Prefer {{ matcherName }}With(/* expected args */)',

@@ -1501,6 +1501,24 @@ ruleTester.run('.each support', rule, {
           messageId: 'haveExpectAssertions',
           column: 1,
           line: 1,
+          suggestions: [
+            {
+              messageId: 'suggestAddingHasAssertions',
+              output: dedent`
+                test.each()("is not fine", () => {expect.hasAssertions();
+                  expect(someValue).toBe(true);
+                });
+              `,
+            },
+            {
+              messageId: 'suggestAddingAssertions',
+              output: dedent`
+                test.each()("is not fine", () => {expect.assertions();
+                  expect(someValue).toBe(true);
+                });
+              `,
+            },
+          ],
         },
       ],
     },
@@ -1517,6 +1535,28 @@ ruleTester.run('.each support', rule, {
           messageId: 'haveExpectAssertions',
           column: 3,
           line: 2,
+          suggestions: [
+            {
+              messageId: 'suggestAddingHasAssertions',
+              output: dedent`
+                describe.each()('something', () => {
+                  it("is not fine", () => {expect.hasAssertions();
+                    expect(someValue).toBe(true);
+                  });
+                });
+              `,
+            },
+            {
+              messageId: 'suggestAddingAssertions',
+              output: dedent`
+                describe.each()('something', () => {
+                  it("is not fine", () => {expect.assertions();
+                    expect(someValue).toBe(true);
+                  });
+                });
+              `,
+            },
+          ],
         },
       ],
     },
@@ -1533,6 +1573,28 @@ ruleTester.run('.each support', rule, {
           messageId: 'haveExpectAssertions',
           column: 3,
           line: 2,
+          suggestions: [
+            {
+              messageId: 'suggestAddingHasAssertions',
+              output: dedent`
+                describe.each()('something', () => {
+                  test.each()("is not fine", () => {expect.hasAssertions();
+                    expect(someValue).toBe(true);
+                  });
+                });
+              `,
+            },
+            {
+              messageId: 'suggestAddingAssertions',
+              output: dedent`
+                describe.each()('something', () => {
+                  test.each()("is not fine", () => {expect.assertions();
+                    expect(someValue).toBe(true);
+                  });
+                });
+              `,
+            },
+          ],
         },
       ],
     },
@@ -1548,6 +1610,24 @@ ruleTester.run('.each support', rule, {
           messageId: 'haveExpectAssertions',
           column: 1,
           line: 1,
+          suggestions: [
+            {
+              messageId: 'suggestAddingHasAssertions',
+              output: dedent`
+                test.each()("is not fine", async () => {expect.hasAssertions();
+                  expect(someValue).toBe(true);
+                });
+              `,
+            },
+            {
+              messageId: 'suggestAddingAssertions',
+              output: dedent`
+                test.each()("is not fine", async () => {expect.assertions();
+                  expect(someValue).toBe(true);
+                });
+              `,
+            },
+          ],
         },
       ],
     },
@@ -1563,6 +1643,24 @@ ruleTester.run('.each support', rule, {
           messageId: 'haveExpectAssertions',
           column: 1,
           line: 1,
+          suggestions: [
+            {
+              messageId: 'suggestAddingHasAssertions',
+              output: dedent`
+                it.each()("is not fine", async () => {expect.hasAssertions();
+                  expect(someValue).toBe(true);
+                });
+              `,
+            },
+            {
+              messageId: 'suggestAddingAssertions',
+              output: dedent`
+                it.each()("is not fine", async () => {expect.assertions();
+                  expect(someValue).toBe(true);
+                });
+              `,
+            },
+          ],
         },
       ],
     },
@@ -1580,6 +1678,28 @@ ruleTester.run('.each support', rule, {
           messageId: 'haveExpectAssertions',
           column: 3,
           line: 2,
+          suggestions: [
+            {
+              messageId: 'suggestAddingHasAssertions',
+              output: dedent`
+                describe.each()('something', () => {
+                  test.each()("is not fine", async () => {expect.hasAssertions();
+                    expect(someValue).toBe(true);
+                  });
+                });
+              `,
+            },
+            {
+              messageId: 'suggestAddingAssertions',
+              output: dedent`
+                describe.each()('something', () => {
+                  test.each()("is not fine", async () => {expect.assertions();
+                    expect(someValue).toBe(true);
+                  });
+                });
+              `,
+            },
+          ],
         },
       ],
     },

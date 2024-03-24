@@ -11,9 +11,7 @@ export default createRule({
   name: __filename,
   meta: {
     docs: {
-      category: 'Best Practices',
       description: 'Suggest using `toHaveLength()`',
-      recommended: false,
     },
     messages: {
       useToHaveLength: 'Use toHaveLength() instead',

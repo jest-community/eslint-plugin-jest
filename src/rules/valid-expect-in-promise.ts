@@ -344,10 +344,8 @@ export default createRule({
   name: __filename,
   meta: {
     docs: {
-      category: 'Best Practices',
       description:
         'Require promises that have expectations in their chain to be valid',
-      recommended: 'error',
     },
     messages: {
       expectInFloatingPromise:

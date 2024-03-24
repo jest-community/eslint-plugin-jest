@@ -1,3 +1,46 @@
+# [28.0.0-next.4](https://github.com/jest-community/eslint-plugin-jest/compare/v28.0.0-next.3...v28.0.0-next.4) (2024-03-23)
+
+
+### Features
+
+* drop support for `@typescript-eslint/eslint-plugin` v5 ([#1530](https://github.com/jest-community/eslint-plugin-jest/issues/1530)) ([150e355](https://github.com/jest-community/eslint-plugin-jest/commit/150e3558a637b49ddd76d362f88332b30f78dc5c))
+
+
+### BREAKING CHANGES
+
+* dropped support for `@typescript-eslint/eslint-plugin` v5
+
+# [28.0.0-next.3](https://github.com/jest-community/eslint-plugin-jest/compare/v28.0.0-next.2...v28.0.0-next.3) (2024-03-22)
+
+
+### Features
+
+* upgrade `@typescript-eslint/utils` to v6 ([#1508](https://github.com/jest-community/eslint-plugin-jest/issues/1508)) ([dc6e8cd](https://github.com/jest-community/eslint-plugin-jest/commit/dc6e8cd249817de585b50e473c2146e1542dd146))
+
+# [28.0.0-next.2](https://github.com/jest-community/eslint-plugin-jest/compare/v28.0.0-next.1...v28.0.0-next.2) (2024-03-21)
+
+
+### Features
+
+* drop support for Node v14 ([#1527](https://github.com/jest-community/eslint-plugin-jest/issues/1527)) ([df5e580](https://github.com/jest-community/eslint-plugin-jest/commit/df5e58081d1bd15fbed8bd22f6c03d5f350d73b6))
+
+
+### BREAKING CHANGES
+
+* dropped support for Node v14
+
+# [28.0.0-next.1](https://github.com/jest-community/eslint-plugin-jest/compare/v27.9.0...v28.0.0-next.1) (2024-03-21)
+
+
+### Features
+
+* remove `no-if` rule ([#1528](https://github.com/jest-community/eslint-plugin-jest/issues/1528)) ([f976fc8](https://github.com/jest-community/eslint-plugin-jest/commit/f976fc8c71fc5e9f55cd5ae09092f15ee277fd2c))
+
+
+### BREAKING CHANGES
+
+* removed `no-if` in favor of `no-conditional-in-test`
+
 # [27.9.0](https://github.com/jest-community/eslint-plugin-jest/compare/v27.8.0...v27.9.0) (2024-02-16)
 
 

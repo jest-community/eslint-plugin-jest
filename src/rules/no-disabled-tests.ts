@@ -10,9 +10,7 @@ export default createRule({
   name: __filename,
   meta: {
     docs: {
-      category: 'Best Practices',
       description: 'Disallow disabled tests',
-      recommended: 'warn',
     },
     messages: {
       missingFunction: 'Test is missing function argument',

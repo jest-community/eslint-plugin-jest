@@ -35,9 +35,7 @@ export default createRule<
   name: __filename,
   meta: {
     docs: {
-      category: 'Best Practices',
       description: 'Enforce `test` and `it` usage conventions',
-      recommended: false,
     },
     fixable: 'code',
     messages: {
@@ -51,9 +49,11 @@ export default createRule<
         type: 'object',
         properties: {
           fn: {
+            type: 'string',
             enum: [TestCaseName.it, TestCaseName.test],
           },
           withinDescribe: {
+            type: 'string',
             enum: [TestCaseName.it, TestCaseName.test],
           },
         },

@@ -12,9 +12,7 @@ export default createRule<
   name: __filename,
   meta: {
     docs: {
-      category: 'Best Practices',
       description: 'Disallow specific `jest.` methods',
-      recommended: false,
     },
     type: 'suggestion',
     schema: [

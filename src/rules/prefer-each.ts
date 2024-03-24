@@ -5,9 +5,7 @@ export default createRule({
   name: __filename,
   meta: {
     docs: {
-      category: 'Best Practices',
       description: 'Prefer using `.each` rather than manual loops',
-      recommended: false,
     },
     messages: {
       preferEach: 'prefer using `{{ fn }}.each` rather than a manual loop',

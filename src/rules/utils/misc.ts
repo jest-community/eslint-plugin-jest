@@ -234,18 +234,14 @@ export const getFirstMatcherArg = (
 export const getFilename = (
   context: TSESLint.RuleContext<string, unknown[]>,
 ) => {
-  return 'filename' in context
-    ? (context.filename as string)
-    : context.getFilename();
+  return context.filename ?? context.getFilename();
 };
 
 /* istanbul ignore next */
 export const getSourceCode = (
   context: TSESLint.RuleContext<string, unknown[]>,
 ) => {
-  return 'sourceCode' in context
-    ? (context.sourceCode as TSESLint.SourceCode)
-    : context.getSourceCode();
+  return context.sourceCode ?? context.getSourceCode();
 };
 
 /* istanbul ignore next */
@@ -253,13 +249,7 @@ export const getScope = (
   context: TSESLint.RuleContext<string, unknown[]>,
   node: TSESTree.Node,
 ) => {
-  const sourceCode = getSourceCode(context);
-
-  if ('getScope' in sourceCode) {
-    return sourceCode.getScope(node);
-  }
-
-  return context.getScope();
+  return getSourceCode(context).getScope?.(node) ?? context.getScope();
 };
 
 /* istanbul ignore next */
@@ -267,13 +257,7 @@ export const getAncestors = (
   context: TSESLint.RuleContext<string, unknown[]>,
   node: TSESTree.Node,
 ) => {
-  const sourceCode = getSourceCode(context);
-
-  if ('getAncestors' in sourceCode) {
-    return sourceCode.getAncestors(node);
-  }
-
-  return context.getAncestors();
+  return getSourceCode(context).getAncestors?.(node) ?? context.getAncestors();
 };
 
 /* istanbul ignore next */
@@ -281,11 +265,8 @@ export const getDeclaredVariables = (
   context: TSESLint.RuleContext<string, unknown[]>,
   node: TSESTree.Node,
 ) => {
-  const sourceCode = getSourceCode(context);
-
-  if ('getDeclaredVariables' in sourceCode) {
-    return sourceCode.getDeclaredVariables(node);
-  }
-
-  return context.getDeclaredVariables(node);
+  return (
+    getSourceCode(context).getDeclaredVariables?.(node) ??
+    context.getDeclaredVariables(node)
+  );
 };

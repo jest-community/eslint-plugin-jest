@@ -48,9 +48,7 @@ const rule = createRule({
   name: __filename,
   meta: {
     docs: {
-      category: 'Possible Errors',
       description: 'Fake rule for testing parseJestFnCall',
-      recommended: false,
     },
     messages: {
       details: '{{ data }}',

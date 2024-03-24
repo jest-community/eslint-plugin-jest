@@ -18,9 +18,7 @@ export default createRule({
   name: __filename,
   meta: {
     docs: {
-      category: 'Best Practices',
       description: 'Disallow confusing usages of jest.setTimeout',
-      recommended: false,
     },
     messages: {
       globalSetTimeout: '`jest.setTimeout` should be call in `global` scope',

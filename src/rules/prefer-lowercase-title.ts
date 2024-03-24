@@ -56,8 +56,6 @@ export default createRule<
     type: 'suggestion',
     docs: {
       description: 'Enforce lowercase test names',
-      category: 'Best Practices',
-      recommended: false,
     },
     fixable: 'code',
     messages: {
@@ -70,11 +68,14 @@ export default createRule<
           ignore: {
             type: 'array',
             items: {
+              type: 'string',
+              // for some reason TypeScript thinks this _must_ be a read-only
+              // array, so we have to explicitly cast it as a mutable array
               enum: [
                 DescribeAlias.describe,
                 TestCaseName.test,
                 TestCaseName.it,
-              ],
+              ] as string[],
             },
             additionalItems: false,
           },

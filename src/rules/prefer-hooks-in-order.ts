@@ -6,9 +6,7 @@ export default createRule({
   name: __filename,
   meta: {
     docs: {
-      category: 'Best Practices',
       description: 'Prefer having hooks in a consistent order',
-      recommended: false,
     },
     messages: {
       reorderHooks: `\`{{ currentHook }}\` hooks should be before any \`{{ previousHook }}\` hooks`,

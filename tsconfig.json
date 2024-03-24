@@ -1,5 +1,5 @@
 {
-  "extends": "@tsconfig/node14/tsconfig.json",
+  "extends": "@tsconfig/node16/tsconfig.json",
   "compilerOptions": {
     "noEmit": true,
     "stripInternal": true,
@@ -12,11 +12,9 @@
     "noFallthroughCasesInSwitch": true,
 
     "strict": true,
-    "esModuleInterop": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "skipLibCheck": false,
-    "forceConsistentCasingInFileNames": true
+    "skipLibCheck": false
   },
   "files": ["eslint-remote-tester.config.ts"],
   "include": ["src/**/*", "tools/**/*"],

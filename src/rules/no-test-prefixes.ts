@@ -5,9 +5,7 @@ export default createRule({
   name: __filename,
   meta: {
     docs: {
-      category: 'Best Practices',
       description: 'Require using `.only` and `.skip` over `f` and `x`',
-      recommended: 'error',
     },
     messages: {
       usePreferredName: 'Use "{{ preferredNodeName }}" instead',
