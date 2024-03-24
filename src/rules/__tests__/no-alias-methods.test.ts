@@ -1,7 +1,8 @@
-import { TSESLint } from '@typescript-eslint/utils';
 import rule from '../no-alias-methods';
 
-const ruleTester = new TSESLint.RuleTester();
+import { FlatCompatRuleTester } from './test-utils';
+
+const ruleTester = new FlatCompatRuleTester();
 
 ruleTester.run('no-alias-methods', rule, {
   valid: [

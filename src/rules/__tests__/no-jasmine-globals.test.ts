@@ -1,7 +1,8 @@
-import { TSESLint } from '@typescript-eslint/utils';
 import rule from '../no-jasmine-globals';
 
-const ruleTester = new TSESLint.RuleTester();
+import { FlatCompatRuleTester } from './test-utils';
+
+const ruleTester = new FlatCompatRuleTester();
 
 ruleTester.run('no-jasmine-globals', rule, {
   valid: [

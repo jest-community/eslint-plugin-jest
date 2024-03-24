@@ -1,9 +1,8 @@
-import { TSESLint } from '@typescript-eslint/utils';
 import dedent from 'dedent';
 import rule from '../no-export';
-import { espreeParser, flatCompat } from './test-utils';
+import { espreeParser, flatCompat, FlatCompatRuleTester } from './test-utils';
 
-const ruleTester = new TSESLint.RuleTester(
+const ruleTester = new FlatCompatRuleTester(
   flatCompat({
     parser: espreeParser,
     parserOptions: {

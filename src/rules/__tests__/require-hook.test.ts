@@ -1,9 +1,9 @@
 import { TSESLint } from '@typescript-eslint/utils';
 import dedent from 'dedent';
 import rule from '../require-hook';
-import { espreeParser } from './test-utils';
+import { espreeParser, FlatCompatRuleTester } from './test-utils';
 
-const ruleTester = new TSESLint.RuleTester({
+const ruleTester = new FlatCompatRuleTester({
   parser: espreeParser,
   parserOptions: {
     ecmaVersion: 2017,
@@ -408,7 +408,7 @@ ruleTester.run('require-hook', rule, {
   ],
 });
 
-new TSESLint.RuleTester({
+new FlatCompatRuleTester({
   parser: require.resolve('@typescript-eslint/parser'),
 }).run('require-hook: typescript edition', rule, {
   valid: [

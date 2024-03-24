@@ -1,9 +1,10 @@
 import { TSESLint } from '@typescript-eslint/utils';
 import rule from '../no-deprecated-functions';
 import {
-  type JestVersion,
   detectJestVersion,
+  type JestVersion,
 } from '../utils/detectJestVersion';
+import { FlatCompatRuleTester } from './test-utils';
 
 jest.mock('../utils/detectJestVersion');
 
@@ -11,7 +12,7 @@ const detectJestVersionMock = detectJestVersion as jest.MockedFunction<
   typeof detectJestVersion
 >;
 
-const ruleTester = new TSESLint.RuleTester();
+const ruleTester = new FlatCompatRuleTester();
 
 const generateValidCases = (
   jestVersion: JestVersion | string | undefined,
