@@ -1,5 +1,5 @@
 import { createRequire } from 'module';
-import type { TSESLint } from '@typescript-eslint/utils';
+import { TSESLint } from '@typescript-eslint/utils';
 import { version as eslintVersion } from 'eslint/package.json';
 import * as semver from 'semver';
 
@@ -8,15 +8,30 @@ const eslintRequire = createRequire(require.resolve('eslint'));
 
 export const espreeParser = eslintRequire.resolve('espree');
 
+export class FlatCompatRuleTester extends TSESLint.RuleTester {
+  public constructor(testerConfig?: TSESLint.RuleTesterConfig) {
+    super(flatCompat(testerConfig));
+  }
+
+  public override run<TMessageIds extends string, TOptions extends Readonly<unknown[]>>(ruleName: string, rule: TSESLint.RuleModule<TMessageIds, TOptions>, tests: TSESLint.RunTests<TMessageIds, TOptions>) {
+    super.run(ruleName, rule, {
+      valid: tests.valid.map(t => flatCompat(t)),
+      invalid: tests.invalid.map(t => flatCompat(t)),
+    });
+  }
+}
+
 export const flatCompat = <
   T extends
+    | undefined
     | TSESLint.RuleTesterConfig
+    | string
     | TSESLint.ValidTestCase<unknown[]>
     | TSESLint.InvalidTestCase<string, unknown[]>,
 >(
   config: T,
 ): T => {
-  if (semver.major(eslintVersion) < 9) {
+  if (!config || semver.major(eslintVersion) < 9 || typeof config === 'string') {
     return config;
   }
 
