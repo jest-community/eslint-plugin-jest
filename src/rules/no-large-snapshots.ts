@@ -105,7 +105,7 @@ export default createRule<[RuleOptions], MessageId>({
   },
   defaultOptions: [{}],
   create(context, [options]) {
-    if (context.getFilename().endsWith('.snap')) {
+    if (getFilename(context).endsWith('.snap')) {
       return {
         ExpressionStatement(node) {
           reportOnViolation(context, node, options);
