@@ -1,0 +1,30 @@
+diff --git a/_ts3.4/dist/ts-estree/ts-nodes.d.ts b/_ts3.4/dist/ts-estree/ts-nodes.d.ts
+index 2021725e0371bc028330cee33e90021f08e12275..5d19dfc6fc8272fa065edba11e1d6fb5f4ca3cf7 100644
+--- a/_ts3.4/dist/ts-estree/ts-nodes.d.ts
++++ b/_ts3.4/dist/ts-estree/ts-nodes.d.ts
+@@ -8,10 +8,6 @@ declare module 'typescript' {
+     }
+     interface ClassStaticBlockDeclaration extends ts.Node {
+     }
+-    interface AssertClause extends ts.Node {
+-    }
+-    interface AssertEntry extends ts.Node {
+-    }
+     interface SatisfiesExpression extends ts.Node {
+     }
+ }
+diff --git a/dist/ts-estree/ts-nodes.d.ts b/dist/ts-estree/ts-nodes.d.ts
+index 1a90a38bf617eedfb7d9c0dbd431429480dd83ca..1ef85da052c3715a492ead81e4ada50697a15d78 100644
+--- a/dist/ts-estree/ts-nodes.d.ts
++++ b/dist/ts-estree/ts-nodes.d.ts
+@@ -8,10 +8,6 @@ declare module 'typescript' {
+     }
+     interface ClassStaticBlockDeclaration extends ts.Node {
+     }
+-    interface AssertClause extends ts.Node {
+-    }
+-    interface AssertEntry extends ts.Node {
+-    }
+     interface SatisfiesExpression extends ts.Node {
+     }
+ }

@@ -56,5 +56,4 @@ See [`@typescript-eslint/unbound-method`][original-rule] options (e.g.
 
 <sup>Taken with ❤️ [from `@typescript-eslint` core][original-rule]</sup>
 
-[original-rule]:
-  https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/unbound-method.md
+[original-rule]: https://typescript-eslint.io/rules/unbound-method
