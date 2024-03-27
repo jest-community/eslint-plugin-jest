@@ -10,7 +10,7 @@ export const espreeParser = eslintRequire.resolve('espree');
 
 export class FlatCompatRuleTester extends TSESLint.RuleTester {
   public constructor(testerConfig?: TSESLint.RuleTesterConfig) {
-    super(flatCompat(testerConfig));
+    super(FlatCompatRuleTester._flatCompat(testerConfig));
   }
 
   public override run<
@@ -22,66 +22,67 @@ export class FlatCompatRuleTester extends TSESLint.RuleTester {
     tests: TSESLint.RunTests<TMessageIds, TOptions>,
   ) {
     super.run(ruleName, rule, {
-      valid: tests.valid.map(t => flatCompat(t)),
-      invalid: tests.invalid.map(t => flatCompat(t)),
+      valid: tests.valid.map(t => FlatCompatRuleTester._flatCompat(t)),
+      invalid: tests.invalid.map(t => FlatCompatRuleTester._flatCompat(t)),
     });
   }
-}
 
-export const flatCompat = <
-  T extends
-    | undefined
-    | TSESLint.RuleTesterConfig
-    | string
-    | TSESLint.ValidTestCase<unknown[]>
-    | TSESLint.InvalidTestCase<string, unknown[]>,
->(
-  config: T,
-): T => {
-  if (
-    !config ||
-    semver.major(eslintVersion) < 9 ||
-    typeof config === 'string'
-  ) {
-    return config;
-  }
-
-  const obj = { languageOptions: { parserOptions: {} } };
-
-  for (const [key, value] of Object.entries(config)) {
-    if (key === 'parser') {
-      // @ts-expect-error this is expected
-      obj.languageOptions.parser = require(value);
-
-      continue;
+  private static _flatCompat<
+    T extends
+      | undefined
+      | TSESLint.RuleTesterConfig
+      | string
+      | TSESLint.ValidTestCase<unknown[]>
+      | TSESLint.InvalidTestCase<string, unknown[]>,
+  >(config: T): T {
+    if (
+      !config ||
+      semver.major(eslintVersion) < 9 ||
+      typeof config === 'string'
+    ) {
+      return config;
     }
 
-    if (key === 'parserOptions') {
-      for (const parserOption of Object.entries(value)) {
-        if (parserOption[0] === 'ecmaVersion' || parserOption[0] === 'sourceType') {
-          // @ts-expect-error this is expected
-          obj.languageOptions[parserOption[0]] = parserOption[1]
+    const obj = { languageOptions: { parserOptions: {} } };
 
-          continue
-        }
-
+    for (const [key, value] of Object.entries(config)) {
+      if (key === 'parser') {
         // @ts-expect-error this is expected
-        obj.languageOptions.parserOptions[parserOption[0]] = parserOption[1];
+        obj.languageOptions.parser = require(value);
+
+        continue;
       }
 
-      continue;
+      if (key === 'parserOptions') {
+        for (const parserOption of Object.entries(value)) {
+          if (
+            parserOption[0] === 'ecmaVersion' ||
+            parserOption[0] === 'sourceType'
+          ) {
+            // @ts-expect-error this is expected
+            obj.languageOptions[parserOption[0]] = parserOption[1];
+
+            continue;
+          }
+
+          // @ts-expect-error this is expected
+          obj.languageOptions.parserOptions[parserOption[0]] = parserOption[1];
+        }
+
+        continue;
+      }
+
+      // @ts-expect-error this is expected
+      obj[key] = value;
     }
 
-    // @ts-expect-error this is expected
-    obj[key] = value;
+    return obj as unknown as T;
+
+    // return {
+    //   languageOptions: {
+    //     parser: require(config.parser),
+    //     ...config.parserOptions,
+    //   },
+    // } as unknown as T;
   }
-
-  return obj as unknown as T;
-
-  // return {
-  //   languageOptions: {
-  //     parser: require(config.parser),
-  //     ...config.parserOptions,
-  //   },
-  // } as unknown as T;
-};
+}
