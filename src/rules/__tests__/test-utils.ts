@@ -29,6 +29,7 @@ export class FlatCompatRuleTester extends TSESLint.RuleTester {
     });
   }
 
+  /* istanbul ignore next */
   private static _flatCompat<
     T extends
       | undefined
