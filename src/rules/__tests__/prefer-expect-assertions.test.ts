@@ -94,7 +94,7 @@ ruleTester.run('prefer-expect-assertions', rule, {
 
         it("returns numbers that are greater than four", function() {
           pleaseExpect.assertions(2);
-  
+
           for(let thing in things) {
             pleaseExpect(number).toBeGreaterThan(4);
           }
@@ -374,6 +374,24 @@ ruleTester.run('prefer-expect-assertions', rule, {
           messageId: 'haveExpectAssertions',
           column: 1,
           line: 1,
+          suggestions: [
+            {
+              messageId: 'suggestAddingHasAssertions',
+              output: dedent`
+                it("it1", async function() {expect.hasAssertions();
+                  expect(someValue).toBe(true);
+                });
+              `,
+            },
+            {
+              messageId: 'suggestAddingAssertions',
+              output: dedent`
+                it("it1", async function() {expect.assertions();
+                  expect(someValue).toBe(true);
+                });
+              `,
+            },
+          ],
         },
       ],
     },
@@ -391,6 +409,28 @@ ruleTester.run('prefer-expect-assertions', rule, {
           messageId: 'haveExpectAssertions',
           column: 1,
           line: 1,
+          suggestions: [
+            {
+              messageId: 'suggestAddingHasAssertions',
+              output: dedent`
+                it("returns numbers that are greater than four", async () => {expect.hasAssertions();
+                  for(let thing in things) {
+                    expect(number).toBeGreaterThan(4);
+                  }
+                });
+              `,
+            },
+            {
+              messageId: 'suggestAddingAssertions',
+              output: dedent`
+                it("returns numbers that are greater than four", async () => {expect.assertions();
+                  for(let thing in things) {
+                    expect(number).toBeGreaterThan(4);
+                  }
+                });
+              `,
+            },
+          ],
         },
       ],
     },
@@ -408,6 +448,28 @@ ruleTester.run('prefer-expect-assertions', rule, {
           messageId: 'haveExpectAssertions',
           column: 1,
           line: 1,
+          suggestions: [
+            {
+              messageId: 'suggestAddingHasAssertions',
+              output: dedent`
+                it("returns numbers that are greater than four", async () => {expect.hasAssertions();
+                  for (const number of getNumbers()) {
+                    expect(number).toBeGreaterThan(4);
+                  }
+                });
+              `,
+            },
+            {
+              messageId: 'suggestAddingAssertions',
+              output: dedent`
+                it("returns numbers that are greater than four", async () => {expect.assertions();
+                  for (const number of getNumbers()) {
+                    expect(number).toBeGreaterThan(4);
+                  }
+                });
+              `,
+            },
+          ],
         },
       ],
     },
@@ -431,6 +493,40 @@ ruleTester.run('prefer-expect-assertions', rule, {
           messageId: 'haveExpectAssertions',
           column: 1,
           line: 1,
+          suggestions: [
+            {
+              messageId: 'suggestAddingHasAssertions',
+              output: dedent`
+                it("returns numbers that are greater than four", async () => {expect.hasAssertions();
+                  for (const number of getNumbers()) {
+                    expect(number).toBeGreaterThan(4);
+                  }
+                });
+
+                it("returns numbers that are greater than five", () => {
+                  for (const number of getNumbers()) {
+                    expect(number).toBeGreaterThan(5);
+                  }
+                });
+              `,
+            },
+            {
+              messageId: 'suggestAddingAssertions',
+              output: dedent`
+                it("returns numbers that are greater than four", async () => {expect.assertions();
+                  for (const number of getNumbers()) {
+                    expect(number).toBeGreaterThan(4);
+                  }
+                });
+
+                it("returns numbers that are greater than five", () => {
+                  for (const number of getNumbers()) {
+                    expect(number).toBeGreaterThan(5);
+                  }
+                });
+              `,
+            },
+          ],
         },
       ],
     },
@@ -493,6 +589,28 @@ ruleTester.run('prefer-expect-assertions (loops)', rule, {
           messageId: 'haveExpectAssertions',
           column: 1,
           line: 1,
+          suggestions: [
+            {
+              messageId: 'suggestAddingHasAssertions',
+              output: dedent`
+                it('only returns numbers that are greater than six', () => {expect.hasAssertions();
+                  for (const number of getNumbers()) {
+                    expect(number).toBeGreaterThan(6);
+                  }
+                });
+              `,
+            },
+            {
+              messageId: 'suggestAddingAssertions',
+              output: dedent`
+                it('only returns numbers that are greater than six', () => {expect.assertions();
+                  for (const number of getNumbers()) {
+                    expect(number).toBeGreaterThan(6);
+                  }
+                });
+              `,
+            },
+          ],
         },
       ],
     },
@@ -514,6 +632,36 @@ ruleTester.run('prefer-expect-assertions (loops)', rule, {
           messageId: 'haveExpectAssertions',
           column: 1,
           line: 1,
+          suggestions: [
+            {
+              messageId: 'suggestAddingHasAssertions',
+              output: dedent`
+                it('returns numbers that are greater than two', function () {expect.hasAssertions();
+                  const expectNumbersToBeGreaterThan = (numbers, value) => {
+                    for (let number of numbers) {
+                      expect(number).toBeGreaterThan(value);
+                    }
+                  };
+
+                  expectNumbersToBeGreaterThan(getNumbers(), 2);
+                });
+              `,
+            },
+            {
+              messageId: 'suggestAddingAssertions',
+              output: dedent`
+                it('returns numbers that are greater than two', function () {expect.assertions();
+                  const expectNumbersToBeGreaterThan = (numbers, value) => {
+                    for (let number of numbers) {
+                      expect(number).toBeGreaterThan(value);
+                    }
+                  };
+
+                  expectNumbersToBeGreaterThan(getNumbers(), 2);
+                });
+              `,
+            },
+          ],
         },
       ],
     },
@@ -533,6 +681,32 @@ ruleTester.run('prefer-expect-assertions (loops)', rule, {
           messageId: 'haveExpectAssertions',
           column: 1,
           line: 1,
+          suggestions: [
+            {
+              messageId: 'suggestAddingHasAssertions',
+              output: dedent`
+                it("only returns numbers that are greater than seven", function () {expect.hasAssertions();
+                  const numbers = getNumbers();
+
+                  for (let i = 0; i < numbers.length; i++) {
+                    expect(numbers[i]).toBeGreaterThan(7);
+                  }
+                });
+              `,
+            },
+            {
+              messageId: 'suggestAddingAssertions',
+              output: dedent`
+                it("only returns numbers that are greater than seven", function () {expect.assertions();
+                  const numbers = getNumbers();
+
+                  for (let i = 0; i < numbers.length; i++) {
+                    expect(numbers[i]).toBeGreaterThan(7);
+                  }
+                });
+              `,
+            },
+          ],
         },
       ],
     },
@@ -554,6 +728,36 @@ ruleTester.run('prefer-expect-assertions (loops)', rule, {
           messageId: 'haveExpectAssertions',
           column: 1,
           line: 5,
+          suggestions: [
+            {
+              messageId: 'suggestAddingHasAssertions',
+              output: dedent`
+                it('has the number two', () => {
+                  expect(number).toBe(2);
+                });
+
+                it('only returns numbers that are less than twenty', () => {expect.hasAssertions();
+                  for (const number of getNumbers()) {
+                    expect(number).toBeLessThan(20);
+                  }
+                });
+              `,
+            },
+            {
+              messageId: 'suggestAddingAssertions',
+              output: dedent`
+                it('has the number two', () => {
+                  expect(number).toBe(2);
+                });
+
+                it('only returns numbers that are less than twenty', () => {expect.assertions();
+                  for (const number of getNumbers()) {
+                    expect(number).toBeLessThan(20);
+                  }
+                });
+              `,
+            },
+          ],
         },
       ],
     },
@@ -573,6 +777,32 @@ ruleTester.run('prefer-expect-assertions (loops)', rule, {
           messageId: 'haveExpectAssertions',
           column: 1,
           line: 3,
+          suggestions: [
+            {
+              messageId: 'suggestAddingHasAssertions',
+              output: dedent`
+                it("is wrong");
+
+                it("is a test", () => {expect.hasAssertions();
+                  for (const number of getNumbers()) {
+                    expect(number).toBeGreaterThan(4);
+                  }
+                });
+              `,
+            },
+            {
+              messageId: 'suggestAddingAssertions',
+              output: dedent`
+                it("is wrong");
+
+                it("is a test", () => {expect.assertions();
+                  for (const number of getNumbers()) {
+                    expect(number).toBeGreaterThan(4);
+                  }
+                });
+              `,
+            },
+          ],
         },
       ],
     },
@@ -598,6 +828,44 @@ ruleTester.run('prefer-expect-assertions (loops)', rule, {
           messageId: 'haveExpectAssertions',
           column: 1,
           line: 5,
+          suggestions: [
+            {
+              messageId: 'suggestAddingHasAssertions',
+              output: dedent`
+                it("is a number that is greater than four", () => {
+                  expect(number).toBeGreaterThan(4);
+                });
+
+                it("returns numbers that are greater than four", () => {expect.hasAssertions();
+                  for (const number of getNumbers()) {
+                    expect(number).toBeGreaterThan(4);
+                  }
+                });
+
+                it("returns numbers that are greater than five", () => {
+                  expect(number).toBeGreaterThan(5);
+                });
+              `,
+            },
+            {
+              messageId: 'suggestAddingAssertions',
+              output: dedent`
+                it("is a number that is greater than four", () => {
+                  expect(number).toBeGreaterThan(4);
+                });
+
+                it("returns numbers that are greater than four", () => {expect.assertions();
+                  for (const number of getNumbers()) {
+                    expect(number).toBeGreaterThan(4);
+                  }
+                });
+
+                it("returns numbers that are greater than five", () => {
+                  expect(number).toBeGreaterThan(5);
+                });
+              `,
+            },
+          ],
         },
       ],
     },
@@ -619,6 +887,36 @@ ruleTester.run('prefer-expect-assertions (loops)', rule, {
           messageId: 'haveExpectAssertions',
           column: 1,
           line: 1,
+          suggestions: [
+            {
+              messageId: 'suggestAddingHasAssertions',
+              output: dedent`
+                it.each([1, 2, 3])("returns numbers that are greater than four", () => {expect.hasAssertions();
+                  for (const number of getNumbers()) {
+                    expect(number).toBeGreaterThan(4);
+                  }
+                });
+
+                it("is a number that is greater than four", () => {
+                  expect(number).toBeGreaterThan(4);
+                });
+              `,
+            },
+            {
+              messageId: 'suggestAddingAssertions',
+              output: dedent`
+                it.each([1, 2, 3])("returns numbers that are greater than four", () => {expect.assertions();
+                  for (const number of getNumbers()) {
+                    expect(number).toBeGreaterThan(4);
+                  }
+                });
+
+                it("is a number that is greater than four", () => {
+                  expect(number).toBeGreaterThan(4);
+                });
+              `,
+            },
+          ],
         },
       ],
     },
@@ -640,6 +938,36 @@ ruleTester.run('prefer-expect-assertions (loops)', rule, {
           messageId: 'haveExpectAssertions',
           column: 1,
           line: 1,
+          suggestions: [
+            {
+              messageId: 'suggestAddingHasAssertions',
+              output: dedent`
+                it("returns numbers that are greater than four", () => {expect.hasAssertions();
+                  for (const number of getNumbers()) {
+                    expect(number).toBeGreaterThan(4);
+                  }
+                });
+
+                it("is a number that is greater than four", () => {
+                  expect(number).toBeGreaterThan(4);
+                });
+              `,
+            },
+            {
+              messageId: 'suggestAddingAssertions',
+              output: dedent`
+                it("returns numbers that are greater than four", () => {expect.assertions();
+                  for (const number of getNumbers()) {
+                    expect(number).toBeGreaterThan(4);
+                  }
+                });
+
+                it("is a number that is greater than four", () => {
+                  expect(number).toBeGreaterThan(4);
+                });
+              `,
+            },
+          ],
         },
       ],
     },
@@ -663,6 +991,40 @@ ruleTester.run('prefer-expect-assertions (loops)', rule, {
           messageId: 'haveExpectAssertions',
           column: 1,
           line: 1,
+          suggestions: [
+            {
+              messageId: 'suggestAddingHasAssertions',
+              output: dedent`
+                it("returns numbers that are greater than four", () => {expect.hasAssertions();
+                  for (const number of getNumbers()) {
+                    expect(number).toBeGreaterThan(4);
+                  }
+                });
+
+                it("is a number that is greater than four", () => {
+                  expect.hasAssertions();
+
+                  expect(number).toBeGreaterThan(4);
+                });
+              `,
+            },
+            {
+              messageId: 'suggestAddingAssertions',
+              output: dedent`
+                it("returns numbers that are greater than four", () => {expect.assertions();
+                  for (const number of getNumbers()) {
+                    expect(number).toBeGreaterThan(4);
+                  }
+                });
+
+                it("is a number that is greater than four", () => {
+                  expect.hasAssertions();
+
+                  expect(number).toBeGreaterThan(4);
+                });
+              `,
+            },
+          ],
         },
       ],
     },
@@ -688,6 +1050,44 @@ ruleTester.run('prefer-expect-assertions (loops)', rule, {
           messageId: 'haveExpectAssertions',
           column: 1,
           line: 9,
+          suggestions: [
+            {
+              messageId: 'suggestAddingHasAssertions',
+              output: dedent`
+                it("it1", () => {
+                  expect.hasAssertions();
+
+                  for (const number of getNumbers()) {
+                    expect(number).toBeGreaterThan(0);
+                  }
+                });
+
+                it("it1", () => {expect.hasAssertions();
+                  for (const number of getNumbers()) {
+                    expect(number).toBeGreaterThan(0);
+                  }
+                });
+              `,
+            },
+            {
+              messageId: 'suggestAddingAssertions',
+              output: dedent`
+                it("it1", () => {
+                  expect.hasAssertions();
+
+                  for (const number of getNumbers()) {
+                    expect(number).toBeGreaterThan(0);
+                  }
+                });
+
+                it("it1", () => {expect.assertions();
+                  for (const number of getNumbers()) {
+                    expect(number).toBeGreaterThan(0);
+                  }
+                });
+              `,
+            },
+          ],
         },
       ],
     },
@@ -711,11 +1111,79 @@ ruleTester.run('prefer-expect-assertions (loops)', rule, {
           messageId: 'haveExpectAssertions',
           column: 1,
           line: 1,
+          suggestions: [
+            {
+              messageId: 'suggestAddingHasAssertions',
+              output: dedent`
+                it("returns numbers that are greater than four", async () => {expect.hasAssertions();
+                  for (const number of await getNumbers()) {
+                    expect(number).toBeGreaterThan(4);
+                  }
+                });
+
+                it("returns numbers that are greater than five", () => {
+                  for (const number of getNumbers()) {
+                    expect(number).toBeGreaterThan(5);
+                  }
+                });
+              `,
+            },
+            {
+              messageId: 'suggestAddingAssertions',
+              output: dedent`
+                it("returns numbers that are greater than four", async () => {expect.assertions();
+                  for (const number of await getNumbers()) {
+                    expect(number).toBeGreaterThan(4);
+                  }
+                });
+
+                it("returns numbers that are greater than five", () => {
+                  for (const number of getNumbers()) {
+                    expect(number).toBeGreaterThan(5);
+                  }
+                });
+              `,
+            },
+          ],
         },
         {
           messageId: 'haveExpectAssertions',
           column: 1,
           line: 7,
+          suggestions: [
+            {
+              messageId: 'suggestAddingHasAssertions',
+              output: dedent`
+                it("returns numbers that are greater than four", async () => {
+                  for (const number of await getNumbers()) {
+                    expect(number).toBeGreaterThan(4);
+                  }
+                });
+
+                it("returns numbers that are greater than five", () => {expect.hasAssertions();
+                  for (const number of getNumbers()) {
+                    expect(number).toBeGreaterThan(5);
+                  }
+                });
+              `,
+            },
+            {
+              messageId: 'suggestAddingAssertions',
+              output: dedent`
+                it("returns numbers that are greater than four", async () => {
+                  for (const number of await getNumbers()) {
+                    expect(number).toBeGreaterThan(4);
+                  }
+                });
+
+                it("returns numbers that are greater than five", () => {expect.assertions();
+                  for (const number of getNumbers()) {
+                    expect(number).toBeGreaterThan(5);
+                  }
+                });
+              `,
+            },
+          ],
         },
       ],
     },
@@ -741,6 +1209,44 @@ ruleTester.run('prefer-expect-assertions (loops)', rule, {
           messageId: 'haveExpectAssertions',
           column: 1,
           line: 9,
+          suggestions: [
+            {
+              messageId: 'suggestAddingHasAssertions',
+              output: dedent`
+                it("it1", async () => {
+                  expect.hasAssertions();
+
+                  for (const number of getNumbers()) {
+                    expect(number).toBeGreaterThan(4);
+                  }
+                });
+
+                it("it1", () => {expect.hasAssertions();
+                  for (const number of getNumbers()) {
+                    expect(number).toBeGreaterThan(4);
+                  }
+                });
+              `,
+            },
+            {
+              messageId: 'suggestAddingAssertions',
+              output: dedent`
+                it("it1", async () => {
+                  expect.hasAssertions();
+
+                  for (const number of getNumbers()) {
+                    expect(number).toBeGreaterThan(4);
+                  }
+                });
+
+                it("it1", () => {expect.assertions();
+                  for (const number of getNumbers()) {
+                    expect(number).toBeGreaterThan(4);
+                  }
+                });
+              `,
+            },
+          ],
         },
       ],
     },
@@ -766,6 +1272,44 @@ ruleTester.run('prefer-expect-assertions (loops)', rule, {
           messageId: 'haveExpectAssertions',
           column: 1,
           line: 9,
+          suggestions: [
+            {
+              messageId: 'suggestAddingHasAssertions',
+              output: dedent`
+                it.skip.each\`\`("it1", async () => {
+                  expect.hasAssertions();
+
+                  for (const number of getNumbers()) {
+                    expect(number).toBeGreaterThan(4);
+                  }
+                });
+
+                it("it1", () => {expect.hasAssertions();
+                  for (const number of getNumbers()) {
+                    expect(number).toBeGreaterThan(4);
+                  }
+                });
+              `,
+            },
+            {
+              messageId: 'suggestAddingAssertions',
+              output: dedent`
+                it.skip.each\`\`("it1", async () => {
+                  expect.hasAssertions();
+
+                  for (const number of getNumbers()) {
+                    expect(number).toBeGreaterThan(4);
+                  }
+                });
+
+                it("it1", () => {expect.assertions();
+                  for (const number of getNumbers()) {
+                    expect(number).toBeGreaterThan(4);
+                  }
+                });
+              `,
+            },
+          ],
         },
       ],
     },
@@ -791,6 +1335,44 @@ ruleTester.run('prefer-expect-assertions (loops)', rule, {
           messageId: 'haveExpectAssertions',
           column: 1,
           line: 1,
+          suggestions: [
+            {
+              messageId: 'suggestAddingHasAssertions',
+              output: dedent`
+                it("it1", async () => {expect.hasAssertions();
+                  for (const number of getNumbers()) {
+                    expect(number).toBeGreaterThan(4);
+                  }
+                });
+
+                it("it1", () => {
+                  expect.hasAssertions();
+
+                  for (const number of getNumbers()) {
+                    expect(number).toBeGreaterThan(4);
+                  }
+                });
+              `,
+            },
+            {
+              messageId: 'suggestAddingAssertions',
+              output: dedent`
+                it("it1", async () => {expect.assertions();
+                  for (const number of getNumbers()) {
+                    expect(number).toBeGreaterThan(4);
+                  }
+                });
+
+                it("it1", () => {
+                  expect.hasAssertions();
+
+                  for (const number of getNumbers()) {
+                    expect(number).toBeGreaterThan(4);
+                  }
+                });
+              `,
+            },
+          ],
         },
       ],
     },
@@ -927,6 +1509,32 @@ ruleTester.run('prefer-expect-assertions (callbacks)', rule, {
           messageId: 'haveExpectAssertions',
           column: 1,
           line: 1,
+          suggestions: [
+            {
+              messageId: 'suggestAddingHasAssertions',
+              output: dedent`
+                it('sends the data as a string', () => {expect.hasAssertions();
+                  const stream = openStream();
+
+                  stream.on('data', data => {
+                    expect(data).toBe(expect.any(String));
+                  });
+                });
+              `,
+            },
+            {
+              messageId: 'suggestAddingAssertions',
+              output: dedent`
+                it('sends the data as a string', () => {expect.assertions();
+                  const stream = openStream();
+
+                  stream.on('data', data => {
+                    expect(data).toBe(expect.any(String));
+                  });
+                });
+              `,
+            },
+          ],
         },
       ],
     },
@@ -944,6 +1552,28 @@ ruleTester.run('prefer-expect-assertions (callbacks)', rule, {
           messageId: 'haveExpectAssertions',
           column: 1,
           line: 1,
+          suggestions: [
+            {
+              messageId: 'suggestAddingHasAssertions',
+              output: dedent`
+                it('responds ok', function () {expect.hasAssertions();
+                  client.get('/user', response => {
+                    expect(response.status).toBe(200);
+                  });
+                });
+              `,
+            },
+            {
+              messageId: 'suggestAddingAssertions',
+              output: dedent`
+                it('responds ok', function () {expect.assertions();
+                  client.get('/user', response => {
+                    expect(response.status).toBe(200);
+                  });
+                });
+              `,
+            },
+          ],
         },
       ],
     },
@@ -963,6 +1593,32 @@ ruleTester.run('prefer-expect-assertions (callbacks)', rule, {
           messageId: 'haveExpectAssertions',
           column: 1,
           line: 1,
+          suggestions: [
+            {
+              messageId: 'suggestAddingHasAssertions',
+              output: dedent`
+                it('responds ok', function () {expect.hasAssertions();
+                  client.get('/user', response => {
+                    expect.assertions(1);
+
+                    expect(response.status).toBe(200);
+                  });
+                });
+              `,
+            },
+            {
+              messageId: 'suggestAddingAssertions',
+              output: dedent`
+                it('responds ok', function () {expect.assertions();
+                  client.get('/user', response => {
+                    expect.assertions(1);
+
+                    expect(response.status).toBe(200);
+                  });
+                });
+              `,
+            },
+          ],
         },
       ],
     },
@@ -973,7 +1629,7 @@ ruleTester.run('prefer-expect-assertions (callbacks)', rule, {
             expect.assertions(1);
 
             expect(response.status).toBe(200);
-          }; 
+          };
 
           client.get('/user', expectOkResponse);
         });
@@ -984,6 +1640,36 @@ ruleTester.run('prefer-expect-assertions (callbacks)', rule, {
           messageId: 'haveExpectAssertions',
           column: 1,
           line: 1,
+          suggestions: [
+            {
+              messageId: 'suggestAddingHasAssertions',
+              output: dedent`
+                it('responds ok', function () {expect.hasAssertions();
+                  const expectOkResponse = response => {
+                    expect.assertions(1);
+
+                    expect(response.status).toBe(200);
+                  };
+
+                  client.get('/user', expectOkResponse);
+                });
+              `,
+            },
+            {
+              messageId: 'suggestAddingAssertions',
+              output: dedent`
+                it('responds ok', function () {expect.assertions();
+                  const expectOkResponse = response => {
+                    expect.assertions(1);
+
+                    expect(response.status).toBe(200);
+                  };
+
+                  client.get('/user', expectOkResponse);
+                });
+              `,
+            },
+          ],
         },
       ],
     },
@@ -1003,6 +1689,32 @@ ruleTester.run('prefer-expect-assertions (callbacks)', rule, {
           messageId: 'haveExpectAssertions',
           column: 1,
           line: 1,
+          suggestions: [
+            {
+              messageId: 'suggestAddingHasAssertions',
+              output: dedent`
+                it('returns numbers that are greater than two', function () {expect.hasAssertions();
+                  const expectNumberToBeGreaterThan = (number, value) => {
+                    expect(number).toBeGreaterThan(value);
+                  };
+
+                  expectNumberToBeGreaterThan(1, 2);
+                });
+              `,
+            },
+            {
+              messageId: 'suggestAddingAssertions',
+              output: dedent`
+                it('returns numbers that are greater than two', function () {expect.assertions();
+                  const expectNumberToBeGreaterThan = (number, value) => {
+                    expect(number).toBeGreaterThan(value);
+                  };
+
+                  expectNumberToBeGreaterThan(1, 2);
+                });
+              `,
+            },
+          ],
         },
       ],
     },
@@ -1024,6 +1736,36 @@ ruleTester.run('prefer-expect-assertions (callbacks)', rule, {
           messageId: 'haveExpectAssertions',
           column: 1,
           line: 1,
+          suggestions: [
+            {
+              messageId: 'suggestAddingHasAssertions',
+              output: dedent`
+                it('returns numbers that are greater than two', function () {expect.hasAssertions();
+                  const expectNumbersToBeGreaterThan = (numbers, value) => {
+                    for (let number of numbers) {
+                      expect(number).toBeGreaterThan(value);
+                    }
+                  };
+
+                  expectNumbersToBeGreaterThan(getNumbers(), 2);
+                });
+              `,
+            },
+            {
+              messageId: 'suggestAddingAssertions',
+              output: dedent`
+                it('returns numbers that are greater than two', function () {expect.assertions();
+                  const expectNumbersToBeGreaterThan = (numbers, value) => {
+                    for (let number of numbers) {
+                      expect(number).toBeGreaterThan(value);
+                    }
+                  };
+
+                  expectNumbersToBeGreaterThan(getNumbers(), 2);
+                });
+              `,
+            },
+          ],
         },
       ],
     },
@@ -1041,6 +1783,28 @@ ruleTester.run('prefer-expect-assertions (callbacks)', rule, {
           messageId: 'haveExpectAssertions',
           column: 1,
           line: 1,
+          suggestions: [
+            {
+              messageId: 'suggestAddingHasAssertions',
+              output: dedent`
+                it('only returns numbers that are greater than six', () => {expect.hasAssertions();
+                  getNumbers().forEach(number => {
+                    expect(number).toBeGreaterThan(6);
+                  });
+                });
+              `,
+            },
+            {
+              messageId: 'suggestAddingAssertions',
+              output: dedent`
+                it('only returns numbers that are greater than six', () => {expect.assertions();
+                  getNumbers().forEach(number => {
+                    expect(number).toBeGreaterThan(6);
+                  });
+                });
+              `,
+            },
+          ],
         },
       ],
     },
@@ -1064,6 +1828,40 @@ ruleTester.run('prefer-expect-assertions (callbacks)', rule, {
           messageId: 'haveExpectAssertions',
           column: 1,
           line: 3,
+          suggestions: [
+            {
+              messageId: 'suggestAddingHasAssertions',
+              output: dedent`
+                it("is wrong");
+
+                it('responds ok', function () {expect.hasAssertions();
+                  const expectOkResponse = response => {
+                    expect.assertions(1);
+
+                    expect(response.status).toBe(200);
+                  };
+
+                  client.get('/user', expectOkResponse);
+                });
+              `,
+            },
+            {
+              messageId: 'suggestAddingAssertions',
+              output: dedent`
+                it("is wrong");
+
+                it('responds ok', function () {expect.assertions();
+                  const expectOkResponse = response => {
+                    expect.assertions(1);
+
+                    expect(response.status).toBe(200);
+                  };
+
+                  client.get('/user', expectOkResponse);
+                });
+              `,
+            },
+          ],
         },
       ],
     },
@@ -1091,6 +1889,48 @@ ruleTester.run('prefer-expect-assertions (callbacks)', rule, {
           messageId: 'haveExpectAssertions',
           column: 1,
           line: 5,
+          suggestions: [
+            {
+              messageId: 'suggestAddingHasAssertions',
+              output: dedent`
+                it("is a number that is greater than four", () => {
+                  expect(number).toBeGreaterThan(4);
+                });
+
+                it('responds ok', function () {expect.hasAssertions();
+                  const expectOkResponse = response => {
+                    expect(response.status).toBe(200);
+                  };
+
+                  client.get('/user', expectOkResponse);
+                });
+
+                it("returns numbers that are greater than five", () => {
+                  expect(number).toBeGreaterThan(5);
+                });
+              `,
+            },
+            {
+              messageId: 'suggestAddingAssertions',
+              output: dedent`
+                it("is a number that is greater than four", () => {
+                  expect(number).toBeGreaterThan(4);
+                });
+
+                it('responds ok', function () {expect.assertions();
+                  const expectOkResponse = response => {
+                    expect(response.status).toBe(200);
+                  };
+
+                  client.get('/user', expectOkResponse);
+                });
+
+                it("returns numbers that are greater than five", () => {
+                  expect(number).toBeGreaterThan(5);
+                });
+              `,
+            },
+          ],
         },
       ],
     },
@@ -1116,6 +1956,44 @@ ruleTester.run('prefer-expect-assertions (callbacks)', rule, {
           messageId: 'haveExpectAssertions',
           column: 1,
           line: 5,
+          suggestions: [
+            {
+              messageId: 'suggestAddingHasAssertions',
+              output: dedent`
+                it("is a number that is greater than four", () => {
+                  expect(number).toBeGreaterThan(4);
+                });
+
+                it("returns numbers that are greater than four", () => {expect.hasAssertions();
+                  getNumbers().map(number => {
+                    expect(number).toBeGreaterThan(0);
+                  });
+                });
+
+                it("returns numbers that are greater than five", () => {
+                  expect(number).toBeGreaterThan(5);
+                });
+              `,
+            },
+            {
+              messageId: 'suggestAddingAssertions',
+              output: dedent`
+                it("is a number that is greater than four", () => {
+                  expect(number).toBeGreaterThan(4);
+                });
+
+                it("returns numbers that are greater than four", () => {expect.assertions();
+                  getNumbers().map(number => {
+                    expect(number).toBeGreaterThan(0);
+                  });
+                });
+
+                it("returns numbers that are greater than five", () => {
+                  expect(number).toBeGreaterThan(5);
+                });
+              `,
+            },
+          ],
         },
       ],
     },
@@ -1137,6 +2015,36 @@ ruleTester.run('prefer-expect-assertions (callbacks)', rule, {
           messageId: 'haveExpectAssertions',
           column: 1,
           line: 1,
+          suggestions: [
+            {
+              messageId: 'suggestAddingHasAssertions',
+              output: dedent`
+                it.each([1, 2, 3])("returns ok", id => {expect.hasAssertions();
+                  client.get(\`/users/$\{id}\`, response => {
+                    expect(response.status).toBe(200);
+                  });
+                });
+
+                it("is a number that is greater than four", () => {
+                  expect(number).toBeGreaterThan(4);
+                });
+              `,
+            },
+            {
+              messageId: 'suggestAddingAssertions',
+              output: dedent`
+                it.each([1, 2, 3])("returns ok", id => {expect.assertions();
+                  client.get(\`/users/$\{id}\`, response => {
+                    expect(response.status).toBe(200);
+                  });
+                });
+
+                it("is a number that is greater than four", () => {
+                  expect(number).toBeGreaterThan(4);
+                });
+              `,
+            },
+          ],
         },
       ],
     },
@@ -1158,6 +2066,36 @@ ruleTester.run('prefer-expect-assertions (callbacks)', rule, {
           messageId: 'haveExpectAssertions',
           column: 1,
           line: 1,
+          suggestions: [
+            {
+              messageId: 'suggestAddingHasAssertions',
+              output: dedent`
+                it('responds ok', function () {expect.hasAssertions();
+                  client.get('/user', response => {
+                    expect(response.status).toBe(200);
+                  });
+                });
+
+                it("is a number that is greater than four", () => {
+                  expect(number).toBeGreaterThan(4);
+                });
+              `,
+            },
+            {
+              messageId: 'suggestAddingAssertions',
+              output: dedent`
+                it('responds ok', function () {expect.assertions();
+                  client.get('/user', response => {
+                    expect(response.status).toBe(200);
+                  });
+                });
+
+                it("is a number that is greater than four", () => {
+                  expect(number).toBeGreaterThan(4);
+                });
+              `,
+            },
+          ],
         },
       ],
     },
@@ -1181,6 +2119,40 @@ ruleTester.run('prefer-expect-assertions (callbacks)', rule, {
           messageId: 'haveExpectAssertions',
           column: 1,
           line: 1,
+          suggestions: [
+            {
+              messageId: 'suggestAddingHasAssertions',
+              output: dedent`
+                it('responds ok', function () {expect.hasAssertions();
+                  client.get('/user', response => {
+                    expect(response.status).toBe(200);
+                  });
+                });
+
+                it("is a number that is greater than four", () => {
+                  expect.hasAssertions();
+
+                  expect(number).toBeGreaterThan(4);
+                });
+              `,
+            },
+            {
+              messageId: 'suggestAddingAssertions',
+              output: dedent`
+                it('responds ok', function () {expect.assertions();
+                  client.get('/user', response => {
+                    expect(response.status).toBe(200);
+                  });
+                });
+
+                it("is a number that is greater than four", () => {
+                  expect.hasAssertions();
+
+                  expect(number).toBeGreaterThan(4);
+                });
+              `,
+            },
+          ],
         },
       ],
     },
@@ -1206,6 +2178,44 @@ ruleTester.run('prefer-expect-assertions (callbacks)', rule, {
           messageId: 'haveExpectAssertions',
           column: 1,
           line: 9,
+          suggestions: [
+            {
+              messageId: 'suggestAddingHasAssertions',
+              output: dedent`
+                it("it1", () => {
+                  expect.hasAssertions();
+
+                  getNumbers().forEach(number => {
+                    expect(number).toBeGreaterThan(0);
+                  });
+                });
+
+                it("it1", () => {expect.hasAssertions();
+                  getNumbers().forEach(number => {
+                    expect(number).toBeGreaterThan(0);
+                  });
+                });
+              `,
+            },
+            {
+              messageId: 'suggestAddingAssertions',
+              output: dedent`
+                it("it1", () => {
+                  expect.hasAssertions();
+
+                  getNumbers().forEach(number => {
+                    expect(number).toBeGreaterThan(0);
+                  });
+                });
+
+                it("it1", () => {expect.assertions();
+                  getNumbers().forEach(number => {
+                    expect(number).toBeGreaterThan(0);
+                  });
+                });
+              `,
+            },
+          ],
         },
       ],
     },
@@ -1231,6 +2241,44 @@ ruleTester.run('prefer-expect-assertions (callbacks)', rule, {
           messageId: 'haveExpectAssertions',
           column: 1,
           line: 9,
+          suggestions: [
+            {
+              messageId: 'suggestAddingHasAssertions',
+              output: dedent`
+                it('responds ok', function () {
+                  expect.hasAssertions();
+
+                  client.get('/user', response => {
+                    expect(response.status).toBe(200);
+                  });
+                });
+
+                it('responds not found', function () {expect.hasAssertions();
+                  client.get('/user', response => {
+                    expect(response.status).toBe(404);
+                  });
+                });
+              `,
+            },
+            {
+              messageId: 'suggestAddingAssertions',
+              output: dedent`
+                it('responds ok', function () {
+                  expect.hasAssertions();
+
+                  client.get('/user', response => {
+                    expect(response.status).toBe(200);
+                  });
+                });
+
+                it('responds not found', function () {expect.assertions();
+                  client.get('/user', response => {
+                    expect(response.status).toBe(404);
+                  });
+                });
+              `,
+            },
+          ],
         },
       ],
     },
@@ -1256,6 +2304,44 @@ ruleTester.run('prefer-expect-assertions (callbacks)', rule, {
           messageId: 'haveExpectAssertions',
           column: 1,
           line: 9,
+          suggestions: [
+            {
+              messageId: 'suggestAddingHasAssertions',
+              output: dedent`
+                it.skip.each\`\`("it1", async () => {
+                  expect.hasAssertions();
+
+                  client.get('/user', response => {
+                    expect(response.status).toBe(200);
+                  });
+                });
+
+                it("responds ok", () => {expect.hasAssertions();
+                  client.get('/user', response => {
+                    expect(response.status).toBe(200);
+                  });
+                });
+              `,
+            },
+            {
+              messageId: 'suggestAddingAssertions',
+              output: dedent`
+                it.skip.each\`\`("it1", async () => {
+                  expect.hasAssertions();
+
+                  client.get('/user', response => {
+                    expect(response.status).toBe(200);
+                  });
+                });
+
+                it("responds ok", () => {expect.assertions();
+                  client.get('/user', response => {
+                    expect(response.status).toBe(200);
+                  });
+                });
+              `,
+            },
+          ],
         },
       ],
     },
@@ -1270,7 +2356,39 @@ ruleTester.run('prefer-expect-assertions (callbacks)', rule, {
         });
       `,
       parserOptions: { sourceType: 'module' },
-      errors: [{ endColumn: 3, column: 1, messageId: 'haveExpectAssertions' }],
+      errors: [
+        {
+          messageId: 'haveExpectAssertions',
+          column: 1,
+          endColumn: 3,
+          suggestions: [
+            {
+              messageId: 'suggestAddingHasAssertions',
+              output: dedent`
+                it("returns numbers that are greater than four", function(expect) {expect.hasAssertions();
+                  expect.assertions(2);
+
+                  for(let thing in things) {
+                    expect(number).toBeGreaterThan(4);
+                  }
+                });
+              `,
+            },
+            {
+              messageId: 'suggestAddingAssertions',
+              output: dedent`
+                it("returns numbers that are greater than four", function(expect) {expect.assertions();
+                  expect.assertions(2);
+
+                  for(let thing in things) {
+                    expect(number).toBeGreaterThan(4);
+                  }
+                });
+              `,
+            },
+          ],
+        },
+      ],
     },
   ],
 });
@@ -1333,6 +2451,40 @@ ruleTester.run('prefer-expect-assertions (mixed)', rule, {
           messageId: 'haveExpectAssertions',
           column: 1,
           line: 1,
+          suggestions: [
+            {
+              messageId: 'suggestAddingHasAssertions',
+              output: dedent`
+                it('only returns numbers that are greater than zero', () => {expect.hasAssertions();
+                  for (const number of getNumbers()) {
+                    expect(number).toBeGreaterThan(0);
+                  }
+                });
+
+                it("is zero", () => {
+                  expect.hasAssertions();
+
+                  expect(0).toBe(0);
+                });
+              `,
+            },
+            {
+              messageId: 'suggestAddingAssertions',
+              output: dedent`
+                it('only returns numbers that are greater than zero', () => {expect.assertions();
+                  for (const number of getNumbers()) {
+                    expect(number).toBeGreaterThan(0);
+                  }
+                });
+
+                it("is zero", () => {
+                  expect.hasAssertions();
+
+                  expect(0).toBe(0);
+                });
+              `,
+            },
+          ],
         },
       ],
     },
@@ -1358,6 +2510,44 @@ ruleTester.run('prefer-expect-assertions (mixed)', rule, {
           messageId: 'haveExpectAssertions',
           column: 1,
           line: 9,
+          suggestions: [
+            {
+              messageId: 'suggestAddingHasAssertions',
+              output: dedent`
+                it('only returns numbers that are greater than zero', () => {
+                  expect.hasAssertions();
+
+                  for (const number of getNumbers()) {
+                    expect(number).toBeGreaterThan(0);
+                  }
+                });
+
+                it('only returns numbers that are less than 100', () => {expect.hasAssertions();
+                  for (const number of getNumbers()) {
+                    expect(number).toBeLessThan(0);
+                  }
+                });
+              `,
+            },
+            {
+              messageId: 'suggestAddingAssertions',
+              output: dedent`
+                it('only returns numbers that are greater than zero', () => {
+                  expect.hasAssertions();
+
+                  for (const number of getNumbers()) {
+                    expect(number).toBeGreaterThan(0);
+                  }
+                });
+
+                it('only returns numbers that are less than 100', () => {expect.assertions();
+                  for (const number of getNumbers()) {
+                    expect(number).toBeLessThan(0);
+                  }
+                });
+              `,
+            },
+          ],
         },
       ],
     },
@@ -1378,6 +2568,24 @@ ruleTester.run('prefer-expect-assertions (mixed)', rule, {
           messageId: 'haveExpectAssertions',
           column: 1,
           line: 1,
+          suggestions: [
+            {
+              messageId: 'suggestAddingHasAssertions',
+              output: dedent`
+                it("to be true", async function() {expect.hasAssertions();
+                  expect(someValue).toBe(true);
+                });
+              `,
+            },
+            {
+              messageId: 'suggestAddingAssertions',
+              output: dedent`
+                it("to be true", async function() {expect.assertions();
+                  expect(someValue).toBe(true);
+                });
+              `,
+            },
+          ],
         },
       ],
     },
@@ -1400,6 +2608,28 @@ ruleTester.run('prefer-expect-assertions (mixed)', rule, {
           messageId: 'haveExpectAssertions',
           column: 1,
           line: 1,
+          suggestions: [
+            {
+              messageId: 'suggestAddingHasAssertions',
+              output: dedent`
+                it('only returns numbers that are greater than zero', async () => {expect.hasAssertions();
+                  for (const number of getNumbers()) {
+                    expect(number).toBeGreaterThan(0);
+                  }
+                });
+              `,
+            },
+            {
+              messageId: 'suggestAddingAssertions',
+              output: dedent`
+                it('only returns numbers that are greater than zero', async () => {expect.assertions();
+                  for (const number of getNumbers()) {
+                    expect(number).toBeGreaterThan(0);
+                  }
+                });
+              `,
+            },
+          ],
         },
       ],
     },
