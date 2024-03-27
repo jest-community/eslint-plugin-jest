@@ -37,6 +37,7 @@ export class FlatCompatRuleTester extends TSESLint.RuleTester {
       | TSESLint.ValidTestCase<unknown[]>
       | TSESLint.InvalidTestCase<string, unknown[]>,
   >(config: T): T {
+    /* istanbul ignore else */
     if (!config || !usingFlatConfig() || typeof config === 'string') {
       return config;
     }
