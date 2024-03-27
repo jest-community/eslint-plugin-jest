@@ -102,8 +102,15 @@ jobs:
           yarn
           yarn add --dev eslint@${{ matrix.eslint-version }} @typescript-eslint/eslint-plugin@${{ matrix.ts-eslint-plugin-version }} @typescript-eslint/parser@${{ matrix.ts-eslint-plugin-version }}
       - name: run tests
+        if: ${{ matrix.eslint-version <= 8 }}
         # only collect coverage on eslint versions that support dynamic import
         run: yarn test --coverage ${{ matrix.eslint-version >= 8 }}
+        env:
+          CI: true
+      - name: run tests
+        if: ${{ matrix.eslint-version == 'next' }}
+        # ESLint v9 requires us to use flat configs, so we can't run linting
+        run: yarn test --coverage --ignore-projects lint
         env:
           CI: true
       - uses: codecov/codecov-action@v3
