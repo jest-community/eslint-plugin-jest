@@ -61,7 +61,6 @@ describe('rules', () => {
       'flat/recommended': { plugins: { jest: expectJestPlugin } },
       'flat/style': { plugins: { jest: expectJestPlugin } },
       'flat/all': { plugins: { jest: expectJestPlugin } },
-      'flat/snapshots': { plugins: { jest: expectJestPlugin } },
     });
     expect(Object.keys(recommendedConfigs)).toEqual([
       'all',
@@ -70,7 +69,6 @@ describe('rules', () => {
       'flat/all',
       'flat/recommended',
       'flat/style',
-      'flat/snapshots',
     ]);
     expect(Object.keys(recommendedConfigs.all.rules)).toHaveLength(
       ruleNames.length - deprecatedRules.length,

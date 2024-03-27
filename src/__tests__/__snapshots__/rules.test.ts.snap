@@ -193,20 +193,6 @@ exports[`rules should export configs that refer to actual rules 1`] = `
       "jest/valid-title": "error",
     },
   },
-  "flat/snapshots": {
-    "files": [
-      "**/*.snap",
-    ],
-    "plugins": {
-      "jest": ObjectContaining {
-        "meta": {
-          "name": "eslint-plugin-jest",
-          "version": Any<String>,
-        },
-      },
-    },
-    "processor": "jest/snapshots",
-  },
   "flat/style": {
     "languageOptions": {
       "globals": {
