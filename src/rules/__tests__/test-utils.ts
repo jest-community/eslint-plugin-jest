@@ -46,7 +46,7 @@ export const flatCompat = <
     return config;
   }
 
-  const obj = { languageOptions: {} };
+  const obj = { languageOptions: { parserOptions: {} } };
 
   for (const [key, value] of Object.entries(config)) {
     if (key === 'parser') {
@@ -57,10 +57,17 @@ export const flatCompat = <
     }
 
     if (key === 'parserOptions') {
-      obj.languageOptions = {
-        ...obj.languageOptions,
-        ...value,
-      };
+      for (const parserOption of Object.entries(value)) {
+        if (parserOption[0] === 'ecmaVersion' || parserOption[0] === 'sourceType') {
+          // @ts-expect-error this is expected
+          obj.languageOptions[parserOption[0]] = parserOption[1]
+
+          continue
+        }
+
+        // @ts-expect-error this is expected
+        obj.languageOptions.parserOptions[parserOption[0]] = parserOption[1];
+      }
 
       continue;
     }
