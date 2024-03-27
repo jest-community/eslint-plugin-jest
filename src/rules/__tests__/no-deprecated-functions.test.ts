@@ -4,7 +4,7 @@ import {
   type JestVersion,
   detectJestVersion,
 } from '../utils/detectJestVersion';
-import { FlatCompatRuleTester } from './test-utils';
+import { FlatCompatRuleTester, usingFlatConfig } from './test-utils';
 
 jest.mock('../utils/detectJestVersion');
 
@@ -159,11 +159,18 @@ describe('the rule', () => {
       expect(() => {
         const linter = new TSESLint.Linter();
 
-        linter.defineRule('no-deprecated-functions', rule);
+        const config: TSESLint.Linter.ConfigType = usingFlatConfig()
+          ? [
+              {
+                plugins: {
+                  jest: { rules: { 'no-deprecated-functions': rule } },
+                },
+                rules: { 'jest/no-deprecated-functions': 'error' },
+              },
+            ]
+          : { rules: { 'no-deprecated-functions': 'error' } };
 
-        linter.verify('jest.resetModuleRegistry()', {
-          rules: { 'no-deprecated-functions': 'error' },
-        });
+        linter.verify('jest.resetModuleRegistry()', config);
       }).toThrow('oh noes!');
     });
   });

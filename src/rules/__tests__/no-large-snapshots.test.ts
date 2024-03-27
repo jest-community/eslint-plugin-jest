@@ -1,7 +1,11 @@
 import { TSESLint } from '@typescript-eslint/utils';
 import dedent from 'dedent';
 import rule from '../no-large-snapshots';
-import { FlatCompatRuleTester, espreeParser } from './test-utils';
+import {
+  FlatCompatRuleTester,
+  espreeParser,
+  usingFlatConfig,
+} from './test-utils';
 
 const ruleTester = new FlatCompatRuleTester({
   parser: espreeParser,
@@ -267,24 +271,28 @@ describe('no-large-snapshots', () => {
       expect(() => {
         const linter = new TSESLint.Linter();
 
-        linter.defineRule('no-large-snapshots', rule);
-
-        linter.verify(
-          'console.log()',
-          {
-            rules: {
-              'no-large-snapshots': [
-                'error',
-                {
-                  allowedSnapshots: {
-                    'mock-component.jsx.snap': [/a big component \d+/u],
-                  },
+        const config: TSESLint.Linter.ConfigType = usingFlatConfig()
+          ? [
+              {
+                files: ['*.snap'],
+                plugins: {
+                  jest: { rules: { 'no-large-snapshots': rule } },
                 },
-              ],
-            },
-          },
-          'mock-component.jsx.snap',
-        );
+                rules: {
+                  'jest/no-large-snapshots': [
+                    'error',
+                    {
+                      allowedSnapshots: {
+                        'mock-component.jsx.snap': [/a big component \d+/u],
+                      },
+                    },
+                  ],
+                },
+              },
+            ]
+          : { rules: { 'no-large-snapshots': 'error' } };
+
+        linter.verify('console.log()', config, 'mock-component.jsx.snap');
       }).toThrow(
         'All paths for allowedSnapshots must be absolute. You can use JS config and `path.resolve`',
       );

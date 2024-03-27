@@ -8,6 +8,8 @@ const eslintRequire = createRequire(require.resolve('eslint'));
 
 export const espreeParser = eslintRequire.resolve('espree');
 
+export const usingFlatConfig = () => semver.major(eslintVersion) >= 9;
+
 export class FlatCompatRuleTester extends TSESLint.RuleTester {
   public constructor(testerConfig?: TSESLint.RuleTesterConfig) {
     super(FlatCompatRuleTester._flatCompat(testerConfig));
@@ -35,11 +37,7 @@ export class FlatCompatRuleTester extends TSESLint.RuleTester {
       | TSESLint.ValidTestCase<unknown[]>
       | TSESLint.InvalidTestCase<string, unknown[]>,
   >(config: T): T {
-    if (
-      !config ||
-      semver.major(eslintVersion) < 9 ||
-      typeof config === 'string'
-    ) {
+    if (!config || !usingFlatConfig() || typeof config === 'string') {
       return config;
     }
 
