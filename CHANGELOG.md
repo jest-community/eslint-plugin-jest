@@ -1,3 +1,15 @@
+# [28.0.0-next.5](https://github.com/jest-community/eslint-plugin-jest/compare/v28.0.0-next.4...v28.0.0-next.5) (2024-03-27)
+
+
+### Features
+
+* remove `snapshot` processor and `flat/snapshot` config ([#1532](https://github.com/jest-community/eslint-plugin-jest/issues/1532)) ([98087f9](https://github.com/jest-community/eslint-plugin-jest/commit/98087f9bb27082f9fbda59a56c65536fb9d8a0dc))
+
+
+### BREAKING CHANGES
+
+* removed unneeded `snapshot` processor and `flat/snapshot` config
+
 # [28.0.0-next.4](https://github.com/jest-community/eslint-plugin-jest/compare/v28.0.0-next.3...v28.0.0-next.4) (2024-03-23)
 
 
