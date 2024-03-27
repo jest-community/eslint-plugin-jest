@@ -1,16 +1,14 @@
 import dedent from 'dedent';
 import rule from '../no-export';
-import { FlatCompatRuleTester, espreeParser, flatCompat } from './test-utils';
+import { FlatCompatRuleTester, espreeParser } from './test-utils';
 
-const ruleTester = new FlatCompatRuleTester(
-  flatCompat({
-    parser: espreeParser,
-    parserOptions: {
-      ecmaVersion: 2015,
-      sourceType: 'module',
-    },
-  }),
-);
+const ruleTester = new FlatCompatRuleTester({
+  parser: espreeParser,
+  parserOptions: {
+    ecmaVersion: 2015,
+    sourceType: 'module',
+  },
+});
 
 ruleTester.run('no-export', rule, {
   valid: [
@@ -23,12 +21,12 @@ ruleTester.run('no-export', rule, {
     'module.exports.myThing = "valid";',
   ],
   invalid: [
-    flatCompat({
+    {
       code: 'export const myThing = "invalid"; test("a test", () => { expect(1).toBe(1);});',
       parserOptions: { sourceType: 'module' },
       errors: [{ endColumn: 34, column: 1, messageId: 'unexpectedExport' }],
-    }),
-    flatCompat({
+    },
+    {
       code: dedent`
         export const myThing = 'invalid';
 
@@ -38,8 +36,8 @@ ruleTester.run('no-export', rule, {
       `,
       parserOptions: { sourceType: 'module' },
       errors: [{ endColumn: 34, column: 1, messageId: 'unexpectedExport' }],
-    }),
-    flatCompat({
+    },
+    {
       code: dedent`
         export const myThing = 'invalid';
 
@@ -49,8 +47,8 @@ ruleTester.run('no-export', rule, {
       `,
       parserOptions: { sourceType: 'module' },
       errors: [{ endColumn: 34, column: 1, messageId: 'unexpectedExport' }],
-    }),
-    flatCompat({
+    },
+    {
       code: dedent`
         export const myThing = 'invalid';
 
@@ -60,12 +58,12 @@ ruleTester.run('no-export', rule, {
       `,
       parserOptions: { sourceType: 'module' },
       errors: [{ endColumn: 34, column: 1, messageId: 'unexpectedExport' }],
-    }),
-    flatCompat({
+    },
+    {
       code: 'export default function() {};  test("a test", () => { expect(1).toBe(1);});',
       parserOptions: { sourceType: 'module' },
       errors: [{ endColumn: 29, column: 1, messageId: 'unexpectedExport' }],
-    }),
+    },
     {
       code: 'module.exports["invalid"] = function() {};  test("a test", () => { expect(1).toBe(1);});',
       errors: [{ endColumn: 26, column: 1, messageId: 'unexpectedExport' }],
