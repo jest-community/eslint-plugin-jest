@@ -1,7 +1,11 @@
 import { TSESLint } from '@typescript-eslint/utils';
 import dedent from 'dedent';
 import rule from '../no-large-snapshots';
-import { FlatCompatRuleTester, espreeParser } from './test-utils';
+import {
+  FlatCompatRuleTester,
+  espreeParser,
+  usingFlatConfig,
+} from './test-utils';
 
 const ruleTester = new FlatCompatRuleTester({
   parser: espreeParser,
@@ -266,6 +270,34 @@ describe('no-large-snapshots', () => {
     it('should throw an exception', () => {
       expect(() => {
         const linter = new TSESLint.Linter();
+
+        /* istanbul ignore if */
+        if (usingFlatConfig()) {
+          linter.verify(
+            'console.log()',
+            [
+              {
+                files: ['*.snap'],
+                plugins: {
+                  jest: { rules: { 'no-large-snapshots': rule } },
+                },
+                rules: {
+                  'jest/no-large-snapshots': [
+                    'error',
+                    {
+                      allowedSnapshots: {
+                        'mock-component.jsx.snap': [/a big component \d+/u],
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+            'mock-component.jsx.snap',
+          );
+
+          return;
+        }
 
         linter.defineRule('no-large-snapshots', rule);
 
