@@ -1,8 +1,7 @@
-import { TSESLint } from '@typescript-eslint/utils';
 import rule from '../prefer-to-have-length';
-import { espreeParser } from './test-utils';
+import { FlatCompatRuleTester, espreeParser } from './test-utils';
 
-const ruleTester = new TSESLint.RuleTester({
+const ruleTester = new FlatCompatRuleTester({
   parser: espreeParser,
   parserOptions: {
     ecmaVersion: 2020,

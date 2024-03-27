@@ -1,9 +1,8 @@
-import { TSESLint } from '@typescript-eslint/utils';
 import dedent from 'dedent';
 import rule from '../no-restricted-jest-methods';
-import { espreeParser } from './test-utils';
+import { FlatCompatRuleTester, espreeParser } from './test-utils';
 
-const ruleTester = new TSESLint.RuleTester({
+const ruleTester = new FlatCompatRuleTester({
   parser: espreeParser,
   parserOptions: {
     ecmaVersion: 2017,
