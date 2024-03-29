@@ -54,11 +54,11 @@ const reportOnViolation = (
       const snapshotName = getAccessorValue(node.expression.left.property);
 
       isAllowed = allowedSnapshotsInFile.some(name => {
-        if (name instanceof RegExp) {
-          return name.test(snapshotName);
+        if (typeof name === 'string') {
+          return snapshotName === name;
         }
 
-        return snapshotName === name;
+        return name.test(snapshotName);
       });
     }
   }
