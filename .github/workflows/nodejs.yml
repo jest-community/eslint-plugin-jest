@@ -78,6 +78,9 @@ jobs:
           # ts-eslint/plugin@7 doesn't support node@16
           - node-version: 16.x
             ts-eslint-plugin-version: 7
+          # eslint@9 doesn't support node@16
+          - node-version: 16.x
+            eslint-version: next
           # ts-eslint/plugin@7 doesn't support node@19
           - node-version: 19.x
             ts-eslint-plugin-version: 7
