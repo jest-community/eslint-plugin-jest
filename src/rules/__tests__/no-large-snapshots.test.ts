@@ -272,7 +272,7 @@ describe('no-large-snapshots', () => {
         const linter = new TSESLint.Linter();
 
         /* istanbul ignore if */
-        if (usingFlatConfig()) {
+        if (usingFlatConfig) {
           linter.verify(
             'console.log()',
             [

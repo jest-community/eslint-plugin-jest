@@ -156,7 +156,7 @@ describe('the rule', () => {
         const linter = new TSESLint.Linter();
 
         /* istanbul ignore if */
-        if (usingFlatConfig()) {
+        if (usingFlatConfig) {
           linter.verify('jest.resetModuleRegistry()', [
             {
               plugins: {
