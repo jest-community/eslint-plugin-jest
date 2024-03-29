@@ -64,36 +64,6 @@
       "@semantic-release/github"
     ]
   },
-  "jest": {
-    "coverageThreshold": {
-      "global": {
-        "branches": 100,
-        "functions": 100,
-        "lines": 100,
-        "statements": 100
-      }
-    },
-    "projects": [
-      {
-        "displayName": "test",
-        "testPathIgnorePatterns": [
-          "<rootDir>/lib/.*",
-          "<rootDir>/src/rules/__tests__/fixtures/*",
-          "<rootDir>/src/rules/__tests__/test-utils.ts"
-        ]
-      },
-      {
-        "displayName": "lint",
-        "runner": "jest-runner-eslint",
-        "testMatch": [
-          "<rootDir>/**/*.{js,ts}"
-        ],
-        "testPathIgnorePatterns": [
-          "<rootDir>/lib/.*"
-        ]
-      }
-    ]
-  },
   "dependencies": {
     "@typescript-eslint/utils": "^6.0.0"
   },
@@ -104,6 +74,7 @@
     "@babel/preset-typescript": "^7.3.3",
     "@commitlint/cli": "^17.0.3",
     "@commitlint/config-conventional": "^17.0.3",
+    "@jest/types": "^29.6.3",
     "@schemastore/package": "^0.0.10",
     "@semantic-release/changelog": "^6.0.0",
     "@semantic-release/git": "^10.0.0",
