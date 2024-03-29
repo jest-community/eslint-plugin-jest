@@ -1,4 +1,6 @@
 import type { Config } from '@jest/types';
+import { version as eslintVersion } from 'eslint/package.json';
+import * as semver from 'semver';
 
 const config = {
   clearMocks: true,
@@ -31,5 +33,11 @@ const config = {
     },
   ],
 } satisfies Config.InitialOptions;
+
+if (semver.major(eslintVersion) >= 9) {
+  config.projects = config.projects.filter(
+    ({ displayName }) => displayName !== 'lint',
+  );
+}
 
 export default config;
