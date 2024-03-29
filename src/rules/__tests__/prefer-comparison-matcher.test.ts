@@ -205,30 +205,30 @@ const generateValidStringLiteralCases = (operator: string, matcher: string) => {
     ['x', "'y'"],
     ['x', '`y`'],
     ['x', '`y${z}`'],
-  ].reduce((cases, [a, b]) => [
-    ...cases,
-    ...[
-      `expect(${a} ${operator} ${b}).${matcher}(true)`,
-      `expect(${a} ${operator} ${b}).${matcher}(false)`,
-      `expect(${a} ${operator} ${b}).not.${matcher}(true)`,
-      `expect(${a} ${operator} ${b}).not.${matcher}(false)`,
-      `expect(${b} ${operator} ${a}).${matcher}(true)`,
-      `expect(${b} ${operator} ${a}).${matcher}(false)`,
-      `expect(${b} ${operator} ${a}).not.${matcher}(true)`,
-      `expect(${b} ${operator} ${a}).not.${matcher}(false)`,
-      `expect(${a} ${operator} ${b}).${matcher}(true)`,
-      `expect(${a} ${operator} ${b}).${matcher}(false)`,
-      `expect(${a} ${operator} ${b}).not.${matcher}(true)`,
-      `expect(${a} ${operator} ${b}).not.${matcher}(false)`,
-      `expect(${b} ${operator} ${a}).${matcher}(true)`,
-      `expect(${b} ${operator} ${a}).${matcher}(false)`,
-      `expect(${b} ${operator} ${a}).not.${matcher}(true)`,
-      `expect(${b} ${operator} ${a}).not.${matcher}(false)`,
-      `expect(${b} ${operator} ${b}).not.${matcher}(false)`,
-      `expect(${b} ${operator} ${b}).resolves.not.${matcher}(false)`,
-      `expect(${b} ${operator} ${b}).resolves.${matcher}(false)`,
+  ].reduce(
+    (cases, [a, b]) => [
+      ...cases,
+      ...[
+        `expect(${a} ${operator} ${b}).${matcher}(true)`,
+        `expect(${a} ${operator} ${b}).${matcher}(false)`,
+        `expect(${a} ${operator} ${b}).not.${matcher}(true)`,
+        `expect(${a} ${operator} ${b}).not.${matcher}(false)`,
+        `expect(${a} ${operator} ${b}).resolves.${matcher}(true)`,
+        `expect(${a} ${operator} ${b}).resolves.${matcher}(false)`,
+        `expect(${a} ${operator} ${b}).resolves.not.${matcher}(true)`,
+        `expect(${a} ${operator} ${b}).resolves.not.${matcher}(false)`,
+        `expect(${b} ${operator} ${a}).resolves.not.${matcher}(false)`,
+        `expect(${b} ${operator} ${a}).resolves.not.${matcher}(true)`,
+        `expect(${b} ${operator} ${a}).resolves.${matcher}(false)`,
+        `expect(${b} ${operator} ${a}).resolves.${matcher}(true)`,
+        `expect(${b} ${operator} ${a}).not.${matcher}(false)`,
+        `expect(${b} ${operator} ${a}).not.${matcher}(true)`,
+        `expect(${b} ${operator} ${a}).${matcher}(false)`,
+        `expect(${b} ${operator} ${a}).${matcher}(true)`,
+      ],
     ],
-  ]);
+    [],
+  );
 };
 
 const testComparisonOperator = (
@@ -236,7 +236,7 @@ const testComparisonOperator = (
   preferredMatcher: string,
   preferredMatcherWhenNegated: string,
 ) => {
-  ruleTester.run(`prefer-to-be-comparison: ${operator}`, rule, {
+  ruleTester.run(`prefer-comparison-matcher: ${operator}`, rule, {
     valid: [
       'expect()',
       'expect({}).toStrictEqual({})',
@@ -274,7 +274,7 @@ testComparisonOperator('<', 'toBeLessThan', 'toBeGreaterThanOrEqual');
 testComparisonOperator('>=', 'toBeGreaterThanOrEqual', 'toBeLessThan');
 testComparisonOperator('<=', 'toBeLessThanOrEqual', 'toBeGreaterThan');
 
-ruleTester.run(`prefer-to-be-comparison`, rule, {
+ruleTester.run(`prefer-comparison-matcher`, rule, {
   valid: [
     'expect.hasAssertions',
     'expect.hasAssertions()',
