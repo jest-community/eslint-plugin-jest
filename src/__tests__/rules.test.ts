@@ -76,12 +76,9 @@ describe('rules', () => {
     expect(Object.keys(recommendedConfigs['flat/all'].rules)).toHaveLength(
       ruleNames.length - deprecatedRules.length,
     );
-    const allConfigRules = Object.values(recommendedConfigs)
-      .map(config => Object.keys(config.rules ?? {}))
-      .reduce((previousValue, currentValue) => [
-        ...previousValue,
-        ...currentValue,
-      ]);
+    const allConfigRules = Object.values(recommendedConfigs).flatMap(config =>
+      Object.keys(config.rules ?? {}),
+    );
 
     allConfigRules.forEach(rule => {
       const ruleNamePrefix = 'jest/';

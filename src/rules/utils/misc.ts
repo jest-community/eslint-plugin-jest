@@ -137,18 +137,14 @@ export const getTestCallExpressionsFromDeclaredVariables = (
   declaredVariables: readonly TSESLint.Scope.Variable[],
   context: TSESLint.RuleContext<string, unknown[]>,
 ): TSESTree.CallExpression[] => {
-  return declaredVariables.reduce<TSESTree.CallExpression[]>(
-    (acc, { references }) =>
-      acc.concat(
-        references
-          .map(({ identifier }) => identifier.parent)
-          .filter(
-            (node): node is TSESTree.CallExpression =>
-              node?.type === AST_NODE_TYPES.CallExpression &&
-              isTypeOfJestFnCall(node, context, ['test']),
-          ),
+  return declaredVariables.flatMap(({ references }) =>
+    references
+      .map(({ identifier }) => identifier.parent)
+      .filter(
+        (node): node is TSESTree.CallExpression =>
+          node?.type === AST_NODE_TYPES.CallExpression &&
+          isTypeOfJestFnCall(node, context, ['test']),
       ),
-    [],
   );
 };
 

@@ -120,30 +120,26 @@ describe('the rule', () => {
       valid: [
         'jest',
         'require("fs")',
-        ...allowedFunctions
-          .map(func => generateValidCases(jestVersion, func))
-          .reduce((acc, arr) => acc.concat(arr), []),
+        ...allowedFunctions.flatMap(func =>
+          generateValidCases(jestVersion, func),
+        ),
       ],
-      invalid: deprecations
-        .map(([, deprecation, replacement]) =>
-          generateInvalidCases(jestVersion, deprecation, replacement),
-        )
-        .reduce((acc, arr) => acc.concat(arr), []),
+      invalid: deprecations.flatMap(([, deprecation, replacement]) =>
+        generateInvalidCases(jestVersion, deprecation, replacement),
+      ),
     });
 
     ruleTester.run('detected jest version', rule, {
       valid: [
         'jest',
         'require("fs")',
-        ...allowedFunctions
-          .map(func => generateValidCases(undefined, func))
-          .reduce((acc, arr) => acc.concat(arr), []),
+        ...allowedFunctions.flatMap(func =>
+          generateValidCases(undefined, func),
+        ),
       ],
-      invalid: deprecations
-        .map(([, deprecation, replacement]) =>
-          generateInvalidCases(undefined, deprecation, replacement),
-        )
-        .reduce((acc, arr) => acc.concat(arr), []),
+      invalid: deprecations.flatMap(([, deprecation, replacement]) =>
+        generateInvalidCases(undefined, deprecation, replacement),
+      ),
     });
   });
 
