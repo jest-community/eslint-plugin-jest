@@ -236,7 +236,7 @@ const testComparisonOperator = (
   preferredMatcher: string,
   preferredMatcherWhenNegated: string,
 ) => {
-  ruleTester.run(`prefer-to-be-comparison: ${operator}`, rule, {
+  ruleTester.run(`prefer-comparison-matcher: ${operator}`, rule, {
     valid: [
       'expect()',
       'expect({}).toStrictEqual({})',
@@ -274,7 +274,7 @@ testComparisonOperator('<', 'toBeLessThan', 'toBeGreaterThanOrEqual');
 testComparisonOperator('>=', 'toBeGreaterThanOrEqual', 'toBeLessThan');
 testComparisonOperator('<=', 'toBeLessThanOrEqual', 'toBeGreaterThan');
 
-ruleTester.run(`prefer-to-be-comparison`, rule, {
+ruleTester.run(`prefer-comparison-matcher`, rule, {
   valid: [
     'expect.hasAssertions',
     'expect.hasAssertions()',
