@@ -1,6 +1,6 @@
-import type { Config } from '@jest/types';
 import { version as typescriptESLintPluginVersion } from '@typescript-eslint/eslint-plugin/package.json';
 import { version as eslintVersion } from 'eslint/package.json';
+import type { Config } from 'jest';
 import * as semver from 'semver';
 
 const config = {
@@ -35,7 +35,7 @@ const config = {
       coveragePathIgnorePatterns: ['/node_modules/'],
     },
   ],
-} satisfies Config.InitialOptions;
+} satisfies Config;
 
 if (semver.major(eslintVersion) >= 9) {
   config.projects = config.projects.filter(
