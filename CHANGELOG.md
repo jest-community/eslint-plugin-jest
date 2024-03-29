@@ -1,3 +1,10 @@
+# [28.0.0-next.6](https://github.com/jest-community/eslint-plugin-jest/compare/v28.0.0-next.5...v28.0.0-next.6) (2024-03-29)
+
+
+### Bug Fixes
+
+* **no-large-snapshots:** avoid `instanceof RegExp` check for ESLint v9 compatibility ([#1542](https://github.com/jest-community/eslint-plugin-jest/issues/1542)) ([af4a9c9](https://github.com/jest-community/eslint-plugin-jest/commit/af4a9c94d624b5db4643c994f5bec96b0cb889b8))
+
 # [28.0.0-next.5](https://github.com/jest-community/eslint-plugin-jest/compare/v28.0.0-next.4...v28.0.0-next.5) (2024-03-27)
 
 
