@@ -87,6 +87,27 @@ You can tell this plugin about any global Jests you have aliased using the
 }
 ```
 
+#### Aliased `@jest/globals`
+
+You can tell this plugin to treat a different package as the source of Jest
+globals using the `globalPackage` setting:
+
+```json
+{
+  "settings": {
+    "jest": {
+      "globalPackage": "bun:test"
+    }
+  }
+}
+```
+
+> [!WARNING]
+>
+> While this can be used to apply rules when using alternative testing libraries
+> and frameworks like `bun`, `vitest` and `node`, there's no guarantee the
+> semantics this plugin assumes will hold outside of Jest
+
 ### Running rules only on test-related files
 
 The rules provided by this plugin assume that the files they are checking are

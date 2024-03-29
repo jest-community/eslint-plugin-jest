@@ -737,6 +737,198 @@ ruleTester.run('global aliases', rule, {
   ],
 });
 
+ruleTester.run('global package source', rule, {
+  valid: [
+    {
+      code: dedent`
+        import { expect } from 'bun:test'
+
+        expect(x).toBe(y);
+      `,
+      parserOptions: { sourceType: 'module' },
+      settings: { jest: { globalPackage: '@jest/globals' } },
+    },
+    {
+      code: dedent`
+        const { it } = require('@jest/globals');
+
+        it('is not considered a test function', () => {});
+      `,
+      parserOptions: { sourceType: 'script' },
+      settings: { jest: { globalPackage: 'bun:test' } },
+    },
+    {
+      code: dedent`
+        const { fn: it } = require('bun:test');
+
+        it('is not considered a test function', () => {});
+      `,
+      parserOptions: { sourceType: 'script' },
+      settings: { jest: { globalPackage: 'bun:test' } },
+    },
+    {
+      code: dedent`
+        import { it } from '@jest/globals';
+
+        it('is not considered a test function', () => {});
+      `,
+      parserOptions: { sourceType: 'module' },
+      settings: { jest: { globalPackage: 'bun:test' } },
+    },
+    {
+      code: dedent`
+        import { fn as it } from 'bun:test';
+
+        it('is not considered a test function', () => {});
+      `,
+      parserOptions: { sourceType: 'module' },
+      settings: { jest: { globalPackage: 'bun:test' } },
+    },
+  ],
+  invalid: [
+    {
+      code: 'expect(x).toBe(y);',
+      parserOptions: { sourceType: 'script' },
+      errors: [
+        {
+          messageId: 'details' as const,
+          data: expectedParsedJestFnCallResultData({
+            name: 'expect',
+            type: 'expect',
+            head: {
+              original: null,
+              local: 'expect',
+              type: 'global',
+              node: 'expect',
+            },
+            members: ['toBe'],
+          }),
+          column: 1,
+          line: 1,
+        },
+      ],
+      settings: { jest: { globalPackage: 'bun:test' } },
+    },
+    {
+      code: dedent`
+        import { describe, expect, it } from 'bun:test'
+
+        describe('some tests', () => {
+          it('ensures something', () => {
+            expect.assertions();
+          });
+        });
+      `,
+      parserOptions: { sourceType: 'module' },
+      errors: [
+        {
+          messageId: 'details' as const,
+          data: expectedParsedJestFnCallResultData({
+            name: 'describe',
+            type: 'describe',
+            head: {
+              original: 'describe',
+              local: 'describe',
+              type: 'import',
+              node: 'describe',
+            },
+            members: [],
+          }),
+          column: 1,
+          line: 3,
+        },
+        {
+          messageId: 'details' as const,
+          data: expectedParsedJestFnCallResultData({
+            name: 'it',
+            type: 'test',
+            head: {
+              original: 'it',
+              local: 'it',
+              type: 'import',
+              node: 'it',
+            },
+            members: [],
+          }),
+          column: 3,
+          line: 4,
+        },
+        {
+          messageId: 'details' as const,
+          data: expectedParsedJestFnCallResultData({
+            name: 'expect',
+            type: 'expect',
+            head: {
+              original: 'expect',
+              local: 'expect',
+              type: 'import',
+              node: 'expect',
+            },
+            members: ['assertions'],
+          }),
+          column: 5,
+          line: 5,
+        },
+      ],
+      settings: { jest: { globalPackage: 'bun:test' } },
+    },
+    {
+      code: dedent`
+        import { expect } from 'bun:test'
+
+        expect(x).not.toBe(y);
+      `,
+      parserOptions: { sourceType: 'module' },
+      errors: [
+        {
+          messageId: 'details' as const,
+          data: expectedParsedJestFnCallResultData({
+            name: 'expect',
+            type: 'expect',
+            head: {
+              original: 'expect',
+              local: 'expect',
+              type: 'import',
+              node: 'expect',
+            },
+            members: ['not', 'toBe'],
+          }),
+          column: 1,
+          line: 3,
+        },
+      ],
+      settings: { jest: { globalPackage: 'bun:test' } },
+    },
+    {
+      code: 'context("when there is an error", () => {})',
+      errors: [
+        {
+          messageId: 'details' as const,
+          data: expectedParsedJestFnCallResultData({
+            name: 'describe',
+            type: 'describe',
+            head: {
+              original: 'describe',
+              local: 'context',
+              type: 'global',
+              node: 'context',
+            },
+            members: [],
+          }),
+          column: 1,
+          line: 1,
+        },
+      ],
+      settings: {
+        jest: {
+          globalPackage: 'bun:test',
+          globalAliases: { describe: ['context'] },
+        },
+      },
+    },
+  ],
+});
+
 ruleTester.run('typescript', rule, {
   valid: [
     {

@@ -188,6 +188,7 @@ const ValidJestFnCallChains = [
 interface SharedConfigurationSettings {
   jest?: {
     globalAliases?: Record<string, string[]>;
+    globalPackage?: string;
     version?: number | string;
   };
 }
@@ -584,9 +585,12 @@ const resolveToJestFn = (
   }
 
   if (maybeImport) {
-    // the identifier is imported from @jest/globals,
-    // so return the original import name
-    if (maybeImport.source === '@jest/globals') {
+    const globalPackage =
+      (context.settings as SharedConfigurationSettings).jest?.globalPackage ??
+      '@jest/globals';
+
+    // the identifier is imported from our global package so return the original import name
+    if (maybeImport.source === globalPackage) {
       return {
         original: maybeImport.imported,
         local: maybeImport.local,
