@@ -42,46 +42,42 @@ export class FlatCompatRuleTester extends TSESLint.RuleTester {
       return config;
     }
 
-    const obj = { languageOptions: { parserOptions: {} } };
+    const obj: TSESLint.FlatConfig.Config & {
+      languageOptions: TSESLint.FlatConfig.LanguageOptions & {
+        parserOptions: TSESLint.FlatConfig.ParserOptions;
+      };
+    } = {
+      languageOptions: { parserOptions: {} },
+    };
 
     for (const [key, value] of Object.entries(config)) {
       if (key === 'parser') {
-        // @ts-expect-error this is expected
         obj.languageOptions.parser = require(value);
 
         continue;
       }
 
       if (key === 'parserOptions') {
-        for (const parserOption of Object.entries(value)) {
-          if (
-            parserOption[0] === 'ecmaVersion' ||
-            parserOption[0] === 'sourceType'
-          ) {
-            // @ts-expect-error this is expected
-            obj.languageOptions[parserOption[0]] = parserOption[1];
+        for (const [option, val] of Object.entries(value)) {
+          if (option === 'ecmaVersion' || option === 'sourceType') {
+            // @ts-expect-error: TS thinks the value could the opposite type of whatever option is
+            obj.languageOptions[option] =
+              val as TSESLint.FlatConfig.LanguageOptions[
+                | 'ecmaVersion'
+                | 'sourceType'];
 
             continue;
           }
 
-          // @ts-expect-error this is expected
-          obj.languageOptions.parserOptions[parserOption[0]] = parserOption[1];
+          obj.languageOptions.parserOptions[option] = val;
         }
 
         continue;
       }
 
-      // @ts-expect-error this is expected
-      obj[key] = value;
+      obj[key as keyof typeof obj] = value;
     }
 
     return obj as unknown as T;
-
-    // return {
-    //   languageOptions: {
-    //     parser: require(config.parser),
-    //     ...config.parserOptions,
-    //   },
-    // } as unknown as T;
   }
 }
