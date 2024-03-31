@@ -1,7 +1,7 @@
-import { TSESLint } from '@typescript-eslint/utils';
 import rule from '../prefer-strict-equal';
+import { FlatCompatRuleTester } from './test-utils';
 
-const ruleTester = new TSESLint.RuleTester();
+const ruleTester = new FlatCompatRuleTester();
 
 ruleTester.run('prefer-strict-equal', rule, {
   valid: [

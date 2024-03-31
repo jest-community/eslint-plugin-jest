@@ -72,12 +72,15 @@ jobs:
       fail-fast: false
       matrix:
         node-version: [16.x, 18.x, 19.x, 20.x, 21.x]
-        eslint-version: [7, 8]
+        eslint-version: [7, 8, next]
         ts-eslint-plugin-version: [6, 7]
         exclude:
           # ts-eslint/plugin@7 doesn't support node@16
           - node-version: 16.x
             ts-eslint-plugin-version: 7
+          # eslint@9 doesn't support node@16
+          - node-version: 16.x
+            eslint-version: next
           # ts-eslint/plugin@7 doesn't support node@19
           - node-version: 19.x
             ts-eslint-plugin-version: 7
@@ -103,7 +106,7 @@ jobs:
           yarn add --dev eslint@${{ matrix.eslint-version }} @typescript-eslint/eslint-plugin@${{ matrix.ts-eslint-plugin-version }} @typescript-eslint/parser@${{ matrix.ts-eslint-plugin-version }}
       - name: run tests
         # only collect coverage on eslint versions that support dynamic import
-        run: yarn test --coverage ${{ matrix.eslint-version >= 8 }}
+        run: yarn test --coverage ${{ matrix.eslint-version == 8 }}
         env:
           CI: true
       - uses: codecov/codecov-action@v3

@@ -4,6 +4,7 @@ import {
   type JestVersion,
   detectJestVersion,
 } from '../utils/detectJestVersion';
+import { FlatCompatRuleTester, usingFlatConfig } from './test-utils';
 
 jest.mock('../utils/detectJestVersion');
 
@@ -11,7 +12,7 @@ const detectJestVersionMock = detectJestVersion as jest.MockedFunction<
   typeof detectJestVersion
 >;
 
-const ruleTester = new TSESLint.RuleTester();
+const ruleTester = new FlatCompatRuleTester();
 
 const generateValidCases = (
   jestVersion: JestVersion | string | undefined,
@@ -153,6 +154,20 @@ describe('the rule', () => {
     it('bubbles the error up', () => {
       expect(() => {
         const linter = new TSESLint.Linter();
+
+        /* istanbul ignore if */
+        if (usingFlatConfig) {
+          linter.verify('jest.resetModuleRegistry()', [
+            {
+              plugins: {
+                jest: { rules: { 'no-deprecated-functions': rule } },
+              },
+              rules: { 'jest/no-deprecated-functions': 'error' },
+            },
+          ]);
+
+          return;
+        }
 
         linter.defineRule('no-deprecated-functions', rule);
 
