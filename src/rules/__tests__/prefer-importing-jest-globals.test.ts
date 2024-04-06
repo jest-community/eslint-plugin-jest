@@ -18,7 +18,7 @@ ruleTester.run('prefer-importing-jest-globals', rule, {
         test('should pass', () => {
             expect(true).toBeDefined();
         });
-        `,
+      `,
       parserOptions: { sourceType: 'module' },
     },
     {
@@ -28,7 +28,7 @@ ruleTester.run('prefer-importing-jest-globals', rule, {
         test('should pass', () => {
             expect(true).toBeDefined();
         });
-        `,
+      `,
     },
     {
       code: dedent`
@@ -58,7 +58,7 @@ ruleTester.run('prefer-importing-jest-globals', rule, {
           test("foo");
           expect(true).toBeDefined();
         })
-        `,
+      `,
       output: dedent`
         import { describe, test, expect } from '@jest/globals';
         describe("suite", () => {
@@ -87,7 +87,7 @@ ruleTester.run('prefer-importing-jest-globals', rule, {
           test("foo");
           expect(true).toBeDefined();
         })
-        `,
+      `,
       output: dedent`
         import React from 'react';
         import { yourFunction } from './yourFile';
@@ -118,7 +118,7 @@ ruleTester.run('prefer-importing-jest-globals', rule, {
           test("foo");
           expect(true).toBeDefined();
         })
-        `,
+      `,
       output: dedent`
         console.log('hello');
         import * as fs from 'fs';
@@ -146,7 +146,7 @@ ruleTester.run('prefer-importing-jest-globals', rule, {
           test("foo");
           expect(true).toBeDefined();
         })
-        `,
+      `,
       output: dedent`
         console.log('hello');
         import { jestGlobals, describe, test, expect } from '@jest/globals';
@@ -171,7 +171,7 @@ ruleTester.run('prefer-importing-jest-globals', rule, {
         describe('foo', () => {
           test.each(['hello', 'world'])("%s", (a) => {});
         });
-        `,
+      `,
       output: dedent`
         import { pending } from 'actions';
         import { describe, test } from '@jest/globals';
@@ -203,7 +203,7 @@ ruleTester.run('prefer-importing-jest-globals', rule, {
           test("foo");
           expect(true).toBeDefined();
         })
-    `,
+      `,
       errors: [
         {
           endColumn: 7,
@@ -227,7 +227,7 @@ ruleTester.run('prefer-importing-jest-globals', rule, {
           test("foo");
           expect(true).toBeDefined();
         })
-    `,
+      `,
       errors: [
         {
           endColumn: 9,
@@ -246,7 +246,7 @@ ruleTester.run('prefer-importing-jest-globals', rule, {
           test("foo");
           expect(true).toBeDefined();
         })
-        `,
+      `,
       output: dedent`
         console.log('hello');
         const fs = require('fs');
@@ -273,7 +273,7 @@ ruleTester.run('prefer-importing-jest-globals', rule, {
           test("foo");
           expect(true).toBeDefined();
         })
-        `,
+      `,
       output: dedent`
         console.log('hello');
         const { describe, test, expect } = require('@jest/globals');
@@ -297,7 +297,7 @@ ruleTester.run('prefer-importing-jest-globals', rule, {
         describe('foo', () => {
           test.each(['hello', 'world'])("%s", (a) => {});
         });
-        `,
+      `,
       output: dedent`
         const { pending } = require('actions');
         const { describe, test } = require('@jest/globals');
@@ -320,7 +320,7 @@ ruleTester.run('prefer-importing-jest-globals', rule, {
           test("foo");
           expect(true).toBeDefined();
         })
-        `,
+      `,
       output: dedent`
         const { describe, test, expect } = require('@jest/globals');
         describe("suite", () => {
@@ -352,7 +352,7 @@ ruleTester.run('prefer-importing-jest-globals', rule, {
           test("foo");
           expect(true).toBeDefined();
         })
-    `,
+      `,
       parserOptions: { sourceType: 'script' },
       errors: [
         {
@@ -378,7 +378,7 @@ ruleTester.run('prefer-importing-jest-globals', rule, {
           test("foo");
           expect(true).toBeDefined();
         })
-    `,
+      `,
       errors: [
         {
           endColumn: 9,
@@ -403,7 +403,7 @@ ruleTester.run('prefer-importing-jest-globals', rule, {
           test("foo");
           expect(true).toBeDefined();
         })
-    `,
+      `,
       errors: [
         {
           endColumn: 9,
