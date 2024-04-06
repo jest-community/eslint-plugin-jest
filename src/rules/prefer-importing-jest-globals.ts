@@ -19,9 +19,7 @@ export default createRule({
   name: __filename,
   meta: {
     docs: {
-      category: 'Best Practices',
       description: 'Prefer importing Jest globals',
-      recommended: false,
     },
     messages: {
       preferImportingJestGlobal: `Import the following Jest functions from '@jest/globals': {{ jestFunctions }}`,
