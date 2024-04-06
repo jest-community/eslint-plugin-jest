@@ -1,5 +1,4 @@
 import { AST_NODE_TYPES, type TSESTree } from '@typescript-eslint/utils';
-import jestFnNames from '../globals.json';
 import {
   type ParsedJestFnCall,
   createRule,
@@ -34,8 +33,6 @@ export default createRule({
   },
   defaultOptions: [],
   create(context) {
-    const jestFunctionNames: string[] = Object.keys(jestFnNames);
-    const importedJestFunctions: string[] = [];
     const importedFunctionsWithSource: Record<string, string> = {};
     const usedJestFunctions: ParsedJestFnCall[] = [];
 
@@ -49,42 +46,17 @@ export default createRule({
         });
       },
       CallExpression(node: TSESTree.CallExpression) {
-        if (
-          node.type === AST_NODE_TYPES.CallExpression &&
-          node.callee.type === AST_NODE_TYPES.Identifier &&
-          jestFunctionNames.includes(node.callee.name) &&
-          importedFunctionsWithSource[node.callee.name] === '@jest/globals'
-        ) {
-          const jestFnCall: ParsedJestFnCall = {
-            head: {
-              type: 'import',
-              node: node.callee,
-              original: node.callee.name,
-              local: node.callee.name,
-            },
-            name: node.callee.name,
-            type: 'jest',
-            members: [],
-          };
-
-          usedJestFunctions.push(jestFnCall);
-        }
-
         const jestFnCall = parseJestFnCall(node, context);
 
         if (!jestFnCall) {
           return;
         }
 
-        if (jestFnCall.head.type === 'import') {
-          importedJestFunctions.push(jestFnCall.name);
-        }
-
         usedJestFunctions.push(jestFnCall);
       },
       'Program:exit'() {
         const jestFunctionsToReport = usedJestFunctions.filter(
-          jestFunction => !importedJestFunctions.includes(jestFunction.name),
+          jestFunction => jestFunction.head.type !== 'import',
         );
 
         if (!jestFunctionsToReport.length) {
