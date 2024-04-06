@@ -1,3 +1,78 @@
+# [28.0.0-next.7](https://github.com/jest-community/eslint-plugin-jest/compare/v28.0.0-next.6...v28.0.0-next.7) (2024-04-06)
+
+
+### Bug Fixes
+
+* allow ESLint 9 as peer dependency ([#1547](https://github.com/jest-community/eslint-plugin-jest/issues/1547)) ([3c5e167](https://github.com/jest-community/eslint-plugin-jest/commit/3c5e1673afd02dc2c9b90d259c0452326715ae6c))
+* drop support for Node 19 ([#1548](https://github.com/jest-community/eslint-plugin-jest/issues/1548)) ([c87e388](https://github.com/jest-community/eslint-plugin-jest/commit/c87e3887e736c40d1460af9cdbdffe30f79fdaea))
+
+
+### BREAKING CHANGES
+
+* Node v19 is no longer supported
+
+# [28.0.0-next.6](https://github.com/jest-community/eslint-plugin-jest/compare/v28.0.0-next.5...v28.0.0-next.6) (2024-03-29)
+
+
+### Bug Fixes
+
+* **no-large-snapshots:** avoid `instanceof RegExp` check for ESLint v9 compatibility ([#1542](https://github.com/jest-community/eslint-plugin-jest/issues/1542)) ([af4a9c9](https://github.com/jest-community/eslint-plugin-jest/commit/af4a9c94d624b5db4643c994f5bec96b0cb889b8))
+
+# [28.0.0-next.5](https://github.com/jest-community/eslint-plugin-jest/compare/v28.0.0-next.4...v28.0.0-next.5) (2024-03-27)
+
+
+### Features
+
+* remove `snapshot` processor and `flat/snapshot` config ([#1532](https://github.com/jest-community/eslint-plugin-jest/issues/1532)) ([98087f9](https://github.com/jest-community/eslint-plugin-jest/commit/98087f9bb27082f9fbda59a56c65536fb9d8a0dc))
+
+
+### BREAKING CHANGES
+
+* removed unneeded `snapshot` processor and `flat/snapshot` config
+
+# [28.0.0-next.4](https://github.com/jest-community/eslint-plugin-jest/compare/v28.0.0-next.3...v28.0.0-next.4) (2024-03-23)
+
+
+### Features
+
+* drop support for `@typescript-eslint/eslint-plugin` v5 ([#1530](https://github.com/jest-community/eslint-plugin-jest/issues/1530)) ([150e355](https://github.com/jest-community/eslint-plugin-jest/commit/150e3558a637b49ddd76d362f88332b30f78dc5c))
+
+
+### BREAKING CHANGES
+
+* dropped support for `@typescript-eslint/eslint-plugin` v5
+
+# [28.0.0-next.3](https://github.com/jest-community/eslint-plugin-jest/compare/v28.0.0-next.2...v28.0.0-next.3) (2024-03-22)
+
+
+### Features
+
+* upgrade `@typescript-eslint/utils` to v6 ([#1508](https://github.com/jest-community/eslint-plugin-jest/issues/1508)) ([dc6e8cd](https://github.com/jest-community/eslint-plugin-jest/commit/dc6e8cd249817de585b50e473c2146e1542dd146))
+
+# [28.0.0-next.2](https://github.com/jest-community/eslint-plugin-jest/compare/v28.0.0-next.1...v28.0.0-next.2) (2024-03-21)
+
+
+### Features
+
+* drop support for Node v14 ([#1527](https://github.com/jest-community/eslint-plugin-jest/issues/1527)) ([df5e580](https://github.com/jest-community/eslint-plugin-jest/commit/df5e58081d1bd15fbed8bd22f6c03d5f350d73b6))
+
+
+### BREAKING CHANGES
+
+* dropped support for Node v14
+
+# [28.0.0-next.1](https://github.com/jest-community/eslint-plugin-jest/compare/v27.9.0...v28.0.0-next.1) (2024-03-21)
+
+
+### Features
+
+* remove `no-if` rule ([#1528](https://github.com/jest-community/eslint-plugin-jest/issues/1528)) ([f976fc8](https://github.com/jest-community/eslint-plugin-jest/commit/f976fc8c71fc5e9f55cd5ae09092f15ee277fd2c))
+
+
+### BREAKING CHANGES
+
+* removed `no-if` in favor of `no-conditional-in-test`
+
 # [27.9.0](https://github.com/jest-community/eslint-plugin-jest/compare/v27.8.0...v27.9.0) (2024-02-16)
 
 
