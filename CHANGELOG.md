@@ -1,3 +1,10 @@
+# [28.2.0](https://github.com/jest-community/eslint-plugin-jest/compare/v28.1.1...v28.2.0) (2024-04-06)
+
+
+### Features
+
+* support providing aliases for `@jest/globals` package ([#1543](https://github.com/jest-community/eslint-plugin-jest/issues/1543)) ([744d4f6](https://github.com/jest-community/eslint-plugin-jest/commit/744d4f6fa5685e0c87062cc867ecadbad9b2e06c))
+
 ## [28.1.1](https://github.com/jest-community/eslint-plugin-jest/compare/v28.1.0...v28.1.1) (2024-04-06)
 
 
