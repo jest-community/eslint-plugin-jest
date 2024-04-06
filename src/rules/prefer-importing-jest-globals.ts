@@ -4,6 +4,7 @@ import {
   type ParsedJestFnCall,
   createRule,
   getSourceCode,
+  isStringNode,
   parseJestFnCall,
 } from './utils';
 
@@ -106,8 +107,7 @@ export default createRule({
             // check if "use strict" directive exists
             if (
               firstNode.type === AST_NODE_TYPES.ExpressionStatement &&
-              firstNode.expression.type === AST_NODE_TYPES.Literal &&
-              firstNode.expression.value === 'use strict'
+              isStringNode(firstNode.expression, 'use strict')
             ) {
               return fixer.insertTextAfter(
                 firstNode,
@@ -165,8 +165,10 @@ export default createRule({
                     declaration.init.callee.type ===
                       AST_NODE_TYPES.Identifier &&
                     declaration.init.callee.name === 'require' &&
-                    declaration.init.arguments[0]?.type === 'Literal' &&
-                    declaration.init.arguments[0]?.value === '@jest/globals' &&
+                    isStringNode(
+                      declaration.init.arguments[0],
+                      '@jest/globals',
+                    ) &&
                     (declaration.id.type === AST_NODE_TYPES.Identifier ||
                       declaration.id.type === AST_NODE_TYPES.ObjectPattern),
                 ),

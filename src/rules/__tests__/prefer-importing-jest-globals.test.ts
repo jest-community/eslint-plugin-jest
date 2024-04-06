@@ -33,6 +33,14 @@ ruleTester.run('prefer-importing-jest-globals', rule, {
     },
     {
       code: dedent`
+        const { test, expect } = require(\`@jest/globals\`);
+        test('should pass', () => {
+            expect(true).toBeDefined();
+        });
+      `,
+    },
+    {
+      code: dedent`
         import { it as itChecks } from '@jest/globals';
         itChecks("foo");
       `,
@@ -210,6 +218,59 @@ ruleTester.run('prefer-importing-jest-globals', rule, {
           endColumn: 7,
           column: 3,
           line: 3,
+          messageId: 'preferImportingJestGlobal',
+        },
+      ],
+    },
+    {
+      code: dedent`
+        const {describe} = require(\`@jest/globals\`);
+        describe("suite", () => {
+          test("foo");
+          expect(true).toBeDefined();
+        })
+      `,
+      // todo: we should really maintain the template literals
+      output: dedent`
+        const { describe, test, expect } = require('@jest/globals');
+        describe("suite", () => {
+          test("foo");
+          expect(true).toBeDefined();
+        })
+      `,
+      errors: [
+        {
+          endColumn: 7,
+          column: 3,
+          line: 3,
+          messageId: 'preferImportingJestGlobal',
+        },
+      ],
+    },
+    {
+      code: dedent`
+        const source = 'globals';
+        const {describe} = require(\`@jest/\${source}\`);
+        describe("suite", () => {
+          test("foo");
+          expect(true).toBeDefined();
+        })
+      `,
+      // todo: this shouldn't be indenting the "test"
+      output: dedent`
+        const source = 'globals';
+        const {describe} = require(\`@jest/\${source}\`);
+        describe("suite", () => {
+          const { test, expect } = require('@jest/globals');
+        test("foo");
+          expect(true).toBeDefined();
+        })
+      `,
+      errors: [
+        {
+          endColumn: 7,
+          column: 3,
+          line: 4,
           messageId: 'preferImportingJestGlobal',
         },
       ],
@@ -399,6 +460,31 @@ ruleTester.run('prefer-importing-jest-globals', rule, {
       `,
       output: dedent`
         'use strict';
+        const { describe, test, expect } = require('@jest/globals');
+        describe("suite", () => {
+          test("foo");
+          expect(true).toBeDefined();
+        })
+      `,
+      errors: [
+        {
+          endColumn: 9,
+          column: 1,
+          line: 2,
+          messageId: 'preferImportingJestGlobal',
+        },
+      ],
+    },
+    {
+      code: dedent`
+        \`use strict\`;
+        describe("suite", () => {
+          test("foo");
+          expect(true).toBeDefined();
+        })
+      `,
+      output: dedent`
+        \`use strict\`;
         const { describe, test, expect } = require('@jest/globals');
         describe("suite", () => {
           test("foo");
