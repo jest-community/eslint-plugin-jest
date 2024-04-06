@@ -1,3 +1,16 @@
+# [28.0.0-next.7](https://github.com/jest-community/eslint-plugin-jest/compare/v28.0.0-next.6...v28.0.0-next.7) (2024-04-06)
+
+
+### Bug Fixes
+
+* allow ESLint 9 as peer dependency ([#1547](https://github.com/jest-community/eslint-plugin-jest/issues/1547)) ([3c5e167](https://github.com/jest-community/eslint-plugin-jest/commit/3c5e1673afd02dc2c9b90d259c0452326715ae6c))
+* drop support for Node 19 ([#1548](https://github.com/jest-community/eslint-plugin-jest/issues/1548)) ([c87e388](https://github.com/jest-community/eslint-plugin-jest/commit/c87e3887e736c40d1460af9cdbdffe30f79fdaea))
+
+
+### BREAKING CHANGES
+
+* Node v19 is no longer supported
+
 # [28.0.0-next.6](https://github.com/jest-community/eslint-plugin-jest/compare/v28.0.0-next.5...v28.0.0-next.6) (2024-03-29)
 
 
