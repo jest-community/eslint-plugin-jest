@@ -64,10 +64,8 @@ export default createRule<[RuleOptions], MessageIds>({
   name: __filename,
   meta: {
     docs: {
-      category: 'Best Practices',
       description:
         'Suggest using `expect.assertions()` OR `expect.hasAssertions()`',
-      recommended: false,
     },
     messages: {
       hasAssertionsTakesNoArguments:

@@ -9,9 +9,7 @@ export default createRule({
   name: __filename,
   meta: {
     docs: {
-      category: 'Best Practices',
       description: 'Disallow alias methods',
-      recommended: 'error',
     },
     messages: {
       replaceAlias: `Replace {{ alias }}() with its canonical name of {{ canonical }}()`,

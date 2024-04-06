@@ -4,6 +4,7 @@ import {
   type JestVersion,
   detectJestVersion,
 } from '../utils/detectJestVersion';
+import { FlatCompatRuleTester, usingFlatConfig } from './test-utils';
 
 jest.mock('../utils/detectJestVersion');
 
@@ -11,7 +12,7 @@ const detectJestVersionMock = detectJestVersion as jest.MockedFunction<
   typeof detectJestVersion
 >;
 
-const ruleTester = new TSESLint.RuleTester();
+const ruleTester = new FlatCompatRuleTester();
 
 const generateValidCases = (
   jestVersion: JestVersion | string | undefined,
@@ -120,30 +121,26 @@ describe('the rule', () => {
       valid: [
         'jest',
         'require("fs")',
-        ...allowedFunctions
-          .map(func => generateValidCases(jestVersion, func))
-          .reduce((acc, arr) => acc.concat(arr), []),
+        ...allowedFunctions.flatMap(func =>
+          generateValidCases(jestVersion, func),
+        ),
       ],
-      invalid: deprecations
-        .map(([, deprecation, replacement]) =>
-          generateInvalidCases(jestVersion, deprecation, replacement),
-        )
-        .reduce((acc, arr) => acc.concat(arr), []),
+      invalid: deprecations.flatMap(([, deprecation, replacement]) =>
+        generateInvalidCases(jestVersion, deprecation, replacement),
+      ),
     });
 
     ruleTester.run('detected jest version', rule, {
       valid: [
         'jest',
         'require("fs")',
-        ...allowedFunctions
-          .map(func => generateValidCases(undefined, func))
-          .reduce((acc, arr) => acc.concat(arr), []),
+        ...allowedFunctions.flatMap(func =>
+          generateValidCases(undefined, func),
+        ),
       ],
-      invalid: deprecations
-        .map(([, deprecation, replacement]) =>
-          generateInvalidCases(undefined, deprecation, replacement),
-        )
-        .reduce((acc, arr) => acc.concat(arr), []),
+      invalid: deprecations.flatMap(([, deprecation, replacement]) =>
+        generateInvalidCases(undefined, deprecation, replacement),
+      ),
     });
   });
 
@@ -157,6 +154,20 @@ describe('the rule', () => {
     it('bubbles the error up', () => {
       expect(() => {
         const linter = new TSESLint.Linter();
+
+        /* istanbul ignore if */
+        if (usingFlatConfig) {
+          linter.verify('jest.resetModuleRegistry()', [
+            {
+              plugins: {
+                jest: { rules: { 'no-deprecated-functions': rule } },
+              },
+              rules: { 'jest/no-deprecated-functions': 'error' },
+            },
+          ]);
+
+          return;
+        }
 
         linter.defineRule('no-deprecated-functions', rule);
 

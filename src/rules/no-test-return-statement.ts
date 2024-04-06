@@ -25,9 +25,7 @@ export default createRule({
   name: __filename,
   meta: {
     docs: {
-      category: 'Best Practices',
       description: 'Disallow explicitly returning from tests',
-      recommended: false,
     },
     messages: {
       noReturnValue: 'Jest tests should not return a value',
