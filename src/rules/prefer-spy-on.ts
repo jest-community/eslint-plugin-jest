@@ -68,9 +68,7 @@ export default createRule({
   name: __filename,
   meta: {
     docs: {
-      category: 'Best Practices',
       description: 'Suggest using `jest.spyOn()`',
-      recommended: false,
     },
     messages: {
       useJestSpyOn: 'Use jest.spyOn() instead',

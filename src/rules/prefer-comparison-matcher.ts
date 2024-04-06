@@ -57,9 +57,7 @@ export default createRule({
   name: __filename,
   meta: {
     docs: {
-      category: 'Best Practices',
       description: 'Suggest using the built-in comparison matchers',
-      recommended: false,
     },
     messages: {
       useToBeComparison: 'Prefer using `{{ preferredMatcher }}` instead',

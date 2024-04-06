@@ -7,9 +7,7 @@ export default createRule<
   name: __filename,
   meta: {
     docs: {
-      category: 'Best Practices',
       description: 'Disallow setup and teardown hooks',
-      recommended: false,
     },
     messages: {
       unexpectedHook: "Unexpected '{{ hookName }}' hook",
@@ -20,6 +18,7 @@ export default createRule<
         properties: {
           allow: {
             type: 'array',
+            // @ts-expect-error https://github.com/eslint/eslint/discussions/17573
             contains: ['beforeAll', 'beforeEach', 'afterAll', 'afterEach'],
           },
         },

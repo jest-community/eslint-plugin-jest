@@ -1,8 +1,8 @@
-import { TSESLint } from '@typescript-eslint/utils';
+import type { TSESLint } from '@typescript-eslint/utils';
 import rule from '../prefer-comparison-matcher';
-import { espreeParser } from './test-utils';
+import { FlatCompatRuleTester, espreeParser } from './test-utils';
 
-const ruleTester = new TSESLint.RuleTester({
+const ruleTester = new FlatCompatRuleTester({
   parser: espreeParser,
   parserOptions: {
     ecmaVersion: 2015,
@@ -205,29 +205,23 @@ const generateValidStringLiteralCases = (operator: string, matcher: string) => {
     ['x', "'y'"],
     ['x', '`y`'],
     ['x', '`y${z}`'],
-  ].reduce((cases, [a, b]) => [
-    ...cases,
-    ...[
-      `expect(${a} ${operator} ${b}).${matcher}(true)`,
-      `expect(${a} ${operator} ${b}).${matcher}(false)`,
-      `expect(${a} ${operator} ${b}).not.${matcher}(true)`,
-      `expect(${a} ${operator} ${b}).not.${matcher}(false)`,
-      `expect(${b} ${operator} ${a}).${matcher}(true)`,
-      `expect(${b} ${operator} ${a}).${matcher}(false)`,
-      `expect(${b} ${operator} ${a}).not.${matcher}(true)`,
-      `expect(${b} ${operator} ${a}).not.${matcher}(false)`,
-      `expect(${a} ${operator} ${b}).${matcher}(true)`,
-      `expect(${a} ${operator} ${b}).${matcher}(false)`,
-      `expect(${a} ${operator} ${b}).not.${matcher}(true)`,
-      `expect(${a} ${operator} ${b}).not.${matcher}(false)`,
-      `expect(${b} ${operator} ${a}).${matcher}(true)`,
-      `expect(${b} ${operator} ${a}).${matcher}(false)`,
-      `expect(${b} ${operator} ${a}).not.${matcher}(true)`,
-      `expect(${b} ${operator} ${a}).not.${matcher}(false)`,
-      `expect(${b} ${operator} ${b}).not.${matcher}(false)`,
-      `expect(${b} ${operator} ${b}).resolves.not.${matcher}(false)`,
-      `expect(${b} ${operator} ${b}).resolves.${matcher}(false)`,
-    ],
+  ].flatMap(([a, b]) => [
+    `expect(${a} ${operator} ${b}).${matcher}(true)`,
+    `expect(${a} ${operator} ${b}).${matcher}(false)`,
+    `expect(${a} ${operator} ${b}).not.${matcher}(true)`,
+    `expect(${a} ${operator} ${b}).not.${matcher}(false)`,
+    `expect(${a} ${operator} ${b}).resolves.${matcher}(true)`,
+    `expect(${a} ${operator} ${b}).resolves.${matcher}(false)`,
+    `expect(${a} ${operator} ${b}).resolves.not.${matcher}(true)`,
+    `expect(${a} ${operator} ${b}).resolves.not.${matcher}(false)`,
+    `expect(${b} ${operator} ${a}).resolves.not.${matcher}(false)`,
+    `expect(${b} ${operator} ${a}).resolves.not.${matcher}(true)`,
+    `expect(${b} ${operator} ${a}).resolves.${matcher}(false)`,
+    `expect(${b} ${operator} ${a}).resolves.${matcher}(true)`,
+    `expect(${b} ${operator} ${a}).not.${matcher}(false)`,
+    `expect(${b} ${operator} ${a}).not.${matcher}(true)`,
+    `expect(${b} ${operator} ${a}).${matcher}(false)`,
+    `expect(${b} ${operator} ${a}).${matcher}(true)`,
   ]);
 };
 
@@ -236,7 +230,7 @@ const testComparisonOperator = (
   preferredMatcher: string,
   preferredMatcherWhenNegated: string,
 ) => {
-  ruleTester.run(`prefer-to-be-comparison: ${operator}`, rule, {
+  ruleTester.run(`prefer-comparison-matcher: ${operator}`, rule, {
     valid: [
       'expect()',
       'expect({}).toStrictEqual({})',
@@ -244,27 +238,17 @@ const testComparisonOperator = (
       `expect(value).${preferredMatcherWhenNegated}(1);`,
       `expect(value).not.${preferredMatcher}(1);`,
       `expect(value).not.${preferredMatcherWhenNegated}(1);`,
-      ...['toBe', 'toEqual', 'toStrictEqual'].reduce<string[]>(
-        (cases, equalityMatcher) => [
-          ...cases,
-          ...generateValidStringLiteralCases(operator, equalityMatcher),
-        ],
-        [],
+      ...['toBe', 'toEqual', 'toStrictEqual'].flatMap(equalityMatcher =>
+        generateValidStringLiteralCases(operator, equalityMatcher),
       ),
     ],
-    invalid: ['toBe', 'toEqual', 'toStrictEqual'].reduce<
-      Array<TSESLint.InvalidTestCase<'useToBeComparison', never>>
-    >(
-      (cases, equalityMatcher) => [
-        ...cases,
-        ...generateInvalidCases(
-          operator,
-          equalityMatcher,
-          preferredMatcher,
-          preferredMatcherWhenNegated,
-        ),
-      ],
-      [],
+    invalid: ['toBe', 'toEqual', 'toStrictEqual'].flatMap(equalityMatcher =>
+      generateInvalidCases(
+        operator,
+        equalityMatcher,
+        preferredMatcher,
+        preferredMatcherWhenNegated,
+      ),
     ),
   });
 };
@@ -274,7 +258,7 @@ testComparisonOperator('<', 'toBeLessThan', 'toBeGreaterThanOrEqual');
 testComparisonOperator('>=', 'toBeGreaterThanOrEqual', 'toBeLessThan');
 testComparisonOperator('<=', 'toBeLessThanOrEqual', 'toBeGreaterThan');
 
-ruleTester.run(`prefer-to-be-comparison`, rule, {
+ruleTester.run(`prefer-comparison-matcher`, rule, {
   valid: [
     'expect.hasAssertions',
     'expect.hasAssertions()',

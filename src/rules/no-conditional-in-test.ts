@@ -6,8 +6,6 @@ export default createRule({
   meta: {
     docs: {
       description: 'Disallow conditional logic in tests',
-      category: 'Best Practices',
-      recommended: false,
     },
     messages: {
       conditionalInTest: 'Avoid having conditionals in tests',

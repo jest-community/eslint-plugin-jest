@@ -5,6 +5,7 @@ import {
 } from '@typescript-eslint/utils';
 import {
   createRule,
+  getFilename,
   getNodeName,
   getSourceCode,
   isFunction,
@@ -37,9 +38,7 @@ export default createRule({
   name: __filename,
   meta: {
     docs: {
-      category: 'Best Practices',
       description: 'Disallow using a callback in asynchronous tests and hooks',
-      recommended: 'error',
     },
     messages: {
       noDoneCallback:
@@ -134,7 +133,7 @@ export default createRule({
                   !tokenAfterLastParam
                 ) {
                   throw new Error(
-                    `Unexpected null when attempting to fix ${context.getFilename()} - please file a github issue at https://github.com/jest-community/eslint-plugin-jest`,
+                    `Unexpected null when attempting to fix ${getFilename(context)} - please file a github issue at https://github.com/jest-community/eslint-plugin-jest`,
                   );
                 }
 

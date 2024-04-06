@@ -1,6 +1,6 @@
 {
   "name": "eslint-plugin-jest",
-  "version": "27.9.0",
+  "version": "28.0.0",
   "description": "ESLint rules for Jest",
   "keywords": [
     "eslint",
@@ -64,38 +64,8 @@
       "@semantic-release/github"
     ]
   },
-  "jest": {
-    "coverageThreshold": {
-      "global": {
-        "branches": 100,
-        "functions": 100,
-        "lines": 100,
-        "statements": 100
-      }
-    },
-    "projects": [
-      {
-        "displayName": "test",
-        "testPathIgnorePatterns": [
-          "<rootDir>/lib/.*",
-          "<rootDir>/src/rules/__tests__/fixtures/*",
-          "<rootDir>/src/rules/__tests__/test-utils.ts"
-        ]
-      },
-      {
-        "displayName": "lint",
-        "runner": "jest-runner-eslint",
-        "testMatch": [
-          "<rootDir>/**/*.{js,ts}"
-        ],
-        "testPathIgnorePatterns": [
-          "<rootDir>/lib/.*"
-        ]
-      }
-    ]
-  },
   "dependencies": {
-    "@typescript-eslint/utils": "^5.10.0"
+    "@typescript-eslint/utils": "^6.0.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.4.4",
@@ -107,16 +77,16 @@
     "@schemastore/package": "^0.0.10",
     "@semantic-release/changelog": "^6.0.0",
     "@semantic-release/git": "^10.0.0",
-    "@tsconfig/node14": "^14.1.0",
+    "@tsconfig/node16": "^16.0.0",
     "@types/eslint": "^8.4.6",
     "@types/jest": "^29.0.0",
     "@types/node": "^14.18.26",
-    "@typescript-eslint/eslint-plugin": "^5.0.0",
-    "@typescript-eslint/parser": "^5.0.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
     "babel-jest": "^29.0.0",
     "babel-plugin-replace-ts-export-assignment": "^0.0.2",
     "dedent": "^1.5.0",
-    "eslint": "^7.0.0 || ^8.0.0",
+    "eslint": "^7.0.0 || ^8.0.0 || ^9.0.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-doc-generator": "^1.0.0",
     "eslint-plugin-eslint-comments": "^3.1.2",
@@ -142,8 +112,8 @@
     "typescript": "^5.0.4"
   },
   "peerDependencies": {
-    "@typescript-eslint/eslint-plugin": "^5.0.0 || ^6.0.0 || ^7.0.0",
-    "eslint": "^7.0.0 || ^8.0.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0 || ^7.0.0",
+    "eslint": "^7.0.0 || ^8.0.0 || ^9.0.0",
     "jest": "*"
   },
   "peerDependenciesMeta": {
@@ -156,12 +126,9 @@
   },
   "packageManager": "yarn@3.8.1",
   "engines": {
-    "node": "^14.15.0 || ^16.10.0 || >=18.0.0"
+    "node": "^16.10.0 || ^18.12.0 || >=20.0.0"
   },
   "publishConfig": {
     "provenance": true
-  },
-  "resolutions": {
-    "@typescript-eslint/typescript-estree@5.62.0": "patch:@typescript-eslint/typescript-estree@npm:^5.62.0#./.yarn/patches/@typescript-eslint-typescript-estree-npm-5.62.0-5d1ea132a9.patch"
   }
 }
