@@ -1,6 +1,5 @@
 import { AST_NODE_TYPES, type TSESTree } from '@typescript-eslint/utils';
 import {
-  type ParsedJestFnCall,
   createRule,
   getAccessorValue,
   getSourceCode,
@@ -10,8 +9,11 @@ import {
   parseJestFnCall,
 } from './utils';
 
-const createFixerImports = (isModule: boolean, functionsToImport: string[]) => {
-  const allImportsFormatted = functionsToImport.join(', ');
+const createFixerImports = (
+  isModule: boolean,
+  functionsToImport: Set<string>,
+) => {
+  const allImportsFormatted = Array.from(functionsToImport).sort().join(', ');
 
   return isModule
     ? `import { ${allImportsFormatted} } from '@jest/globals';`
@@ -34,7 +36,8 @@ export default createRule({
   defaultOptions: [],
   create(context) {
     const importedFunctionsWithSource: Record<string, string> = {};
-    const usedJestFunctions: ParsedJestFnCall[] = [];
+    const functionsToImport = new Set<string>();
+    let reportingNode: TSESTree.Node;
 
     return {
       ImportDeclaration(node: TSESTree.ImportDeclaration) {
@@ -52,29 +55,23 @@ export default createRule({
           return;
         }
 
-        usedJestFunctions.push(jestFnCall);
+        if (jestFnCall.head.type !== 'import') {
+          functionsToImport.add(jestFnCall.name);
+          reportingNode ||= jestFnCall.head.node;
+        }
       },
       'Program:exit'() {
-        const jestFunctionsToReport = usedJestFunctions.filter(
-          jestFunction => jestFunction.head.type !== 'import',
-        );
-
-        if (!jestFunctionsToReport.length) {
+        // this means we found at least one function to import
+        if (!reportingNode) {
           return;
         }
-        const jestFunctionsToImport = Array.from(
-          new Set(jestFunctionsToReport.map(jestFunction => jestFunction.name)),
-        );
-        const reportingNode = jestFunctionsToReport[0].head.node;
-
-        const jestFunctionsToImportFormatted = jestFunctionsToImport.join(', ');
 
         const isModule = context.parserOptions.sourceType === 'module';
 
         context.report({
           node: reportingNode,
           messageId: 'preferImportingJestGlobal',
-          data: { jestFunctions: jestFunctionsToImportFormatted },
+          data: { jestFunctions: Array.from(functionsToImport).join(', ') },
           fix(fixer) {
             const sourceCode = getSourceCode(context);
             const [firstNode] = sourceCode.ast.body;
@@ -86,7 +83,7 @@ export default createRule({
             ) {
               return fixer.insertTextAfter(
                 firstNode,
-                `\n${createFixerImports(isModule, jestFunctionsToImport)}`,
+                `\n${createFixerImports(isModule, functionsToImport)}`,
               );
             }
 
@@ -97,33 +94,22 @@ export default createRule({
             );
 
             if (importNode?.type === AST_NODE_TYPES.ImportDeclaration) {
-              const existingImports = importNode.specifiers.reduce<string[]>(
-                (imports, specifier) => {
-                  if (
-                    specifier.type === AST_NODE_TYPES.ImportSpecifier &&
-                    specifier.imported?.name
-                  ) {
-                    imports.push(specifier.imported.name);
-                  }
+              for (const specifier of importNode.specifiers) {
+                if (
+                  specifier.type === AST_NODE_TYPES.ImportSpecifier &&
+                  specifier.imported?.name
+                ) {
+                  functionsToImport.add(specifier.imported.name);
+                }
 
-                  if (
-                    specifier.type === AST_NODE_TYPES.ImportDefaultSpecifier
-                  ) {
-                    imports.push(specifier.local.name);
-                  }
-
-                  return imports;
-                },
-                [],
-              );
-
-              const allImports = [
-                ...new Set([...existingImports, ...jestFunctionsToImport]),
-              ];
+                if (specifier.type === AST_NODE_TYPES.ImportDefaultSpecifier) {
+                  functionsToImport.add(specifier.local.name);
+                }
+              }
 
               return fixer.replaceText(
                 importNode,
-                createFixerImports(isModule, allImports),
+                createFixerImports(isModule, functionsToImport),
               );
             }
 
@@ -146,35 +132,28 @@ export default createRule({
             if (requireNode?.type !== AST_NODE_TYPES.VariableDeclaration) {
               return fixer.insertTextBefore(
                 reportingNode,
-                `${createFixerImports(isModule, jestFunctionsToImport)}\n`,
+                `${createFixerImports(isModule, functionsToImport)}\n`,
               );
             }
 
-            const existingImports =
+            if (
               requireNode.declarations[0]?.id.type ===
               AST_NODE_TYPES.ObjectPattern
-                ? requireNode.declarations[0]?.id.properties.map(property => {
-                    if (
-                      property.type === AST_NODE_TYPES.Property &&
-                      isSupportedAccessor(property.key)
-                    ) {
-                      return getAccessorValue(property.key);
-                    }
-
-                    return null;
-                  })
-                : [];
-
-            const allImports = [
-              ...new Set([
-                ...existingImports.filter((imp): imp is string => imp !== null),
-                ...jestFunctionsToImport,
-              ]),
-            ];
+            ) {
+              for (const property of requireNode.declarations[0].id
+                .properties) {
+                if (
+                  property.type === AST_NODE_TYPES.Property &&
+                  isSupportedAccessor(property.key)
+                ) {
+                  functionsToImport.add(getAccessorValue(property.key));
+                }
+              }
+            }
 
             return fixer.replaceText(
               requireNode,
-              `${createFixerImports(isModule, allImports)}`,
+              `${createFixerImports(isModule, functionsToImport)}`,
             );
           },
         });

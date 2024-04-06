@@ -69,7 +69,7 @@ ruleTester.run('prefer-importing-jest-globals', rule, {
         })
       `,
       output: dedent`
-        import { describe, test, expect } from '@jest/globals';
+        import { describe, expect, test } from '@jest/globals';
         describe("suite", () => {
           test("foo");
           expect(true).toBeDefined();
@@ -101,7 +101,7 @@ ruleTester.run('prefer-importing-jest-globals', rule, {
         import React from 'react';
         import { yourFunction } from './yourFile';
         import something from "something";
-        import { test, describe, expect } from '@jest/globals';
+        import { describe, expect, test } from '@jest/globals';
         import { xit } from '@jest/globals';
         describe("suite", () => {
           test("foo");
@@ -131,7 +131,7 @@ ruleTester.run('prefer-importing-jest-globals', rule, {
       output: dedent`
         console.log('hello');
         import * as fs from 'fs';
-        import { test, describe, expect } from '@jest/globals';
+        import { describe, expect, test } from '@jest/globals';
         describe("suite", () => {
           test("foo");
           expect(true).toBeDefined();
@@ -158,7 +158,7 @@ ruleTester.run('prefer-importing-jest-globals', rule, {
       `,
       output: dedent`
         console.log('hello');
-        import { jestGlobals, describe, test, expect } from '@jest/globals';
+        import { describe, expect, jestGlobals, test } from '@jest/globals';
         describe("suite", () => {
           test("foo");
           expect(true).toBeDefined();
@@ -207,7 +207,7 @@ ruleTester.run('prefer-importing-jest-globals', rule, {
         })
       `,
       output: dedent`
-        const { describe, test, expect } = require('@jest/globals');
+        const { describe, expect, test } = require('@jest/globals');
         describe("suite", () => {
           test("foo");
           expect(true).toBeDefined();
@@ -232,7 +232,7 @@ ruleTester.run('prefer-importing-jest-globals', rule, {
       `,
       // todo: we should really maintain the template literals
       output: dedent`
-        const { describe, test, expect } = require('@jest/globals');
+        const { describe, expect, test } = require('@jest/globals');
         describe("suite", () => {
           test("foo");
           expect(true).toBeDefined();
@@ -261,7 +261,7 @@ ruleTester.run('prefer-importing-jest-globals', rule, {
         const source = 'globals';
         const {describe} = require(\`@jest/\${source}\`);
         describe("suite", () => {
-          const { test, expect } = require('@jest/globals');
+          const { expect, test } = require('@jest/globals');
         test("foo");
           expect(true).toBeDefined();
         })
@@ -284,7 +284,7 @@ ruleTester.run('prefer-importing-jest-globals', rule, {
         })
       `,
       output: dedent`
-        const { describe, test, expect } = require('@jest/globals');
+        const { describe, expect, test } = require('@jest/globals');
         describe("suite", () => {
           test("foo");
           expect(true).toBeDefined();
@@ -312,7 +312,7 @@ ruleTester.run('prefer-importing-jest-globals', rule, {
       output: dedent`
         console.log('hello');
         const fs = require('fs');
-        const { test, describe, expect } = require('@jest/globals');
+        const { describe, expect, test } = require('@jest/globals');
         describe("suite", () => {
           test("foo");
           expect(true).toBeDefined();
@@ -338,7 +338,7 @@ ruleTester.run('prefer-importing-jest-globals', rule, {
       `,
       output: dedent`
         console.log('hello');
-        const { describe, test, expect } = require('@jest/globals');
+        const { describe, expect, test } = require('@jest/globals');
         describe("suite", () => {
           test("foo");
           expect(true).toBeDefined();
@@ -384,7 +384,7 @@ ruleTester.run('prefer-importing-jest-globals', rule, {
         })
       `,
       output: dedent`
-        const { describe, test, expect } = require('@jest/globals');
+        const { describe, expect, test } = require('@jest/globals');
         describe("suite", () => {
           test("foo");
           expect(true).toBeDefined();
@@ -409,7 +409,7 @@ ruleTester.run('prefer-importing-jest-globals', rule, {
       `,
       output: dedent`
         #!/usr/bin/env node
-        const { describe, test, expect } = require('@jest/globals');
+        const { describe, expect, test } = require('@jest/globals');
         describe("suite", () => {
           test("foo");
           expect(true).toBeDefined();
@@ -435,7 +435,7 @@ ruleTester.run('prefer-importing-jest-globals', rule, {
       `,
       output: dedent`
         // with comment above
-        const { describe, test, expect } = require('@jest/globals');
+        const { describe, expect, test } = require('@jest/globals');
         describe("suite", () => {
           test("foo");
           expect(true).toBeDefined();
@@ -460,7 +460,7 @@ ruleTester.run('prefer-importing-jest-globals', rule, {
       `,
       output: dedent`
         'use strict';
-        const { describe, test, expect } = require('@jest/globals');
+        const { describe, expect, test } = require('@jest/globals');
         describe("suite", () => {
           test("foo");
           expect(true).toBeDefined();
@@ -485,7 +485,7 @@ ruleTester.run('prefer-importing-jest-globals', rule, {
       `,
       output: dedent`
         \`use strict\`;
-        const { describe, test, expect } = require('@jest/globals');
+        const { describe, expect, test } = require('@jest/globals');
         describe("suite", () => {
           test("foo");
           expect(true).toBeDefined();
