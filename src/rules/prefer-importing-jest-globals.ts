@@ -3,8 +3,11 @@ import jestFnNames from '../globals.json';
 import {
   type ParsedJestFnCall,
   createRule,
+  getAccessorValue,
   getSourceCode,
+  isIdentifier,
   isStringNode,
+  isSupportedAccessor,
   parseJestFnCall,
 } from './utils';
 
@@ -121,10 +124,7 @@ export default createRule({
                 node.source.value === '@jest/globals',
             );
 
-            if (
-              importNode &&
-              importNode.type === AST_NODE_TYPES.ImportDeclaration
-            ) {
+            if (importNode?.type === AST_NODE_TYPES.ImportDeclaration) {
               const existingImports = importNode.specifiers.reduce<string[]>(
                 (imports, specifier) => {
                   if (
@@ -160,11 +160,8 @@ export default createRule({
                 node.type === AST_NODE_TYPES.VariableDeclaration &&
                 node.declarations.some(
                   declaration =>
-                    declaration.init &&
-                    declaration.init.type === AST_NODE_TYPES.CallExpression &&
-                    declaration.init.callee.type ===
-                      AST_NODE_TYPES.Identifier &&
-                    declaration.init.callee.name === 'require' &&
+                    declaration.init?.type === AST_NODE_TYPES.CallExpression &&
+                    isIdentifier(declaration.init.callee, 'require') &&
                     isStringNode(
                       declaration.init.arguments[0],
                       '@jest/globals',
@@ -187,16 +184,9 @@ export default createRule({
                 ? requireNode.declarations[0]?.id.properties.map(property => {
                     if (
                       property.type === AST_NODE_TYPES.Property &&
-                      property.key.type === AST_NODE_TYPES.Identifier
+                      isSupportedAccessor(property.key)
                     ) {
-                      return property.key.name;
-                    }
-
-                    if (
-                      property.type === AST_NODE_TYPES.Property &&
-                      property.key.type === AST_NODE_TYPES.Literal
-                    ) {
-                      return property.key.value;
+                      return getAccessorValue(property.key);
                     }
 
                     return null;
