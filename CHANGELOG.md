@@ -1,3 +1,10 @@
+# [28.1.0](https://github.com/jest-community/eslint-plugin-jest/compare/v28.0.0...v28.1.0) (2024-04-06)
+
+
+### Features
+
+* add `prefer-importing-jest-globals` rule ([#1490](https://github.com/jest-community/eslint-plugin-jest/issues/1490)) ([37478d8](https://github.com/jest-community/eslint-plugin-jest/commit/37478d860eb15841f2ab73bb3fb6d94f51841638)), closes [#1101](https://github.com/jest-community/eslint-plugin-jest/issues/1101)
+
 # [28.0.0](https://github.com/jest-community/eslint-plugin-jest/compare/v27.9.0...v28.0.0) (2024-04-06)
 
 
