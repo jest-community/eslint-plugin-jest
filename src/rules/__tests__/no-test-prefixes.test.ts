@@ -1,8 +1,8 @@
-import { TSESLint } from '@typescript-eslint/utils';
 import dedent from 'dedent';
 import rule from '../no-test-prefixes';
+import { FlatCompatRuleTester } from './test-utils';
 
-const ruleTester = new TSESLint.RuleTester();
+const ruleTester = new FlatCompatRuleTester();
 
 ruleTester.run('no-test-prefixes', rule, {
   valid: [

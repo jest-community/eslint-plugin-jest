@@ -98,7 +98,7 @@ module.exports = {
       globals,
     },
     {
-      files: ['src/**/*', 'dangerfile.ts', 'tools/*'],
+      files: ['src/**/*', 'dangerfile.ts', 'tools/*', './jest.config.ts'],
       parserOptions: {
         sourceType: 'module',
       },

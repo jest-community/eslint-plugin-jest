@@ -12,7 +12,7 @@ jobs:
         with:
           fetch-depth: 0
           persist-credentials: false
-      - uses: wagoid/commitlint-github-action@v5
+      - uses: wagoid/commitlint-github-action@v6
         with:
           configFile: './package.json'
         env:

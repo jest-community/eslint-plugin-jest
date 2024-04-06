@@ -1,9 +1,8 @@
-import { TSESLint } from '@typescript-eslint/utils';
 import dedent from 'dedent';
 import rule from '../prefer-to-contain';
-import { espreeParser } from './test-utils';
+import { FlatCompatRuleTester, espreeParser } from './test-utils';
 
-const ruleTester = new TSESLint.RuleTester({
+const ruleTester = new FlatCompatRuleTester({
   parser: espreeParser,
   parserOptions: {
     ecmaVersion: 2015,
@@ -212,7 +211,7 @@ ruleTester.run('prefer-to-contain', rule, {
   ],
 });
 
-new TSESLint.RuleTester({
+new FlatCompatRuleTester({
   parser: require.resolve('@typescript-eslint/parser'),
 }).run('prefer-to-be-null: typescript edition', rule, {
   valid: [

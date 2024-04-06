@@ -4,9 +4,7 @@ export default createRule({
   name: __filename,
   meta: {
     docs: {
-      category: 'Best Practices',
       description: 'Disallow duplicate setup and teardown hooks',
-      recommended: false,
     },
     messages: {
       noDuplicateHook: 'Duplicate {{hook}} in describe block',

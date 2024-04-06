@@ -2,7 +2,7 @@ import { existsSync } from 'fs';
 import { resolve } from 'path';
 import plugin from '../';
 
-const numberOfRules = 53;
+const numberOfRules = 52;
 const ruleNames = Object.keys(plugin.rules);
 const deprecatedRules = Object.entries(plugin.rules)
   .filter(([, rule]) => rule.meta.deprecated)
@@ -61,7 +61,6 @@ describe('rules', () => {
       'flat/recommended': { plugins: { jest: expectJestPlugin } },
       'flat/style': { plugins: { jest: expectJestPlugin } },
       'flat/all': { plugins: { jest: expectJestPlugin } },
-      'flat/snapshots': { plugins: { jest: expectJestPlugin } },
     });
     expect(Object.keys(recommendedConfigs)).toEqual([
       'all',
@@ -70,7 +69,6 @@ describe('rules', () => {
       'flat/all',
       'flat/recommended',
       'flat/style',
-      'flat/snapshots',
     ]);
     expect(Object.keys(recommendedConfigs.all.rules)).toHaveLength(
       ruleNames.length - deprecatedRules.length,
@@ -78,12 +76,9 @@ describe('rules', () => {
     expect(Object.keys(recommendedConfigs['flat/all'].rules)).toHaveLength(
       ruleNames.length - deprecatedRules.length,
     );
-    const allConfigRules = Object.values(recommendedConfigs)
-      .map(config => Object.keys(config.rules ?? {}))
-      .reduce((previousValue, currentValue) => [
-        ...previousValue,
-        ...currentValue,
-      ]);
+    const allConfigRules = Object.values(recommendedConfigs).flatMap(config =>
+      Object.keys(config.rules ?? {}),
+    );
 
     allConfigRules.forEach(rule => {
       const ruleNamePrefix = 'jest/';

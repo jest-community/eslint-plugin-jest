@@ -54,11 +54,11 @@ const reportOnViolation = (
       const snapshotName = getAccessorValue(node.expression.left.property);
 
       isAllowed = allowedSnapshotsInFile.some(name => {
-        if (name instanceof RegExp) {
-          return name.test(snapshotName);
+        if (typeof name === 'string') {
+          return snapshotName === name;
         }
 
-        return snapshotName === name;
+        return name.test(snapshotName);
       });
     }
   }
@@ -76,9 +76,7 @@ export default createRule<[RuleOptions], MessageId>({
   name: __filename,
   meta: {
     docs: {
-      category: 'Best Practices',
       description: 'Disallow large snapshots',
-      recommended: false,
     },
     messages: {
       noSnapshot: '`{{ lineCount }}`s should begin with lowercase',
@@ -107,7 +105,7 @@ export default createRule<[RuleOptions], MessageId>({
   },
   defaultOptions: [{}],
   create(context, [options]) {
-    if (context.getFilename().endsWith('.snap')) {
+    if (getFilename(context).endsWith('.snap')) {
       return {
         ExpressionStatement(node) {
           reportOnViolation(context, node, options);

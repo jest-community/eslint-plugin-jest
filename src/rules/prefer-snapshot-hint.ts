@@ -43,9 +43,7 @@ export default createRule<[('always' | 'multi')?], keyof typeof messages>({
   name: __filename,
   meta: {
     docs: {
-      category: 'Best Practices',
       description: 'Prefer including a hint with external snapshots',
-      recommended: false,
     },
     messages,
     type: 'suggestion',
