@@ -1,3 +1,10 @@
+## [28.1.1](https://github.com/jest-community/eslint-plugin-jest/compare/v28.1.0...v28.1.1) (2024-04-06)
+
+
+### Bug Fixes
+
+* **max-expects:** properly reset counter when exiting a test case ([#1550](https://github.com/jest-community/eslint-plugin-jest/issues/1550)) ([b4b7cbc](https://github.com/jest-community/eslint-plugin-jest/commit/b4b7cbc6195b47ba032fcf9ef1443de6b851d42b))
+
 # [28.1.0](https://github.com/jest-community/eslint-plugin-jest/compare/v28.0.0...v28.1.0) (2024-04-06)
 
 
