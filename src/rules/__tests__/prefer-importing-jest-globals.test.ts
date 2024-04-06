@@ -6,6 +6,7 @@ const ruleTester = new FlatCompatRuleTester({
   parser: espreeParser,
   parserOptions: {
     ecmaVersion: 2015,
+    sourceType: 'script',
   },
 });
 
