@@ -1,9 +1,9 @@
 import dedent from 'dedent';
 import rule from '../consistent-test-it';
 import { TestCaseName } from '../utils';
-import { FlatCompatRuleTester, espreeParser } from './test-utils';
+import { FlatCompatRuleTester as RuleTester, espreeParser } from './test-utils';
 
-const ruleTester = new FlatCompatRuleTester({
+const ruleTester = new RuleTester({
   parser: espreeParser,
   parserOptions: {
     ecmaVersion: 2015,

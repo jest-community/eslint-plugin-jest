@@ -4,7 +4,10 @@ import {
   type JestVersion,
   detectJestVersion,
 } from '../utils/detectJestVersion';
-import { FlatCompatRuleTester, usingFlatConfig } from './test-utils';
+import {
+  FlatCompatRuleTester as RuleTester,
+  usingFlatConfig,
+} from './test-utils';
 
 jest.mock('../utils/detectJestVersion');
 
@@ -12,7 +15,7 @@ const detectJestVersionMock = detectJestVersion as jest.MockedFunction<
   typeof detectJestVersion
 >;
 
-const ruleTester = new FlatCompatRuleTester();
+const ruleTester = new RuleTester();
 
 const generateValidCases = (
   jestVersion: JestVersion | string | undefined,

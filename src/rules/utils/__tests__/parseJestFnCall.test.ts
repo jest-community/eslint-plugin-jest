@@ -1,7 +1,10 @@
 import type { JSONSchemaForNPMPackageJsonFiles } from '@schemastore/package';
 import type { TSESTree } from '@typescript-eslint/utils';
 import dedent from 'dedent';
-import { FlatCompatRuleTester, espreeParser } from '../../__tests__/test-utils';
+import {
+  FlatCompatRuleTester as RuleTester,
+  espreeParser,
+} from '../../__tests__/test-utils';
 import {
   type ParsedJestFnCall,
   type ResolvedJestFnWithNode,
@@ -29,7 +32,7 @@ const findESLintVersion = (): number => {
 
 const eslintVersion = findESLintVersion();
 
-const ruleTester = new FlatCompatRuleTester({
+const ruleTester = new RuleTester({
   parser: espreeParser,
   parserOptions: {
     ecmaVersion: 2015,

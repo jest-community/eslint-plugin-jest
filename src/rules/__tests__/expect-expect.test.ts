@@ -1,9 +1,9 @@
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import dedent from 'dedent';
 import rule from '../expect-expect';
-import { FlatCompatRuleTester, espreeParser } from './test-utils';
+import { FlatCompatRuleTester as RuleTester, espreeParser } from './test-utils';
 
-const ruleTester = new FlatCompatRuleTester({
+const ruleTester = new RuleTester({
   parser: espreeParser,
   parserOptions: {
     ecmaVersion: 2015,
