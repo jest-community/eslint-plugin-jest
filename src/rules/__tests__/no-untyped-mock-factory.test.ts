@@ -1,8 +1,8 @@
 import dedent from 'dedent';
 import rule from '../no-untyped-mock-factory';
-import { FlatCompatRuleTester } from './test-utils';
+import { FlatCompatRuleTester as RuleTester } from './test-utils';
 
-const ruleTester = new FlatCompatRuleTester({
+const ruleTester = new RuleTester({
   parser: require.resolve('@typescript-eslint/parser'),
 });
 
