@@ -2354,14 +2354,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@octokit/plugin-paginate-rest@npm:^10.0.0":
-  version: 10.1.0
-  resolution: "@octokit/plugin-paginate-rest@npm:10.1.0"
+"@octokit/plugin-paginate-rest@npm:^11.0.0":
+  version: 11.0.0
+  resolution: "@octokit/plugin-paginate-rest@npm:11.0.0"
   dependencies:
-    "@octokit/types": ^12.6.0
+    "@octokit/types": ^13.0.0
   peerDependencies:
     "@octokit/core": ">=6"
-  checksum: 44bd3149ed5990eab94f9fa605f66c034fb25a693ac46b9c8ef03300bd10565bcde7c0835e1031704e062be0b6b3254010243c596f64ab0f29cdc64b8ba1e1f2
+  checksum: 9ec422c9a2566739b2b7058b15e111c2a50cbaf8488e54cd13a4a99f2d4f976906a46dfc911998c3926c10894312324a2f548c0ca75444c358f515eac5fe555b
   languageName: node
   linkType: hard
 
@@ -2411,7 +2411,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@octokit/types@npm:^12.0.0, @octokit/types@npm:^12.6.0":
+"@octokit/types@npm:^12.0.0":
   version: 12.6.0
   resolution: "@octokit/types@npm:12.6.0"
   dependencies:
@@ -2541,11 +2541,11 @@ __metadata:
   linkType: hard
 
 "@semantic-release/github@npm:^10.0.0":
-  version: 10.0.2
-  resolution: "@semantic-release/github@npm:10.0.2"
+  version: 10.0.3
+  resolution: "@semantic-release/github@npm:10.0.3"
   dependencies:
     "@octokit/core": ^6.0.0
-    "@octokit/plugin-paginate-rest": ^10.0.0
+    "@octokit/plugin-paginate-rest": ^11.0.0
     "@octokit/plugin-retry": ^7.0.0
     "@octokit/plugin-throttling": ^9.0.0
     "@semantic-release/error": ^4.0.0
@@ -2562,7 +2562,7 @@ __metadata:
     url-join: ^5.0.0
   peerDependencies:
     semantic-release: ">=20.1.0"
-  checksum: fbca028e248f4386b71cc41e1e2477b562b77be228d19db7c70e1ddd984a74df5c7f9c79f9b3decb9791eaef3a78de501a05ea3c9d1a3c581d8ed509ffc889b6
+  checksum: 177ea0b978c3abff02689e409133ed952396f04829d4535a0634856d0a951bf74de1f0adf1151197d9022f97812c0f89166538b6754c623f5b04a2df3fb64f47
   languageName: node
   linkType: hard
 
@@ -3759,11 +3759,11 @@ __metadata:
   linkType: hard
 
 "builtins@npm:^5.0.0, builtins@npm:^5.0.1":
-  version: 5.0.1
-  resolution: "builtins@npm:5.0.1"
+  version: 5.1.0
+  resolution: "builtins@npm:5.1.0"
   dependencies:
     semver: ^7.0.0
-  checksum: 66d204657fe36522822a95b288943ad11b58f5eaede235b11d8c4edaa28ce4800087d44a2681524c340494aadb120a0068011acabe99d30e8f11a7d826d83515
+  checksum: 76327fa85b8e253b26e52f79988148013ea742691b4ab15f7228ebee47dd757832da308c9d4e4fc89763a1773e3f25a9836fff6315df85c7c6c72190436bf11d
   languageName: node
   linkType: hard
 
