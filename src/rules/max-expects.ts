@@ -52,6 +52,10 @@ export default createRule({
       CallExpression(node) {
         const jestFnCall = parseJestFnCall(node, context);
 
+        if (jestFnCall?.type === 'test') {
+          count = 0;
+        }
+
         if (
           jestFnCall?.type !== 'expect' ||
           jestFnCall.head.node.parent?.type === AST_NODE_TYPES.MemberExpression

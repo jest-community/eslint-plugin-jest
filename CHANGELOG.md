@@ -1,3 +1,24 @@
+# [28.2.0](https://github.com/jest-community/eslint-plugin-jest/compare/v28.1.1...v28.2.0) (2024-04-06)
+
+
+### Features
+
+* support providing aliases for `@jest/globals` package ([#1543](https://github.com/jest-community/eslint-plugin-jest/issues/1543)) ([744d4f6](https://github.com/jest-community/eslint-plugin-jest/commit/744d4f6fa5685e0c87062cc867ecadbad9b2e06c))
+
+## [28.1.1](https://github.com/jest-community/eslint-plugin-jest/compare/v28.1.0...v28.1.1) (2024-04-06)
+
+
+### Bug Fixes
+
+* **max-expects:** properly reset counter when exiting a test case ([#1550](https://github.com/jest-community/eslint-plugin-jest/issues/1550)) ([b4b7cbc](https://github.com/jest-community/eslint-plugin-jest/commit/b4b7cbc6195b47ba032fcf9ef1443de6b851d42b))
+
+# [28.1.0](https://github.com/jest-community/eslint-plugin-jest/compare/v28.0.0...v28.1.0) (2024-04-06)
+
+
+### Features
+
+* add `prefer-importing-jest-globals` rule ([#1490](https://github.com/jest-community/eslint-plugin-jest/issues/1490)) ([37478d8](https://github.com/jest-community/eslint-plugin-jest/commit/37478d860eb15841f2ab73bb3fb6d94f51841638)), closes [#1101](https://github.com/jest-community/eslint-plugin-jest/issues/1101)
+
 # [28.0.0](https://github.com/jest-community/eslint-plugin-jest/compare/v27.9.0...v28.0.0) (2024-04-06)
 
 

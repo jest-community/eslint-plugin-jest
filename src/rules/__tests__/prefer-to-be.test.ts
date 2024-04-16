@@ -1,7 +1,7 @@
 import rule from '../prefer-to-be';
-import { FlatCompatRuleTester, espreeParser } from './test-utils';
+import { FlatCompatRuleTester as RuleTester, espreeParser } from './test-utils';
 
-const ruleTester = new FlatCompatRuleTester({
+const ruleTester = new RuleTester({
   parser: espreeParser,
   parserOptions: {
     ecmaVersion: 2015,
@@ -316,7 +316,7 @@ ruleTester.run('prefer-to-be: undefined vs defined', rule, {
   ],
 });
 
-new FlatCompatRuleTester({
+new RuleTester({
   parser: require.resolve('@typescript-eslint/parser'),
 }).run('prefer-to-be: typescript edition', rule, {
   valid: [

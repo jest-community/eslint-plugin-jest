@@ -87,6 +87,27 @@ You can tell this plugin about any global Jests you have aliased using the
 }
 ```
 
+#### Aliased `@jest/globals`
+
+You can tell this plugin to treat a different package as the source of Jest
+globals using the `globalPackage` setting:
+
+```json
+{
+  "settings": {
+    "jest": {
+      "globalPackage": "bun:test"
+    }
+  }
+}
+```
+
+> [!WARNING]
+>
+> While this can be used to apply rules when using alternative testing libraries
+> and frameworks like `bun`, `vitest` and `node`, there's no guarantee the
+> semantics this plugin assumes will hold outside of Jest
+
 ### Running rules only on test-related files
 
 The rules provided by this plugin assume that the files they are checking are
@@ -328,6 +349,7 @@ set to warn in.\
 | [prefer-expect-resolves](docs/rules/prefer-expect-resolves.md)               | Prefer `await expect(...).resolves` over `expect(await ...)` syntax       |     |     | 🔧  |     |
 | [prefer-hooks-in-order](docs/rules/prefer-hooks-in-order.md)                 | Prefer having hooks in a consistent order                                 |     |     |     |     |
 | [prefer-hooks-on-top](docs/rules/prefer-hooks-on-top.md)                     | Suggest having hooks before any test cases                                |     |     |     |     |
+| [prefer-importing-jest-globals](docs/rules/prefer-importing-jest-globals.md) | Prefer importing Jest globals                                             |     |     | 🔧  |     |
 | [prefer-lowercase-title](docs/rules/prefer-lowercase-title.md)               | Enforce lowercase test names                                              |     |     | 🔧  |     |
 | [prefer-mock-promise-shorthand](docs/rules/prefer-mock-promise-shorthand.md) | Prefer mock resolved/rejected shorthands for promises                     |     |     | 🔧  |     |
 | [prefer-snapshot-hint](docs/rules/prefer-snapshot-hint.md)                   | Prefer including a hint with external snapshots                           |     |     |     |     |

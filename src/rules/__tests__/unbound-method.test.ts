@@ -2,7 +2,7 @@ import path from 'path';
 import type { TSESLint } from '@typescript-eslint/utils';
 import dedent from 'dedent';
 import type { MessageIds, Options } from '../unbound-method';
-import { FlatCompatRuleTester } from './test-utils';
+import { FlatCompatRuleTester as RuleTester } from './test-utils';
 
 function getFixturesRootDir(): string {
   return path.join(__dirname, 'fixtures');
@@ -10,7 +10,7 @@ function getFixturesRootDir(): string {
 
 const rootPath = getFixturesRootDir();
 
-const ruleTester = new FlatCompatRuleTester({
+const ruleTester = new RuleTester({
   parser: require.resolve('@typescript-eslint/parser'),
   parserOptions: {
     sourceType: 'module',
@@ -185,7 +185,7 @@ describe('error handling', () => {
   });
 
   describe('when @typescript-eslint/eslint-plugin is not available', () => {
-    const ruleTester = new FlatCompatRuleTester({
+    const ruleTester = new RuleTester({
       parser: require.resolve('@typescript-eslint/parser'),
       parserOptions: {
         sourceType: 'module',
