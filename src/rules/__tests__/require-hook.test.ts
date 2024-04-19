@@ -84,7 +84,7 @@ ruleTester.run('require-hook', rule, {
         let consoleLogSpy;
 
         beforeEach(() => {
-          consoleLogSpy = jest.spyOn(console, 'log'); 
+          consoleLogSpy = jest.spyOn(console, 'log');
         });
 
         it('prints a message', () => {
@@ -95,14 +95,14 @@ ruleTester.run('require-hook', rule, {
       });
     `,
     dedent`
-      let consoleErrorSpy = null; 
+      let consoleErrorSpy = null;
 
       beforeEach(() => {
         consoleErrorSpy = jest.spyOn(console, 'error');
       });
     `,
     dedent`
-      let consoleErrorSpy = undefined; 
+      let consoleErrorSpy = undefined;
 
       beforeEach(() => {
         consoleErrorSpy = jest.spyOn(console, 'error');
@@ -154,7 +154,7 @@ ruleTester.run('require-hook', rule, {
     {
       code: dedent`
         enableAutoDestroy(afterEach);
-        
+
         describe('some tests', () => {
           it('is false', () => {
             expect(true).toBe(true);
@@ -388,7 +388,7 @@ ruleTester.run('require-hook', rule, {
     {
       code: dedent`
         enableAutoDestroy(afterEach);
-        
+
         describe('some tests', () => {
           it('is false', () => {
             expect(true).toBe(true);
