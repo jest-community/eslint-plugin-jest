@@ -17,6 +17,6 @@
     "skipLibCheck": false
   },
   "files": ["eslint-remote-tester.config.ts"],
-  "include": ["src/**/*", "tools/**/*"],
+  "include": ["src/**/*"],
   "exclude": ["src/rules/__tests__/fixtures/**/*"]
 }
