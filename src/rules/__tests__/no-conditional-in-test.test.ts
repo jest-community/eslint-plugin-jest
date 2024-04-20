@@ -462,7 +462,7 @@ ruleTester.run('switch statements', rule, {
                     return thing.bar;
                 }
               });
-  
+
               switch('invalid') {
                 case true:
                   expect(values).toStrictEqual(['foo']);

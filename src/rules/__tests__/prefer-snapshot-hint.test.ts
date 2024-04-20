@@ -80,7 +80,7 @@ ruleTester.run('prefer-snapshot-hint (always)', rule, {
     },
     {
       code: dedent`
-        const x = "we can't know if this is a string or not"; 
+        const x = "we can't know if this is a string or not";
         expect(1).toMatchSnapshot(x);
       `,
       options: ['always'],

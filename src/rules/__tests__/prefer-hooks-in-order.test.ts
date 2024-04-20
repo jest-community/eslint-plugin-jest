@@ -181,47 +181,47 @@ ruleTester.run('prefer-hooks-in-order', rule, {
         beforeAll(() => {
           createMyDatabase();
         });
-      
+
         beforeEach(() => {
           seedMyDatabase();
         });
-      
+
         it('accepts this input', () => {
           // ...
         });
-      
+
         it('returns that value', () => {
           // ...
         });
-      
+
         describe('when the database has specific values', () => {
           const specificValue = '...';
-      
+
           beforeEach(() => {
             seedMyDatabase(specificValue);
           });
-      
+
           it('accepts that input', () => {
             // ...
           });
-      
+
           it('throws an error', () => {
             // ...
           });
-      
+
           beforeEach(() => {
             mockLogger();
           });
-      
+
           afterEach(() => {
             clearLogger();
           });
-      
+
           it('logs a message', () => {
             // ...
           });
         });
-      
+
         afterAll(() => {
           removeMyDatabase();
         });
@@ -233,35 +233,35 @@ ruleTester.run('prefer-hooks-in-order', rule, {
           setupTheDatabase();
           createMocks();
         });
-        
+
         beforeAll(() => {
           doEvenMore();
         });
-        
+
         beforeEach(() => {
           cleanTheDatabase();
           resetSomeThings();
         });
-        
+
         afterEach(() => {
           cleanTheDatabase();
           resetSomeThings();
         });
-        
+
         afterAll(() => {
           closeTheDatabase();
           stop();
         });
-        
+
         it('does something', () => {
           const thing = getThing();
           expect(thing).toBe('something');
         });
-        
+
         it('throws', () => {
           // Do something that throws
         });
-        
+
         describe('Also have tests in here', () => {
           afterAll(() => {});
           it('tests something', () => {});
@@ -539,7 +539,7 @@ ruleTester.run('prefer-hooks-in-order', rule, {
           beforeAll(() => {});
           beforeAll(() => {});
           afterAll(() => {});
-          
+
           it('foo nested', () => {
             // this is a test
           });
@@ -547,17 +547,17 @@ ruleTester.run('prefer-hooks-in-order', rule, {
           describe('when something is true', () => {
             beforeAll(() => {});
             afterEach(() => {});
-            
+
             it('foo nested', () => {
               // this is a test
             });
-            
-            describe('deeply nested', () => { 
+
+            describe('deeply nested', () => {
               afterAll(() => {});
               afterAll(() => {});
               // This comment does nothing
               afterEach(() => {});
-              
+
               it('foo nested', () => {
                 // this is a test
               });
@@ -588,15 +588,15 @@ ruleTester.run('prefer-hooks-in-order', rule, {
               setupMocks();
             });
           };
-          
+
           it('foo', () => {
             // this is a test
           });
-          
+
           describe('my nested test', () => {
             afterAll(() => {});
             afterEach(() => {});
-            
+
             it('foo nested', () => {
               // this is a test
             });
@@ -624,47 +624,47 @@ ruleTester.run('prefer-hooks-in-order', rule, {
           beforeEach(() => {
             seedMyDatabase();
           });
-        
+
           beforeAll(() => {
             createMyDatabase();
           });
-        
+
           it('accepts this input', () => {
             // ...
           });
-        
+
           it('returns that value', () => {
             // ...
           });
-        
+
           describe('when the database has specific values', () => {
             const specificValue = '...';
-        
+
             beforeEach(() => {
               seedMyDatabase(specificValue);
             });
-        
+
             it('accepts that input', () => {
               // ...
             });
-        
+
             it('throws an error', () => {
               // ...
             });
-        
+
             afterEach(() => {
               clearLogger();
             });
-            
+
             beforeEach(() => {
               mockLogger();
             });
-        
+
             it('logs a message', () => {
               // ...
             });
           });
-        
+
           afterAll(() => {
             removeMyDatabase();
           });

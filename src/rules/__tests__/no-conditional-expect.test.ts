@@ -128,7 +128,7 @@ ruleTester.run('logical conditions', rule, {
     {
       code: `
         function getValue() {
-          something && expect(something).toHaveBeenCalled(); 
+          something && expect(something).toHaveBeenCalled();
         }
 
         it('foo', getValue);
@@ -162,7 +162,7 @@ ruleTester.run('logical conditions', rule, {
     {
       code: `
         function getValue() {
-          something || expect(something).toHaveBeenCalled(); 
+          something || expect(something).toHaveBeenCalled();
         }
 
         it('foo', getValue);
@@ -512,7 +512,7 @@ ruleTester.run('catch conditions', rule, {
       code: `
         it('foo', () => {
           try {
-  
+
           } catch (err) {
             expect(err).toMatch('Error');
           }
@@ -524,7 +524,7 @@ ruleTester.run('catch conditions', rule, {
       code: `
         it.each\`\`('foo', () => {
           try {
-  
+
           } catch (err) {
             expect(err).toMatch('Error');
           }
@@ -536,7 +536,7 @@ ruleTester.run('catch conditions', rule, {
       code: `
         it.each()('foo', () => {
           try {
-  
+
           } catch (err) {
             expect(err).toMatch('Error');
           }
@@ -548,7 +548,7 @@ ruleTester.run('catch conditions', rule, {
       code: `
         it.skip.each\`\`('foo', () => {
           try {
-  
+
           } catch (err) {
             expect(err).toMatch('Error');
           }
@@ -560,7 +560,7 @@ ruleTester.run('catch conditions', rule, {
       code: `
         it.skip.each()('foo', () => {
           try {
-  
+
           } catch (err) {
             expect(err).toMatch('Error');
           }
