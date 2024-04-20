@@ -29,7 +29,7 @@
     "prettier:write": "prettier --write 'docs/**/*.md' README.md '.github/**' package.json tsconfig.json src/globals.json .yarnrc.yml",
     "postpublish": "pinst --enable",
     "test": "jest",
-    "tools:regenerate-docs": "yarn prepack && eslint-doc-generator",
+    "regenerate-docs": "yarn prepack && eslint-doc-generator",
     "typecheck": "tsc -p ."
   },
   "commitlint": {

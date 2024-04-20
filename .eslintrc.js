@@ -98,15 +98,9 @@ module.exports = {
       globals,
     },
     {
-      files: ['src/**/*', 'dangerfile.ts', 'tools/*', './jest.config.ts'],
+      files: ['src/**/*', 'dangerfile.ts', './jest.config.ts'],
       parserOptions: {
         sourceType: 'module',
-      },
-    },
-    {
-      files: ['tools/*'],
-      rules: {
-        'node/shebang': 'off',
       },
     },
     {
