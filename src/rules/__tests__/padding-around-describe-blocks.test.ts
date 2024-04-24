@@ -7,10 +7,11 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-import { RuleTester } from 'eslint';
 import rule from '../padding-around-describe-blocks';
+import { FlatCompatRuleTester as RuleTester, espreeParser } from './test-utils';
 
 const ruleTester = new RuleTester({
+  parser: espreeParser,
   parserOptions: {
     ecmaVersion: 6,
   },

@@ -6,10 +6,11 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-import { RuleTester } from 'eslint';
 import rule from '../padding-around-before-all-blocks';
+import { FlatCompatRuleTester as RuleTester, espreeParser } from './test-utils';
 
 const ruleTester = new RuleTester({
+  parser: espreeParser,
   parserOptions: {
     ecmaVersion: 6,
   },
