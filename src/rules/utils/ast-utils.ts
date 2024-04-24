@@ -38,8 +38,8 @@ export const getActualLastToken = (
   sourceCode: TSESLint.SourceCode,
   node: TSESTree.Node,
 ): TSESTree.Token => {
-  const semiToken = sourceCode.getLastToken(node);
-  const prevToken = sourceCode.getTokenBefore(semiToken);
+  const semiToken = sourceCode.getLastToken(node)!;
+  const prevToken = sourceCode.getTokenBefore(semiToken)!;
   const nextToken = sourceCode.getTokenAfter(semiToken);
   const isSemicolonLessStyle = Boolean(
     prevToken &&

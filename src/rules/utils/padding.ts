@@ -198,20 +198,22 @@ const paddingTesters: { [T in PaddingType]: PaddingTester } = {
 
 const createScopeInfo = (): ScopeInfo => {
   return (() => {
-    let scope: Scope = null;
+    let scope: Scope | null = null;
 
     return {
       get prevNode() {
-        return scope.prevNode;
+        return scope?.prevNode ?? null;
       },
       set prevNode(node) {
-        scope.prevNode = node;
+        if (scope) {
+          scope.prevNode = node;
+        }
       },
       enter() {
         scope = { upper: scope, prevNode: null };
       },
       exit() {
-        scope = scope.upper;
+        scope = scope?.upper ?? null;
       },
     };
   })();
