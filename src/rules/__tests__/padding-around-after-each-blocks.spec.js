@@ -7,7 +7,7 @@
 //------------------------------------------------------------------------------
 
 const { RuleTester } = require('eslint');
-const rule = require('../padding').rules['padding-around-after-each-blocks'];
+const { default: rule } = require('../padding-around-after-each-blocks');
 
 const ruleTester = new RuleTester({
   parserOptions: {

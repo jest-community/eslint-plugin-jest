@@ -8,7 +8,7 @@
 //------------------------------------------------------------------------------
 
 const { RuleTester } = require('eslint');
-const rule = require('../padding').rules['padding-around-describe-blocks'];
+const { default: rule } = require('../padding-around-describe-blocks');
 
 const ruleTester = new RuleTester({
   parserOptions: {

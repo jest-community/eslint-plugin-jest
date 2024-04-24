@@ -7,7 +7,7 @@
 // Requirements
 //------------------------------------------------------------------------------
 const { RuleTester } = require('eslint');
-const rule = require('../padding').rules['padding-around-test-blocks'];
+const { default: rule } = require('../padding-around-test-blocks');
 
 const ruleTester = new RuleTester({
   parserOptions: {

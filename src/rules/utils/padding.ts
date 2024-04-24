@@ -12,10 +12,10 @@ import type { AST, Rule, SourceCode } from 'eslint';
 // This is because we are using @types/estree that are brought in with eslint
 
 import type { Node } from 'estree';
-import * as astUtils from './utils/ast-utils';
+import * as astUtils from './ast-utils';
 
 // Statement types we'll respond to
-const enum StatementType {
+export const enum StatementType {
   Any,
   AfterAllToken,
   AfterEachToken,
@@ -37,7 +37,7 @@ type StatementTypes = StatementType | StatementType[];
 type StatementTester = (node: Node, sourceCode: SourceCode) => boolean;
 
 // Padding type to apply between statements
-const enum PaddingType {
+export const enum PaddingType {
   Any,
   Always,
 }
@@ -321,7 +321,7 @@ const verifyNode = (node: Node, paddingContext: PaddingContext): void => {
  *
  * See src/index.ts for examples of Config usage.
  */
-const createRule = (
+export const createPaddingRule = (
   configs: Config[],
   deprecated = false,
 ): Rule.RuleModule => ({
@@ -355,128 +355,3 @@ const createRule = (
     };
   },
 });
-
-const paddingConfigs: { [name: string]: Config[] } = {
-  afterAll: [
-    {
-      paddingType: PaddingType.Always,
-      prevStatementType: StatementType.Any,
-      nextStatementType: StatementType.AfterAllToken,
-    },
-    {
-      paddingType: PaddingType.Always,
-      prevStatementType: StatementType.AfterAllToken,
-      nextStatementType: StatementType.Any,
-    },
-  ],
-  afterEach: [
-    {
-      paddingType: PaddingType.Always,
-      prevStatementType: StatementType.Any,
-      nextStatementType: StatementType.AfterEachToken,
-    },
-    {
-      paddingType: PaddingType.Always,
-      prevStatementType: StatementType.AfterEachToken,
-      nextStatementType: StatementType.Any,
-    },
-  ],
-  beforeAll: [
-    {
-      paddingType: PaddingType.Always,
-      prevStatementType: StatementType.Any,
-      nextStatementType: StatementType.BeforeAllToken,
-    },
-    {
-      paddingType: PaddingType.Always,
-      prevStatementType: StatementType.BeforeAllToken,
-      nextStatementType: StatementType.Any,
-    },
-  ],
-  beforeEach: [
-    {
-      paddingType: PaddingType.Always,
-      prevStatementType: StatementType.Any,
-      nextStatementType: StatementType.BeforeEachToken,
-    },
-    {
-      paddingType: PaddingType.Always,
-      prevStatementType: StatementType.BeforeEachToken,
-      nextStatementType: StatementType.Any,
-    },
-  ],
-  describe: [
-    {
-      paddingType: PaddingType.Always,
-      prevStatementType: StatementType.Any,
-      nextStatementType: [
-        StatementType.DescribeToken,
-        StatementType.FdescribeToken,
-        StatementType.XdescribeToken,
-      ],
-    },
-    {
-      paddingType: PaddingType.Always,
-      prevStatementType: [
-        StatementType.DescribeToken,
-        StatementType.FdescribeToken,
-        StatementType.XdescribeToken,
-      ],
-      nextStatementType: StatementType.Any,
-    },
-  ],
-  expect: [
-    {
-      paddingType: PaddingType.Always,
-      prevStatementType: StatementType.Any,
-      nextStatementType: StatementType.ExpectToken,
-    },
-    {
-      paddingType: PaddingType.Always,
-      prevStatementType: StatementType.ExpectToken,
-      nextStatementType: StatementType.Any,
-    },
-    {
-      paddingType: PaddingType.Any,
-      prevStatementType: StatementType.ExpectToken,
-      nextStatementType: StatementType.ExpectToken,
-    },
-  ],
-  test: [
-    {
-      paddingType: PaddingType.Always,
-      prevStatementType: StatementType.Any,
-      nextStatementType: [
-        StatementType.TestToken,
-        StatementType.ItToken,
-        StatementType.FitToken,
-        StatementType.XitToken,
-        StatementType.XtestToken,
-      ],
-    },
-    {
-      paddingType: PaddingType.Always,
-      prevStatementType: [
-        StatementType.TestToken,
-        StatementType.ItToken,
-        StatementType.FitToken,
-        StatementType.XitToken,
-        StatementType.XtestToken,
-      ],
-      nextStatementType: StatementType.Any,
-    },
-  ],
-};
-
-export const rules = {
-  'padding-around-after-all-blocks': createRule(paddingConfigs.afterAll),
-  'padding-around-after-each-blocks': createRule(paddingConfigs.afterEach),
-  'padding-around-before-all-blocks': createRule(paddingConfigs.beforeAll),
-  'padding-around-before-each-blocks': createRule(paddingConfigs.beforeEach),
-  'padding-around-describe-blocks': createRule(paddingConfigs.describe),
-  'padding-around-expect-groups': createRule(paddingConfigs.expect),
-  'padding-around-test-blocks': createRule(paddingConfigs.test),
-  'padding-around-all': createRule(
-    [].concat(...Object.keys(paddingConfigs).map(k => paddingConfigs[k])),
-  ),
-};
