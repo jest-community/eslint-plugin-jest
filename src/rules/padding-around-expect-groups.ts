@@ -18,4 +18,4 @@ export const config = [
   },
 ];
 
-export default createPaddingRule(config);
+export default createPaddingRule(__filename, config);

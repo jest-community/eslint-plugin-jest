@@ -320,9 +320,13 @@ const verifyNode = (node: Node, paddingContext: PaddingContext): void => {
  *
  * See src/index.ts for examples of Config usage.
  */
-export const createPaddingRule = (configs: Config[], deprecated = false) => {
+export const createPaddingRule = (
+  name: string,
+  configs: Config[],
+  deprecated = false,
+) => {
   return createRule({
-    name: __filename,
+    name,
     meta: {
       docs: {
         description: 'Enforce assertion to be made in a test body',

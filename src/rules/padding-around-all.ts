@@ -7,7 +7,7 @@ import { config as paddingAroundExpectGroupsConfig } from './padding-around-expe
 import { config as paddingAroundTestBlocksConfig } from './padding-around-test-blocks';
 import { createPaddingRule } from './utils/padding';
 
-export default createPaddingRule([
+export default createPaddingRule(__filename, [
   ...paddingAroundAfterAllBlocksConfig,
   ...paddingAroundAfterEachBlocksConfig,
   ...paddingAroundBeforeAllBlocksConfig,
