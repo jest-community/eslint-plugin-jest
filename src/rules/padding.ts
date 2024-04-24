@@ -15,7 +15,7 @@ import type { Node } from 'estree';
 import * as astUtils from './utils/ast-utils';
 
 // Statement types we'll respond to
-export const enum StatementType {
+const enum StatementType {
   Any,
   AfterAllToken,
   AfterEachToken,
@@ -37,13 +37,13 @@ type StatementTypes = StatementType | StatementType[];
 type StatementTester = (node: Node, sourceCode: SourceCode) => boolean;
 
 // Padding type to apply between statements
-export const enum PaddingType {
+const enum PaddingType {
   Any,
   Always,
 }
 
 // A configuration object for padding type and the two statement types
-export interface Config {
+interface Config {
   paddingType: PaddingType;
   prevStatementType: StatementTypes;
   nextStatementType: StatementTypes;
@@ -321,7 +321,7 @@ const verifyNode = (node: Node, paddingContext: PaddingContext): void => {
  *
  * See src/index.ts for examples of Config usage.
  */
-export const createRule = (
+const createRule = (
   configs: Config[],
   deprecated = false,
 ): Rule.RuleModule => ({
