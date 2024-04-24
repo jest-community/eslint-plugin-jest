@@ -108,42 +108,42 @@ ruleTester.run('padding-around-describe-blocks', rule, {
       output: valid,
       errors: [
         {
-          message: 'Expected blank line before this statement.',
+          messageId: 'missingPadding',
           line: 11,
           column: 1,
         },
         {
-          message: 'Expected blank line before this statement.',
+          messageId: 'missingPadding',
           line: 14,
           column: 3,
         },
         {
-          message: 'Expected blank line before this statement.',
+          messageId: 'missingPadding',
           line: 17,
           column: 1,
         },
         {
-          message: 'Expected blank line before this statement.',
+          messageId: 'missingPadding',
           line: 21,
           column: 5,
         },
         {
-          message: 'Expected blank line before this statement.',
+          messageId: 'missingPadding',
           line: 24,
           column: 4,
         },
         {
-          message: 'Expected blank line before this statement.',
+          messageId: 'missingPadding',
           line: 25,
           column: 1,
         },
         {
-          message: 'Expected blank line before this statement.',
+          messageId: 'missingPadding',
           line: 26,
           column: 1,
         },
         {
-          message: 'Expected blank line before this statement.',
+          messageId: 'missingPadding',
           line: 27,
           column: 1,
         },

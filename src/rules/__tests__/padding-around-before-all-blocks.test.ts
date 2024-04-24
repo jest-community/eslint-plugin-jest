@@ -85,27 +85,27 @@ ruleTester.run('padding-around-before-all-blocks', rule, {
       output: valid,
       errors: [
         {
-          message: 'Expected blank line before this statement.',
+          messageId: 'missingPadding',
           line: 3,
           column: 1,
         },
         {
-          message: 'Expected blank line before this statement.',
+          messageId: 'missingPadding',
           line: 5,
           column: 1,
         },
         {
-          message: 'Expected blank line before this statement.',
+          messageId: 'missingPadding',
           line: 8,
           column: 3,
         },
         {
-          message: 'Expected blank line before this statement.',
+          messageId: 'missingPadding',
           line: 11,
           column: 3,
         },
         {
-          message: 'Expected blank line before this statement.',
+          messageId: 'missingPadding',
           line: 18,
           column: 3,
         },

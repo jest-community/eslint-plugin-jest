@@ -162,52 +162,52 @@ ruleTester.run('padding-around-expect-groups', rule, {
       output: valid,
       errors: [
         {
-          message: 'Expected blank line before this statement.',
+          messageId: 'missingPadding',
           line: 13,
           column: 3,
         },
         {
-          message: 'Expected blank line before this statement.',
+          messageId: 'missingPadding',
           line: 15,
           column: 3,
         },
         {
-          message: 'Expected blank line before this statement.',
+          messageId: 'missingPadding',
           line: 16,
           column: 3,
         },
         {
-          message: 'Expected blank line before this statement.',
+          messageId: 'missingPadding',
           line: 21,
           column: 3,
         },
         {
-          message: 'Expected blank line before this statement.',
+          messageId: 'missingPadding',
           line: 24,
           column: 3,
         },
         {
-          message: 'Expected blank line before this statement.',
+          messageId: 'missingPadding',
           line: 32,
           column: 7,
         },
         {
-          message: 'Expected blank line before this statement.',
+          messageId: 'missingPadding',
           line: 43,
           column: 3,
         },
         {
-          message: 'Expected blank line before this statement.',
+          messageId: 'missingPadding',
           line: 47,
           column: 3,
         },
         {
-          message: 'Expected blank line before this statement.',
+          messageId: 'missingPadding',
           line: 51,
           column: 3,
         },
         {
-          message: 'Expected blank line before this statement.',
+          messageId: 'missingPadding',
           line: 56,
           column: 3,
         },

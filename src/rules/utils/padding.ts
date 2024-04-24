@@ -62,7 +62,7 @@ interface ScopeInfo {
 }
 
 interface PaddingContext {
-  ruleContext: TSESLint.RuleContext<string, unknown[]>;
+  ruleContext: TSESLint.RuleContext<'missingPadding', unknown[]>;
   sourceCode: TSESLint.SourceCode;
   scopeInfo: ScopeInfo;
   configs: Config[];
@@ -148,7 +148,7 @@ const paddingAlwaysTester = (
   // Missing padding line
   ruleContext.report({
     node: nextNode,
-    message: 'Expected blank line before this statement.',
+    messageId: 'missingPadding',
     fix(fixer: TSESLint.RuleFixer) {
       let prevToken = astUtils.getActualLastToken(sourceCode, prevNode);
       const nextToken = (sourceCode.getFirstTokenBetween(prevToken, nextNode, {
@@ -345,7 +345,9 @@ export const createPaddingRule = (
       },
       fixable: 'whitespace',
       deprecated,
-      messages: {},
+      messages: {
+        missingPadding: 'Expected blank line before this statement.',
+      },
       schema: [],
       type: 'suggestion',
     },
