@@ -197,26 +197,23 @@ const paddingTesters: { [T in PaddingType]: PaddingTester } = {
 };
 
 const createScopeInfo = (): ScopeInfo => {
-  return (() => {
-    let scope: Scope | null = null;
+  let scope: Scope | null = null;
 
-    return {
-      get prevNode() {
-        return scope?.prevNode ?? null;
-      },
-      set prevNode(node) {
-        if (scope) {
-          scope.prevNode = node;
-        }
-      },
-      enter() {
-        scope = { upper: scope, prevNode: null };
-      },
-      exit() {
-        scope = scope?.upper ?? null;
-      },
-    };
-  })();
+  // todo: explore seeing if we can refactor to a more TypeScript friendly structure
+  return {
+    get prevNode() {
+      return scope!.prevNode;
+    },
+    set prevNode(node) {
+      scope!.prevNode = node;
+    },
+    enter() {
+      scope = { upper: scope, prevNode: null };
+    },
+    exit() {
+      scope = scope!.upper;
+    },
+  };
 };
 
 /**
