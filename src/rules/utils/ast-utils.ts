@@ -1,20 +1,24 @@
-import type { AST, SourceCode } from 'eslint';
-import type { Node } from 'estree';
+import {
+  AST_NODE_TYPES,
+  AST_TOKEN_TYPES,
+  type TSESLint,
+  type TSESTree,
+} from '@typescript-eslint/utils';
 
-export const isTokenASemicolon = (token: AST.Token): boolean =>
-  token.value === ';' && token.type === 'Punctuator';
+export const isTokenASemicolon = (token: TSESTree.Token): boolean =>
+  token.value === ';' && token.type === AST_TOKEN_TYPES.Punctuator;
 
 export const areTokensOnSameLine = (
-  left: Node | AST.Token,
-  right: Node | AST.Token,
+  left: TSESTree.Node | TSESTree.Token,
+  right: TSESTree.Node | TSESTree.Token,
 ): boolean => left.loc.end.line === right.loc.start.line;
 
 // We'll only verify nodes with these parent types
 const STATEMENT_LIST_PARENTS = new Set([
-  'Program',
-  'BlockStatement',
-  'SwitchCase',
-  'SwitchStatement',
+  AST_NODE_TYPES.Program,
+  AST_NODE_TYPES.BlockStatement,
+  AST_NODE_TYPES.SwitchCase,
+  AST_NODE_TYPES.SwitchStatement,
 ]);
 
 export const isValidParent = (parentType: string): boolean => {
@@ -31,9 +35,9 @@ export const isValidParent = (parentType: string): boolean => {
  *     ;[1, 2, 3].forEach(bar)
  */
 export const getActualLastToken = (
-  sourceCode: SourceCode,
-  node: Node,
-): AST.Token => {
+  sourceCode: TSESLint.SourceCode,
+  node: TSESTree.Node,
+): TSESTree.Token => {
   const semiToken = sourceCode.getLastToken(node);
   const prevToken = sourceCode.getTokenBefore(semiToken);
   const nextToken = sourceCode.getTokenAfter(semiToken);
@@ -54,11 +58,11 @@ export const getActualLastToken = (
  * Comments are separators of the padding line sequences.
  */
 export const getPaddingLineSequences = (
-  prevNode: Node,
-  nextNode: Node,
-  sourceCode: SourceCode,
-): AST.Token[][] => {
-  const pairs: AST.Token[][] = [];
+  prevNode: TSESTree.Node,
+  nextNode: TSESTree.Node,
+  sourceCode: TSESLint.SourceCode,
+): TSESTree.Token[][] => {
+  const pairs: TSESTree.Token[][] = [];
   const includeComments = true;
   let prevToken = getActualLastToken(sourceCode, prevNode);
 
@@ -66,7 +70,7 @@ export const getPaddingLineSequences = (
     do {
       const token = sourceCode.getTokenAfter(prevToken, {
         includeComments,
-      }) as AST.Token;
+      }) as TSESTree.Token;
 
       if (token.loc.start.line - prevToken.loc.end.line >= 2) {
         pairs.push([prevToken, token]);

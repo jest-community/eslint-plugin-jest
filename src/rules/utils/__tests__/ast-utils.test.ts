@@ -1,5 +1,8 @@
-import type { AST } from 'eslint';
-import type { Node } from 'estree';
+import {
+  AST_NODE_TYPES,
+  AST_TOKEN_TYPES,
+  type TSESTree,
+} from '@typescript-eslint/utils';
 import {
   areTokensOnSameLine,
   isTokenASemicolon,
@@ -8,12 +11,12 @@ import {
 
 describe('isValidParent', () => {
   test.each`
-    type                 | expected
-    ${'Program'}         | ${true}
-    ${'BlockStatement'}  | ${true}
-    ${'SwitchCase'}      | ${true}
-    ${'SwitchStatement'} | ${true}
-    ${'Statement'}       | ${false}
+    type                              | expected
+    ${AST_NODE_TYPES.Program}         | ${true}
+    ${AST_NODE_TYPES.BlockStatement}  | ${true}
+    ${AST_NODE_TYPES.SwitchCase}      | ${true}
+    ${AST_NODE_TYPES.SwitchStatement} | ${true}
+    ${AST_NODE_TYPES.Identifier}      | ${false}
   `('returns $expected for parent value of $type', ({ type, expected }) => {
     expect(isValidParent(type)).toBe(expected);
   });
@@ -21,12 +24,12 @@ describe('isValidParent', () => {
 
 describe('isTokenASemicolon', () => {
   test.each`
-    type            | value  | expected
-    ${'Punctuator'} | ${';'} | ${true}
-    ${'Punctuator'} | ${'.'} | ${false}
-    ${'String'}     | ${';'} | ${false}
+    type                          | value  | expected
+    ${AST_TOKEN_TYPES.Punctuator} | ${';'} | ${true}
+    ${AST_TOKEN_TYPES.Punctuator} | ${'.'} | ${false}
+    ${AST_TOKEN_TYPES.String}     | ${';'} | ${false}
   `('returns $expected for $type and $value', ({ type, value, expected }) => {
-    const token: AST.Token = {
+    const token: TSESTree.Token = {
       type,
       value,
       range: [0, 1],
@@ -47,9 +50,9 @@ describe('isTokenASemicolon', () => {
 });
 
 describe('areTokensOnSameLine', () => {
-  const makeNode = (line: number): Node => {
+  const makeNode = (line: number): TSESTree.Node => {
     return {
-      type: 'Identifier',
+      type: AST_NODE_TYPES.Identifier,
       name: 'describe',
       loc: {
         start: {
@@ -61,12 +64,12 @@ describe('areTokensOnSameLine', () => {
           column: 10,
         },
       },
-    };
+    } as TSESTree.Node;
   };
 
-  const makeToken = (line: number): AST.Token => {
+  const makeToken = (line: number): TSESTree.Token => {
     return {
-      type: 'Punctuator',
+      type: AST_TOKEN_TYPES.Punctuator,
       value: ';',
       range: [0, 1],
       loc: {
