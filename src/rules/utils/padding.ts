@@ -11,6 +11,7 @@
 import type { AST, Rule, SourceCode } from 'eslint';
 import type { Node } from 'estree';
 import * as astUtils from './ast-utils';
+import { createRule } from './misc';
 
 // Statement types we'll respond to
 export const enum StatementType {
@@ -319,37 +320,44 @@ const verifyNode = (node: Node, paddingContext: PaddingContext): void => {
  *
  * See src/index.ts for examples of Config usage.
  */
-export const createPaddingRule = (
-  configs: Config[],
-  deprecated = false,
-): Rule.RuleModule => ({
-  meta: {
-    fixable: 'whitespace',
-    deprecated,
-  },
-  create(context: Rule.RuleContext) {
-    const paddingContext = {
-      ruleContext: context,
-      sourceCode: context.getSourceCode(),
-      scopeInfo: createScopeInfo(),
-      configs,
-    };
-
-    const { scopeInfo } = paddingContext;
-
-    return {
-      Program: scopeInfo.enter,
-      'Program:exit': scopeInfo.enter,
-      BlockStatement: scopeInfo.enter,
-      'BlockStatement:exit': scopeInfo.exit,
-      SwitchStatement: scopeInfo.enter,
-      'SwitchStatement:exit': scopeInfo.exit,
-      ':statement': (node: Node) => verifyNode(node, paddingContext),
-      SwitchCase(node: Node) {
-        verifyNode(node, paddingContext);
-        scopeInfo.enter();
+export const createPaddingRule = (configs: Config[], deprecated = false) => {
+  return createRule({
+    name: __filename,
+    meta: {
+      docs: {
+        description: 'Enforce assertion to be made in a test body',
       },
-      'SwitchCase:exit': scopeInfo.exit,
-    };
-  },
-});
+      fixable: 'whitespace',
+      deprecated,
+      messages: {},
+      schema: [],
+      type: 'suggestion',
+    },
+    defaultOptions: [],
+    create(context) {
+      const paddingContext = {
+        ruleContext: context,
+        sourceCode: context.getSourceCode(),
+        scopeInfo: createScopeInfo(),
+        configs,
+      };
+
+      const { scopeInfo } = paddingContext;
+
+      return {
+        Program: scopeInfo.enter,
+        'Program:exit': scopeInfo.enter,
+        BlockStatement: scopeInfo.enter,
+        'BlockStatement:exit': scopeInfo.exit,
+        SwitchStatement: scopeInfo.enter,
+        'SwitchStatement:exit': scopeInfo.exit,
+        ':statement': (node: Node) => verifyNode(node, paddingContext),
+        SwitchCase(node: Node) {
+          verifyNode(node, paddingContext);
+          scopeInfo.enter();
+        },
+        'SwitchCase:exit': scopeInfo.exit,
+      };
+    },
+  });
+};
