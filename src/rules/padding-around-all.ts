@@ -7,12 +7,16 @@ import { config as paddingAroundExpectGroupsConfig } from './padding-around-expe
 import { config as paddingAroundTestBlocksConfig } from './padding-around-test-blocks';
 import { createPaddingRule } from './utils/padding';
 
-export default createPaddingRule(__filename, [
-  ...paddingAroundAfterAllBlocksConfig,
-  ...paddingAroundAfterEachBlocksConfig,
-  ...paddingAroundBeforeAllBlocksConfig,
-  ...paddingAroundBeforeEachBlocksConfig,
-  ...paddingAroundDescribeBlocksConfig,
-  ...paddingAroundExpectGroupsConfig,
-  ...paddingAroundTestBlocksConfig,
-]);
+export default createPaddingRule(
+  __filename,
+  'Enforce padding around Jest functions',
+  [
+    ...paddingAroundAfterAllBlocksConfig,
+    ...paddingAroundAfterEachBlocksConfig,
+    ...paddingAroundBeforeAllBlocksConfig,
+    ...paddingAroundBeforeEachBlocksConfig,
+    ...paddingAroundDescribeBlocksConfig,
+    ...paddingAroundExpectGroupsConfig,
+    ...paddingAroundTestBlocksConfig,
+  ],
+);

@@ -317,61 +317,69 @@ Automatically fixable by the
 Manually fixable by
 [editor suggestions](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions).
 
-| Name                                                                         | Description                                                               | 💼  | ⚠️  | 🔧  | 💡  |
-| :--------------------------------------------------------------------------- | :------------------------------------------------------------------------ | :-- | :-- | :-- | :-- |
-| [consistent-test-it](docs/rules/consistent-test-it.md)                       | Enforce `test` and `it` usage conventions                                 |     |     | 🔧  |     |
-| [expect-expect](docs/rules/expect-expect.md)                                 | Enforce assertion to be made in a test body                               |     | ✅  |     |     |
-| [max-expects](docs/rules/max-expects.md)                                     | Enforces a maximum number assertion calls in a test body                  |     |     |     |     |
-| [max-nested-describe](docs/rules/max-nested-describe.md)                     | Enforces a maximum depth to nested describe calls                         |     |     |     |     |
-| [no-alias-methods](docs/rules/no-alias-methods.md)                           | Disallow alias methods                                                    | ✅  | 🎨  | 🔧  |     |
-| [no-commented-out-tests](docs/rules/no-commented-out-tests.md)               | Disallow commented out tests                                              |     | ✅  |     |     |
-| [no-conditional-expect](docs/rules/no-conditional-expect.md)                 | Disallow calling `expect` conditionally                                   | ✅  |     |     |     |
-| [no-conditional-in-test](docs/rules/no-conditional-in-test.md)               | Disallow conditional logic in tests                                       |     |     |     |     |
-| [no-confusing-set-timeout](docs/rules/no-confusing-set-timeout.md)           | Disallow confusing usages of jest.setTimeout                              |     |     |     |     |
-| [no-deprecated-functions](docs/rules/no-deprecated-functions.md)             | Disallow use of deprecated functions                                      | ✅  |     | 🔧  |     |
-| [no-disabled-tests](docs/rules/no-disabled-tests.md)                         | Disallow disabled tests                                                   |     | ✅  |     |     |
-| [no-done-callback](docs/rules/no-done-callback.md)                           | Disallow using a callback in asynchronous tests and hooks                 | ✅  |     |     | 💡  |
-| [no-duplicate-hooks](docs/rules/no-duplicate-hooks.md)                       | Disallow duplicate setup and teardown hooks                               |     |     |     |     |
-| [no-export](docs/rules/no-export.md)                                         | Disallow using `exports` in files containing tests                        | ✅  |     |     |     |
-| [no-focused-tests](docs/rules/no-focused-tests.md)                           | Disallow focused tests                                                    | ✅  |     |     | 💡  |
-| [no-hooks](docs/rules/no-hooks.md)                                           | Disallow setup and teardown hooks                                         |     |     |     |     |
-| [no-identical-title](docs/rules/no-identical-title.md)                       | Disallow identical titles                                                 | ✅  |     |     |     |
-| [no-interpolation-in-snapshots](docs/rules/no-interpolation-in-snapshots.md) | Disallow string interpolation inside snapshots                            | ✅  |     |     |     |
-| [no-jasmine-globals](docs/rules/no-jasmine-globals.md)                       | Disallow Jasmine globals                                                  | ✅  |     | 🔧  |     |
-| [no-large-snapshots](docs/rules/no-large-snapshots.md)                       | Disallow large snapshots                                                  |     |     |     |     |
-| [no-mocks-import](docs/rules/no-mocks-import.md)                             | Disallow manually importing from `__mocks__`                              | ✅  |     |     |     |
-| [no-restricted-jest-methods](docs/rules/no-restricted-jest-methods.md)       | Disallow specific `jest.` methods                                         |     |     |     |     |
-| [no-restricted-matchers](docs/rules/no-restricted-matchers.md)               | Disallow specific matchers & modifiers                                    |     |     |     |     |
-| [no-standalone-expect](docs/rules/no-standalone-expect.md)                   | Disallow using `expect` outside of `it` or `test` blocks                  | ✅  |     |     |     |
-| [no-test-prefixes](docs/rules/no-test-prefixes.md)                           | Require using `.only` and `.skip` over `f` and `x`                        | ✅  |     | 🔧  |     |
-| [no-test-return-statement](docs/rules/no-test-return-statement.md)           | Disallow explicitly returning from tests                                  |     |     |     |     |
-| [no-untyped-mock-factory](docs/rules/no-untyped-mock-factory.md)             | Disallow using `jest.mock()` factories without an explicit type parameter |     |     | 🔧  |     |
-| [prefer-called-with](docs/rules/prefer-called-with.md)                       | Suggest using `toBeCalledWith()` or `toHaveBeenCalledWith()`              |     |     |     |     |
-| [prefer-comparison-matcher](docs/rules/prefer-comparison-matcher.md)         | Suggest using the built-in comparison matchers                            |     |     | 🔧  |     |
-| [prefer-each](docs/rules/prefer-each.md)                                     | Prefer using `.each` rather than manual loops                             |     |     |     |     |
-| [prefer-equality-matcher](docs/rules/prefer-equality-matcher.md)             | Suggest using the built-in equality matchers                              |     |     |     | 💡  |
-| [prefer-expect-assertions](docs/rules/prefer-expect-assertions.md)           | Suggest using `expect.assertions()` OR `expect.hasAssertions()`           |     |     |     | 💡  |
-| [prefer-expect-resolves](docs/rules/prefer-expect-resolves.md)               | Prefer `await expect(...).resolves` over `expect(await ...)` syntax       |     |     | 🔧  |     |
-| [prefer-hooks-in-order](docs/rules/prefer-hooks-in-order.md)                 | Prefer having hooks in a consistent order                                 |     |     |     |     |
-| [prefer-hooks-on-top](docs/rules/prefer-hooks-on-top.md)                     | Suggest having hooks before any test cases                                |     |     |     |     |
-| [prefer-importing-jest-globals](docs/rules/prefer-importing-jest-globals.md) | Prefer importing Jest globals                                             |     |     | 🔧  |     |
-| [prefer-jest-mocked](docs/rules/prefer-jest-mocked.md)                       | Prefer `jest.mocked()` over `fn as jest.Mock`                             |     |     | 🔧  |     |
-| [prefer-lowercase-title](docs/rules/prefer-lowercase-title.md)               | Enforce lowercase test names                                              |     |     | 🔧  |     |
-| [prefer-mock-promise-shorthand](docs/rules/prefer-mock-promise-shorthand.md) | Prefer mock resolved/rejected shorthands for promises                     |     |     | 🔧  |     |
-| [prefer-snapshot-hint](docs/rules/prefer-snapshot-hint.md)                   | Prefer including a hint with external snapshots                           |     |     |     |     |
-| [prefer-spy-on](docs/rules/prefer-spy-on.md)                                 | Suggest using `jest.spyOn()`                                              |     |     | 🔧  |     |
-| [prefer-strict-equal](docs/rules/prefer-strict-equal.md)                     | Suggest using `toStrictEqual()`                                           |     |     |     | 💡  |
-| [prefer-to-be](docs/rules/prefer-to-be.md)                                   | Suggest using `toBe()` for primitive literals                             | 🎨  |     | 🔧  |     |
-| [prefer-to-contain](docs/rules/prefer-to-contain.md)                         | Suggest using `toContain()`                                               | 🎨  |     | 🔧  |     |
-| [prefer-to-have-length](docs/rules/prefer-to-have-length.md)                 | Suggest using `toHaveLength()`                                            | 🎨  |     | 🔧  |     |
-| [prefer-todo](docs/rules/prefer-todo.md)                                     | Suggest using `test.todo`                                                 |     |     | 🔧  |     |
-| [require-hook](docs/rules/require-hook.md)                                   | Require setup and teardown code to be within a hook                       |     |     |     |     |
-| [require-to-throw-message](docs/rules/require-to-throw-message.md)           | Require a message for `toThrow()`                                         |     |     |     |     |
-| [require-top-level-describe](docs/rules/require-top-level-describe.md)       | Require test cases and hooks to be inside a `describe` block              |     |     |     |     |
-| [valid-describe-callback](docs/rules/valid-describe-callback.md)             | Enforce valid `describe()` callback                                       | ✅  |     |     |     |
-| [valid-expect](docs/rules/valid-expect.md)                                   | Enforce valid `expect()` usage                                            | ✅  |     | 🔧  |     |
-| [valid-expect-in-promise](docs/rules/valid-expect-in-promise.md)             | Require promises that have expectations in their chain to be valid        | ✅  |     |     |     |
-| [valid-title](docs/rules/valid-title.md)                                     | Enforce valid titles                                                      | ✅  |     | 🔧  |     |
+| Name                                                                                 | Description                                                               | 💼  | ⚠️  | 🔧  | 💡  |
+| :----------------------------------------------------------------------------------- | :------------------------------------------------------------------------ | :-- | :-- | :-- | :-- |
+| [consistent-test-it](docs/rules/consistent-test-it.md)                               | Enforce `test` and `it` usage conventions                                 |     |     | 🔧  |     |
+| [expect-expect](docs/rules/expect-expect.md)                                         | Enforce assertion to be made in a test body                               |     | ✅  |     |     |
+| [max-expects](docs/rules/max-expects.md)                                             | Enforces a maximum number assertion calls in a test body                  |     |     |     |     |
+| [max-nested-describe](docs/rules/max-nested-describe.md)                             | Enforces a maximum depth to nested describe calls                         |     |     |     |     |
+| [no-alias-methods](docs/rules/no-alias-methods.md)                                   | Disallow alias methods                                                    | ✅  | 🎨  | 🔧  |     |
+| [no-commented-out-tests](docs/rules/no-commented-out-tests.md)                       | Disallow commented out tests                                              |     | ✅  |     |     |
+| [no-conditional-expect](docs/rules/no-conditional-expect.md)                         | Disallow calling `expect` conditionally                                   | ✅  |     |     |     |
+| [no-conditional-in-test](docs/rules/no-conditional-in-test.md)                       | Disallow conditional logic in tests                                       |     |     |     |     |
+| [no-confusing-set-timeout](docs/rules/no-confusing-set-timeout.md)                   | Disallow confusing usages of jest.setTimeout                              |     |     |     |     |
+| [no-deprecated-functions](docs/rules/no-deprecated-functions.md)                     | Disallow use of deprecated functions                                      | ✅  |     | 🔧  |     |
+| [no-disabled-tests](docs/rules/no-disabled-tests.md)                                 | Disallow disabled tests                                                   |     | ✅  |     |     |
+| [no-done-callback](docs/rules/no-done-callback.md)                                   | Disallow using a callback in asynchronous tests and hooks                 | ✅  |     |     | 💡  |
+| [no-duplicate-hooks](docs/rules/no-duplicate-hooks.md)                               | Disallow duplicate setup and teardown hooks                               |     |     |     |     |
+| [no-export](docs/rules/no-export.md)                                                 | Disallow using `exports` in files containing tests                        | ✅  |     |     |     |
+| [no-focused-tests](docs/rules/no-focused-tests.md)                                   | Disallow focused tests                                                    | ✅  |     |     | 💡  |
+| [no-hooks](docs/rules/no-hooks.md)                                                   | Disallow setup and teardown hooks                                         |     |     |     |     |
+| [no-identical-title](docs/rules/no-identical-title.md)                               | Disallow identical titles                                                 | ✅  |     |     |     |
+| [no-interpolation-in-snapshots](docs/rules/no-interpolation-in-snapshots.md)         | Disallow string interpolation inside snapshots                            | ✅  |     |     |     |
+| [no-jasmine-globals](docs/rules/no-jasmine-globals.md)                               | Disallow Jasmine globals                                                  | ✅  |     | 🔧  |     |
+| [no-large-snapshots](docs/rules/no-large-snapshots.md)                               | Disallow large snapshots                                                  |     |     |     |     |
+| [no-mocks-import](docs/rules/no-mocks-import.md)                                     | Disallow manually importing from `__mocks__`                              | ✅  |     |     |     |
+| [no-restricted-jest-methods](docs/rules/no-restricted-jest-methods.md)               | Disallow specific `jest.` methods                                         |     |     |     |     |
+| [no-restricted-matchers](docs/rules/no-restricted-matchers.md)                       | Disallow specific matchers & modifiers                                    |     |     |     |     |
+| [no-standalone-expect](docs/rules/no-standalone-expect.md)                           | Disallow using `expect` outside of `it` or `test` blocks                  | ✅  |     |     |     |
+| [no-test-prefixes](docs/rules/no-test-prefixes.md)                                   | Require using `.only` and `.skip` over `f` and `x`                        | ✅  |     | 🔧  |     |
+| [no-test-return-statement](docs/rules/no-test-return-statement.md)                   | Disallow explicitly returning from tests                                  |     |     |     |     |
+| [no-untyped-mock-factory](docs/rules/no-untyped-mock-factory.md)                     | Disallow using `jest.mock()` factories without an explicit type parameter |     |     | 🔧  |     |
+| [padding-around-after-all-blocks](docs/rules/padding-around-after-all-blocks.md)     | Enforce padding around `afterAll` blocks                                  |     |     | 🔧  |     |
+| [padding-around-after-each-blocks](docs/rules/padding-around-after-each-blocks.md)   | Enforce padding around `afterEach` blocks                                 |     |     | 🔧  |     |
+| [padding-around-all](docs/rules/padding-around-all.md)                               | Enforce padding around Jest functions                                     |     |     | 🔧  |     |
+| [padding-around-before-all-blocks](docs/rules/padding-around-before-all-blocks.md)   | Enforce padding around `beforeAll` blocks                                 |     |     | 🔧  |     |
+| [padding-around-before-each-blocks](docs/rules/padding-around-before-each-blocks.md) | Enforce padding around `beforeEach` blocks                                |     |     | 🔧  |     |
+| [padding-around-describe-blocks](docs/rules/padding-around-describe-blocks.md)       | Enforce padding around `describe` blocks                                  |     |     | 🔧  |     |
+| [padding-around-expect-groups](docs/rules/padding-around-expect-groups.md)           | Enforce padding around `expect` groups                                    |     |     | 🔧  |     |
+| [padding-around-test-blocks](docs/rules/padding-around-test-blocks.md)               | Enforce padding around afterAll blocks                                    |     |     | 🔧  |     |
+| [prefer-called-with](docs/rules/prefer-called-with.md)                               | Suggest using `toBeCalledWith()` or `toHaveBeenCalledWith()`              |     |     |     |     |
+| [prefer-comparison-matcher](docs/rules/prefer-comparison-matcher.md)                 | Suggest using the built-in comparison matchers                            |     |     | 🔧  |     |
+| [prefer-each](docs/rules/prefer-each.md)                                             | Prefer using `.each` rather than manual loops                             |     |     |     |     |
+| [prefer-equality-matcher](docs/rules/prefer-equality-matcher.md)                     | Suggest using the built-in equality matchers                              |     |     |     | 💡  |
+| [prefer-expect-assertions](docs/rules/prefer-expect-assertions.md)                   | Suggest using `expect.assertions()` OR `expect.hasAssertions()`           |     |     |     | 💡  |
+| [prefer-expect-resolves](docs/rules/prefer-expect-resolves.md)                       | Prefer `await expect(...).resolves` over `expect(await ...)` syntax       |     |     | 🔧  |     |
+| [prefer-hooks-in-order](docs/rules/prefer-hooks-in-order.md)                         | Prefer having hooks in a consistent order                                 |     |     |     |     |
+| [prefer-hooks-on-top](docs/rules/prefer-hooks-on-top.md)                             | Suggest having hooks before any test cases                                |     |     |     |     |
+| [prefer-importing-jest-globals](docs/rules/prefer-importing-jest-globals.md)         | Prefer importing Jest globals                                             |     |     | 🔧  |     |
+| [prefer-jest-mocked](docs/rules/prefer-jest-mocked.md)                               | Prefer `jest.mocked()` over `fn as jest.Mock`                             |     |     | 🔧  |     |
+| [prefer-lowercase-title](docs/rules/prefer-lowercase-title.md)                       | Enforce lowercase test names                                              |     |     | 🔧  |     |
+| [prefer-mock-promise-shorthand](docs/rules/prefer-mock-promise-shorthand.md)         | Prefer mock resolved/rejected shorthands for promises                     |     |     | 🔧  |     |
+| [prefer-snapshot-hint](docs/rules/prefer-snapshot-hint.md)                           | Prefer including a hint with external snapshots                           |     |     |     |     |
+| [prefer-spy-on](docs/rules/prefer-spy-on.md)                                         | Suggest using `jest.spyOn()`                                              |     |     | 🔧  |     |
+| [prefer-strict-equal](docs/rules/prefer-strict-equal.md)                             | Suggest using `toStrictEqual()`                                           |     |     |     | 💡  |
+| [prefer-to-be](docs/rules/prefer-to-be.md)                                           | Suggest using `toBe()` for primitive literals                             | 🎨  |     | 🔧  |     |
+| [prefer-to-contain](docs/rules/prefer-to-contain.md)                                 | Suggest using `toContain()`                                               | 🎨  |     | 🔧  |     |
+| [prefer-to-have-length](docs/rules/prefer-to-have-length.md)                         | Suggest using `toHaveLength()`                                            | 🎨  |     | 🔧  |     |
+| [prefer-todo](docs/rules/prefer-todo.md)                                             | Suggest using `test.todo`                                                 |     |     | 🔧  |     |
+| [require-hook](docs/rules/require-hook.md)                                           | Require setup and teardown code to be within a hook                       |     |     |     |     |
+| [require-to-throw-message](docs/rules/require-to-throw-message.md)                   | Require a message for `toThrow()`                                         |     |     |     |     |
+| [require-top-level-describe](docs/rules/require-top-level-describe.md)               | Require test cases and hooks to be inside a `describe` block              |     |     |     |     |
+| [valid-describe-callback](docs/rules/valid-describe-callback.md)                     | Enforce valid `describe()` callback                                       | ✅  |     |     |     |
+| [valid-expect](docs/rules/valid-expect.md)                                           | Enforce valid `expect()` usage                                            | ✅  |     | 🔧  |     |
+| [valid-expect-in-promise](docs/rules/valid-expect-in-promise.md)                     | Require promises that have expectations in their chain to be valid        | ✅  |     |     |     |
+| [valid-title](docs/rules/valid-title.md)                                             | Enforce valid titles                                                      | ✅  |     | 🔧  |     |
 
 ### Requires Type Checking
 

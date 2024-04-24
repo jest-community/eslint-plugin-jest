@@ -25,4 +25,8 @@ export const config = [
   },
 ];
 
-export default createPaddingRule(__filename, config);
+export default createPaddingRule(
+  __filename,
+  'Enforce padding around afterAll blocks',
+  config,
+);

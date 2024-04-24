@@ -334,15 +334,14 @@ const verifyNode = (
  */
 export const createPaddingRule = (
   name: string,
+  description: string,
   configs: Config[],
   deprecated = false,
 ) => {
   return createRule({
     name,
     meta: {
-      docs: {
-        description: 'Enforce assertion to be made in a test body',
-      },
+      docs: { description },
       fixable: 'whitespace',
       deprecated,
       messages: {
