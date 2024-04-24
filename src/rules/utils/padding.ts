@@ -96,7 +96,7 @@ const createTokenTester = (tokenName: string): StatementTester => {
       const token = sourceCode.getFirstToken(activeNode);
 
       return (
-        token.type === AST_TOKEN_TYPES.Identifier && token.value === tokenName
+        token?.type === AST_TOKEN_TYPES.Identifier && token.value === tokenName
       );
     }
 

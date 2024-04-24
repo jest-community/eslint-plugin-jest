@@ -21,7 +21,7 @@ const STATEMENT_LIST_PARENTS = new Set([
   AST_NODE_TYPES.SwitchStatement,
 ]);
 
-export const isValidParent = (parentType: string): boolean => {
+export const isValidParent = (parentType: AST_NODE_TYPES): boolean => {
   return STATEMENT_LIST_PARENTS.has(parentType);
 };
 
