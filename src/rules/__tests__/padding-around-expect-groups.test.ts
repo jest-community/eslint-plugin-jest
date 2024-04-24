@@ -155,7 +155,58 @@ ruleTester.run('padding-around-expect-groups', rule, {
       filename: 'src/component.test.jsx',
       code: invalid,
       output: valid,
-      errors: 10,
+      errors: [
+        {
+          messageId: 'missingPadding',
+          line: 13,
+          column: 3,
+        },
+        {
+          messageId: 'missingPadding',
+          line: 15,
+          column: 3,
+        },
+        {
+          messageId: 'missingPadding',
+          line: 16,
+          column: 3,
+        },
+        {
+          messageId: 'missingPadding',
+          line: 21,
+          column: 3,
+        },
+        {
+          messageId: 'missingPadding',
+          line: 24,
+          column: 3,
+        },
+        {
+          messageId: 'missingPadding',
+          line: 32,
+          column: 7,
+        },
+        {
+          messageId: 'missingPadding',
+          line: 43,
+          column: 3,
+        },
+        {
+          messageId: 'missingPadding',
+          line: 47,
+          column: 3,
+        },
+        {
+          messageId: 'missingPadding',
+          line: 51,
+          column: 3,
+        },
+        {
+          messageId: 'missingPadding',
+          line: 56,
+          column: 3,
+        },
+      ],
     },
     {
       filename: 'src/component.test.js',

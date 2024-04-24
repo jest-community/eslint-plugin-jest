@@ -95,7 +95,63 @@ ruleTester.run('padding-around-test-blocks', rule, {
       filename: 'src/component.test.jsx',
       code: invalid,
       output: valid,
-      errors: 11,
+      errors: [
+        {
+          messageId: 'missingPadding',
+          line: 4,
+          column: 1,
+        },
+        {
+          messageId: 'missingPadding',
+          line: 7,
+          column: 1,
+        },
+        {
+          messageId: 'missingPadding',
+          line: 10,
+          column: 1,
+        },
+        {
+          messageId: 'missingPadding',
+          line: 11,
+          column: 1,
+        },
+        {
+          messageId: 'missingPadding',
+          line: 16,
+          column: 3,
+        },
+        {
+          messageId: 'missingPadding',
+          line: 19,
+          column: 3,
+        },
+        {
+          messageId: 'missingPadding',
+          line: 21,
+          column: 3,
+        },
+        {
+          messageId: 'missingPadding',
+          line: 22,
+          column: 3,
+        },
+        {
+          messageId: 'missingPadding',
+          line: 23,
+          column: 4,
+        },
+        {
+          messageId: 'missingPadding',
+          line: 24,
+          column: 1,
+        },
+        {
+          messageId: 'missingPadding',
+          line: 26,
+          column: 1,
+        },
+      ],
     },
     {
       filename: 'src/component.test.js',

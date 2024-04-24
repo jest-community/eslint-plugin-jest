@@ -78,7 +78,33 @@ ruleTester.run('padding-around-before-all-blocks', rule, {
       filename: 'src/component.test.jsx',
       code: invalid,
       output: valid,
-      errors: 5,
+      errors: [
+        {
+          messageId: 'missingPadding',
+          line: 3,
+          column: 1,
+        },
+        {
+          messageId: 'missingPadding',
+          line: 5,
+          column: 1,
+        },
+        {
+          messageId: 'missingPadding',
+          line: 8,
+          column: 3,
+        },
+        {
+          messageId: 'missingPadding',
+          line: 11,
+          column: 3,
+        },
+        {
+          messageId: 'missingPadding',
+          line: 18,
+          column: 3,
+        },
+      ],
     },
     {
       filename: 'src/component.test.js',
