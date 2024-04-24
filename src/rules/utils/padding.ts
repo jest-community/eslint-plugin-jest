@@ -9,8 +9,6 @@
  */
 
 import type { AST, Rule, SourceCode } from 'eslint';
-// This is because we are using @types/estree that are brought in with eslint
-
 import type { Node } from 'estree';
 import * as astUtils from './ast-utils';
 

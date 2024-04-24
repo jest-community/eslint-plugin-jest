@@ -6,8 +6,8 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-const { RuleTester } = require('eslint');
-const { default: rule } = require('../padding-around-expect-groups');
+import { RuleTester } from 'eslint';
+import rule from '../padding-around-expect-groups';
 
 const ruleTester = new RuleTester({
   parserOptions: {
