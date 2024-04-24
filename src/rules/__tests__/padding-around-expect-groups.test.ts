@@ -1,11 +1,3 @@
-/**
- * @fileoverview Enforces single line padding around groups of expect statements
- */
-
-//------------------------------------------------------------------------------
-// Requirements
-//------------------------------------------------------------------------------
-
 import rule from '../padding-around-expect-groups';
 import { FlatCompatRuleTester as RuleTester, espreeParser } from './test-utils';
 
@@ -15,10 +7,6 @@ const ruleTester = new RuleTester({
     ecmaVersion: 2017,
   },
 });
-
-//------------------------------------------------------------------------------
-// Tests
-//------------------------------------------------------------------------------
 
 const valid = `
 foo();

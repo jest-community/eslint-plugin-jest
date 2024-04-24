@@ -1,11 +1,3 @@
-/**
- * @fileoverview Enforces single line padding before afterAll blocks
- */
-
-//------------------------------------------------------------------------------
-// Requirements
-//------------------------------------------------------------------------------
-
 import rule from '../padding-around-all';
 import { FlatCompatRuleTester as RuleTester, espreeParser } from './test-utils';
 
@@ -15,10 +7,6 @@ const ruleTester = new RuleTester({
     ecmaVersion: 6,
   },
 });
-
-//------------------------------------------------------------------------------
-// Tests
-//------------------------------------------------------------------------------`
 
 // todo: these should be more fulsome
 const valid = `

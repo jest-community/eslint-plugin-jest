@@ -1,11 +1,3 @@
-/**
- * @fileoverview Enforces padding line around test/it blocks
- * @author Dan Green-Leipciger
- */
-
-//------------------------------------------------------------------------------
-// Requirements
-//------------------------------------------------------------------------------
 import rule from '../padding-around-test-blocks';
 import { FlatCompatRuleTester as RuleTester, espreeParser } from './test-utils';
 
@@ -15,10 +7,6 @@ const ruleTester = new RuleTester({
     ecmaVersion: 6,
   },
 });
-
-//------------------------------------------------------------------------------
-// Tests
-//------------------------------------------------------------------------------
 
 const valid = `
 const foo = 'bar';

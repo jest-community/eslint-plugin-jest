@@ -1,12 +1,3 @@
-/**
- * @fileoverview Enforces padding line around describe blocks
- * @author Dan Green-Leipciger
- */
-
-//------------------------------------------------------------------------------
-// Requirements
-//------------------------------------------------------------------------------
-
 import rule from '../padding-around-describe-blocks';
 import { FlatCompatRuleTester as RuleTester, espreeParser } from './test-utils';
 
@@ -16,10 +7,6 @@ const ruleTester = new RuleTester({
     ecmaVersion: 6,
   },
 });
-
-//------------------------------------------------------------------------------
-// Tests
-//------------------------------------------------------------------------------
 
 const valid = `
 foo();
