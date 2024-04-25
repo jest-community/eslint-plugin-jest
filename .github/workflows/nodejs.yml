@@ -111,6 +111,7 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           fail_ci_if_error: true
+          use_oidc: false
   test-ubuntu:
     uses: ./.github/workflows/test.yml
     needs: prepare-yarn-cache-ubuntu
