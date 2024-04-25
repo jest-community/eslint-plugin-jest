@@ -109,7 +109,7 @@ jobs:
       - uses: codecov/codecov-action@v4.1.1
         if: ${{ matrix.eslint-version >= 8 }}
         with:
-          token: ${{ secrets.CODECOV_TOKEN }}
+          token: 'blahblah'
           fail_ci_if_error: true
   test-ubuntu:
     uses: ./.github/workflows/test.yml
