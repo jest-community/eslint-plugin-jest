@@ -65,7 +65,7 @@ export default createRule<
         properties: {
           assertFunctionNames: {
             type: 'array',
-            items: [{ type: 'string' }],
+            items: { type: 'string' },
           },
           additionalTestBlockFunctions: {
             type: 'array',
