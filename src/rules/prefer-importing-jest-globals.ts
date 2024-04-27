@@ -57,11 +57,7 @@ export default createRule({
       },
     ],
   },
-  defaultOptions: [
-    {
-      types: allJestFnTypes as JestFnType[],
-    },
-  ],
+  defaultOptions: [{ types: allJestFnTypes }],
   create(context) {
     const { types = allJestFnTypes } = context.options[0] || {};
     const importedFunctionsWithSource: Record<string, string> = {};
