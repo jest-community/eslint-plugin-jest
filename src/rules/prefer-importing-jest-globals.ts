@@ -1,5 +1,6 @@
 import { AST_NODE_TYPES, type TSESTree } from '@typescript-eslint/utils';
 import {
+  type JestFnType,
   createRule,
   getAccessorValue,
   getSourceCode,
@@ -20,6 +21,15 @@ const createFixerImports = (
     : `const { ${allImportsFormatted} } = require('@jest/globals');`;
 };
 
+const allJestFnTypes: JestFnType[] = [
+  'hook',
+  'describe',
+  'test',
+  'expect',
+  'jest',
+  'unknown',
+];
+
 export default createRule({
   name: __filename,
   meta: {
@@ -31,10 +41,25 @@ export default createRule({
     },
     fixable: 'code',
     type: 'problem',
-    schema: [],
+    schema: [
+      {
+        type: 'object',
+        properties: {
+          types: {
+            type: 'array',
+            items: {
+              type: 'string',
+              enum: allJestFnTypes,
+            },
+          },
+        },
+        additionalProperties: false,
+      },
+    ],
   },
-  defaultOptions: [],
+  defaultOptions: [{ types: allJestFnTypes }],
   create(context) {
+    const { types = allJestFnTypes } = context.options[0] || {};
     const importedFunctionsWithSource: Record<string, string> = {};
     const functionsToImport = new Set<string>();
     let reportingNode: TSESTree.Node;
@@ -55,7 +80,10 @@ export default createRule({
           return;
         }
 
-        if (jestFnCall.head.type !== 'import') {
+        if (
+          jestFnCall.head.type !== 'import' &&
+          types.includes(jestFnCall.type)
+        ) {
           functionsToImport.add(jestFnCall.name);
           reportingNode ||= jestFnCall.head.node;
         }
