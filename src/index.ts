@@ -76,7 +76,7 @@ const plugin = {
     | 'flat/all'
     | 'flat/recommended'
     | 'flat/style',
-    Pick<Required<TSESLint.Linter.Config>, 'rules'>
+    Pick<Required<TSESLint.ClassicConfig.Config>, 'rules'>
   >,
   environments: {
     globals: {
