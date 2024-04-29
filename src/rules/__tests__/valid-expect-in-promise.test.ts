@@ -621,7 +621,7 @@ ruleTester.run('valid-expect-in-promise', rule, {
 
         somePromise = getPromise().then((data) => {
           expect(data).toEqual('foo');
-        }); 
+        });
 
         await somePromise;
       });
@@ -636,7 +636,7 @@ ruleTester.run('valid-expect-in-promise', rule, {
 
         somePromise = getPromise().then((data) => {
           expect(data).toEqual('foo');
-        }); 
+        });
 
         return somePromise;
       });
@@ -705,7 +705,7 @@ ruleTester.run('valid-expect-in-promise', rule, {
 
         somePromise = somePromise.then((data) => {
           expect(data).toEqual('foo');
-        }); 
+        });
 
         await somePromise;
       });
@@ -721,7 +721,7 @@ ruleTester.run('valid-expect-in-promise', rule, {
           .then((data) => data)
           .then((data) => {
             expect(data).toEqual('foo');
-          }); 
+          });
 
         await somePromise;
       });
@@ -1467,7 +1467,7 @@ ruleTester.run('valid-expect-in-promise', rule, {
 
           somePromise = getPromise().then((data) => {
             expect(data).toEqual('foo');
-          }); 
+          });
 
           await somePromise;
         });
@@ -1487,7 +1487,7 @@ ruleTester.run('valid-expect-in-promise', rule, {
           let somePromise = getPromise().then((data) => {
             expect(data).toEqual('foo');
           });
-  
+
           ({ somePromise } = {})
         });
       `,
@@ -1510,7 +1510,7 @@ ruleTester.run('valid-expect-in-promise', rule, {
           {
             somePromise = getPromise().then((data) => {
               expect(data).toEqual('foo');
-            }); 
+            });
 
             await somePromise;
           }

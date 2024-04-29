@@ -487,7 +487,7 @@ if (eslintVersion >= 8) {
       {
         code: dedent`
           const { it } = await import("@jest/globals");
-  
+
           it('is a jest function', () => {});
         `,
         parserOptions: { sourceType: 'module', ecmaVersion: 2022 },
@@ -513,7 +513,7 @@ if (eslintVersion >= 8) {
       {
         code: dedent`
           const { it } = await import(\`@jest/globals\`);
-  
+
           it('is a jest function', () => {});
         `,
         parserOptions: { sourceType: 'module', ecmaVersion: 2022 },

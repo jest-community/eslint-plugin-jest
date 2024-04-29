@@ -42,6 +42,42 @@ describe('foo', () => {
 });
 ```
 
+## Options
+
+This rule can be configured as follows
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "types": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["hook", "describe", "test", "expect", "jest", "unknown"]
+      }
+    }
+  },
+  "additionalProperties": false
+}
+```
+
+#### types
+
+A list of Jest global types to enforce explicit imports for. By default, all
+Jest globals are enforced.
+
+This option is useful when you only want to enforce explicit imports for a
+subset of Jest globals. For instance, when migrating to ESM, you might want to
+enforce explicit imports only for the `jest` global, as of
+[Jest's ESM documentation](https://jestjs.io/docs/ecmascript-modules#differences-between-esm-and-commonjs).
+
+```json5
+{
+  'jest/prefer-importing-jest-globals': ['error', { types: ['jest'] }],
+}
+```
+
 ## Further Reading
 
 - [Documentation](https://jestjs.io/docs/api)

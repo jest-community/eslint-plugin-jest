@@ -270,7 +270,7 @@ ruleTester.run('prefer-each', rule, {
         for (const [input, expected] of data) {
           it("only returns numbers that are greater than seven", function () {
             const numbers = getNumbers(input);
-  
+
             for (let i = 0; i < numbers.length; i++) {
               expect(numbers[i]).toBeGreaterThan(7);
             }
@@ -291,7 +291,7 @@ ruleTester.run('prefer-each', rule, {
 
           it("only returns numbers that are greater than seven", function () {
             const numbers = getNumbers();
-  
+
             for (let i = 0; i < numbers.length; i++) {
               expect(numbers[i]).toBeGreaterThan(7);
             }

@@ -1,3 +1,10 @@
+# [28.3.0](https://github.com/jest-community/eslint-plugin-jest/compare/v28.2.0...v28.3.0) (2024-04-27)
+
+
+### Features
+
+* prefer importing jest globals for specific types ([#1568](https://github.com/jest-community/eslint-plugin-jest/issues/1568)) ([c464ae3](https://github.com/jest-community/eslint-plugin-jest/commit/c464ae311b81f005af29df610d4032519125bafa))
+
 # [28.2.0](https://github.com/jest-community/eslint-plugin-jest/compare/v28.1.1...v28.2.0) (2024-04-06)
 
 

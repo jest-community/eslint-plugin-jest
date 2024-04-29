@@ -208,7 +208,7 @@ describe('detectJestVersion', () => {
         `
           const { detectJestVersion } = require('${relativePathToFn}');
           const fs = require('fs');
-  
+
           console.log(detectJestVersion());
           fs.writeFileSync(
             'node_modules/jest/package.json',
