@@ -54,7 +54,7 @@ const toThrowMatchers = [
   'toThrowError',
   'toThrowErrorMatchingSnapshot',
   'toThrowErrorMatchingInlineSnapshot',
-];
+] as const;
 
 const validTestCases: string[] = [
   ...[
@@ -113,33 +113,37 @@ const invalidTestCases: Array<TSESLint.InvalidTestCase<MessageIds, Options>> = [
     ],
   },
   // toThrow matchers call the expected value (which is expected to be a function)
-  ...toThrowMatchers.map(matcher => ({
-    code: dedent`
+  ...toThrowMatchers.map<TSESLint.InvalidTestCase<MessageIds, Options>>(
+    matcher => ({
+      code: dedent`
       ${ConsoleClassAndVariableCode}
 
       expect(console.log).${matcher}();
     `,
-    errors: [
-      {
-        line: 9,
-        messageId: 'unboundWithoutThisAnnotation' as const,
-      },
-    ],
-  })),
+      errors: [
+        {
+          line: 9,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    }),
+  ),
   // toThrow matchers call the expected value (which is expected to be a function)
-  ...toThrowMatchers.map(matcher => ({
-    code: dedent`
+  ...toThrowMatchers.map<TSESLint.InvalidTestCase<MessageIds, Options>>(
+    matcher => ({
+      code: dedent`
       ${ConsoleClassAndVariableCode}
 
       expect(console.log).not.${matcher}();
     `,
-    errors: [
-      {
-        line: 9,
-        messageId: 'unboundWithoutThisAnnotation' as const,
-      },
-    ],
-  })),
+      errors: [
+        {
+          line: 9,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    }),
+  ),
 ];
 
 const requireRule = (throwWhenRequiring: boolean) => {

@@ -39,9 +39,11 @@ const shouldBeInHook = (
     case AST_NODE_TYPES.ExpressionStatement:
       return shouldBeInHook(node.expression, context, allowedFunctionCalls);
     case AST_NODE_TYPES.CallExpression:
+      const nodeName = getNodeName(node);
+
       return !(
         isJestFnCall(node, context) ||
-        allowedFunctionCalls.includes(getNodeName(node) as string)
+        (nodeName && allowedFunctionCalls.includes(nodeName))
       );
     case AST_NODE_TYPES.VariableDeclaration: {
       if (node.kind === 'const') {

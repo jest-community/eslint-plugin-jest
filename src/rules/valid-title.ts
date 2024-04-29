@@ -74,13 +74,13 @@ const compileMatcherPatterns = (
 type CompiledMatcherAndMessage = [matcher: RegExp, message?: string];
 type MatcherAndMessage = [matcher: string, message?: string];
 
-const MatcherAndMessageSchema: JSONSchema.JSONSchema4 = {
+const MatcherAndMessageSchema = {
   type: 'array',
   items: { type: 'string' },
   minItems: 1,
   maxItems: 2,
   additionalItems: false,
-} as const;
+} as const satisfies JSONSchema.JSONSchema4;
 
 type MatcherGroups = 'describe' | 'test' | 'it';
 

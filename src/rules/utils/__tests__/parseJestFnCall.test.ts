@@ -194,7 +194,7 @@ ruleTester.run('expect', rule, {
       parserOptions: { sourceType: 'script' },
       errors: [
         {
-          messageId: 'details' as const,
+          messageId: 'details',
           data: expectedParsedJestFnCallResultData({
             name: 'expect',
             type: 'expect',
@@ -220,7 +220,7 @@ ruleTester.run('expect', rule, {
       parserOptions: { sourceType: 'module' },
       errors: [
         {
-          messageId: 'details' as const,
+          messageId: 'details',
           data: expectedParsedJestFnCallResultData({
             name: 'expect',
             type: 'expect',
@@ -246,7 +246,7 @@ ruleTester.run('expect', rule, {
       parserOptions: { sourceType: 'module' },
       errors: [
         {
-          messageId: 'details' as const,
+          messageId: 'details',
           data: expectedParsedJestFnCallResultData({
             name: 'expect',
             type: 'expect',
@@ -272,7 +272,7 @@ ruleTester.run('expect', rule, {
       parserOptions: { sourceType: 'module' },
       errors: [
         {
-          messageId: 'details' as const,
+          messageId: 'details',
           data: expectedParsedJestFnCallResultData({
             name: 'expect',
             type: 'expect',
@@ -298,7 +298,7 @@ ruleTester.run('expect', rule, {
       parserOptions: { sourceType: 'module' },
       errors: [
         {
-          messageId: 'details' as const,
+          messageId: 'details',
           data: expectedParsedJestFnCallResultData({
             name: 'expect',
             type: 'expect',
@@ -327,7 +327,7 @@ ruleTester.run('expect', rule, {
       parserOptions: { sourceType: 'module' },
       errors: [
         {
-          messageId: 'details' as const,
+          messageId: 'details',
           data: expectedParsedJestFnCallResultData({
             name: 'expect',
             type: 'expect',
@@ -343,7 +343,7 @@ ruleTester.run('expect', rule, {
           line: 3,
         },
         {
-          messageId: 'details' as const,
+          messageId: 'details',
           data: expectedParsedJestFnCallResultData({
             name: 'expect',
             type: 'expect',
@@ -359,7 +359,7 @@ ruleTester.run('expect', rule, {
           line: 4,
         },
         {
-          messageId: 'details' as const,
+          messageId: 'details',
           data: expectedParsedJestFnCallResultData({
             name: 'expect',
             type: 'expect',
@@ -375,7 +375,7 @@ ruleTester.run('expect', rule, {
           line: 5,
         },
         {
-          messageId: 'details' as const,
+          messageId: 'details',
           data: expectedParsedJestFnCallResultData({
             name: 'expect',
             type: 'expect',
@@ -493,7 +493,7 @@ if (eslintVersion >= 8) {
         parserOptions: { sourceType: 'module', ecmaVersion: 2022 },
         errors: [
           {
-            messageId: 'details' as const,
+            messageId: 'details',
             data: expectedParsedJestFnCallResultData({
               name: 'it',
               type: 'test',
@@ -519,7 +519,7 @@ if (eslintVersion >= 8) {
         parserOptions: { sourceType: 'module', ecmaVersion: 2022 },
         errors: [
           {
-            messageId: 'details' as const,
+            messageId: 'details',
             data: expectedParsedJestFnCallResultData({
               name: 'it',
               type: 'test',
@@ -630,7 +630,7 @@ ruleTester.run('global aliases', rule, {
       code: 'context("when there is an error", () => {})',
       errors: [
         {
-          messageId: 'details' as const,
+          messageId: 'details',
           data: expectedParsedJestFnCallResultData({
             name: 'describe',
             type: 'describe',
@@ -652,7 +652,7 @@ ruleTester.run('global aliases', rule, {
       code: 'context.skip("when there is an error", () => {})',
       errors: [
         {
-          messageId: 'details' as const,
+          messageId: 'details',
           data: expectedParsedJestFnCallResultData({
             name: 'describe',
             type: 'describe',
@@ -677,7 +677,7 @@ ruleTester.run('global aliases', rule, {
       `,
       errors: [
         {
-          messageId: 'details' as const,
+          messageId: 'details',
           data: expectedParsedJestFnCallResultData({
             name: 'xdescribe',
             type: 'describe',
@@ -703,7 +703,7 @@ ruleTester.run('global aliases', rule, {
       `,
       errors: [
         {
-          messageId: 'details' as const,
+          messageId: 'details',
           data: expectedParsedJestFnCallResultData({
             name: 'describe',
             type: 'describe',
@@ -719,7 +719,7 @@ ruleTester.run('global aliases', rule, {
           line: 1,
         },
         {
-          messageId: 'details' as const,
+          messageId: 'details',
           data: expectedParsedJestFnCallResultData({
             name: 'describe',
             type: 'describe',
@@ -794,7 +794,7 @@ ruleTester.run('global package source', rule, {
       parserOptions: { sourceType: 'script' },
       errors: [
         {
-          messageId: 'details' as const,
+          messageId: 'details',
           data: expectedParsedJestFnCallResultData({
             name: 'expect',
             type: 'expect',
@@ -825,7 +825,7 @@ ruleTester.run('global package source', rule, {
       parserOptions: { sourceType: 'module' },
       errors: [
         {
-          messageId: 'details' as const,
+          messageId: 'details',
           data: expectedParsedJestFnCallResultData({
             name: 'describe',
             type: 'describe',
@@ -841,7 +841,7 @@ ruleTester.run('global package source', rule, {
           line: 3,
         },
         {
-          messageId: 'details' as const,
+          messageId: 'details',
           data: expectedParsedJestFnCallResultData({
             name: 'it',
             type: 'test',
@@ -857,7 +857,7 @@ ruleTester.run('global package source', rule, {
           line: 4,
         },
         {
-          messageId: 'details' as const,
+          messageId: 'details',
           data: expectedParsedJestFnCallResultData({
             name: 'expect',
             type: 'expect',
@@ -884,7 +884,7 @@ ruleTester.run('global package source', rule, {
       parserOptions: { sourceType: 'module' },
       errors: [
         {
-          messageId: 'details' as const,
+          messageId: 'details',
           data: expectedParsedJestFnCallResultData({
             name: 'expect',
             type: 'expect',
@@ -906,7 +906,7 @@ ruleTester.run('global package source', rule, {
       code: 'context("when there is an error", () => {})',
       errors: [
         {
-          messageId: 'details' as const,
+          messageId: 'details',
           data: expectedParsedJestFnCallResultData({
             name: 'describe',
             type: 'describe',
@@ -1013,7 +1013,7 @@ ruleTester.run('typescript', rule, {
       parserOptions: { sourceType: 'module' },
       errors: [
         {
-          messageId: 'details' as const,
+          messageId: 'details',
           data: expectedParsedJestFnCallResultData({
             name: 'it',
             type: 'test',
