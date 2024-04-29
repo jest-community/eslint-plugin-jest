@@ -98,7 +98,7 @@ const isPromiseMethodThatUsesValue = (
   ) {
     const nodeName = getNodeName(node.argument);
 
-    if (nodeName && ['Promise.all', 'Promise.allSettled'].includes(nodeName)) {
+    if (['Promise.all', 'Promise.allSettled'].includes(nodeName as string)) {
       const [firstArg] = node.argument.arguments;
 
       if (
@@ -110,8 +110,7 @@ const isPromiseMethodThatUsesValue = (
     }
 
     if (
-      nodeName &&
-      ['Promise.resolve', 'Promise.reject'].includes(nodeName) &&
+      ['Promise.resolve', 'Promise.reject'].includes(nodeName as string) &&
       node.argument.arguments.length === 1
     ) {
       return isIdentifier(node.argument.arguments[0], name);
