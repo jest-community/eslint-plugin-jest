@@ -106,7 +106,7 @@ jobs:
         run: yarn test --coverage ${{ matrix.eslint-version == 8 }}
         env:
           CI: true
-      - uses: codecov/codecov-action@v4.1.1
+      - uses: codecov/codecov-action@v4
         if: ${{ matrix.eslint-version >= 8 }}
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
