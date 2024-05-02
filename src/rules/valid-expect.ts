@@ -8,6 +8,8 @@ import {
   ModifierName,
   createRule,
   getAccessorValue,
+  getSourceCode,
+  isFunction,
   isSupportedAccessor,
   parseJestFnCallWithReason,
 } from './utils';
@@ -47,6 +49,18 @@ const findPromiseCallExpressionNode = (node: TSESTree.Node) =>
   )
     ? getPromiseCallExpressionNode(node.parent)
     : null;
+
+const findFirstAsyncFunction = ({
+  parent,
+}: TSESTree.Node): TSESTree.Node | null => {
+  if (!parent) {
+    return null;
+  }
+
+  return isFunction(parent) && parent.async
+    ? parent
+    : findFirstAsyncFunction(parent);
+};
 
 const getParentIfThenified = (node: TSESTree.Node): TSESTree.Node => {
   const grandParentNode = node.parent?.parent;
@@ -127,6 +141,7 @@ export default createRule<[Options], MessageIds>({
       promisesWithAsyncAssertionsMustBeAwaited:
         'Promises which return async assertions must be awaited{{ orReturned }}',
     },
+    fixable: 'code',
     type: 'suggestion',
     schema: [
       {
@@ -339,6 +354,25 @@ export default createRule<[Options], MessageIds>({
                 ? 'asyncMustBeAwaited'
                 : 'promisesWithAsyncAssertionsMustBeAwaited',
             node,
+            fix(fixer) {
+              if (!findFirstAsyncFunction(finalNode)) {
+                return [];
+              }
+              const returnStatement =
+                finalNode.parent?.type === AST_NODE_TYPES.ReturnStatement
+                  ? finalNode.parent
+                  : null;
+
+              if (alwaysAwait && returnStatement) {
+                const sourceCodeText =
+                  getSourceCode(context).getText(returnStatement);
+                const replacedText = sourceCodeText.replace('return', 'await');
+
+                return fixer.replaceText(returnStatement, replacedText);
+              }
+
+              return fixer.insertTextBefore(finalNode, 'await ');
+            },
           });
 
           if (isParentArrayExpression) {
