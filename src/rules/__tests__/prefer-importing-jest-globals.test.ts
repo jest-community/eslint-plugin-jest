@@ -24,6 +24,25 @@ ruleTester.run('prefer-importing-jest-globals', rule, {
     },
     {
       code: dedent`
+        test('should pass', () => {
+            expect(true).toBeDefined();
+        });
+      `,
+      options: [{ types: ['jest'] }],
+      parserOptions: { sourceType: 'module' },
+    },
+    {
+      code: dedent`
+        const { it } = require('@jest/globals');
+        it('should pass', () => {
+            expect(true).toBeDefined();
+        });
+      `,
+      options: [{ types: ['test'] }],
+      parserOptions: { sourceType: 'module' },
+    },
+    {
+      code: dedent`
         // with require
         const { test, expect } = require('@jest/globals');
         test('should pass', () => {
@@ -81,6 +100,33 @@ ruleTester.run('prefer-importing-jest-globals', rule, {
           endColumn: 7,
           column: 3,
           line: 3,
+          messageId: 'preferImportingJestGlobal',
+        },
+      ],
+    },
+    {
+      code: dedent`
+        jest.useFakeTimers();
+        describe("suite", () => {
+          test("foo");
+          expect(true).toBeDefined();
+        })
+      `,
+      output: dedent`
+        import { jest } from '@jest/globals';
+        jest.useFakeTimers();
+        describe("suite", () => {
+          test("foo");
+          expect(true).toBeDefined();
+        })
+      `,
+      options: [{ types: ['jest'] }],
+      parserOptions: { sourceType: 'module' },
+      errors: [
+        {
+          endColumn: 5,
+          column: 1,
+          line: 1,
           messageId: 'preferImportingJestGlobal',
         },
       ],
