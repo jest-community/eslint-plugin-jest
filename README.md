@@ -363,7 +363,7 @@ set to warn in.\
 | [require-to-throw-message](docs/rules/require-to-throw-message.md)           | Require a message for `toThrow()`                                         |     |     |     |     |
 | [require-top-level-describe](docs/rules/require-top-level-describe.md)       | Require test cases and hooks to be inside a `describe` block              |     |     |     |     |
 | [valid-describe-callback](docs/rules/valid-describe-callback.md)             | Enforce valid `describe()` callback                                       | ✅  |     |     |     |
-| [valid-expect](docs/rules/valid-expect.md)                                   | Enforce valid `expect()` usage                                            | ✅  |     |     |     |
+| [valid-expect](docs/rules/valid-expect.md)                                   | Enforce valid `expect()` usage                                            | ✅  |     | 🔧  |     |
 | [valid-expect-in-promise](docs/rules/valid-expect-in-promise.md)             | Require promises that have expectations in their chain to be valid        | ✅  |     |     |     |
 | [valid-title](docs/rules/valid-title.md)                                     | Enforce valid titles                                                      | ✅  |     | 🔧  |     |
 
