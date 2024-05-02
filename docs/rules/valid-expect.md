@@ -8,7 +8,8 @@
 
 <!-- end auto-generated rule header -->
 
-Note: Test function will be fixed if it is async and does not have await in the
+> [!NOTE]
+> Test function will be fixed if it is async and does not have await in the
 async assertion.
 
 Ensure `expect()` is called with a single argument and there is an actual
