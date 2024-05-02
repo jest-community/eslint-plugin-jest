@@ -6,10 +6,10 @@
 🔧 This rule is automatically fixable by the
 [`--fix` CLI option](https://eslint.org/docs/latest/user-guide/command-line-interface#--fix).
 
+<!-- end auto-generated rule header -->
+
 Note: Test function will be fixed if it is async and does not have await in the
 async assertion.
-
-<!-- end auto-generated rule header -->
 
 Ensure `expect()` is called with a single argument and there is an actual
 expectation made.
