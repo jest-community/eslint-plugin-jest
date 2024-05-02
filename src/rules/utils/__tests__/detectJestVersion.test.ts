@@ -115,7 +115,7 @@ describe('detectJestVersion', () => {
     it('finds the correct version', () => {
       const projectDir = setupFakeProject({
         'package.json': { name: 'simple-project' },
-        [`node_modules/${relativePathToFn}` as const]: compiledFn,
+        [`node_modules/${relativePathToFn}`]: compiledFn,
         'node_modules/jest/package.json': {
           name: 'jest',
           version: '21.0.0',
@@ -133,7 +133,7 @@ describe('detectJestVersion', () => {
     it('finds the correct version', () => {
       const projectDir = setupFakeProject({
         'package.json': { name: 'mono-repo' },
-        [`node_modules/${relativePathToFn}` as const]: compiledFn,
+        [`node_modules/${relativePathToFn}`]: compiledFn,
         'node_modules/jest/package.json': {
           name: 'jest',
           version: '19.0.0',
@@ -153,13 +153,13 @@ describe('detectJestVersion', () => {
     it('finds the correct versions', () => {
       const projectDir = setupFakeProject({
         'backend/package.json': { name: 'package-a' },
-        [`backend/node_modules/${relativePathToFn}` as const]: compiledFn,
+        [`backend/node_modules/${relativePathToFn}`]: compiledFn,
         'backend/node_modules/jest/package.json': {
           name: 'jest',
           version: '24.0.0',
         },
         'frontend/package.json': { name: 'package-b' },
-        [`frontend/node_modules/${relativePathToFn}` as const]: compiledFn,
+        [`frontend/node_modules/${relativePathToFn}`]: compiledFn,
         'frontend/node_modules/jest/package.json': {
           name: 'jest',
           version: '15.0.0',
@@ -184,7 +184,7 @@ describe('detectJestVersion', () => {
     it('throws an error', () => {
       const projectDir = setupFakeProject({
         'package.json': { name: 'no-jest' },
-        [`node_modules/${relativePathToFn}` as const]: compiledFn,
+        [`node_modules/${relativePathToFn}`]: compiledFn,
         'node_modules/pack/package.json': { name: 'pack' },
       });
 
@@ -199,7 +199,7 @@ describe('detectJestVersion', () => {
     it('uses the cached version', () => {
       const projectDir = setupFakeProject({
         'package.json': { name: 'no-jest' },
-        [`node_modules/${relativePathToFn}` as const]: compiledFn,
+        [`node_modules/${relativePathToFn}`]: compiledFn,
         'node_modules/jest/package.json': { name: 'jest', version: '26.0.0' },
       });
 

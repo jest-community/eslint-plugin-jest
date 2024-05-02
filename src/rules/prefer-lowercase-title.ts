@@ -92,7 +92,7 @@ export default createRule<
         additionalProperties: false,
       },
     ],
-  } as const,
+  },
   defaultOptions: [
     { ignore: [], allowedPrefixes: [], ignoreTopLevelDescribe: false },
   ],
