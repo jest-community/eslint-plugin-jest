@@ -5,6 +5,7 @@
 
 import { AST_NODE_TYPES, type TSESTree } from '@typescript-eslint/utils';
 import {
+  type FunctionExpression,
   ModifierName,
   createRule,
   getAccessorValue,
@@ -50,16 +51,27 @@ const findPromiseCallExpressionNode = (node: TSESTree.Node) =>
     ? getPromiseCallExpressionNode(node.parent)
     : null;
 
-const findFirstAsyncFunction = ({
+const findFirstFunctionExpression = ({
   parent,
-}: TSESTree.Node): TSESTree.Node | null => {
+}: TSESTree.Node): FunctionExpression | null => {
   if (!parent) {
     return null;
   }
 
-  return isFunction(parent) && parent.async
-    ? parent
-    : findFirstAsyncFunction(parent);
+  return isFunction(parent) ? parent : findFirstFunctionExpression(parent);
+};
+
+const getNormalizeFunctionExpression = (
+  functionExpression: FunctionExpression,
+): TSESTree.Node => {
+  if (
+    functionExpression.parent.type === AST_NODE_TYPES.Property &&
+    functionExpression.type === AST_NODE_TYPES.FunctionExpression
+  ) {
+    return functionExpression.parent;
+  }
+
+  return functionExpression;
 };
 
 const getParentIfThenified = (node: TSESTree.Node): TSESTree.Node => {
@@ -355,8 +367,17 @@ export default createRule<[Options], MessageIds>({
                 : 'promisesWithAsyncAssertionsMustBeAwaited',
             node,
             fix(fixer) {
-              if (!findFirstAsyncFunction(finalNode)) {
+              const functionExpression = findFirstFunctionExpression(finalNode);
+
+              if (!functionExpression) {
                 return [];
+              }
+
+              if (!functionExpression.async) {
+                const targetFunction =
+                  getNormalizeFunctionExpression(functionExpression);
+
+                return fixer.insertTextBefore(targetFunction, 'async ');
               }
               const returnStatement =
                 finalNode.parent?.type === AST_NODE_TYPES.ReturnStatement
