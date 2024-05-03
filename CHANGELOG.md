@@ -1,3 +1,10 @@
+# [28.4.0](https://github.com/jest-community/eslint-plugin-jest/compare/v28.3.0...v28.4.0) (2024-05-03)
+
+
+### Features
+
+* **valid-expect:** supporting automatically fixing missing `await` in some cases ([#1574](https://github.com/jest-community/eslint-plugin-jest/issues/1574)) ([a407098](https://github.com/jest-community/eslint-plugin-jest/commit/a40709833cd12a87b746ddf2e26a10af838bca0a))
+
 # [28.3.0](https://github.com/jest-community/eslint-plugin-jest/compare/v28.2.0...v28.3.0) (2024-04-27)
 
 
