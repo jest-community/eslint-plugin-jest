@@ -63,7 +63,10 @@ const findFirstFunctionExpression = ({
 
 const getNormalizeFunctionExpression = (
   functionExpression: FunctionExpression,
-): TSESTree.Node => {
+):
+  | TSESTree.PropertyComputedName
+  | TSESTree.PropertyNonComputedName
+  | FunctionExpression => {
   if (
     functionExpression.parent.type === AST_NODE_TYPES.Property &&
     functionExpression.type === AST_NODE_TYPES.FunctionExpression
@@ -377,10 +380,13 @@ export default createRule<[Options], MessageIds>({
                 const targetFunction =
                   getNormalizeFunctionExpression(functionExpression);
 
-                return fixer.insertTextBefore(targetFunction, 'async ');
+                return [
+                  fixer.insertTextBefore(targetFunction, 'async '),
+                  fixer.insertTextBefore(finalNode, 'await '),
+                ];
               }
               const returnStatement =
-                finalNode.parent?.type === AST_NODE_TYPES.ReturnStatement
+                finalNode.parent.type === AST_NODE_TYPES.ReturnStatement
                   ? finalNode.parent
                   : null;
 
