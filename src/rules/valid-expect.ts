@@ -4,6 +4,7 @@
  */
 
 import { AST_NODE_TYPES, type TSESTree } from '@typescript-eslint/utils';
+import type { RuleFix } from '@typescript-eslint/utils/ts-eslint';
 import {
   type FunctionExpression,
   ModifierName,
@@ -376,14 +377,13 @@ export default createRule<[Options], MessageIds>({
                 return [];
               }
 
+              const fixes: RuleFix[] = [];
+
               if (!functionExpression.async) {
                 const targetFunction =
                   getNormalizeFunctionExpression(functionExpression);
 
-                return [
-                  fixer.insertTextBefore(targetFunction, 'async '),
-                  fixer.insertTextBefore(finalNode, 'await '),
-                ];
+                fixes.push(fixer.insertTextBefore(targetFunction, 'async '));
               }
               const returnStatement =
                 finalNode.parent.type === AST_NODE_TYPES.ReturnStatement
@@ -395,10 +395,13 @@ export default createRule<[Options], MessageIds>({
                   getSourceCode(context).getText(returnStatement);
                 const replacedText = sourceCodeText.replace('return', 'await');
 
-                return fixer.replaceText(returnStatement, replacedText);
+                return [
+                  ...fixes,
+                  fixer.replaceText(returnStatement, replacedText),
+                ];
               }
 
-              return fixer.insertTextBefore(finalNode, 'await ');
+              return [...fixes, fixer.insertTextBefore(finalNode, 'await ')];
             },
           });
 
