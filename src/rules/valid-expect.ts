@@ -380,7 +380,10 @@ export default createRule<[Options], MessageIds>({
                 const targetFunction =
                   getNormalizeFunctionExpression(functionExpression);
 
-                return fixer.insertTextBefore(targetFunction, 'async ');
+                return [
+                  fixer.insertTextBefore(targetFunction, 'async '),
+                  fixer.insertTextBefore(finalNode, 'await '),
+                ];
               }
               const returnStatement =
                 finalNode.parent.type === AST_NODE_TYPES.ReturnStatement
