@@ -3,7 +3,13 @@
 💼 This rule is enabled in the ✅ `recommended`
 [config](https://github.com/jest-community/eslint-plugin-jest/blob/main/README.md#shareable-configurations).
 
+🔧 This rule is automatically fixable by the
+[`--fix` CLI option](https://eslint.org/docs/latest/user-guide/command-line-interface#--fix).
+
 <!-- end auto-generated rule header -->
+
+> [!NOTE] Test function will be fixed if it is async and does not have await in
+> the async assertion.
 
 Ensure `expect()` is called with a single argument and there is an actual
 expectation made.

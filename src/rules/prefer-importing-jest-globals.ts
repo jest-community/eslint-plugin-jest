@@ -67,7 +67,7 @@ export default createRule({
     return {
       ImportDeclaration(node: TSESTree.ImportDeclaration) {
         node.specifiers.forEach(specifier => {
-          if (specifier.type === 'ImportSpecifier') {
+          if (specifier.type === AST_NODE_TYPES.ImportSpecifier) {
             importedFunctionsWithSource[specifier.local.name] =
               node.source.value;
           }

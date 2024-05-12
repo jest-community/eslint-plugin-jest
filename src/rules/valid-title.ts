@@ -80,7 +80,7 @@ const MatcherAndMessageSchema: JSONSchema.JSONSchema4 = {
   minItems: 1,
   maxItems: 2,
   additionalItems: false,
-} as const;
+};
 
 type MatcherGroups = 'describe' | 'test' | 'it';
 

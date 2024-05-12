@@ -92,7 +92,7 @@ export default createRule<
         additionalProperties: false,
       },
     ],
-  } as const,
+  },
   defaultOptions: [
     { ignore: [], allowedPrefixes: [], ignoreTopLevelDescribe: false },
   ],
@@ -134,7 +134,7 @@ export default createRule<
         if (
           !firstCharacter ||
           firstCharacter === firstCharacter.toLowerCase() ||
-          ignores.includes(jestFnCall.name as IgnorableFunctionExpressions)
+          ignores.includes(jestFnCall.name)
         ) {
           return;
         }
