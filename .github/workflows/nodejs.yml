@@ -108,7 +108,7 @@ jobs:
         env:
           CI: true
       - uses: codecov/codecov-action@v4
-        if: ${{ matrix.eslint-version >= 8 }}
+        if: ${{ matrix.eslint-version == 8 }}
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           fail_ci_if_error: true
