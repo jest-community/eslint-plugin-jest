@@ -4,7 +4,6 @@
  */
 
 import { AST_NODE_TYPES, type TSESTree } from '@typescript-eslint/utils';
-import type { RuleFix } from '@typescript-eslint/utils/ts-eslint';
 import {
   type FunctionExpression,
   ModifierName,
@@ -362,6 +361,25 @@ export default createRule<[Options], MessageIds>({
           // if we didn't warn user already
           !promiseArrayExceptionExists(finalNode.loc)
         ) {
+          const functionExpression = findFirstFunctionExpression(finalNode);
+
+          if (functionExpression && !functionExpression.async) {
+            context.report({
+              loc: functionExpression.loc,
+              data: { orReturned },
+              messageId:
+                finalNode === targetNode
+                  ? 'asyncMustBeAwaited'
+                  : 'promisesWithAsyncAssertionsMustBeAwaited',
+              node,
+              fix(fixer) {
+                const targetFunction =
+                  getNormalizeFunctionExpression(functionExpression);
+
+                return fixer.insertTextBefore(targetFunction, 'async ');
+              },
+            });
+          }
           context.report({
             loc: finalNode.loc,
             data: { orReturned },
@@ -371,20 +389,10 @@ export default createRule<[Options], MessageIds>({
                 : 'promisesWithAsyncAssertionsMustBeAwaited',
             node,
             fix(fixer) {
-              const functionExpression = findFirstFunctionExpression(finalNode);
-
               if (!functionExpression) {
-                return [];
+                return null;
               }
 
-              const fixes: RuleFix[] = [];
-
-              if (!functionExpression.async) {
-                const targetFunction =
-                  getNormalizeFunctionExpression(functionExpression);
-
-                fixes.push(fixer.insertTextBefore(targetFunction, 'async '));
-              }
               const returnStatement =
                 finalNode.parent.type === AST_NODE_TYPES.ReturnStatement
                   ? finalNode.parent
@@ -395,13 +403,10 @@ export default createRule<[Options], MessageIds>({
                   getSourceCode(context).getText(returnStatement);
                 const replacedText = sourceCodeText.replace('return', 'await');
 
-                return [
-                  ...fixes,
-                  fixer.replaceText(returnStatement, replacedText),
-                ];
+                return fixer.replaceText(returnStatement, replacedText);
               }
 
-              return [...fixes, fixer.insertTextBefore(finalNode, 'await ')];
+              return fixer.insertTextBefore(finalNode, 'await ');
             },
           });
 
