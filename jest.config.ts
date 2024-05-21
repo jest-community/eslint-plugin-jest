@@ -37,7 +37,8 @@ const config = {
   ],
 } satisfies Config;
 
-if (semver.major(eslintVersion) >= 9) {
+if (semver.major(eslintVersion) !== 8) {
+  // our eslint config only works for v8
   config.projects = config.projects.filter(
     ({ displayName }) => displayName !== 'lint',
   );
