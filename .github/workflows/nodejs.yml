@@ -66,7 +66,7 @@ jobs:
   test-node:
     name:
       # prettier-ignore
-      Test on Node.js v${{ matrix.node-version }}, eslint v${{ matrix.eslint-version }}, and ts-eslint/plugin v${{ matrix.ts-eslint-plugin-version }}
+      Test on Node.js v${{ matrix.node-version }}, eslint v${{ matrix.eslint-version }}, and ts-eslint v${{ matrix.ts-eslint-plugin-version }}
     needs: prepare-yarn-cache-ubuntu
     strategy:
       fail-fast: false
@@ -100,14 +100,18 @@ jobs:
           install with eslint v${{ matrix.eslint-version }} and ts-eslint/plugin v${{ matrix.ts-eslint-plugin-version }}
         run: |
           yarn
+          yarn add @typescript-eslint/utils@${{ matrix.ts-eslint-plugin-version }}
           yarn add --dev eslint@${{ matrix.eslint-version }} @typescript-eslint/eslint-plugin@${{ matrix.ts-eslint-plugin-version }} @typescript-eslint/parser@${{ matrix.ts-eslint-plugin-version }}
       - name: run tests
         # only collect coverage on eslint versions that support dynamic import
         run: yarn test --coverage ${{ matrix.eslint-version == 8 }}
         env:
           CI: true
-      - uses: codecov/codecov-action@v3
-        if: ${{ matrix.eslint-version >= 8 }}
+      - uses: codecov/codecov-action@v4
+        if: ${{ matrix.eslint-version == 8 }}
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          fail_ci_if_error: true
   test-ubuntu:
     uses: ./.github/workflows/test.yml
     needs: prepare-yarn-cache-ubuntu
