@@ -30,6 +30,7 @@ yarn add --dev eslint eslint-plugin-jest
 > Refer to the
 > [ESLint documentation on the new configuration file format](https://eslint.org/docs/latest/use/configure/configuration-files-new)
 > for more.
+> For information on migrating from `.eslintrc` to `eslint.config.js`, or to learn more about the differences, checkout their [migration guide](https://eslint.org/docs/latest/use/configure/migration-guide)
 
 Add `jest` to the plugins section of your `.eslintrc` configuration file. You
 can omit the `eslint-plugin-` prefix:
