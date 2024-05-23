@@ -1038,8 +1038,8 @@ ruleTester.run('valid-expect', rule, {
       output: dedent`
         test("valid-expect", async () => {
           const assertions = [
-            expect(Promise.resolve(2)).toResolve(),
-            expect(Promise.resolve(3)).toReject(),
+            await expect(Promise.resolve(2)).toResolve(),
+            await expect(Promise.resolve(3)).toReject(),
           ]
         });
       `,

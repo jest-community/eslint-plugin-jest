@@ -205,6 +205,13 @@ export default createRule<[Options], MessageIds>({
   ) {
     // Context state
     const arrayExceptions = new Set<string>();
+    const descriptors: Array<{
+      node: TSESTree.Node;
+      messageId: Extract<
+        MessageIds,
+        'asyncMustBeAwaited' | 'promisesWithAsyncAssertionsMustBeAwaited'
+      >;
+    }> = [];
 
     const pushPromiseArrayException = (loc: TSESTree.SourceLocation) =>
       arrayExceptions.add(promiseArrayExceptionKey(loc));
@@ -336,7 +343,7 @@ export default createRule<[Options], MessageIds>({
           jestFnCall.modifiers.some(nod => getAccessorValue(nod) !== 'not') ||
           asyncMatchers.includes(getAccessorValue(matcher));
 
-        if (!parentNode?.parent || !shouldBeAwaited) {
+        if (!parentNode.parent || !shouldBeAwaited) {
           return;
         }
         /**
@@ -345,7 +352,6 @@ export default createRule<[Options], MessageIds>({
          */
         const isParentArrayExpression =
           parentNode.parent.type === AST_NODE_TYPES.ArrayExpression;
-        const orReturned = alwaysAwait ? '' : ' or returned';
         /**
          * An async assertion can be chained with `then` or `catch` statements.
          * In that case our target CallExpression node is the one with
@@ -362,32 +368,47 @@ export default createRule<[Options], MessageIds>({
           // if we didn't warn user already
           !promiseArrayExceptionExists(finalNode.loc)
         ) {
-          context.report({
-            loc: finalNode.loc,
-            data: { orReturned },
+          descriptors.push({
+            node: finalNode,
             messageId:
-              finalNode === targetNode
+              targetNode === finalNode
                 ? 'asyncMustBeAwaited'
                 : 'promisesWithAsyncAssertionsMustBeAwaited',
+          });
+        }
+        if (isParentArrayExpression) {
+          pushPromiseArrayException(finalNode.loc);
+        }
+      },
+      'Program:exit'() {
+        const fixes: RuleFix[] = [];
+
+        descriptors.forEach(({ node, messageId }, index) => {
+          const orReturned = alwaysAwait ? '' : ' or returned';
+
+          context.report({
+            loc: node.loc,
+            data: { orReturned },
+            messageId,
             node,
             fix(fixer) {
-              const functionExpression = findFirstFunctionExpression(finalNode);
+              const functionExpression = findFirstFunctionExpression(node);
 
               if (!functionExpression) {
-                return [];
+                return null;
               }
+              const foundAsyncFixer = fixes.some(fix => fix.text === 'async ');
 
-              const fixes: RuleFix[] = [];
-
-              if (!functionExpression.async) {
+              if (!functionExpression.async && !foundAsyncFixer) {
                 const targetFunction =
                   getNormalizeFunctionExpression(functionExpression);
 
                 fixes.push(fixer.insertTextBefore(targetFunction, 'async '));
               }
+
               const returnStatement =
-                finalNode.parent.type === AST_NODE_TYPES.ReturnStatement
-                  ? finalNode.parent
+                node.parent?.type === AST_NODE_TYPES.ReturnStatement
+                  ? node.parent
                   : null;
 
               if (alwaysAwait && returnStatement) {
@@ -395,20 +416,15 @@ export default createRule<[Options], MessageIds>({
                   getSourceCode(context).getText(returnStatement);
                 const replacedText = sourceCodeText.replace('return', 'await');
 
-                return [
-                  ...fixes,
-                  fixer.replaceText(returnStatement, replacedText),
-                ];
+                fixes.push(fixer.replaceText(returnStatement, replacedText));
+              } else {
+                fixes.push(fixer.insertTextBefore(node, 'await '));
               }
 
-              return [...fixes, fixer.insertTextBefore(finalNode, 'await ')];
+              return index === descriptors.length - 1 ? fixes : null;
             },
           });
-
-          if (isParentArrayExpression) {
-            pushPromiseArrayException(finalNode.loc);
-          }
-        }
+        });
       },
     };
   },
