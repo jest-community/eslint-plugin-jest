@@ -2,7 +2,7 @@ import { existsSync } from 'fs';
 import { resolve } from 'path';
 import plugin from '../';
 
-const numberOfRules = 53;
+const numberOfRules = 54;
 const ruleNames = Object.keys(plugin.rules);
 const deprecatedRules = Object.entries(plugin.rules)
   .filter(([, rule]) => rule.meta.deprecated)

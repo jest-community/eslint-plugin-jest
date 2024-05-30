@@ -350,6 +350,7 @@ set to warn in.\
 | [prefer-hooks-in-order](docs/rules/prefer-hooks-in-order.md)                 | Prefer having hooks in a consistent order                                 |     |     |     |     |
 | [prefer-hooks-on-top](docs/rules/prefer-hooks-on-top.md)                     | Suggest having hooks before any test cases                                |     |     |     |     |
 | [prefer-importing-jest-globals](docs/rules/prefer-importing-jest-globals.md) | Prefer importing Jest globals                                             |     |     | 🔧  |     |
+| [prefer-jest-mocked](docs/rules/prefer-jest-mocked.md)                       | Prefer `jest.mocked()` over `fn as jest.Mock`                             |     |     | 🔧  |     |
 | [prefer-lowercase-title](docs/rules/prefer-lowercase-title.md)               | Enforce lowercase test names                                              |     |     | 🔧  |     |
 | [prefer-mock-promise-shorthand](docs/rules/prefer-mock-promise-shorthand.md) | Prefer mock resolved/rejected shorthands for promises                     |     |     | 🔧  |     |
 | [prefer-snapshot-hint](docs/rules/prefer-snapshot-hint.md)                   | Prefer including a hint with external snapshots                           |     |     |     |     |
