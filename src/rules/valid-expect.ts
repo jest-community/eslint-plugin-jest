@@ -3,8 +3,11 @@
  * MIT license, Tom Vincent.
  */
 
-import { AST_NODE_TYPES, type TSESTree } from '@typescript-eslint/utils';
-import type { RuleFix } from '@typescript-eslint/utils/ts-eslint';
+import {
+  AST_NODE_TYPES,
+  type TSESLint,
+  type TSESTree,
+} from '@typescript-eslint/utils';
 import {
   type FunctionExpression,
   ModifierName,
@@ -381,7 +384,7 @@ export default createRule<[Options], MessageIds>({
         }
       },
       'Program:exit'() {
-        const fixes: RuleFix[] = [];
+        const fixes: TSESLint.RuleFix[] = [];
 
         descriptors.forEach(({ node, messageId }, index) => {
           const orReturned = alwaysAwait ? '' : ' or returned';
