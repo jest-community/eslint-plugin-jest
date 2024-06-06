@@ -3,8 +3,13 @@
  * MIT license, Tom Vincent.
  */
 
-import { AST_NODE_TYPES, type TSESTree } from '@typescript-eslint/utils';
 import {
+  AST_NODE_TYPES,
+  type TSESLint,
+  type TSESTree,
+} from '@typescript-eslint/utils';
+import {
+  type FunctionExpression,
   ModifierName,
   createRule,
   getAccessorValue,
@@ -50,16 +55,30 @@ const findPromiseCallExpressionNode = (node: TSESTree.Node) =>
     ? getPromiseCallExpressionNode(node.parent)
     : null;
 
-const findFirstAsyncFunction = ({
+const findFirstFunctionExpression = ({
   parent,
-}: TSESTree.Node): TSESTree.Node | null => {
+}: TSESTree.Node): FunctionExpression | null => {
   if (!parent) {
     return null;
   }
 
-  return isFunction(parent) && parent.async
-    ? parent
-    : findFirstAsyncFunction(parent);
+  return isFunction(parent) ? parent : findFirstFunctionExpression(parent);
+};
+
+const getNormalizeFunctionExpression = (
+  functionExpression: FunctionExpression,
+):
+  | TSESTree.PropertyComputedName
+  | TSESTree.PropertyNonComputedName
+  | FunctionExpression => {
+  if (
+    functionExpression.parent.type === AST_NODE_TYPES.Property &&
+    functionExpression.type === AST_NODE_TYPES.FunctionExpression
+  ) {
+    return functionExpression.parent;
+  }
+
+  return functionExpression;
 };
 
 const getParentIfThenified = (node: TSESTree.Node): TSESTree.Node => {
@@ -189,6 +208,13 @@ export default createRule<[Options], MessageIds>({
   ) {
     // Context state
     const arrayExceptions = new Set<string>();
+    const descriptors: Array<{
+      node: TSESTree.Node;
+      messageId: Extract<
+        MessageIds,
+        'asyncMustBeAwaited' | 'promisesWithAsyncAssertionsMustBeAwaited'
+      >;
+    }> = [];
 
     const pushPromiseArrayException = (loc: TSESTree.SourceLocation) =>
       arrayExceptions.add(promiseArrayExceptionKey(loc));
@@ -320,7 +346,7 @@ export default createRule<[Options], MessageIds>({
           jestFnCall.modifiers.some(nod => getAccessorValue(nod) !== 'not') ||
           asyncMatchers.includes(getAccessorValue(matcher));
 
-        if (!parentNode?.parent || !shouldBeAwaited) {
+        if (!parentNode.parent || !shouldBeAwaited) {
           return;
         }
         /**
@@ -329,7 +355,6 @@ export default createRule<[Options], MessageIds>({
          */
         const isParentArrayExpression =
           parentNode.parent.type === AST_NODE_TYPES.ArrayExpression;
-        const orReturned = alwaysAwait ? '' : ' or returned';
         /**
          * An async assertion can be chained with `then` or `catch` statements.
          * In that case our target CallExpression node is the one with
@@ -346,21 +371,47 @@ export default createRule<[Options], MessageIds>({
           // if we didn't warn user already
           !promiseArrayExceptionExists(finalNode.loc)
         ) {
-          context.report({
-            loc: finalNode.loc,
-            data: { orReturned },
+          descriptors.push({
+            node: finalNode,
             messageId:
-              finalNode === targetNode
+              targetNode === finalNode
                 ? 'asyncMustBeAwaited'
                 : 'promisesWithAsyncAssertionsMustBeAwaited',
+          });
+        }
+        if (isParentArrayExpression) {
+          pushPromiseArrayException(finalNode.loc);
+        }
+      },
+      'Program:exit'() {
+        const fixes: TSESLint.RuleFix[] = [];
+
+        descriptors.forEach(({ node, messageId }, index) => {
+          const orReturned = alwaysAwait ? '' : ' or returned';
+
+          context.report({
+            loc: node.loc,
+            data: { orReturned },
+            messageId,
             node,
             fix(fixer) {
-              if (!findFirstAsyncFunction(finalNode)) {
-                return [];
+              const functionExpression = findFirstFunctionExpression(node);
+
+              if (!functionExpression) {
+                return null;
               }
+              const foundAsyncFixer = fixes.some(fix => fix.text === 'async ');
+
+              if (!functionExpression.async && !foundAsyncFixer) {
+                const targetFunction =
+                  getNormalizeFunctionExpression(functionExpression);
+
+                fixes.push(fixer.insertTextBefore(targetFunction, 'async '));
+              }
+
               const returnStatement =
-                finalNode.parent?.type === AST_NODE_TYPES.ReturnStatement
-                  ? finalNode.parent
+                node.parent?.type === AST_NODE_TYPES.ReturnStatement
+                  ? node.parent
                   : null;
 
               if (alwaysAwait && returnStatement) {
@@ -368,17 +419,15 @@ export default createRule<[Options], MessageIds>({
                   getSourceCode(context).getText(returnStatement);
                 const replacedText = sourceCodeText.replace('return', 'await');
 
-                return fixer.replaceText(returnStatement, replacedText);
+                fixes.push(fixer.replaceText(returnStatement, replacedText));
+              } else {
+                fixes.push(fixer.insertTextBefore(node, 'await '));
               }
 
-              return fixer.insertTextBefore(finalNode, 'await ');
+              return index === descriptors.length - 1 ? fixes : null;
             },
           });
-
-          if (isParentArrayExpression) {
-            pushPromiseArrayException(finalNode.loc);
-          }
-        }
+        });
       },
     };
   },
