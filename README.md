@@ -307,10 +307,15 @@ enabled in.\
 set to warn in.\
 ✅ Set in the `recommended`
 [configuration](https://github.com/jest-community/eslint-plugin-jest/blob/main/README.md#shareable-configurations).\
-🎨 Set in the `style` [configuration](https://github.com/jest-community/eslint-plugin-jest/blob/main/README.md#shareable-configurations).\
-🔧 Automatically fixable by the
+🎨
+Set in the `style`
+[configuration](https://github.com/jest-community/eslint-plugin-jest/blob/main/README.md#shareable-configurations).\
+🔧
+Automatically fixable by the
 [`--fix` CLI option](https://eslint.org/docs/user-guide/command-line-interface#--fix).\
-💡 Manually fixable by [editor suggestions](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions).
+💡
+Manually fixable by
+[editor suggestions](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions).
 
 | Name                                                                         | Description                                                               | 💼  | ⚠️  | 🔧  | 💡  |
 | :--------------------------------------------------------------------------- | :------------------------------------------------------------------------ | :-- | :-- | :-- | :-- |
