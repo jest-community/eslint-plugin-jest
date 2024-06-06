@@ -20,6 +20,7 @@ module.exports = {
   ],
   parserOptions: {
     ecmaVersion: 2018,
+    warnOnUnsupportedTypeScriptVersion: false,
   },
   env: {
     node: true,
