@@ -1,3 +1,11 @@
+# [28.6.0](https://github.com/jest-community/eslint-plugin-jest/compare/v28.5.0...v28.6.0) (2024-06-06)
+
+
+### Features
+
+* **prefer-jest-mocked:** add new rule ([#1599](https://github.com/jest-community/eslint-plugin-jest/issues/1599)) ([4b6a4f2](https://github.com/jest-community/eslint-plugin-jest/commit/4b6a4f29c51ccc2dbb79a2f24d4a5cecd8195a8b))
+* **valid-expect:** supporting automatically fixing adding async in some cases ([#1579](https://github.com/jest-community/eslint-plugin-jest/issues/1579)) ([5b9b47e](https://github.com/jest-community/eslint-plugin-jest/commit/5b9b47e3822e7895f8d74d73b0e07e3eff406523))
+
 # [28.5.0](https://github.com/jest-community/eslint-plugin-jest/compare/v28.4.0...v28.5.0) (2024-05-03)
 
 
