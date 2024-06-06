@@ -129,7 +129,6 @@ jobs:
       os: windows-latest
 
   docs:
-    if: ${{ github.event_name == 'pull_request' }}
     needs: prepare-yarn-cache-ubuntu
     runs-on: ubuntu-latest
     steps:
