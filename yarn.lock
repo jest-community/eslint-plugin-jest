@@ -4517,7 +4517,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"debug@npm:4, debug@npm:^4.0.0, debug@npm:^4.1.0, debug@npm:^4.1.1, debug@npm:^4.3.1, debug@npm:^4.3.2, debug@npm:^4.3.4":
+"debug@npm:4, debug@npm:^4.0.0, debug@npm:^4.1.0, debug@npm:^4.1.1, debug@npm:^4.3.1, debug@npm:^4.3.2, debug@npm:^4.3.4, debug@npm:^4.3.5":
   version: 4.3.5
   resolution: "debug@npm:4.3.5"
   dependencies:
@@ -5190,7 +5190,7 @@ __metadata:
     eslint-plugin-import: ^2.25.1
     eslint-plugin-n: ^17.0.0
     eslint-plugin-prettier: ^5.0.0
-    eslint-remote-tester: ^3.0.0
+    eslint-remote-tester: ^4.0.0
     eslint-remote-tester-repositories: ~1.0.0
     husky: ^9.0.1
     is-ci: ^3.0.0
@@ -5263,26 +5263,29 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-remote-tester@npm:^3.0.0":
-  version: 3.0.1
-  resolution: "eslint-remote-tester@npm:3.0.1"
+"eslint-remote-tester@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "eslint-remote-tester@npm:4.0.0"
   dependencies:
-    "@babel/code-frame": ^7.22.13
+    "@babel/code-frame": ^7.24.7
     JSONStream: ^1.3.5
     chalk: ^4.1.2
     ink: ^3.2.0
     object-hash: ^3.0.0
     react: ^17.0.2
-    simple-git: ^3.20.0
+    simple-git: ^3.24.0
   peerDependencies:
-    eslint: ">=7"
-    ts-node: ">=9.0.0"
+    eslint: ">=9"
+    importx: ">=0.3.5"
+    jiti: ">=1"
   peerDependenciesMeta:
-    ts-node:
+    importx:
+      optional: true
+    jiti:
       optional: true
   bin:
     eslint-remote-tester: dist/index.js
-  checksum: 524437536474b99a7ac96c4bbbd5186ea4be3840c5156984dc0126b27c308e9263aca81ca8fd1d27943526643b9f9a563a0d70c8c1ea129fac821dca74e54e8b
+  checksum: 146ba99410b2d541d8484c43534cce39840afd4c11321f2ccd51dcf9c49a171ecf4caa2a2ef76da5dda2860d644162ca4571775488787b1dbe30d850f04fea9d
   languageName: node
   linkType: hard
 
@@ -10270,14 +10273,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"simple-git@npm:^3.20.0":
-  version: 3.24.0
-  resolution: "simple-git@npm:3.24.0"
+"simple-git@npm:^3.24.0":
+  version: 3.25.0
+  resolution: "simple-git@npm:3.25.0"
   dependencies:
     "@kwsites/file-exists": ^1.1.1
     "@kwsites/promise-deferred": ^1.1.1
-    debug: ^4.3.4
-  checksum: f2b8544a47c70a533a5461719e31c2ca39682ab2997158d90e636092cbd32fb2f859f57ca33eaa9d8d691e930d1654b2bc33c27ff4c86836eb211c6880f35dca
+    debug: ^4.3.5
+  checksum: 0f54f03882f3b733fc5b61826935b3a6b1d2f8976fe74a488ef72d05baf1f8eb6f465867dcf72c1b7292b20843de23e900160c5c9b5d6933b3db2188cb79e1d2
   languageName: node
   linkType: hard
 
