@@ -47,7 +47,7 @@ export default createRule({
       );
 
       context.report({
-        node: node,
+        node,
         messageId: 'useJestMocked',
         fix(fixer) {
           return fixer.replaceText(node, `jest.mocked(${fnName})`);
