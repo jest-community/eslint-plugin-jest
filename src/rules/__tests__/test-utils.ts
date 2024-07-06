@@ -17,7 +17,7 @@ export class FlatCompatRuleTester extends TSESLint.RuleTester {
 
   public override run<
     TMessageIds extends string,
-    TOptions extends Readonly<unknown[]>,
+    TOptions extends readonly unknown[],
   >(
     ruleName: string,
     rule: TSESLint.RuleModule<TMessageIds, TOptions>,
