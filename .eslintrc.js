@@ -29,7 +29,7 @@ module.exports = {
   rules: {
     '@typescript-eslint/array-type': ['error', { default: 'array-simple' }],
     '@typescript-eslint/no-require-imports': 'error',
-    '@typescript-eslint/ban-ts-comment': 'warn',
+    '@typescript-eslint/ban-ts-comment': 'error',
     '@typescript-eslint/ban-types': 'error',
     '@typescript-eslint/consistent-type-imports': [
       'error',
@@ -47,8 +47,12 @@ module.exports = {
     'no-negated-condition': 'error',
     eqeqeq: ['error', 'smart'],
     strict: 'error',
-    'prefer-template': 'warn',
-    'object-shorthand': ['warn', 'always', { avoidExplicitReturnArrows: true }],
+    'prefer-template': 'error',
+    'object-shorthand': [
+      'error',
+      'always',
+      { avoidExplicitReturnArrows: true },
+    ],
     'prefer-destructuring': [
       'error',
       { VariableDeclarator: { array: true, object: true } },
