@@ -64,8 +64,6 @@ export default createRule<Options, MessageIds>({
         'Enforce unbound methods are called with their expected scope',
       requiresTypeChecking: true,
       ...baseRule?.meta.docs,
-      // mark this as not recommended
-      recommended: undefined,
     },
   },
   create(context) {
