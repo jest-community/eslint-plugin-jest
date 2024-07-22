@@ -2801,13 +2801,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/eslint@npm:^8.4.6":
-  version: 8.56.10
-  resolution: "@types/eslint@npm:8.56.10"
+"@types/eslint@npm:^9.0.0":
+  version: 9.6.0
+  resolution: "@types/eslint@npm:9.6.0"
   dependencies:
     "@types/estree": "*"
     "@types/json-schema": "*"
-  checksum: fb7137dd263ce1130b42d14452bdd0266ef81f52cb55ba1a5e9750e65da1f0596dc598c88bffc7e415458b6cb611a876dcc132bcf40ea48701c6d05b40c57be5
+  checksum: 7be4b1d24f3df30b28e9cbaac6a5fa14ec1ceca7c173d9605c0ec6e0d1dcdba0452d326dd695dd980f5c14b42aa09fe41675c4f09ffc82db4f466588d3f837cb
   languageName: node
   linkType: hard
 
@@ -5185,7 +5185,7 @@ __metadata:
     "@semantic-release/changelog": ^6.0.0
     "@semantic-release/git": ^10.0.0
     "@tsconfig/node16": ^16.0.0
-    "@types/eslint": ^8.4.6
+    "@types/eslint": ^9.0.0
     "@types/jest": ^29.0.0
     "@types/node": ^14.18.26
     "@typescript-eslint/eslint-plugin": ^6.0.0
