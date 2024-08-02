@@ -1,6 +1,24 @@
 'use strict';
 
+const {
+  version: typescriptESLintPluginVersion,
+} = require('@typescript-eslint/eslint-plugin/package.json');
+const semver = require('semver');
 const globals = require('./src/globals.json');
+
+const typescriptBanTypesRules = () => {
+  if (semver.major(typescriptESLintPluginVersion) === 8) {
+    return {
+      '@typescript-eslint/no-empty-object-type': 'error',
+      '@typescript-eslint/no-unsafe-function-type': 'error',
+      '@typescript-eslint/no-wrapper-object-types': 'error',
+    };
+  }
+
+  return {
+    '@typescript-eslint/ban-types': 'error',
+  };
+};
 
 module.exports = {
   parser: require.resolve('@typescript-eslint/parser'),
@@ -30,7 +48,7 @@ module.exports = {
     '@typescript-eslint/array-type': ['error', { default: 'array-simple' }],
     '@typescript-eslint/no-require-imports': 'error',
     '@typescript-eslint/ban-ts-comment': 'error',
-    '@typescript-eslint/ban-types': 'error',
+    ...typescriptBanTypesRules(),
     '@typescript-eslint/consistent-type-imports': [
       'error',
       { disallowTypeAnnotations: false, fixStyle: 'inline-type-imports' },
