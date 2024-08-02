@@ -6,14 +6,14 @@ module.exports = {
   parser: require.resolve('@typescript-eslint/parser'),
   extends: [
     'plugin:eslint-plugin/recommended',
-    'plugin:eslint-comments/recommended',
+    'plugin:@eslint-community/eslint-comments/recommended',
     'plugin:n/recommended',
     'plugin:@typescript-eslint/eslint-recommended',
     'plugin:prettier/recommended',
   ],
   plugins: [
     'eslint-plugin',
-    'eslint-comments',
+    '@eslint-community/eslint-comments',
     'n',
     'import',
     '@typescript-eslint',
@@ -37,7 +37,7 @@ module.exports = {
     ],
     '@typescript-eslint/no-import-type-side-effects': 'error',
     '@typescript-eslint/no-unused-vars': 'error',
-    'eslint-comments/no-unused-disable': 'error',
+    '@eslint-community/eslint-comments/no-unused-disable': 'error',
     'eslint-plugin/require-meta-docs-description': [
       'error',
       { pattern: '^(Enforce|Require|Disallow|Suggest|Prefer)' },
