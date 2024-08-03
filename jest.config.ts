@@ -42,17 +42,17 @@ if (semver.major(eslintVersion) !== 8) {
   config.projects = config.projects.filter(
     ({ displayName }) => displayName !== 'lint',
   );
+}
 
-  // jest/unbound-method doesn't work when using @typescript-eslint v6
-  if (semver.major(typescriptESLintPluginVersion) === 6) {
-    for (const project of config.projects) {
-      project.testPathIgnorePatterns.push(
-        '<rootDir>/src/rules/__tests__/unbound-method.test.ts',
-      );
-      project.coveragePathIgnorePatterns.push(
-        '<rootDir>/src/rules/unbound-method.ts',
-      );
-    }
+// jest/unbound-method seems to only be happy with @typescript-eslint v7 right now...
+if (semver.major(typescriptESLintPluginVersion) !== 7) {
+  for (const project of config.projects) {
+    project.testPathIgnorePatterns.push(
+      '<rootDir>/src/rules/__tests__/unbound-method.test.ts',
+    );
+    project.coveragePathIgnorePatterns.push(
+      '<rootDir>/src/rules/unbound-method.ts',
+    );
   }
 }
 
