@@ -1,3 +1,10 @@
+# [28.7.0](https://github.com/jest-community/eslint-plugin-jest/compare/v28.6.0...v28.7.0) (2024-08-03)
+
+
+### Features
+
+* allow `[@typescript-eslint](https://github.com/typescript-eslint)` v8 ([#1636](https://github.com/jest-community/eslint-plugin-jest/issues/1636)) ([fb43171](https://github.com/jest-community/eslint-plugin-jest/commit/fb43171a150922524744194e023841af12b3f76b))
+
 # [28.6.0](https://github.com/jest-community/eslint-plugin-jest/compare/v28.5.0...v28.6.0) (2024-06-06)
 
 
