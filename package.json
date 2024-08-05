@@ -118,7 +118,7 @@
       "optional": true
     }
   },
-  "packageManager": "yarn@3.8.3",
+  "packageManager": "yarn@3.8.4",
   "engines": {
     "node": "^16.10.0 || ^18.12.0 || >=20.0.0"
   },
