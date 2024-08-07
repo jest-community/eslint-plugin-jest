@@ -1,3 +1,10 @@
+# [28.8.0](https://github.com/jest-community/eslint-plugin-jest/compare/v28.7.0...v28.8.0) (2024-08-07)
+
+
+### Features
+
+* import formatting rules from `eslint-plugin-jest-formatting` ([#1563](https://github.com/jest-community/eslint-plugin-jest/issues/1563)) ([74078ee](https://github.com/jest-community/eslint-plugin-jest/commit/74078ee13dd7c7d257d514809dadc5593a214e74))
+
 # [28.7.0](https://github.com/jest-community/eslint-plugin-jest/compare/v28.6.0...v28.7.0) (2024-08-03)
 
 
