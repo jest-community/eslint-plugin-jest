@@ -94,7 +94,9 @@ export default createRule({
           return;
         }
 
-        const isModule = context.parserOptions.sourceType === 'module';
+        const isModule =
+          context.parserOptions.sourceType === 'module' ||
+          context.languageOptions?.sourceType === 'module';
 
         context.report({
           node: reportingNode,
