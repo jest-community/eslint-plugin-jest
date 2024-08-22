@@ -5,7 +5,73 @@ import { FlatCompatRuleTester as RuleTester } from './test-utils';
 new RuleTester({
   parser: require.resolve('@typescript-eslint/parser'),
 }).run('prefer-importing-jest-globals: typescript edition', rule, {
-  valid: [],
+  valid: [
+    {
+      code: dedent`
+        // with import
+        import { test, expect } from '@jest/globals';
+        test('should pass', () => {
+            expect(true).toBeDefined();
+        });
+      `,
+      parserOptions: { sourceType: 'module' },
+    },
+    {
+      code: dedent`
+        test('should pass', () => {
+            expect(true).toBeDefined();
+        });
+      `,
+      options: [{ types: ['jest'] }],
+      parserOptions: { sourceType: 'module' },
+    },
+    {
+      code: dedent`
+        const { it } = require('@jest/globals');
+        it('should pass', () => {
+            expect(true).toBeDefined();
+        });
+      `,
+      options: [{ types: ['test'] }],
+      parserOptions: { sourceType: 'module' },
+    },
+    {
+      code: dedent`
+        // with require
+        const { test, expect } = require('@jest/globals');
+        test('should pass', () => {
+            expect(true).toBeDefined();
+        });
+      `,
+    },
+    {
+      code: dedent`
+        const { test, expect } = require(\`@jest/globals\`);
+        test('should pass', () => {
+            expect(true).toBeDefined();
+        });
+      `,
+    },
+    {
+      code: dedent`
+        import { it as itChecks } from '@jest/globals';
+        itChecks("foo");
+      `,
+      parserOptions: { sourceType: 'module' },
+    },
+    {
+      code: dedent`
+        const { test } = require('@jest/globals');
+        test("foo");
+      `,
+    },
+    {
+      code: dedent`
+        const { test } = require('my-test-library');
+        test("foo");
+      `,
+    },
+  ],
   invalid: [
     {
       code: dedent`
