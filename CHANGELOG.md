@@ -1,3 +1,10 @@
+## [28.8.1](https://github.com/jest-community/eslint-plugin-jest/compare/v28.8.0...v28.8.1) (2024-08-29)
+
+
+### Bug Fixes
+
+* **prefer-importing-jest-globals:** support typescript-eslint parser ([#1639](https://github.com/jest-community/eslint-plugin-jest/issues/1639)) ([307f6a7](https://github.com/jest-community/eslint-plugin-jest/commit/307f6a7b3aad7a5c891d8fea9f115e5d2f4f3fbb))
+
 # [28.8.0](https://github.com/jest-community/eslint-plugin-jest/compare/v28.7.0...v28.8.0) (2024-08-07)
 
 
