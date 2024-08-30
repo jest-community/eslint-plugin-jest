@@ -21,6 +21,22 @@ const createFixerImports = (
     : `const { ${allImportsFormatted} } = require('@jest/globals');`;
 };
 
+const findInsertionPoint = (reportingNode: TSESTree.Node) => {
+  let currentNode = reportingNode;
+
+  while (
+    currentNode.parent &&
+    currentNode.parent.type !== AST_NODE_TYPES.Program &&
+    currentNode.parent.type !== AST_NODE_TYPES.VariableDeclaration
+  ) {
+    currentNode = currentNode.parent;
+  }
+
+  return currentNode.parent?.type === AST_NODE_TYPES.VariableDeclaration
+    ? currentNode.parent
+    : reportingNode;
+};
+
 const allJestFnTypes: JestFnType[] = [
   'hook',
   'describe',
@@ -151,8 +167,12 @@ export default createRule({
             );
 
             if (requireNode?.type !== AST_NODE_TYPES.VariableDeclaration) {
+              const insertBeforeNode = isModule
+                ? firstNode
+                : findInsertionPoint(reportingNode);
+
               return fixer.insertTextBefore(
-                reportingNode,
+                insertBeforeNode,
                 `${createFixerImports(isModule, functionsToImport)}\n`,
               );
             }
