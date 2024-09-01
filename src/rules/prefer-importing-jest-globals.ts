@@ -60,19 +60,10 @@ export default createRule({
   defaultOptions: [{ types: allJestFnTypes }],
   create(context) {
     const { types = allJestFnTypes } = context.options[0] || {};
-    const importedFunctionsWithSource: Record<string, string> = {};
     const functionsToImport = new Set<string>();
     let reportingNode: TSESTree.Node;
 
     return {
-      ImportDeclaration(node: TSESTree.ImportDeclaration) {
-        node.specifiers.forEach(specifier => {
-          if (specifier.type === AST_NODE_TYPES.ImportSpecifier) {
-            importedFunctionsWithSource[specifier.local.name] =
-              node.source.value;
-          }
-        });
-      },
       CallExpression(node: TSESTree.CallExpression) {
         const jestFnCall = parseJestFnCall(node, context);
 
