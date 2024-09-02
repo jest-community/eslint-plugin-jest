@@ -548,22 +548,22 @@ ruleTester.run('prefer-importing-jest-globals', rule, {
     },
     {
       code: dedent`
-          console.log('hello');
-          const onClick = jest.fn();
-          describe("suite", () => {
-            test("foo");
-            expect(onClick).toHaveBeenCalled();
-          })
-          `,
+        console.log('hello');
+        const onClick = jest.fn();
+        describe("suite", () => {
+          test("foo");
+        expect(onClick).toHaveBeenCalled();
+        })
+      `,
       output: dedent`
-          console.log('hello');
-          const { describe, expect, jest, test } = require('@jest/globals');
-          const onClick = jest.fn();
-          describe("suite", () => {
-            test("foo");
-            expect(onClick).toHaveBeenCalled();
-          })
-          `,
+        console.log('hello');
+        const { describe, expect, jest, test } = require('@jest/globals');
+        const onClick = jest.fn();
+        describe("suite", () => {
+          test("foo");
+          expect(onClick).toHaveBeenCalled();
+        })
+      `,
       errors: [
         {
           endColumn: 21,
@@ -575,21 +575,21 @@ ruleTester.run('prefer-importing-jest-globals', rule, {
     },
     {
       code: dedent`
-      console.log('hello');
-      const onClick = jest.fn();
-      describe("suite", () => {
-        test("foo");
-        expect(onClick).toHaveBeenCalled();
-      })
+        console.log('hello');
+        const onClick = jest.fn();
+        describe("suite", () => {
+          test("foo");
+          expect(onClick).toHaveBeenCalled();
+        })
       `,
       output: dedent`
-      import { describe, expect, jest, test } from '@jest/globals';
-      console.log('hello');
-      const onClick = jest.fn();
-      describe("suite", () => {
-        test("foo");
-        expect(onClick).toHaveBeenCalled();
-      })
+        import { describe, expect, jest, test } from '@jest/globals';
+        console.log('hello');
+        const onClick = jest.fn();
+        describe("suite", () => {
+          test("foo");
+          expect(onClick).toHaveBeenCalled();
+        })
       `,
       parserOptions: { sourceType: 'module' },
       errors: [
