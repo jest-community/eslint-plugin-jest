@@ -1,3 +1,10 @@
+## [28.8.2](https://github.com/jest-community/eslint-plugin-jest/compare/v28.8.1...v28.8.2) (2024-09-02)
+
+
+### Performance Improvements
+
+* **prefer-importing-jest-globals:** stop collecting import specifiers for no reason ([#1646](https://github.com/jest-community/eslint-plugin-jest/issues/1646)) ([0660242](https://github.com/jest-community/eslint-plugin-jest/commit/066024289ec09e2ecf83db001cc93930aa6288a8))
+
 ## [28.8.1](https://github.com/jest-community/eslint-plugin-jest/compare/v28.8.0...v28.8.1) (2024-08-29)
 
 
