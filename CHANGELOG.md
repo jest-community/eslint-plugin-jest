@@ -1,3 +1,10 @@
+## [28.8.3](https://github.com/jest-community/eslint-plugin-jest/compare/v28.8.2...v28.8.3) (2024-09-04)
+
+
+### Bug Fixes
+
+* **prefer-importing-jest-globals:** don't add imports in the middle of statements ([#1645](https://github.com/jest-community/eslint-plugin-jest/issues/1645)) ([9c4197c](https://github.com/jest-community/eslint-plugin-jest/commit/9c4197c91fa96d7991acba8eac4fca909f28f8d0))
+
 ## [28.8.2](https://github.com/jest-community/eslint-plugin-jest/compare/v28.8.1...v28.8.2) (2024-09-02)
 
 
