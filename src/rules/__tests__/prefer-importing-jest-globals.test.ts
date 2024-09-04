@@ -228,8 +228,8 @@ ruleTester.run('prefer-importing-jest-globals', rule, {
         });
       `,
       output: dedent`
-        import { pending } from 'actions';
         import { describe, test } from '@jest/globals';
+        import { pending } from 'actions';
         describe('foo', () => {
           test.each(['hello', 'world'])("%s", (a) => {});
         });
@@ -304,11 +304,11 @@ ruleTester.run('prefer-importing-jest-globals', rule, {
       `,
       // todo: this shouldn't be indenting the "test"
       output: dedent`
+        const { expect, test } = require('@jest/globals');
         const source = 'globals';
         const {describe} = require(\`@jest/\${source}\`);
         describe("suite", () => {
-          const { expect, test } = require('@jest/globals');
-        test("foo");
+          test("foo");
           expect(true).toBeDefined();
         })
       `,
@@ -407,8 +407,8 @@ ruleTester.run('prefer-importing-jest-globals', rule, {
         });
       `,
       output: dedent`
-        const { pending } = require('actions');
         const { describe, test } = require('@jest/globals');
+        const { pending } = require('actions');
         describe('foo', () => {
           test.each(['hello', 'world'])("%s", (a) => {});
         });
@@ -541,6 +541,61 @@ ruleTester.run('prefer-importing-jest-globals', rule, {
         {
           endColumn: 9,
           column: 1,
+          line: 2,
+          messageId: 'preferImportingJestGlobal',
+        },
+      ],
+    },
+    {
+      code: dedent`
+        console.log('hello');
+        const onClick = jest.fn();
+        describe("suite", () => {
+          test("foo");
+          expect(onClick).toHaveBeenCalled();
+        })
+      `,
+      output: dedent`
+        const { describe, expect, jest, test } = require('@jest/globals');
+        console.log('hello');
+        const onClick = jest.fn();
+        describe("suite", () => {
+          test("foo");
+          expect(onClick).toHaveBeenCalled();
+        })
+      `,
+      errors: [
+        {
+          endColumn: 21,
+          column: 17,
+          line: 2,
+          messageId: 'preferImportingJestGlobal',
+        },
+      ],
+    },
+    {
+      code: dedent`
+        console.log('hello');
+        const onClick = jest.fn();
+        describe("suite", () => {
+          test("foo");
+          expect(onClick).toHaveBeenCalled();
+        })
+      `,
+      output: dedent`
+        import { describe, expect, jest, test } from '@jest/globals';
+        console.log('hello');
+        const onClick = jest.fn();
+        describe("suite", () => {
+          test("foo");
+          expect(onClick).toHaveBeenCalled();
+        })
+      `,
+      parserOptions: { sourceType: 'module' },
+      errors: [
+        {
+          endColumn: 21,
+          column: 17,
           line: 2,
           messageId: 'preferImportingJestGlobal',
         },

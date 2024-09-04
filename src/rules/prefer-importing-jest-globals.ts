@@ -152,7 +152,7 @@ export default createRule({
 
             if (requireNode?.type !== AST_NODE_TYPES.VariableDeclaration) {
               return fixer.insertTextBefore(
-                reportingNode,
+                firstNode,
                 `${createFixerImports(isModule, functionsToImport)}\n`,
               );
             }
