@@ -6,6 +6,7 @@ import {
   version as packageVersion,
 } from '../package.json';
 import globals from './globals.json';
+import latestGlobals from "./globals.latest.json";
 
 type RuleModule = TSESLint.RuleModule<string, unknown[]> & {
   meta: Required<Pick<TSESLint.RuleMetaData<string>, 'docs'>>;
@@ -82,6 +83,9 @@ const plugin = {
     globals: {
       globals,
     },
+    latest: {
+      latestGlobals,
+    }
   },
   rules,
 };
