@@ -40,6 +40,14 @@ can omit the `eslint-plugin-` prefix:
 }
 ```
 
+If you are using `eslint` version 9 or higher,
+
+```js
+plugins: {
+    jest: jestPlugin,
+},
+```
+
 Then configure the rules you want to use under the rules section.
 
 ```json
