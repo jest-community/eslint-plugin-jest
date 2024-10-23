@@ -43,6 +43,10 @@ can omit the `eslint-plugin-` prefix:
 If you are using `eslint` version 9 or higher,
 
 ```js
+import jestPlugin from "eslint-plugin-jest";
+
+// ...
+
 plugins: {
     jest: jestPlugin,
 },
@@ -69,6 +73,21 @@ doing:
 {
   "env": {
     "jest/globals": true
+  }
+}
+```
+
+If you are using `eslint` version 9 or higher,
+```js
+import jestPlugin from "eslint-plugin-jest";
+
+//...
+
+{
+languageOptions: {
+  globals: {
+      ...jestPlugin.environments.globals.latest
+    }
   }
 }
 ```
