@@ -78,6 +78,7 @@ doing:
 ```
 
 If you are using `eslint` version 9 or higher,
+
 ```js
 import jestPlugin from "eslint-plugin-jest";
 
