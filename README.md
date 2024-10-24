@@ -40,6 +40,18 @@ can omit the `eslint-plugin-` prefix:
 }
 ```
 
+If you are using `eslint` version 9 or higher,
+
+```js
+import jestPlugin from "eslint-plugin-jest";
+
+// ...
+
+plugins: {
+    jest: jestPlugin,
+},
+```
+
 Then configure the rules you want to use under the rules section.
 
 ```json
@@ -61,6 +73,22 @@ doing:
 {
   "env": {
     "jest/globals": true
+  }
+}
+```
+
+If you are using `eslint` version 9 or higher,
+
+```js
+import jestPlugin from "eslint-plugin-jest";
+
+//...
+
+{
+languageOptions: {
+  globals: {
+      ...jestPlugin.environments.globals.latest
+    }
   }
 }
 ```

@@ -1,0 +1,15 @@
+{
+  "afterAll": "readonly",
+  "afterEach": "readonly",
+  "beforeAll": "readonly",
+  "beforeEach": "readonly",
+  "describe": "readonly",
+  "expect": "readonly",
+  "fit": "readonly",        
+  "it": "readonly",
+  "jest": "readonly",
+  "test": "readonly",
+  "xdescribe": "readonly",
+  "xit": "readonly",
+  "xtest": "readonly"
+}
