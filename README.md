@@ -22,28 +22,43 @@ yarn add --dev eslint eslint-plugin-jest
 
 ## Usage
 
-> [!NOTE]
->
-> `eslint.config.js` is supported, though most of the plugin documentation still
-> currently uses `.eslintrc` syntax.
->
-> Refer to the
-> [ESLint documentation on the new configuration file format](https://eslint.org/docs/latest/use/configure/configuration-files-new)
-> for more.
+If you're using flat configuration:
 
-Add `jest` to the plugins section of your `.eslintrc` configuration file. You
-can omit the `eslint-plugin-` prefix:
+With
+[flat configuration](https://eslint.org/docs/latest/use/configure/configuration-files),
+just import the plugin and away you go:
 
-```json
-{
-  "plugins": ["jest"]
-}
+```js
+const pluginJest = require('eslint-plugin-jest');
+
+module.exports = [
+  {
+    // update this to match your test files
+    files: ['**/*.spec.js', '**/*.test.js'],
+    plugins: { jest: pluginJest },
+    languageOptions: {
+      globals: pluginJest.environments.globals.globals,
+    },
+    rules: {
+      'jest/no-disabled-tests': 'warn',
+      'jest/no-focused-tests': 'error',
+      'jest/no-identical-title': 'error',
+      'jest/prefer-to-have-length': 'warn',
+      'jest/valid-expect': 'error',
+    },
+  },
+];
 ```
 
-Then configure the rules you want to use under the rules section.
+With legacy configuration, add `jest` to the plugins section of your `.eslintrc`
+configuration file. You can omit the `eslint-plugin-` prefix:
 
 ```json
 {
+  "plugins": ["jest"],
+  "env": {
+    "jest/globals": true
+  },
   "rules": {
     "jest/no-disabled-tests": "warn",
     "jest/no-focused-tests": "error",
@@ -54,19 +69,10 @@ Then configure the rules you want to use under the rules section.
 }
 ```
 
-You can also tell ESLint about the environment variables provided by Jest by
-doing:
-
-```json
-{
-  "env": {
-    "jest/globals": true
-  }
-}
-```
-
-This is included in all configs shared by this plugin, so can be omitted if
-extending them.
+> [!NOTE]
+>
+> You only need to explicitly include our globals if you're not using one of our
+> shared configs
 
 #### Aliased Jest globals
 
