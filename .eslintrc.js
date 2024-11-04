@@ -133,5 +133,11 @@ module.exports = {
         'import/no-commonjs': 'off',
       },
     },
+    {
+      files: ['*.d.ts'],
+      rules: {
+        strict: 'off',
+      },
+    },
   ],
 };

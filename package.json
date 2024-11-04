@@ -15,9 +15,11 @@
     "url": "jkimbo.com"
   },
   "main": "lib/index.js",
+  "types": "index.d.ts",
   "files": [
     "docs/",
-    "lib/"
+    "lib/",
+    "index.d.ts"
   ],
   "scripts": {
     "build": "babel --extensions .js,.ts src --out-dir lib --copy-files && rimraf --glob lib/__tests__ 'lib/**/__tests__'",
