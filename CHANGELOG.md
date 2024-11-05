@@ -1,3 +1,10 @@
+# [28.9.0](https://github.com/jest-community/eslint-plugin-jest/compare/v28.8.3...v28.9.0) (2024-11-05)
+
+
+### Features
+
+* add TypeScript types ([#1667](https://github.com/jest-community/eslint-plugin-jest/issues/1667)) ([1ce1258](https://github.com/jest-community/eslint-plugin-jest/commit/1ce12588e7081558bd727dfe10428aed08080167))
+
 ## [28.8.3](https://github.com/jest-community/eslint-plugin-jest/compare/v28.8.2...v28.8.3) (2024-09-04)
 
 
