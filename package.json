@@ -7,7 +7,11 @@
     "eslintplugin",
     "eslint-plugin"
   ],
-  "repository": "jest-community/eslint-plugin-jest",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jest-community/eslint-plugin-jest.git"
+  },
+  "homepage": "https://github.com/jest-community/eslint-plugin-jest#readme",
   "license": "MIT",
   "author": {
     "name": "Jonathan Kim",
