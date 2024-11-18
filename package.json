@@ -12,6 +12,9 @@
     "url": "git+https://github.com/jest-community/eslint-plugin-jest.git"
   },
   "homepage": "https://github.com/jest-community/eslint-plugin-jest#readme",
+  "bugs": {
+    "url": "https://github.com/jest-community/eslint-plugin-jest/issues"
+  },
   "license": "MIT",
   "author": {
     "name": "Jonathan Kim",
