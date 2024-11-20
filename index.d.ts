@@ -1,6 +1,6 @@
 import type { TSESLint } from '@typescript-eslint/utils';
 
-type SupportedConfigs = 'all' | 'recommended' | 'style';
+type JestPluginConfigName = 'all' | 'recommended' | 'style';
 
 declare const plugin: {
   meta: {
@@ -12,8 +12,8 @@ declare const plugin: {
       globals: Record<string, boolean>;
     };
   };
-  configs: Record<SupportedConfigs, TSESLint.ClassicConfig> &
-		Record<`flat/${SupportedConfigs}`, TSESLint.FlatConfig>;
+  configs: Record<JestPluginConfigName, TSESLint.ClassicConfig> &
+    Record<`flat/${JestPluginConfigName}`, TSESLint.FlatConfig>;
   rules: Record<string, TSESLint.RuleModule>;
 };
 
