@@ -1,4 +1,6 @@
-import type { Linter, Rule } from 'eslint';
+import type { TSESLint } from '@typescript-eslint/utils';
+
+type SupportedConfigs = 'all' | 'recommended' | 'style';
 
 declare const plugin: {
   meta: {
@@ -7,22 +9,12 @@ declare const plugin: {
   };
   environments: {
     globals: {
-      globals: {
-        [key: string]: boolean;
-      };
+      globals: Record<string, boolean>;
     };
   };
-  configs: {
-    all: Linter.LegacyConfig;
-    recommended: Linter.LegacyConfig;
-    style: Linter.LegacyConfig;
-    'flat/all': Linter.FlatConfig;
-    'flat/recommended': Linter.FlatConfig;
-    'flat/style': Linter.FlatConfig;
-  };
-  rules: {
-    [key: string]: Rule.RuleModule;
-  };
+  configs: Record<SupportedConfigs, TSESLint.ClassicConfig> &
+		Record<`flat/${SupportedConfigs}`, TSESLint.FlatConfig>;
+  rules: Record<string, TSESLint.RuleModule>;
 };
 
 export = plugin;
