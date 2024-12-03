@@ -240,7 +240,6 @@ exports[`rules should export configs that refer to actual rules 1`] = `
       },
     },
     "rules": {
-      "jest/no-alias-methods": "warn",
       "jest/prefer-to-be": "error",
       "jest/prefer-to-contain": "error",
       "jest/prefer-to-have-length": "error",
@@ -283,7 +282,6 @@ exports[`rules should export configs that refer to actual rules 1`] = `
       "jest",
     ],
     "rules": {
-      "jest/no-alias-methods": "warn",
       "jest/prefer-to-be": "error",
       "jest/prefer-to-contain": "error",
       "jest/prefer-to-have-length": "error",
