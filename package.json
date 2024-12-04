@@ -120,7 +120,7 @@
       "optional": true
     }
   },
-  "packageManager": "yarn@3.8.6",
+  "packageManager": "yarn@3.8.7",
   "engines": {
     "node": "^16.10.0 || ^18.12.0 || >=20.0.0"
   },
