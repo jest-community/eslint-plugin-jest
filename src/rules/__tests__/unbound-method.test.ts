@@ -61,6 +61,7 @@ const validTestCases: string[] = [
     'expect(Console.prototype.log).toHaveBeenCalledTimes(1);',
     'expect(Console.prototype.log).not.toHaveBeenCalled();',
     'expect(Console.prototype.log).toStrictEqual(somethingElse);',
+    'jest.mocked(Console.prototype.log).mockImplementation(() => {});',
   ].map(code => [ConsoleClassAndVariableCode, code].join('\n')),
   dedent`
     expect(() => {
