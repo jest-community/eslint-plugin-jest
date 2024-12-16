@@ -3423,14 +3423,14 @@ __metadata:
   linkType: hard
 
 "array.prototype.flatmap@npm:^1.3.2":
-  version: 1.3.2
-  resolution: "array.prototype.flatmap@npm:1.3.2"
+  version: 1.3.3
+  resolution: "array.prototype.flatmap@npm:1.3.3"
   dependencies:
-    call-bind: ^1.0.2
-    define-properties: ^1.2.0
-    es-abstract: ^1.22.1
-    es-shim-unscopables: ^1.0.0
-  checksum: ce09fe21dc0bcd4f30271f8144083aa8c13d4639074d6c8dc82054b847c7fc9a0c97f857491f4da19d4003e507172a78f4bcd12903098adac8b9cd374f734be3
+    call-bind: ^1.0.8
+    define-properties: ^1.2.1
+    es-abstract: ^1.23.5
+    es-shim-unscopables: ^1.0.2
+  checksum: 11b4de09b1cf008be6031bb507d997ad6f1892e57dc9153583de6ebca0f74ea403fffe0f203461d359de05048d609f3f480d9b46fed4099652d8b62cc972f284
   languageName: node
   linkType: hard
 
@@ -3779,13 +3779,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"call-bound@npm:^1.0.2":
-  version: 1.0.2
-  resolution: "call-bound@npm:1.0.2"
+"call-bound@npm:^1.0.2, call-bound@npm:^1.0.3":
+  version: 1.0.3
+  resolution: "call-bound@npm:1.0.3"
   dependencies:
-    call-bind: ^1.0.8
-    get-intrinsic: ^1.2.5
-  checksum: 6f0020b8848307446ed410d0dcf40470b3c16d96a26d8d8bba2ea5bc1582f9bdfc49945cf270698495d4c0f422ad56d243a336855cfb0260feabf72952238cf8
+    call-bind-apply-helpers: ^1.0.1
+    get-intrinsic: ^1.2.6
+  checksum: a93bbe0f2d0a2d6c144a4349ccd0593d5d0d5d9309b69101710644af8964286420062f2cc3114dca120b9bc8cc07507952d4b1b3ea7672e0d7f6f1675efedb32
   languageName: node
   linkType: hard
 
@@ -4624,7 +4624,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"define-properties@npm:^1.2.0, define-properties@npm:^1.2.1":
+"define-properties@npm:^1.2.1":
   version: 1.2.1
   resolution: "define-properties@npm:1.2.1"
   dependencies:
@@ -4904,7 +4904,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"es-abstract@npm:^1.22.1, es-abstract@npm:^1.23.2, es-abstract@npm:^1.23.5":
+"es-abstract@npm:^1.23.2, es-abstract@npm:^1.23.5":
   version: 1.23.5
   resolution: "es-abstract@npm:1.23.5"
   dependencies:
@@ -4992,7 +4992,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"es-shim-unscopables@npm:^1.0.0, es-shim-unscopables@npm:^1.0.2":
+"es-shim-unscopables@npm:^1.0.2":
   version: 1.0.2
   resolution: "es-shim-unscopables@npm:1.0.2"
   dependencies:
@@ -6770,12 +6770,12 @@ __metadata:
   linkType: hard
 
 "is-number-object@npm:^1.1.0":
-  version: 1.1.0
-  resolution: "is-number-object@npm:1.1.0"
+  version: 1.1.1
+  resolution: "is-number-object@npm:1.1.1"
   dependencies:
-    call-bind: ^1.0.7
+    call-bound: ^1.0.3
     has-tostringtag: ^1.0.2
-  checksum: 965f91493e5c02a44bb9c5d8dd4ae40da20bd9bd1cff9cd92e2f2e66a486935a0a01f8a4744eab033c450888f01a4ec3226e1c75bbcff973ce12d06ed79eb17b
+  checksum: 6517f0a0e8c4b197a21afb45cd3053dc711e79d45d8878aa3565de38d0102b130ca8732485122c7b336e98c27dacd5236854e3e6526e0eb30cae64956535662f
   languageName: node
   linkType: hard
 
@@ -6873,12 +6873,12 @@ __metadata:
   linkType: hard
 
 "is-string@npm:^1.0.7, is-string@npm:^1.1.0":
-  version: 1.1.0
-  resolution: "is-string@npm:1.1.0"
+  version: 1.1.1
+  resolution: "is-string@npm:1.1.1"
   dependencies:
-    call-bind: ^1.0.7
+    call-bound: ^1.0.3
     has-tostringtag: ^1.0.2
-  checksum: 1e330e9fe0984cdf37371f704f9babf9b56d50b1e9d2e6c19b8b78443be3e9771c33309b4aadde9ba2a8870769374538681e01f54113a335dd393c80a72e7d11
+  checksum: 2eeaaff605250f5e836ea3500d33d1a5d3aa98d008641d9d42fb941e929ffd25972326c2ef912987e54c95b6f10416281aaf1b35cdf81992cfb7524c5de8e193
   languageName: node
   linkType: hard
 
