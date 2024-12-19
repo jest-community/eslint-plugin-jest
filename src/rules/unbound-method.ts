@@ -7,6 +7,7 @@ import {
   createRule,
   findTopMostCallExpression,
   getAccessorValue,
+  isIdentifier,
   parseJestFnCall,
 } from './utils';
 
@@ -79,20 +80,18 @@ export default createRule<Options, MessageIds>({
       ...baseSelectors,
       MemberExpression(node: TSESTree.MemberExpression): void {
         if (node.parent?.type === AST_NODE_TYPES.CallExpression) {
-          if (
-            node.parent.callee.type === AST_NODE_TYPES.MemberExpression &&
-            node.parent.callee.object.type === AST_NODE_TYPES.Identifier &&
-            node.parent.callee.object.name === 'jest' &&
-            node.parent.callee.property.type === AST_NODE_TYPES.Identifier &&
-            node.parent.callee.property.name === 'mocked'
-          ) {
-            return;
-          }
-
           const jestFnCall = parseJestFnCall(
             findTopMostCallExpression(node.parent),
             context,
           );
+
+          if (
+            jestFnCall?.type === 'jest' &&
+            jestFnCall.members.length >= 1 &&
+            isIdentifier(jestFnCall.members[0], 'mocked')
+          ) {
+            return;
+          }
 
           if (jestFnCall?.type === 'expect') {
             const { matcher } = jestFnCall;
