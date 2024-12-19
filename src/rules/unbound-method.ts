@@ -7,6 +7,7 @@ import {
   createRule,
   findTopMostCallExpression,
   getAccessorValue,
+  isIdentifier,
   parseJestFnCall,
 } from './utils';
 
@@ -83,6 +84,14 @@ export default createRule<Options, MessageIds>({
             findTopMostCallExpression(node.parent),
             context,
           );
+
+          if (
+            jestFnCall?.type === 'jest' &&
+            jestFnCall.members.length >= 1 &&
+            isIdentifier(jestFnCall.members[0], 'mocked')
+          ) {
+            return;
+          }
 
           if (jestFnCall?.type === 'expect') {
             const { matcher } = jestFnCall;
