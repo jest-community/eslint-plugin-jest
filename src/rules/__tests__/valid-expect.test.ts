@@ -129,6 +129,10 @@ ruleTester.run('valid-expect', rule, {
       code: 'test("valid-expect", async () => { expect(Promise.resolve(2)).toResolve(); });',
       options: [{ asyncMatchers: ['toResolveWith'] }],
     },
+    {
+      code: 'expect().pass();',
+      options: [{ minArgs: 0 }],
+    },
   ],
   invalid: [
     {
