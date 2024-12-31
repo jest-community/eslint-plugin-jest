@@ -27,6 +27,6 @@ export const config = [
 
 export default createPaddingRule(
   __filename,
-  'Enforce padding around `test` blocks',
+  'Enforce padding around `test` and `it` blocks',
   config,
 );
