@@ -359,7 +359,7 @@ Manually fixable by
 | [padding-around-before-each-blocks](docs/rules/padding-around-before-each-blocks.md) | Enforce padding around `beforeEach` blocks                                |     |     | 🔧  |     |
 | [padding-around-describe-blocks](docs/rules/padding-around-describe-blocks.md)       | Enforce padding around `describe` blocks                                  |     |     | 🔧  |     |
 | [padding-around-expect-groups](docs/rules/padding-around-expect-groups.md)           | Enforce padding around `expect` groups                                    |     |     | 🔧  |     |
-| [padding-around-test-blocks](docs/rules/padding-around-test-blocks.md)               | Enforce padding around afterAll blocks                                    |     |     | 🔧  |     |
+| [padding-around-test-blocks](docs/rules/padding-around-test-blocks.md)               | Enforce padding around `test` and `it` blocks                             |     |     | 🔧  |     |
 | [prefer-called-with](docs/rules/prefer-called-with.md)                               | Suggest using `toBeCalledWith()` or `toHaveBeenCalledWith()`              |     |     |     |     |
 | [prefer-comparison-matcher](docs/rules/prefer-comparison-matcher.md)                 | Suggest using the built-in comparison matchers                            |     |     | 🔧  |     |
 | [prefer-each](docs/rules/prefer-each.md)                                             | Prefer using `.each` rather than manual loops                             |     |     |     |     |
