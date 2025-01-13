@@ -7,7 +7,14 @@
     "eslintplugin",
     "eslint-plugin"
   ],
-  "repository": "jest-community/eslint-plugin-jest",
+  "homepage": "https://github.com/jest-community/eslint-plugin-jest#readme",
+  "bugs": {
+    "url": "https://github.com/jest-community/eslint-plugin-jest/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jest-community/eslint-plugin-jest.git"
+  },
   "license": "MIT",
   "author": {
     "name": "Jonathan Kim",
@@ -30,8 +37,8 @@
     "prettier:check": "prettier --check 'docs/**/*.md' README.md '.github/**' package.json tsconfig.json src/globals.json .yarnrc.yml",
     "prettier:write": "prettier --write 'docs/**/*.md' README.md '.github/**' package.json tsconfig.json src/globals.json .yarnrc.yml",
     "postpublish": "pinst --enable",
-    "test": "jest",
     "regenerate-docs": "yarn prepack && eslint-doc-generator",
+    "test": "jest",
     "typecheck": "tsc -p ."
   },
   "commitlint": {
