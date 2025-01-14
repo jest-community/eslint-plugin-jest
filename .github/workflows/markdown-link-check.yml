@@ -35,4 +35,3 @@ jobs:
         run:
           find . -name "*.md" | grep -v node_modules | grep -v CHANGELOG.md |
           xargs -n 1 yarn markdown-link-check -c markdown_link_check_config.json
-          -q
