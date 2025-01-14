@@ -2336,43 +2336,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@oozcitak/dom@npm:1.15.10":
-  version: 1.15.10
-  resolution: "@oozcitak/dom@npm:1.15.10"
-  dependencies:
-    "@oozcitak/infra": 1.0.8
-    "@oozcitak/url": 1.0.4
-    "@oozcitak/util": 8.3.8
-  checksum: c83f5dc778b12f8e52e35fac0aa741bfac074faf3f3b60345723de46cba4c8ef0dced2839379fb93e21007f52336f875cf9ddfff6c598020b0688cb7d6f03ec7
-  languageName: node
-  linkType: hard
-
-"@oozcitak/infra@npm:1.0.8":
-  version: 1.0.8
-  resolution: "@oozcitak/infra@npm:1.0.8"
-  dependencies:
-    "@oozcitak/util": 8.3.8
-  checksum: fc76a17187d67df39cf38ae8138ce1757d6b86e5d2ff3c90f5db12194380005b4e22fb6caec4bd40dce363fb8c89f6f945bb0577e6ecee59755773b7ff793164
-  languageName: node
-  linkType: hard
-
-"@oozcitak/url@npm:1.0.4":
-  version: 1.0.4
-  resolution: "@oozcitak/url@npm:1.0.4"
-  dependencies:
-    "@oozcitak/infra": 1.0.8
-    "@oozcitak/util": 8.3.8
-  checksum: ab4a9726b447910e093c0efcb92c4486e1bc314e0c9375f1a4082d1f0b2cc80bbfd433cc6953641b1ddaf73df21bd7002bb5cf581d8ff104a9eac5d21633b781
-  languageName: node
-  linkType: hard
-
-"@oozcitak/util@npm:8.3.8":
-  version: 8.3.8
-  resolution: "@oozcitak/util@npm:8.3.8"
-  checksum: 3aaa936fb3ba5a8561b54f41ef55cbba633b52f7f95c74e9c4a8068e3cbe893dc30865a24483d3887a0d8a201ee4584daf51f0a177fb8e5997c0bdd289c4f559
-  languageName: node
-  linkType: hard
-
 "@pkgjs/parseargs@npm:^0.11.0":
   version: 0.11.0
   resolution: "@pkgjs/parseargs@npm:0.11.0"
@@ -3473,7 +3436,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"async@npm:^3.2.6":
+"async@npm:^3.2.5":
   version: 3.2.6
   resolution: "async@npm:3.2.6"
   checksum: ee6eb8cd8a0ab1b58bd2a3ed6c415e93e773573a91d31df9d5ef559baafa9dab37d3b096fa7993e84585cac3697b2af6ddb9086f45d3ac8cae821bb2aab65682
@@ -5240,7 +5203,7 @@ __metadata:
     jest: ^29.0.0
     jest-runner-eslint: ^2.0.0
     lint-staged: ^13.0.3
-    markdown-link-check: ^3.10.2
+    markdown-link-check: ~3.12.0
     pinst: ^3.0.0
     prettier: ^3.0.0
     rimraf: ^5.0.0
@@ -7574,7 +7537,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"js-yaml@npm:3.14.1, js-yaml@npm:^3.13.1":
+"js-yaml@npm:^3.13.1":
   version: 3.14.1
   resolution: "js-yaml@npm:3.14.1"
   dependencies:
@@ -7919,7 +7882,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"link-check@npm:^5.4.0":
+"link-check@npm:^5.3.0":
   version: 5.4.0
   resolution: "link-check@npm:5.4.0"
   dependencies:
@@ -8123,7 +8086,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lodash@npm:^4.17.15, lodash@npm:^4.17.20, lodash@npm:^4.17.4":
+"lodash@npm:^4.17.15, lodash@npm:^4.17.20, lodash@npm:^4.17.21, lodash@npm:^4.17.4":
   version: 4.17.21
   resolution: "lodash@npm:4.17.21"
   checksum: eb835a2e51d381e561e508ce932ea50a8e5a68f4ebdd771ea240d3048244a8d13658acbd502cd4829768c56f2e16bdd4340b9ea141297d472517b83868e677f7
@@ -8263,22 +8226,22 @@ __metadata:
   languageName: node
   linkType: hard
 
-"markdown-link-check@npm:^3.10.2":
-  version: 3.13.6
-  resolution: "markdown-link-check@npm:3.13.6"
+"markdown-link-check@npm:~3.12.0":
+  version: 3.12.2
+  resolution: "markdown-link-check@npm:3.12.2"
   dependencies:
-    async: ^3.2.6
+    async: ^3.2.5
     chalk: ^5.3.0
     commander: ^12.1.0
-    link-check: ^5.4.0
+    link-check: ^5.3.0
+    lodash: ^4.17.21
     markdown-link-extractor: ^4.0.2
     needle: ^3.3.1
     progress: ^2.0.3
     proxy-agent: ^6.4.0
-    xmlbuilder2: ^3.1.1
   bin:
     markdown-link-check: markdown-link-check
-  checksum: 84cef0f9f2699bca4be82e84d4685ead031c3a96258d6cdd9a3300e50b13e7f5c26b407cfad5ebc8a397cc312078660ca357e07a4e29691600939835ba04d452
+  checksum: da67cf618cafe432b546e51990985fdffd5bb399d884c9bd4f9418aa51f4d7ab12d876b9418b3f4bb17992e6fe8ec9f91cc739a586482dff3b5078ef94a8c949
   languageName: node
   linkType: hard
 
@@ -11874,18 +11837,6 @@ __metadata:
     utf-8-validate:
       optional: true
   checksum: f9bb062abf54cc8f02d94ca86dcd349c3945d63851f5d07a3a61c2fcb755b15a88e943a63cf580cbdb5b74436d67ef6b67f745b8f7c0814e411379138e1863cb
-  languageName: node
-  linkType: hard
-
-"xmlbuilder2@npm:^3.1.1":
-  version: 3.1.1
-  resolution: "xmlbuilder2@npm:3.1.1"
-  dependencies:
-    "@oozcitak/dom": 1.15.10
-    "@oozcitak/infra": 1.0.8
-    "@oozcitak/util": 8.3.8
-    js-yaml: 3.14.1
-  checksum: fdcd38d271f1571972ec1facda5bb0d441c4d7d4fa0696cb591a1804549527c462479937194329a453ae5efcd5110c6d3a3d6cf98e210afa2c78bd0400fc6d3c
   languageName: node
   linkType: hard
 
