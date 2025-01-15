@@ -1,4 +1,4 @@
-# Enforce padding around afterAll blocks (`padding-around-test-blocks`)
+# Enforce padding around `test` and `it` blocks (`padding-around-test-blocks`)
 
 🔧 This rule is automatically fixable by the
 [`--fix` CLI option](https://eslint.org/docs/latest/user-guide/command-line-interface#--fix).
