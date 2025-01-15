@@ -176,7 +176,7 @@ export default createRule<[Options], MessageIds>({
           },
           minArgs: {
             type: 'number',
-            minimum: 1,
+            minimum: 0,
           },
           maxArgs: {
             type: 'number',
