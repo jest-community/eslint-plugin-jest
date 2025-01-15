@@ -1,3 +1,10 @@
+## [28.10.1](https://github.com/jest-community/eslint-plugin-jest/compare/v28.10.0...v28.10.1) (2025-01-15)
+
+
+### Bug Fixes
+
+* **padding-around-test-blocks:** update description ([#1691](https://github.com/jest-community/eslint-plugin-jest/issues/1691)) ([9cb4ecc](https://github.com/jest-community/eslint-plugin-jest/commit/9cb4eccab0439c7f56608ffa1e6c9441178bf6d5))
+
 # [28.10.0](https://github.com/jest-community/eslint-plugin-jest/compare/v28.9.0...v28.10.0) (2024-12-19)
 
 
