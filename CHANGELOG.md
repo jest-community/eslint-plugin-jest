@@ -1,3 +1,10 @@
+# [28.11.0](https://github.com/jest-community/eslint-plugin-jest/compare/v28.10.1...v28.11.0) (2025-01-15)
+
+
+### Features
+
+* **valid-expect:** allow calling `expect` with no arguments ([#1688](https://github.com/jest-community/eslint-plugin-jest/issues/1688)) ([ff0349e](https://github.com/jest-community/eslint-plugin-jest/commit/ff0349ea0beb399fdd6d08676b88a32b2fab722c))
+
 ## [28.10.1](https://github.com/jest-community/eslint-plugin-jest/compare/v28.10.0...v28.10.1) (2025-01-15)
 
 
