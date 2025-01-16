@@ -30,5 +30,5 @@ Examples of **correct** code for this rule:
 ```js
 expect(x).toBe(5);
 expect(name).not.toEqual('Carl');
-expect(myObj).toStrictEqual(thatObj);
+expect(myObj).not.toStrictEqual(thatObj);
 ```
