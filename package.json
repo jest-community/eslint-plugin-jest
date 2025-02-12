@@ -92,7 +92,7 @@
     "dedent": "^1.5.0",
     "eslint": "^7.0.0 || ^8.0.0",
     "eslint-config-prettier": "^10.0.0",
-    "eslint-doc-generator": "^1.0.0",
+    "eslint-doc-generator": "^2.0.0",
     "eslint-plugin-eslint-plugin": "^6.0.0",
     "eslint-plugin-import": "^2.25.1",
     "eslint-plugin-n": "^17.0.0",
