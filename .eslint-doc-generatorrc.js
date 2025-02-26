@@ -1,3 +1,5 @@
+'use strict';
+
 const { format } = require('prettier');
 const { prettier: prettierRC } = require('./package.json');
 
