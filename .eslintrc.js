@@ -21,6 +21,7 @@ const typescriptBanTypesRules = () => {
 };
 
 module.exports = {
+  ignorePatterns: ['!.eslint-doc-generatorrc.js', '!.eslintrc.js'],
   parser: require.resolve('@typescript-eslint/parser'),
   extends: [
     'plugin:eslint-plugin/recommended',
@@ -127,7 +128,7 @@ module.exports = {
       },
     },
     {
-      files: ['.eslintrc.js', 'babel.config.js'],
+      files: ['.eslint-doc-generatorrc.js', '.eslintrc.js', 'babel.config.js'],
       rules: {
         '@typescript-eslint/no-require-imports': 'off',
         'import/no-commonjs': 'off',
