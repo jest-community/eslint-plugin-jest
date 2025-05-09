@@ -31,6 +31,6 @@ jobs:
         with:
           persist-credentials: false
       - name: Danger
-        uses: danger/danger-js@12.3.4
+        uses: danger/danger-js@13.0.4
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
