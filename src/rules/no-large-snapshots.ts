@@ -79,7 +79,8 @@ export default createRule<[RuleOptions], MessageId>({
       description: 'Disallow large snapshots',
     },
     messages: {
-      noSnapshot: '`{{ lineCount }}`s should begin with lowercase',
+      noSnapshot:
+        'Expected to not encounter a Jest snapshot but was found with {{ lineCount }} lines long',
       tooLongSnapshots:
         'Expected Jest snapshot to be smaller than {{ lineLimit }} lines but was {{ lineCount }} lines long',
     },
