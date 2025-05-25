@@ -80,7 +80,7 @@ export default createRule<[RuleOptions], MessageId>({
     },
     messages: {
       noSnapshot:
-        'Expected to not encounter a Jest snapshot but was found with {{ lineCount }} lines long',
+        'Expected to not encounter a Jest snapshot but one was found that is {{ lineCount }} lines long',
       tooLongSnapshots:
         'Expected Jest snapshot to be smaller than {{ lineLimit }} lines but was {{ lineCount }} lines long',
     },
