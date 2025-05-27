@@ -1,3 +1,10 @@
+## [28.11.1](https://github.com/jest-community/eslint-plugin-jest/compare/v28.11.0...v28.11.1) (2025-05-27)
+
+
+### Bug Fixes
+
+* **no-large-snapshots:** use a far better message for when an unexpected snapshot is found ([#1736](https://github.com/jest-community/eslint-plugin-jest/issues/1736)) ([0f5b873](https://github.com/jest-community/eslint-plugin-jest/commit/0f5b873edcce08988d1ce51e17eb67c21ddf102d))
+
 # [28.11.0](https://github.com/jest-community/eslint-plugin-jest/compare/v28.10.1...v28.11.0) (2025-01-15)
 
 
