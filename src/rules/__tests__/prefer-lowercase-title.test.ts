@@ -77,7 +77,7 @@ ruleTester.run('prefer-lowercase-title', rule, {
       output: "it('foo', function () {})",
       errors: [
         {
-          messageId: 'unexpectedLowercase',
+          messageId: 'unexpectedCase',
           data: { method: TestCaseName.it },
           column: 4,
           line: 1,
@@ -89,7 +89,7 @@ ruleTester.run('prefer-lowercase-title', rule, {
       output: "xit('foo', function () {})",
       errors: [
         {
-          messageId: 'unexpectedLowercase',
+          messageId: 'unexpectedCase',
           data: { method: TestCaseName.xit },
           column: 5,
           line: 1,
@@ -101,7 +101,7 @@ ruleTester.run('prefer-lowercase-title', rule, {
       output: 'it("foo", function () {})',
       errors: [
         {
-          messageId: 'unexpectedLowercase',
+          messageId: 'unexpectedCase',
           data: { method: TestCaseName.it },
           column: 4,
           line: 1,
@@ -113,7 +113,7 @@ ruleTester.run('prefer-lowercase-title', rule, {
       output: 'it(`foo`, function () {})',
       errors: [
         {
-          messageId: 'unexpectedLowercase',
+          messageId: 'unexpectedCase',
           data: { method: TestCaseName.it },
           column: 4,
           line: 1,
@@ -125,7 +125,7 @@ ruleTester.run('prefer-lowercase-title', rule, {
       output: "test('foo', function () {})",
       errors: [
         {
-          messageId: 'unexpectedLowercase',
+          messageId: 'unexpectedCase',
           data: { method: TestCaseName.test },
           column: 6,
           line: 1,
@@ -137,7 +137,7 @@ ruleTester.run('prefer-lowercase-title', rule, {
       output: "xtest('foo', function () {})",
       errors: [
         {
-          messageId: 'unexpectedLowercase',
+          messageId: 'unexpectedCase',
           data: { method: TestCaseName.xtest },
           column: 7,
           line: 1,
@@ -149,7 +149,7 @@ ruleTester.run('prefer-lowercase-title', rule, {
       output: 'test("foo", function () {})',
       errors: [
         {
-          messageId: 'unexpectedLowercase',
+          messageId: 'unexpectedCase',
           data: { method: TestCaseName.test },
           column: 6,
           line: 1,
@@ -161,7 +161,7 @@ ruleTester.run('prefer-lowercase-title', rule, {
       output: 'test(`foo`, function () {})',
       errors: [
         {
-          messageId: 'unexpectedLowercase',
+          messageId: 'unexpectedCase',
           data: { method: TestCaseName.test },
           column: 6,
           line: 1,
@@ -173,7 +173,7 @@ ruleTester.run('prefer-lowercase-title', rule, {
       output: "describe('foo', function () {})",
       errors: [
         {
-          messageId: 'unexpectedLowercase',
+          messageId: 'unexpectedCase',
           data: { method: DescribeAlias.describe },
           column: 10,
           line: 1,
@@ -185,7 +185,7 @@ ruleTester.run('prefer-lowercase-title', rule, {
       output: 'describe("foo", function () {})',
       errors: [
         {
-          messageId: 'unexpectedLowercase',
+          messageId: 'unexpectedCase',
           data: { method: DescribeAlias.describe },
           column: 10,
           line: 1,
@@ -197,7 +197,7 @@ ruleTester.run('prefer-lowercase-title', rule, {
       output: 'describe(`foo`, function () {})',
       errors: [
         {
-          messageId: 'unexpectedLowercase',
+          messageId: 'unexpectedCase',
           data: { method: DescribeAlias.describe },
           column: 10,
           line: 1,
@@ -218,7 +218,7 @@ ruleTester.run('prefer-lowercase-title', rule, {
       parserOptions: { sourceType: 'module' },
       errors: [
         {
-          messageId: 'unexpectedLowercase',
+          messageId: 'unexpectedCase',
           data: { method: DescribeAlias.describe },
           column: 9,
           line: 3,
@@ -230,7 +230,7 @@ ruleTester.run('prefer-lowercase-title', rule, {
       output: 'describe(`some longer description`, function () {})',
       errors: [
         {
-          messageId: 'unexpectedLowercase',
+          messageId: 'unexpectedCase',
           data: { method: DescribeAlias.describe },
           column: 10,
           line: 1,
@@ -242,7 +242,7 @@ ruleTester.run('prefer-lowercase-title', rule, {
       output: 'fdescribe(`some longer description`, function () {})',
       errors: [
         {
-          messageId: 'unexpectedLowercase',
+          messageId: 'unexpectedCase',
           data: { method: DescribeAlias.fdescribe },
           column: 11,
           line: 1,
@@ -254,7 +254,7 @@ ruleTester.run('prefer-lowercase-title', rule, {
       output: "it.each(['green', 'black'])('should return %', () => {})",
       errors: [
         {
-          messageId: 'unexpectedLowercase',
+          messageId: 'unexpectedCase',
           data: { method: TestCaseName.it },
           column: 29,
           line: 1,
@@ -266,7 +266,7 @@ ruleTester.run('prefer-lowercase-title', rule, {
       output: "describe.each(['green', 'black'])('should return %', () => {})",
       errors: [
         {
-          messageId: 'unexpectedLowercase',
+          messageId: 'unexpectedCase',
           data: { method: DescribeAlias.describe },
           column: 35,
           line: 1,
@@ -306,7 +306,7 @@ ruleTester.run('prefer-lowercase-title with ignore=describe', rule, {
       options: [{ ignore: [DescribeAlias.describe] }],
       errors: [
         {
-          messageId: 'unexpectedLowercase',
+          messageId: 'unexpectedCase',
           data: { method: TestCaseName.test },
           column: 6,
           line: 1,
@@ -319,7 +319,7 @@ ruleTester.run('prefer-lowercase-title with ignore=describe', rule, {
       options: [{ ignore: [DescribeAlias.describe] }],
       errors: [
         {
-          messageId: 'unexpectedLowercase',
+          messageId: 'unexpectedCase',
           data: { method: TestCaseName.xit },
           column: 5,
           line: 1,
@@ -359,7 +359,7 @@ ruleTester.run('prefer-lowercase-title with ignore=test', rule, {
       options: [{ ignore: [TestCaseName.test] }],
       errors: [
         {
-          messageId: 'unexpectedLowercase',
+          messageId: 'unexpectedCase',
           data: { method: DescribeAlias.describe },
           column: 10,
           line: 1,
@@ -372,7 +372,7 @@ ruleTester.run('prefer-lowercase-title with ignore=test', rule, {
       options: [{ ignore: [TestCaseName.test] }],
       errors: [
         {
-          messageId: 'unexpectedLowercase',
+          messageId: 'unexpectedCase',
           data: { method: TestCaseName.it },
           column: 4,
           line: 1,
@@ -385,7 +385,7 @@ ruleTester.run('prefer-lowercase-title with ignore=test', rule, {
       options: [{ ignore: [TestCaseName.test] }],
       errors: [
         {
-          messageId: 'unexpectedLowercase',
+          messageId: 'unexpectedCase',
           data: { method: TestCaseName.xit },
           column: 5,
           line: 1,
@@ -425,7 +425,7 @@ ruleTester.run('prefer-lowercase-title with ignore=it', rule, {
       options: [{ ignore: [TestCaseName.it] }],
       errors: [
         {
-          messageId: 'unexpectedLowercase',
+          messageId: 'unexpectedCase',
           data: { method: DescribeAlias.describe },
           column: 10,
           line: 1,
@@ -438,7 +438,7 @@ ruleTester.run('prefer-lowercase-title with ignore=it', rule, {
       options: [{ ignore: [TestCaseName.it] }],
       errors: [
         {
-          messageId: 'unexpectedLowercase',
+          messageId: 'unexpectedCase',
           data: { method: TestCaseName.test },
           column: 6,
           line: 1,
@@ -451,7 +451,7 @@ ruleTester.run('prefer-lowercase-title with ignore=it', rule, {
       options: [{ ignore: [TestCaseName.it] }],
       errors: [
         {
-          messageId: 'unexpectedLowercase',
+          messageId: 'unexpectedCase',
           data: { method: TestCaseName.xtest },
           column: 7,
           line: 1,
@@ -521,7 +521,7 @@ ruleTester.run('prefer-lowercase-title with ignoreTopLevelDescribe', rule, {
       options: [{ ignoreTopLevelDescribe: true }],
       errors: [
         {
-          messageId: 'unexpectedLowercase',
+          messageId: 'unexpectedCase',
           data: { method: TestCaseName.it },
           column: 4,
           line: 1,
@@ -550,13 +550,13 @@ ruleTester.run('prefer-lowercase-title with ignoreTopLevelDescribe', rule, {
       options: [{ ignoreTopLevelDescribe: true }],
       errors: [
         {
-          messageId: 'unexpectedLowercase',
+          messageId: 'unexpectedCase',
           data: { method: DescribeAlias.describe },
           column: 12,
           line: 2,
         },
         {
-          messageId: 'unexpectedLowercase',
+          messageId: 'unexpectedCase',
           data: { method: TestCaseName.it },
           column: 8,
           line: 3,
@@ -590,13 +590,13 @@ ruleTester.run('prefer-lowercase-title with ignoreTopLevelDescribe', rule, {
       parserOptions: { sourceType: 'module' },
       errors: [
         {
-          messageId: 'unexpectedLowercase',
+          messageId: 'unexpectedCase',
           data: { method: DescribeAlias.describe },
           column: 11,
           line: 4,
         },
         {
-          messageId: 'unexpectedLowercase',
+          messageId: 'unexpectedCase',
           data: { method: TestCaseName.it },
           column: 8,
           line: 5,
@@ -625,19 +625,19 @@ ruleTester.run('prefer-lowercase-title with ignoreTopLevelDescribe', rule, {
       options: [{ ignoreTopLevelDescribe: false }],
       errors: [
         {
-          messageId: 'unexpectedLowercase',
+          messageId: 'unexpectedCase',
           data: { method: DescribeAlias.describe },
           column: 10,
           line: 1,
         },
         {
-          messageId: 'unexpectedLowercase',
+          messageId: 'unexpectedCase',
           data: { method: DescribeAlias.describe },
           column: 12,
           line: 2,
         },
         {
-          messageId: 'unexpectedLowercase',
+          messageId: 'unexpectedCase',
           data: { method: TestCaseName.it },
           column: 8,
           line: 3,
