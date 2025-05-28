@@ -14,20 +14,13 @@ export default createRule({
     },
     messages: {
       missingFunction: 'Test is missing function argument',
-      pending: 'Call to pending()',
-      pendingSuite: 'Call to pending() within test suite',
-      pendingTest: 'Call to pending() within test',
-      disabledSuite: 'Disabled test suite',
-      disabledTest: 'Disabled test',
+      skippedTest: 'Tests should not be skipped',
     },
     schema: [],
     type: 'suggestion',
   },
   defaultOptions: [],
   create(context) {
-    let suiteDepth = 0;
-    let testDepth = 0;
-
     return {
       CallExpression(node) {
         const jestFnCall = parseJestFnCall(node, context);
@@ -36,13 +29,7 @@ export default createRule({
           return;
         }
 
-        if (jestFnCall.type === 'describe') {
-          suiteDepth++;
-        }
-
         if (jestFnCall.type === 'test') {
-          testDepth++;
-
           if (
             node.arguments.length < 2 &&
             jestFnCall.members.every(s => getAccessorValue(s) !== 'todo')
@@ -57,25 +44,9 @@ export default createRule({
           jestFnCall.members.some(s => getAccessorValue(s) === 'skip')
         ) {
           context.report({
-            messageId:
-              jestFnCall.type === 'describe' ? 'disabledSuite' : 'disabledTest',
+            messageId: 'skippedTest',
             node,
           });
-        }
-      },
-      'CallExpression:exit'(node) {
-        const jestFnCall = parseJestFnCall(node, context);
-
-        if (!jestFnCall) {
-          return;
-        }
-
-        if (jestFnCall.type === 'describe') {
-          suiteDepth--;
-        }
-
-        if (jestFnCall.type === 'test') {
-          testDepth--;
         }
       },
       'CallExpression[callee.name="pending"]'(node) {
@@ -83,13 +54,7 @@ export default createRule({
           return;
         }
 
-        if (testDepth > 0) {
-          context.report({ messageId: 'pendingTest', node });
-        } else if (suiteDepth > 0) {
-          context.report({ messageId: 'pendingSuite', node });
-        } else {
-          context.report({ messageId: 'pending', node });
-        }
+        context.report({ messageId: 'skippedTest', node });
       },
     };
   },
