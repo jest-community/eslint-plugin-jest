@@ -1,7 +1,17 @@
-import { version as typescriptESLintPluginVersion } from '@typescript-eslint/eslint-plugin/package.json';
-import { version as eslintVersion } from 'eslint/package.json';
+import fs from 'fs';
 import type { Config } from 'jest';
 import * as semver from 'semver';
+
+const { version: typescriptESLintPluginVersion } = JSON.parse(
+  fs.readFileSync(
+    'node_modules/@typescript-eslint/eslint-plugin/package.json',
+    'utf-8',
+  ),
+);
+
+const { version: eslintVersion } = JSON.parse(
+  fs.readFileSync('node_modules/eslint/package.json', 'utf-8'),
+);
 
 const config = {
   clearMocks: true,
