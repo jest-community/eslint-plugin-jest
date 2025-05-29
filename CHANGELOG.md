@@ -1,3 +1,10 @@
+## [28.11.2](https://github.com/jest-community/eslint-plugin-jest/compare/v28.11.1...v28.11.2) (2025-05-29)
+
+
+### Bug Fixes
+
+* **no-commented-out-tests:** make message less ambiguous ([#1740](https://github.com/jest-community/eslint-plugin-jest/issues/1740)) ([14c27ab](https://github.com/jest-community/eslint-plugin-jest/commit/14c27ab73fba6ea2b6509d4ede88ecab8a40e2db))
+
 ## [28.11.1](https://github.com/jest-community/eslint-plugin-jest/compare/v28.11.0...v28.11.1) (2025-05-27)
 
 
