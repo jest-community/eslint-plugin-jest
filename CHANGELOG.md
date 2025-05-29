@@ -1,3 +1,10 @@
+# [28.12.0](https://github.com/jest-community/eslint-plugin-jest/compare/v28.11.2...v28.12.0) (2025-05-29)
+
+
+### Features
+
+* **no-disabled-tests:** improve error message and simplify rule ([#1739](https://github.com/jest-community/eslint-plugin-jest/issues/1739)) ([1fb5a4a](https://github.com/jest-community/eslint-plugin-jest/commit/1fb5a4acf04de3d8829125593279ee8705f358c7))
+
 ## [28.11.2](https://github.com/jest-community/eslint-plugin-jest/compare/v28.11.1...v28.11.2) (2025-05-29)
 
 
