@@ -102,7 +102,7 @@
     "eslint-remote-tester-repositories": "~1.0.0",
     "husky": "^9.0.1",
     "is-ci": "^4.0.0",
-    "jest": "^29.0.0",
+    "jest": "30.0.0-beta.4",
     "jest-runner-eslint": "^2.0.0",
     "lint-staged": "^13.0.3",
     "markdown-link-check": "~3.12.0",
