@@ -363,6 +363,7 @@ Manually fixable by
 | [prefer-called-with](docs/rules/prefer-called-with.md)                               | Suggest using `toBeCalledWith()` or `toHaveBeenCalledWith()`              |     |     |     |     |
 | [prefer-comparison-matcher](docs/rules/prefer-comparison-matcher.md)                 | Suggest using the built-in comparison matchers                            |     |     | 🔧  |     |
 | [prefer-each](docs/rules/prefer-each.md)                                             | Prefer using `.each` rather than manual loops                             |     |     |     |     |
+| [prefer-ending-with-an-expect](docs/rules/prefer-ending-with-an-expect.md)           | Prefer having the last statement in a test be an assertion                |     |     |     |     |
 | [prefer-equality-matcher](docs/rules/prefer-equality-matcher.md)                     | Suggest using the built-in equality matchers                              |     |     |     | 💡  |
 | [prefer-expect-assertions](docs/rules/prefer-expect-assertions.md)                   | Suggest using `expect.assertions()` OR `expect.hasAssertions()`           |     |     |     | 💡  |
 | [prefer-expect-resolves](docs/rules/prefer-expect-resolves.md)                       | Prefer `await expect(...).resolves` over `expect(await ...)` syntax       |     |     | 🔧  |     |
