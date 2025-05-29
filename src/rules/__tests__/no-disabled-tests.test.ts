@@ -73,83 +73,83 @@ ruleTester.run('no-disabled-tests', rule, {
   invalid: [
     {
       code: 'describe.skip("foo", function () {})',
-      errors: [{ messageId: 'disabledSuite', column: 1, line: 1 }],
+      errors: [{ messageId: 'skippedTest', column: 1, line: 1 }],
     },
     {
       code: 'describe.skip.each([1, 2, 3])("%s", (a, b) => {});',
-      errors: [{ messageId: 'disabledSuite', column: 1, line: 1 }],
+      errors: [{ messageId: 'skippedTest', column: 1, line: 1 }],
     },
     {
       code: 'xdescribe.each([1, 2, 3])("%s", (a, b) => {});',
-      errors: [{ messageId: 'disabledSuite', column: 1, line: 1 }],
+      errors: [{ messageId: 'skippedTest', column: 1, line: 1 }],
     },
     {
       code: 'describe[`skip`]("foo", function () {})',
-      errors: [{ messageId: 'disabledSuite', column: 1, line: 1 }],
+      errors: [{ messageId: 'skippedTest', column: 1, line: 1 }],
     },
     {
       code: 'describe["skip"]("foo", function () {})',
-      errors: [{ messageId: 'disabledSuite', column: 1, line: 1 }],
+      errors: [{ messageId: 'skippedTest', column: 1, line: 1 }],
     },
     {
       code: 'it.skip("foo", function () {})',
-      errors: [{ messageId: 'disabledTest', column: 1, line: 1 }],
+      errors: [{ messageId: 'skippedTest', column: 1, line: 1 }],
     },
     {
       code: 'it["skip"]("foo", function () {})',
-      errors: [{ messageId: 'disabledTest', column: 1, line: 1 }],
+      errors: [{ messageId: 'skippedTest', column: 1, line: 1 }],
     },
     {
       code: 'test.skip("foo", function () {})',
-      errors: [{ messageId: 'disabledTest', column: 1, line: 1 }],
+      errors: [{ messageId: 'skippedTest', column: 1, line: 1 }],
     },
     {
       code: 'it.skip.each``("foo", function () {})',
-      errors: [{ messageId: 'disabledTest', column: 1, line: 1 }],
+      errors: [{ messageId: 'skippedTest', column: 1, line: 1 }],
     },
     {
       code: 'test.skip.each``("foo", function () {})',
-      errors: [{ messageId: 'disabledTest', column: 1, line: 1 }],
+      errors: [{ messageId: 'skippedTest', column: 1, line: 1 }],
     },
     {
       code: 'it.skip.each([])("foo", function () {})',
-      errors: [{ messageId: 'disabledTest', column: 1, line: 1 }],
+      errors: [{ messageId: 'skippedTest', column: 1, line: 1 }],
     },
     {
       code: 'test.skip.each([])("foo", function () {})',
-      errors: [{ messageId: 'disabledTest', column: 1, line: 1 }],
+      errors: [{ messageId: 'skippedTest', column: 1, line: 1 }],
     },
     {
       code: 'test["skip"]("foo", function () {})',
-      errors: [{ messageId: 'disabledTest', column: 1, line: 1 }],
+      errors: [{ messageId: 'skippedTest', column: 1, line: 1 }],
     },
     {
       code: 'xdescribe("foo", function () {})',
-      errors: [{ messageId: 'disabledSuite', column: 1, line: 1 }],
+      errors: [{ messageId: 'skippedTest', column: 1, line: 1 }],
     },
     {
       code: 'xit("foo", function () {})',
-      errors: [{ messageId: 'disabledTest', column: 1, line: 1 }],
+      errors: [{ messageId: 'skippedTest', column: 1, line: 1 }],
     },
     {
       code: 'xtest("foo", function () {})',
-      errors: [{ messageId: 'disabledTest', column: 1, line: 1 }],
+      errors: [{ messageId: 'skippedTest', column: 1, line: 1 }],
     },
     {
       code: 'xit.each``("foo", function () {})',
-      errors: [{ messageId: 'disabledTest', column: 1, line: 1 }],
+      errors: [{ messageId: 'skippedTest', column: 1, line: 1 }],
     },
     {
       code: 'xtest.each``("foo", function () {})',
-      errors: [{ messageId: 'disabledTest', column: 1, line: 1 }],
+      errors: [{ messageId: 'skippedTest', column: 1, line: 1 }],
     },
     {
       code: 'xit.each([])("foo", function () {})',
-      errors: [{ messageId: 'disabledTest', column: 1, line: 1 }],
+      errors: [{ messageId: 'skippedTest', column: 1, line: 1 }],
     },
     {
       code: 'xtest.each([])("foo", function () {})',
-      errors: [{ messageId: 'disabledTest', column: 1, line: 1 }],
+      errors: [{ messageId: 'skippedTest', column: 1, line: 1 }],
     },
     {
       code: 'it("has title but no callback")',
@@ -161,15 +161,15 @@ ruleTester.run('no-disabled-tests', rule, {
     },
     {
       code: 'it("contains a call to pending", function () { pending() })',
-      errors: [{ messageId: 'pendingTest', column: 48, line: 1 }],
+      errors: [{ messageId: 'skippedTest', column: 48, line: 1 }],
     },
     {
       code: 'pending();',
-      errors: [{ messageId: 'pending', column: 1, line: 1 }],
+      errors: [{ messageId: 'skippedTest', column: 1, line: 1 }],
     },
     {
       code: 'describe("contains a call to pending", function () { pending() })',
-      errors: [{ messageId: 'pendingSuite', column: 54, line: 1 }],
+      errors: [{ messageId: 'skippedTest', column: 54, line: 1 }],
     },
     {
       code: dedent`
