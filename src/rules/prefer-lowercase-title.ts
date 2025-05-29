@@ -49,7 +49,7 @@ export default createRule<
       ignoreTopLevelDescribe: boolean;
     }>,
   ],
-  'unexpectedLowercase'
+  'unexpectedCase'
 >({
   name: __filename,
   meta: {
@@ -59,7 +59,7 @@ export default createRule<
     },
     fixable: 'code',
     messages: {
-      unexpectedLowercase: '`{{ method }}`s should begin with lowercase',
+      unexpectedCase: '`{{ method }}`s should begin with lowercase',
     },
     schema: [
       {
@@ -140,7 +140,7 @@ export default createRule<
         }
 
         context.report({
-          messageId: 'unexpectedLowercase',
+          messageId: 'unexpectedCase',
           node: node.arguments[0],
           data: { method: jestFnCall.name },
           fix(fixer) {
