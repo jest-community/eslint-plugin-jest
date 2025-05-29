@@ -14,7 +14,7 @@ export default createRule({
       description: 'Disallow commented out tests',
     },
     messages: {
-      commentedTests: 'Some tests seem to be commented',
+      commentedTests: 'Do not comment out tests',
     },
     schema: [],
     type: 'suggestion',
