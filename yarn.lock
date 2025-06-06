@@ -2667,10 +2667,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tsconfig/node16@npm:^16.0.0":
-  version: 16.1.4
-  resolution: "@tsconfig/node16@npm:16.1.4"
-  checksum: 99ed9232899f6e92b2c05cd7c7d16bae7dd9250d14d1af5d8f280023a47960c14c1ba4184e600231a21d70f02c2b2dba3ceb92e643b57aede1eaee2232a732c4
+"@tsconfig/node18@npm:^18.0.0":
+  version: 18.2.4
+  resolution: "@tsconfig/node18@npm:18.2.4"
+  checksum: 80623cb9c129c78d51fe6c4a256ba986f12f02ff02dc2a1e5b33dd13a7983f767b6792cfcd51b3dd1c8256ea105f1fea31f64a2070564e37787ab3d9a1a1e7e3
   languageName: node
   linkType: hard
 
@@ -2830,10 +2830,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^16.0.0":
-  version: 16.18.126
-  resolution: "@types/node@npm:16.18.126"
-  checksum: 86112e7499f8a4d1bb60696cab0bf464adf3c141fca4bc5451e8f3aba5736529b76d4b4396edb21e5d7c19592852f7d6cb81ee70074fd13bde2db2d0db720467
+"@types/node@npm:^18.0.0":
+  version: 18.19.111
+  resolution: "@types/node@npm:18.19.111"
+  dependencies:
+    undici-types: ~5.26.4
+  checksum: 0696f422bf8c70e01255397767cea2938287d819e5ac92242f0e5629ab69f25ac22c811d0f4f3ae727c6b4f678f88737aa568b17404047cfcf3ea2b1f47786b3
   languageName: node
   linkType: hard
 
@@ -5146,10 +5148,10 @@ __metadata:
     "@schemastore/package": ^0.0.10
     "@semantic-release/changelog": ^6.0.0
     "@semantic-release/git": ^10.0.0
-    "@tsconfig/node16": ^16.0.0
+    "@tsconfig/node18": ^18.0.0
     "@types/eslint": ^8.4.6
     "@types/jest": ^29.0.0
-    "@types/node": ^16.0.0
+    "@types/node": ^18.0.0
     "@types/semver": ^7.5.8
     "@typescript-eslint/eslint-plugin": ^8.0.0
     "@typescript-eslint/parser": ^8.0.0
@@ -11396,6 +11398,13 @@ __metadata:
     has-symbols: ^1.1.0
     which-boxed-primitive: ^1.1.1
   checksum: 729f13b84a5bfa3fead1d8139cee5c38514e63a8d6a437819a473e241ba87eeb593646568621c7fc7f133db300ef18d65d1a5a60dc9c7beb9000364d93c581df
+  languageName: node
+  linkType: hard
+
+"undici-types@npm:~5.26.4":
+  version: 5.26.5
+  resolution: "undici-types@npm:5.26.5"
+  checksum: 3192ef6f3fd5df652f2dc1cd782b49d6ff14dc98e5dced492aa8a8c65425227da5da6aafe22523c67f035a272c599bb89cfe803c1db6311e44bed3042fc25487
   languageName: node
   linkType: hard
 
