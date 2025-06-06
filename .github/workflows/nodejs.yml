@@ -74,7 +74,7 @@ jobs:
       matrix:
         node-version: [18.x, 20.x, 22.x, 23.x, 24.x]
         eslint-version: [8, 9]
-        ts-eslint-plugin-version: [7, 8]
+        ts-eslint-plugin-version: [8]
     runs-on: ubuntu-latest
 
     steps:
