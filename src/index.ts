@@ -53,7 +53,6 @@ const recommendedRules = {
 } satisfies Record<string, TSESLint.Linter.RuleLevel>;
 
 const styleRules = {
-  'jest/no-alias-methods': 'warn',
   'jest/prefer-to-be': 'error',
   'jest/prefer-to-contain': 'error',
   'jest/prefer-to-have-length': 'error',
