@@ -1,3 +1,10 @@
+# [28.13.0](https://github.com/jest-community/eslint-plugin-jest/compare/v28.12.0...v28.13.0) (2025-06-06)
+
+
+### Features
+
+* create new `prefer-ending-with-an-expect` rule ([#1742](https://github.com/jest-community/eslint-plugin-jest/issues/1742)) ([fe1349b](https://github.com/jest-community/eslint-plugin-jest/commit/fe1349bbc7e91a9ea5420481a28fe8d86f5a0b69))
+
 # [28.12.0](https://github.com/jest-community/eslint-plugin-jest/compare/v28.11.2...v28.12.0) (2025-05-29)
 
 
