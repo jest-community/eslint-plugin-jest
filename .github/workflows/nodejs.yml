@@ -72,7 +72,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version: [16.x, 18.x, 20.x, 21.x, 22.x, 23.x]
+        node-version: [16.x, 18.x, 20.x, 21.x, 22.x, 23.x, 24.x]
         eslint-version: [7, 8, 9]
         ts-eslint-plugin-version: [6, 7, 8]
         exclude:
