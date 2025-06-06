@@ -8,8 +8,7 @@ const eslintRequire = createRequire(require.resolve('eslint'));
 
 export const espreeParser = eslintRequire.resolve('espree');
 
-export const eslintMajorVersion = semver.major(eslintVersion);
-export const usingFlatConfig = eslintMajorVersion >= 9;
+export const usingFlatConfig = semver.major(eslintVersion) >= 9;
 
 export class FlatCompatRuleTester extends TSESLint.RuleTester {
   public constructor(testerConfig?: TSESLint.RuleTesterConfig) {
@@ -25,47 +24,9 @@ export class FlatCompatRuleTester extends TSESLint.RuleTester {
     tests: TSESLint.RunTests<TMessageIds, TOptions>,
   ) {
     super.run(ruleName, rule, {
-      valid: FlatCompatRuleTester._filterCases(
-        tests.valid.map(t => FlatCompatRuleTester._flatCompat(t)),
-      ),
-      invalid: FlatCompatRuleTester._filterCases(
-        tests.invalid.map(t => FlatCompatRuleTester._flatCompat(t)),
-      ),
+      valid: tests.valid.map(t => FlatCompatRuleTester._flatCompat(t)),
+      invalid: tests.invalid.map(t => FlatCompatRuleTester._flatCompat(t)),
     });
-  }
-
-  /* istanbul ignore next */
-  /**
-   * Filters out test cases that are using ecma version 2022 or higher when running
-   * on ESLint v7
-   * @private
-   */
-  private static _filterCases<
-    T extends
-      | string
-      | TSESLint.ValidTestCase<unknown[]>
-      | TSESLint.InvalidTestCase<string, unknown[]>,
-  >(tests: T[]): T[] {
-    if (semver.major(eslintVersion) > 7) {
-      return tests;
-    }
-
-    const filtered = tests.filter(
-      t =>
-        typeof t === 'string' ||
-        !t.parserOptions?.ecmaVersion ||
-        t.parserOptions.ecmaVersion === 'latest' ||
-        t.parserOptions.ecmaVersion < 2022,
-    );
-
-    // print the number of tests that were filtered
-    if (filtered.length !== tests.length) {
-      console.warn(
-        `Filtered ${tests.length - filtered.length} tests due to unsupported parser options.`,
-      );
-    }
-
-    return filtered;
   }
 
   /* istanbul ignore next */
