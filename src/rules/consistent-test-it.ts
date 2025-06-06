@@ -12,7 +12,7 @@ import {
 
 const buildFixer =
   (
-    callee: TSESTree.LeftHandSideExpression,
+    callee: TSESTree.Expression,
     nodeName: string,
     preferredTestKeyword: TestCaseName.test | TestCaseName.it,
   ) =>

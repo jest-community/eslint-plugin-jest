@@ -67,7 +67,7 @@
     ]
   },
   "dependencies": {
-    "@typescript-eslint/utils": "^6.0.0 || ^7.0.0 || ^8.0.0"
+    "@typescript-eslint/utils": "^7.0.0 || ^8.0.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.4.4",
@@ -80,18 +80,18 @@
     "@schemastore/package": "^0.0.10",
     "@semantic-release/changelog": "^6.0.0",
     "@semantic-release/git": "^10.0.0",
-    "@tsconfig/node16": "^16.0.0",
+    "@tsconfig/node18": "^18.0.0",
     "@types/eslint": "^8.4.6",
     "@types/jest": "^29.0.0",
-    "@types/node": "^16.0.0",
+    "@types/node": "^18.0.0",
     "@types/semver": "^7.5.8",
-    "@typescript-eslint/eslint-plugin": "^6.0.0",
-    "@typescript-eslint/parser": "^6.0.0",
-    "@typescript-eslint/utils": "^6.0.0",
+    "@typescript-eslint/eslint-plugin": "^7.0.0",
+    "@typescript-eslint/parser": "^7.0.0",
+    "@typescript-eslint/utils": "^7.0.0",
     "babel-jest": "^29.0.0",
     "babel-plugin-replace-ts-export-assignment": "^0.0.2",
     "dedent": "^1.5.0",
-    "eslint": "^7.0.0 || ^8.0.0",
+    "eslint": "^8.0.0",
     "eslint-config-prettier": "^10.0.0",
     "eslint-doc-generator": "^2.0.0",
     "eslint-plugin-eslint-plugin": "^6.0.0",
@@ -116,8 +116,8 @@
     "typescript": "^5.0.4"
   },
   "peerDependencies": {
-    "@typescript-eslint/eslint-plugin": "^6.0.0 || ^7.0.0 || ^8.0.0",
-    "eslint": "^7.0.0 || ^8.0.0 || ^9.0.0",
+    "@typescript-eslint/eslint-plugin": "^7.0.0 || ^8.0.0",
+    "eslint": "^8.0.0 || ^9.0.0",
     "jest": "*"
   },
   "peerDependenciesMeta": {
@@ -130,7 +130,7 @@
   },
   "packageManager": "yarn@3.8.7",
   "engines": {
-    "node": "^16.10.0 || ^18.12.0 || >=20.0.0"
+    "node": "^18.12.0 || ^20.0.0 || >=22.0.0"
   },
   "publishConfig": {
     "provenance": true

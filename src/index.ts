@@ -8,7 +8,7 @@ import {
 import globals from './globals.json';
 
 type RuleModule = TSESLint.RuleModule<string, unknown[]> & {
-  meta: Required<Pick<TSESLint.RuleMetaData<string>, 'docs'>>;
+  meta: Required<Pick<TSESLint.RuleMetaData<string, unknown[]>, 'docs'>>;
 };
 
 // copied from https://github.com/babel/babel/blob/d8da63c929f2d28c401571e2a43166678c555bc4/packages/babel-helpers/src/helpers.js#L602-L606
@@ -53,7 +53,6 @@ const recommendedRules = {
 } satisfies Record<string, TSESLint.Linter.RuleLevel>;
 
 const styleRules = {
-  'jest/no-alias-methods': 'warn',
   'jest/prefer-to-be': 'error',
   'jest/prefer-to-contain': 'error',
   'jest/prefer-to-have-length': 'error',
