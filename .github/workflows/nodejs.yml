@@ -73,15 +73,8 @@ jobs:
       fail-fast: false
       matrix:
         node-version: [18.x, 20.x, 22.x, 23.x, 24.x]
-        eslint-version: [7, 8, 9]
+        eslint-version: [8, 9]
         ts-eslint-plugin-version: [6, 7, 8]
-        exclude:
-          # ts-eslint/plugin@7 doesn't support eslint@7
-          - eslint-version: 7
-            ts-eslint-plugin-version: 7
-          # ts-eslint/plugin@8 doesn't support eslint@7
-          - eslint-version: 7
-            ts-eslint-plugin-version: 8
     runs-on: ubuntu-latest
 
     steps:
