@@ -1,3 +1,10 @@
+## [28.13.3](https://github.com/jest-community/eslint-plugin-jest/compare/v28.13.2...v28.13.3) (2025-06-10)
+
+
+### Bug Fixes
+
+* **prefer-importing-jest-globals:** preserve `require` property renames ([#1754](https://github.com/jest-community/eslint-plugin-jest/issues/1754)) ([41b9523](https://github.com/jest-community/eslint-plugin-jest/commit/41b95239ef3bcb413b0ea6f1e33c23aca43ad3c5))
+
 ## [28.13.2](https://github.com/jest-community/eslint-plugin-jest/compare/v28.13.1...v28.13.2) (2025-06-10)
 
 
