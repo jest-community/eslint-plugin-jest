@@ -106,6 +106,60 @@ ruleTester.run('prefer-importing-jest-globals', rule, {
     },
     {
       code: dedent`
+        import { describe as context } from '@jest/globals';
+        context("suite", () => {
+          test("foo");
+          expect(true).toBeDefined();
+        })
+      `,
+      output: dedent`
+        import { describe as context, expect, test } from '@jest/globals';
+        context("suite", () => {
+          test("foo");
+          expect(true).toBeDefined();
+        })
+      `,
+      parserOptions: { sourceType: 'module' },
+      errors: [
+        {
+          endColumn: 7,
+          column: 3,
+          line: 3,
+          messageId: 'preferImportingJestGlobal',
+        },
+      ],
+    },
+    {
+      code: dedent`
+        import { describe as context } from '@jest/globals';
+        describe("something", () => {
+          context("suite", () => {
+            test("foo");
+            expect(true).toBeDefined();
+          })
+        })
+      `,
+      output: dedent`
+        import { describe, describe as context, expect, test } from '@jest/globals';
+        describe("something", () => {
+          context("suite", () => {
+            test("foo");
+            expect(true).toBeDefined();
+          })
+        })
+      `,
+      parserOptions: { sourceType: 'module' },
+      errors: [
+        {
+          endColumn: 9,
+          column: 1,
+          line: 2,
+          messageId: 'preferImportingJestGlobal',
+        },
+      ],
+    },
+    {
+      code: dedent`
         jest.useFakeTimers();
         describe("suite", () => {
           test("foo");

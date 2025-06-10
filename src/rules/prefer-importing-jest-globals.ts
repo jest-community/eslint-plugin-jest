@@ -120,7 +120,14 @@ export default createRule({
                   specifier.type === AST_NODE_TYPES.ImportSpecifier &&
                   specifier.imported?.name
                 ) {
-                  functionsToImport.add(specifier.imported.name);
+                  let importName = specifier.imported.name;
+                  const local = getAccessorValue(specifier.local);
+
+                  if (local !== importName) {
+                    importName = `${importName} as ${local}`;
+                  }
+
+                  functionsToImport.add(importName);
                 }
 
                 if (specifier.type === AST_NODE_TYPES.ImportDefaultSpecifier) {
