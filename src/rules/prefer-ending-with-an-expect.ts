@@ -118,7 +118,11 @@ export default createRule<
           return;
         }
 
-        const lastStatement = getLastStatement(node.arguments[1]);
+        let lastStatement = getLastStatement(node.arguments[1]);
+
+        if (lastStatement?.type === AST_NODE_TYPES.AwaitExpression) {
+          lastStatement = lastStatement.argument;
+        }
 
         if (
           lastStatement?.type === AST_NODE_TYPES.CallExpression &&

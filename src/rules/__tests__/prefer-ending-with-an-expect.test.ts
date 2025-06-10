@@ -53,7 +53,7 @@ ruleTester.run('prefer-ending-with-an-expect', rule, {
       code: dedent`
         test('verifies chained expect method call', () => {
           doSomething();
-        
+
           tester
             .foo()
             .bar()
@@ -69,6 +69,10 @@ ruleTester.run('prefer-ending-with-an-expect', rule, {
         })
       `,
       options: [{ assertFunctionNames: ['td.verify'] }],
+    },
+    {
+      code: 'it("should pass", async () => expect(true).toBeDefined())',
+      parserOptions: { ecmaVersion: 2017 },
     },
     {
       code: 'it("should pass", () => expect(true).toBeDefined())',
@@ -92,6 +96,34 @@ ruleTester.run('prefer-ending-with-an-expect', rule, {
         expect(container.toHTML()).toContain('Hello Bob!');
       });
     `,
+    {
+      code: dedent`
+        it('is a complete test', async () => {
+          const container = render(Greeter);
+
+          expect(container).toBeDefined();
+
+          container.setProp('name', 'Bob');
+
+          await expect(container.toHTML()).resolve.toContain('Hello Bob!');
+        });
+      `,
+      parserOptions: { ecmaVersion: 2017 },
+    },
+    {
+      code: dedent`
+        it('is a complete test', async function () {
+          const container = render(Greeter);
+
+          expect(container).toBeDefined();
+
+          container.setProp('name', 'Bob');
+
+          await expect(container.toHTML()).resolve.toContain('Hello Bob!');
+        });
+      `,
+      parserOptions: { ecmaVersion: 2017 },
+    },
     {
       code: dedent`
         describe('GET /user', function () {
@@ -273,6 +305,24 @@ ruleTester.run('prefer-ending-with-an-expect', rule, {
           container.setProp('name', 'Bob');
         });
       `,
+      errors: [
+        {
+          messageId: 'mustEndWithExpect',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        it('is a complete test', async () => {
+          const container = render(Greeter);
+
+          await expect(container).toBeDefined();
+
+          await container.setProp('name', 'Bob');
+        });
+      `,
+      parserOptions: { ecmaVersion: 2017 },
       errors: [
         {
           messageId: 'mustEndWithExpect',
