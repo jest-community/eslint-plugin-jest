@@ -1,3 +1,10 @@
+## [28.13.2](https://github.com/jest-community/eslint-plugin-jest/compare/v28.13.1...v28.13.2) (2025-06-10)
+
+
+### Bug Fixes
+
+* **prefer-importing-jest-globals:** preserve `as` imports ([#1753](https://github.com/jest-community/eslint-plugin-jest/issues/1753)) ([3a5af78](https://github.com/jest-community/eslint-plugin-jest/commit/3a5af78febd4a0f71ac4297530d11fa9a0e785fb))
+
 ## [28.13.1](https://github.com/jest-community/eslint-plugin-jest/compare/v28.13.0...v28.13.1) (2025-06-10)
 
 
