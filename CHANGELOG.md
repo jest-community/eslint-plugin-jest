@@ -1,3 +1,10 @@
+## [28.13.1](https://github.com/jest-community/eslint-plugin-jest/compare/v28.13.0...v28.13.1) (2025-06-10)
+
+
+### Bug Fixes
+
+* **prefer-ending-with-an-expect:** don't report on `await expect` ([#1752](https://github.com/jest-community/eslint-plugin-jest/issues/1752)) ([5e3d687](https://github.com/jest-community/eslint-plugin-jest/commit/5e3d687f2f304ece35fb683091e9f819e99641f7))
+
 # [28.13.0](https://github.com/jest-community/eslint-plugin-jest/compare/v28.12.0...v28.13.0) (2025-06-06)
 
 
