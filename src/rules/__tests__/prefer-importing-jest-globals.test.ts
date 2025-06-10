@@ -302,7 +302,6 @@ ruleTester.run('prefer-importing-jest-globals', rule, {
           expect(true).toBeDefined();
         })
       `,
-      // todo: this shouldn't be indenting the "test"
       output: dedent`
         const { expect, test } = require('@jest/globals');
         const source = 'globals';
