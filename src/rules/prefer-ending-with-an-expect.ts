@@ -40,6 +40,24 @@ function matchesAssertFunctionName(
   );
 }
 
+function getLastStatement(fn: FunctionExpression): TSESTree.Node | null {
+  if (fn.body.type === AST_NODE_TYPES.BlockStatement) {
+    if (fn.body.body.length === 0) {
+      return null;
+    }
+
+    const lastStatement = fn.body.body[fn.body.body.length - 1];
+
+    if (lastStatement.type === AST_NODE_TYPES.ExpressionStatement) {
+      return lastStatement.expression;
+    }
+
+    return lastStatement;
+  }
+
+  return fn.body;
+}
+
 export default createRule<
   [
     Partial<{
@@ -85,24 +103,6 @@ export default createRule<
     context,
     [{ assertFunctionNames = ['expect'], additionalTestBlockFunctions = [] }],
   ) {
-    function getLastStatement(fn: FunctionExpression): TSESTree.Node | null {
-      if (fn.body.type === AST_NODE_TYPES.BlockStatement) {
-        if (fn.body.body.length === 0) {
-          return null;
-        }
-
-        const lastStatement = fn.body.body[fn.body.body.length - 1];
-
-        if (lastStatement.type === AST_NODE_TYPES.ExpressionStatement) {
-          return lastStatement.expression;
-        }
-
-        return lastStatement;
-      }
-
-      return fn.body;
-    }
-
     return {
       CallExpression(node) {
         const name = getNodeName(node.callee) ?? '';
