@@ -171,11 +171,23 @@ export default createRule({
               for (const property of requireNode.declarations[0].id
                 .properties) {
                 if (
-                  property.type === AST_NODE_TYPES.Property &&
-                  isSupportedAccessor(property.key)
+                  property.type !== AST_NODE_TYPES.Property ||
+                  !isSupportedAccessor(property.key)
                 ) {
-                  functionsToImport.add(getAccessorValue(property.key));
+                  continue;
                 }
+
+                let importName = getAccessorValue(property.key);
+
+                if (isSupportedAccessor(property.value)) {
+                  const local = getAccessorValue(property.value);
+
+                  if (importName !== local) {
+                    importName += `: ${local}`;
+                  }
+                }
+
+                functionsToImport.add(importName);
               }
             }
 
