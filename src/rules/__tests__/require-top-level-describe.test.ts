@@ -109,6 +109,16 @@ ruleTester.run('require-top-level-describe', rule, {
       errors: [{ messageId: 'unexpectedHook' }],
     },
     {
+      code: dedent`
+        import { 'describe' as describe, afterAll as onceEverythingIsDone } from '@jest/globals';
+
+        describe("test suite", () => {});
+        onceEverythingIsDone("my test", () => {})
+      `,
+      parserOptions: { sourceType: 'module', ecmaVersion: 2022 },
+      errors: [{ messageId: 'unexpectedHook' }],
+    },
+    {
       code: "it.skip('test', () => {});",
       errors: [{ messageId: 'unexpectedTestCase' }],
     },

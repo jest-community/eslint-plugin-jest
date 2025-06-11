@@ -454,7 +454,10 @@ const describeImportDefAsImport = (
 
   return {
     source: def.parent.source.value,
-    imported: def.node.imported.name,
+    imported:
+      'name' in def.node.imported
+        ? def.node.imported.name
+        : def.node.imported.value,
     local: def.node.local.name,
   };
 };
