@@ -441,7 +441,34 @@ ruleTester.run('esm', rule, {
       parserOptions: { sourceType: 'module', ecmaVersion: 2017 },
     },
   ],
-  invalid: [],
+  invalid: [
+    {
+      code: dedent`
+        import { 'describe' as it } from '@jest/globals';
+
+        it('is a jest function', () => {});
+      `,
+      parserOptions: { sourceType: 'module', ecmaVersion: 2022 },
+      errors: [
+        {
+          messageId: 'details',
+          data: expectedParsedJestFnCallResultData({
+            name: 'describe',
+            type: 'describe',
+            head: {
+              original: 'describe',
+              local: 'it',
+              type: 'import',
+              node: 'it',
+            },
+            members: [],
+          }),
+          column: 1,
+          line: 3,
+        },
+      ],
+    },
+  ],
 });
 
 ruleTester.run('esm (dynamic)', rule, {
