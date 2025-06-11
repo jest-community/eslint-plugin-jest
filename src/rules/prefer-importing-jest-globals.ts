@@ -116,15 +116,16 @@ export default createRule({
 
             if (importNode?.type === AST_NODE_TYPES.ImportDeclaration) {
               for (const specifier of importNode.specifiers) {
-                if (
-                  specifier.type === AST_NODE_TYPES.ImportSpecifier &&
-                  specifier.imported?.name
-                ) {
-                  let importName = specifier.imported.name;
+                if (specifier.type === AST_NODE_TYPES.ImportSpecifier) {
+                  let importName = specifier.imported.name ?? '';
                   const local = getAccessorValue(specifier.local);
 
                   if (local !== importName) {
                     importName = `${importName} as ${local}`;
+                  }
+
+                  if ('value' in specifier.imported) {
+                    importName = `'${specifier.imported.value}'${importName}`;
                   }
 
                   functionsToImport.add(importName);
