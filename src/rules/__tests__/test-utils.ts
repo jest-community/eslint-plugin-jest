@@ -8,7 +8,8 @@ const eslintRequire = createRequire(require.resolve('eslint'));
 
 export const espreeParser = eslintRequire.resolve('espree');
 
-export const usingFlatConfig = semver.major(eslintVersion) >= 9;
+export const eslintMajorVersion = semver.major(eslintVersion);
+export const usingFlatConfig = eslintMajorVersion >= 9;
 
 export class FlatCompatRuleTester extends TSESLint.RuleTester {
   public constructor(testerConfig?: TSESLint.RuleTesterConfig) {

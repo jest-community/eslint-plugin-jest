@@ -1,8 +1,8 @@
-import type { JSONSchemaForNPMPackageJsonFiles } from '@schemastore/package';
 import type { TSESTree } from '@typescript-eslint/utils';
 import dedent from 'dedent';
 import {
   FlatCompatRuleTester as RuleTester,
+  eslintMajorVersion,
   espreeParser,
 } from '../../__tests__/test-utils';
 import {
@@ -13,24 +13,6 @@ import {
   isSupportedAccessor,
   parseJestFnCall,
 } from '../../utils';
-
-const findESLintVersion = (): number => {
-  const eslintPath = require.resolve('eslint/package.json');
-
-  const eslintPackageJson =
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    require(eslintPath) as JSONSchemaForNPMPackageJsonFiles;
-
-  if (!eslintPackageJson.version) {
-    throw new Error('eslint package.json does not have a version!');
-  }
-
-  const [majorVersion] = eslintPackageJson.version.split('.');
-
-  return parseInt(majorVersion, 10);
-};
-
-const eslintVersion = findESLintVersion();
 
 const ruleTester = new RuleTester({
   parser: espreeParser,
@@ -463,7 +445,7 @@ ruleTester.run('esm', rule, {
   invalid: [],
 });
 
-if (eslintVersion >= 8) {
+if (eslintMajorVersion >= 8) {
   ruleTester.run('esm (dynamic)', rule, {
     valid: [
       {
