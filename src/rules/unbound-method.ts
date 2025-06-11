@@ -71,9 +71,11 @@ export default createRule<Options, MessageIds>({
     docs: {
       description:
         'Enforce unbound methods are called with their expected scope',
+      /** @deprecated */
       requiresTypeChecking: true,
       ...baseRule?.meta.docs,
       // mark this as not recommended
+      /** @deprecated */
       recommended: undefined,
     },
   },
