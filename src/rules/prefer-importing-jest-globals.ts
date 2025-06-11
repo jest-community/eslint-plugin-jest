@@ -117,7 +117,8 @@ export default createRule({
             if (importNode?.type === AST_NODE_TYPES.ImportDeclaration) {
               for (const specifier of importNode.specifiers) {
                 if (specifier.type === AST_NODE_TYPES.ImportSpecifier) {
-                  let importName = specifier.imported.name ?? '';
+                  let importName =
+                    'name' in specifier.imported ? specifier.imported.name : '';
                   const local = getAccessorValue(specifier.local);
 
                   if (local !== importName) {
