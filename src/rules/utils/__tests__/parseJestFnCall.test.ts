@@ -2,7 +2,6 @@ import type { TSESTree } from '@typescript-eslint/utils';
 import dedent from 'dedent';
 import {
   FlatCompatRuleTester as RuleTester,
-  eslintMajorVersion,
   espreeParser,
 } from '../../__tests__/test-utils';
 import {
@@ -445,82 +444,80 @@ ruleTester.run('esm', rule, {
   invalid: [],
 });
 
-if (eslintMajorVersion >= 8) {
-  ruleTester.run('esm (dynamic)', rule, {
-    valid: [
-      {
-        code: dedent`
-          const { it } = await import('./test-utils');
+ruleTester.run('esm (dynamic)', rule, {
+  valid: [
+    {
+      code: dedent`
+        const { it } = await import('./test-utils');
 
-          it('is not a jest function', () => {});
-        `,
-        parserOptions: { sourceType: 'module', ecmaVersion: 2022 },
-      },
-      {
-        code: dedent`
-          const { it } = await import(\`./test-utils\`);
+        it('is not a jest function', () => {});
+      `,
+      parserOptions: { sourceType: 'module', ecmaVersion: 2022 },
+    },
+    {
+      code: dedent`
+        const { it } = await import(\`./test-utils\`);
 
-          it('is not a jest function', () => {});
-        `,
-        parserOptions: { sourceType: 'module', ecmaVersion: 2022 },
-      },
-    ],
-    invalid: [
-      {
-        code: dedent`
-          const { it } = await import("@jest/globals");
+        it('is not a jest function', () => {});
+      `,
+      parserOptions: { sourceType: 'module', ecmaVersion: 2022 },
+    },
+  ],
+  invalid: [
+    {
+      code: dedent`
+        const { it } = await import("@jest/globals");
 
-          it('is a jest function', () => {});
-        `,
-        parserOptions: { sourceType: 'module', ecmaVersion: 2022 },
-        errors: [
-          {
-            messageId: 'details',
-            data: expectedParsedJestFnCallResultData({
-              name: 'it',
-              type: 'test',
-              head: {
-                original: 'it',
-                local: 'it',
-                type: 'import',
-                node: 'it',
-              },
-              members: [],
-            }),
-            column: 1,
-            line: 3,
-          },
-        ],
-      },
-      {
-        code: dedent`
-          const { it } = await import(\`@jest/globals\`);
+        it('is a jest function', () => {});
+      `,
+      parserOptions: { sourceType: 'module', ecmaVersion: 2022 },
+      errors: [
+        {
+          messageId: 'details',
+          data: expectedParsedJestFnCallResultData({
+            name: 'it',
+            type: 'test',
+            head: {
+              original: 'it',
+              local: 'it',
+              type: 'import',
+              node: 'it',
+            },
+            members: [],
+          }),
+          column: 1,
+          line: 3,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        const { it } = await import(\`@jest/globals\`);
 
-          it('is a jest function', () => {});
-        `,
-        parserOptions: { sourceType: 'module', ecmaVersion: 2022 },
-        errors: [
-          {
-            messageId: 'details',
-            data: expectedParsedJestFnCallResultData({
-              name: 'it',
-              type: 'test',
-              head: {
-                original: 'it',
-                local: 'it',
-                type: 'import',
-                node: 'it',
-              },
-              members: [],
-            }),
-            column: 1,
-            line: 3,
-          },
-        ],
-      },
-    ],
-  });
-}
+        it('is a jest function', () => {});
+      `,
+      parserOptions: { sourceType: 'module', ecmaVersion: 2022 },
+      errors: [
+        {
+          messageId: 'details',
+          data: expectedParsedJestFnCallResultData({
+            name: 'it',
+            type: 'test',
+            head: {
+              original: 'it',
+              local: 'it',
+              type: 'import',
+              node: 'it',
+            },
+            members: [],
+          }),
+          column: 1,
+          line: 3,
+        },
+      ],
+    },
+  ],
+});
 
 ruleTester.run('cjs', rule, {
   valid: [
