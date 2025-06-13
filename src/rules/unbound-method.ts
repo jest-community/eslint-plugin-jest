@@ -48,6 +48,14 @@ export type MessageIds = 'unbound' | 'unboundWithoutThisAnnotation';
 
 const DEFAULT_MESSAGE = 'This rule requires `@typescript-eslint/eslint-plugin`';
 
+// todo: remove these along with the actual runtime properties below in new major
+declare module '@typescript-eslint/utils/ts-eslint' {
+  interface RuleMetaDataDocs {
+    requiresTypeChecking?: boolean;
+    recommended?: unknown;
+  }
+}
+
 export default createRule<Options, MessageIds>({
   defaultOptions: [{ ignoreStatic: false }],
   ...baseRule,
