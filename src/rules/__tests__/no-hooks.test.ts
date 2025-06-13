@@ -50,6 +50,17 @@ ruleTester.run('no-hooks', rule, {
       ],
     },
     {
+      code: dedent`
+        import { 'afterEach' as afterEachTest } from '@jest/globals';
+
+        afterEachTest(() => {})
+      `,
+      parserOptions: { sourceType: 'module', ecmaVersion: 2022 },
+      errors: [
+        { messageId: 'unexpectedHook', data: { hookName: HookName.afterEach } },
+      ],
+    },
+    {
       code: 'beforeEach(() => {}); afterEach(() => { jest.resetModules() });',
       options: [{ allow: [HookName.afterEach] }],
       errors: [

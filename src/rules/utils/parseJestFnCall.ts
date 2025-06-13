@@ -452,9 +452,15 @@ const describeImportDefAsImport = (
     return null;
   }
 
+  let imported = def.node.imported.name ?? '';
+
+  if ('value' in def.node.imported) {
+    imported = def.node.imported.value as string;
+  }
+
   return {
     source: def.parent.source.value,
-    imported: def.node.imported.name,
+    imported,
     local: def.node.local.name,
   };
 };
