@@ -1,7 +1,6 @@
 import { AST_NODE_TYPES, type TSESTree } from '@typescript-eslint/utils';
 import {
   createRule,
-  getDeclaredVariables,
   getTestCallExpressionsFromDeclaredVariables,
   isFunction,
   isTypeOfJestFnCall,
@@ -53,7 +52,7 @@ export default createRule({
         context.report({ messageId: 'noReturnValue', node: returnStmt });
       },
       FunctionDeclaration(node) {
-        const declaredVariables = getDeclaredVariables(context, node);
+        const declaredVariables = context.sourceCode.getDeclaredVariables(node);
         const testCallExpressions = getTestCallExpressionsFromDeclaredVariables(
           declaredVariables,
           context,
