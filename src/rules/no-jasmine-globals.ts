@@ -2,7 +2,6 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import {
   createRule,
   getNodeName,
-  getScope,
   isSupportedAccessor,
   resolveScope,
 } from './utils';
@@ -45,7 +44,7 @@ export default createRule({
           calleeName === 'fail' ||
           calleeName === 'pending'
         ) {
-          if (resolveScope(getScope(context, node), calleeName)) {
+          if (resolveScope(context.sourceCode.getScope(node), calleeName)) {
             // It's a local variable, not a jasmine global.
             return;
           }

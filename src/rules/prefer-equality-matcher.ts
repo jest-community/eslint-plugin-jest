@@ -5,7 +5,6 @@ import {
   createRule,
   getAccessorValue,
   getFirstMatcherArg,
-  getSourceCode,
   isBooleanLiteral,
   parseJestFnCall,
 } from './utils';
@@ -73,7 +72,7 @@ export default createRule({
         const buildFixer =
           (equalityMatcher: string): TSESLint.ReportFixFunction =>
           fixer => {
-            const sourceCode = getSourceCode(context);
+            const { sourceCode } = context;
 
             // preserve the existing modifier if it's not a negation
             let modifierText =

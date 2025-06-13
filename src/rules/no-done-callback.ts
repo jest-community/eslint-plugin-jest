@@ -3,14 +3,7 @@ import {
   type TSESLint,
   type TSESTree,
 } from '@typescript-eslint/utils';
-import {
-  createRule,
-  getFilename,
-  getNodeName,
-  getSourceCode,
-  isFunction,
-  parseJestFnCall,
-} from './utils';
+import { createRule, getNodeName, isFunction, parseJestFnCall } from './utils';
 
 const findCallbackArg = (
   node: TSESTree.CallExpression,
@@ -109,7 +102,7 @@ export default createRule({
               fix(fixer) {
                 const { body, params } = callback;
 
-                const sourceCode = getSourceCode(context);
+                const { sourceCode } = context;
                 const firstBodyToken = sourceCode.getFirstToken(body);
                 const lastBodyToken = sourceCode.getLastToken(body);
 
@@ -133,7 +126,7 @@ export default createRule({
                   !tokenAfterLastParam
                 ) {
                   throw new Error(
-                    `Unexpected null when attempting to fix ${getFilename(context)} - please file a github issue at https://github.com/jest-community/eslint-plugin-jest`,
+                    `Unexpected null when attempting to fix ${context.filename} - please file a github issue at https://github.com/jest-community/eslint-plugin-jest`,
                   );
                 }
 
