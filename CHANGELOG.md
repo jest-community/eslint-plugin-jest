@@ -1,3 +1,10 @@
+## [28.13.5](https://github.com/jest-community/eslint-plugin-jest/compare/v28.13.4...v28.13.5) (2025-06-13)
+
+
+### Bug Fixes
+
+* handle string-based import names when resolving Jest functions ([#1761](https://github.com/jest-community/eslint-plugin-jest/issues/1761)) ([d8b5e0e](https://github.com/jest-community/eslint-plugin-jest/commit/d8b5e0e8340d57282f30d414b7ae84d6b88e4af8))
+
 ## [28.13.4](https://github.com/jest-community/eslint-plugin-jest/compare/v28.13.3...v28.13.4) (2025-06-13)
 
 
