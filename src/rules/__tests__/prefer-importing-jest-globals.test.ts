@@ -24,6 +24,16 @@ ruleTester.run('prefer-importing-jest-globals', rule, {
     },
     {
       code: dedent`
+        // with import
+        import { 'test' as test, expect } from '@jest/globals';
+        test('should pass', () => {
+            expect(true).toBeDefined();
+        });
+      `,
+      parserOptions: { sourceType: 'module', ecmaVersion: 2022 },
+    },
+    {
+      code: dedent`
         test('should pass', () => {
             expect(true).toBeDefined();
         });
@@ -64,6 +74,13 @@ ruleTester.run('prefer-importing-jest-globals', rule, {
         itChecks("foo");
       `,
       parserOptions: { sourceType: 'module' },
+    },
+    {
+      code: dedent`
+        import { 'it' as itChecks } from '@jest/globals';
+        itChecks("foo");
+      `,
+      parserOptions: { sourceType: 'module', ecmaVersion: 2022 },
     },
     {
       code: dedent`
@@ -154,6 +171,56 @@ ruleTester.run('prefer-importing-jest-globals', rule, {
           endColumn: 9,
           column: 1,
           line: 2,
+          messageId: 'preferImportingJestGlobal',
+        },
+      ],
+    },
+    {
+      code: dedent`
+        import { 'describe' as describe } from '@jest/globals';
+        describe("suite", () => {
+          test("foo");
+          expect(true).toBeDefined();
+        })
+      `,
+      output: dedent`
+        import { 'describe' as describe, expect, test } from '@jest/globals';
+        describe("suite", () => {
+          test("foo");
+          expect(true).toBeDefined();
+        })
+      `,
+      parserOptions: { sourceType: 'module', ecmaVersion: 2022 },
+      errors: [
+        {
+          endColumn: 7,
+          column: 3,
+          line: 3,
+          messageId: 'preferImportingJestGlobal',
+        },
+      ],
+    },
+    {
+      code: dedent`
+        import { 'describe' as context } from '@jest/globals';
+        context("suite", () => {
+          test("foo");
+          expect(true).toBeDefined();
+        })
+      `,
+      output: dedent`
+        import { 'describe' as context, expect, test } from '@jest/globals';
+        context("suite", () => {
+          test("foo");
+          expect(true).toBeDefined();
+        })
+      `,
+      parserOptions: { sourceType: 'module', ecmaVersion: 2022 },
+      errors: [
+        {
+          endColumn: 7,
+          column: 3,
+          line: 3,
           messageId: 'preferImportingJestGlobal',
         },
       ],
