@@ -48,16 +48,6 @@ export type MessageIds = 'unbound' | 'unboundWithoutThisAnnotation';
 
 const DEFAULT_MESSAGE = 'This rule requires `@typescript-eslint/eslint-plugin`';
 
-// todo: remove these along with the actual runtime properties below in new major
-declare module '@typescript-eslint/utils/ts-eslint' {
-  interface RuleMetaDataDocs {
-    /** @deprecated */
-    requiresTypeChecking?: boolean;
-    /** @deprecated */
-    recommended?: unknown;
-  }
-}
-
 export default createRule<Options, MessageIds>({
   defaultOptions: [{ ignoreStatic: false }],
   ...baseRule,
@@ -73,12 +63,7 @@ export default createRule<Options, MessageIds>({
     docs: {
       description:
         'Enforce unbound methods are called with their expected scope',
-      /** @deprecated */
-      requiresTypeChecking: true,
       ...baseRule?.meta.docs,
-      // mark this as not recommended
-      /** @deprecated */
-      recommended: undefined,
     },
   },
   create(context) {
