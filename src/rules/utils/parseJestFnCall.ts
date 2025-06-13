@@ -12,7 +12,6 @@ import {
   TestCaseName,
   findTopMostCallExpression,
   getAccessorValue,
-  getScope,
   getStringValue,
   isIdentifier,
   isStringNode,
@@ -578,7 +577,10 @@ const resolveToJestFn = (
   accessor: AccessorNode,
 ): ResolvedJestFn | null => {
   const identifier = getAccessorValue(accessor);
-  const maybeImport = resolveScope(getScope(context, accessor), identifier);
+  const maybeImport = resolveScope(
+    context.sourceCode.getScope(accessor),
+    identifier,
+  );
 
   // the identifier was found as a local variable or function declaration
   // meaning it's not a function from jest
