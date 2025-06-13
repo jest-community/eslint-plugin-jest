@@ -6,8 +6,6 @@
 import { AST_NODE_TYPES, type TSESTree } from '@typescript-eslint/utils';
 import {
   createRule,
-  getAncestors,
-  getDeclaredVariables,
   getNodeName,
   getTestCallExpressionsFromDeclaredVariables,
   isSupportedAccessor,
@@ -94,7 +92,8 @@ export default createRule<
             : -1;
 
         if (node.type === AST_NODE_TYPES.FunctionDeclaration) {
-          const declaredVariables = getDeclaredVariables(context, node);
+          const declaredVariables =
+            context.sourceCode.getDeclaredVariables(node);
           const testCallExpressions =
             getTestCallExpressionsFromDeclaredVariables(
               declaredVariables,
@@ -129,7 +128,7 @@ export default createRule<
           unchecked.push(node);
         } else if (matchesAssertFunctionName(name, assertFunctionNames)) {
           // Return early in case of nested `it` statements.
-          checkCallExpressionUsed(getAncestors(context, node));
+          checkCallExpressionUsed(context.sourceCode.getAncestors(node));
         }
       },
       'Program:exit'() {

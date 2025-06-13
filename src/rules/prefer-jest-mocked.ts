@@ -1,5 +1,5 @@
 import { AST_NODE_TYPES, type TSESTree } from '@typescript-eslint/utils';
-import { createRule, followTypeAssertionChain, getSourceCode } from './utils';
+import { createRule, followTypeAssertionChain } from './utils';
 
 const mockTypes = ['Mock', 'MockedFunction', 'MockedClass', 'MockedObject'];
 
@@ -42,7 +42,7 @@ export default createRule({
         return;
       }
 
-      const fnName = getSourceCode(context).text.slice(
+      const fnName = context.sourceCode.text.slice(
         ...followTypeAssertionChain(node.expression).range,
       );
 

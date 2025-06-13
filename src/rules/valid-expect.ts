@@ -13,7 +13,6 @@ import {
   ModifierName,
   createRule,
   getAccessorValue,
-  getSourceCode,
   isFunction,
   isSupportedAccessor,
   parseJestFnCallWithReason,
@@ -416,7 +415,7 @@ export default createRule<[Options], MessageIds>({
 
               if (alwaysAwait && returnStatement) {
                 const sourceCodeText =
-                  getSourceCode(context).getText(returnStatement);
+                  context.sourceCode.getText(returnStatement);
                 const replacedText = sourceCodeText.replace('return', 'await');
 
                 fixes.push(fixer.replaceText(returnStatement, replacedText));

@@ -174,7 +174,7 @@ export const removeExtraArgumentsFixer = (
   const firstArg = func.arguments[from];
   const lastArg = func.arguments[func.arguments.length - 1];
 
-  const sourceCode = getSourceCode(context);
+  const { sourceCode } = context;
   let tokenAfterLastParam = sourceCode.getTokenAfter(lastArg)!;
 
   if (tokenAfterLastParam.value === ',') {
@@ -224,45 +224,4 @@ export const getFirstMatcherArg = (
   }
 
   return followTypeAssertionChain(firstArg);
-};
-
-/* istanbul ignore next */
-export const getFilename = (
-  context: TSESLint.RuleContext<string, unknown[]>,
-) => {
-  return context.filename ?? context.getFilename();
-};
-
-/* istanbul ignore next */
-export const getSourceCode = (
-  context: TSESLint.RuleContext<string, unknown[]>,
-) => {
-  return context.sourceCode ?? context.getSourceCode();
-};
-
-/* istanbul ignore next */
-export const getScope = (
-  context: TSESLint.RuleContext<string, unknown[]>,
-  node: TSESTree.Node,
-) => {
-  return getSourceCode(context).getScope?.(node) ?? context.getScope();
-};
-
-/* istanbul ignore next */
-export const getAncestors = (
-  context: TSESLint.RuleContext<string, unknown[]>,
-  node: TSESTree.Node,
-) => {
-  return getSourceCode(context).getAncestors?.(node) ?? context.getAncestors();
-};
-
-/* istanbul ignore next */
-export const getDeclaredVariables = (
-  context: TSESLint.RuleContext<string, unknown[]>,
-  node: TSESTree.Node,
-) => {
-  return (
-    getSourceCode(context).getDeclaredVariables?.(node) ??
-    context.getDeclaredVariables(node)
-  );
 };

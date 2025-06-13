@@ -3,7 +3,6 @@ import {
   type JestFnType,
   createRule,
   getAccessorValue,
-  getSourceCode,
   isIdentifier,
   isStringNode,
   isSupportedAccessor,
@@ -94,7 +93,7 @@ export default createRule({
           messageId: 'preferImportingJestGlobal',
           data: { jestFunctions: Array.from(functionsToImport).join(', ') },
           fix(fixer) {
-            const sourceCode = getSourceCode(context);
+            const { sourceCode } = context;
             const [firstNode] = sourceCode.ast.body;
 
             // check if "use strict" directive exists

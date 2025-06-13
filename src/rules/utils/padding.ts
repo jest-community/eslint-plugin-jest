@@ -15,7 +15,7 @@ import {
   type TSESTree,
 } from '@typescript-eslint/utils';
 import * as astUtils from './ast-utils';
-import { createRule, getSourceCode } from './misc';
+import { createRule } from './misc';
 
 // Statement types we'll respond to
 export const enum StatementType {
@@ -353,7 +353,7 @@ export const createPaddingRule = (
     create(context) {
       const paddingContext = {
         ruleContext: context,
-        sourceCode: getSourceCode(context),
+        sourceCode: context.sourceCode,
         scopeInfo: createScopeInfo(),
         configs,
       };
