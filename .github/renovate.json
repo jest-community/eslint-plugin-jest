@@ -1,5 +1,5 @@
 {
-  "extends": ["config:recommended"],
+  "extends": ["config:recommended", "helpers:disableTypesNodeMajor"],
   "lockFileMaintenance": {
     "enabled": true,
     "automerge": true
