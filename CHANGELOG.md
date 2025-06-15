@@ -1,3 +1,10 @@
+# [28.14.0](https://github.com/jest-community/eslint-plugin-jest/compare/v28.13.5...v28.14.0) (2025-06-15)
+
+
+### Features
+
+* **unbound-method:** mark `docs.recommended` and `docs.requiresTypeChecking` as deprecated ([#1762](https://github.com/jest-community/eslint-plugin-jest/issues/1762)) ([30440ef](https://github.com/jest-community/eslint-plugin-jest/commit/30440ef7509ee565690507c003da9bccf574b4bf))
+
 ## [28.13.5](https://github.com/jest-community/eslint-plugin-jest/compare/v28.13.4...v28.13.5) (2025-06-13)
 
 
