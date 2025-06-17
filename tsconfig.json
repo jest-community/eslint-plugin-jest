@@ -14,8 +14,7 @@
     "strict": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
-    // todo: required due to @typescript-eslint v7 - disable in new major
-    "skipLibCheck": true
+    "skipLibCheck": false
   },
   "files": ["eslint-remote-tester.config.ts"],
   "include": ["src/**/*"],
