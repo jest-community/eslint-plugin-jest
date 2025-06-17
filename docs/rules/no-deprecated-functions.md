@@ -53,5 +53,5 @@ Jest 27.
 
 ### `jest.genMockFromModule`
 
-This function was renamed to `createMockFromModule` in Jest 26, and is scheduled
-for removal in Jest 30.
+This function was renamed to `createMockFromModule` in Jest 26, and removed in
+Jest 30.
