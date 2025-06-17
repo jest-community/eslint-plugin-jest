@@ -183,22 +183,21 @@ const ValidJestFnCallChains = [
   'xtest.failing.each',
 ];
 
-// todo: switch back to using declaration merging once https://github.com/typescript-eslint/typescript-eslint/pull/8485
-//  is landed
-interface SharedConfigurationSettings {
-  jest?: {
-    globalAliases?: Record<string, string[]>;
-    globalPackage?: string;
-    version?: number | string;
-  };
+declare module '@typescript-eslint/utils/ts-eslint' {
+  export interface SharedConfigurationSettings {
+    jest?: {
+      globalAliases?: Record<string, string[]>;
+      globalPackage?: string;
+      version?: number | string;
+    };
+  }
 }
 
 const resolvePossibleAliasedGlobal = (
   global: string,
   context: TSESLint.RuleContext<string, unknown[]>,
 ) => {
-  const globalAliases =
-    (context.settings as SharedConfigurationSettings).jest?.globalAliases ?? {};
+  const globalAliases = context.settings.jest?.globalAliases ?? {};
 
   const alias = Object.entries(globalAliases).find(([, aliases]) =>
     aliases.includes(global),
@@ -589,8 +588,7 @@ const resolveToJestFn = (
 
   if (maybeImport) {
     const globalPackage =
-      (context.settings as SharedConfigurationSettings).jest?.globalPackage ??
-      '@jest/globals';
+      context.settings.jest?.globalPackage ?? '@jest/globals';
 
     // the identifier is imported from our global package so return the original import name
     if (maybeImport.source === globalPackage) {
