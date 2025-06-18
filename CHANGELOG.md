@@ -1,3 +1,10 @@
+## [29.0.1](https://github.com/jest-community/eslint-plugin-jest/compare/v29.0.0...v29.0.1) (2025-06-18)
+
+
+### Bug Fixes
+
+* update semantic-release config so new v29 major is marked as latest on `npm` ([#1772](https://github.com/jest-community/eslint-plugin-jest/issues/1772)) ([531c8ba](https://github.com/jest-community/eslint-plugin-jest/commit/531c8ba10afb993886a49c893d5250c13c329df1))
+
 # [29.0.0](https://github.com/jest-community/eslint-plugin-jest/compare/v28.14.0...v29.0.0) (2025-06-18)
 
 
