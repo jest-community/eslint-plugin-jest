@@ -3,7 +3,6 @@ import * as fs from 'fs';
 import * as os from 'os';
 import * as path from 'path';
 import type { JSONSchemaForNPMPackageJsonFiles } from '@schemastore/package';
-import stripAnsi from 'strip-ansi';
 import { create } from 'ts-node';
 import { detectJestVersion } from '../detectJestVersion';
 
@@ -21,11 +20,11 @@ const relativePathToFn = 'eslint-plugin-jest/lib/rules/detectJestVersion.js';
 const runNodeScript = (cwd: string, script: string) => {
   const { stdout, stderr } = spawnSync(
     'node',
-    ['-e', script.split('\n').join(' ')],
+    ['-p', script.split('\n').join(' ')],
     { cwd, encoding: 'utf-8' },
   );
 
-  return { stdout: stripAnsi(stdout.trim()), stderr: stripAnsi(stderr.trim()) };
+  return { stdout: stdout.trim(), stderr: stderr.trim() };
 };
 
 const runDetectJestVersion = (cwd: string) => {
@@ -33,7 +32,7 @@ const runDetectJestVersion = (cwd: string) => {
     cwd,
     `
       try {
-        console.log(require('${relativePathToFn}').detectJestVersion());
+        require('${relativePathToFn}').detectJestVersion();
       } catch (error) {
         console.error(error.message);
       }
@@ -190,7 +189,7 @@ describe('detectJestVersion', () => {
 
       const { stdout, stderr } = runDetectJestVersion(projectDir);
 
-      expect(stdout).toBe('');
+      expect(stdout).toBe('undefined');
       expect(stderr).toContain('Unable to detect Jest version');
     });
   });
