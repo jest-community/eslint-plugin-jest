@@ -3,44 +3,6 @@
 
 ### Bug Fixes
 
-* remove `jest/no-alias-methods` from `styles` config ([df3b8cd](https://github.com/jest-community/eslint-plugin-jest/commit/df3b8cdb5b249736a886f584498745e580bb929e))
-* update semantic-release config so new v29 major is marked as latest on `npm` ([#1772](https://github.com/jest-community/eslint-plugin-jest/issues/1772)) ([531c8ba](https://github.com/jest-community/eslint-plugin-jest/commit/531c8ba10afb993886a49c893d5250c13c329df1))
-
-
-### Features
-
-* drop support for `[@typescript-eslint](https://github.com/typescript-eslint)` v6 ([fbf49a0](https://github.com/jest-community/eslint-plugin-jest/commit/fbf49a0366892956c9e4d53a18d7724fa8cbd3f3))
-* drop support for `[@typescript-eslint](https://github.com/typescript-eslint)` v7 ([d77ac46](https://github.com/jest-community/eslint-plugin-jest/commit/d77ac467f51e3ae3f62798bd3c13b7fbacb024fa))
-* drop support for ESLint v7 ([60e26c2](https://github.com/jest-community/eslint-plugin-jest/commit/60e26c21e8a5ea40ea144a19bba74e2205b80efe))
-* drop support for ESLint v8.x prior to v8.57.0 ([854cef4](https://github.com/jest-community/eslint-plugin-jest/commit/854cef4735520ada9de2e1e3e9a4edbce2332b59))
-* drop support for Node v16 ([8000c3d](https://github.com/jest-community/eslint-plugin-jest/commit/8000c3dacbb85d36726cf3a4fa24411178ece51d))
-* drop support for Node v18 ([f442a2a](https://github.com/jest-community/eslint-plugin-jest/commit/f442a2a3b13d156d4af13d2b8b68f9b311494093))
-* drop support for Node v20.x prior to v20.12.0 ([83c130b](https://github.com/jest-community/eslint-plugin-jest/commit/83c130b7634a30318a32dd968f89e84ea384124b))
-* drop support for Node v21 ([e6d5a25](https://github.com/jest-community/eslint-plugin-jest/commit/e6d5a259d85c55aca3bc486a3754fa503e256a5b))
-* drop support for Node v23 ([d7fe2d4](https://github.com/jest-community/eslint-plugin-jest/commit/d7fe2d4ed729677f5a516ca175c7a39ba336de5a))
-* **unbound-method:** remove `docs.recommended` and `docs.requiresTypeChecking` properties ([1d53075](https://github.com/jest-community/eslint-plugin-jest/commit/1d53075c2dd22e33933a0e461c5a2da27cfea361))
-
-
-### BREAKING CHANGES
-
-* dropped support for ESLint v8.x prior to v8.57.0
-* dropped support for Node v20.x prior to v20.12.0
-* dropped support for Node v23
-* dropped support for Node v18
-* **unbound-method:** removed `docs.recommend` and `docs.requiresTypeChecking` from `unbound-method`
-* dropped support for `@typescript-eslint` v7
-* dropped support for `@typescript-eslint` v6
-* `jest/no-alias-methods` has been removed from the `styles` config as its already in
- the `recommended` config
-* dropped support for ESLint v7
-* dropped support for Node v21
-* dropped support for Node v16
-
-# [29.0.0](https://github.com/jest-community/eslint-plugin-jest/compare/v28.14.0...v29.0.0) (2025-06-18)
-
-
-### Bug Fixes
-
 * remove `jest/no-alias-methods` from `styles` config ([d3bf1dc](https://github.com/jest-community/eslint-plugin-jest/commit/d3bf1dcec9322304a37fe45e6a5cdeee7775c543))
 
 
