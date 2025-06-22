@@ -21,7 +21,11 @@ const runNodeScript = (cwd: string, script: string) => {
   const { stdout, stderr } = spawnSync(
     'node',
     ['-p', script.split('\n').join(' ')],
-    { cwd, encoding: 'utf-8' },
+    {
+      cwd,
+      encoding: 'utf-8',
+      env: { ...process.env, FORCE_COLOR: '0', NO_COLOR: '1' },
+    },
   );
 
   return { stdout: stdout.trim(), stderr: stderr.trim() };
