@@ -1,5 +1,3 @@
-'use strict';
-
 import type { Config } from 'eslint-remote-tester';
 import {
   getPathIgnorePattern,

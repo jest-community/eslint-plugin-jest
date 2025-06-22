@@ -107,7 +107,12 @@ const config = {
       globals,
     },
     {
-      files: ['src/**/*', 'dangerfile.ts', './jest.config.ts'],
+      files: [
+        'src/**/*',
+        'dangerfile.ts',
+        './jest.config.ts',
+        './eslint-remote-tester.config.ts',
+      ],
       parserOptions: {
         sourceType: 'module',
       },
