@@ -2,7 +2,8 @@
 
 const globals = require('./src/globals.json');
 
-module.exports = {
+/** @type {import('eslint').Linter.LegacyConfig} */
+const config = {
   ignorePatterns: ['!.eslint-doc-generatorrc.js', '!.eslintrc.js'],
   parser: require.resolve('@typescript-eslint/parser'),
   extends: [
@@ -126,3 +127,5 @@ module.exports = {
     },
   ],
 };
+
+module.exports = config;

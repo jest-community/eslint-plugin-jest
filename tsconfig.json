@@ -14,9 +14,17 @@
     "strict": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "skipLibCheck": false
+    "skipLibCheck": false,
+    "allowJs": true,
+    "checkJs": true
   },
-  "files": ["eslint-remote-tester.config.ts"],
+  "files": [
+    ".eslint-doc-generatorrc.js",
+    ".eslintrc.js",
+    "babel.config.js",
+    "eslint-remote-tester.config.ts",
+    "jest.config.ts"
+  ],
   "include": ["src/**/*"],
   "exclude": ["src/rules/__tests__/fixtures/**/*"]
 }
