@@ -20,7 +20,7 @@
   },
   "files": [
     ".eslint-doc-generatorrc.js",
-    ".eslintrc.js",
+    "eslint.config.js",
     "babel.config.js",
     "eslint-remote-tester.config.ts",
     "jest.config.ts"

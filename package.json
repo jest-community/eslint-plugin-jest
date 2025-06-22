@@ -31,7 +31,7 @@
   "scripts": {
     "build": "babel --extensions .js,.ts src --out-dir lib --copy-files && rimraf --glob lib/__tests__ 'lib/**/__tests__'",
     "postinstall": "is-ci || husky",
-    "lint": "eslint . --ignore-pattern '!.eslintrc.js' --ext js,ts",
+    "lint": "eslint .",
     "prepack": "rimraf lib && yarn build",
     "prepublishOnly": "pinst --disable",
     "prettier:check": "prettier --check 'docs/**/*.md' README.md '.github/**' package.json tsconfig.json src/globals.json .yarnrc.yml",
