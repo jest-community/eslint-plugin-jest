@@ -1,4 +1,3 @@
-import { version as typescriptESLintPluginVersion } from '@typescript-eslint/eslint-plugin/package.json';
 import { version as eslintVersion } from 'eslint/package.json';
 import type { Config } from 'jest';
 import * as semver from 'semver';
@@ -42,18 +41,6 @@ if (semver.major(eslintVersion) !== 8) {
   config.projects = config.projects.filter(
     ({ displayName }) => displayName !== 'lint',
   );
-}
-
-// jest/unbound-method seems to only be happy with @typescript-eslint v7 right now...
-if (semver.major(typescriptESLintPluginVersion) !== 7) {
-  for (const project of config.projects) {
-    project.testPathIgnorePatterns.push(
-      '<rootDir>/src/rules/__tests__/unbound-method.test.ts',
-    );
-    project.coveragePathIgnorePatterns.push(
-      '<rootDir>/src/rules/unbound-method.ts',
-    );
-  }
 }
 
 export default config;
