@@ -1,4 +1,0 @@
-coverage/
-lib/
-!.eslintrc.js
-src/rules/__tests__/fixtures/
