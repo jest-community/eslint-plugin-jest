@@ -16,6 +16,8 @@ const config = [
   { ignores: ['.yarn', 'coverage/', 'lib/', 'src/rules/__tests__/fixtures'] },
   {
     plugins: {
+      // @ts-expect-error types are currently not considered compatible currently
+      //  todo: suspect this is because of differences in ESLint (types) versions
       '@typescript-eslint': pluginTypeScriptESLint,
       ...pluginEslintCommentsConfigs.recommended.plugins,
       import: pluginImport,
