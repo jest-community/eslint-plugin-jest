@@ -1,6 +1,4 @@
-import { version as eslintVersion } from 'eslint/package.json';
 import type { Config } from 'jest';
-import * as semver from 'semver';
 
 const config = {
   clearMocks: true,
@@ -35,12 +33,5 @@ const config = {
     },
   ],
 } satisfies Config;
-
-if (semver.major(eslintVersion) !== 8) {
-  // our eslint config only works for v8
-  config.projects = config.projects.filter(
-    ({ displayName }) => displayName !== 'lint',
-  );
-}
 
 export default config;
