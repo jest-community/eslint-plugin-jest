@@ -29,7 +29,6 @@ jobs:
       - run: |
           yarn install
           yarn build
-          yarn link
           ln -s ../ node_modules/eslint-plugin-jest
       - uses: AriPerkkio/eslint-remote-tester-run-action@v4
         with:
