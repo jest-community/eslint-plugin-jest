@@ -5,7 +5,7 @@ import {
 } from 'eslint-remote-tester-repositories';
 
 const config: Config = {
-  repositories: getRepositories({ randomize: true }).slice(0, 1),
+  repositories: getRepositories({ randomize: true }),
   pathIgnorePattern: getPathIgnorePattern(),
   extensions: ['js', 'jsx', 'ts', 'tsx'],
   concurrentTasks: 3,
