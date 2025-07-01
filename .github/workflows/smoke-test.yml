@@ -27,10 +27,9 @@ jobs:
         with:
           node-version: 20
       - run: |
-          npm install --legacy-peer-deps
-          npm run build
-          npm link
-          npm link eslint-plugin-jest
+          yarn install
+          yarn build
+          yarn link
       - uses: AriPerkkio/eslint-remote-tester-run-action@v4
         with:
           issue-title: 'Results of weekly scheduled smoke test'
