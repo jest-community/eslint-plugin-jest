@@ -22,12 +22,12 @@ jobs:
           persist-credentials: false
       - uses: actions/setup-node@v4
         with:
-          node-version: 16
+          node-version: 20
+          cache: 'yarn'
       - run: |
-          npm install --legacy-peer-deps
-          npm run build
-          npm link
-          npm link eslint-plugin-jest
+          yarn install
+          yarn build
+          ln -s ../ node_modules/eslint-plugin-jest
       - uses: AriPerkkio/eslint-remote-tester-run-action@v4
         with:
           issue-title: 'Results of weekly scheduled smoke test'
