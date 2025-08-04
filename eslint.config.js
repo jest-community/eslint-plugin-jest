@@ -50,6 +50,7 @@ const config = [
       '@typescript-eslint/no-import-type-side-effects': 'error',
       '@typescript-eslint/no-unused-vars': 'error',
       '@eslint-community/eslint-comments/no-unused-disable': 'error',
+      // todo: enable once we drop support for ESLint <9.15
       'eslint-plugin/no-meta-schema-default': 'off',
       'eslint-plugin/require-meta-default-options': 'off',
       'eslint-plugin/require-meta-docs-description': [
