@@ -3,7 +3,7 @@
 const pluginEslintCommentsConfigs = require('@eslint-community/eslint-plugin-eslint-comments/configs');
 const pluginTypeScriptESLint = require('@typescript-eslint/eslint-plugin');
 const parserTypeScriptESLint = require('@typescript-eslint/parser');
-const pluginESLintPlugin = require('eslint-plugin-eslint-plugin');
+const { default: pluginESLintPlugin } = require('eslint-plugin-eslint-plugin');
 const pluginImport = require('eslint-plugin-import');
 const pluginN = require('eslint-plugin-n');
 const pluginPrettier = require('eslint-plugin-prettier');
@@ -30,7 +30,7 @@ const config = [
       reportUnusedDisableDirectives: 'error',
     },
     rules: {
-      ...pluginESLintPlugin.configs['flat/recommended'].rules,
+      ...pluginESLintPlugin.configs.recommended.rules,
       ...pluginEslintCommentsConfigs.recommended.rules,
       ...pluginPrettierRecommended.rules,
     },
@@ -50,10 +50,13 @@ const config = [
       '@typescript-eslint/no-import-type-side-effects': 'error',
       '@typescript-eslint/no-unused-vars': 'error',
       '@eslint-community/eslint-comments/no-unused-disable': 'error',
+      'eslint-plugin/no-meta-schema-default': 'off',
+      'eslint-plugin/require-meta-default-options': 'off',
       'eslint-plugin/require-meta-docs-description': [
         'error',
         { pattern: '^(Enforce|Require|Disallow|Suggest|Prefer)' },
       ],
+      'eslint-plugin/require-meta-schema-description': 'off',
       'eslint-plugin/test-case-property-ordering': 'error',
       'no-else-return': 'error',
       'no-negated-condition': 'error',
