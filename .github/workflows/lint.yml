@@ -10,7 +10,7 @@ jobs:
   commitlint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
           fetch-depth: 0
           persist-credentials: false
@@ -27,10 +27,10 @@ jobs:
       statuses: write # to set PR status
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
           persist-credentials: false
       - name: Danger
-        uses: danger/danger-js@13.0.4
+        uses: danger/danger-js@bdccecb77e0144055fbaea9224f10cf8b1229b68 # v13.0.4
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
