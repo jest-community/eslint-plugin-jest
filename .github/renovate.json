@@ -5,5 +5,11 @@
     "automerge": true
   },
   "rangeStrategy": "replace",
-  "postUpdateOptions": ["yarnDedupeHighest"]
+  "postUpdateOptions": ["yarnDedupeHighest"],
+  "packageRules": [
+    {
+      "matchFileNames": [".github/**"],
+      "groupName": "workflows"
+    }
+  ]
 }
