@@ -1,4 +1,19 @@
 import type { JSONSchemaForNPMPackageJsonFiles } from '@schemastore/package';
+import type { RuleContext } from '@typescript-eslint/utils/ts-eslint';
+
+interface ContextSettings {
+  [key: string]: unknown;
+  jest?: EslintPluginJestSettings;
+}
+
+interface EslintPluginJestSettings {
+  version: JestVersion | string;
+}
+
+export interface EslintPluginJestRuleContext
+  extends Readonly<RuleContext<never, []>> {
+  settings: ContextSettings;
+}
 
 export type JestVersion =
   | 14
@@ -22,7 +37,25 @@ export type JestVersion =
 
 let cachedJestVersion: JestVersion | null = null;
 
-export const detectJestVersion = (): JestVersion => {
+const parseJestVersion = (rawVersion: number | string): JestVersion => {
+  if (typeof rawVersion === 'number') {
+    return rawVersion;
+  }
+
+  const [majorVersion] = rawVersion.split('.');
+
+  return parseInt(majorVersion, 10);
+};
+
+export const getContextJestVersion = (
+  context: EslintPluginJestRuleContext,
+): JestVersion | null => {
+  return context.settings.jest?.version
+    ? parseJestVersion(context.settings.jest.version)
+    : null;
+};
+
+export const detectJestVersion = (): JestVersion | null => {
   if (cachedJestVersion) {
     return cachedJestVersion;
   }
@@ -35,13 +68,15 @@ export const detectJestVersion = (): JestVersion => {
       require(jestPath) as JSONSchemaForNPMPackageJsonFiles;
 
     if (jestPackageJson.version) {
-      const [majorVersion] = jestPackageJson.version.split('.');
-
-      return (cachedJestVersion = parseInt(majorVersion, 10));
+      return (cachedJestVersion = parseJestVersion(jestPackageJson.version));
     }
   } catch {}
 
-  throw new Error(
-    'Unable to detect Jest version - please ensure jest package is installed, or otherwise set version explicitly',
-  );
+  return null;
+};
+
+export const getJestVersion = (
+  context: EslintPluginJestRuleContext,
+): JestVersion | null => {
+  return getContextJestVersion(context) || detectJestVersion();
 };

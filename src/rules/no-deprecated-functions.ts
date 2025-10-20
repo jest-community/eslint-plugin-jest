@@ -1,28 +1,10 @@
 import { AST_NODE_TYPES, type TSESTree } from '@typescript-eslint/utils';
 import {
-  type JestVersion,
+  type EslintPluginJestRuleContext,
   createRule,
-  detectJestVersion,
+  getJestVersion,
   getNodeName,
 } from './utils';
-
-interface ContextSettings {
-  jest?: EslintPluginJestSettings;
-}
-
-interface EslintPluginJestSettings {
-  version: JestVersion | string;
-}
-
-const parseJestVersion = (rawVersion: number | string): JestVersion => {
-  if (typeof rawVersion === 'number') {
-    return rawVersion;
-  }
-
-  const [majorVersion] = rawVersion.split('.');
-
-  return parseInt(majorVersion, 10);
-};
 
 export default createRule({
   name: __filename,
@@ -33,6 +15,8 @@ export default createRule({
     messages: {
       deprecatedFunction:
         '`{{ deprecation }}` has been deprecated in favor of `{{ replacement }}`',
+      jestNotDetected:
+        'Unable to detect Jest version - please ensure jest package is installed, or otherwise set version explicitly',
     },
     type: 'suggestion',
     schema: [],
@@ -40,10 +24,11 @@ export default createRule({
   },
   defaultOptions: [],
   create(context) {
-    const jestVersion = parseJestVersion(
-      (context.settings as ContextSettings)?.jest?.version ||
-        detectJestVersion(),
-    );
+    // If jest version is not detected, it is set to Infinity so that all possible deprecations
+    // are reported with a "jest not detected" error message
+    const jestVersion =
+      getJestVersion(context as EslintPluginJestRuleContext) || Infinity;
+    const jestNotDetected = jestVersion === Infinity;
 
     const deprecations: Record<string, string> = {
       ...(jestVersion >= 15 && {
@@ -80,13 +65,16 @@ export default createRule({
         const { callee } = node;
 
         context.report({
-          messageId: 'deprecatedFunction',
+          messageId: jestNotDetected ? 'jestNotDetected' : 'deprecatedFunction',
           data: {
             deprecation,
             replacement,
           },
           node,
           fix(fixer) {
+            if (jestNotDetected) {
+              return [];
+            }
             let [name, func] = replacement.split('.');
 
             if (callee.property.type === AST_NODE_TYPES.Literal) {
