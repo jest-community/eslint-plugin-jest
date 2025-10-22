@@ -143,7 +143,7 @@ jobs:
       contents: write # to be able to publish a GitHub release
       issues: write # to be able to comment on released issues
       pull-requests: write # to be able to comment on released pull requests
-      id-token: write # to enable use of OIDC for npm provenance
+      id-token: write # to enable use of OIDC for npm provenance and publishing
 
     if:
       # prettier-ignore
@@ -160,9 +160,14 @@ jobs:
         with:
           node-version: lts/*
           cache: yarn
+
+        # todo: this can be removed once we are using a version of Node that
+        #  ships with npm v11.5.1 or higher, which is needed for using oidc
+      - name: install latest npm
+        run: npm i -g npm
+
       - name: install
         run: yarn
       - run: yarn semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
