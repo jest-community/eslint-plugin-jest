@@ -160,12 +160,6 @@ jobs:
         with:
           node-version: lts/*
           cache: yarn
-
-        # todo: this can be removed once we are using a version of Node that
-        #  ships with npm v11.5.1 or higher, which is needed for using oidc
-      - name: install latest npm
-        run: npm i -g npm
-
       - name: install
         run: yarn
       - run: yarn semantic-release
