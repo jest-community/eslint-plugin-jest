@@ -1,3 +1,10 @@
+## [29.0.2-next.1](https://github.com/jest-community/eslint-plugin-jest/compare/v29.0.1...v29.0.2-next.1) (2025-10-31)
+
+
+### Bug Fixes
+
+* only specify ts-eslint once in package.json ([bc1d010](https://github.com/jest-community/eslint-plugin-jest/commit/bc1d0108ccf3a7995a8888d5dd92c58dc50ecaff))
+
 ## [29.0.1](https://github.com/jest-community/eslint-plugin-jest/compare/v29.0.0...v29.0.1) (2025-06-18)
 
 
