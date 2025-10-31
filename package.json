@@ -94,7 +94,6 @@
     "@types/semver": "^7.5.8",
     "@typescript-eslint/eslint-plugin": "^8.0.0",
     "@typescript-eslint/parser": "^8.0.0",
-    "@typescript-eslint/utils": "^8.0.0",
     "babel-jest": "^30.0.0",
     "babel-plugin-replace-ts-export-assignment": "^0.0.2",
     "dedent": "^1.5.0",
