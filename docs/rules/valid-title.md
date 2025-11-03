@@ -175,6 +175,7 @@ describe('foo', () => {
 interface Options {
   ignoreSpaces?: boolean;
   ignoreTypeOfDescribeName?: boolean;
+  ignoreTypeOfTestName?: boolean;
   disallowedWords?: string[];
   mustNotMatch?: Partial<Record<'describe' | 'test' | 'it', string>> | string;
   mustMatch?: Partial<Record<'describe' | 'test' | 'it', string>> | string;
@@ -192,6 +193,13 @@ When enabled, the leading and trailing spaces won't be checked.
 Default: `false`
 
 When enabled, the type of the first argument to `describe` blocks won't be
+checked.
+
+#### `ignoreTypeOfTestName`
+
+Default: `false`
+
+When enabled, the type of the first argument to `it` blocks won't be
 checked.
 
 #### `disallowedWords`
