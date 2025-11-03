@@ -5383,15 +5383,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-eslint-plugin@npm:~7.0.0":
-  version: 7.0.0
-  resolution: "eslint-plugin-eslint-plugin@npm:7.0.0"
+"eslint-plugin-eslint-plugin@npm:^6.0.0":
+  version: 6.5.0
+  resolution: "eslint-plugin-eslint-plugin@npm:6.5.0"
   dependencies:
     "@eslint-community/eslint-utils": "npm:^4.4.0"
     estraverse: "npm:^5.3.0"
   peerDependencies:
-    eslint: ">=9.0.0"
-  checksum: 10c0/018582af73035321705626f31d56df93d79ac9fe1ed952ad7be2429f86b32ed090997434d95fdbfa0d3b73c91655050a3017efaf5fdaf06cffb4bf2915c986c3
+    eslint: ">=8.23.0"
+  checksum: 10c0/00821d99d842ce5dd19731f2806da344074c689c5e2d2977afd1dac94dac98f53a9a743a48515017beb91390fded003eaee7a9309673b424f2dba9695091a3ee
   languageName: node
   linkType: hard
 
@@ -5452,7 +5452,7 @@ __metadata:
     eslint: "npm:^8.57.0"
     eslint-config-prettier: "npm:^10.0.0"
     eslint-doc-generator: "npm:^2.0.0"
-    eslint-plugin-eslint-plugin: "npm:~7.0.0"
+    eslint-plugin-eslint-plugin: "npm:^6.0.0"
     eslint-plugin-import: "npm:^2.25.1"
     eslint-plugin-n: "npm:^17.0.0"
     eslint-plugin-prettier: "npm:^5.0.0"
