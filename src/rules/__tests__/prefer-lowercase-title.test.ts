@@ -646,3 +646,57 @@ ruleTester.run('prefer-lowercase-title with ignoreTopLevelDescribe', rule, {
     },
   ],
 });
+
+ruleTester.run('prefer-lowercase-title with ignoreTodos', rule, {
+  valid: [
+    {
+      code: 'test.todo(`Foo`, function () {})',
+      options: [{ ignoreTodos: true }],
+    },
+    {
+      code: 'it.todo(`Foo`, function () {})',
+      options: [{ ignoreTodos: true }],
+    },
+  ],
+  invalid: [
+    {
+      code: "describe('Foo', function () {})",
+      output: "describe('foo', function () {})",
+      options: [{ ignoreTodos: true }],
+      errors: [
+        {
+          messageId: 'unexpectedCase',
+          data: { method: DescribeAlias.describe },
+          column: 10,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: "it('Foo', function () {})",
+      output: "it('foo', function () {})",
+      options: [{ ignoreTodos: true }],
+      errors: [
+        {
+          messageId: 'unexpectedCase',
+          data: { method: TestCaseName.it },
+          column: 4,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: "test('Foo', function () {})",
+      output: "test('foo', function () {})",
+      options: [{ ignore: [TestCaseName.it] }],
+      errors: [
+        {
+          messageId: 'unexpectedCase',
+          data: { method: TestCaseName.test },
+          column: 6,
+          line: 1,
+        },
+      ],
+    },
+  ],
+});

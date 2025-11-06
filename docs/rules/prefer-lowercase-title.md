@@ -109,3 +109,18 @@ describe('MyClass', () => {
   });
 });
 ```
+
+### `ignoreTodos`
+
+This option is used to control whether
+[`todo`](https://jestjs.io/docs/api#testtodoname) Jest functions to be checked
+by this rule. By the default, the option is set to false.
+
+Example of **correct** code for the `{ "ignoreTodos": true }` option:
+
+```js
+/* eslint jest/prefer-lowercase-title: ["error", { "ignoreTodos": true }] */
+test.todo('Uppercase description');
+
+it.todo('Uppercase description');
+```
