@@ -142,8 +142,7 @@ export default createRule<
         // Ignore *.todo test and/or test suites
         if (
           ignoreTodos &&
-          (jestFnCall.name.startsWith('x') ||
-            jestFnCall.members.some(s => getAccessorValue(s) === 'todo'))
+          jestFnCall.members.some(s => getAccessorValue(s) === 'todo')
         ) {
           return;
         }
