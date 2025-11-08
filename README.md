@@ -386,6 +386,7 @@ Manually fixable by
 | [valid-describe-callback](docs/rules/valid-describe-callback.md)                     | Enforce valid `describe()` callback                                       | ✅  |     |     |     |
 | [valid-expect](docs/rules/valid-expect.md)                                           | Enforce valid `expect()` usage                                            | ✅  |     | 🔧  |     |
 | [valid-expect-in-promise](docs/rules/valid-expect-in-promise.md)                     | Require promises that have expectations in their chain to be valid        | ✅  |     |     |     |
+| [valid-mocked-module-path](docs/rules/valid-mocked-module-path.md)                   | Disallow mocking of non-existing module path                              |     |     |     |     |
 | [valid-title](docs/rules/valid-title.md)                                             | Enforce valid titles                                                      | ✅  |     | 🔧  |     |
 
 ### Requires Type Checking

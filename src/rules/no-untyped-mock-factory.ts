@@ -1,21 +1,12 @@
 import { AST_NODE_TYPES, type TSESTree } from '@typescript-eslint/utils';
 import {
   createRule,
+  findModuleName,
   getAccessorValue,
   isFunction,
   isSupportedAccessor,
   isTypeOfJestFnCall,
 } from './utils';
-
-const findModuleName = (
-  node: TSESTree.Literal | TSESTree.Node,
-): TSESTree.StringLiteral | null => {
-  if (node.type === AST_NODE_TYPES.Literal && typeof node.value === 'string') {
-    return node;
-  }
-
-  return null;
-};
 
 export default createRule({
   name: __filename,
