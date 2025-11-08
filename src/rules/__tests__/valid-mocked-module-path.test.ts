@@ -1,3 +1,4 @@
+import dedent from 'dedent';
 import rule from '../valid-mocked-module-path';
 import { FlatCompatRuleTester as RuleTester, espreeParser } from './test-utils';
 
@@ -11,13 +12,26 @@ const ruleTester = new RuleTester({
 ruleTester.run('valid-mocked-module-path', rule, {
   valid: [
     { filename: __filename, code: 'jest.mock("./fixtures/module")' },
+    { filename: __filename, code: 'jest.mock("./fixtures/module", () => {})' },
+    { filename: __filename, code: 'jest.mock()' },
+    {
+      filename: __filename,
+      code: 'jest.doMock("./fixtures/module", () => {})',
+    },
+    {
+      filename: __filename,
+      code: dedent`
+        describe("foo", () => {});
+      `,
+    },
     { filename: __filename, code: 'jest.doMock("./fixtures/module")' },
     { filename: __filename, code: 'jest.mock("./fixtures/module/foo.ts")' },
     { filename: __filename, code: 'jest.doMock("./fixtures/module/foo.ts")' },
     { filename: __filename, code: 'jest.mock("./fixtures/module/foo.js")' },
     { filename: __filename, code: 'jest.doMock("./fixtures/module/foo.js")' },
-    'jest.mock("dedent")',
-    'jest.doMock("dedent")',
+    'jest.mock("eslint")',
+    'jest.doMock("eslint")',
+    'jest.mock("child_process")',
   ],
   invalid: [
     {

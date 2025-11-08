@@ -34,50 +34,64 @@ export default createRule({
         const { property } = callee;
 
         if (
-          node.arguments.length >= 1 &&
-          isTypeOfJestFnCall(node, context, ['jest']) &&
-          isSupportedAccessor(property) &&
-          ['mock', 'doMock'].includes(getAccessorValue(property))
+          !node.arguments.length ||
+          !isTypeOfJestFnCall(node, context, ['jest']) ||
+          !(
+            isSupportedAccessor(property) &&
+            ['mock', 'doMock'].includes(getAccessorValue(property))
+          )
         ) {
-          const [nameNode] = node.arguments;
-          const moduleName = findModuleName(nameNode);
+          return;
+        }
 
-          try {
-            if (moduleName) {
-              if (moduleName.value.startsWith('.')) {
-                const resolvedModulePath = path.resolve(
-                  path.dirname(context.filename),
-                  moduleName.value,
-                );
+        const [nameNode] = node.arguments;
+        const moduleName = findModuleName(nameNode);
 
-                const hasPossiblyModulePaths = ['', '.js', '.ts']
-                  .map(ext => `${resolvedModulePath}${ext}`)
-                  .some(modPath => {
-                    try {
-                      statSync(modPath);
+        /* istanbul ignore if */
+        if (!moduleName) {
+          throw new Error(
+            'Cannot parse mocked module name from `jest.mock` -  - please file a github issue at https://github.com/jest-community/eslint-plugin-jest`',
+          );
+        }
 
-                      return true;
-                    } catch {
-                      return false;
-                    }
-                  });
+        try {
+          if (moduleName.value.startsWith('.')) {
+            const resolvedModulePath = path.resolve(
+              path.dirname(context.filename),
+              moduleName.value,
+            );
 
-                if (!hasPossiblyModulePaths) {
-                  throw { code: 'MODULE_NOT_FOUND' };
+            const hasPossiblyModulePaths = ['', '.js', '.ts']
+              .map(ext => `${resolvedModulePath}${ext}`)
+              .some(modPath => {
+                try {
+                  statSync(modPath);
+
+                  return true;
+                } catch {
+                  return false;
                 }
-              } else {
-                require.resolve(moduleName.value);
-              }
-            }
-          } catch (err: any) {
-            if (err?.code === 'MODULE_NOT_FOUND' || err?.code === 'ENOENT') {
-              context.report({
-                messageId: 'invalidMockModulePath',
-                data: { moduleName: moduleName?.raw ?? './module-name' },
-                node,
               });
+
+            if (!hasPossiblyModulePaths) {
+              throw { code: 'MODULE_NOT_FOUND' };
             }
+          } else {
+            require.resolve(moduleName.value);
           }
+        } catch (err: any) {
+          // Skip over any unexpected issues when attempt to verify mocked module path.
+          // The list of possible errors is non-exhaustive.
+          /* istanbul ignore if */
+          if (!['MODULE_NOT_FOUND', 'ENOENT'].includes(err.code)) {
+            return;
+          }
+
+          context.report({
+            messageId: 'invalidMockModulePath',
+            data: { moduleName: moduleName.raw },
+            node,
+          });
         }
       },
     };
