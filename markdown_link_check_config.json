@@ -6,5 +6,11 @@
         "Accept-Encoding": "br, gzip, deflate"
       }
     }
+  ],
+  "replacementPatterns": [
+      {
+      "pattern": "^https://www\\.npmjs\\.com/package",
+      "replacement": "https://registry.npmjs.org"
+    }
   ]
 }
