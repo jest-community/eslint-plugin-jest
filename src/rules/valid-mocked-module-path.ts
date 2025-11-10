@@ -17,7 +17,7 @@ export default createRule({
       description: 'Disallow mocking of non-existing module path',
     },
     messages: {
-      invalidMockModulePath: 'Mocked module path {{moduleName}} does not exist',
+      invalidMockModulePath: 'Module path {{ moduleName }} does not exist',
     },
     schema: [],
   },
@@ -44,8 +44,7 @@ export default createRule({
           return;
         }
 
-        const [nameNode] = node.arguments;
-        const moduleName = findModuleName(nameNode);
+        const moduleName = findModuleName(node.arguments[0]);
 
         /* istanbul ignore if */
         if (!moduleName) {
