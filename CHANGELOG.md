@@ -1,3 +1,10 @@
+# [29.1.0](https://github.com/jest-community/eslint-plugin-jest/compare/v29.0.1...v29.1.0) (2025-11-10)
+
+
+### Features
+
+* **prefer-lowercase-title:** allow ignoring `todo`s ([#1843](https://github.com/jest-community/eslint-plugin-jest/issues/1843)) ([4658638](https://github.com/jest-community/eslint-plugin-jest/commit/4658638ef45a58e35e9aed1fa959f9421361a476))
+
 ## [29.0.1](https://github.com/jest-community/eslint-plugin-jest/compare/v29.0.0...v29.0.1) (2025-06-18)
 
 
