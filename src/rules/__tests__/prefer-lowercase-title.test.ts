@@ -657,6 +657,18 @@ ruleTester.run('prefer-lowercase-title with ignoreTodos', rule, {
       code: 'it.todo(`Foo`, function () {})',
       options: [{ ignoreTodos: true }],
     },
+    {
+      code: 'it.todo("Foo", () => {})',
+      options: [{ ignoreTodos: true }],
+    },
+    {
+      code: 'it.only.todo("Foo", () => {})',
+      options: [{ ignoreTodos: true }],
+    },
+    {
+      code: 'it.todo.only("Foo", () => {})',
+      options: [{ ignoreTodos: true }],
+    },
   ],
   invalid: [
     {
