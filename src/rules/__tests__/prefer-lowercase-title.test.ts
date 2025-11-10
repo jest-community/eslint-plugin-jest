@@ -646,3 +646,95 @@ ruleTester.run('prefer-lowercase-title with ignoreTopLevelDescribe', rule, {
     },
   ],
 });
+
+ruleTester.run('prefer-lowercase-title with ignoreTodos', rule, {
+  valid: [
+    {
+      code: 'test.todo(`Foo`, function () {})',
+      options: [{ ignoreTodos: true }],
+    },
+    {
+      code: 'it.todo(`Foo`, function () {})',
+      options: [{ ignoreTodos: true }],
+    },
+    {
+      code: 'it.todo("Foo", () => {})',
+      options: [{ ignoreTodos: true }],
+    },
+    {
+      code: 'it.only.todo("Foo", () => {})',
+      options: [{ ignoreTodos: true }],
+    },
+    {
+      code: 'it.todo.only("Foo", () => {})',
+      options: [{ ignoreTodos: true }],
+    },
+  ],
+  invalid: [
+    {
+      code: "describe('Foo', function () {})",
+      output: "describe('foo', function () {})",
+      options: [{ ignoreTodos: true }],
+      errors: [
+        {
+          messageId: 'unexpectedCase',
+          data: { method: DescribeAlias.describe },
+          column: 10,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: "it('Foo', function () {})",
+      output: "it('foo', function () {})",
+      options: [{ ignoreTodos: true }],
+      errors: [
+        {
+          messageId: 'unexpectedCase',
+          data: { method: TestCaseName.it },
+          column: 4,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: "test('Foo', function () {})",
+      output: "test('foo', function () {})",
+      options: [{ ignoreTodos: true }],
+      errors: [
+        {
+          messageId: 'unexpectedCase',
+          data: { method: TestCaseName.test },
+          column: 6,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: "test.only('Foo', function () {})",
+      output: "test.only('foo', function () {})",
+      options: [{ ignoreTodos: true }],
+      errors: [
+        {
+          messageId: 'unexpectedCase',
+          data: { method: TestCaseName.test },
+          column: 11,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: "test.skip('Foo', function () {})",
+      output: "test.skip('foo', function () {})",
+      options: [{ ignoreTodos: true }],
+      errors: [
+        {
+          messageId: 'unexpectedCase',
+          data: { method: TestCaseName.test },
+          column: 11,
+          line: 1,
+        },
+      ],
+    },
+  ],
+});
