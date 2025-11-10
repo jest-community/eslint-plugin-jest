@@ -698,5 +698,31 @@ ruleTester.run('prefer-lowercase-title with ignoreTodos', rule, {
         },
       ],
     },
+    {
+      code: "test.only('Foo', function () {})",
+      output: "test.only('foo', function () {})",
+      options: [{ ignoreTodos: true }],
+      errors: [
+        {
+          messageId: 'unexpectedCase',
+          data: { method: TestCaseName.test },
+          column: 11,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: "test.skip('Foo', function () {})",
+      output: "test.skip('foo', function () {})",
+      options: [{ ignoreTodos: true }],
+      errors: [
+        {
+          messageId: 'unexpectedCase',
+          data: { method: TestCaseName.test },
+          column: 11,
+          line: 1,
+        },
+      ],
+    },
   ],
 });
