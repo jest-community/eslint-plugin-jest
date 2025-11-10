@@ -5463,7 +5463,7 @@ __metadata:
     jest: "npm:^30.0.0"
     jest-runner-eslint: "npm:^2.0.0"
     lint-staged: "npm:^16.0.0"
-    markdown-link-check: "npm:^3.14.1"
+    markdown-link-check: "npm:^3.13.7"
     pinst: "npm:^3.0.0"
     prettier: "npm:^3.0.0"
     rimraf: "npm:^6.0.0"
@@ -8442,7 +8442,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"markdown-link-check@npm:^3.14.1":
+"markdown-link-check@npm:^3.13.7":
   version: 3.14.1
   resolution: "markdown-link-check@npm:3.14.1"
   dependencies:

@@ -112,7 +112,7 @@
     "jest": "^30.0.0",
     "jest-runner-eslint": "^2.0.0",
     "lint-staged": "^16.0.0",
-    "markdown-link-check": "^3.14.1",
+    "markdown-link-check": "^3.13.7",
     "pinst": "^3.0.0",
     "prettier": "^3.0.0",
     "rimraf": "^6.0.0",
