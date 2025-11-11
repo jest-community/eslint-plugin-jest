@@ -5,6 +5,7 @@ import {
   type StringNode,
   TestCaseName,
   createRule,
+  getAccessorValue,
   getStringValue,
   isStringNode,
   isTypeOfJestFnCall,
@@ -47,6 +48,7 @@ export default createRule<
       ignore: readonly IgnorableFunctionExpressions[];
       allowedPrefixes: readonly string[];
       ignoreTopLevelDescribe: boolean;
+      ignoreTodos: boolean;
     }>,
   ],
   'unexpectedCase'
@@ -88,17 +90,33 @@ export default createRule<
             type: 'boolean',
             default: false,
           },
+          ignoreTodos: {
+            type: 'boolean',
+            default: false,
+          },
         },
         additionalProperties: false,
       },
     ],
   },
   defaultOptions: [
-    { ignore: [], allowedPrefixes: [], ignoreTopLevelDescribe: false },
+    {
+      ignore: [],
+      allowedPrefixes: [],
+      ignoreTopLevelDescribe: false,
+      ignoreTodos: false,
+    },
   ],
   create(
     context,
-    [{ ignore = [], allowedPrefixes = [], ignoreTopLevelDescribe }],
+    [
+      {
+        ignore = [],
+        allowedPrefixes = [],
+        ignoreTopLevelDescribe,
+        ignoreTodos,
+      },
+    ],
   ) {
     const ignores = populateIgnores(ignore);
     let numberOfDescribeBlocks = 0;
@@ -118,6 +136,14 @@ export default createRule<
             return;
           }
         } else if (jestFnCall.type !== 'test') {
+          return;
+        }
+
+        // Ignore *.todo test and/or test suites
+        if (
+          ignoreTodos &&
+          jestFnCall.members.some(s => getAccessorValue(s) === 'todo')
+        ) {
           return;
         }
 
