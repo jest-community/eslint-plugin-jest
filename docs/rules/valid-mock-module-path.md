@@ -1,4 +1,4 @@
-# Disallow mocking of non-existing module path (`valid-mocked-module-path`)
+# Disallow mocking of non-existing module path (`valid-mock-module-path`)
 
 <!-- end auto-generated rule header -->
 
@@ -37,6 +37,36 @@ jest.mock('../../this/module/really/does/exist');
 // Local file that cannot be found
 jest.mock('../../this/path/really/does/exist.js');
 ```
+
+## Options
+
+```json
+{
+  "jest/valid-mock-module-path": [
+    "error",
+    {
+      "moduleFileExtensions": [".tsx", ".ts"]
+    }
+  ]
+}
+```
+
+### `moduleFileExtensions`
+
+This array option controls which file extensions the plugin checks for
+existence. Valid values are:
+
+- `".js"`
+- `".ts"`
+- `".jsx"`
+- `".tsx"`
+- `".json"`
+
+For any custom extension, a preceding dot **must** be present before the file
+extension for desired effect.
+
+The default value for this option is
+`{ "moduleFileExtensions": [".js", ".ts", ".jsx", ".tsx", ".json"] }`.
 
 ## When Not To Use It
 

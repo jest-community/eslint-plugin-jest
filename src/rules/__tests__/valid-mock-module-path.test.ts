@@ -1,5 +1,5 @@
 import dedent from 'dedent';
-import rule from '../valid-mocked-module-path';
+import rule from '../valid-mock-module-path';
 import { FlatCompatRuleTester as RuleTester, espreeParser } from './test-utils';
 
 const ruleTester = new RuleTester({
@@ -9,7 +9,7 @@ const ruleTester = new RuleTester({
   },
 });
 
-ruleTester.run('valid-mocked-module-path', rule, {
+ruleTester.run('valid-mock-module-path', rule, {
   valid: [
     { filename: __filename, code: 'jest.mock("./fixtures/module")' },
     { filename: __filename, code: 'jest.mock("./fixtures/module", () => {})' },
@@ -32,6 +32,21 @@ ruleTester.run('valid-mocked-module-path', rule, {
     'jest.mock("eslint")',
     'jest.doMock("eslint")',
     'jest.mock("child_process")',
+    'jest.mock(() => {})',
+    {
+      filename: __filename,
+      code: dedent`
+        const a = "../module/does/not/exist";
+        jest.mock(a);
+    `,
+    },
+    { filename: __filename, code: 'jest.mock("./fixtures/module/jsx/foo")' },
+    { filename: __filename, code: 'jest.mock("./fixtures/module/tsx/foo")' },
+    {
+      filename: __filename,
+      code: 'jest.mock("./fixtures/module/tsx/foo")',
+      options: [{ moduleFileExtensions: ['.jsx'] }],
+    },
   ],
   invalid: [
     {
@@ -53,6 +68,32 @@ ruleTester.run('valid-mocked-module-path', rule, {
         {
           messageId: 'invalidMockModulePath',
           data: { moduleName: '"../file/does/not/exist.ts"' },
+          column: 1,
+          line: 1,
+        },
+      ],
+    },
+    {
+      filename: __filename,
+      code: 'jest.mock("./fixtures/module/foo.jsx")',
+      options: [{ moduleFileExtensions: ['.tsx'] }],
+      errors: [
+        {
+          messageId: 'invalidMockModulePath',
+          data: { moduleName: '"./fixtures/module/foo.jsx"' },
+          column: 1,
+          line: 1,
+        },
+      ],
+    },
+    {
+      filename: __filename,
+      code: 'jest.mock("./fixtures/module/foo.jsx")',
+      options: [{ moduleFileExtensions: undefined }],
+      errors: [
+        {
+          messageId: 'invalidMockModulePath',
+          data: { moduleName: '"./fixtures/module/foo.jsx"' },
           column: 1,
           line: 1,
         },
