@@ -64,10 +64,6 @@ existence. The default extensions are:
 
 For any custom extension, a preceding dot **must** be present before the file
 extension for desired effect.
-
-The default value for this option is
-`{ "moduleFileExtensions": [".js", ".ts", ".jsx", ".tsx", ".json"] }`.
-
 ## When Not To Use It
 
 Don't use this rule on non-jest test files.
