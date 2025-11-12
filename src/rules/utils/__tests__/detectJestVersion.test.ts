@@ -93,12 +93,10 @@ describe('detectJestVersion', () => {
     });
 
     describe('when the package.json is missing the version property', () => {
-      it('throws an error', () => {
+      it('returns null', () => {
         packageJsonFactory.mockReturnValue({});
 
-        expect(() => detectJestVersion()).toThrow(
-          /Unable to detect Jest version/iu,
-        );
+        expect(detectJestVersion()).toBeNull();
       });
     });
 
@@ -184,7 +182,7 @@ describe('detectJestVersion', () => {
   });
 
   describe('when jest is not installed', () => {
-    it('throws an error', () => {
+    it('returns null', () => {
       const projectDir = setupFakeProject({
         'package.json': { name: 'no-jest' },
         [`node_modules/${relativePathToFn}`]: compiledFn,
@@ -193,8 +191,8 @@ describe('detectJestVersion', () => {
 
       const { stdout, stderr } = runDetectJestVersion(projectDir);
 
-      expect(stdout).toBe('undefined');
-      expect(stderr).toContain('Unable to detect Jest version');
+      expect(stdout).toBe('null');
+      expect(stderr).toContain('');
     });
   });
 
