@@ -1,4 +1,4 @@
-# Disallow mocking of non-existing module path (`valid-mock-module-path`)
+# Disallow mocking of non-existing module paths (`valid-mock-module-path`)
 
 <!-- end auto-generated rule header -->
 
@@ -64,6 +64,7 @@ existence. The default extensions are:
 
 For any custom extension, a preceding dot **must** be present before the file
 extension for desired effect.
+
 ## When Not To Use It
 
 Don't use this rule on non-jest test files.
