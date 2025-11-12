@@ -21,7 +21,7 @@ export default createRule<
   meta: {
     type: 'problem',
     docs: {
-      description: 'Disallow mocking of non-existing module path',
+      description: 'Disallow mocking of non-existing module paths',
     },
     messages: {
       invalidMockModulePath: 'Module path {{ moduleName }} does not exist',

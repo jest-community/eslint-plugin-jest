@@ -45,7 +45,7 @@ jest.mock('../../this/path/really/does/exist.js');
   "jest/valid-mock-module-path": [
     "error",
     {
-      "moduleFileExtensions": [".tsx", ".ts"]
+      "moduleFileExtensions": [".js", ".ts", ".jsx", ".tsx", ".json"]
     }
   ]
 }
@@ -54,7 +54,7 @@ jest.mock('../../this/path/really/does/exist.js');
 ### `moduleFileExtensions`
 
 This array option controls which file extensions the plugin checks for
-existence. Valid values are:
+existence. The default extensions are:
 
 - `".js"`
 - `".ts"`
