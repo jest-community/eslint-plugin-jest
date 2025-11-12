@@ -1,18 +1,18 @@
-import { TSESLint } from '@typescript-eslint/utils';
+import type { TSESLint } from '@typescript-eslint/utils';
 import rule from '../no-deprecated-functions';
-import {
-  type JestVersion,
-  detectJestVersion,
-} from '../utils/detectJestVersion';
-import {
-  FlatCompatRuleTester as RuleTester,
-  usingFlatConfig,
-} from './test-utils';
+import { type JestVersion, getJestVersion } from '../utils/detectJestVersion';
+import { FlatCompatRuleTester as RuleTester } from './test-utils';
 
-jest.mock('../utils/detectJestVersion');
+jest.mock('../utils/detectJestVersion', () => {
+  const actual = jest.requireActual('../utils/detectJestVersion');
 
-const detectJestVersionMock = detectJestVersion as jest.MockedFunction<
-  typeof detectJestVersion
+  jest.spyOn(actual, 'getJestVersion');
+
+  return actual;
+});
+
+const getJestVersionMock = getJestVersion as jest.MockedFunction<
+  typeof getJestVersion
 >;
 
 const ruleTester = new RuleTester();
@@ -60,6 +60,31 @@ const generateInvalidCases = (
   ];
 };
 
+const generateNotDetectedCases = (
+  deprecation: string,
+): Array<TSESLint.InvalidTestCase<'jestNotDetected', []>> => {
+  const [deprecatedName, deprecatedFunc] = deprecation.split('.');
+  const settings = { jest: { version: undefined } };
+  const errors: [TSESLint.TestCaseError<'jestNotDetected'>] = [
+    { messageId: 'jestNotDetected' },
+  ];
+
+  return [
+    {
+      code: `${deprecation}()`,
+      output: null,
+      settings,
+      errors,
+    },
+    {
+      code: `${deprecatedName}['${deprecatedFunc}']()`,
+      output: null,
+      settings,
+      errors,
+    },
+  ];
+};
+
 // contains the cache-clearing beforeEach so we can test the cache too
 describe('the rule', () => {
   // a few sanity checks before doing our massive loop
@@ -72,7 +97,7 @@ describe('the rule', () => {
       ...generateValidCases(25, 'jest.genMockFromModule'),
       ...generateValidCases('25.1.1', 'jest.genMockFromModule'),
       ...generateValidCases('17.2', 'require.requireActual'),
-    ],
+    ].filter(testCase => testCase.settings?.jest?.version),
     invalid: [
       ...generateInvalidCases(
         21,
@@ -90,14 +115,14 @@ describe('the rule', () => {
         'jest.genMockFromModule',
         'jest.createMockFromModule',
       ),
-    ],
+    ].filter(testCase => testCase.settings?.jest?.version),
   });
 
   describe.each<JestVersion>([
     14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27,
   ])('when using jest version %i', jestVersion => {
     beforeEach(async () => {
-      detectJestVersionMock.mockReturnValue(jestVersion);
+      getJestVersionMock.mockReturnValue(jestVersion);
     });
 
     const allowedFunctions: string[] = [];
@@ -147,37 +172,21 @@ describe('the rule', () => {
     });
   });
 
-  describe('when there is an error in detecting the jest version', () => {
-    beforeEach(() => {
-      detectJestVersionMock.mockImplementation(() => {
-        throw new Error('oh noes!');
-      });
+  describe('when jest version not detected', () => {
+    beforeEach(async () => {
+      getJestVersionMock.mockReturnValue(null);
     });
 
-    it('bubbles the error up', () => {
-      expect(() => {
-        const linter = new TSESLint.Linter();
-
-        /* istanbul ignore if */
-        if (usingFlatConfig) {
-          linter.verify('jest.resetModuleRegistry()', [
-            {
-              plugins: {
-                jest: { rules: { 'no-deprecated-functions': rule } },
-              },
-              rules: { 'jest/no-deprecated-functions': 'error' },
-            },
-          ]);
-
-          return;
-        }
-
-        linter.defineRule('no-deprecated-functions', rule);
-
-        linter.verify('jest.resetModuleRegistry()', {
-          rules: { 'no-deprecated-functions': 'error' },
-        });
-      }).toThrow('oh noes!');
+    ruleTester.run('no jest version', rule, {
+      valid: ['jest', 'require("fs")'],
+      invalid: [
+        'jest.resetModuleRegistry',
+        'jest.addMatchers',
+        'require.requireMock',
+        'require.requireActual',
+        'jest.runTimersToTime',
+        'jest.genMockFromModule',
+      ].flatMap(generateNotDetectedCases),
     });
   });
 });
