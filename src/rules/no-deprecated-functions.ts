@@ -16,7 +16,7 @@ export default createRule({
       deprecatedFunction:
         '`{{ deprecation }}` has been deprecated in favor of `{{ replacement }}`',
       jestNotDetected:
-        'Unable to detect Jest version - please ensure jest package is installed, or otherwise set version explicitly',
+        'Unable to detect Jest version - please ensure jest package is installed or set version explicitly',
     },
     type: 'suggestion',
     schema: [],
