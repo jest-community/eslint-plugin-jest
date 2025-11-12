@@ -47,6 +47,16 @@ ruleTester.run('valid-mock-module-path', rule, {
       code: 'jest.mock("./fixtures/module/tsx/foo")',
       options: [{ moduleFileExtensions: ['.jsx'] }],
     },
+    {
+      filename: __filename,
+      code: 'jest.mock("./fixtures/module/bar")',
+      options: [{ moduleFileExtensions: ['.json'] }],
+    },
+    {
+      filename: __filename,
+      code: 'jest.mock("./fixtures/module/bar")',
+      options: [{ moduleFileExtensions: ['.css'] }],
+    },
   ],
   invalid: [
     {

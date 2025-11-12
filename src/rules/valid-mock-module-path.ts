@@ -96,25 +96,27 @@ export default createRule<
             },
           );
 
-          if (!hasPossiblyModulePaths) {
-            throw { code: 'MODULE_NOT_FOUND' };
+          if (hasPossiblyModulePaths) {
+            return;
           }
-        } catch (err: any) {
+        } catch (err: unknown) {
+          const castedErr = err as NodeJS.ErrnoException;
+
           // Reports unexpected issues when attempt to verify mocked module path.
           // The list of possible errors is non-exhaustive.
           /* istanbul ignore if */
-          if (!['MODULE_NOT_FOUND', 'ENOENT'].includes(err.code)) {
+          if (castedErr.code !== 'MODULE_NOT_FOUND') {
             throw new Error(
               `Error when trying to validate mock module path from \`jest.mock\`: ${err}`,
             );
           }
-
-          context.report({
-            messageId: 'invalidMockModulePath',
-            data: { moduleName: moduleName.raw },
-            node,
-          });
         }
+
+        context.report({
+          messageId: 'invalidMockModulePath',
+          data: { moduleName: moduleName.raw },
+          node,
+        });
       },
     };
   },
