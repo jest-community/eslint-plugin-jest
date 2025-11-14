@@ -225,3 +225,13 @@ export const getFirstMatcherArg = (
 
   return followTypeAssertionChain(firstArg);
 };
+
+export const findModuleName = (
+  node: TSESTree.Literal | TSESTree.Node,
+): TSESTree.StringLiteral | null => {
+  if (node.type === AST_NODE_TYPES.Literal && typeof node.value === 'string') {
+    return node;
+  }
+
+  return null;
+};
