@@ -100,7 +100,7 @@ export default createRule<
             return;
           }
         } catch (err: unknown) {
-          const castedErr = err as NodeJS.ErrnoException;
+          const castedErr = err as { code: string };
 
           // Reports unexpected issues when attempt to verify mocked module path.
           // The list of possible errors is non-exhaustive.
