@@ -157,20 +157,18 @@ describe('valid-mock-module-path', () => {
 
       /* istanbul ignore if */
       if (usingFlatConfig) {
-        linter.verify(
-          'jest.mock("./fixtures/module")',
-          [
-            {
-              files: [__filename],
-              plugins: {
-                jest: {
-                  rules: { 'valid-mock-module-path': mockUnexpectedError() },
-                },
+        linter.verify('jest.mock("./fixtures/module")', [
+          {
+            plugins: {
+              jest: {
+                rules: { 'valid-mock-module-path': mockUnexpectedError() },
               },
             },
-          ],
-          __filename,
-        );
+            rules: {
+              'jest/valid-mock-module-path': 'error',
+            },
+          },
+        ]);
 
         return;
       }
