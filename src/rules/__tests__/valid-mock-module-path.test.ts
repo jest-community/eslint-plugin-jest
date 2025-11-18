@@ -1,6 +1,11 @@
+import { TSESLint } from '@typescript-eslint/utils';
 import dedent from 'dedent';
 import rule from '../valid-mock-module-path';
-import { FlatCompatRuleTester as RuleTester, espreeParser } from './test-utils';
+import {
+  FlatCompatRuleTester as RuleTester,
+  espreeParser,
+  usingFlatConfig,
+} from './test-utils';
 
 const ruleTester = new RuleTester({
   parser: espreeParser,
@@ -122,4 +127,65 @@ ruleTester.run('valid-mock-module-path', rule, {
       ],
     },
   ],
+});
+
+const mockUnexpectedError = () => {
+  jest.resetModules();
+
+  jest.doMock('path', () => ({
+    ...jest.requireActual('path'),
+    resolve() {
+      throw new (class extends Error {
+        public code;
+
+        constructor(message?: string) {
+          super(message);
+          this.code = 'VERY_UNEXPECTED_OS_ERROR';
+        }
+      })();
+    },
+  }));
+
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  return require('../valid-mock-module-path').default;
+};
+
+describe('valid-mock-module-path', () => {
+  it('throws if encountered unexpected OS errors', () => {
+    expect(() => {
+      const linter = new TSESLint.Linter();
+
+      /* istanbul ignore if */
+      if (usingFlatConfig) {
+        linter.verify(
+          'jest.mock("./fixtures/module")',
+          [
+            {
+              files: [__filename],
+              plugins: {
+                jest: {
+                  rules: { 'valid-mock-module-path': mockUnexpectedError() },
+                },
+              },
+            },
+          ],
+          __filename,
+        );
+
+        return;
+      }
+
+      linter.defineRule('valid-mock-module-path', mockUnexpectedError());
+
+      linter.verify(
+        'jest.mock("./fixtures/module")',
+        {
+          rules: { 'valid-mock-module-path': 'error' },
+        },
+        __filename,
+      );
+    }).toThrow(
+      'Error when trying to validate mock module path from `jest.mock`',
+    );
+  });
 });

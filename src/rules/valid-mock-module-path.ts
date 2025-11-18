@@ -104,7 +104,6 @@ export default createRule<
 
           // Reports unexpected issues when attempt to verify mocked module path.
           // The list of possible errors is non-exhaustive.
-          /* istanbul ignore if */
           if (castedErr.code !== 'MODULE_NOT_FOUND') {
             throw new Error(
               `Error when trying to validate mock module path from \`jest.mock\`: ${err}`,
