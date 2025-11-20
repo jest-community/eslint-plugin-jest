@@ -1,3 +1,10 @@
+# [29.2.0](https://github.com/jest-community/eslint-plugin-jest/compare/v29.1.0...v29.2.0) (2025-11-20)
+
+
+### Features
+
+* create new `valid-mock-module-path` rule ([#1845](https://github.com/jest-community/eslint-plugin-jest/issues/1845)) ([a8625f1](https://github.com/jest-community/eslint-plugin-jest/commit/a8625f1e77758aacb1daedc4eb628050a797082a))
+
 # [29.1.0](https://github.com/jest-community/eslint-plugin-jest/compare/v29.0.1...v29.1.0) (2025-11-10)
 
 
