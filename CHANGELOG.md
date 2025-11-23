@@ -1,3 +1,10 @@
+## [29.2.1](https://github.com/jest-community/eslint-plugin-jest/compare/v29.2.0...v29.2.1) (2025-11-23)
+
+
+### Bug Fixes
+
+* **valid-mock-module-path:** report on `ERR_PACKAGE_PATH_NOT_EXPORTED` errors ([#1860](https://github.com/jest-community/eslint-plugin-jest/issues/1860)) ([6cd4e89](https://github.com/jest-community/eslint-plugin-jest/commit/6cd4e89da0cc2dafbc4b9659800f33143229b7f6))
+
 # [29.2.0](https://github.com/jest-community/eslint-plugin-jest/compare/v29.1.0...v29.2.0) (2025-11-20)
 
 
