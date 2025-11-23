@@ -126,6 +126,34 @@ ruleTester.run('valid-mock-module-path', rule, {
         },
       ],
     },
+    // the imported file does not exist, but since it's not in `exports`
+    // a ERR_PACKAGE_PATH_NOT_EXPORTED error will be thrown instead
+    {
+      filename: __filename,
+      code: 'jest.mock("jest-util/build/isInteractive")',
+      errors: [
+        {
+          messageId: 'invalidMockModulePath',
+          data: { moduleName: '"jest-util/build/isInteractive"' },
+          column: 1,
+          line: 1,
+        },
+      ],
+    },
+    // the imported file does exist, but since it's not in `exports`
+    // a ERR_PACKAGE_PATH_NOT_EXPORTED error will be thrown instead
+    {
+      filename: __filename,
+      code: 'jest.mock("jackspeak/dist/commonjs/parse-args.js")',
+      errors: [
+        {
+          messageId: 'invalidMockModulePath',
+          data: { moduleName: '"jackspeak/dist/commonjs/parse-args.js"' },
+          column: 1,
+          line: 1,
+        },
+      ],
+    },
   ],
 });
 
