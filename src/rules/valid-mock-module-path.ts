@@ -24,7 +24,8 @@ export default createRule<
       description: 'Disallow mocking of non-existing module paths',
     },
     messages: {
-      invalidMockModulePath: 'Module path {{ moduleName }} does not exist',
+      invalidMockModulePath:
+        'Module path {{ moduleName }} does not exist or is not exported',
     },
     schema: [
       {
@@ -104,7 +105,10 @@ export default createRule<
 
           // Reports unexpected issues when attempt to verify mocked module path.
           // The list of possible errors is non-exhaustive.
-          if (castedErr.code !== 'MODULE_NOT_FOUND') {
+          if (
+            castedErr.code !== 'MODULE_NOT_FOUND' &&
+            castedErr.code !== 'ERR_PACKAGE_PATH_NOT_EXPORTED'
+          ) {
             throw new Error(
               `Error when trying to validate mock module path from \`jest.mock\`: ${err}`,
             );
