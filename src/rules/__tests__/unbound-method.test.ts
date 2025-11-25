@@ -81,7 +81,7 @@ const validTestCases: string[] = [
   'expect(() => Promise.resolve().then(console.log)).not.toThrow();',
   ...toThrowMatchers.map(matcher => `expect(console.log).not.${matcher}();`),
   ...toThrowMatchers.map(matcher => `expect(console.log).${matcher}();`),
-  // Issue #1800: jest.mocked().mock.calls should be allowed
+  // https://github.com/jest-community/eslint-plugin-jest/issues/1800
   ...[
     'const parameter = jest.mocked(service.method).mock.calls[0][0];',
     'const calls = jest.mocked(service.method).mock.calls;',

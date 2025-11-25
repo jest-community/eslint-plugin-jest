@@ -338,9 +338,8 @@ const parseJestFnCallWithReasonInner = (
   // parsing e.g. x().y.z(), we'll incorrectly find & parse "x()" even though
   // the full chain is not a valid jest function call chain
   if (
-    lastLink !== 'mocked' &&
-    (node.parent?.type === AST_NODE_TYPES.CallExpression ||
-      node.parent?.type === AST_NODE_TYPES.MemberExpression)
+    node.parent?.type === AST_NODE_TYPES.CallExpression ||
+    node.parent?.type === AST_NODE_TYPES.MemberExpression
   ) {
     return null;
   }
