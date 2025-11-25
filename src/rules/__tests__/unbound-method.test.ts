@@ -49,6 +49,14 @@ const ConsoleClassAndVariableCode = dedent`
   const console = new Console();
 `;
 
+const ServiceClassAndMethodCode = dedent`
+  class Service {
+    method() {}
+  }
+
+  const service = new Service();
+`;
+
 const toThrowMatchers = [
   'toThrow',
   'toThrowError',
@@ -73,6 +81,13 @@ const validTestCases: string[] = [
   'expect(() => Promise.resolve().then(console.log)).not.toThrow();',
   ...toThrowMatchers.map(matcher => `expect(console.log).not.${matcher}();`),
   ...toThrowMatchers.map(matcher => `expect(console.log).${matcher}();`),
+  // Issue #1800: jest.mocked().mock.calls should be allowed
+  ...[
+    'const parameter = jest.mocked(service.method).mock.calls[0][0];',
+    'const calls = jest.mocked(service.method).mock.calls;',
+    'const lastCall = jest.mocked(service.method).mock.calls[0];',
+    'const mockedMethod = jest.mocked(service.method); const parameter = mockedMethod.mock.calls[0][0];',
+  ].map(code => [ServiceClassAndMethodCode, code].join('\n')),
 ];
 
 const invalidTestCases: Array<TSESLint.InvalidTestCase<MessageIds, Options>> = [
@@ -235,6 +250,7 @@ const arith = {
 ${code}
   `;
 }
+
 function addContainsMethodsClassInvalid(
   code: string[],
 ): Array<TSESLint.InvalidTestCase<MessageIds, Options>> {
