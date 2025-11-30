@@ -330,7 +330,7 @@ Manually fixable by
 | [max-expects](docs/rules/max-expects.md)                                                     | Enforces a maximum number assertion calls in a test body                  |     |     |     |     |
 | [max-nested-describe](docs/rules/max-nested-describe.md)                                     | Enforces a maximum depth to nested describe calls                         |     |     |     |     |
 | [no-alias-methods](docs/rules/no-alias-methods.md)                                           | Disallow alias methods                                                    | ✅  |     | 🔧  |     |
-| [no-async-wrapper-for-expected-promise](docs/rules/no-async-wrapper-for-expected-promise.md) | Disallow unnecessary async function wrapper for expected promises         | ✅  |     | 🔧  |     |
+| [no-async-wrapper-for-expected-promise](docs/rules/no-async-wrapper-for-expected-promise.md) | Disallow unnecessary async function wrapper for expected promises         |     |     | 🔧  |     |
 | [no-commented-out-tests](docs/rules/no-commented-out-tests.md)                               | Disallow commented out tests                                              |     | ✅  |     |     |
 | [no-conditional-expect](docs/rules/no-conditional-expect.md)                                 | Disallow calling `expect` conditionally                                   | ✅  |     |     |     |
 | [no-conditional-in-test](docs/rules/no-conditional-in-test.md)                               | Disallow conditional logic in tests                                       |     |     |     |     |
