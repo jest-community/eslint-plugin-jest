@@ -33,6 +33,7 @@ const rules = Object.fromEntries(
 const recommendedRules = {
   'jest/expect-expect': 'warn',
   'jest/no-alias-methods': 'error',
+  'jest/no-async-wrapper-for-expected-promise': 'error',
   'jest/no-commented-out-tests': 'warn',
   'jest/no-conditional-expect': 'error',
   'jest/no-deprecated-functions': 'error',

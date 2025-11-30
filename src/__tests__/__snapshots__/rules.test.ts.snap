@@ -15,6 +15,7 @@ exports[`rules should export configs that refer to actual rules 1`] = `
       "jest/max-expects": "error",
       "jest/max-nested-describe": "error",
       "jest/no-alias-methods": "error",
+      "jest/no-async-wrapper-for-expected-promise": "error",
       "jest/no-commented-out-tests": "error",
       "jest/no-conditional-expect": "error",
       "jest/no-conditional-in-test": "error",
@@ -108,6 +109,7 @@ exports[`rules should export configs that refer to actual rules 1`] = `
       "jest/max-expects": "error",
       "jest/max-nested-describe": "error",
       "jest/no-alias-methods": "error",
+      "jest/no-async-wrapper-for-expected-promise": "error",
       "jest/no-commented-out-tests": "error",
       "jest/no-conditional-expect": "error",
       "jest/no-conditional-in-test": "error",
@@ -198,6 +200,7 @@ exports[`rules should export configs that refer to actual rules 1`] = `
     "rules": {
       "jest/expect-expect": "warn",
       "jest/no-alias-methods": "error",
+      "jest/no-async-wrapper-for-expected-promise": "error",
       "jest/no-commented-out-tests": "warn",
       "jest/no-conditional-expect": "error",
       "jest/no-deprecated-functions": "error",
@@ -259,6 +262,7 @@ exports[`rules should export configs that refer to actual rules 1`] = `
     "rules": {
       "jest/expect-expect": "warn",
       "jest/no-alias-methods": "error",
+      "jest/no-async-wrapper-for-expected-promise": "error",
       "jest/no-commented-out-tests": "warn",
       "jest/no-conditional-expect": "error",
       "jest/no-deprecated-functions": "error",
