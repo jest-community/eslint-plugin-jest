@@ -1,4 +1,4 @@
-# Disallow unnecessary async wrapper for expected promises (`no-async-wrapper-for-expected-promise`)
+# Disallow unnecessary async function wrapper for expected promises (`no-async-wrapper-for-expected-promise`)
 
 💼 This rule is enabled in the ✅ `recommended`
 [config](https://github.com/jest-community/eslint-plugin-jest/blob/main/README.md#shareable-configurations).
