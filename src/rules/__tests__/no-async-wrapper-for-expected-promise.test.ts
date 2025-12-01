@@ -51,6 +51,14 @@ ruleTester.run('no-async-wrapper-for-expected-promise', rule, {
         }).rejects.toThrow();
       })
     `,
+    dedent`
+      it('pass', async () => {
+        await expect(async () => {
+          const a = 1;
+          await doSomethingSync(a);
+        }).rejects.toThrow();
+      })
+    `,
   ],
   invalid: [
     {
