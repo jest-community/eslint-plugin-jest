@@ -1,5 +1,5 @@
 import { AST_NODE_TYPES, type TSESTree } from '@typescript-eslint/utils';
-import { createRule, parseJestFnCall } from './utils';
+import { createRule, isFunction, parseJestFnCall } from './utils';
 
 export default createRule({
   name: __filename,
@@ -10,8 +10,7 @@ export default createRule({
     },
     fixable: 'code',
     messages: {
-      noAsyncWrapperForExpectedPromise:
-        'Rejected/resolved promises should not be wrapped in async function',
+      noAsyncWrapperForExpectedPromise: 'Unnecessary async function wrapper',
     },
     schema: [],
     type: 'suggestion',
@@ -35,8 +34,8 @@ export default createRule({
         const [awaitNode] = parent.arguments;
 
         if (
-          (awaitNode?.type !== AST_NODE_TYPES.ArrowFunctionExpression &&
-            awaitNode?.type !== AST_NODE_TYPES.FunctionExpression) ||
+          !awaitNode ||
+          !isFunction(awaitNode) ||
           !awaitNode?.async ||
           awaitNode.body.type !== AST_NODE_TYPES.BlockStatement ||
           awaitNode.body.body.length !== 1
