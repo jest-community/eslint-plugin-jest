@@ -1,4 +1,3 @@
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import rule from '../prefer-spy-on';
 import { FlatCompatRuleTester as RuleTester, espreeParser } from './test-utils';
 
@@ -28,7 +27,10 @@ ruleTester.run('prefer-spy-on', rule, {
       errors: [
         {
           messageId: 'useJestSpyOn',
-          type: AST_NODE_TYPES.AssignmentExpression,
+          line: 1,
+          column: 1,
+          endLine: 1,
+          endColumn: 18,
         },
       ],
     },
@@ -38,7 +40,10 @@ ruleTester.run('prefer-spy-on', rule, {
       errors: [
         {
           messageId: 'useJestSpyOn',
-          type: AST_NODE_TYPES.AssignmentExpression,
+          line: 1,
+          column: 1,
+          endLine: 1,
+          endColumn: 27,
         },
       ],
     },
@@ -48,7 +53,10 @@ ruleTester.run('prefer-spy-on', rule, {
       errors: [
         {
           messageId: 'useJestSpyOn',
-          type: AST_NODE_TYPES.AssignmentExpression,
+          line: 1,
+          column: 1,
+          endLine: 1,
+          endColumn: 33,
         },
       ],
     },
@@ -58,7 +66,10 @@ ruleTester.run('prefer-spy-on', rule, {
       errors: [
         {
           messageId: 'useJestSpyOn',
-          type: AST_NODE_TYPES.AssignmentExpression,
+          line: 1,
+          column: 1,
+          endLine: 1,
+          endColumn: 31,
         },
       ],
     },
@@ -69,7 +80,10 @@ ruleTester.run('prefer-spy-on', rule, {
       errors: [
         {
           messageId: 'useJestSpyOn',
-          type: AST_NODE_TYPES.AssignmentExpression,
+          line: 1,
+          column: 1,
+          endLine: 1,
+          endColumn: 24,
         },
       ],
     },
@@ -80,7 +94,10 @@ ruleTester.run('prefer-spy-on', rule, {
       errors: [
         {
           messageId: 'useJestSpyOn',
-          type: AST_NODE_TYPES.AssignmentExpression,
+          line: 1,
+          column: 1,
+          endLine: 1,
+          endColumn: 27,
         },
       ],
     },
@@ -91,7 +108,10 @@ ruleTester.run('prefer-spy-on', rule, {
       errors: [
         {
           messageId: 'useJestSpyOn',
-          type: AST_NODE_TYPES.AssignmentExpression,
+          line: 1,
+          column: 1,
+          endLine: 1,
+          endColumn: 91,
         },
       ],
     },
@@ -102,7 +122,10 @@ ruleTester.run('prefer-spy-on', rule, {
       errors: [
         {
           messageId: 'useJestSpyOn',
-          type: AST_NODE_TYPES.AssignmentExpression,
+          line: 1,
+          column: 1,
+          endLine: 1,
+          endColumn: 58,
         },
       ],
     },
@@ -114,7 +137,10 @@ ruleTester.run('prefer-spy-on', rule, {
       errors: [
         {
           messageId: 'useJestSpyOn',
-          type: AST_NODE_TYPES.AssignmentExpression,
+          line: 1,
+          column: 1,
+          endLine: 1,
+          endColumn: 48,
         },
       ],
     },
@@ -131,11 +157,17 @@ ruleTester.run('prefer-spy-on', rule, {
       errors: [
         {
           messageId: 'useJestSpyOn',
-          type: AST_NODE_TYPES.AssignmentExpression,
+          line: 2,
+          column: 9,
+          endLine: 2,
+          endColumn: 59,
         },
         {
           messageId: 'useJestSpyOn',
-          type: AST_NODE_TYPES.AssignmentExpression,
+          line: 3,
+          column: 9,
+          endLine: 3,
+          endColumn: 65,
         },
       ],
     },
