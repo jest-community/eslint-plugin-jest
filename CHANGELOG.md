@@ -1,3 +1,10 @@
+## [29.2.2](https://github.com/jest-community/eslint-plugin-jest/compare/v29.2.1...v29.2.2) (2025-12-12)
+
+
+### Bug Fixes
+
+* **no-export:** report on `export =` usage ([#1870](https://github.com/jest-community/eslint-plugin-jest/issues/1870)) ([9d90466](https://github.com/jest-community/eslint-plugin-jest/commit/9d90466af1849270ae1652d05f6f233f4f43c8d6))
+
 ## [29.2.1](https://github.com/jest-community/eslint-plugin-jest/compare/v29.2.0...v29.2.1) (2025-11-23)
 
 
