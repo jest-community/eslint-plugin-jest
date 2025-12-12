@@ -190,14 +190,14 @@ export default createRule<[RuleOptions], MessageIds>({
     const enterForLoop = () => (inForLoop = true);
     const exitForLoop = () => (inForLoop = false);
 
-    let inBeforeEach = false;
+    let inEachHook = false;
 
     // when set to a non-negative value, all expect calls within describes whose depth
     // are equal to or higher than this value are covered by an expect.hasAssertions set
-    // up within a beforeEach hook
+    // up within a beforeEach or afterEach hook
     //
     // when the describe depth is lower than the current value, it gets reset to -1
-    let coveredByBeforeEachAtDepth = -1;
+    let coveredByHookAtDepth = -1;
 
     return {
       FunctionExpression: enterExpression,
@@ -217,8 +217,8 @@ export default createRule<[RuleOptions], MessageIds>({
           describeDepth += 1;
         }
 
-        if (jestFnCall?.type === 'hook' && jestFnCall.name === 'beforeEach') {
-          inBeforeEach = true;
+        if (jestFnCall?.type === 'hook' && jestFnCall.name.endsWith('Each')) {
+          inEachHook = true;
         }
 
         if (jestFnCall?.type === 'test') {
@@ -227,12 +227,12 @@ export default createRule<[RuleOptions], MessageIds>({
           return;
         }
 
-        if (jestFnCall?.type === 'expect' && inBeforeEach) {
+        if (jestFnCall?.type === 'expect' && inEachHook) {
           if (getAccessorValue(jestFnCall.members[0]) === 'hasAssertions') {
             checkExpectHasAssertions(jestFnCall, node);
 
-            if (coveredByBeforeEachAtDepth < 0) {
-              coveredByBeforeEachAtDepth = describeDepth;
+            if (coveredByHookAtDepth < 0) {
+              coveredByHookAtDepth = describeDepth;
             }
           }
         }
@@ -264,15 +264,15 @@ export default createRule<[RuleOptions], MessageIds>({
         if (jestFnCall?.type === 'describe') {
           describeDepth -= 1;
 
-          // clear the "covered by beforeEach" flag if we have left the describe
+          // clear the "covered by each hook" flag if we have left the describe
           // depth that it applies to
-          if (coveredByBeforeEachAtDepth > describeDepth) {
-            coveredByBeforeEachAtDepth = -1;
+          if (coveredByHookAtDepth > describeDepth) {
+            coveredByHookAtDepth = -1;
           }
         }
 
-        if (jestFnCall?.type === 'hook' && jestFnCall.name === 'beforeEach') {
-          inBeforeEach = false;
+        if (jestFnCall?.type === 'hook' && jestFnCall.name.endsWith('Each')) {
+          inEachHook = false;
         }
 
         if (jestFnCall?.type !== 'test') {
@@ -301,8 +301,8 @@ export default createRule<[RuleOptions], MessageIds>({
         }
 
         if (
-          coveredByBeforeEachAtDepth >= 0 &&
-          coveredByBeforeEachAtDepth <= describeDepth
+          coveredByHookAtDepth >= 0 &&
+          coveredByHookAtDepth <= describeDepth
         ) {
           return;
         }
