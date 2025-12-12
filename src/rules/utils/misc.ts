@@ -45,8 +45,9 @@ export interface KnownCallExpression<Name extends string = string>
  *
  * This is `KnownCallExpression` from the perspective of the `MemberExpression` node.
  */
-interface CalledKnownMemberExpression<Name extends string = string>
-  extends KnownMemberExpression<Name> {
+interface CalledKnownMemberExpression<
+  Name extends string = string,
+> extends KnownMemberExpression<Name> {
   parent: KnownCallExpression<Name>;
 }
 
@@ -54,9 +55,10 @@ interface CalledKnownMemberExpression<Name extends string = string>
  * Represents a `CallExpression` with a single argument.
  */
 export interface CallExpressionWithSingleArgument<
-  Argument extends
-    TSESTree.CallExpression['arguments'][number] = TSESTree.CallExpression['arguments'][number],
-> extends TSESTree.CallExpression {
+  Argument extends TSESTree.CallExpression['arguments'][number] =
+    TSESTree.CallExpression['arguments'][number],
+>
+  extends TSESTree.CallExpression {
   arguments: [Argument];
 }
 

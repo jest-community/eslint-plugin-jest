@@ -104,8 +104,7 @@ interface ParsedGeneralJestFnCall extends BaseParsedJestFnCall {
 }
 
 export interface ParsedExpectFnCall
-  extends BaseParsedJestFnCall,
-    ModifiersAndMatcher {
+  extends BaseParsedJestFnCall, ModifiersAndMatcher {
   type: 'expect';
 }
 
