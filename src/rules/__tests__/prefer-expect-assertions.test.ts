@@ -1242,6 +1242,29 @@ ruleTester.run('prefer-expect-assertions (loops)', rule, {
       `,
       options: [{ onlyFunctionsWithExpectInLoop: true }],
     },
+    // todo: ideally this should be considered valid
+    // {
+    //   code: dedent`
+    //     describe('my tests', () => {
+    //       beforeEach(expect.hasAssertions);
+    //
+    //       it("is a number that is greater than four", () => {
+    //         expect(number).toBeGreaterThan(4);
+    //       });
+    //
+    //       it("returns numbers that are greater than four", () => {
+    //         for (const number of getNumbers()) {
+    //           expect(number).toBeGreaterThan(4);
+    //         }
+    //       });
+    //     });
+    //
+    //     it("returns numbers that are greater than five", () => {
+    //       expect(number).toBeGreaterThan(5);
+    //     });
+    //   `,
+    //   options: [{ onlyFunctionsWithExpectInLoop: true }],
+    // },
   ],
   invalid: [
     {
@@ -1527,6 +1550,84 @@ ruleTester.run('prefer-expect-assertions (loops)', rule, {
                   for (const number of getNumbers()) {
                     expect(number).toBeGreaterThan(4);
                   }
+                });
+
+                it("returns numbers that are greater than five", () => {
+                  expect(number).toBeGreaterThan(5);
+                });
+              `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: dedent`
+        describe('my tests', () => {
+          beforeEach(expect.hasAssertions);
+          it("is a number that is greater than four", () => {
+            expect(number).toBeGreaterThan(4);
+          });
+        });
+
+        describe('more tests', () => {
+          it("returns numbers that are greater than four", () => {
+            for (const number of getNumbers()) {
+              expect(number).toBeGreaterThan(4);
+            }
+          });
+        });
+
+        it("returns numbers that are greater than five", () => {
+          expect(number).toBeGreaterThan(5);
+        });
+      `,
+      options: [{ onlyFunctionsWithExpectInLoop: true }],
+      errors: [
+        {
+          messageId: 'haveExpectAssertions',
+          column: 3,
+          line: 9,
+          suggestions: [
+            {
+              messageId: 'suggestAddingHasAssertions',
+              output: dedent`
+                describe('my tests', () => {
+                  beforeEach(expect.hasAssertions);
+                  it("is a number that is greater than four", () => {
+                    expect(number).toBeGreaterThan(4);
+                  });
+                });
+
+                describe('more tests', () => {
+                  it("returns numbers that are greater than four", () => {expect.hasAssertions();
+                    for (const number of getNumbers()) {
+                      expect(number).toBeGreaterThan(4);
+                    }
+                  });
+                });
+
+                it("returns numbers that are greater than five", () => {
+                  expect(number).toBeGreaterThan(5);
+                });
+              `,
+            },
+            {
+              messageId: 'suggestAddingAssertions',
+              output: dedent`
+                describe('my tests', () => {
+                  beforeEach(expect.hasAssertions);
+                  it("is a number that is greater than four", () => {
+                    expect(number).toBeGreaterThan(4);
+                  });
+                });
+
+                describe('more tests', () => {
+                  it("returns numbers that are greater than four", () => {expect.assertions();
+                    for (const number of getNumbers()) {
+                      expect(number).toBeGreaterThan(4);
+                    }
+                  });
                 });
 
                 it("returns numbers that are greater than five", () => {
