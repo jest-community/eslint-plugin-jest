@@ -175,11 +175,7 @@ export default createRule<[RuleOptions], MessageIds>({
 
       const [arg] = expectFnCall.args;
 
-      if (
-        arg.type === AST_NODE_TYPES.Literal &&
-        typeof arg.value === 'number' &&
-        Number.isInteger(arg.value)
-      ) {
+      if (arg.type === AST_NODE_TYPES.Literal && Number.isInteger(arg.value)) {
         return;
       }
 
@@ -218,9 +214,6 @@ export default createRule<[RuleOptions], MessageIds>({
           if (
             expressionDepth === 1 &&
             isFirstStatement(node) &&
-            jestFnCall.head.node.parent?.type ===
-              AST_NODE_TYPES.MemberExpression &&
-            jestFnCall.members.length === 1 &&
             ['assertions', 'hasAssertions'].includes(
               getAccessorValue(jestFnCall.members[0]),
             )
