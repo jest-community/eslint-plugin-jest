@@ -71,7 +71,7 @@ export default createRule<[RuleOptions], MessageIds>({
       hasAssertionsTakesNoArguments:
         '`expect.hasAssertions` expects no arguments',
       assertionsRequiresOneArgument:
-        '`expect.assertions` excepts a single argument of type number',
+        '`expect.assertions` expects a single argument of type number',
       assertionsRequiresNumberArgument: 'This argument should be a number',
       haveExpectAssertions:
         'Every test should have either `expect.assertions(<number of assertions>)` or `expect.hasAssertions()` as its first expression',
