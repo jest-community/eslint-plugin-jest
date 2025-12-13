@@ -8,7 +8,6 @@ import {
   createRule,
   getAccessorValue,
   isFunction,
-  isTypeOfJestFnCall,
   parseJestFnCall,
   removeExtraArgumentsFixer,
 } from './utils';
@@ -103,6 +102,7 @@ export default createRule<[RuleOptions], MessageIds>({
   ],
   create(context, [options]) {
     let expressionDepth = 0;
+    let describeDepth = 0;
     let hasExpectInCallback = false;
     let hasExpectInLoop = false;
     let hasExpectAssertionsAsFirstStatement = false;
@@ -190,6 +190,15 @@ export default createRule<[RuleOptions], MessageIds>({
     const enterForLoop = () => (inForLoop = true);
     const exitForLoop = () => (inForLoop = false);
 
+    let inEachHook = false;
+
+    // when set to a non-negative value, all expect calls within describes whose depth
+    // are equal to or higher than this value are covered by an expect.hasAssertions set
+    // up within a beforeEach or afterEach hook
+    //
+    // when the describe depth is lower than the current value, it gets reset to -1
+    let coveredByHookAtDepth = -1;
+
     return {
       FunctionExpression: enterExpression,
       'FunctionExpression:exit': exitExpression,
@@ -204,10 +213,30 @@ export default createRule<[RuleOptions], MessageIds>({
       CallExpression(node) {
         const jestFnCall = parseJestFnCall(node, context);
 
+        if (jestFnCall?.type === 'describe') {
+          describeDepth += 1;
+        }
+
+        if (jestFnCall?.type === 'hook' && jestFnCall.name.endsWith('Each')) {
+          inEachHook = true;
+        }
+
         if (jestFnCall?.type === 'test') {
           inTestCaseCall = true;
 
           return;
+        }
+
+        if (
+          jestFnCall?.type === 'expect' &&
+          inEachHook &&
+          getAccessorValue(jestFnCall.members[0]) === 'hasAssertions'
+        ) {
+          checkExpectHasAssertions(jestFnCall, node);
+
+          if (coveredByHookAtDepth < 0) {
+            coveredByHookAtDepth = describeDepth;
+          }
         }
 
         if (jestFnCall?.type === 'expect' && inTestCaseCall) {
@@ -232,7 +261,23 @@ export default createRule<[RuleOptions], MessageIds>({
         }
       },
       'CallExpression:exit'(node: TSESTree.CallExpression) {
-        if (!isTypeOfJestFnCall(node, context, ['test'])) {
+        const jestFnCall = parseJestFnCall(node, context);
+
+        if (jestFnCall?.type === 'describe') {
+          describeDepth -= 1;
+
+          // clear the "covered by each hook" flag if we have left the describe
+          // depth that it applies to
+          if (coveredByHookAtDepth > describeDepth) {
+            coveredByHookAtDepth = -1;
+          }
+        }
+
+        if (jestFnCall?.type === 'hook' && jestFnCall.name.endsWith('Each')) {
+          inEachHook = false;
+        }
+
+        if (jestFnCall?.type !== 'test') {
           return;
         }
 
@@ -254,6 +299,13 @@ export default createRule<[RuleOptions], MessageIds>({
         if (hasExpectAssertionsAsFirstStatement) {
           hasExpectAssertionsAsFirstStatement = false;
 
+          return;
+        }
+
+        if (
+          coveredByHookAtDepth >= 0 &&
+          coveredByHookAtDepth <= describeDepth
+        ) {
           return;
         }
 
