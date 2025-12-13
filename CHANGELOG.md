@@ -1,3 +1,10 @@
+## [29.2.3](https://github.com/jest-community/eslint-plugin-jest/compare/v29.2.2...v29.2.3) (2025-12-13)
+
+
+### Bug Fixes
+
+* **prefer-expect-assertions:** use correct word in error message ([#1873](https://github.com/jest-community/eslint-plugin-jest/issues/1873)) ([c48c48c](https://github.com/jest-community/eslint-plugin-jest/commit/c48c48c9d03ed04eda01a78959ab7f794e1fa448))
+
 ## [29.2.2](https://github.com/jest-community/eslint-plugin-jest/compare/v29.2.1...v29.2.2) (2025-12-12)
 
 
