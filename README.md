@@ -360,7 +360,7 @@ Manually fixable by
 | [padding-around-describe-blocks](docs/rules/padding-around-describe-blocks.md)       | Enforce padding around `describe` blocks                                  |     |     | 🔧  |     |
 | [padding-around-expect-groups](docs/rules/padding-around-expect-groups.md)           | Enforce padding around `expect` groups                                    |     |     | 🔧  |     |
 | [padding-around-test-blocks](docs/rules/padding-around-test-blocks.md)               | Enforce padding around `test` and `it` blocks                             |     |     | 🔧  |     |
-| [prefer-called-with](docs/rules/prefer-called-with.md)                               | Suggest using `toBeCalledWith()` or `toHaveBeenCalledWith()`              |     |     |     |     |
+| [prefer-called-with](docs/rules/prefer-called-with.md)                               | Suggest using `toHaveBeenCalledWith()`                                    |     |     |     |     |
 | [prefer-comparison-matcher](docs/rules/prefer-comparison-matcher.md)                 | Suggest using the built-in comparison matchers                            |     |     | 🔧  |     |
 | [prefer-each](docs/rules/prefer-each.md)                                             | Prefer using `.each` rather than manual loops                             |     |     |     |     |
 | [prefer-ending-with-an-expect](docs/rules/prefer-ending-with-an-expect.md)           | Prefer having the last statement in a test be an assertion                |     |     |     |     |
