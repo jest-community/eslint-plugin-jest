@@ -74,5 +74,20 @@ ruleTester.run('prefer-to-have-length', rule, {
       output: 'expect(files).not.toHaveLength(1);',
       errors: [{ messageId: 'useToHaveLength', column: 26, line: 1 }],
     },
+    {
+      code: 'expect(x.files.length).not.toStrictEqual(1);',
+      output: 'expect(x.files).not.toHaveLength(1);',
+      errors: [{ messageId: 'useToHaveLength', column: 28, line: 1 }],
+    },
+    {
+      code: 'expect(x["files"].length).not.toStrictEqual(1);',
+      output: 'expect(x["files"]).not.toHaveLength(1);',
+      errors: [{ messageId: 'useToHaveLength', column: 31, line: 1 }],
+    },
+    {
+      code: 'expect(x.y.z.length).not.toStrictEqual(1);',
+      output: 'expect(x.y.z).not.toHaveLength(1);',
+      errors: [{ messageId: 'useToHaveLength', column: 26, line: 1 }],
+    },
   ],
 });
