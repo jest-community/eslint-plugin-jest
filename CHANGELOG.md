@@ -1,3 +1,10 @@
+# [29.3.0](https://github.com/jest-community/eslint-plugin-jest/compare/v29.2.3...v29.3.0) (2025-12-13)
+
+
+### Features
+
+* **prefer-expect-assertions:** support basic uses of `hasAssertions` in `beforeEach` and `afterEach` hooks ([#1871](https://github.com/jest-community/eslint-plugin-jest/issues/1871)) ([eed9acb](https://github.com/jest-community/eslint-plugin-jest/commit/eed9acb98a9d2a64abb42dba2af4a2f36838caff))
+
 ## [29.2.3](https://github.com/jest-community/eslint-plugin-jest/compare/v29.2.2...v29.2.3) (2025-12-13)
 
 
