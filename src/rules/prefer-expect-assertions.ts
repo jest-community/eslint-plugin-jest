@@ -227,13 +227,15 @@ export default createRule<[RuleOptions], MessageIds>({
           return;
         }
 
-        if (jestFnCall?.type === 'expect' && inEachHook) {
-          if (getAccessorValue(jestFnCall.members[0]) === 'hasAssertions') {
-            checkExpectHasAssertions(jestFnCall, node);
+        if (
+          jestFnCall?.type === 'expect' &&
+          inEachHook &&
+          getAccessorValue(jestFnCall.members[0]) === 'hasAssertions'
+        ) {
+          checkExpectHasAssertions(jestFnCall, node);
 
-            if (coveredByHookAtDepth < 0) {
-              coveredByHookAtDepth = describeDepth;
-            }
+          if (coveredByHookAtDepth < 0) {
+            coveredByHookAtDepth = describeDepth;
           }
         }
 
