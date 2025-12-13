@@ -1,3 +1,11 @@
+# [29.4.0](https://github.com/jest-community/eslint-plugin-jest/compare/v29.3.0...v29.4.0) (2025-12-13)
+
+
+### Features
+
+* create new `prefer-to-have-been-called-times` rule ([281085a](https://github.com/jest-community/eslint-plugin-jest/commit/281085ac5df90b77f8d4bbb7720f17d720add762))
+* create new `prefer-to-have-been-called` rule ([24e2acd](https://github.com/jest-community/eslint-plugin-jest/commit/24e2acd12004731d8162d8eb78eda8385ce896d7))
+
 # [29.3.0](https://github.com/jest-community/eslint-plugin-jest/compare/v29.2.3...v29.3.0) (2025-12-13)
 
 
