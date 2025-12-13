@@ -1,7 +1,7 @@
 import rule from '../prefer-to-have-been-called-times';
-import { FlatCompatRuleTester } from './test-utils';
+import { FlatCompatRuleTester as RuleTester } from './test-utils';
 
-const ruleTester = new FlatCompatRuleTester();
+const ruleTester = new RuleTester();
 
 ruleTester.run('prefer-to-have-been-called-times', rule, {
   valid: [
