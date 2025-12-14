@@ -1,3 +1,10 @@
+# [29.5.0](https://github.com/jest-community/eslint-plugin-jest/compare/v29.4.1...v29.5.0) (2025-12-14)
+
+
+### Features
+
+* create new `no-unneeded-async-expect-function` rule ([#1863](https://github.com/jest-community/eslint-plugin-jest/issues/1863)) ([6b8182d](https://github.com/jest-community/eslint-plugin-jest/commit/6b8182d7382b68c4bce14b5a9dcd8c6c0dab5aa6))
+
 ## [29.4.1](https://github.com/jest-community/eslint-plugin-jest/compare/v29.4.0...v29.4.1) (2025-12-14)
 
 
