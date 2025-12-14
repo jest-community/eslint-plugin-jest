@@ -46,6 +46,7 @@ const recommendedRules = {
   'jest/no-mocks-import': 'error',
   'jest/no-standalone-expect': 'error',
   'jest/no-test-prefixes': 'error',
+  'jest/no-unneeded-async-expect-function': 'error',
   'jest/valid-describe-callback': 'error',
   'jest/valid-expect': 'error',
   'jest/valid-expect-in-promise': 'error',
