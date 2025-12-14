@@ -57,6 +57,7 @@ const styleRules = {
   'jest/prefer-to-contain': 'error',
   'jest/prefer-to-have-length': 'error',
   'jest/prefer-to-have-been-called': 'error',
+  'jest/prefer-to-have-been-called-times': 'error',
 } satisfies Record<string, TSESLint.Linter.RuleLevel>;
 
 const allRules = Object.fromEntries<TSESLint.Linter.RuleLevel>(
