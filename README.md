@@ -379,7 +379,7 @@ Manually fixable by
 | [prefer-strict-equal](docs/rules/prefer-strict-equal.md)                             | Suggest using `toStrictEqual()`                                           |     |     |     | 💡  |
 | [prefer-to-be](docs/rules/prefer-to-be.md)                                           | Suggest using `toBe()` for primitive literals                             | 🎨  |     | 🔧  |     |
 | [prefer-to-contain](docs/rules/prefer-to-contain.md)                                 | Suggest using `toContain()`                                               | 🎨  |     | 🔧  |     |
-| [prefer-to-have-been-called](docs/rules/prefer-to-have-been-called.md)               | Suggest using `toHaveBeenCalled`                                          |     |     | 🔧  |     |
+| [prefer-to-have-been-called](docs/rules/prefer-to-have-been-called.md)               | Suggest using `toHaveBeenCalled`                                          | 🎨  |     | 🔧  |     |
 | [prefer-to-have-been-called-times](docs/rules/prefer-to-have-been-called-times.md)   | Suggest using `toHaveBeenCalledTimes()`                                   |     |     | 🔧  |     |
 | [prefer-to-have-length](docs/rules/prefer-to-have-length.md)                         | Suggest using `toHaveLength()`                                            | 🎨  |     | 🔧  |     |
 | [prefer-todo](docs/rules/prefer-todo.md)                                             | Suggest using `test.todo`                                                 |     |     | 🔧  |     |
