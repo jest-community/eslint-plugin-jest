@@ -1,5 +1,5 @@
 import dedent from 'dedent';
-import rule from '../no-async-wrapper-for-expected-promise';
+import rule from '../no-unneeded-async-expect-function';
 import { FlatCompatRuleTester as RuleTester, espreeParser } from './test-utils';
 
 const ruleTester = new RuleTester({
@@ -9,7 +9,7 @@ const ruleTester = new RuleTester({
   },
 });
 
-ruleTester.run('no-async-wrapper-for-expected-promise', rule, {
+ruleTester.run('no-unneeded-async-expect-function', rule, {
   valid: [
     'expect.hasAssertions()',
     dedent`
@@ -47,7 +47,7 @@ ruleTester.run('no-async-wrapper-for-expected-promise', rule, {
     dedent`
       it('pass', async () => {
         await expect(async () => {
-          doSomethingSync();
+          doSomethingAsync();
         }).rejects.toThrow();
       })
     `,
@@ -55,8 +55,45 @@ ruleTester.run('no-async-wrapper-for-expected-promise', rule, {
       it('pass', async () => {
         await expect(async () => {
           const a = 1;
-          await doSomethingSync(a);
+          await doSomethingAsync(a);
         }).rejects.toThrow();
+      })
+    `,
+    dedent`
+      it('pass for non-async expect', async () => {
+        await expect(() => {
+          doSomethingSync(a);
+        }).rejects.toThrow();
+      })
+    `,
+    dedent`
+      it('pass for await in expect', async () => {
+        await expect(await doSomethingAsync()).rejects.toThrow();
+      })
+    `,
+    dedent`
+      it('pass for different matchers', async () => {
+        await expect(await doSomething()).not.toThrow();
+        await expect(await doSomething()).toHaveLength(2);
+        await expect(await doSomething()).toHaveReturned();
+        await expect(await doSomething()).not.toHaveBeenCalled();
+        await expect(await doSomething()).not.toBeDefined();
+        await expect(await doSomething()).toEqual(2);
+      })
+    `,
+    dedent`
+      it('pass for using await within for-loop', async () => {
+        const b = [async () => Promise.resolve(1), async () => Promise.reject(2)];
+        await expect(async() => {
+          for (const a of b) {
+            await b();
+          }
+        }).rejects.toThrow();
+      })
+    `,
+    dedent`
+      it('pass for using await within array', async () => {
+        await expect(async() => [await Promise.reject(2)]).rejects.toThrow(2);
       })
     `,
   ],
@@ -105,14 +142,14 @@ ruleTester.run('no-async-wrapper-for-expected-promise', rule, {
     },
     {
       code: dedent`
-        it('should be fixed', async () => {
+        it('should be fixed for async arrow function', async () => {
           await expect(async () => {
             await doSomethingAsync(1, 2);
           }).rejects.toThrow(); 
         })
       `,
       output: dedent`
-        it('should be fixed', async () => {
+        it('should be fixed for async arrow function', async () => {
           await expect(doSomethingAsync(1, 2)).rejects.toThrow(); 
         })
       `,
@@ -126,15 +163,59 @@ ruleTester.run('no-async-wrapper-for-expected-promise', rule, {
     },
     {
       code: dedent`
-        it('should be fixed', async () => {
+        it('should be fixed for async normal function', async () => {
           await expect(async function () {
             await doSomethingAsync(1, 2);
           }).rejects.toThrow(); 
         })
       `,
       output: dedent`
-        it('should be fixed', async () => {
+        it('should be fixed for async normal function', async () => {
           await expect(doSomethingAsync(1, 2)).rejects.toThrow(); 
+        })
+      `,
+      errors: [
+        {
+          endColumn: 4,
+          column: 16,
+          messageId: 'noAsyncWrapperForExpectedPromise',
+        },
+      ],
+    },
+    {
+      code: dedent`
+        it('should be fixed for Promise.all', async () => {
+          await expect(async function () {
+            await Promise.all([doSomethingAsync(1, 2), doSomethingAsync()]);
+          }).rejects.toThrow(); 
+        })
+      `,
+      output: dedent`
+        it('should be fixed for Promise.all', async () => {
+          await expect(Promise.all([doSomethingAsync(1, 2), doSomethingAsync()])).rejects.toThrow(); 
+        })
+      `,
+      errors: [
+        {
+          endColumn: 4,
+          column: 16,
+          messageId: 'noAsyncWrapperForExpectedPromise',
+        },
+      ],
+    },
+    {
+      code: dedent`
+        it('should be fixed for async ref to expect', async () => {
+          const a = async () => { await doSomethingAsync() };
+          await expect(async () => {
+            await a();
+          }).rejects.toThrow();
+        })
+      `,
+      output: dedent`
+        it('should be fixed for async ref to expect', async () => {
+          const a = async () => { await doSomethingAsync() };
+          await expect(a()).rejects.toThrow();
         })
       `,
       errors: [

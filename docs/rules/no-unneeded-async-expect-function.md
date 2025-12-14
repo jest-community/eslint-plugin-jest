@@ -1,4 +1,4 @@
-# Disallow unnecessary async function wrapper for expected promises (`no-async-wrapper-for-expected-promise`)
+# Disallow unnecessary async function wrapper for expected promises (`no-unneeded-async-expect-function`)
 
 🔧 This rule is automatically fixable by the
 [`--fix` CLI option](https://eslint.org/docs/latest/user-guide/command-line-interface#--fix).
@@ -11,8 +11,8 @@ excessively verbose and make the tests harder to read.
 
 ## Rule details
 
-This rule triggers a warning if a single `await` function call is wrapped by an
-unnecessary `async` function.
+This rule triggers a warning if `expect` is passed with an an `async` function
+that has a single `await` call.
 
 Examples of **incorrect** code for this rule
 
