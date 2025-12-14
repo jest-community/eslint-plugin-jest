@@ -1,8 +1,8 @@
 import dedent from 'dedent';
 import rule from '../no-test-prefixes';
-import { FlatCompatRuleTester } from './test-utils';
+import { FlatCompatRuleTester as RuleTester } from './test-utils';
 
-const ruleTester = new FlatCompatRuleTester();
+const ruleTester = new RuleTester();
 
 ruleTester.run('no-test-prefixes', rule, {
   valid: [
