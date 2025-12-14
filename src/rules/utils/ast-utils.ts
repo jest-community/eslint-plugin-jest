@@ -43,11 +43,11 @@ export const getActualLastToken = (
   const nextToken = sourceCode.getTokenAfter(semiToken);
   const isSemicolonLessStyle = Boolean(
     prevToken &&
-      nextToken &&
-      prevToken.range[0] >= node.range[0] &&
-      isTokenASemicolon(semiToken) &&
-      semiToken.loc.start.line !== prevToken.loc.end.line &&
-      semiToken.loc.end.line === nextToken.loc.start.line,
+    nextToken &&
+    prevToken.range[0] >= node.range[0] &&
+    isTokenASemicolon(semiToken) &&
+    semiToken.loc.start.line !== prevToken.loc.end.line &&
+    semiToken.loc.end.line === nextToken.loc.start.line,
   );
 
   return isSemicolonLessStyle ? prevToken : semiToken;
