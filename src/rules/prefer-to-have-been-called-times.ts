@@ -30,6 +30,12 @@ export default createRule({
           return;
         }
 
+        const { matcher } = jestFnCall;
+
+        if (!isSupportedAccessor(matcher, 'toHaveLength')) {
+          return;
+        }
+
         const [argument] = expect.arguments;
 
         // check if the last property in the chain is `calls`
@@ -49,8 +55,6 @@ export default createRule({
         ) {
           return;
         }
-
-        const { matcher } = jestFnCall;
 
         context.report({
           messageId: 'preferMatcher',
