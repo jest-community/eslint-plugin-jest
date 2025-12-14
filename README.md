@@ -351,6 +351,7 @@ Manually fixable by
 | [no-standalone-expect](docs/rules/no-standalone-expect.md)                           | Disallow using `expect` outside of `it` or `test` blocks                  | ✅  |     |     |     |
 | [no-test-prefixes](docs/rules/no-test-prefixes.md)                                   | Require using `.only` and `.skip` over `f` and `x`                        | ✅  |     | 🔧  |     |
 | [no-test-return-statement](docs/rules/no-test-return-statement.md)                   | Disallow explicitly returning from tests                                  |     |     |     |     |
+| [no-unneeded-async-expect-function](docs/rules/no-unneeded-async-expect-function.md) | Disallow unnecessary async function wrapper for expected promises         |     |     | 🔧  |     |
 | [no-untyped-mock-factory](docs/rules/no-untyped-mock-factory.md)                     | Disallow using `jest.mock()` factories without an explicit type parameter |     |     | 🔧  |     |
 | [padding-around-after-all-blocks](docs/rules/padding-around-after-all-blocks.md)     | Enforce padding around `afterAll` blocks                                  |     |     | 🔧  |     |
 | [padding-around-after-each-blocks](docs/rules/padding-around-after-each-blocks.md)   | Enforce padding around `afterEach` blocks                                 |     |     | 🔧  |     |
