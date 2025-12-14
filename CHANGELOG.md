@@ -1,3 +1,32 @@
+# [29.4.0](https://github.com/jest-community/eslint-plugin-jest/compare/v29.3.0...v29.4.0) (2025-12-13)
+
+
+### Features
+
+* create new `prefer-to-have-been-called-times` rule ([281085a](https://github.com/jest-community/eslint-plugin-jest/commit/281085ac5df90b77f8d4bbb7720f17d720add762))
+* create new `prefer-to-have-been-called` rule ([24e2acd](https://github.com/jest-community/eslint-plugin-jest/commit/24e2acd12004731d8162d8eb78eda8385ce896d7))
+
+# [29.3.0](https://github.com/jest-community/eslint-plugin-jest/compare/v29.2.3...v29.3.0) (2025-12-13)
+
+
+### Features
+
+* **prefer-expect-assertions:** support basic uses of `hasAssertions` in `beforeEach` and `afterEach` hooks ([#1871](https://github.com/jest-community/eslint-plugin-jest/issues/1871)) ([eed9acb](https://github.com/jest-community/eslint-plugin-jest/commit/eed9acb98a9d2a64abb42dba2af4a2f36838caff))
+
+## [29.2.3](https://github.com/jest-community/eslint-plugin-jest/compare/v29.2.2...v29.2.3) (2025-12-13)
+
+
+### Bug Fixes
+
+* **prefer-expect-assertions:** use correct word in error message ([#1873](https://github.com/jest-community/eslint-plugin-jest/issues/1873)) ([c48c48c](https://github.com/jest-community/eslint-plugin-jest/commit/c48c48c9d03ed04eda01a78959ab7f794e1fa448))
+
+## [29.2.2](https://github.com/jest-community/eslint-plugin-jest/compare/v29.2.1...v29.2.2) (2025-12-12)
+
+
+### Bug Fixes
+
+* **no-export:** report on `export =` usage ([#1870](https://github.com/jest-community/eslint-plugin-jest/issues/1870)) ([9d90466](https://github.com/jest-community/eslint-plugin-jest/commit/9d90466af1849270ae1652d05f6f233f4f43c8d6))
+
 ## [29.2.1](https://github.com/jest-community/eslint-plugin-jest/compare/v29.2.0...v29.2.1) (2025-11-23)
 
 

@@ -360,7 +360,7 @@ Manually fixable by
 | [padding-around-describe-blocks](docs/rules/padding-around-describe-blocks.md)       | Enforce padding around `describe` blocks                                  |     |     | 🔧  |     |
 | [padding-around-expect-groups](docs/rules/padding-around-expect-groups.md)           | Enforce padding around `expect` groups                                    |     |     | 🔧  |     |
 | [padding-around-test-blocks](docs/rules/padding-around-test-blocks.md)               | Enforce padding around `test` and `it` blocks                             |     |     | 🔧  |     |
-| [prefer-called-with](docs/rules/prefer-called-with.md)                               | Suggest using `toBeCalledWith()` or `toHaveBeenCalledWith()`              |     |     |     |     |
+| [prefer-called-with](docs/rules/prefer-called-with.md)                               | Suggest using `toHaveBeenCalledWith()`                                    |     |     |     |     |
 | [prefer-comparison-matcher](docs/rules/prefer-comparison-matcher.md)                 | Suggest using the built-in comparison matchers                            |     |     | 🔧  |     |
 | [prefer-each](docs/rules/prefer-each.md)                                             | Prefer using `.each` rather than manual loops                             |     |     |     |     |
 | [prefer-ending-with-an-expect](docs/rules/prefer-ending-with-an-expect.md)           | Prefer having the last statement in a test be an assertion                |     |     |     |     |
@@ -378,6 +378,8 @@ Manually fixable by
 | [prefer-strict-equal](docs/rules/prefer-strict-equal.md)                             | Suggest using `toStrictEqual()`                                           |     |     |     | 💡  |
 | [prefer-to-be](docs/rules/prefer-to-be.md)                                           | Suggest using `toBe()` for primitive literals                             | 🎨  |     | 🔧  |     |
 | [prefer-to-contain](docs/rules/prefer-to-contain.md)                                 | Suggest using `toContain()`                                               | 🎨  |     | 🔧  |     |
+| [prefer-to-have-been-called](docs/rules/prefer-to-have-been-called.md)               | Suggest using `toHaveBeenCalled`                                          |     |     | 🔧  |     |
+| [prefer-to-have-been-called-times](docs/rules/prefer-to-have-been-called-times.md)   | Suggest using `toHaveBeenCalledTimes()`                                   |     |     | 🔧  |     |
 | [prefer-to-have-length](docs/rules/prefer-to-have-length.md)                         | Suggest using `toHaveLength()`                                            | 🎨  |     | 🔧  |     |
 | [prefer-todo](docs/rules/prefer-todo.md)                                             | Suggest using `test.todo`                                                 |     |     | 🔧  |     |
 | [require-hook](docs/rules/require-hook.md)                                           | Require setup and teardown code to be within a hook                       |     |     |     |     |

@@ -1,7 +1,7 @@
 import rule from '../prefer-strict-equal';
-import { FlatCompatRuleTester } from './test-utils';
+import { FlatCompatRuleTester as RuleTester } from './test-utils';
 
-const ruleTester = new FlatCompatRuleTester();
+const ruleTester = new RuleTester();
 
 ruleTester.run('prefer-strict-equal', rule, {
   valid: [
