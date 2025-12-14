@@ -63,14 +63,14 @@ ruleTester.run('no-async-wrapper-for-expected-promise', rule, {
   invalid: [
     {
       code: dedent`
-        it('should be fix', async () => {
+        it('should be fixed', async () => {
           await expect(async () => {
             await doSomethingAsync();
           }).rejects.toThrow(); 
         })
       `,
       output: dedent`
-        it('should be fix', async () => {
+        it('should be fixed', async () => {
           await expect(doSomethingAsync()).rejects.toThrow(); 
         })
       `,
@@ -84,14 +84,14 @@ ruleTester.run('no-async-wrapper-for-expected-promise', rule, {
     },
     {
       code: dedent`
-        it('should be fix', async () => {
+        it('should be fixed', async () => {
           await expect(async function () {
             await doSomethingAsync();
           }).rejects.toThrow(); 
         })
       `,
       output: dedent`
-        it('should be fix', async () => {
+        it('should be fixed', async () => {
           await expect(doSomethingAsync()).rejects.toThrow(); 
         })
     `,
@@ -105,14 +105,14 @@ ruleTester.run('no-async-wrapper-for-expected-promise', rule, {
     },
     {
       code: dedent`
-        it('should be fix', async () => {
+        it('should be fixed', async () => {
           await expect(async () => {
             await doSomethingAsync(1, 2);
           }).rejects.toThrow(); 
         })
       `,
       output: dedent`
-        it('should be fix', async () => {
+        it('should be fixed', async () => {
           await expect(doSomethingAsync(1, 2)).rejects.toThrow(); 
         })
       `,
@@ -126,14 +126,14 @@ ruleTester.run('no-async-wrapper-for-expected-promise', rule, {
     },
     {
       code: dedent`
-        it('should be fix', async () => {
+        it('should be fixed', async () => {
           await expect(async function () {
             await doSomethingAsync(1, 2);
           }).rejects.toThrow(); 
         })
       `,
       output: dedent`
-        it('should be fix', async () => {
+        it('should be fixed', async () => {
           await expect(doSomethingAsync(1, 2)).rejects.toThrow(); 
         })
       `,
