@@ -1,3 +1,10 @@
+## [29.4.1](https://github.com/jest-community/eslint-plugin-jest/compare/v29.4.0...v29.4.1) (2025-12-14)
+
+
+### Bug Fixes
+
+* **prefer-to-have-been-called-times:** actually check that current matcher is `toHaveLength` ([#1878](https://github.com/jest-community/eslint-plugin-jest/issues/1878)) ([3415744](https://github.com/jest-community/eslint-plugin-jest/commit/341574473a4151f8182e6d6dd41fdd5de6d88058))
+
 # [29.4.0](https://github.com/jest-community/eslint-plugin-jest/compare/v29.3.0...v29.4.0) (2025-12-13)
 
 
