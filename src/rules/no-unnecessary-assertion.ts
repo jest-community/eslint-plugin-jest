@@ -19,6 +19,7 @@ export default createRule<Options, MessageIds>({
   meta: {
     docs: {
       description: 'Disallow unnecessary assertions based on types',
+      requiresTypeChecking: true,
     },
     messages: {
       unnecessaryAssertion:

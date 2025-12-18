@@ -1,5 +1,8 @@
 # Disallow unnecessary assertions based on types (`no-unnecessary-assertion`)
 
+💭 This rule requires
+[type information](https://typescript-eslint.io/linting/typed-linting).
+
 <!-- end auto-generated rule header -->
 
 When using TypeScript, runtime assertions based on types can often be omitted

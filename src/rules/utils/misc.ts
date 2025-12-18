@@ -16,7 +16,9 @@ import { type ParsedExpectFnCall, isTypeOfJestFnCall } from './parseJestFnCall';
 
 const REPO_URL = 'https://github.com/jest-community/eslint-plugin-jest';
 
-export const createRule = ESLintUtils.RuleCreator(name => {
+export const createRule = ESLintUtils.RuleCreator<{
+  requiresTypeChecking?: boolean;
+}>(name => {
   const ruleName = parsePath(name).name;
 
   return `${REPO_URL}/blob/v${version}/docs/rules/${ruleName}.md`;

@@ -351,7 +351,6 @@ Manually fixable by
 | [no-standalone-expect](docs/rules/no-standalone-expect.md)                           | Disallow using `expect` outside of `it` or `test` blocks                  | ✅  |     |     |     |
 | [no-test-prefixes](docs/rules/no-test-prefixes.md)                                   | Require using `.only` and `.skip` over `f` and `x`                        | ✅  |     | 🔧  |     |
 | [no-test-return-statement](docs/rules/no-test-return-statement.md)                   | Disallow explicitly returning from tests                                  |     |     |     |     |
-| [no-unnecessary-assertion](docs/rules/no-unnecessary-assertion.md)                   | Disallow unnecessary assertions based on types                            |     |     |     |     |
 | [no-unneeded-async-expect-function](docs/rules/no-unneeded-async-expect-function.md) | Disallow unnecessary async function wrapper for expected promises         |     |     | 🔧  |     |
 | [no-untyped-mock-factory](docs/rules/no-untyped-mock-factory.md)                     | Disallow using `jest.mock()` factories without an explicit type parameter |     |     | 🔧  |     |
 | [padding-around-after-all-blocks](docs/rules/padding-around-after-all-blocks.md)     | Enforce padding around `afterAll` blocks                                  |     |     | 🔧  |     |
@@ -395,9 +394,10 @@ Manually fixable by
 
 ### Requires Type Checking
 
-| Name                                           | Description                                                  | 💼  | ⚠️  | 🔧  | 💡  |
-| :--------------------------------------------- | :----------------------------------------------------------- | :-- | :-- | :-- | :-- |
-| [unbound-method](docs/rules/unbound-method.md) | Enforce unbound methods are called with their expected scope |     |     |     |     |
+| Name                                                               | Description                                                  | 💼  | ⚠️  | 🔧  | 💡  |
+| :----------------------------------------------------------------- | :----------------------------------------------------------- | :-- | :-- | :-- | :-- |
+| [no-unnecessary-assertion](docs/rules/no-unnecessary-assertion.md) | Disallow unnecessary assertions based on types               |     |     |     |     |
+| [unbound-method](docs/rules/unbound-method.md)                     | Enforce unbound methods are called with their expected scope |     |     |     |     |
 
 <!-- end auto-generated rules list -->
 
