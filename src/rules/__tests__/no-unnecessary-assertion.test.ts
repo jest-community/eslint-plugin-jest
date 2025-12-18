@@ -95,6 +95,7 @@ const generateValidCases = (
       expect(mx('world')).not.${matcher}();
     `,
     `expect(${thing}).not.${matcher}()`,
+    `expect("hello" as ${thing}).${matcher}();`,
   ];
 };
 
@@ -160,6 +161,20 @@ const generateInvalidCases = (
           messageId: 'unnecessaryAssertion',
           data: { thing },
           line: 4,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        const add = (a: number, b: number) => a + b;
+
+        expect(add(1, 1)).${matcher}();
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+          data: { thing },
+          line: 3,
         },
       ],
     },
@@ -342,6 +357,53 @@ const generateInvalidCases = (
           messageId: 'unnecessaryAssertion',
           data: { thing },
           line: 7,
+        },
+      ],
+    },
+
+    {
+      code: dedent`
+        declare function mx(): string | ${thing};
+
+        expect(mx()!).${matcher}();
+        expect(mx()!).not.${matcher}();
+
+        expect(mx() as string).${matcher}();
+        expect(mx() as string).not.${matcher}();
+
+        expect(mx() as number).${matcher}();
+        expect(mx() as number).not.${matcher}();
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+          data: { thing },
+          line: 3,
+        },
+        {
+          messageId: 'unnecessaryAssertion',
+          data: { thing },
+          line: 4,
+        },
+        {
+          messageId: 'unnecessaryAssertion',
+          data: { thing },
+          line: 6,
+        },
+        {
+          messageId: 'unnecessaryAssertion',
+          data: { thing },
+          line: 7,
+        },
+        {
+          messageId: 'unnecessaryAssertion',
+          data: { thing },
+          line: 9,
+        },
+        {
+          messageId: 'unnecessaryAssertion',
+          data: { thing },
+          line: 10,
         },
       ],
     },
