@@ -1,5 +1,5 @@
 import { AST_NODE_TYPES, ESLintUtils } from '@typescript-eslint/utils';
-import ts from 'typescript';
+import type ts from 'typescript';
 import { createRule, getAccessorValue, parseJestFnCall } from './utils';
 
 const canBe = (firstArgumentType: ts.Type, flag: ts.TypeFlags) => {
@@ -32,6 +32,9 @@ export default createRule<Options, MessageIds>({
   create(context) {
     const services = ESLintUtils.getParserServices(context);
 
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    const { TypeFlags } = require('typescript') as typeof ts;
+
     return {
       CallExpression(node) {
         const jestFnCall = parseJestFnCall(node, context);
@@ -55,9 +58,7 @@ export default createRule<Options, MessageIds>({
 
         const isNullable = canBe(
           services.getTypeAtLocation(argument),
-          matcherName === 'toBeNull'
-            ? ts.TypeFlags.Null
-            : ts.TypeFlags.Undefined,
+          matcherName === 'toBeNull' ? TypeFlags.Null : TypeFlags.Undefined,
         );
 
         if (!isNullable) {
