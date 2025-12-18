@@ -1,13 +1,13 @@
 import { AST_NODE_TYPES, ESLintUtils } from '@typescript-eslint/utils';
 import ts from 'typescript';
-import { createRule, isSupportedAccessor, parseJestFnCall } from './utils';
+import { createRule, getAccessorValue, parseJestFnCall } from './utils';
 
-const canBeNull = (firstArgumentType: ts.Type) => {
+const canBe = (firstArgumentType: ts.Type, flag: ts.TypeFlags) => {
   if (firstArgumentType.isUnion()) {
-    return firstArgumentType.types.some(typ => typ.flags & ts.TypeFlags.Null);
+    return firstArgumentType.types.some(typ => typ.flags & flag);
   }
 
-  return firstArgumentType.flags & ts.TypeFlags.Null;
+  return firstArgumentType.flags & flag;
 };
 
 export type MessageIds = 'unnecessaryAssertion';
@@ -21,7 +21,8 @@ export default createRule<Options, MessageIds>({
       description: 'Disallow unnecessary assertions based on types',
     },
     messages: {
-      unnecessaryAssertion: 'Unnecessary assertion, subject cannot be null',
+      unnecessaryAssertion:
+        'Unnecessary assertion, subject cannot be {{ thing }}',
     },
     type: 'suggestion',
     schema: [],
@@ -36,24 +37,32 @@ export default createRule<Options, MessageIds>({
 
         if (
           jestFnCall?.type !== 'expect' ||
-          !isSupportedAccessor(jestFnCall.matcher, 'toBeNull')
+          jestFnCall.head.node.parent.type !== AST_NODE_TYPES.CallExpression
         ) {
           return;
         }
 
-        const { parent: expect } = jestFnCall.head.node;
+        const matcherName = getAccessorValue(jestFnCall.matcher);
 
-        if (expect?.type !== AST_NODE_TYPES.CallExpression) {
+        if (
+          !['toBeNull', 'toBeDefined', 'toBeUndefined'].includes(matcherName)
+        ) {
           return;
         }
 
-        const [argument] = expect.arguments;
+        const [argument] = jestFnCall.head.node.parent.arguments;
 
-        const isNullable = canBeNull(services.getTypeAtLocation(argument));
+        const isNullable = canBe(
+          services.getTypeAtLocation(argument),
+          matcherName === 'toBeNull'
+            ? ts.TypeFlags.Null
+            : ts.TypeFlags.Undefined,
+        );
 
         if (!isNullable) {
           context.report({
             messageId: 'unnecessaryAssertion',
+            data: { thing: matcherName === 'toBeNull' ? 'null' : 'undefined' },
             node,
           });
         }

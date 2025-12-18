@@ -42,14 +42,23 @@ const withFixtureFilename = <
   });
 };
 
-ruleTester.run('no-unnecessary-assertion', rule, {
+ruleTester.run('no-unnecessary-assertion (general)', rule, {
   valid: withFixtureFilename([
     'expect',
     'expect.hasAssertions',
     'expect.hasAssertions()',
-    'expect.toBeNull',
-    'expect.toBeNull()',
     'expect(a).toBe(b)',
+  ]),
+  invalid: [],
+});
+
+const generateValidCases = (
+  matcher: 'toBeNull' | 'toBeUndefined' | 'toBeDefined',
+  thing: 'null' | 'undefined',
+) => {
+  return [
+    `expect.${matcher}`,
+    `expect.${matcher}()`,
     dedent`
       const add = (a, b) => a + b;
 
@@ -66,60 +75,70 @@ ruleTester.run('no-unnecessary-assertion', rule, {
       expect(add(1, 1)).toBe(2);
     `,
     dedent`
-      const add = (a: number, b: number): number | null => a + b;
+      const add = (a: number, b: number): number | ${thing} => a + b;
 
-      expect(add(1, 1)).not.toBeNull();
+      expect(add(1, 1)).not.${matcher}();
     `,
     dedent`
-      declare function mx(): string | null;
+      declare function mx(): string | ${thing};
 
-      expect(mx()).toBeNull();
-      expect(mx()).not.toBeNull();
+      expect(mx()).${matcher}();
+      expect(mx()).not.${matcher}();
     `,
     dedent`
-      declare function mx<T>(p: T): T | null;
+      declare function mx<T>(p: T): T | ${thing};
 
-      expect(mx(null)).toBeNull();
-      expect(mx(null)).not.toBeNull();
+      expect(mx(${thing})).${matcher}();
+      expect(mx(${thing})).not.${matcher}();
 
-      expect(mx('hello')).toBeNull();
-      expect(mx('world')).not.toBeNull();
+      expect(mx('hello')).${matcher}();
+      expect(mx('world')).not.${matcher}();
     `,
-    'expect(null).not.toBeNull()',
-  ]),
-  invalid: withFixtureFilename([
+    `expect(${thing}).not.${matcher}()`,
+  ];
+};
+
+const generateInvalidCases = (
+  matcher: 'toBeNull' | 'toBeUndefined' | 'toBeDefined',
+  thing: 'null' | 'undefined',
+): Array<TSESLint.InvalidTestCase<MessageIds, Options>> => {
+  return [
     {
-      code: 'expect(0).toBeNull()',
+      code: `expect(0).${matcher}()`,
       errors: [
         {
           messageId: 'unnecessaryAssertion',
+          data: { thing },
           line: 1,
         },
       ],
     },
     {
-      code: 'expect("hello world").toBeNull()',
+      code: `expect("hello world").${matcher}()`,
       errors: [
         {
           messageId: 'unnecessaryAssertion',
+          data: { thing },
           line: 1,
         },
       ],
     },
     {
-      code: 'expect({}).toBeNull()',
+      code: `expect({}).${matcher}()`,
       errors: [
         {
           messageId: 'unnecessaryAssertion',
+          data: { thing },
           line: 1,
         },
       ],
     },
     {
-      code: 'expect([]).not.toBeNull()',
+      code: `expect([]).not.${matcher}()`,
       errors: [
         {
           messageId: 'unnecessaryAssertion',
+          data: { thing },
           line: 1,
         },
       ],
@@ -128,16 +147,18 @@ ruleTester.run('no-unnecessary-assertion', rule, {
       code: dedent`
         const x = 0;
 
-        expect(x).toBeNull()
-        expect(x).not.toBeNull()
+        expect(x).${matcher}()
+        expect(x).not.${matcher}()
       `,
       errors: [
         {
           messageId: 'unnecessaryAssertion',
+          data: { thing },
           line: 3,
         },
         {
           messageId: 'unnecessaryAssertion',
+          data: { thing },
           line: 4,
         },
       ],
@@ -146,11 +167,12 @@ ruleTester.run('no-unnecessary-assertion', rule, {
       code: dedent`
         const add = (a: number, b: number): number => a + b;
 
-        expect(add(1, 1)).toBeNull();
+        expect(add(1, 1)).${matcher}();
       `,
       errors: [
         {
           messageId: 'unnecessaryAssertion',
+          data: { thing },
           line: 3,
         },
       ],
@@ -159,11 +181,12 @@ ruleTester.run('no-unnecessary-assertion', rule, {
       code: dedent`
         const add = (a: number, b: number): number => a + b;
 
-        expect(add(1, 1)).not.toBeNull();
+        expect(add(1, 1)).not.${matcher}();
       `,
       errors: [
         {
           messageId: 'unnecessaryAssertion',
+          data: { thing },
           line: 3,
         },
       ],
@@ -173,16 +196,18 @@ ruleTester.run('no-unnecessary-assertion', rule, {
       code: dedent`
         const result = "hello world".match("sunshine") ?? [];
 
-        expect(result).not.toBeNull();
-        expect(result).toBeNull();
+        expect(result).not.${matcher}();
+        expect(result).${matcher}();
       `,
       errors: [
         {
           messageId: 'unnecessaryAssertion',
+          data: { thing },
           line: 3,
         },
         {
           messageId: 'unnecessaryAssertion',
+          data: { thing },
           line: 4,
         },
       ],
@@ -191,16 +216,18 @@ ruleTester.run('no-unnecessary-assertion', rule, {
       code: dedent`
         const result = "hello world".match("sunshine") || [];
 
-        expect(result).not.toBeNull();
-        expect(result).toBeNull();
+        expect(result).not.${matcher}();
+        expect(result).${matcher}();
       `,
       errors: [
         {
           messageId: 'unnecessaryAssertion',
+          data: { thing },
           line: 3,
         },
         {
           messageId: 'unnecessaryAssertion',
+          data: { thing },
           line: 4,
         },
       ],
@@ -213,16 +240,18 @@ ruleTester.run('no-unnecessary-assertion', rule, {
     //
     //     result ??= []
     //
-    //     expect(result).not.toBeNull();
-    //     expect(result).toBeNull();
+    //     expect(result).not.${matcher}();
+    //     expect(result).${matcher}();
     //   `,
     //   errors: [
     //     {
     //       messageId: 'unnecessaryAssertion',
+    //       data: { thing },
     //       line: 5,
     //     },
     //     {
     //       messageId: 'unnecessaryAssertion',
+    //       data: { thing },
     //       line: 6,
     //     },
     //   ],
@@ -233,16 +262,18 @@ ruleTester.run('no-unnecessary-assertion', rule, {
     //
     //     result ||= []
     //
-    //     expect(result).not.toBeNull();
-    //     expect(result).toBeNull();
+    //     expect(result).not.${matcher}();
+    //     expect(result).${matcher}();
     //   `,
     //   errors: [
     //     {
     //       messageId: 'unnecessaryAssertion',
+    //       data: { thing },
     //       line: 5,
     //     },
     //     {
     //       messageId: 'unnecessaryAssertion',
+    //       data: { thing },
     //       line: 6,
     //     },
     //   ],
@@ -252,16 +283,18 @@ ruleTester.run('no-unnecessary-assertion', rule, {
       code: dedent`
         declare function mx(): string | number;
 
-        expect(mx()).toBeNull();
-        expect(mx()).not.toBeNull();
+        expect(mx()).${matcher}();
+        expect(mx()).not.${matcher}();
       `,
       errors: [
         {
           messageId: 'unnecessaryAssertion',
+          data: { thing },
           line: 3,
         },
         {
           messageId: 'unnecessaryAssertion',
+          data: { thing },
           line: 4,
         },
       ],
@@ -270,43 +303,66 @@ ruleTester.run('no-unnecessary-assertion', rule, {
       code: dedent`
         declare function mx<T>(p: T): T;
 
-        expect(mx(null)).toBeNull();
-        expect(mx(null)).not.toBeNull();
+        expect(mx(${thing})).${matcher}();
+        expect(mx(${thing})).not.${matcher}();
 
-        expect(mx('hello')).toBeNull();
-        expect(mx('world')).not.toBeNull();
+        expect(mx('hello')).${matcher}();
+        expect(mx('world')).not.${matcher}();
       `,
       errors: [
         {
           messageId: 'unnecessaryAssertion',
+          data: { thing },
           line: 6,
         },
         {
           messageId: 'unnecessaryAssertion',
+          data: { thing },
           line: 7,
         },
       ],
     },
     {
       code: dedent`
-        declare function mx<T>(p: T): T extends string ? null : T;
+        declare function mx<T>(p: T): T extends string ? ${thing} : T;
 
-        expect(mx('hello')).toBeNull();
-        expect(mx('world')).not.toBeNull();
+        expect(mx('hello')).${matcher}();
+        expect(mx('world')).not.${matcher}();
 
-        expect(mx({})).toBeNull();
-        expect(mx({})).not.toBeNull();
+        expect(mx({})).${matcher}();
+        expect(mx({})).not.${matcher}();
       `,
       errors: [
         {
           messageId: 'unnecessaryAssertion',
+          data: { thing },
           line: 6,
         },
         {
           messageId: 'unnecessaryAssertion',
+          data: { thing },
           line: 7,
         },
       ],
     },
-  ]),
+  ];
+};
+
+ruleTester.run('no-unnecessary-assertion (toBeNull)', rule, {
+  valid: withFixtureFilename(generateValidCases('toBeNull', 'null')),
+  invalid: withFixtureFilename(generateInvalidCases('toBeNull', 'null')),
+});
+
+ruleTester.run('no-unnecessary-assertion (toBeDefined)', rule, {
+  valid: withFixtureFilename(generateValidCases('toBeDefined', 'undefined')),
+  invalid: withFixtureFilename(
+    generateInvalidCases('toBeDefined', 'undefined'),
+  ),
+});
+
+ruleTester.run('no-unnecessary-assertion (toBeUndefined)', rule, {
+  valid: withFixtureFilename(generateValidCases('toBeUndefined', 'undefined')),
+  invalid: withFixtureFilename(
+    generateInvalidCases('toBeUndefined', 'undefined'),
+  ),
 });
