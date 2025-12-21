@@ -1,10 +1,7 @@
 import path from 'path';
 import type { TSESLint } from '@typescript-eslint/utils';
 import dedent from 'dedent';
-import rule, {
-  type MessageIds,
-  type Options,
-} from '../no-unnecessary-assertion';
+import type { MessageIds, Options } from '../no-unnecessary-assertion';
 import { FlatCompatRuleTester as RuleTester } from './test-utils';
 
 function getFixturesRootDir(): string {
@@ -25,6 +22,44 @@ const ruleTester = new RuleTester({
 
 const fixtureFilename = path.join(rootPath, 'file.ts');
 
+const requireRule = (throwWhenRequiring: boolean) => {
+  jest.resetModules();
+
+  TSESLintPluginRef.throwWhenRequiring = throwWhenRequiring;
+
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  return require('../no-unnecessary-assertion').default;
+};
+
+const TSESLintPluginRef: { throwWhenRequiring: boolean } = {
+  throwWhenRequiring: false,
+};
+
+jest.mock('typescript', () => {
+  if (TSESLintPluginRef.throwWhenRequiring) {
+    throw new (class extends Error {
+      public code;
+
+      constructor(message?: string) {
+        super(message);
+        this.code = 'MODULE_NOT_FOUND';
+      }
+    })();
+  }
+
+  return jest.requireActual('typescript');
+});
+
+describe('error handling', () => {
+  afterAll(() => {
+    TSESLintPluginRef.throwWhenRequiring = false;
+  });
+
+  it('does not require typescript until the rule is actually created', () => {
+    expect(() => requireRule(true)).not.toThrow();
+  });
+});
+
 const withFixtureFilename = <
   T extends Array<
     | (TSESLint.ValidTestCase<Options> | string)
@@ -43,7 +78,7 @@ const withFixtureFilename = <
   });
 };
 
-ruleTester.run('no-unnecessary-assertion (general)', rule, {
+ruleTester.run('no-unnecessary-assertion (general)', requireRule(false), {
   valid: withFixtureFilename([
     'expect',
     'expect.hasAssertions',
@@ -425,19 +460,19 @@ const generateInvalidCases = (
   ];
 };
 
-ruleTester.run('no-unnecessary-assertion (toBeNull)', rule, {
+ruleTester.run('no-unnecessary-assertion (toBeNull)', requireRule(false), {
   valid: withFixtureFilename(generateValidCases('toBeNull', 'null')),
   invalid: withFixtureFilename(generateInvalidCases('toBeNull', 'null')),
 });
 
-ruleTester.run('no-unnecessary-assertion (toBeDefined)', rule, {
+ruleTester.run('no-unnecessary-assertion (toBeDefined)', requireRule(false), {
   valid: withFixtureFilename(generateValidCases('toBeDefined', 'undefined')),
   invalid: withFixtureFilename(
     generateInvalidCases('toBeDefined', 'undefined'),
   ),
 });
 
-ruleTester.run('no-unnecessary-assertion (toBeUndefined)', rule, {
+ruleTester.run('no-unnecessary-assertion (toBeUndefined)', requireRule(false), {
   valid: withFixtureFilename(generateValidCases('toBeUndefined', 'undefined')),
   invalid: withFixtureFilename(
     generateInvalidCases('toBeUndefined', 'undefined'),
