@@ -16,6 +16,7 @@ const ruleTester = new RuleTester({
     sourceType: 'module',
     tsconfigRootDir: rootPath,
     project: './tsconfig.json',
+    disallowAutomaticSingleRunInference: true,
   },
 });
 
@@ -89,16 +90,15 @@ const invalidTestCases: Array<TSESLint.InvalidTestCase<MessageIds, Options>> = [
       },
     ],
   },
-  // todo: for some reason this test is failing in CI but not locally
-  // {
-  //   code: 'expect(Console.prototype.log).toHaveBeenCalledTimes',
-  //   errors: [
-  //     {
-  //       line: 1,
-  //       messageId: 'unboundWithoutThisAnnotation',
-  //     },
-  //   ],
-  // },
+  {
+    code: 'expect(Console.prototype.log).toHaveBeenCalledTimes',
+    errors: [
+      {
+        line: 1,
+        messageId: 'unboundWithoutThisAnnotation',
+      },
+    ],
+  },
   {
     code: dedent`
       expect(() => {
@@ -502,19 +502,18 @@ Promise.resolve().then(console.log);
         },
       ],
     },
-    // todo: for some reason this test is failing in CI but not locally
-    //     {
-    //       code: `
-    // import { console } from './class';
-    // const x = console.log;
-    //       `,
-    //       errors: [
-    //         {
-    //           line: 3,
-    //           messageId: 'unboundWithoutThisAnnotation',
-    //         },
-    //       ],
-    //     },
+    {
+      code: `
+import { console } from './class';
+const x = console.log;
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
     {
       code: addContainsMethodsClass(`
 function foo(arg: ContainsMethods | null) {
@@ -595,17 +594,16 @@ const x = CommunicationError.prototype.foo;
         },
       ],
     },
-    // todo: for some reason this test is failing in CI but not locally
-    // {
-    //   // Promise.all is not auto-bound to Promise
-    //   code: 'const x = Promise.all;',
-    //   errors: [
-    //     {
-    //       line: 1,
-    //       messageId: 'unboundWithoutThisAnnotation',
-    //     },
-    //   ],
-    // },
+    {
+      // Promise.all is not auto-bound to Promise
+      code: 'const x = Promise.all;',
+      errors: [
+        {
+          line: 1,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
     {
       code: `
 class Foo {
@@ -726,29 +724,27 @@ let foo;
         },
       ],
     },
-    // todo: for some reason this test is failing in CI but not locally
-    //     {
-    //       code: `
-    // import { console } from './class';
-    // const { log } = console;
-    //       `,
-    //       errors: [
-    //         {
-    //           line: 3,
-    //           messageId: 'unboundWithoutThisAnnotation',
-    //         },
-    //       ],
-    //     },
-    // todo: for some reason this test is failing in CI but not locally
-    // {
-    //   code: 'const { all } = Promise;',
-    //   errors: [
-    //     {
-    //       line: 1,
-    //       messageId: 'unboundWithoutThisAnnotation',
-    //     },
-    //   ],
-    // },
+    {
+      code: `
+import { console } from './class';
+const { log } = console;
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
+    {
+      code: 'const { all } = Promise;',
+      errors: [
+        {
+          line: 1,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
     // https://github.com/typescript-eslint/typescript-eslint/issues/1866
     {
       code: `
