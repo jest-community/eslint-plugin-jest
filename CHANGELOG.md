@@ -1,3 +1,10 @@
+# [29.6.0](https://github.com/jest-community/eslint-plugin-jest/compare/v29.5.0...v29.6.0) (2025-12-21)
+
+
+### Features
+
+* create new `no-unnecessary-assertion` rule ([#1882](https://github.com/jest-community/eslint-plugin-jest/issues/1882)) ([6a7db49](https://github.com/jest-community/eslint-plugin-jest/commit/6a7db490886460e2c853c259cd295746180dec5b))
+
 # [29.5.0](https://github.com/jest-community/eslint-plugin-jest/compare/v29.4.1...v29.5.0) (2025-12-14)
 
 
