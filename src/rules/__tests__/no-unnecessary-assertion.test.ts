@@ -19,6 +19,7 @@ const ruleTester = new RuleTester({
     sourceType: 'module',
     tsconfigRootDir: rootPath,
     project: './tsconfig.json',
+    disallowAutomaticSingleRunInference: true,
   },
 });
 
