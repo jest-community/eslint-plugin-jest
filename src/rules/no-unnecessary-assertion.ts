@@ -67,7 +67,9 @@ export default createRule<Options, MessageIds>({
         const matcherName = getAccessorValue(jestFnCall.matcher);
 
         if (
-          !['toBeNull', 'toBeDefined', 'toBeUndefined'].includes(matcherName)
+          !['toBeNull', 'toBeDefined', 'toBeUndefined', 'toBeNaN'].includes(
+            matcherName,
+          )
         ) {
           return;
         }
@@ -79,15 +81,26 @@ export default createRule<Options, MessageIds>({
 
         const [argument] = jestFnCall.head.node.parent.arguments;
 
-        const isNullable = canBe(
+        const isTypePossible = canBe(
           services.getTypeAtLocation(argument),
-          matcherName === 'toBeNull' ? TypeFlags.Null : TypeFlags.Undefined,
+          matcherName === 'toBeNaN'
+            ? TypeFlags.NumberLike
+            : matcherName === 'toBeNull'
+              ? TypeFlags.Null
+              : TypeFlags.Undefined,
         );
 
-        if (!isNullable) {
+        if (!isTypePossible) {
           context.report({
             messageId: 'unnecessaryAssertion',
-            data: { thing: matcherName === 'toBeNull' ? 'null' : 'undefined' },
+            data: {
+              thing:
+                matcherName === 'toBeNaN'
+                  ? 'a number'
+                  : matcherName === 'toBeNull'
+                    ? 'null'
+                    : 'undefined',
+            },
             node,
           });
         }
