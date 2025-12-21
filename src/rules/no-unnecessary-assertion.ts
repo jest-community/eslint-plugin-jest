@@ -10,7 +10,7 @@ const canBe = (firstArgumentType: ts.Type, flag: ts.TypeFlags) => {
   return firstArgumentType.flags & flag;
 };
 
-export type MessageIds = 'unnecessaryAssertion';
+export type MessageIds = 'unnecessaryAssertion' | 'noStrictNullCheck';
 
 export type Options = [];
 
@@ -24,6 +24,8 @@ export default createRule<Options, MessageIds>({
     messages: {
       unnecessaryAssertion:
         'Unnecessary assertion, subject cannot be {{ thing }}',
+      noStrictNullCheck:
+        'This rule requires the `strictNullChecks` compiler option to be turned on to function correctly.',
     },
     type: 'suggestion',
     schema: [],
@@ -34,6 +36,22 @@ export default createRule<Options, MessageIds>({
 
     // eslint-disable-next-line @typescript-eslint/no-require-imports
     const { TypeFlags } = require('typescript') as typeof ts;
+
+    const compilerOptions = services.program.getCompilerOptions();
+
+    const isStrictNullChecks =
+      compilerOptions.strictNullChecks ||
+      (compilerOptions.strict && compilerOptions.strictNullChecks !== false);
+
+    if (!isStrictNullChecks) {
+      context.report({
+        loc: {
+          start: { column: 0, line: 0 },
+          end: { column: 0, line: 0 },
+        },
+        messageId: 'noStrictNullCheck',
+      });
+    }
 
     return {
       CallExpression(node) {

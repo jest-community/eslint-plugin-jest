@@ -50,7 +50,21 @@ ruleTester.run('no-unnecessary-assertion (general)', rule, {
     'expect.hasAssertions()',
     'expect(a).toBe(b)',
   ]),
-  invalid: [],
+  invalid: [
+    {
+      filename: path.join(rootPath, 'unstrict', 'file.ts'),
+      code: 'expect(x).toBe(y);',
+      parserOptions: {
+        tsconfigRootDir: path.join(rootPath, 'unstrict'),
+      },
+      errors: [
+        {
+          messageId: 'noStrictNullCheck',
+          line: 0,
+        },
+      ],
+    },
+  ],
 });
 
 const generateValidCases = (
