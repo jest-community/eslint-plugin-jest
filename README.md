@@ -394,9 +394,10 @@ Manually fixable by
 
 ### Requires Type Checking
 
-| Name                                           | Description                                                  | 💼  | ⚠️  | 🔧  | 💡  |
-| :--------------------------------------------- | :----------------------------------------------------------- | :-- | :-- | :-- | :-- |
-| [unbound-method](docs/rules/unbound-method.md) | Enforce unbound methods are called with their expected scope |     |     |     |     |
+| Name                                                               | Description                                                  | 💼  | ⚠️  | 🔧  | 💡  |
+| :----------------------------------------------------------------- | :----------------------------------------------------------- | :-- | :-- | :-- | :-- |
+| [no-unnecessary-assertion](docs/rules/no-unnecessary-assertion.md) | Disallow unnecessary assertions based on types               |     |     |     |     |
+| [unbound-method](docs/rules/unbound-method.md)                     | Enforce unbound methods are called with their expected scope |     |     |     |     |
 
 <!-- end auto-generated rules list -->
 
