@@ -34,9 +34,6 @@ export default createRule<Options, MessageIds>({
   create(context) {
     const services = ESLintUtils.getParserServices(context);
 
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    const { TypeFlags } = require('typescript') as typeof ts;
-
     const compilerOptions = services.program.getCompilerOptions();
 
     const isStrictNullChecks =
@@ -52,6 +49,9 @@ export default createRule<Options, MessageIds>({
         messageId: 'noStrictNullCheck',
       });
     }
+
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    const { TypeFlags } = require('typescript') as typeof ts;
 
     return {
       CallExpression(node) {
