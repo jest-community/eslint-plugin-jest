@@ -1,3 +1,10 @@
+# [29.7.0](https://github.com/jest-community/eslint-plugin-jest/compare/v29.6.1...v29.7.0) (2025-12-22)
+
+
+### Features
+
+* create new `no-error-equal` rule ([#1886](https://github.com/jest-community/eslint-plugin-jest/issues/1886)) ([930edc4](https://github.com/jest-community/eslint-plugin-jest/commit/930edc4e54a67133ce7070f235eb8900aa0610fb))
+
 ## [29.6.1](https://github.com/jest-community/eslint-plugin-jest/compare/v29.6.0...v29.6.1) (2025-12-22)
 
 
