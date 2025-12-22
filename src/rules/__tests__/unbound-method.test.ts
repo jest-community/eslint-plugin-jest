@@ -2,11 +2,11 @@ import path from 'path';
 import type { TSESLint } from '@typescript-eslint/utils';
 import dedent from 'dedent';
 import type { MessageIds, Options } from '../unbound-method';
-import { FlatCompatRuleTester as RuleTester } from './test-utils';
-
-function getFixturesRootDir(): string {
-  return path.join(__dirname, 'fixtures');
-}
+import {
+  FlatCompatRuleTester as RuleTester,
+  createRuleRequirerTester,
+  getFixturesRootDir,
+} from './test-utils';
 
 const rootPath = getFixturesRootDir();
 
@@ -19,26 +19,6 @@ const ruleTester = new RuleTester({
     disallowAutomaticSingleRunInference: true,
   },
 });
-
-const fixtureFilename = path.join(rootPath, 'file.ts');
-
-const withFixtureFilename = <
-  T extends Array<
-    | (TSESLint.ValidTestCase<Options> | string)
-    | TSESLint.InvalidTestCase<MessageIds, Options>
-  >,
->(
-  cases: T,
-): T extends Array<TSESLint.InvalidTestCase<MessageIds, Options>>
-  ? Array<TSESLint.InvalidTestCase<MessageIds, Options>>
-  : Array<TSESLint.ValidTestCase<Options>> => {
-  // @ts-expect-error this is fine, and will go away later once we upgrade
-  return cases.map(code => {
-    const test = typeof code === 'string' ? { code } : code;
-
-    return { filename: fixtureFilename, ...test };
-  });
-};
 
 const ConsoleClassAndVariableCode = dedent`
   class Console {
@@ -144,33 +124,14 @@ const invalidTestCases: Array<TSESLint.InvalidTestCase<MessageIds, Options>> = [
   })),
 ];
 
-const requireRule = (throwWhenRequiring: boolean) => {
-  jest.resetModules();
-
-  TSESLintPluginRef.throwWhenRequiring = throwWhenRequiring;
-
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-  return require('../unbound-method').default;
-};
-
-const TSESLintPluginRef: { throwWhenRequiring: boolean } = {
-  throwWhenRequiring: false,
-};
-
-jest.mock('@typescript-eslint/eslint-plugin', () => {
-  if (TSESLintPluginRef.throwWhenRequiring) {
-    throw new (class extends Error {
-      public code;
-
-      constructor(message?: string) {
-        super(message);
-        this.code = 'MODULE_NOT_FOUND';
-      }
-    })();
-  }
-
-  return jest.requireActual('@typescript-eslint/eslint-plugin');
-});
+const { requireRule, withFixtureFilename } = createRuleRequirerTester<
+  Options,
+  MessageIds
+>(
+  '../unbound-method',
+  '@typescript-eslint/eslint-plugin',
+  path.join(rootPath, 'file.ts'),
+);
 
 describe('error handling', () => {
   describe('when an error is thrown accessing the base rule', () => {
