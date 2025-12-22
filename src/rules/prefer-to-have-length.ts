@@ -32,7 +32,7 @@ export default createRule({
 
         const { parent: expect } = jestFnCall.head.node;
 
-        if (expect?.type !== AST_NODE_TYPES.CallExpression) {
+        if (expect.type !== AST_NODE_TYPES.CallExpression) {
           return;
         }
 
@@ -41,7 +41,7 @@ export default createRule({
 
         if (
           !EqualityMatcher.hasOwnProperty(getAccessorValue(matcher)) ||
-          argument?.type !== AST_NODE_TYPES.MemberExpression ||
+          argument.type !== AST_NODE_TYPES.MemberExpression ||
           !isSupportedAccessor(argument.property, 'length')
         ) {
           return;

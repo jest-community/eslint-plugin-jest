@@ -316,7 +316,7 @@ const parseJestFnCallWithReasonInner = (
     }
 
     if (result === 'matcher-not-found') {
-      if (node.parent?.type === AST_NODE_TYPES.MemberExpression) {
+      if (node.parent.type === AST_NODE_TYPES.MemberExpression) {
         return 'matcher-not-called';
       }
     }
@@ -328,7 +328,7 @@ const parseJestFnCallWithReasonInner = (
   if (
     chain
       .slice(0, chain.length - 1)
-      .some(nod => nod.parent?.type !== AST_NODE_TYPES.MemberExpression)
+      .some(nod => nod.parent.type !== AST_NODE_TYPES.MemberExpression)
   ) {
     return null;
   }
@@ -337,8 +337,8 @@ const parseJestFnCallWithReasonInner = (
   // parsing e.g. x().y.z(), we'll incorrectly find & parse "x()" even though
   // the full chain is not a valid jest function call chain
   if (
-    node.parent?.type === AST_NODE_TYPES.CallExpression ||
-    node.parent?.type === AST_NODE_TYPES.MemberExpression
+    node.parent.type === AST_NODE_TYPES.CallExpression ||
+    node.parent.type === AST_NODE_TYPES.MemberExpression
   ) {
     return null;
   }
@@ -364,10 +364,7 @@ const findModifiersAndMatcher = (
   for (const member of members) {
     // check if the member is being called, which means it is the matcher
     // (and also the end of the entire "expect" call chain)
-    if (
-      member.parent?.type === AST_NODE_TYPES.MemberExpression &&
-      member.parent.parent?.type === AST_NODE_TYPES.CallExpression
-    ) {
+    if (member.parent.parent.type === AST_NODE_TYPES.CallExpression) {
       return {
         matcher: member,
         args: member.parent.parent.arguments,
@@ -501,7 +498,7 @@ const describeVariableDefAsImport = (
     return null;
   }
 
-  if (def.name.parent?.type !== AST_NODE_TYPES.Property) {
+  if (def.name.parent.type !== AST_NODE_TYPES.Property) {
     return null;
   }
 

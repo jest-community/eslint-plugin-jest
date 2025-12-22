@@ -146,7 +146,7 @@ export const getTestCallExpressionsFromDeclaredVariables = (
       .map(({ identifier }) => identifier.parent)
       .filter(
         (node): node is TSESTree.CallExpression =>
-          node?.type === AST_NODE_TYPES.CallExpression &&
+          node.type === AST_NODE_TYPES.CallExpression &&
           isTypeOfJestFnCall(node, context, ['test']),
       ),
   );

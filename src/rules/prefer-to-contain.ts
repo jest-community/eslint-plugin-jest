@@ -59,7 +59,7 @@ export default createRule({
 
         const { parent: expect } = jestFnCall.head.node;
 
-        if (expect?.type !== AST_NODE_TYPES.CallExpression) {
+        if (expect.type !== AST_NODE_TYPES.CallExpression) {
           return;
         }
 
