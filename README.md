@@ -394,11 +394,12 @@ Manually fixable by
 
 ### Requires Type Checking
 
-| Name                                                               | Description                                                  | 💼  | ⚠️  | 🔧  | 💡  |
-| :----------------------------------------------------------------- | :----------------------------------------------------------- | :-- | :-- | :-- | :-- |
-| [no-error-equal](docs/rules/no-error-equal.md)                     | Disallow using equality matchers on error types              |     |     |     |     |
-| [no-unnecessary-assertion](docs/rules/no-unnecessary-assertion.md) | Disallow unnecessary assertions based on types               |     |     |     |     |
-| [unbound-method](docs/rules/unbound-method.md)                     | Enforce unbound methods are called with their expected scope |     |     |     |     |
+| Name                                                                 | Description                                                                                 | 💼  | ⚠️  | 🔧  | 💡  |
+| :------------------------------------------------------------------- | :------------------------------------------------------------------------------------------ | :-- | :-- | :-- | :-- |
+| [no-error-equal](docs/rules/no-error-equal.md)                       | Disallow using equality matchers on error types                                             |     |     |     |     |
+| [no-unnecessary-assertion](docs/rules/no-unnecessary-assertion.md)   | Disallow unnecessary assertions based on types                                              |     |     |     |     |
+| [unbound-method](docs/rules/unbound-method.md)                       | Enforce unbound methods are called with their expected scope                                |     |     |     |     |
+| [valid-expect-with-promise](docs/rules/valid-expect-with-promise.md) | Require that `resolve` and `reject` modifiers are present (and only) for promise-like types |     |     |     |     |
 
 <!-- end auto-generated rules list -->
 
