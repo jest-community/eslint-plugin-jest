@@ -1,3 +1,10 @@
+# [29.10.0](https://github.com/jest-community/eslint-plugin-jest/compare/v29.9.0...v29.10.0) (2025-12-22)
+
+
+### Features
+
+* **valid-title:** ensure printf specifiers in `.each` titles are valid ([#1892](https://github.com/jest-community/eslint-plugin-jest/issues/1892)) ([5db9b3b](https://github.com/jest-community/eslint-plugin-jest/commit/5db9b3b378a627352e44f764d08422b5962541f6))
+
 # [29.9.0](https://github.com/jest-community/eslint-plugin-jest/compare/v29.8.0...v29.9.0) (2025-12-22)
 
 
