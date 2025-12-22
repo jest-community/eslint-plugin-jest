@@ -1,12 +1,11 @@
 import path from 'path';
-import type { TSESLint } from '@typescript-eslint/utils';
 import dedent from 'dedent';
 import type { MessageIds, Options } from '../valid-expect-with-promise';
-import { FlatCompatRuleTester as RuleTester } from './test-utils';
-
-function getFixturesRootDir(): string {
-  return path.join(__dirname, 'fixtures');
-}
+import {
+  FlatCompatRuleTester as RuleTester,
+  createRuleRequirerTester,
+  getFixturesRootDir,
+} from './test-utils';
 
 const rootPath = getFixturesRootDir();
 
@@ -20,35 +19,12 @@ const ruleTester = new RuleTester({
   },
 });
 
-const fixtureFilename = path.join(rootPath, 'file.ts');
-
-const requireRule = (throwWhenRequiring: boolean) => {
-  jest.resetModules();
-
-  TSESLintPluginRef.throwWhenRequiring = throwWhenRequiring;
-
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-  return require('../valid-expect-with-promise').default;
-};
-
-const TSESLintPluginRef: { throwWhenRequiring: boolean } = {
-  throwWhenRequiring: false,
-};
-
-jest.mock('typescript', () => {
-  if (TSESLintPluginRef.throwWhenRequiring) {
-    throw new (class extends Error {
-      public code;
-
-      constructor(message?: string) {
-        super(message);
-        this.code = 'MODULE_NOT_FOUND';
-      }
-    })();
-  }
-
-  return jest.requireActual('typescript');
-});
+const { TSESLintPluginRef, requireRule, withFixtureFilename } =
+  createRuleRequirerTester<Options, MessageIds>(
+    '../valid-expect-with-promise',
+    'typescript',
+    path.join(rootPath, 'file.ts'),
+  );
 
 describe('error handling', () => {
   afterAll(() => {
@@ -59,24 +35,6 @@ describe('error handling', () => {
     expect(() => requireRule(true)).not.toThrow();
   });
 });
-
-const withFixtureFilename = <
-  T extends Array<
-    | (TSESLint.ValidTestCase<Options> | string)
-    | TSESLint.InvalidTestCase<MessageIds, Options>
-  >,
->(
-  cases: T,
-): T extends Array<TSESLint.InvalidTestCase<MessageIds, Options>>
-  ? Array<TSESLint.InvalidTestCase<MessageIds, Options>>
-  : Array<TSESLint.ValidTestCase<Options>> => {
-  // @ts-expect-error this is fine, and will go away later once we upgrade
-  return cases.map(code => {
-    const test = typeof code === 'string' ? { code } : code;
-
-    return { filename: fixtureFilename, ...test };
-  });
-};
 
 ruleTester.run('valid-expect-with-promise', requireRule(false), {
   valid: withFixtureFilename([
