@@ -76,7 +76,9 @@ const isTestCaseCallWithCallbackArg = (
   const callbackArgIndex = Number(isJestEach);
 
   return (
-    isFunction(callback) && callback.params.length === 1 + callbackArgIndex
+    callback &&
+    isFunction(callback) &&
+    callback.params.length === 1 + callbackArgIndex
   );
 };
 
