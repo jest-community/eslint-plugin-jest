@@ -1,3 +1,10 @@
+# [29.8.0](https://github.com/jest-community/eslint-plugin-jest/compare/v29.7.0...v29.8.0) (2025-12-22)
+
+
+### Features
+
+* create new `valid-expect-with-promise` rule ([#1888](https://github.com/jest-community/eslint-plugin-jest/issues/1888)) ([753e5bb](https://github.com/jest-community/eslint-plugin-jest/commit/753e5bb70779f4085cd0d4e41d19c86e251d4779))
+
 # [29.7.0](https://github.com/jest-community/eslint-plugin-jest/compare/v29.6.1...v29.7.0) (2025-12-22)
 
 
