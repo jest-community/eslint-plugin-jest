@@ -76,9 +76,7 @@ const isTestCaseCallWithCallbackArg = (
   const callbackArgIndex = Number(isJestEach);
 
   return (
-    callback &&
-    isFunction(callback) &&
-    callback.params.length === 1 + callbackArgIndex
+    isFunction(callback) && callback.params.length === 1 + callbackArgIndex
   );
 };
 
@@ -314,7 +312,7 @@ const isDirectlyWithinTestCaseCall = (
       parent = parent.parent;
 
       return (
-        parent?.type === AST_NODE_TYPES.CallExpression &&
+        parent.type === AST_NODE_TYPES.CallExpression &&
         isTypeOfJestFnCall(parent, context, ['test'])
       );
     }
@@ -421,11 +419,10 @@ export default createRule({
 
         const { parent } = findTopMostCallExpression(node);
 
-        // if we don't have a parent (which is technically impossible at runtime)
-        // or our parent is not directly within the test case, we stop checking
+        // if our parent is not directly within the test case, we stop checking
         // because we're most likely in the body of a function being defined
         // within the test, which we can't track
-        if (!parent || !isDirectlyWithinTestCaseCall(parent, context)) {
+        if (!isDirectlyWithinTestCaseCall(parent, context)) {
           return;
         }
 

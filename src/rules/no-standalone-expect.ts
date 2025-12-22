@@ -19,19 +19,12 @@ const getBlockType = (
 ): 'function' | 'describe' | null => {
   const func = statement.parent;
 
-  /* istanbul ignore if */
-  if (!func) {
-    throw new Error(
-      `Unexpected BlockStatement. No parent defined. - please file a github issue at https://github.com/jest-community/eslint-plugin-jest`,
-    );
-  }
-
   // functionDeclaration: function func() {}
   if (func.type === AST_NODE_TYPES.FunctionDeclaration) {
     return 'function';
   }
 
-  if (isFunction(func) && func.parent) {
+  if (isFunction(func)) {
     const expr = func.parent;
 
     // arrow function or function expr
@@ -94,7 +87,7 @@ export default createRule<
 
         if (jestFnCall?.type === 'expect') {
           if (
-            jestFnCall.head.node.parent?.type ===
+            jestFnCall.head.node.parent.type ===
               AST_NODE_TYPES.MemberExpression &&
             jestFnCall.members.length === 1 &&
             !['assertions', 'hasAssertions'].includes(
@@ -152,7 +145,7 @@ export default createRule<
       },
 
       ArrowFunctionExpression(node) {
-        if (node.parent?.type !== AST_NODE_TYPES.CallExpression) {
+        if (node.parent.type !== AST_NODE_TYPES.CallExpression) {
           callStack.push('arrow');
         }
       },

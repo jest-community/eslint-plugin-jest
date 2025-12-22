@@ -27,7 +27,7 @@ export default createRule({
 
         const { parent } = jestFnCall.head.node;
 
-        if (parent?.type !== AST_NODE_TYPES.CallExpression) {
+        if (parent.type !== AST_NODE_TYPES.CallExpression) {
           return;
         }
 
@@ -36,7 +36,7 @@ export default createRule({
         if (
           !awaitNode ||
           !isFunction(awaitNode) ||
-          !awaitNode?.async ||
+          !awaitNode.async ||
           awaitNode.body.type !== AST_NODE_TYPES.BlockStatement ||
           awaitNode.body.body.length !== 1
         ) {
