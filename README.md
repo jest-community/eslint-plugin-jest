@@ -396,6 +396,7 @@ Manually fixable by
 
 | Name                                                               | Description                                                  | 💼  | ⚠️  | 🔧  | 💡  |
 | :----------------------------------------------------------------- | :----------------------------------------------------------- | :-- | :-- | :-- | :-- |
+| [no-error-equal](docs/rules/no-error-equal.md)                     | Disallow using equality matchers on error types              |     |     |     |     |
 | [no-unnecessary-assertion](docs/rules/no-unnecessary-assertion.md) | Disallow unnecessary assertions based on types               |     |     |     |     |
 | [unbound-method](docs/rules/unbound-method.md)                     | Enforce unbound methods are called with their expected scope |     |     |     |     |
 
