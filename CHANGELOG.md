@@ -1,3 +1,10 @@
+## [29.6.1](https://github.com/jest-community/eslint-plugin-jest/compare/v29.6.0...v29.6.1) (2025-12-22)
+
+
+### Bug Fixes
+
+* **no-unnecessary-assertion:** ignore `resolve` and `reject` chains (for now) ([#1887](https://github.com/jest-community/eslint-plugin-jest/issues/1887)) ([64a5f0c](https://github.com/jest-community/eslint-plugin-jest/commit/64a5f0c90a3fce91921826d8495a548cb44d5e35))
+
 # [29.6.0](https://github.com/jest-community/eslint-plugin-jest/compare/v29.5.0...v29.6.0) (2025-12-21)
 
 
