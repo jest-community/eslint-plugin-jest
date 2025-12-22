@@ -556,3 +556,292 @@ ruleTester.run('no-unnecessary-assertion (toBeUndefined)', requireRule(false), {
     generateInvalidCases('toBeUndefined', 'undefined'),
   ),
 });
+
+ruleTester.run('no-unnecessary-assertion (toBeNaN)', requireRule(false), {
+  valid: withFixtureFilename([
+    `expect.toBeNaN`,
+    `expect.toBeNaN()`,
+    'expect(0).toBeNaN()',
+    'expect(0).not.toBeNaN()',
+    dedent`
+      const x = 0;
+
+      expect(x).toBeNaN()
+      expect(x).not.toBeNaN()
+    `,
+    dedent`
+      const add = (a, b) => a + b;
+
+      expect(add(1, 1)).toBe(2);
+    `,
+    dedent`
+      const add = (a: number, b: number) => a.toString() + b.toString();
+
+      expect(add(1, 1)).toBe(2);
+    `,
+    dedent`
+      const add = (a: number, b: number): string => a.toString() + b.toString();
+
+      expect(add(1, 1)).toBe(2);
+    `,
+    dedent`
+      const add = (a: number, b: number): string | number => a.toString() + b.toString();
+
+      expect(add(1, 1)).toBe(2);
+    `,
+    dedent`
+      const add = (a: number, b: number): string | number => a.toString() + b.toString();
+
+      expect(add(1, 1)).toBeNaN();
+    `,
+    dedent`
+      const add = (a: number, b: number): string | number => a + b;
+
+      expect(add(1, 1)).not.toBeNaN();
+    `,
+    dedent`
+      declare function mx(): string | number;
+
+      expect(mx()).toBeNaN();
+      expect(mx()).not.toBeNaN();
+    `,
+    dedent`
+      declare function mx<T>(p: T): T | number;
+
+      expect(mx(42)).toBeNaN();
+      expect(mx(4.2)).toBeNaN();
+      expect(mx(Infinity)).not.toBeNaN();
+
+      expect(mx('hello')).toBeNaN();
+      expect(mx('world')).not.toBeNaN();
+    `,
+    `expect("hello" as number).toBeNaN();`,
+  ]),
+  invalid: withFixtureFilename([
+    {
+      code: 'expect("hello world").toBeNaN()',
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+          data: { thing: 'a number' },
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: 'expect({}).toBeNaN()',
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+          data: { thing: 'a number' },
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: 'expect([]).not.toBeNaN()',
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+          data: { thing: 'a number' },
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        const x = 'hello world';
+
+        expect(x).toBeNaN()
+        expect(x).not.toBeNaN()
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+          data: { thing: 'a number' },
+          line: 3,
+        },
+        {
+          messageId: 'unnecessaryAssertion',
+          data: { thing: 'a number' },
+          line: 4,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        const join = (a: string, b: string) => a + b;
+
+        expect(join('hello', 'world')).toBeNaN();
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+          data: { thing: 'a number' },
+          line: 3,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        const join = (a: string, b: string): string => a + b;
+
+        expect(join('hello', 'world')).toBeNaN();
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+          data: { thing: 'a number' },
+          line: 3,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        const join = (a: string, b: string): string => a + b;
+
+        expect(join('hello', 'world')).not.toBeNaN();
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+          data: { thing: 'a number' },
+          line: 3,
+        },
+      ],
+    },
+
+    {
+      code: dedent`
+        const result = "hello world".match("sunshine") ?? [];
+
+        expect(result).not.toBeNaN();
+        expect(result).toBeNaN();
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+          data: { thing: 'a number' },
+          line: 3,
+        },
+        {
+          messageId: 'unnecessaryAssertion',
+          data: { thing: 'a number' },
+          line: 4,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        const result = "hello world".match("sunshine") || [];
+
+        expect(result).not.toBeNaN();
+        expect(result).toBeNaN();
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+          data: { thing: 'a number' },
+          line: 3,
+        },
+        {
+          messageId: 'unnecessaryAssertion',
+          data: { thing: 'a number' },
+          line: 4,
+        },
+      ],
+    },
+
+    {
+      code: dedent`
+        declare function mx(): string | null;
+
+        expect(mx()).toBeNaN();
+        expect(mx()).not.toBeNaN();
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+          data: { thing: 'a number' },
+          line: 3,
+        },
+        {
+          messageId: 'unnecessaryAssertion',
+          data: { thing: 'a number' },
+          line: 4,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        declare function mx<T>(p: T): T;
+
+        expect(mx(0)).toBeNaN();
+        expect(mx(1)).not.toBeNaN();
+        expect(mx(NaN)).not.toBeNaN();
+
+        expect(mx('hello')).toBeNaN();
+        expect(mx('world')).not.toBeNaN();
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+          data: { thing: 'a number' },
+          line: 7,
+        },
+        {
+          messageId: 'unnecessaryAssertion',
+          data: { thing: 'a number' },
+          line: 8,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        declare function mx<T>(p: T): T extends string ? number : T;
+
+        expect(mx('hello')).toBeNaN();
+        expect(mx('world')).not.toBeNaN();
+
+        expect(mx({})).toBeNaN();
+        expect(mx({})).not.toBeNaN();
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+          data: { thing: 'a number' },
+          line: 6,
+        },
+        {
+          messageId: 'unnecessaryAssertion',
+          data: { thing: 'a number' },
+          line: 7,
+        },
+      ],
+    },
+
+    {
+      code: dedent`
+        declare function mx(): string | number;
+
+        expect(mx() as string).toBeNaN();
+        expect(mx() as string).not.toBeNaN();
+
+        expect(mx() as number).toBeNaN();
+        expect(mx() as number).not.toBeNaN();
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+          data: { thing: 'a number' },
+          line: 3,
+        },
+        {
+          messageId: 'unnecessaryAssertion',
+          data: { thing: 'a number' },
+          line: 4,
+        },
+      ],
+    },
+  ]),
+});
