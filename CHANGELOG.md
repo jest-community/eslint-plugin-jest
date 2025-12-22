@@ -1,3 +1,10 @@
+## [29.10.1](https://github.com/jest-community/eslint-plugin-jest/compare/v29.10.0...v29.10.1) (2025-12-22)
+
+
+### Bug Fixes
+
+* **valid-expect-in-promise:** don't crash on `it.todo` ([#1896](https://github.com/jest-community/eslint-plugin-jest/issues/1896)) ([5511258](https://github.com/jest-community/eslint-plugin-jest/commit/55112586c4a42ccf83783b0d2c81dc09542b50e3))
+
 # [29.10.0](https://github.com/jest-community/eslint-plugin-jest/compare/v29.9.0...v29.10.0) (2025-12-22)
 
 
