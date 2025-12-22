@@ -72,6 +72,11 @@ export default createRule<Options, MessageIds>({
           return;
         }
 
+        // todo: we should support resolving promise types
+        if (jestFnCall.modifiers.some(nod => getAccessorValue(nod) !== 'not')) {
+          return;
+        }
+
         const [argument] = jestFnCall.head.node.parent.arguments;
 
         const isNullable = canBe(

@@ -146,6 +146,49 @@ const generateValidCases = (
     `,
     `expect(${thing}).not.${matcher}()`,
     `expect("hello" as ${thing}).${matcher}();`,
+    dedent`
+      declare function mx(): Promise<string | ${thing}>;
+
+      it('is async', async () => {
+        await expect(mx()).resolves.${matcher}();
+      });
+    `,
+    dedent`
+      declare function mx(): Promise<string | ${thing}>;
+
+      it('is async', async () => {
+        await expect(mx()).rejects.${matcher}();
+      });
+    `,
+    dedent`
+      declare function mx(): Promise<string | ${thing}>;
+
+      it('is async', async () => {
+        await expect(mx()).rejects.not.${matcher}();
+      });
+    `,
+    dedent`
+      declare function mx(): Promise<string | ${thing}>;
+
+      it('is async', async () => {
+        expect(await mx()).not.${matcher}();
+      });
+    `,
+    // todo: ideally we should be able to catch these
+    dedent`
+      declare function mx(): Promise<string>;
+
+      it('is async', async () => {
+        await expect(mx()).resolves.${matcher}();
+      });
+    `,
+    dedent`
+      declare function mx(): Promise<string>;
+
+      it('is async', async () => {
+        await expect(mx()).rejects.not.${matcher}();
+      });
+    `,
   ];
 };
 
@@ -297,6 +340,41 @@ const generateInvalidCases = (
         },
       ],
     },
+
+    {
+      code: dedent`
+        declare function mx(): Promise<string>;
+
+        it('is async', async () => {
+          expect(await mx()).${matcher}();
+        });
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+          data: { thing },
+          line: 4,
+        },
+      ],
+    },
+
+    // todo: ideally we should support promises
+    // {
+    //   code: dedent`
+    //     declare function mx(): Promise<string>;
+    //
+    //     it('is async', async () => {
+    //       await expect(mx()).resolves.${matcher}();
+    //     });
+    //   `,
+    //   errors: [
+    //     {
+    //       messageId: 'unnecessaryAssertion',
+    //       data: { thing },
+    //       line: 3,
+    //     },
+    //   ],
+    // },
 
     // todo: ideally support these
     // {
