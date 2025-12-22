@@ -14,6 +14,7 @@ Checks that the title of Jest blocks are valid by ensuring that titles are:
 - is a string,
 - not prefixed with their block name,
 - have no leading or trailing spaces
+- using valid printf specifiers when applicable
 
 ## Rule details
 
@@ -47,6 +48,38 @@ it('foo', () => {});
 xdescribe('foo', () => {});
 xit('foo', () => {});
 xtest('foo', () => {});
+```
+
+**invalidEachSpecifier**
+
+Titles for
+[array-based `.each`s](https://jestjs.io/docs/api#1-testeachtablename-fn-timeout_)
+can use
+[`printf` formatting](https://nodejs.org/api/util.html#util_util_format_format_args),
+but there are specific specifiers that are allowed.
+
+Examples of **incorrect** code for this rule:
+
+```js
+test.each([
+  [1, 1, 2],
+  [1, 2, 3],
+  [2, 1, 3],
+])('.add(%I, %I)', (a, b, expected) => {
+  expect(a + b).toBe(expected);
+});
+```
+
+Examples of **correct** code for this rule:
+
+```js
+test.each([
+  [1, 1, 2],
+  [1, 2, 3],
+  [2, 1, 3],
+])('.add(%i, %i)', (a, b, expected) => {
+  expect(a + b).toBe(expected);
+});
 ```
 
 **titleMustBeString**
