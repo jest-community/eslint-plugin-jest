@@ -1,3 +1,10 @@
+# [29.9.0](https://github.com/jest-community/eslint-plugin-jest/compare/v29.8.0...v29.9.0) (2025-12-22)
+
+
+### Features
+
+* **no-unnecessary-assertion:** support `toBeNaN` too ([#1890](https://github.com/jest-community/eslint-plugin-jest/issues/1890)) ([1dd5e5d](https://github.com/jest-community/eslint-plugin-jest/commit/1dd5e5d685202177aec147111b728dbf91088330))
+
 # [29.8.0](https://github.com/jest-community/eslint-plugin-jest/compare/v29.7.0...v29.8.0) (2025-12-22)
 
 
