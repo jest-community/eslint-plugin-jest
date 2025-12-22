@@ -268,13 +268,15 @@ const testPadding = (
       nodeMatchesType(prevNode, prevType, paddingContext) &&
       nodeMatchesType(nextNode, nextType, paddingContext)
     ) {
-      return testType(paddingType);
+      testType(paddingType);
+
+      return;
     }
   }
 
   // There were no matching padding rules for the prevNode, nextNode,
   // paddingType combination... so we'll use PaddingType.Any which is always ok
-  return testType(PaddingType.Any);
+  testType(PaddingType.Any);
 };
 
 /**
