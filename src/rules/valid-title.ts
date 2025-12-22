@@ -10,6 +10,7 @@ import {
   createRule,
   getStringValue,
   isStringNode,
+  isSupportedAccessor,
   parseJestFnCall,
 } from './utils';
 
@@ -71,6 +72,19 @@ const compileMatcherPatterns = (
   };
 };
 
+// %p - pretty-format.
+// %s- String.
+// %d- Number.
+// %i - Integer.
+// %f - Floating point value.
+// %j - JSON.
+// %o - Object.
+// %# - Index of the test case.
+// %$ - Number of the test case.
+// %% - single percent sign ('%'). This does not consume an argument.
+
+// const re = /%([^psdifjo#$%])/u;
+
 type CompiledMatcherAndMessage = [matcher: RegExp, message?: string];
 type MatcherAndMessage = [matcher: string, message?: string];
 
@@ -108,7 +122,8 @@ type MessageIds =
   | 'mustNotMatch'
   | 'mustMatch'
   | 'mustNotMatchCustom'
-  | 'mustMatchCustom';
+  | 'mustMatchCustom'
+  | 'invalidEachSpecifier';
 
 export default createRule<[Options], MessageIds>({
   name: __filename,
@@ -126,6 +141,7 @@ export default createRule<[Options], MessageIds>({
       mustMatch: '{{ jestFunctionName }} should match {{ pattern }}',
       mustNotMatchCustom: '{{ message }}',
       mustMatchCustom: '{{ message }}',
+      invalidEachSpecifier: '"{{ specifier }}" is not a valid format specifier',
     },
     type: 'suggestion',
     schema: [
@@ -252,6 +268,23 @@ export default createRule<[Options], MessageIds>({
           });
 
           return;
+        }
+
+        // check array-based .each titles for invalid printf specifiers
+        if (
+          jestFnCall.members.find(s => isSupportedAccessor(s, 'each'))?.parent
+            .parent.type === AST_NODE_TYPES.CallExpression
+        ) {
+          const [unknownSpecifier] =
+            /%[^psdifjo#$%]/u.exec(title.replaceAll('%%', '')) ?? [];
+
+          if (unknownSpecifier) {
+            context.report({
+              messageId: 'invalidEachSpecifier',
+              data: { specifier: unknownSpecifier },
+              node: argument,
+            });
+          }
         }
 
         if (disallowedWords.length > 0) {
