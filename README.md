@@ -374,6 +374,7 @@ Manually fixable by
 | [prefer-jest-mocked](docs/rules/prefer-jest-mocked.md)                               | Prefer `jest.mocked()` over `fn as jest.Mock`                             |     |     | 🔧  |     |
 | [prefer-lowercase-title](docs/rules/prefer-lowercase-title.md)                       | Enforce lowercase test names                                              |     |     | 🔧  |     |
 | [prefer-mock-promise-shorthand](docs/rules/prefer-mock-promise-shorthand.md)         | Prefer mock resolved/rejected shorthands for promises                     |     |     | 🔧  |     |
+| [prefer-mock-return-shorthand](docs/rules/prefer-mock-return-shorthand.md)           | Prefer mock return shorthands                                             |     |     | 🔧  |     |
 | [prefer-snapshot-hint](docs/rules/prefer-snapshot-hint.md)                           | Prefer including a hint with external snapshots                           |     |     |     |     |
 | [prefer-spy-on](docs/rules/prefer-spy-on.md)                                         | Suggest using `jest.spyOn()`                                              |     |     | 🔧  |     |
 | [prefer-strict-equal](docs/rules/prefer-strict-equal.md)                             | Suggest using `toStrictEqual()`                                           |     |     |     | 💡  |
