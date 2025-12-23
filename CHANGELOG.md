@@ -1,3 +1,10 @@
+# [29.11.0](https://github.com/jest-community/eslint-plugin-jest/compare/v29.10.1...v29.11.0) (2025-12-23)
+
+
+### Features
+
+* create new `prefer-mock-return-shorthand` rule ([#1897](https://github.com/jest-community/eslint-plugin-jest/issues/1897)) ([0eb94b6](https://github.com/jest-community/eslint-plugin-jest/commit/0eb94b6b8b70623e55af1fe7c575edd2c35e00f8))
+
 ## [29.10.1](https://github.com/jest-community/eslint-plugin-jest/compare/v29.10.0...v29.10.1) (2025-12-22)
 
 
