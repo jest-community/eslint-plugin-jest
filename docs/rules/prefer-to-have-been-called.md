@@ -1,5 +1,8 @@
 # Suggest using `toHaveBeenCalled` (`prefer-to-have-been-called`)
 
+💼 This rule is enabled in the 🎨 `style`
+[config](https://github.com/jest-community/eslint-plugin-jest/blob/main/README.md#shareable-configurations).
+
 🔧 This rule is automatically fixable by the
 [`--fix` CLI option](https://eslint.org/docs/latest/user-guide/command-line-interface#--fix).
 
