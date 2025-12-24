@@ -104,18 +104,6 @@ export default createRule<Options, MessageIds>({
       }
 
       return false;
-
-      // Also try using parseJestFnCall as a fallback
-      // const jestFnCall = parseJestFnCall(
-      //   findTopMostCallExpression(parentCall),
-      //   context,
-      // );
-
-      // return (
-      //   jestFnCall?.type === 'jest' &&
-      //   jestFnCall.members.length >= 1 &&
-      //   isIdentifier(jestFnCall.members[0], 'mocked')
-      // );
     };
 
     return {
