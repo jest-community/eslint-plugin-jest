@@ -99,10 +99,11 @@ export default createRule<Options, MessageIds>({
     return {
       ...baseSelectors,
       MemberExpression(node: TSESTree.MemberExpression): void {
-        if (
-          !isArgumentToJestMocked(node) &&
-          node.parent?.type === AST_NODE_TYPES.CallExpression
-        ) {
+        if (isArgumentToJestMocked(node)) {
+          return;
+        }
+
+        if (node.parent?.type === AST_NODE_TYPES.CallExpression) {
           const jestFnCall = parseJestFnCall(
             findTopMostCallExpression(node.parent),
             context,
