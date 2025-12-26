@@ -8,6 +8,7 @@ import {
   findTopMostCallExpression,
   getAccessorValue,
   isIdentifier,
+  isSupportedAccessor,
   parseJestFnCall,
 } from './utils';
 
@@ -73,10 +74,36 @@ export default createRule<Options, MessageIds>({
       return {};
     }
 
+    /**
+     * Checks if a MemberExpression is an argument to a `jest.mocked()` call.
+     * This handles cases like `jest.mocked(service.method)` where `service.method`
+     * should not be flagged as an unbound method.
+     */
+    const isArgumentToJestMocked = (
+      node: TSESTree.MemberExpression,
+    ): boolean => {
+      // Check if the immediate parent is a CallExpression
+      if (node.parent?.type !== AST_NODE_TYPES.CallExpression) {
+        return false;
+      }
+
+      const parentCall = node.parent;
+
+      return (
+        parentCall.callee.type === AST_NODE_TYPES.MemberExpression &&
+        isSupportedAccessor(parentCall.callee.object, 'jest') &&
+        isSupportedAccessor(parentCall.callee.property, 'mocked')
+      );
+    };
+
     return {
       ...baseSelectors,
       MemberExpression(node: TSESTree.MemberExpression): void {
-        if (node.parent.type === AST_NODE_TYPES.CallExpression) {
+        if (isArgumentToJestMocked(node)) {
+          return;
+        }
+
+        if (node.parent?.type === AST_NODE_TYPES.CallExpression) {
           const jestFnCall = parseJestFnCall(
             findTopMostCallExpression(node.parent),
             context,

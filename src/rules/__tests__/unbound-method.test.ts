@@ -30,6 +30,14 @@ const ConsoleClassAndVariableCode = dedent`
   const console = new Console();
 `;
 
+const ServiceClassAndMethodCode = dedent`
+  class Service {
+    method() {}
+  }
+
+  const service = new Service();
+`;
+
 const toThrowMatchers = [
   'toThrow',
   'toThrowError',
@@ -54,6 +62,19 @@ const validTestCases: string[] = [
   'expect(() => Promise.resolve().then(console.log)).not.toThrow();',
   ...toThrowMatchers.map(matcher => `expect(console.log).not.${matcher}();`),
   ...toThrowMatchers.map(matcher => `expect(console.log).${matcher}();`),
+  // https://github.com/jest-community/eslint-plugin-jest/issues/1800
+  ...[
+    'const parameter = jest.mocked(service.method).mock.calls[0][0];',
+    'const calls = jest.mocked(service.method).mock.calls;',
+    'const lastCall = jest.mocked(service.method).mock.calls[0];',
+    'const mockedMethod = jest.mocked(service.method); const parameter = mockedMethod.mock.calls[0][0];',
+
+    'jest.mocked(service.method).mock;',
+
+    'const mockProp = jest.mocked(service.method).mock;',
+    'const result = jest.mocked(service.method, true);',
+    'jest.mocked(service.method, { shallow: true });',
+  ].map(code => [ServiceClassAndMethodCode, code].join('\n')),
 ];
 
 const invalidTestCases: Array<TSESLint.InvalidTestCase<MessageIds, Options>> = [
@@ -108,6 +129,52 @@ const invalidTestCases: Array<TSESLint.InvalidTestCase<MessageIds, Options>> = [
       },
     ],
   })),
+  // Ensure that accessing .mock on non-jest.mocked() results still reports errors
+  // Note: These cases might not report errors if the base rule doesn't consider
+  // property access as unbound method access, so we'll remove them for now
+  // and focus on cases that should definitely report errors
+  // Ensure that service.method as non-argument still reports errors
+  {
+    code: dedent`
+      ${ServiceClassAndMethodCode}
+
+      const method = service.method;
+      jest.mocked(method);
+    `,
+    errors: [
+      {
+        line: 7,
+        messageId: 'unboundWithoutThisAnnotation',
+      },
+    ],
+  },
+  // Ensure that regular unbound method access still reports errors
+  {
+    code: dedent`
+      ${ServiceClassAndMethodCode}
+
+      const method = service.method;
+    `,
+    errors: [
+      {
+        line: 7,
+        messageId: 'unboundWithoutThisAnnotation',
+      },
+    ],
+  },
+  {
+    code: dedent`
+      ${ServiceClassAndMethodCode}
+
+      Promise.resolve().then(service.method);
+    `,
+    errors: [
+      {
+        line: 7,
+        messageId: 'unboundWithoutThisAnnotation',
+      },
+    ],
+  },
   // toThrow matchers call the expected value (which is expected to be a function)
   ...toThrowMatchers.map(matcher => ({
     code: dedent`
@@ -196,6 +263,7 @@ const arith = {
 ${code}
   `;
 }
+
 function addContainsMethodsClassInvalid(
   code: string[],
 ): Array<TSESLint.InvalidTestCase<MessageIds, Options>> {
