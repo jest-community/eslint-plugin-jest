@@ -14,6 +14,7 @@ ruleTester.run('valid-expect-in-promise', rule, {
     "test('something', () => Promise.resolve().then(() => expect(1).toBe(2)));",
     'Promise.resolve().then(() => expect(1).toBe(2))',
     'const x = Promise.resolve().then(() => expect(1).toBe(2))',
+    'it.todo("something")',
     dedent`
       it('is valid', () => {
         const promise = loadNumber().then(number => {

@@ -2,11 +2,11 @@ import path from 'path';
 import type { TSESLint } from '@typescript-eslint/utils';
 import dedent from 'dedent';
 import type { MessageIds, Options } from '../unbound-method';
-import { FlatCompatRuleTester as RuleTester } from './test-utils';
-
-function getFixturesRootDir(): string {
-  return path.join(__dirname, 'fixtures');
-}
+import {
+  FlatCompatRuleTester as RuleTester,
+  createRuleRequirerTester,
+  getFixturesRootDir,
+} from './test-utils';
 
 const rootPath = getFixturesRootDir();
 
@@ -16,28 +16,9 @@ const ruleTester = new RuleTester({
     sourceType: 'module',
     tsconfigRootDir: rootPath,
     project: './tsconfig.json',
+    disallowAutomaticSingleRunInference: true,
   },
 });
-
-const fixtureFilename = path.join(rootPath, 'file.ts');
-
-const withFixtureFilename = <
-  T extends Array<
-    | (TSESLint.ValidTestCase<Options> | string)
-    | TSESLint.InvalidTestCase<MessageIds, Options>
-  >,
->(
-  cases: T,
-): T extends Array<TSESLint.InvalidTestCase<MessageIds, Options>>
-  ? Array<TSESLint.InvalidTestCase<MessageIds, Options>>
-  : Array<TSESLint.ValidTestCase<Options>> => {
-  // @ts-expect-error this is fine, and will go away later once we upgrade
-  return cases.map(code => {
-    const test = typeof code === 'string' ? { code } : code;
-
-    return { filename: fixtureFilename, ...test };
-  });
-};
 
 const ConsoleClassAndVariableCode = dedent`
   class Console {
@@ -110,16 +91,15 @@ const invalidTestCases: Array<TSESLint.InvalidTestCase<MessageIds, Options>> = [
       },
     ],
   },
-  // todo: for some reason this test is failing in CI but not locally
-  // {
-  //   code: 'expect(Console.prototype.log).toHaveBeenCalledTimes',
-  //   errors: [
-  //     {
-  //       line: 1,
-  //       messageId: 'unboundWithoutThisAnnotation',
-  //     },
-  //   ],
-  // },
+  {
+    code: 'expect(Console.prototype.log).toHaveBeenCalledTimes',
+    errors: [
+      {
+        line: 1,
+        messageId: 'unboundWithoutThisAnnotation',
+      },
+    ],
+  },
   {
     code: dedent`
       expect(() => {
@@ -211,33 +191,14 @@ const invalidTestCases: Array<TSESLint.InvalidTestCase<MessageIds, Options>> = [
   })),
 ];
 
-const requireRule = (throwWhenRequiring: boolean) => {
-  jest.resetModules();
-
-  TSESLintPluginRef.throwWhenRequiring = throwWhenRequiring;
-
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-  return require('../unbound-method').default;
-};
-
-const TSESLintPluginRef: { throwWhenRequiring: boolean } = {
-  throwWhenRequiring: false,
-};
-
-jest.mock('@typescript-eslint/eslint-plugin', () => {
-  if (TSESLintPluginRef.throwWhenRequiring) {
-    throw new (class extends Error {
-      public code;
-
-      constructor(message?: string) {
-        super(message);
-        this.code = 'MODULE_NOT_FOUND';
-      }
-    })();
-  }
-
-  return jest.requireActual('@typescript-eslint/eslint-plugin');
-});
+const { requireRule, withFixtureFilename } = createRuleRequirerTester<
+  Options,
+  MessageIds
+>(
+  '../unbound-method',
+  '@typescript-eslint/eslint-plugin',
+  path.join(rootPath, 'file.ts'),
+);
 
 describe('error handling', () => {
   describe('when an error is thrown accessing the base rule', () => {
@@ -322,8 +283,79 @@ ruleTester.run('unbound-method', requireRule(false), {
     'Promise.resolve().then(console.log);',
     "['1', '2', '3'].map(Number.parseInt);",
     '[5.2, 7.1, 3.6].map(Math.floor);',
+    `
+      const foo = Number;
+      ['1', '2', '3'].map(foo.parseInt);
+    `,
+    `
+      const foo = Math;
+      [5.2, 7.1, 3.6].map(foo.floor);
+    `,
+    "['1', '2', '3'].map(Number['floor']);",
     'const x = console.log;',
     'const x = Object.defineProperty;',
+    `
+      const foo = Object;
+      const x = foo.defineProperty;
+    `,
+    'const x = String.fromCharCode;',
+    `
+      const foo = String;
+      const x = foo.fromCharCode;
+    `,
+    'const x = RegExp.prototype;',
+    'const x = Symbol.keyFor;',
+    `
+      const foo = Symbol;
+      const x = foo.keyFor;
+    `,
+    'const x = Array.isArray;',
+    `
+      const foo = Array;
+      const x = foo.isArray;
+    `,
+    `
+      class Foo extends Array {}
+      const x = Foo.isArray;
+    `,
+    'const x = Proxy.revocable;',
+    `
+      const foo = Proxy;
+      const x = foo.revocable;
+    `,
+    'const x = Date.parse;',
+    `
+      const foo = Date;
+      const x = foo.parse;
+    `,
+    'const x = Atomics.load;',
+    `
+      const foo = Atomics;
+      const x = foo.load;
+    `,
+    'const x = Reflect.deleteProperty;',
+    'const x = JSON.stringify;',
+    `
+      const foo = JSON;
+      const x = foo.stringify;
+    `,
+    `
+      const o = {
+        f: function (this: void) {},
+      };
+      const f = o.f;
+    `,
+    `
+      const { alert } = window;
+    `,
+    `
+      let b = window.blur;
+    `,
+    `
+      function foo() {}
+      const fooObject = { foo };
+      const { foo: bar } = fooObject;
+    `,
     ...[
       'instance.bound();',
       'instance.unbound();',
@@ -533,6 +565,130 @@ class Foo {
 }
 const { bound } = new Foo();
     `,
+    `
+class Foo {
+  bound = () => 'foo';
+}
+function foo({ bound } = new Foo()) {}
+    `,
+    `
+class Foo {
+  bound = () => 'foo';
+}
+declare const bar: Foo;
+function foo({ bound }: Foo) {}
+    `,
+    `
+class Foo {
+  bound = () => 'foo';
+}
+class Bar {
+  bound = () => 'bar';
+}
+function foo({ bound }: Foo | Bar) {}
+    `,
+    `
+class Foo {
+  bound = () => 'foo';
+}
+type foo = ({ bound }: Foo) => void;
+    `,
+    `
+class Foo {
+  unbound = function () {};
+}
+type foo = ({ unbound }: Foo) => void;
+    `,
+    `
+class Foo {
+  bound = () => 'foo';
+}
+class Bar {
+  bound = () => 'bar';
+}
+function foo({ bound }: Foo & Bar) {}
+    `,
+    `
+class Foo {
+  unbound = function () {};
+}
+declare const { unbound }: Foo;
+    `,
+    "declare const { unbound } = '***';",
+    `
+class Foo {
+  unbound = function () {};
+}
+type foo = (a: (b: (c: ({ unbound }: Foo) => void) => void) => void) => void;
+    `,
+    `
+class Foo {
+  unbound = function () {};
+}
+class Bar {
+  property: ({ unbound }: Foo) => void;
+}
+    `,
+    `
+class Foo {
+  unbound = function () {};
+}
+function foo<T extends ({ unbound }: Foo) => void>() {}
+    `,
+    `
+class Foo {
+  unbound = function () {};
+}
+abstract class Bar {
+  abstract foo({ unbound }: Foo);
+}
+    `,
+    `
+class Foo {
+  unbound = function () {};
+}
+declare class Bar {
+  foo({ unbound }: Foo);
+}
+    `,
+    `
+class Foo {
+  unbound = function () {};
+}
+declare function foo({ unbound }: Foo);
+    `,
+    `
+class Foo {
+  unbound = function () {};
+}
+interface Bar {
+  foo: ({ unbound }: Foo) => void;
+}
+    `,
+    `
+class Foo {
+  unbound = function () {};
+}
+interface Bar {
+  foo({ unbound }: Foo): void;
+}
+    `,
+    `
+class Foo {
+  unbound = function () {};
+}
+interface Bar {
+  new ({ unbound }: Foo): Foo;
+}
+    `,
+    `
+class Foo {
+  unbound = function () {};
+}
+type foo = new ({ unbound }: Foo) => void;
+    `,
+    'const { unbound } = { unbound: () => {} };',
+    'function foo({ unbound }: { unbound: () => void } = { unbound: () => {} }) {}',
     // https://github.com/typescript-eslint/typescript-eslint/issues/1866
     `
 class BaseClass {
@@ -570,19 +726,18 @@ Promise.resolve().then(console.log);
         },
       ],
     },
-    // todo: for some reason this test is failing in CI but not locally
-    //     {
-    //       code: `
-    // import { console } from './class';
-    // const x = console.log;
-    //       `,
-    //       errors: [
-    //         {
-    //           line: 3,
-    //           messageId: 'unboundWithoutThisAnnotation',
-    //         },
-    //       ],
-    //     },
+    {
+      code: `
+import { console } from './class';
+const x = console.log;
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
     {
       code: addContainsMethodsClass(`
 function foo(arg: ContainsMethods | null) {
@@ -663,17 +818,16 @@ const x = CommunicationError.prototype.foo;
         },
       ],
     },
-    // todo: for some reason this test is failing in CI but not locally
-    // {
-    //   // Promise.all is not auto-bound to Promise
-    //   code: 'const x = Promise.all;',
-    //   errors: [
-    //     {
-    //       line: 1,
-    //       messageId: 'unboundWithoutThisAnnotation',
-    //     },
-    //   ],
-    // },
+    {
+      // Promise.all is not auto-bound to Promise
+      code: 'const x = Promise.all;',
+      errors: [
+        {
+          line: 1,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
     {
       code: `
 class Foo {
@@ -689,6 +843,117 @@ instance.unbound = x; // THIS SHOULD NOT
       errors: [
         {
           line: 9,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo extends Number {
+  static parseInt = function (string: string, radix?: number): number {};
+}
+const foo = Foo;
+['1', '2', '3'].map(foo.parseInt);
+      `,
+      errors: [
+        {
+          line: 6,
+          messageId: 'unbound',
+        },
+      ],
+    },
+    {
+      code: `
+declare const foo: Number;
+const x = foo.toFixed;
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
+    {
+      code: `
+declare const foo: Object;
+const x = foo.hasOwnProperty;
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
+    {
+      code: `
+declare const foo: String;
+const x = foo.slice;
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
+    {
+      code: `
+declare const foo: Date;
+const x = foo.getTime;
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo extends Number {}
+const x = Foo.parseInt;
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo extends String {}
+const x = Foo.fromCharCode;
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo extends Object {}
+const x = Foo.defineProperty;
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo extends Date {}
+const x = Foo.parse;
+      `,
+      errors: [
+        {
+          line: 3,
           messageId: 'unboundWithoutThisAnnotation',
         },
       ],
@@ -767,6 +1032,291 @@ let unbound;
     },
     {
       code: `
+class Foo {
+  unbound = function () {};
+}
+function foo({ unbound }: Foo = new Foo()) {}
+      `,
+      errors: [
+        {
+          line: 5,
+          messageId: 'unbound',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  unbound = function () {};
+}
+declare const bar: Foo;
+function foo({ unbound }: Foo = bar) {}
+      `,
+      errors: [
+        {
+          line: 6,
+          messageId: 'unbound',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  unbound = function () {};
+}
+declare const bar: Foo;
+function foo({ unbound }: Foo = { unbound: () => {} }) {}
+      `,
+      errors: [
+        {
+          line: 6,
+          messageId: 'unbound',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  unbound = function () {};
+}
+declare const bar: Foo;
+function foo({ unbound }: Foo = { unbound: function () {} }) {}
+      `,
+      errors: [
+        {
+          line: 6,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  unbound = function () {};
+}
+function foo({ unbound }: Foo) {}
+      `,
+      errors: [
+        {
+          line: 5,
+          messageId: 'unbound',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  unbound = function () {};
+}
+function bar(cb: (arg: Foo) => void) {}
+bar(({ unbound }) => {});
+      `,
+      errors: [
+        {
+          line: 6,
+          messageId: 'unbound',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  unbound = function () {};
+}
+function bar(cb: (arg: { unbound: () => void }) => void) {}
+bar(({ unbound } = new Foo()) => {});
+      `,
+      errors: [
+        {
+          line: 6,
+          messageId: 'unbound',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  unbound = function () {};
+}
+for (const { unbound } of [new Foo(), new Foo()]) {
+}
+      `,
+      errors: [
+        {
+          line: 5,
+          messageId: 'unbound',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  unbound = function () {};
+
+  foo({ unbound }: Foo) {}
+}
+      `,
+      errors: [
+        {
+          line: 5,
+          messageId: 'unbound',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  unbound = function () {};
+}
+class Bar {
+  unbound = function () {};
+}
+function foo({ unbound }: Foo | Bar) {}
+      `,
+      errors: [
+        {
+          line: 8,
+          messageId: 'unbound',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  unbound = function () {};
+}
+function foo({ unbound }: { unbound: () => string } | Foo) {}
+      `,
+      errors: [
+        {
+          line: 5,
+          messageId: 'unbound',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  unbound = function () {};
+}
+class Bar {
+  unbound = () => {};
+}
+function foo({ unbound }: Foo | Bar) {}
+      `,
+      errors: [
+        {
+          line: 8,
+          messageId: 'unbound',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  unbound = function () {};
+}
+const foo = ({ unbound }: Foo & { foo: () => 'bar' }) => {};
+      `,
+      errors: [
+        {
+          line: 5,
+          messageId: 'unbound',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  unbound = function () {};
+}
+class Bar {
+  unbound = () => {};
+}
+const foo = ({ unbound }: (Foo & { foo: () => 'bar' }) | Bar) => {};
+      `,
+      errors: [
+        {
+          line: 8,
+          messageId: 'unbound',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  unbound = function () {};
+}
+class Bar {
+  unbound = () => {};
+}
+const foo = ({ unbound }: Foo & Bar) => {};
+      `,
+      errors: [
+        {
+          line: 8,
+          messageId: 'unbound',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  unbound = function () {};
+
+  other = function () {};
+}
+class Bar {
+  unbound = () => {};
+}
+const foo = ({ unbound, ...rest }: Foo & Bar) => {};
+      `,
+      errors: [
+        {
+          line: 10,
+          messageId: 'unbound',
+        },
+      ],
+    },
+    {
+      code: 'const { unbound } = { unbound: function () {} };',
+      errors: [
+        {
+          line: 1,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
+    {
+      code: `
+function foo(
+  { unbound }: { unbound: () => void } = { unbound: function () {} },
+) {}
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  floor = function () {};
+}
+
+const { floor } = Math.random() > 0.5 ? new Foo() : Math;
+      `,
+      errors: [
+        {
+          line: 6,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
+    {
+      code: `
 class CommunicationError {
   foo() {}
 }
@@ -794,29 +1344,27 @@ let foo;
         },
       ],
     },
-    // todo: for some reason this test is failing in CI but not locally
-    //     {
-    //       code: `
-    // import { console } from './class';
-    // const { log } = console;
-    //       `,
-    //       errors: [
-    //         {
-    //           line: 3,
-    //           messageId: 'unboundWithoutThisAnnotation',
-    //         },
-    //       ],
-    //     },
-    // todo: for some reason this test is failing in CI but not locally
-    // {
-    //   code: 'const { all } = Promise;',
-    //   errors: [
-    //     {
-    //       line: 1,
-    //       messageId: 'unboundWithoutThisAnnotation',
-    //     },
-    //   ],
-    // },
+    {
+      code: `
+import { console } from './class';
+const { log } = console;
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
+    {
+      code: 'const { all } = Promise;',
+      errors: [
+        {
+          line: 1,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
     // https://github.com/typescript-eslint/typescript-eslint/issues/1866
     {
       code: `
@@ -832,8 +1380,8 @@ class OtherClass extends BaseClass {
       `,
       errors: [
         {
-          line: 8,
           column: 15,
+          line: 8,
           messageId: 'unboundWithoutThisAnnotation',
         },
       ],
@@ -854,8 +1402,8 @@ class OtherClass extends BaseClass {
       `,
       errors: [
         {
-          line: 9,
           column: 9,
+          line: 9,
           messageId: 'unboundWithoutThisAnnotation',
         },
       ],
@@ -871,9 +1419,9 @@ const { a, b } = values;
       `,
       errors: [
         {
-          line: 7,
           column: 9,
           endColumn: 10,
+          line: 7,
           messageId: 'unboundWithoutThisAnnotation',
         },
       ],
@@ -889,9 +1437,9 @@ const { a: c } = values;
       `,
       errors: [
         {
-          line: 7,
           column: 9,
           endColumn: 10,
+          line: 7,
           messageId: 'unboundWithoutThisAnnotation',
         },
       ],
@@ -907,9 +1455,24 @@ const { b, a } = values;
       `,
       errors: [
         {
-          line: 7,
           column: 12,
           endColumn: 13,
+          line: 7,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/8636
+    {
+      code: `
+const objectLiteral = {
+  f: function () {},
+};
+const f = objectLiteral.f;
+      `,
+      errors: [
+        {
+          line: 5,
           messageId: 'unboundWithoutThisAnnotation',
         },
       ],

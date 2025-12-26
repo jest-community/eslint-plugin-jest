@@ -374,6 +374,7 @@ Manually fixable by
 | [prefer-jest-mocked](docs/rules/prefer-jest-mocked.md)                               | Prefer `jest.mocked()` over `fn as jest.Mock`                             |     |     | 🔧  |     |
 | [prefer-lowercase-title](docs/rules/prefer-lowercase-title.md)                       | Enforce lowercase test names                                              |     |     | 🔧  |     |
 | [prefer-mock-promise-shorthand](docs/rules/prefer-mock-promise-shorthand.md)         | Prefer mock resolved/rejected shorthands for promises                     |     |     | 🔧  |     |
+| [prefer-mock-return-shorthand](docs/rules/prefer-mock-return-shorthand.md)           | Prefer mock return shorthands                                             |     |     | 🔧  |     |
 | [prefer-snapshot-hint](docs/rules/prefer-snapshot-hint.md)                           | Prefer including a hint with external snapshots                           |     |     |     |     |
 | [prefer-spy-on](docs/rules/prefer-spy-on.md)                                         | Suggest using `jest.spyOn()`                                              |     |     | 🔧  |     |
 | [prefer-strict-equal](docs/rules/prefer-strict-equal.md)                             | Suggest using `toStrictEqual()`                                           |     |     |     | 💡  |
@@ -394,9 +395,12 @@ Manually fixable by
 
 ### Requires Type Checking
 
-| Name                                           | Description                                                  | 💼  | ⚠️  | 🔧  | 💡  |
-| :--------------------------------------------- | :----------------------------------------------------------- | :-- | :-- | :-- | :-- |
-| [unbound-method](docs/rules/unbound-method.md) | Enforce unbound methods are called with their expected scope |     |     |     |     |
+| Name                                                                 | Description                                                                                 | 💼  | ⚠️  | 🔧  | 💡  |
+| :------------------------------------------------------------------- | :------------------------------------------------------------------------------------------ | :-- | :-- | :-- | :-- |
+| [no-error-equal](docs/rules/no-error-equal.md)                       | Disallow using equality matchers on error types                                             |     |     |     |     |
+| [no-unnecessary-assertion](docs/rules/no-unnecessary-assertion.md)   | Disallow unnecessary assertions based on types                                              |     |     |     |     |
+| [unbound-method](docs/rules/unbound-method.md)                       | Enforce unbound methods are called with their expected scope                                |     |     |     |     |
+| [valid-expect-with-promise](docs/rules/valid-expect-with-promise.md) | Require that `resolve` and `reject` modifiers are present (and only) for promise-like types |     |     |     |     |
 
 <!-- end auto-generated rules list -->
 

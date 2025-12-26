@@ -1164,6 +1164,15 @@ ruleTester.run('no-duplicate-prefix ft nested', rule, {
         it('describes things correctly', () => {})
       })
     `,
+    // todo: finish this
+    dedent`
+      it.each\`
+        num   | value
+        \${1} | \${true}
+      \`('trues', ({ value }) => {
+        expect(value).toBe(true);
+      });
+    `,
   ],
   invalid: [
     {
@@ -1204,6 +1213,330 @@ ruleTester.run('no-duplicate-prefix ft nested', rule, {
         })
       `,
       errors: [{ messageId: 'duplicatePrefix', column: 6, line: 2 }],
+    },
+  ],
+});
+
+ruleTester.run('valid-title (each printf checking)', rule, {
+  valid: [
+    dedent`
+      test.each([
+        [1, 1, 2],
+        [1, 2, 3],
+        [2, 1, 3],
+      ])('.add(%i, %i) = %i', (a, b, expected) => {
+        expect(a + b).toBe(expected);
+      });
+    `,
+    dedent`
+      test.only.each([
+        [1, 1, 2],
+        [1, 2, 3],
+        [2, 1, 3],
+      ])('.add(%i, %i)', (a, b, expected) => {
+        expect(a + b).toBe(expected);
+      });
+    `,
+    dedent`
+      describe.each([
+        [1, 1, 2],
+        [1, 2, 3],
+        [2, 1, 3],
+      ])('.add(%i, %i)', (a, b, expected) => {
+        it('is correct', () => {
+          expect(a + b).toBe(expected);
+        });
+      });
+    `,
+    dedent`
+      describe.skip.each([
+        [1, 1, 2],
+        [1, 2, 3],
+        [2, 1, 3],
+      ])('.add(%i, %i)', (a, b, expected) => {
+        it('is correct', () => {
+          expect(a + b).toBe(expected);
+        });
+      });
+    `,
+    ...['p', 's', 'd', 'i', 'f', 'j', 'o', '#', '$'].flatMap(param => [
+      `it.each([])("%${param}", () => {})`,
+      `it.each([])("%%${param}", () => {})`,
+      `it.each([])("%${param}%", () => {})`,
+      `it.each([])("%%${param}%", () => {})`,
+      `it.each([])("%${param}!", () => {})`,
+      dedent`
+        test.each([
+          [1, 1, 2],
+          [1, 2, 3],
+          [2, 1, 3],
+        ])('.add(%${param}, %${param})', (a, b, expected) => {
+          expect(a + b).toBe(expected);
+        });
+      `,
+      dedent`
+        test.each([
+          [1, 1, 2],
+          [1, 2, 3],
+          [2, 1, 3],
+        ])('.add(%${param}, 1)', (a, b, expected) => {
+          expect(a + b).toBe(expected);
+        });
+      `,
+    ]),
+    dedent`
+      test.each([
+        {a: 1, b: 1, expected: 2},
+        {a: 1, b: 2, expected: 3},
+        {a: 2, b: 1, expected: 3},
+      ])('.add($a, $b)', ({a, b, expected}) => {
+        expect(a + b).toBe(expected);
+      });
+    `,
+    'it("returns 100%", () => {})',
+    'it("returns %100%", () => {})',
+    'it("returns %100", () => {})',
+    'it("returns a percent%", () => {})',
+    'it("returns a %percent%", () => {})',
+    'it("returns a %percent", () => {})',
+    'it.each([])("%i %p", () => {})',
+    'it.skip.each([])("%%%", () => {})',
+    'it.only.each([])("%%%%", () => {})',
+    'it.failing.each([])("%%%%%", () => {})',
+    'it.each([])("x%%y", () => {})',
+    'it.each([])("x %% y", () => {})',
+    'it.each([])("%int", () => {})',
+    dedent`
+      const x = '%x';
+
+      it.each([])(\`has a value of $\{x}\`, () => {});
+    `,
+    dedent`
+      const x = '%x';
+
+      it.each([])(\`has a value of %$\{x}\`, () => {});
+    `,
+    dedent`
+      it.each\`
+        num   | value
+        \${1} | \${true}
+      \`('trues', ({ value }) => {
+        expect(value).toBe(true);
+      });
+    `,
+    dedent`
+      test.each\`
+        a    | b    | expected
+        $\{1} | $\{1} | $\{2}
+        $\{1} | $\{2} | $\{3}
+        $\{2} | $\{1} | $\{3}
+      \`('returns $expected when $a is added to $b', ({a, b, expected}) => {
+        expect(a + b).toBe(expected);
+      });
+    `,
+    dedent`
+      test.each\`
+        a    | b    | expected
+        $\{1} | $\{1} | $\{2}
+        $\{1} | $\{2} | $\{3}
+        $\{2} | $\{1} | $\{3}
+      \`('returns %expected when %a is added to %b', ({a, b, expected}) => {
+        expect(a + b).toBe(expected);
+      });
+    `,
+  ],
+  invalid: [
+    {
+      code: 'it.each([])("%y", () => {})',
+      output: null,
+      errors: [
+        {
+          messageId: 'invalidEachSpecifier',
+          data: { specifier: '%y' },
+          column: 13,
+          line: 1,
+        },
+      ],
+    },
+    ...['p', 's', 'd', 'i', 'f', 'j', 'o'].map(param => ({
+      code: `it.each([])("%${param.toUpperCase()}", () => {})`,
+      output: null,
+      errors: [
+        {
+          messageId: 'invalidEachSpecifier' as const,
+          data: { specifier: `%${param.toUpperCase()}` },
+          column: 13,
+          line: 1,
+        },
+      ],
+    })),
+    {
+      code: 'it.each([])("%s+%y", () => {})',
+      output: null,
+      errors: [
+        {
+          messageId: 'invalidEachSpecifier',
+          data: { specifier: '%y' },
+          column: 13,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: 'it.each([])("%y+%%y", () => {})',
+      output: null,
+      errors: [
+        {
+          messageId: 'invalidEachSpecifier',
+          data: { specifier: '%y' },
+          column: 13,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: 'it.each([])("%%y+%y", () => {})',
+      output: null,
+      errors: [
+        {
+          messageId: 'invalidEachSpecifier',
+          data: { specifier: '%y' },
+          column: 13,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: 'it.each([])("%%%x", () => {})',
+      output: null,
+      errors: [
+        {
+          messageId: 'invalidEachSpecifier',
+          data: { specifier: '%x' },
+          column: 13,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        test.each([
+          [1, 1, 2],
+          [1, 2, 3],
+          [2, 1, 3],
+        ])('.add(%x, %x)', (a, b, expected) => {
+          expect(a + b).toBe(expected);
+        });
+      `,
+      output: null,
+      errors: [
+        {
+          messageId: 'invalidEachSpecifier',
+          data: { specifier: '%x' },
+          column: 4,
+          line: 5,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        test.only.each([
+          [1, 1, 2],
+          [1, 2, 3],
+          [2, 1, 3],
+        ])('.add(%x, %y)', (a, b, expected) => {
+          expect(a + b).toBe(expected);
+        });
+      `,
+      output: null,
+      errors: [
+        {
+          messageId: 'invalidEachSpecifier',
+          data: { specifier: '%x' },
+          column: 4,
+          line: 5,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        describe.each([
+          [1, 1, 2],
+          [1, 2, 3],
+          [2, 1, 3],
+        ])('.add(%x, %y)', (a, b, expected) => {
+          it('is correct', () => {
+            expect(a + b).toBe(expected);
+          });
+        });
+      `,
+      output: null,
+      errors: [
+        {
+          messageId: 'invalidEachSpecifier',
+          data: { specifier: '%x' },
+          column: 4,
+          line: 5,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        test.each([
+          [1, 1, 2],
+          [1, 2, 3],
+          [2, 1, 3],
+        ])('.add(%i, %x)', (a, b, expected) => {
+          expect(a + b).toBe(expected);
+        });
+      `,
+      output: null,
+      errors: [
+        {
+          messageId: 'invalidEachSpecifier',
+          data: { specifier: '%x' },
+          column: 4,
+          line: 5,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        it.skip.each(entries)('.add(%i, %x)', (a, b, expected) => {
+          expect(a + b).toBe(expected);
+        });
+      `,
+      output: null,
+      errors: [
+        {
+          messageId: 'invalidEachSpecifier',
+          data: { specifier: '%x' },
+          column: 23,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        const entries = [
+          [1, 1, 2],
+          [1, 2, 3],
+          [2, 1, 3],
+        ]; 
+
+        test.each(entries)('.add(%i, %x)', (a, b, expected) => {
+          expect(a + b).toBe(expected);
+        });
+      `,
+      output: null,
+      errors: [
+        {
+          messageId: 'invalidEachSpecifier',
+          data: { specifier: '%x' },
+          column: 20,
+          line: 7,
+        },
+      ],
     },
   ],
 });
