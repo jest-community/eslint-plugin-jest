@@ -4,6 +4,7 @@ on:
   schedule:
     - cron: '0 0 * * SUN'
   workflow_dispatch:
+  pull_request:
 
 permissions:
   contents: read # to fetch code (actions/checkout)
@@ -29,7 +30,8 @@ jobs:
           yarn install
           yarn build
           ln -s ../ node_modules/eslint-plugin-jest
-      - uses: AriPerkkio/eslint-remote-tester-run-action@c0213f3c3b320c3dac16578ed9d0ba8af148a1a8 # v4.1.0
-        with:
-          issue-title: 'Results of weekly scheduled smoke test'
-          eslint-remote-tester-config: eslint-remote-tester.config.ts
+      - run: npx eslint-remote-tester
+#      - uses: AriPerkkio/eslint-remote-tester-run-action@c0213f3c3b320c3dac16578ed9d0ba8af148a1a8 # v4.1.0
+#        with:
+#          issue-title: 'Results of weekly scheduled smoke test'
+#          eslint-remote-tester-config: eslint-remote-tester.config.ts
