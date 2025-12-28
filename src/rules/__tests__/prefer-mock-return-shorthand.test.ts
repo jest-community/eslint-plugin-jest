@@ -96,10 +96,10 @@ ruleTester.run('prefer-mock-shorthand', rule, {
         },
         {
           code: dedent`
-          jest.fn().mockImplementation(() => {
-            return ${value};
-          })
-        `,
+            jest.fn().mockImplementation(() => {
+              return ${value};
+            })
+          `,
           output: `jest.fn().mockReturnValue(${value})`,
           errors: [
             {
@@ -124,10 +124,10 @@ ruleTester.run('prefer-mock-shorthand', rule, {
         },
         {
           code: dedent`
-          aVariable.mockImplementation(() => {
-            return ${value};
-          })
-        `,
+            aVariable.mockImplementation(() => {
+              return ${value};
+            })
+          `,
           output: `aVariable.mockReturnValue(${value})`,
           errors: [
             {
