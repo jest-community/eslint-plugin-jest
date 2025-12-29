@@ -134,6 +134,17 @@ const config = [
       strict: 'off',
     },
   },
+
+  // todo: these are recommended in eslint-plugin-eslint-plugin v7
+  //  we should work on getting them addressed and switching to error
+  {
+    rules: {
+      'eslint-plugin/no-meta-replaced-by': 'warn',
+      'eslint-plugin/no-meta-schema-default': 'warn',
+      'eslint-plugin/require-meta-default-options': 'warn',
+      'eslint-plugin/require-meta-schema-description': 'warn',
+    },
+  },
 ];
 
 module.exports = config;
