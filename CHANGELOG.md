@@ -1,3 +1,10 @@
+## [29.11.2](https://github.com/jest-community/eslint-plugin-jest/compare/v29.11.1...v29.11.2) (2025-12-29)
+
+
+### Bug Fixes
+
+* **prefer-mock-return-shorthand:** don't report mutable implementations ([#1908](https://github.com/jest-community/eslint-plugin-jest/issues/1908)) ([b164700](https://github.com/jest-community/eslint-plugin-jest/commit/b1647001613183fbaa406e160810b68c58f96a36))
+
 ## [29.11.1](https://github.com/jest-community/eslint-plugin-jest/compare/v29.11.0...v29.11.1) (2025-12-29)
 
 
