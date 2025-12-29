@@ -7,7 +7,7 @@ import {
 import plugin from './src';
 
 const config: Config = {
-  repositories: getRepositories({ randomize: true }).slice(0, 5),
+  repositories: getRepositories({ randomize: true }),
   pathIgnorePattern: getPathIgnorePattern(),
   extensions: ['js', 'jsx', 'ts', 'tsx'],
   concurrentTasks: 3,
