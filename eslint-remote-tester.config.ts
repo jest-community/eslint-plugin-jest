@@ -13,6 +13,7 @@ const config: Config = {
   concurrentTasks: 3,
   cache: false,
   logLevel: 'info',
+  // @ts-expect-error todo: https://github.com/AriPerkkio/eslint-remote-tester/pull/628
   eslintConfig: [
     plugin.configs['flat/all'],
     { languageOptions: { parser } },
