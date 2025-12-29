@@ -73,6 +73,21 @@ export default createRule({
           return;
         }
 
+        // check if we're using a non-constant variable
+        if (returnNode.type === AST_NODE_TYPES.Identifier) {
+          const scope = context.sourceCode.getScope(returnNode);
+
+          const isMutable = scope.through.some(v =>
+            v.resolved?.defs.some(
+              n => n.type === 'Variable' && n.parent.kind !== 'const',
+            ),
+          );
+
+          if (isMutable) {
+            return;
+          }
+        }
+
         context.report({
           node: property,
           messageId: 'useMockShorthand',

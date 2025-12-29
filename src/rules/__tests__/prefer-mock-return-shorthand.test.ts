@@ -65,6 +65,56 @@ ruleTester.run('prefer-mock-shorthand', rule, {
       });
     `,
     'aVariable.mockReturnValue(Promise.all([1, 2, 3]));',
+    dedent`
+      let currentX = 0;
+      jest.spyOn(X, getCount).mockImplementation(() => currentX);
+
+      // stuff happens
+
+      currentX++;
+
+      // more stuff happens
+    `,
+    dedent`
+      let currentX = 0;
+      jest.spyOn(X, getCount).mockImplementation(() => currentX);
+    `,
+    dedent`
+      let currentX = 0;
+      currentX = 0;
+      jest.spyOn(X, getCount).mockImplementation(() => currentX);
+    `,
+    dedent`
+      var currentX = 0;
+      currentX = 0;
+      jest.spyOn(X, getCount).mockImplementation(() => currentX);
+    `,
+    dedent`
+      var currentX = 0;
+      var currentX = 0;
+      jest.spyOn(X, getCount).mockImplementation(() => currentX);
+    `,
+    dedent`
+      let doSomething = () => {};
+
+      jest.spyOn(X, getCount).mockImplementation(() => doSomething);
+    `,
+    dedent`
+      let currentX = 0;
+      jest.spyOn(X, getCount).mockImplementation(() => {
+        currentX += 1;
+
+        return currentX;
+      });
+    `,
+    dedent`
+      const currentX = 0;
+      jest.spyOn(X, getCount).mockImplementation(() => {
+        console.log('returning', currentX);
+
+        return currentX;
+      });
+    `,
   ],
 
   invalid: [
@@ -411,6 +461,113 @@ ruleTester.run('prefer-mock-shorthand', rule, {
           data: { replacement: 'mockReturnValue' },
           column: 11,
           line: 1,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        const currentX = 0;
+        jest.spyOn(X, getCount).mockImplementation(() => currentX);
+      `,
+      output: dedent`
+        const currentX = 0;
+        jest.spyOn(X, getCount).mockReturnValue(currentX);
+      `,
+      errors: [
+        {
+          messageId: 'useMockShorthand',
+          data: { replacement: 'mockReturnValue' },
+          column: 25,
+          line: 2,
+        },
+      ],
+    },
+    // currently we assume that exported stuff is immutable, since that
+    // is generally considered a bad idea especially when testing
+    {
+      code: dedent`
+        import { currentX } from './elsewhere';
+        jest.spyOn(X, getCount).mockImplementation(() => currentX);
+      `,
+      output: dedent`
+        import { currentX } from './elsewhere';
+        jest.spyOn(X, getCount).mockReturnValue(currentX);
+      `,
+      parserOptions: { sourceType: 'module' },
+      errors: [
+        {
+          messageId: 'useMockShorthand',
+          data: { replacement: 'mockReturnValue' },
+          column: 25,
+          line: 2,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        const currentX = 0;
+
+        describe('some tests', () => {
+          it('works', () => {
+            jest.spyOn(X, getCount).mockImplementation(() => currentX);
+          });
+        });
+      `,
+      output: dedent`
+        const currentX = 0;
+
+        describe('some tests', () => {
+          it('works', () => {
+            jest.spyOn(X, getCount).mockReturnValue(currentX);
+          });
+        });
+      `,
+      errors: [
+        {
+          messageId: 'useMockShorthand',
+          data: { replacement: 'mockReturnValue' },
+          column: 29,
+          line: 5,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        function doSomething() {};
+
+        jest.spyOn(X, getCount).mockImplementation(() => doSomething);
+      `,
+      output: dedent`
+        function doSomething() {};
+
+        jest.spyOn(X, getCount).mockReturnValue(doSomething);
+      `,
+      errors: [
+        {
+          messageId: 'useMockShorthand',
+          data: { replacement: 'mockReturnValue' },
+          column: 25,
+          line: 3,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        const doSomething = () => {};
+
+        jest.spyOn(X, getCount).mockImplementation(() => doSomething);
+      `,
+      output: dedent`
+        const doSomething = () => {};
+
+        jest.spyOn(X, getCount).mockReturnValue(doSomething);
+      `,
+      errors: [
+        {
+          messageId: 'useMockShorthand',
+          data: { replacement: 'mockReturnValue' },
+          column: 25,
+          line: 3,
         },
       ],
     },
