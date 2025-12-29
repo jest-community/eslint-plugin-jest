@@ -16,7 +16,7 @@ const config: Config = {
   // @ts-expect-error todo: https://github.com/AriPerkkio/eslint-remote-tester/pull/628
   eslintConfig: [
     plugin.configs['flat/all'],
-    { languageOptions: { parser } },
+    { languageOptions: { parser, parserOptions: { project: true } } },
     {
       rules: {
         // these rules require type information, which is not really feasible
