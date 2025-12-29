@@ -29,7 +29,7 @@ jobs:
           yarn install
           yarn build
           ln -s ../ node_modules/eslint-plugin-jest
-      - uses: AriPerkkio/eslint-remote-tester-run-action@c0213f3c3b320c3dac16578ed9d0ba8af148a1a8 # v4.1.0
+      - uses: AriPerkkio/eslint-remote-tester-run-action@5724813c126b48e735e7fc08f048f318c3df262d # v5
         with:
           issue-title: 'Results of weekly scheduled smoke test'
           eslint-remote-tester-config: eslint-remote-tester.config.ts
