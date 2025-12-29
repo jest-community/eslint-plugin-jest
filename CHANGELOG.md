@@ -1,3 +1,10 @@
+## [29.11.1](https://github.com/jest-community/eslint-plugin-jest/compare/v29.11.0...v29.11.1) (2025-12-29)
+
+
+### Bug Fixes
+
+* **unbound-method:** ignore inline use of `jest.mocked(...)` ([#1862](https://github.com/jest-community/eslint-plugin-jest/issues/1862)) ([3a50b97](https://github.com/jest-community/eslint-plugin-jest/commit/3a50b97b2c7a2bf33552ca2b56ea24017bee09cc))
+
 # [29.11.0](https://github.com/jest-community/eslint-plugin-jest/compare/v29.10.1...v29.11.0) (2025-12-23)
 
 
