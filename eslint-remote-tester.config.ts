@@ -17,18 +17,6 @@ const config: Config = {
   eslintConfig: [
     plugin.configs['flat/all'],
     { languageOptions: { parser, parserOptions: { project: true } } },
-    {
-      rules: {
-        // these rules require type information, which is not really feasible
-        // when linting a bunch of randomly picked open-source js & ts projects
-        //
-        // todo: try to see if we can actually get these working
-        // 'jest/no-error-equal': 'off',
-        // 'jest/no-unnecessary-assertion': 'off',
-        // 'jest/unbound-method': 'off',
-        // 'jest/valid-expect-with-promise': 'off',
-      },
-    },
   ],
 };
 
