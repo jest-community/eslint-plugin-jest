@@ -24,9 +24,9 @@ const config: Config = {
         //
         // todo: try to see if we can actually get these working
         // 'jest/no-error-equal': 'off',
-        'jest/no-unnecessary-assertion': 'off',
-        'jest/unbound-method': 'off',
-        'jest/valid-expect-with-promise': 'off',
+        // 'jest/no-unnecessary-assertion': 'off',
+        // 'jest/unbound-method': 'off',
+        // 'jest/valid-expect-with-promise': 'off',
       },
     },
   ],
