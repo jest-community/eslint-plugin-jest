@@ -46,6 +46,28 @@ ruleTester.run('prefer-mock-shorthand', rule, {
         return 2;
       });
     `,
+    'aVariable.mockImplementation(() => value++)',
+    'aVariable.mockImplementationOnce(() => --value)',
+    dedent`
+      const aValue = 0;
+      aVariable.mockImplementation(() => {
+        return aValue++;
+      });
+    `,
+    dedent`
+      aVariable.mockImplementation(() => {
+        aValue += 1;
+
+        return aValue;
+      });
+    `,
+    dedent`
+      aVariable.mockImplementation(() => {
+        aValue++;
+
+        return aValue;
+      });
+    `,
     'aVariable.mockReturnValue()',
     'aVariable.mockReturnValue(1)',
     'aVariable.mockReturnValue("hello world")',
