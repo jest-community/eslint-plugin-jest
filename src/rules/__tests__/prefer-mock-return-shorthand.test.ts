@@ -5,7 +5,7 @@ import { FlatCompatRuleTester as RuleTester, espreeParser } from './test-utils';
 const ruleTester = new RuleTester({
   parser: espreeParser,
   parserOptions: {
-    ecmaVersion: 2018,
+    ecmaVersion: 2020,
   },
 });
 
@@ -352,12 +352,18 @@ ruleTester.run('prefer-mock-shorthand', rule, {
 
       jest.fn().mockImplementation(() => mx(value));
       jest.fn().mockImplementation(() => mx(value));
+      jest.fn().mockImplementation(() => mx?.(value));
       jest.fn().mockImplementation(() => mx(value).my());
       jest.fn().mockImplementation(() => mx(value).my);
       jest.fn().mockImplementation(() => mx.my(value));
+      jest.fn().mockImplementation(() => mx?.my(value));
+      jest.fn().mockImplementation(() => mx?.my?.(value));
+      jest.fn().mockImplementation(() => mx.my?.(value));
       jest.fn().mockImplementation(() => mx().my(value));
+      jest.fn().mockImplementation(() => mx()?.my(value));
       jest.fn().mockImplementation(() => mx.my(value));
       jest.fn().mockImplementation(() => mx(value).my(value));
+      jest.fn().mockImplementation(() => mx?.(value)?.my?.(value));
       jest.fn().mockImplementation(() => {
         return mx([{
           type: 'object',
@@ -1370,16 +1376,21 @@ ruleTester.run('prefer-mock-shorthand', rule, {
         const value = 1;
 
         jest.fn().mockImplementation(() => mx(value));
+        jest.fn().mockImplementation(() => mx?.(value));
         jest.fn().mockImplementation(() => mx().my());
         jest.fn().mockImplementation(() => mx().my);
         jest.fn().mockImplementation(() => mx.my());
+        jest.fn().mockImplementation(() => mx?.my());
         jest.fn().mockImplementation(() => mx.my);
         jest.fn().mockImplementation(() => mx(value).my());
+        jest.fn().mockImplementation(() => mx(value)?.my());
         jest.fn().mockImplementation(() => mx(value).my);
         jest.fn().mockImplementation(() => mx.my(value));
         jest.fn().mockImplementation(() => mx().my(value));
         jest.fn().mockImplementation(() => mx.my(value));
+        jest.fn().mockImplementation(() => mx.my?.(value));
         jest.fn().mockImplementation(() => mx(value).my(value));
+        jest.fn().mockImplementation(() => mx?.(value)?.my?.(value));
         jest.fn().mockImplementation(() => {
           return mx([{
             type: 'object',
@@ -1395,16 +1406,21 @@ ruleTester.run('prefer-mock-shorthand', rule, {
         const value = 1;
 
         jest.fn().mockReturnValue(mx(value));
+        jest.fn().mockReturnValue(mx?.(value));
         jest.fn().mockReturnValue(mx().my());
         jest.fn().mockReturnValue(mx().my);
         jest.fn().mockReturnValue(mx.my());
+        jest.fn().mockReturnValue(mx?.my());
         jest.fn().mockReturnValue(mx.my);
         jest.fn().mockReturnValue(mx(value).my());
+        jest.fn().mockReturnValue(mx(value)?.my());
         jest.fn().mockReturnValue(mx(value).my);
         jest.fn().mockReturnValue(mx.my(value));
         jest.fn().mockReturnValue(mx().my(value));
         jest.fn().mockReturnValue(mx.my(value));
+        jest.fn().mockReturnValue(mx.my?.(value));
         jest.fn().mockReturnValue(mx(value).my(value));
+        jest.fn().mockReturnValue(mx?.(value)?.my?.(value));
         jest.fn().mockReturnValue(mx([{
             type: 'object',
             with: {
@@ -1486,6 +1502,36 @@ ruleTester.run('prefer-mock-shorthand', rule, {
           data: { replacement: 'mockReturnValue' },
           column: 11,
           line: 14,
+        },
+        {
+          messageId: 'useMockShorthand',
+          data: { replacement: 'mockReturnValue' },
+          column: 11,
+          line: 15,
+        },
+        {
+          messageId: 'useMockShorthand',
+          data: { replacement: 'mockReturnValue' },
+          column: 11,
+          line: 16,
+        },
+        {
+          messageId: 'useMockShorthand',
+          data: { replacement: 'mockReturnValue' },
+          column: 11,
+          line: 17,
+        },
+        {
+          messageId: 'useMockShorthand',
+          data: { replacement: 'mockReturnValue' },
+          column: 11,
+          line: 18,
+        },
+        {
+          messageId: 'useMockShorthand',
+          data: { replacement: 'mockReturnValue' },
+          column: 11,
+          line: 19,
         },
       ],
     },

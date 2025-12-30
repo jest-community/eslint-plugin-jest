@@ -1,5 +1,11 @@
 import { AST_NODE_TYPES, type TSESTree } from '@typescript-eslint/utils';
-import { createRule, type FunctionExpression, getAccessorValue, isFunction, isSupportedAccessor } from './utils';
+import {
+  type FunctionExpression,
+  createRule,
+  getAccessorValue,
+  isFunction,
+  isSupportedAccessor,
+} from './utils';
 
 const withOnce = (name: string, addOnce: boolean): string => {
   return `${name}${addOnce ? 'Once' : ''}`;
@@ -54,6 +60,8 @@ export default createRule({
           return usesMutableIdentifier(node.value);
         case AST_NODE_TYPES.ArrayExpression:
           return node.elements.some(el => el && usesMutableIdentifier(el));
+        case AST_NODE_TYPES.ChainExpression:
+          return usesMutableIdentifier(node.expression);
         case AST_NODE_TYPES.SpreadElement:
           return usesMutableIdentifier(node.argument);
         case AST_NODE_TYPES.UnaryExpression:
