@@ -102,6 +102,14 @@ export default createRule({
           ) {
             return;
           }
+        } else if (returnNode.type === AST_NODE_TYPES.ArrayExpression) {
+          if (
+            returnNode.elements.some(
+              el => el?.type === AST_NODE_TYPES.Identifier && isMutable(el),
+            )
+          ) {
+            return;
+          }
         }
 
         context.report({
