@@ -1,3 +1,10 @@
+# [29.12.0](https://github.com/jest-community/eslint-plugin-jest/compare/v29.11.4...v29.12.0) (2025-12-30)
+
+
+### Features
+
+* **prefer-mock-return-shorthand:** greatly improve checking if mutable variables are used ([#1914](https://github.com/jest-community/eslint-plugin-jest/issues/1914)) ([13bbd20](https://github.com/jest-community/eslint-plugin-jest/commit/13bbd20dccbd58d9d5b23a1966aca7e8323b27fe))
+
 ## [29.11.4](https://github.com/jest-community/eslint-plugin-jest/compare/v29.11.3...v29.11.4) (2025-12-30)
 
 
