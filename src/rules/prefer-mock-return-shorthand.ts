@@ -57,6 +57,10 @@ export default createRule({
         case AST_NODE_TYPES.ObjectExpression:
           return node.properties.some(prop => usesMutableIdentifier(prop));
         case AST_NODE_TYPES.Property:
+          if (node.computed && usesMutableIdentifier(node.key)) {
+            return true;
+          }
+
           return usesMutableIdentifier(node.value);
         case AST_NODE_TYPES.ArrayExpression:
           return node.elements.some(el => el && usesMutableIdentifier(el));
@@ -74,6 +78,10 @@ export default createRule({
         case AST_NODE_TYPES.MemberExpression:
           if (node.object.type === AST_NODE_TYPES.CallExpression) {
             return usesMutableIdentifier(node.object);
+          }
+
+          if (node.computed && usesMutableIdentifier(node.property)) {
+            return true;
           }
           break;
         case AST_NODE_TYPES.NewExpression:

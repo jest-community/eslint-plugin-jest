@@ -400,6 +400,13 @@ ruleTester.run('prefer-mock-shorthand', rule, {
         }])
       });
     `,
+    dedent`
+      let propName = 'world';
+
+      aVariable.mockImplementation(() => mx[propName]());
+      aVariable.mockImplementation(() => mx[propName]);
+      aVariable.mockImplementation(() => ({ [propName]: 1 }));
+    `,
   ],
 
   invalid: [
@@ -1637,6 +1644,42 @@ ruleTester.run('prefer-mock-shorthand', rule, {
           data: { replacement: 'mockReturnValue' },
           column: 11,
           line: 20,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        const propName = 'world';
+  
+        aVariable.mockImplementation(() => mx[propName]());
+        aVariable.mockImplementation(() => mx[propName]);
+        aVariable.mockImplementation(() => ({ [propName]: 1 }));
+      `,
+      output: dedent`
+        const propName = 'world';
+  
+        aVariable.mockReturnValue(mx[propName]());
+        aVariable.mockReturnValue(mx[propName]);
+        aVariable.mockReturnValue({ [propName]: 1 });
+      `,
+      errors: [
+        {
+          messageId: 'useMockShorthand',
+          data: { replacement: 'mockReturnValue' },
+          column: 11,
+          line: 3,
+        },
+        {
+          messageId: 'useMockShorthand',
+          data: { replacement: 'mockReturnValue' },
+          column: 11,
+          line: 4,
+        },
+        {
+          messageId: 'useMockShorthand',
+          data: { replacement: 'mockReturnValue' },
+          column: 11,
+          line: 5,
         },
       ],
     },
