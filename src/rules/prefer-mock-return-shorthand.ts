@@ -110,6 +110,20 @@ export default createRule({
           ) {
             return;
           }
+        } else if (returnNode.type === AST_NODE_TYPES.BinaryExpression) {
+          if (
+            returnNode.left.type === AST_NODE_TYPES.Identifier &&
+            isMutable(returnNode.left)
+          ) {
+            return;
+          }
+
+          if (
+            returnNode.right.type === AST_NODE_TYPES.Identifier &&
+            isMutable(returnNode.right)
+          ) {
+            return;
+          }
         }
 
         context.report({
