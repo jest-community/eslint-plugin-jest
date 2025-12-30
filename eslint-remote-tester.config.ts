@@ -10,13 +10,17 @@ import plugin from './src';
 // they are large typescript repositories which cause our type-based rules
 // to use a lot of memory
 const reposToIgnore = new Set<string>([
-  'trezor/trezor-suite',
-  'tannerlinsley/react-location',
-  'w-okada/image-analyze-workers',
   'hubmapconsortium/vitessce',
-  'magiclabs/magic-js',
-  'umbraco/Umbraco.UI',
   'LaunchMenu/LaunchMenu',
+  'Lemoncode/master-frontend-lemoncode',
+  'magiclabs/magic-js',
+  'Synerise/synerise-design',
+  'tannerlinsley/react-location',
+  'trezor/trezor-suite',
+  'umbraco/Umbraco.UI',
+  'w-okada/image-analyze-workers',
+  'webiny/webiny-js',
+  'wso2/identity-apps',
 ]);
 
 const config: Config = {
