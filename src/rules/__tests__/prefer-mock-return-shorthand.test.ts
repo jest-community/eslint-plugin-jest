@@ -5,7 +5,7 @@ import { FlatCompatRuleTester as RuleTester, espreeParser } from './test-utils';
 const ruleTester = new RuleTester({
   parser: espreeParser,
   parserOptions: {
-    ecmaVersion: 6,
+    ecmaVersion: 2017,
   },
 });
 
@@ -30,6 +30,13 @@ ruleTester.run('prefer-mock-shorthand', rule, {
     'jest.fn(() => ({}))',
     'aVariable.mockImplementation',
     'aVariable.mockImplementation()',
+    'jest.fn().mockImplementation(async () => 1);',
+    'jest.fn().mockImplementation(async function () {});',
+    dedent`
+      jest.fn().mockImplementation(async function () {
+        return 42;
+      });
+    `,
     dedent`
       aVariable.mockImplementation(() => {
         if (true) {
@@ -350,12 +357,14 @@ ruleTester.run('prefer-mock-shorthand', rule, {
       code: dedent`
         aVariable
           .mockImplementation(() => 42)
+          .mockImplementation(async () => 42)
           .mockImplementation(() => Promise.resolve(42))
           .mockReturnValue("hello world")
       `,
       output: dedent`
         aVariable
           .mockReturnValue(42)
+          .mockImplementation(async () => 42)
           .mockReturnValue(Promise.resolve(42))
           .mockReturnValue("hello world")
       `,
@@ -370,7 +379,7 @@ ruleTester.run('prefer-mock-shorthand', rule, {
           messageId: 'useMockShorthand',
           data: { replacement: 'mockReturnValue' },
           column: 4,
-          line: 3,
+          line: 4,
         },
       ],
     },
