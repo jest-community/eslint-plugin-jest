@@ -40,6 +40,74 @@ export default createRule({
   },
   defaultOptions: [],
   create(context) {
+    const isMutable = (identifier: TSESTree.Identifier) => {
+      const scope = context.sourceCode.getScope(identifier);
+
+      return scope.through.some(v =>
+        v.resolved?.defs.some(
+          n => n.type === 'Variable' && n.parent.kind !== 'const',
+        ),
+      );
+    };
+
+    const usesMutableIdentifier = (node: TSESTree.Node): boolean => {
+      switch (node.type) {
+        case AST_NODE_TYPES.Identifier:
+          return isMutable(node);
+        case AST_NODE_TYPES.ObjectExpression:
+          return node.properties.some(prop => usesMutableIdentifier(prop));
+        case AST_NODE_TYPES.Property:
+          if (node.computed && usesMutableIdentifier(node.key)) {
+            return true;
+          }
+
+          return usesMutableIdentifier(node.value);
+        case AST_NODE_TYPES.ArrayExpression:
+          return node.elements.some(el => el && usesMutableIdentifier(el));
+        case AST_NODE_TYPES.ChainExpression:
+          return usesMutableIdentifier(node.expression);
+        case AST_NODE_TYPES.SpreadElement:
+        case AST_NODE_TYPES.UnaryExpression:
+          return usesMutableIdentifier(node.argument);
+        case AST_NODE_TYPES.LogicalExpression:
+        case AST_NODE_TYPES.BinaryExpression:
+          return (
+            usesMutableIdentifier(node.left) ||
+            usesMutableIdentifier(node.right)
+          );
+        case AST_NODE_TYPES.MemberExpression:
+          if (node.computed && usesMutableIdentifier(node.property)) {
+            return true;
+          }
+
+          return (
+            node.object.type === AST_NODE_TYPES.CallExpression &&
+            usesMutableIdentifier(node.object)
+          );
+        case AST_NODE_TYPES.ConditionalExpression:
+          return (
+            usesMutableIdentifier(node.test) ||
+            usesMutableIdentifier(node.alternate) ||
+            usesMutableIdentifier(node.consequent)
+          );
+        case AST_NODE_TYPES.NewExpression:
+        case AST_NODE_TYPES.CallExpression:
+          return (
+            usesMutableIdentifier(node.callee) ||
+            node.arguments.some(arg => usesMutableIdentifier(arg))
+          );
+      }
+
+      // currently we assume a mutable identifier is not being used
+      // unless we can find one specifically, which is technically
+      // not safe but so far it has not seemed to cause issues.
+      //
+      // if it proves to be too troublesome, we should consider
+      // inverting this so we only report when we're completely
+      // sure it is safe
+      return false;
+    };
+
     return {
       CallExpression(node) {
         if (
@@ -77,18 +145,8 @@ export default createRule({
         }
 
         // check if we're using a non-constant variable
-        if (returnNode.type === AST_NODE_TYPES.Identifier) {
-          const scope = context.sourceCode.getScope(returnNode);
-
-          const isMutable = scope.through.some(v =>
-            v.resolved?.defs.some(
-              n => n.type === 'Variable' && n.parent.kind !== 'const',
-            ),
-          );
-
-          if (isMutable) {
-            return;
-          }
+        if (usesMutableIdentifier(returnNode)) {
+          return;
         }
 
         context.report({
