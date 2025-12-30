@@ -66,6 +66,7 @@ export default createRule({
           return usesMutableIdentifier(node.argument);
         case AST_NODE_TYPES.UnaryExpression:
           return usesMutableIdentifier(node.argument);
+        case AST_NODE_TYPES.LogicalExpression:
         case AST_NODE_TYPES.BinaryExpression:
           return (
             usesMutableIdentifier(node.left) ||

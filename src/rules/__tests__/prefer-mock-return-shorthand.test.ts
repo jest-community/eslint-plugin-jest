@@ -300,6 +300,23 @@ ruleTester.run('prefer-mock-shorthand', rule, {
       aVariable.mockImplementation(() => my | mx);
     `,
     dedent`
+      let value = 1;
+
+      aVariable.mockImplementation(() => value || 0);
+      aVariable.mockImplementation(() => 1 && value);
+      aVariable.mockImplementation(() => 1 ?? value);
+      aVariable.mockImplementation(() => 1 ?? (value && 0));
+    `,
+    dedent`
+      const mx = 1
+      let my = 2;
+
+      aVariable.mockImplementation(() => mx || my);
+      aVariable.mockImplementation(() => my && mx);
+      aVariable.mockImplementation(() => my ?? mx);
+      aVariable.mockImplementation(() => mx ?? (7 && my));
+    `,
+    dedent`
       let value = [1];
 
       aVariable.mockImplementation(() => {
@@ -1368,6 +1385,42 @@ ruleTester.run('prefer-mock-shorthand', rule, {
           data: { replacement: 'mockReturnValue' },
           column: 11,
           line: 3,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        const mx = 1
+        let my = 2;
+  
+        aVariable.mockImplementation(() => mx || my);
+        aVariable.mockImplementation(() => mx || 0);
+        aVariable.mockImplementation(() => my && mx);
+        aVariable.mockImplementation(() => mx ?? (7 && my));
+        aVariable.mockImplementation(() => mx ?? (7 && 0));
+      `,
+      output: dedent`
+        const mx = 1
+        let my = 2;
+  
+        aVariable.mockImplementation(() => mx || my);
+        aVariable.mockReturnValue(mx || 0);
+        aVariable.mockImplementation(() => my && mx);
+        aVariable.mockImplementation(() => mx ?? (7 && my));
+        aVariable.mockReturnValue(mx ?? (7 && 0));
+      `,
+      errors: [
+        {
+          messageId: 'useMockShorthand',
+          data: { replacement: 'mockReturnValue' },
+          column: 11,
+          line: 5,
+        },
+        {
+          messageId: 'useMockShorthand',
+          data: { replacement: 'mockReturnValue' },
+          column: 11,
+          line: 8,
         },
       ],
     },
