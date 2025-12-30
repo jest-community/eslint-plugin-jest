@@ -76,14 +76,14 @@ export default createRule({
             usesMutableIdentifier(node.right)
           );
         case AST_NODE_TYPES.MemberExpression:
-          if (node.object.type === AST_NODE_TYPES.CallExpression) {
-            return usesMutableIdentifier(node.object);
-          }
-
           if (node.computed && usesMutableIdentifier(node.property)) {
             return true;
           }
-          break;
+
+          return (
+            node.object.type === AST_NODE_TYPES.CallExpression &&
+            usesMutableIdentifier(node.object)
+          );
         case AST_NODE_TYPES.ConditionalExpression:
           return (
             usesMutableIdentifier(node.test) ||
@@ -92,11 +92,10 @@ export default createRule({
           );
         case AST_NODE_TYPES.NewExpression:
         case AST_NODE_TYPES.CallExpression:
-          if (usesMutableIdentifier(node.callee)) {
-            return true;
-          }
-
-          return node.arguments.some(arg => usesMutableIdentifier(arg));
+          return (
+            usesMutableIdentifier(node.callee) ||
+            node.arguments.some(arg => usesMutableIdentifier(arg))
+          );
       }
 
       // currently we assume a mutable identifier is not being used
