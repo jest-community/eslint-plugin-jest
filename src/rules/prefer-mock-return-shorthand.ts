@@ -63,7 +63,6 @@ export default createRule({
         case AST_NODE_TYPES.ChainExpression:
           return usesMutableIdentifier(node.expression);
         case AST_NODE_TYPES.SpreadElement:
-          return usesMutableIdentifier(node.argument);
         case AST_NODE_TYPES.UnaryExpression:
           return usesMutableIdentifier(node.argument);
         case AST_NODE_TYPES.LogicalExpression:
