@@ -67,6 +67,8 @@ export default createRule({
             usesMutableIdentifier(node.left) ||
             usesMutableIdentifier(node.right)
           );
+        case AST_NODE_TYPES.CallExpression:
+          return node.arguments.some(arg => usesMutableIdentifier(arg));
       }
 
       // currently we assume a mutable identifier is not being used

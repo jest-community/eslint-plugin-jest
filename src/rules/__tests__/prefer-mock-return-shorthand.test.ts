@@ -287,6 +287,21 @@ ruleTester.run('prefer-mock-shorthand', rule, {
         return mx();
       });
     `,
+    dedent`
+      let value = 1;
+
+      jest.fn().mockImplementation(() => mx(value));
+      jest.fn().mockImplementation(() => {
+        return mx([{
+          type: 'object',
+          with: {
+            inner: {
+              items: [1, 2, value],
+            },
+          },
+        }])
+      });
+    `,
   ],
 
   invalid: [
@@ -1144,6 +1159,50 @@ ruleTester.run('prefer-mock-shorthand', rule, {
           data: { replacement: 'mockReturnValue' },
           column: 11,
           line: 3,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        const value = 1;
+
+        jest.fn().mockImplementation(() => mx(value));
+        jest.fn().mockImplementation(() => {
+          return mx([{
+            type: 'object',
+            with: {
+              inner: {
+                items: [1, 2, value],
+              },
+            },
+          }])
+        });
+      `,
+      output: dedent`
+        const value = 1;
+
+        jest.fn().mockReturnValue(mx(value));
+        jest.fn().mockReturnValue(mx([{
+            type: 'object',
+            with: {
+              inner: {
+                items: [1, 2, value],
+              },
+            },
+          }]));
+      `,
+      errors: [
+        {
+          messageId: 'useMockShorthand',
+          data: { replacement: 'mockReturnValue' },
+          column: 11,
+          line: 3,
+        },
+        {
+          messageId: 'useMockShorthand',
+          data: { replacement: 'mockReturnValue' },
+          column: 11,
+          line: 4,
         },
       ],
     },
