@@ -367,6 +367,13 @@ ruleTester.run('prefer-mock-shorthand', rule, {
     dedent`
       let value = 1;
 
+      jest.fn().mockImplementation(() => new Mx(value));
+      jest.fn().mockImplementation(() => new Mx(() => value));
+      jest.fn().mockImplementation(() => new Mx(() => { return value }));
+    `,
+    dedent`
+      let value = 1;
+
       jest.fn().mockImplementation(() => mx(value));
       jest.fn().mockImplementation(() => mx(value));
       jest.fn().mockImplementation(() => mx?.(value));
@@ -381,6 +388,7 @@ ruleTester.run('prefer-mock-shorthand', rule, {
       jest.fn().mockImplementation(() => mx.my(value));
       jest.fn().mockImplementation(() => mx(value).my(value));
       jest.fn().mockImplementation(() => mx?.(value)?.my?.(value));
+      jest.fn().mockImplementation(() => new Mx().add(value));
       jest.fn().mockImplementation(() => {
         return mx([{
           type: 'object',
@@ -1428,6 +1436,42 @@ ruleTester.run('prefer-mock-shorthand', rule, {
       code: dedent`
         const value = 1;
 
+        jest.fn().mockImplementation(() => new Mx(value));
+        jest.fn().mockImplementation(() => new Mx(() => value));
+        jest.fn().mockImplementation(() => new Mx(() => { return value }));
+      `,
+      output: dedent`
+        const value = 1;
+
+        jest.fn().mockReturnValue(new Mx(value));
+        jest.fn().mockReturnValue(new Mx(() => value));
+        jest.fn().mockReturnValue(new Mx(() => { return value }));
+      `,
+      errors: [
+        {
+          messageId: 'useMockShorthand',
+          data: { replacement: 'mockReturnValue' },
+          column: 11,
+          line: 3,
+        },
+        {
+          messageId: 'useMockShorthand',
+          data: { replacement: 'mockReturnValue' },
+          column: 11,
+          line: 4,
+        },
+        {
+          messageId: 'useMockShorthand',
+          data: { replacement: 'mockReturnValue' },
+          column: 11,
+          line: 5,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        const value = 1;
+
         jest.fn().mockImplementation(() => mx(value));
         jest.fn().mockImplementation(() => mx?.(value));
         jest.fn().mockImplementation(() => mx().my());
@@ -1444,6 +1488,7 @@ ruleTester.run('prefer-mock-shorthand', rule, {
         jest.fn().mockImplementation(() => mx.my?.(value));
         jest.fn().mockImplementation(() => mx(value).my(value));
         jest.fn().mockImplementation(() => mx?.(value)?.my?.(value));
+        jest.fn().mockImplementation(() => new Mx().add(value));
         jest.fn().mockImplementation(() => {
           return mx([{
             type: 'object',
@@ -1474,6 +1519,7 @@ ruleTester.run('prefer-mock-shorthand', rule, {
         jest.fn().mockReturnValue(mx.my?.(value));
         jest.fn().mockReturnValue(mx(value).my(value));
         jest.fn().mockReturnValue(mx?.(value)?.my?.(value));
+        jest.fn().mockReturnValue(new Mx().add(value));
         jest.fn().mockReturnValue(mx([{
             type: 'object',
             with: {
@@ -1585,6 +1631,12 @@ ruleTester.run('prefer-mock-shorthand', rule, {
           data: { replacement: 'mockReturnValue' },
           column: 11,
           line: 19,
+        },
+        {
+          messageId: 'useMockShorthand',
+          data: { replacement: 'mockReturnValue' },
+          column: 11,
+          line: 20,
         },
       ],
     },

@@ -76,6 +76,7 @@ export default createRule({
             return usesMutableIdentifier(node.object);
           }
           break;
+        case AST_NODE_TYPES.NewExpression:
         case AST_NODE_TYPES.CallExpression:
           if (usesMutableIdentifier(node.callee)) {
             return true;
