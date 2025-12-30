@@ -1,3 +1,10 @@
+## [29.11.4](https://github.com/jest-community/eslint-plugin-jest/compare/v29.11.3...v29.11.4) (2025-12-30)
+
+
+### Bug Fixes
+
+* **prefer-mock-return-shorthand:** ignore use of update expressions ([#1913](https://github.com/jest-community/eslint-plugin-jest/issues/1913)) ([5713ac9](https://github.com/jest-community/eslint-plugin-jest/commit/5713ac91804d31f925aeda89ff279d499b650515))
+
 ## [29.11.3](https://github.com/jest-community/eslint-plugin-jest/compare/v29.11.2...v29.11.3) (2025-12-30)
 
 
