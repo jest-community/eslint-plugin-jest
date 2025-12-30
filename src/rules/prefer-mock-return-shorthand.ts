@@ -50,6 +50,35 @@ export default createRule({
       );
     };
 
+    const usesMutableIdentifier = (node: TSESTree.Node): boolean => {
+      switch (node.type) {
+        case AST_NODE_TYPES.Identifier:
+          return isMutable(node);
+        case AST_NODE_TYPES.ObjectExpression:
+          return node.properties.some(
+            prop =>
+              prop.type === AST_NODE_TYPES.Property &&
+              usesMutableIdentifier(prop.value),
+          );
+        case AST_NODE_TYPES.ArrayExpression:
+          return node.elements.some(el => el && usesMutableIdentifier(el));
+        case AST_NODE_TYPES.BinaryExpression:
+          return (
+            usesMutableIdentifier(node.left) ||
+            usesMutableIdentifier(node.right)
+          );
+      }
+
+      // currently we assume a mutable identifier is not being used
+      // unless we can find one specifically, which is technically
+      // not safe but so far it has not seemed to cause issues.
+      //
+      // if it proves to be too troublesome, we should consider
+      // inverting this so we only report when we're completely
+      // sure it is safe
+      return false;
+    };
+
     return {
       CallExpression(node) {
         if (
@@ -87,43 +116,8 @@ export default createRule({
         }
 
         // check if we're using a non-constant variable
-        if (returnNode.type === AST_NODE_TYPES.Identifier) {
-          if (isMutable(returnNode)) {
-            return;
-          }
-        } else if (returnNode.type === AST_NODE_TYPES.ObjectExpression) {
-          if (
-            returnNode.properties.some(
-              n =>
-                n.type === AST_NODE_TYPES.Property &&
-                n.value.type === AST_NODE_TYPES.Identifier &&
-                isMutable(n.value),
-            )
-          ) {
-            return;
-          }
-        } else if (returnNode.type === AST_NODE_TYPES.ArrayExpression) {
-          if (
-            returnNode.elements.some(
-              el => el?.type === AST_NODE_TYPES.Identifier && isMutable(el),
-            )
-          ) {
-            return;
-          }
-        } else if (returnNode.type === AST_NODE_TYPES.BinaryExpression) {
-          if (
-            returnNode.left.type === AST_NODE_TYPES.Identifier &&
-            isMutable(returnNode.left)
-          ) {
-            return;
-          }
-
-          if (
-            returnNode.right.type === AST_NODE_TYPES.Identifier &&
-            isMutable(returnNode.right)
-          ) {
-            return;
-          }
+        if (usesMutableIdentifier(returnNode)) {
+          return;
         }
 
         context.report({
