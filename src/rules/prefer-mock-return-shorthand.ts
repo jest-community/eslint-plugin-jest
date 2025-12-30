@@ -84,6 +84,12 @@ export default createRule({
             return true;
           }
           break;
+        case AST_NODE_TYPES.ConditionalExpression:
+          return (
+            usesMutableIdentifier(node.test) ||
+            usesMutableIdentifier(node.alternate) ||
+            usesMutableIdentifier(node.consequent)
+          );
         case AST_NODE_TYPES.NewExpression:
         case AST_NODE_TYPES.CallExpression:
           if (usesMutableIdentifier(node.callee)) {

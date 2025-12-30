@@ -407,6 +407,26 @@ ruleTester.run('prefer-mock-shorthand', rule, {
       aVariable.mockImplementation(() => mx[propName]);
       aVariable.mockImplementation(() => ({ [propName]: 1 }));
     `,
+    dedent`
+      const x = true;
+      let value = 1;
+
+      aVariable.mockImplementation(() => value ? true : false);
+      aVariable.mockImplementation(() => x ? value : false);
+      aVariable.mockImplementation(() => x ? true : value);
+      aVariable.mockImplementation(() => true ? true : value);
+      aVariable.mockImplementation(() => true ? true : value ? true : false);
+      aVariable.mockImplementation(() => true ? true : true ? value : false);
+      aVariable.mockImplementation(() => true ? true : true ? false : value);
+
+      aVariable.mockImplementation(function() {
+        if (x) {
+          return value;
+        } else {
+          return 0;
+        }
+      });
+    `,
   ],
 
   invalid: [
@@ -1680,6 +1700,52 @@ ruleTester.run('prefer-mock-shorthand', rule, {
           data: { replacement: 'mockReturnValue' },
           column: 11,
           line: 5,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        const x = true;
+        let value = 1;
+
+        aVariable.mockImplementation(() => value ? true : false);
+        aVariable.mockImplementation(() => x ? true : false);
+        aVariable.mockImplementation(() => x ? true : value);
+        aVariable.mockImplementation(() => true ? true : value);
+        aVariable.mockImplementation(() => true ? true : true ? value : false);
+        aVariable.mockImplementation(() => true ? true : true ? x : false);
+        aVariable.mockImplementation(() => true ? true : true ? true : false);
+      `,
+      output: dedent`
+        const x = true;
+        let value = 1;
+
+        aVariable.mockImplementation(() => value ? true : false);
+        aVariable.mockReturnValue(x ? true : false);
+        aVariable.mockImplementation(() => x ? true : value);
+        aVariable.mockImplementation(() => true ? true : value);
+        aVariable.mockImplementation(() => true ? true : true ? value : false);
+        aVariable.mockReturnValue(true ? true : true ? x : false);
+        aVariable.mockReturnValue(true ? true : true ? true : false);
+      `,
+      errors: [
+        {
+          messageId: 'useMockShorthand',
+          data: { replacement: 'mockReturnValue' },
+          column: 11,
+          line: 5,
+        },
+        {
+          messageId: 'useMockShorthand',
+          data: { replacement: 'mockReturnValue' },
+          column: 11,
+          line: 9,
+        },
+        {
+          messageId: 'useMockShorthand',
+          data: { replacement: 'mockReturnValue' },
+          column: 11,
+          line: 10,
         },
       ],
     },
