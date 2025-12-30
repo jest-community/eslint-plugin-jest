@@ -278,6 +278,28 @@ ruleTester.run('prefer-mock-shorthand', rule, {
       });
     `,
     dedent`
+      let value = 1;
+
+      aVariable.mockImplementation(() => value & 1);
+      aVariable.mockImplementation(() => value | 1);
+      aVariable.mockImplementation(() => 1 & value);
+      aVariable.mockImplementation(() => 1 | value);
+    `,
+    dedent`
+      let value = 1;
+
+      aVariable.mockImplementation(() => !value);
+      aVariable.mockImplementation(() => ~value);
+      aVariable.mockImplementation(() => typeof value);
+    `,
+    dedent`
+      const mx = 1
+      let my = 2;
+
+      aVariable.mockImplementation(() => mx & my);
+      aVariable.mockImplementation(() => my | mx);
+    `,
+    dedent`
       let value = [1];
 
       aVariable.mockImplementation(() => {
@@ -956,6 +978,78 @@ ruleTester.run('prefer-mock-shorthand', rule, {
           data: { replacement: 'mockReturnValue' },
           column: 10,
           line: 5,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        const value = 1;
+
+        aVariable.mockImplementation(() => value & 0);
+        aVariable.mockImplementation(() => 0 & value);
+        aVariable.mockImplementation(() => value | 1);
+        aVariable.mockImplementation(() => 1 | value);
+      `,
+      output: dedent`
+        const value = 1;
+
+        aVariable.mockReturnValue(value & 0);
+        aVariable.mockReturnValue(0 & value);
+        aVariable.mockReturnValue(value | 1);
+        aVariable.mockReturnValue(1 | value);
+      `,
+      errors: [
+        {
+          messageId: 'useMockShorthand',
+          data: { replacement: 'mockReturnValue' },
+          column: 11,
+          line: 3,
+        },
+        {
+          messageId: 'useMockShorthand',
+          data: { replacement: 'mockReturnValue' },
+          column: 11,
+          line: 4,
+        },
+        {
+          messageId: 'useMockShorthand',
+          data: { replacement: 'mockReturnValue' },
+          column: 11,
+          line: 5,
+        },
+        {
+          messageId: 'useMockShorthand',
+          data: { replacement: 'mockReturnValue' },
+          column: 11,
+          line: 6,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        const value = 1;
+
+        aVariable.mockImplementation(() => ~value);
+        aVariable.mockImplementation(() => !value);
+      `,
+      output: dedent`
+        const value = 1;
+
+        aVariable.mockReturnValue(~value);
+        aVariable.mockReturnValue(!value);
+      `,
+      errors: [
+        {
+          messageId: 'useMockShorthand',
+          data: { replacement: 'mockReturnValue' },
+          column: 11,
+          line: 3,
+        },
+        {
+          messageId: 'useMockShorthand',
+          data: { replacement: 'mockReturnValue' },
+          column: 11,
+          line: 4,
         },
       ],
     },
