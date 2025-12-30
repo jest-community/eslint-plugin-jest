@@ -91,6 +91,17 @@ export default createRule({
           if (isMutable(returnNode)) {
             return;
           }
+        } else if (returnNode.type === AST_NODE_TYPES.ObjectExpression) {
+          if (
+            returnNode.properties.some(
+              n =>
+                n.type === AST_NODE_TYPES.Property &&
+                n.value.type === AST_NODE_TYPES.Identifier &&
+                isMutable(n.value),
+            )
+          ) {
+            return;
+          }
         }
 
         context.report({
