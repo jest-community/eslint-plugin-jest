@@ -5,7 +5,7 @@ import { FlatCompatRuleTester as RuleTester, espreeParser } from './test-utils';
 const ruleTester = new RuleTester({
   parser: espreeParser,
   parserOptions: {
-    ecmaVersion: 2017,
+    ecmaVersion: 2018,
   },
 });
 
@@ -275,6 +275,44 @@ ruleTester.run('prefer-mock-shorthand', rule, {
             },
           },
         }]
+      });
+    `,
+    dedent`
+      let value = [1];
+
+      aVariable.mockImplementation(() => {
+        return [{
+          type: 'object',
+          with: {
+            inner: {
+              items: [1, 2, ...value],
+            },
+          },
+        }]
+      });
+    `,
+    dedent`
+      let value = 1;
+
+      aVariable.mockImplementation(() => {
+        return [{
+          type: 'object',
+          with: {
+            inner: {
+              items: [1, 2, ...[value]],
+            },
+          },
+        }]
+      });
+    `,
+    dedent`
+      let obj = {};
+
+      aVariable.mockImplementation(() => {
+        return {
+          type: 'object',
+          ...obj,
+        }
       });
     `,
     dedent`
@@ -1003,6 +1041,34 @@ ruleTester.run('prefer-mock-shorthand', rule, {
     },
     {
       code: dedent`
+        const obj = {};
+
+        aVariable.mockImplementation(() => {
+          return {
+            type: 'object',
+            ...obj,
+          }
+        });
+      `,
+      output: dedent`
+        const obj = {};
+
+        aVariable.mockReturnValue({
+            type: 'object',
+            ...obj,
+          });
+      `,
+      errors: [
+        {
+          messageId: 'useMockShorthand',
+          data: { replacement: 'mockReturnValue' },
+          column: 11,
+          line: 3,
+        },
+      ],
+    },
+    {
+      code: dedent`
         const value = 1;
 
         jest.fn().mockImplementationOnce(() => {
@@ -1084,6 +1150,42 @@ ruleTester.run('prefer-mock-shorthand', rule, {
             with: {
               inner: {
                 value,
+              },
+            },
+          });
+      `,
+      errors: [
+        {
+          messageId: 'useMockShorthand',
+          data: { replacement: 'mockReturnValueOnce' },
+          column: 11,
+          line: 3,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        const value = 1;
+
+        aVariable.mockImplementationOnce(() => {
+          return {
+            type: 'object',
+            with: {
+              inner: {
+                ...{ value },
+              },
+            },
+          }
+        });
+      `,
+      output: dedent`
+        const value = 1;
+
+        aVariable.mockReturnValueOnce({
+            type: 'object',
+            with: {
+              inner: {
+                ...{ value },
               },
             },
           });

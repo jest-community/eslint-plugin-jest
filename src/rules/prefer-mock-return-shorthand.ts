@@ -55,13 +55,13 @@ export default createRule({
         case AST_NODE_TYPES.Identifier:
           return isMutable(node);
         case AST_NODE_TYPES.ObjectExpression:
-          return node.properties.some(
-            prop =>
-              prop.type === AST_NODE_TYPES.Property &&
-              usesMutableIdentifier(prop.value),
-          );
+          return node.properties.some(prop => usesMutableIdentifier(prop));
+        case AST_NODE_TYPES.Property:
+          return usesMutableIdentifier(node.value);
         case AST_NODE_TYPES.ArrayExpression:
           return node.elements.some(el => el && usesMutableIdentifier(el));
+        case AST_NODE_TYPES.SpreadElement:
+          return usesMutableIdentifier(node.argument);
         case AST_NODE_TYPES.BinaryExpression:
           return (
             usesMutableIdentifier(node.left) ||
