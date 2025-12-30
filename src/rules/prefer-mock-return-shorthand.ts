@@ -69,7 +69,10 @@ export default createRule({
 
         const returnNode = findSingleReturnArgumentNode(arg);
 
-        if (!returnNode) {
+        if (
+          !returnNode ||
+          returnNode.type === AST_NODE_TYPES.UpdateExpression
+        ) {
           return;
         }
 
