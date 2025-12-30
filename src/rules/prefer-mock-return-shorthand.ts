@@ -40,6 +40,16 @@ export default createRule({
   },
   defaultOptions: [],
   create(context) {
+    const isMutable = (identifier: TSESTree.Identifier) => {
+      const scope = context.sourceCode.getScope(identifier);
+
+      return scope.through.some(v =>
+        v.resolved?.defs.some(
+          n => n.type === 'Variable' && n.parent.kind !== 'const',
+        ),
+      );
+    };
+
     return {
       CallExpression(node) {
         if (
@@ -78,15 +88,7 @@ export default createRule({
 
         // check if we're using a non-constant variable
         if (returnNode.type === AST_NODE_TYPES.Identifier) {
-          const scope = context.sourceCode.getScope(returnNode);
-
-          const isMutable = scope.through.some(v =>
-            v.resolved?.defs.some(
-              n => n.type === 'Variable' && n.parent.kind !== 'const',
-            ),
-          );
-
-          if (isMutable) {
+          if (isMutable(returnNode)) {
             return;
           }
         }
