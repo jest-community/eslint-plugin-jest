@@ -67,7 +67,16 @@ export default createRule({
             usesMutableIdentifier(node.left) ||
             usesMutableIdentifier(node.right)
           );
+        case AST_NODE_TYPES.MemberExpression:
+          if (node.object.type === AST_NODE_TYPES.CallExpression) {
+            return usesMutableIdentifier(node.object);
+          }
+          break;
         case AST_NODE_TYPES.CallExpression:
+          if (usesMutableIdentifier(node.callee)) {
+            return true;
+          }
+
           return node.arguments.some(arg => usesMutableIdentifier(arg));
       }
 
