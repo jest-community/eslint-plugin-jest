@@ -1,3 +1,10 @@
+## [29.11.3](https://github.com/jest-community/eslint-plugin-jest/compare/v29.11.2...v29.11.3) (2025-12-30)
+
+
+### Bug Fixes
+
+* **prefer-mock-return-shorthand:** ignore async implementations ([#1912](https://github.com/jest-community/eslint-plugin-jest/issues/1912)) ([80288e2](https://github.com/jest-community/eslint-plugin-jest/commit/80288e270d1d631a20fb4d194525ac1f84a41134))
+
 ## [29.11.2](https://github.com/jest-community/eslint-plugin-jest/compare/v29.11.1...v29.11.2) (2025-12-29)
 
 
