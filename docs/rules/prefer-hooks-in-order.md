@@ -1,4 +1,6 @@
-# Prefer having hooks in a consistent order (`prefer-hooks-in-order`)
+# jest/prefer-hooks-in-order
+
+📝 Prefer having hooks in a consistent order.
 
 <!-- end auto-generated rule header -->
 

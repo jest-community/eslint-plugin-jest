@@ -1,4 +1,6 @@
-# Disallow mocking of non-existing module paths (`valid-mock-module-path`)
+# jest/valid-mock-module-path
+
+📝 Disallow mocking of non-existing module paths.
 
 <!-- end auto-generated rule header -->
 

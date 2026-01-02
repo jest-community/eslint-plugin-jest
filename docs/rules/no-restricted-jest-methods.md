@@ -1,4 +1,6 @@
-# Disallow specific `jest.` methods (`no-restricted-jest-methods`)
+# jest/no-restricted-jest-methods
+
+📝 Disallow specific `jest.` methods.
 
 <!-- end auto-generated rule header -->
 

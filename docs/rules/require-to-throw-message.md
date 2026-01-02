@@ -1,4 +1,6 @@
-# Require a message for `toThrow()` (`require-to-throw-message`)
+# jest/require-to-throw-message
+
+📝 Require a message for `toThrow()`.
 
 <!-- end auto-generated rule header -->
 

@@ -1,4 +1,6 @@
-# Disallow setup and teardown hooks (`no-hooks`)
+# jest/no-hooks
+
+📝 Disallow setup and teardown hooks.
 
 <!-- end auto-generated rule header -->
 

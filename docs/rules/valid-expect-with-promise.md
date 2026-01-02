@@ -1,4 +1,7 @@
-# Require that `resolve` and `reject` modifiers are present (and only) for promise-like types (`valid-expect-with-promise`)
+# jest/valid-expect-with-promise
+
+📝 Require that `resolve` and `reject` modifiers are present (and only) for
+promise-like types.
 
 💭 This rule requires
 [type information](https://typescript-eslint.io/linting/typed-linting).

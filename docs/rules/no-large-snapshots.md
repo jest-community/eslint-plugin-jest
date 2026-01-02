@@ -1,4 +1,6 @@
-# Disallow large snapshots (`no-large-snapshots`)
+# jest/no-large-snapshots
+
+📝 Disallow large snapshots.
 
 <!-- end auto-generated rule header -->
 

@@ -1,4 +1,6 @@
-# Disallow identical titles (`no-identical-title`)
+# jest/no-identical-title
+
+📝 Disallow identical titles.
 
 💼 This rule is enabled in the ✅ `recommended`
 [config](https://github.com/jest-community/eslint-plugin-jest/blob/main/README.md#shareable-configurations).

@@ -1,4 +1,6 @@
-# Suggest using `jest.spyOn()` (`prefer-spy-on`)
+# jest/prefer-spy-on
+
+📝 Suggest using `jest.spyOn()`.
 
 🔧 This rule is automatically fixable by the
 [`--fix` CLI option](https://eslint.org/docs/latest/user-guide/command-line-interface#--fix).

@@ -1,4 +1,6 @@
-# Prefer `await expect(...).resolves` over `expect(await ...)` syntax (`prefer-expect-resolves`)
+# jest/prefer-expect-resolves
+
+📝 Prefer `await expect(...).resolves` over `expect(await ...)` syntax.
 
 🔧 This rule is automatically fixable by the
 [`--fix` CLI option](https://eslint.org/docs/latest/user-guide/command-line-interface#--fix).

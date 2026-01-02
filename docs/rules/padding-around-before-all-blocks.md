@@ -1,4 +1,6 @@
-# Enforce padding around `beforeAll` blocks (`padding-around-before-all-blocks`)
+# jest/padding-around-before-all-blocks
+
+📝 Enforce padding around `beforeAll` blocks.
 
 🔧 This rule is automatically fixable by the
 [`--fix` CLI option](https://eslint.org/docs/latest/user-guide/command-line-interface#--fix).

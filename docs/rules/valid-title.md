@@ -1,4 +1,6 @@
-# Enforce valid titles (`valid-title`)
+# jest/valid-title
+
+📝 Enforce valid titles.
 
 💼 This rule is enabled in the ✅ `recommended`
 [config](https://github.com/jest-community/eslint-plugin-jest/blob/main/README.md#shareable-configurations).

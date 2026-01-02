@@ -1,4 +1,6 @@
-# Disallow conditional logic in tests (`no-conditional-in-test`)
+# jest/no-conditional-in-test
+
+📝 Disallow conditional logic in tests.
 
 <!-- end auto-generated rule header -->
 

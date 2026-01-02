@@ -1,4 +1,6 @@
-# Prefer importing Jest globals (`prefer-importing-jest-globals`)
+# jest/prefer-importing-jest-globals
+
+📝 Prefer importing Jest globals.
 
 🔧 This rule is automatically fixable by the
 [`--fix` CLI option](https://eslint.org/docs/latest/user-guide/command-line-interface#--fix).

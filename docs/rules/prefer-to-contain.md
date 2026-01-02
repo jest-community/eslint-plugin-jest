@@ -1,4 +1,6 @@
-# Suggest using `toContain()` (`prefer-to-contain`)
+# jest/prefer-to-contain
+
+📝 Suggest using `toContain()`.
 
 💼 This rule is enabled in the 🎨 `style`
 [config](https://github.com/jest-community/eslint-plugin-jest/blob/main/README.md#shareable-configurations).

@@ -1,4 +1,6 @@
-# Disallow using a callback in asynchronous tests and hooks (`no-done-callback`)
+# jest/no-done-callback
+
+📝 Disallow using a callback in asynchronous tests and hooks.
 
 💼 This rule is enabled in the ✅ `recommended`
 [config](https://github.com/jest-community/eslint-plugin-jest/blob/main/README.md#shareable-configurations).

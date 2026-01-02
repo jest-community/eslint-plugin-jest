@@ -1,4 +1,6 @@
-# Suggest using `toHaveBeenCalledWith()` (`prefer-called-with`)
+# jest/prefer-called-with
+
+📝 Suggest using `toHaveBeenCalledWith()`.
 
 <!-- end auto-generated rule header -->
 

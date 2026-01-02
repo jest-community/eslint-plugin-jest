@@ -1,4 +1,6 @@
-# Disallow using equality matchers on error types (`no-error-equal`)
+# jest/no-error-equal
+
+📝 Disallow using equality matchers on error types.
 
 💭 This rule requires
 [type information](https://typescript-eslint.io/linting/typed-linting).

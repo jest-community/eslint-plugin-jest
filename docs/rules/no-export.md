@@ -1,4 +1,6 @@
-# Disallow using `exports` in files containing tests (`no-export`)
+# jest/no-export
+
+📝 Disallow using `exports` in files containing tests.
 
 💼 This rule is enabled in the ✅ `recommended`
 [config](https://github.com/jest-community/eslint-plugin-jest/blob/main/README.md#shareable-configurations).

@@ -1,4 +1,6 @@
-# Disallow using `expect` outside of `it` or `test` blocks (`no-standalone-expect`)
+# jest/no-standalone-expect
+
+📝 Disallow using `expect` outside of `it` or `test` blocks.
 
 💼 This rule is enabled in the ✅ `recommended`
 [config](https://github.com/jest-community/eslint-plugin-jest/blob/main/README.md#shareable-configurations).

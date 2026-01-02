@@ -1,4 +1,6 @@
-# Disallow manually importing from `__mocks__` (`no-mocks-import`)
+# jest/no-mocks-import
+
+📝 Disallow manually importing from `__mocks__`.
 
 💼 This rule is enabled in the ✅ `recommended`
 [config](https://github.com/jest-community/eslint-plugin-jest/blob/main/README.md#shareable-configurations).

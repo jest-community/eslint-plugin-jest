@@ -1,4 +1,6 @@
-# Enforce padding around `test` and `it` blocks (`padding-around-test-blocks`)
+# jest/padding-around-test-blocks
+
+📝 Enforce padding around `test` and `it` blocks.
 
 🔧 This rule is automatically fixable by the
 [`--fix` CLI option](https://eslint.org/docs/latest/user-guide/command-line-interface#--fix).

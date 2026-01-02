@@ -1,4 +1,6 @@
-# Suggest using `toHaveLength()` (`prefer-to-have-length`)
+# jest/prefer-to-have-length
+
+📝 Suggest using `toHaveLength()`.
 
 💼 This rule is enabled in the 🎨 `style`
 [config](https://github.com/jest-community/eslint-plugin-jest/blob/main/README.md#shareable-configurations).

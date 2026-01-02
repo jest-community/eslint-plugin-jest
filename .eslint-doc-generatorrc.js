@@ -12,7 +12,6 @@ const config = {
     'flat/style',
     'flat/snapshots',
   ],
-  ruleDocTitleFormat: 'desc-parens-name',
   ruleDocSectionInclude: ['Rule details'],
   ruleListColumns: [
     'name',
