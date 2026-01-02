@@ -1,3 +1,10 @@
+## [29.12.1](https://github.com/jest-community/eslint-plugin-jest/compare/v29.12.0...v29.12.1) (2026-01-02)
+
+
+### Bug Fixes
+
+* **no-unnecessary-assertion:** don't report for `any` and `unknown` types ([#1918](https://github.com/jest-community/eslint-plugin-jest/issues/1918)) ([388a36c](https://github.com/jest-community/eslint-plugin-jest/commit/388a36cdb0feb04d04bff4f1398e448aabfeaf8c))
+
 # [29.12.0](https://github.com/jest-community/eslint-plugin-jest/compare/v29.11.4...v29.12.0) (2025-12-30)
 
 
