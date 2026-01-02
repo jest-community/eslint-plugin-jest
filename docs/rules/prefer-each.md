@@ -1,4 +1,6 @@
-# Prefer using `.each` rather than manual loops (`prefer-each`)
+# jest/prefer-each
+
+📝 Prefer using `.each` rather than manual loops.
 
 <!-- end auto-generated rule header -->
 

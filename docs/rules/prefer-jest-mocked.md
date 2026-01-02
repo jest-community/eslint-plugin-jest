@@ -1,4 +1,6 @@
-# Prefer `jest.mocked()` over `fn as jest.Mock` (`prefer-jest-mocked`)
+# jest/prefer-jest-mocked
+
+📝 Prefer `jest.mocked()` over `fn as jest.Mock`.
 
 🔧 This rule is automatically fixable by the
 [`--fix` CLI option](https://eslint.org/docs/latest/user-guide/command-line-interface#--fix).

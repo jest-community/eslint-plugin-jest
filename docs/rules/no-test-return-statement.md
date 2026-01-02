@@ -1,4 +1,6 @@
-# Disallow explicitly returning from tests (`no-test-return-statement`)
+# jest/no-test-return-statement
+
+📝 Disallow explicitly returning from tests.
 
 <!-- end auto-generated rule header -->
 

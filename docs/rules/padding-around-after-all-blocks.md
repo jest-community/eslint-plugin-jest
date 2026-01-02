@@ -1,4 +1,6 @@
-# Enforce padding around `afterAll` blocks (`padding-around-after-all-blocks`)
+# jest/padding-around-after-all-blocks
+
+📝 Enforce padding around `afterAll` blocks.
 
 🔧 This rule is automatically fixable by the
 [`--fix` CLI option](https://eslint.org/docs/latest/user-guide/command-line-interface#--fix).

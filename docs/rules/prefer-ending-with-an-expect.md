@@ -1,4 +1,6 @@
-# Prefer having the last statement in a test be an assertion (`prefer-ending-with-an-expect`)
+# jest/prefer-ending-with-an-expect
+
+📝 Prefer having the last statement in a test be an assertion.
 
 <!-- end auto-generated rule header -->
 

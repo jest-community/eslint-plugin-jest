@@ -1,4 +1,6 @@
-# Suggest using `toHaveBeenCalledTimes()` (`prefer-to-have-been-called-times`)
+# jest/prefer-to-have-been-called-times
+
+📝 Suggest using `toHaveBeenCalledTimes()`.
 
 🔧 This rule is automatically fixable by the
 [`--fix` CLI option](https://eslint.org/docs/latest/user-guide/command-line-interface#--fix).

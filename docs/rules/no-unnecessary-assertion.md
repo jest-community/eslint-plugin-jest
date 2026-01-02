@@ -1,4 +1,6 @@
-# Disallow unnecessary assertions based on types (`no-unnecessary-assertion`)
+# jest/no-unnecessary-assertion
+
+📝 Disallow unnecessary assertions based on types.
 
 💭 This rule requires
 [type information](https://typescript-eslint.io/linting/typed-linting).

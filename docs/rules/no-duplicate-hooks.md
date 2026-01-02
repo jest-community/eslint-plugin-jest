@@ -1,4 +1,6 @@
-# Disallow duplicate setup and teardown hooks (`no-duplicate-hooks`)
+# jest/no-duplicate-hooks
+
+📝 Disallow duplicate setup and teardown hooks.
 
 <!-- end auto-generated rule header -->
 

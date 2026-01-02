@@ -1,4 +1,6 @@
-# Suggest using `test.todo` (`prefer-todo`)
+# jest/prefer-todo
+
+📝 Suggest using `test.todo`.
 
 🔧 This rule is automatically fixable by the
 [`--fix` CLI option](https://eslint.org/docs/latest/user-guide/command-line-interface#--fix).

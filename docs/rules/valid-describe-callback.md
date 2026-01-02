@@ -1,4 +1,6 @@
-# Enforce valid `describe()` callback (`valid-describe-callback`)
+# jest/valid-describe-callback
+
+📝 Enforce valid `describe()` callback.
 
 💼 This rule is enabled in the ✅ `recommended`
 [config](https://github.com/jest-community/eslint-plugin-jest/blob/main/README.md#shareable-configurations).

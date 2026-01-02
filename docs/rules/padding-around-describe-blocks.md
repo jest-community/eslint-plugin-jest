@@ -1,4 +1,6 @@
-# Enforce padding around `describe` blocks (`padding-around-describe-blocks`)
+# jest/padding-around-describe-blocks
+
+📝 Enforce padding around `describe` blocks.
 
 🔧 This rule is automatically fixable by the
 [`--fix` CLI option](https://eslint.org/docs/latest/user-guide/command-line-interface#--fix).

@@ -1,4 +1,6 @@
-# Enforce assertion to be made in a test body (`expect-expect`)
+# jest/expect-expect
+
+📝 Enforce assertion to be made in a test body.
 
 ⚠️ This rule _warns_ in the ✅ `recommended`
 [config](https://github.com/jest-community/eslint-plugin-jest/blob/main/README.md#shareable-configurations).

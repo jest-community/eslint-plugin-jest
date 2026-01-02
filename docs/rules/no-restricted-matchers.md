@@ -1,4 +1,6 @@
-# Disallow specific matchers & modifiers (`no-restricted-matchers`)
+# jest/no-restricted-matchers
+
+📝 Disallow specific matchers & modifiers.
 
 <!-- end auto-generated rule header -->
 

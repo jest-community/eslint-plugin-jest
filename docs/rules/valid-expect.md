@@ -1,4 +1,6 @@
-# Enforce valid `expect()` usage (`valid-expect`)
+# jest/valid-expect
+
+📝 Enforce valid `expect()` usage.
 
 💼 This rule is enabled in the ✅ `recommended`
 [config](https://github.com/jest-community/eslint-plugin-jest/blob/main/README.md#shareable-configurations).

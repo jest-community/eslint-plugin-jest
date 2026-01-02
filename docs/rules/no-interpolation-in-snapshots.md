@@ -1,4 +1,6 @@
-# Disallow string interpolation inside snapshots (`no-interpolation-in-snapshots`)
+# jest/no-interpolation-in-snapshots
+
+📝 Disallow string interpolation inside snapshots.
 
 💼 This rule is enabled in the ✅ `recommended`
 [config](https://github.com/jest-community/eslint-plugin-jest/blob/main/README.md#shareable-configurations).

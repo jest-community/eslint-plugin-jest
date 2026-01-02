@@ -1,4 +1,6 @@
-# Disallow unnecessary async function wrapper for expected promises (`no-unneeded-async-expect-function`)
+# jest/no-unneeded-async-expect-function
+
+📝 Disallow unnecessary async function wrapper for expected promises.
 
 🔧 This rule is automatically fixable by the
 [`--fix` CLI option](https://eslint.org/docs/latest/user-guide/command-line-interface#--fix).
