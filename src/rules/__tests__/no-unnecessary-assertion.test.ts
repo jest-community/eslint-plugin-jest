@@ -89,6 +89,18 @@ const generateValidCases = (
       expect(add(1, 1)).not.${matcher}();
     `,
     dedent`
+      declare function mx(): any;
+
+      expect(mx()).${matcher}();
+      expect(mx()).not.${matcher}();
+    `,
+    dedent`
+      declare function mx(): unknown;
+
+      expect(mx()).${matcher}();
+      expect(mx()).not.${matcher}();
+    `,
+    dedent`
       declare function mx(): string | ${thing};
 
       expect(mx()).${matcher}();
@@ -249,6 +261,21 @@ const generateInvalidCases = (
         const add = (a: number, b: number): number => a + b;
 
         expect(add(1, 1)).not.${matcher}();
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+          data: { thing },
+          line: 3,
+        },
+      ],
+    },
+
+    {
+      code: dedent`
+        declare function mx(): never;
+
+        expect(mx()).not.${matcher}();
       `,
       errors: [
         {

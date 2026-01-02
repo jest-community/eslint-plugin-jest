@@ -81,29 +81,32 @@ export default createRule<Options, MessageIds>({
 
         const [argument] = jestFnCall.head.node.parent.arguments;
 
-        const isTypePossible = canBe(
-          services.getTypeAtLocation(argument),
+        let desiredType = TypeFlags.Any | TypeFlags.Unknown;
+
+        // add in the appropriate type flag based on the matcher being used
+        desiredType |=
           matcherName === 'toBeNaN'
             ? TypeFlags.NumberLike
             : matcherName === 'toBeNull'
               ? TypeFlags.Null
-              : TypeFlags.Undefined,
-        );
+              : TypeFlags.Undefined;
 
-        if (!isTypePossible) {
-          context.report({
-            messageId: 'unnecessaryAssertion',
-            data: {
-              thing:
-                matcherName === 'toBeNaN'
-                  ? 'a number'
-                  : matcherName === 'toBeNull'
-                    ? 'null'
-                    : 'undefined',
-            },
-            node,
-          });
+        if (canBe(services.getTypeAtLocation(argument), desiredType)) {
+          return;
         }
+
+        context.report({
+          messageId: 'unnecessaryAssertion',
+          data: {
+            thing:
+              matcherName === 'toBeNaN'
+                ? 'a number'
+                : matcherName === 'toBeNull'
+                  ? 'null'
+                  : 'undefined',
+          },
+          node,
+        });
       },
     };
   },
