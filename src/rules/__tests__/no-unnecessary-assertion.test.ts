@@ -89,6 +89,18 @@ const generateValidCases = (
       expect(add(1, 1)).not.${matcher}();
     `,
     dedent`
+      declare function mx(): any;
+
+      expect(mx()).${matcher}();
+      expect(mx()).not.${matcher}();
+    `,
+    dedent`
+      declare function mx(): unknown;
+
+      expect(mx()).${matcher}();
+      expect(mx()).not.${matcher}();
+    `,
+    dedent`
       declare function mx(): string | ${thing};
 
       expect(mx()).${matcher}();
