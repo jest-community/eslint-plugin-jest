@@ -273,6 +273,21 @@ const generateInvalidCases = (
 
     {
       code: dedent`
+        declare function mx(): never;
+
+        expect(mx()).not.${matcher}();
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+          data: { thing },
+          line: 3,
+        },
+      ],
+    },
+
+    {
+      code: dedent`
         const result = "hello world".match("sunshine") ?? [];
 
         expect(result).not.${matcher}();
