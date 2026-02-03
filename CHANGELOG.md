@@ -1,3 +1,10 @@
+## [29.12.2](https://github.com/jest-community/eslint-plugin-jest/compare/v29.12.1...v29.12.2) (2026-02-03)
+
+
+### Bug Fixes
+
+* add optional peer dependency on TypeScript ([#1926](https://github.com/jest-community/eslint-plugin-jest/issues/1926)) ([82e3b04](https://github.com/jest-community/eslint-plugin-jest/commit/82e3b043d15d3b9fbffc263fb57631ebe56f9ea7))
+
 ## [29.12.1](https://github.com/jest-community/eslint-plugin-jest/compare/v29.12.0...v29.12.1) (2026-01-02)
 
 
