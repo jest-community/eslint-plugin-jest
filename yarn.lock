@@ -5377,10 +5377,13 @@ __metadata:
     "@typescript-eslint/eslint-plugin": ^8.0.0
     eslint: ^8.57.0 || ^9.0.0
     jest: "*"
+    typescript: ">=4.8.4 <6.0.0"
   peerDependenciesMeta:
     "@typescript-eslint/eslint-plugin":
       optional: true
     jest:
+      optional: true
+    typescript:
       optional: true
   languageName: unknown
   linkType: soft
