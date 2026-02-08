@@ -1,3 +1,10 @@
+# [29.13.0](https://github.com/jest-community/eslint-plugin-jest/compare/v29.12.2...v29.13.0) (2026-02-08)
+
+
+### Features
+
+* support ESLint v10 ([#1929](https://github.com/jest-community/eslint-plugin-jest/issues/1929)) ([7735c44](https://github.com/jest-community/eslint-plugin-jest/commit/7735c44b285b3969066e206c71d5f77e20590446))
+
 ## [29.12.2](https://github.com/jest-community/eslint-plugin-jest/compare/v29.12.1...v29.12.2) (2026-02-03)
 
 
