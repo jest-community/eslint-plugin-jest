@@ -73,7 +73,7 @@ jobs:
       fail-fast: false
       matrix:
         node-version: [20.x, 22.x, 24.x]
-        eslint-version: [8, 9]
+        eslint-version: [8, 9, 10]
         ts-eslint-plugin-version: [8]
     runs-on: ubuntu-latest
 
