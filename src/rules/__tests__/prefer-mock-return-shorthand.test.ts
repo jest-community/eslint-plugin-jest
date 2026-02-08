@@ -9,7 +9,7 @@ const ruleTester = new RuleTester({
   },
 });
 
-ruleTester.run('prefer-mock-shorthand', rule, {
+ruleTester.run('prefer-mock-return-shorthand', rule, {
   valid: [
     'describe()',
     'it()',
