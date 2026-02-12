@@ -12,7 +12,7 @@ devoted to it.
 ## Rule details
 
 This rule reports on any use of a conditional statement such as `if`, `switch`,
-and ternary expressions.
+ternary expressions, and optional chaining.
 
 Examples of **incorrect** code for this rule:
 
@@ -36,7 +36,11 @@ it('bar', () => {
   expect(fixtures.length).toBeGreaterThan(-1);
 });
 
-it('baz', async () => {
+it('baz', () => {
+  const value = obj?.bar;
+});
+
+it('qux', async () => {
   const promiseValue = () => {
     return something instanceof Promise
       ? something
@@ -77,7 +81,11 @@ const promiseValue = something => {
   return something instanceof Promise ? something : Promise.resolve(something);
 };
 
-it('baz', async () => {
+it('baz', () => {
+  const value = obj!.bar;
+});
+
+it('qux', async () => {
   await expect(promiseValue()).resolves.toBe(1);
 });
 ```

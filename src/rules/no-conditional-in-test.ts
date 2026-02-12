@@ -41,6 +41,7 @@ export default createRule({
       SwitchStatement: maybeReportConditional,
       ConditionalExpression: maybeReportConditional,
       LogicalExpression: maybeReportConditional,
+      ChainExpression: maybeReportConditional,
     };
   },
 });

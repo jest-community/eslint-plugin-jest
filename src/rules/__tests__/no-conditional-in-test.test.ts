@@ -5,7 +5,7 @@ import { FlatCompatRuleTester as RuleTester, espreeParser } from './test-utils';
 const ruleTester = new RuleTester({
   parser: espreeParser,
   parserOptions: {
-    ecmaVersion: 2015,
+    ecmaVersion: 2020,
   },
 });
 
@@ -944,6 +944,227 @@ ruleTester.run('if statements', rule, {
           messageId: 'conditionalInTest',
           column: 3,
           line: 9,
+        },
+      ],
+    },
+  ],
+});
+
+ruleTester.run('optional chaining', rule, {
+  valid: [
+    'const x = obj?.foo',
+    dedent`
+      const foo = obj?.bar;
+
+      it('foo', () => {
+        expect(foo).toBe(undefined);
+      });
+    `,
+    dedent`
+      describe('foo', () => {
+        const val = obj?.bar;
+      })
+    `,
+    dedent`
+      describe('foo', () => {
+        beforeEach(() => {
+          const val = obj?.bar;
+        });
+      })
+    `,
+    dedent`
+      describe('foo', () => {
+        afterEach(() => {
+          const val = obj?.bar;
+        });
+      })
+    `,
+    dedent`
+      const values = something.map(thing => thing?.foo);
+
+      it('valid', () => {
+        expect(values).toStrictEqual(['foo']);
+      });
+    `,
+    dedent`
+      describe('valid', () => {
+        const values = something.map(thing => thing?.foo);
+        it('still valid', () => {
+          expect(values).toStrictEqual(['foo']);
+        });
+      });
+    `,
+  ],
+  invalid: [
+    {
+      code: dedent`
+        it('foo', () => {
+          const value = obj?.bar;
+        })
+      `,
+      errors: [
+        {
+          messageId: 'conditionalInTest',
+          column: 17,
+          line: 2,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        it('foo', () => {
+          obj?.foo?.bar;
+        })
+      `,
+      errors: [
+        {
+          messageId: 'conditionalInTest',
+          column: 3,
+          line: 2,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        it('foo', () => {
+          obj?.foo();
+        })
+      `,
+      errors: [
+        {
+          messageId: 'conditionalInTest',
+          column: 3,
+          line: 2,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        it('foo', () => {
+          obj?.[key];
+        })
+      `,
+      errors: [
+        {
+          messageId: 'conditionalInTest',
+          column: 3,
+          line: 2,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        it.skip('foo', () => {
+          obj?.bar;
+        })
+      `,
+      errors: [
+        {
+          messageId: 'conditionalInTest',
+          column: 3,
+          line: 2,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        it.only('foo', () => {
+          obj?.bar;
+        })
+      `,
+      errors: [
+        {
+          messageId: 'conditionalInTest',
+          column: 3,
+          line: 2,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        test('foo', () => {
+          obj?.bar;
+        })
+      `,
+      errors: [
+        {
+          messageId: 'conditionalInTest',
+          column: 3,
+          line: 2,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        xtest('foo', () => {
+          obj?.bar;
+        })
+      `,
+      errors: [
+        {
+          messageId: 'conditionalInTest',
+          column: 3,
+          line: 2,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        fit('foo', () => {
+          obj?.bar;
+        })
+      `,
+      errors: [
+        {
+          messageId: 'conditionalInTest',
+          column: 3,
+          line: 2,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        xit('foo', () => {
+          obj?.bar;
+        })
+      `,
+      errors: [
+        {
+          messageId: 'conditionalInTest',
+          column: 3,
+          line: 2,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        describe('foo', () => {
+          it('bar', () => {
+            obj?.bar;
+          })
+        })
+      `,
+      errors: [
+        {
+          messageId: 'conditionalInTest',
+          column: 5,
+          line: 3,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        it('is invalid', () => {
+          const values = something.map(thing => thing?.foo);
+
+          expect(values).toStrictEqual(['foo']);
+        });
+      `,
+      errors: [
+        {
+          messageId: 'conditionalInTest',
+          column: 41,
+          line: 2,
         },
       ],
     },
