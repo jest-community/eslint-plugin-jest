@@ -1,3 +1,10 @@
+# [29.14.0](https://github.com/jest-community/eslint-plugin-jest/compare/v29.13.0...v29.14.0) (2026-02-12)
+
+
+### Features
+
+* **no-conditional-in-test:** ban optional chaining ([#1933](https://github.com/jest-community/eslint-plugin-jest/issues/1933)) ([6406493](https://github.com/jest-community/eslint-plugin-jest/commit/64064939d0df526c6ed063a52f7802d76d70bed7))
+
 # [29.13.0](https://github.com/jest-community/eslint-plugin-jest/compare/v29.12.2...v29.13.0) (2026-02-08)
 
 
