@@ -954,46 +954,106 @@ ruleTester.run('optional chaining', rule, {
   valid: [
     'const x = obj?.foo',
     dedent`
-      const foo = obj?.bar;
-
       it('foo', () => {
-        expect(foo).toBe(undefined);
-      });
-    `,
-    dedent`
-      describe('foo', () => {
-        const val = obj?.bar;
+        const value = obj?.bar;
       })
     `,
     dedent`
-      describe('foo', () => {
-        beforeEach(() => {
-          const val = obj?.bar;
-        });
+      it('foo', () => {
+        obj?.foo?.bar;
       })
     `,
     dedent`
-      describe('foo', () => {
-        afterEach(() => {
-          const val = obj?.bar;
-        });
+      it('foo', () => {
+        obj?.foo();
       })
     `,
     dedent`
-      const values = something.map(thing => thing?.foo);
+      it('foo', () => {
+        obj?.[key];
+      })
+    `,
+    dedent`
+      test('foo', () => {
+        obj?.bar;
+      })
+    `,
+    dedent`
+      it('is valid', () => {
+        const values = something.map(thing => thing?.foo);
 
-      it('valid', () => {
         expect(values).toStrictEqual(['foo']);
       });
     `,
-    dedent`
-      describe('valid', () => {
+  ],
+  invalid: [],
+});
+
+ruleTester.run('optional chaining with allowOptionalChaining=false', rule, {
+  valid: [
+    {
+      code: 'const x = obj?.foo',
+      options: [{ allowOptionalChaining: false }],
+    },
+    {
+      code: dedent`
+        const foo = obj?.bar;
+
+        it('foo', () => {
+          expect(foo).toBe(undefined);
+        });
+      `,
+      options: [{ allowOptionalChaining: false }],
+    },
+    {
+      code: dedent`
+        describe('foo', () => {
+          const val = obj?.bar;
+        })
+      `,
+      options: [{ allowOptionalChaining: false }],
+    },
+    {
+      code: dedent`
+        describe('foo', () => {
+          beforeEach(() => {
+            const val = obj?.bar;
+          });
+        })
+      `,
+      options: [{ allowOptionalChaining: false }],
+    },
+    {
+      code: dedent`
+        describe('foo', () => {
+          afterEach(() => {
+            const val = obj?.bar;
+          });
+        })
+      `,
+      options: [{ allowOptionalChaining: false }],
+    },
+    {
+      code: dedent`
         const values = something.map(thing => thing?.foo);
-        it('still valid', () => {
+
+        it('valid', () => {
           expect(values).toStrictEqual(['foo']);
         });
-      });
-    `,
+      `,
+      options: [{ allowOptionalChaining: false }],
+    },
+    {
+      code: dedent`
+        describe('valid', () => {
+          const values = something.map(thing => thing?.foo);
+          it('still valid', () => {
+            expect(values).toStrictEqual(['foo']);
+          });
+        });
+      `,
+      options: [{ allowOptionalChaining: false }],
+    },
   ],
   invalid: [
     {
@@ -1002,6 +1062,7 @@ ruleTester.run('optional chaining', rule, {
           const value = obj?.bar;
         })
       `,
+      options: [{ allowOptionalChaining: false }],
       errors: [
         {
           messageId: 'conditionalInTest',
@@ -1016,6 +1077,7 @@ ruleTester.run('optional chaining', rule, {
           obj?.foo?.bar;
         })
       `,
+      options: [{ allowOptionalChaining: false }],
       errors: [
         {
           messageId: 'conditionalInTest',
@@ -1030,6 +1092,7 @@ ruleTester.run('optional chaining', rule, {
           obj?.foo();
         })
       `,
+      options: [{ allowOptionalChaining: false }],
       errors: [
         {
           messageId: 'conditionalInTest',
@@ -1044,6 +1107,7 @@ ruleTester.run('optional chaining', rule, {
           obj?.[key];
         })
       `,
+      options: [{ allowOptionalChaining: false }],
       errors: [
         {
           messageId: 'conditionalInTest',
@@ -1058,6 +1122,7 @@ ruleTester.run('optional chaining', rule, {
           obj?.bar;
         })
       `,
+      options: [{ allowOptionalChaining: false }],
       errors: [
         {
           messageId: 'conditionalInTest',
@@ -1072,6 +1137,7 @@ ruleTester.run('optional chaining', rule, {
           obj?.bar;
         })
       `,
+      options: [{ allowOptionalChaining: false }],
       errors: [
         {
           messageId: 'conditionalInTest',
@@ -1086,6 +1152,7 @@ ruleTester.run('optional chaining', rule, {
           obj?.bar;
         })
       `,
+      options: [{ allowOptionalChaining: false }],
       errors: [
         {
           messageId: 'conditionalInTest',
@@ -1100,6 +1167,7 @@ ruleTester.run('optional chaining', rule, {
           obj?.bar;
         })
       `,
+      options: [{ allowOptionalChaining: false }],
       errors: [
         {
           messageId: 'conditionalInTest',
@@ -1114,6 +1182,7 @@ ruleTester.run('optional chaining', rule, {
           obj?.bar;
         })
       `,
+      options: [{ allowOptionalChaining: false }],
       errors: [
         {
           messageId: 'conditionalInTest',
@@ -1128,6 +1197,7 @@ ruleTester.run('optional chaining', rule, {
           obj?.bar;
         })
       `,
+      options: [{ allowOptionalChaining: false }],
       errors: [
         {
           messageId: 'conditionalInTest',
@@ -1144,6 +1214,7 @@ ruleTester.run('optional chaining', rule, {
           })
         })
       `,
+      options: [{ allowOptionalChaining: false }],
       errors: [
         {
           messageId: 'conditionalInTest',
@@ -1160,6 +1231,7 @@ ruleTester.run('optional chaining', rule, {
           expect(values).toStrictEqual(['foo']);
         });
       `,
+      options: [{ allowOptionalChaining: false }],
       errors: [
         {
           messageId: 'conditionalInTest',
