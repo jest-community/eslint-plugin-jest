@@ -1,3 +1,10 @@
+# [29.15.0](https://github.com/jest-community/eslint-plugin-jest/compare/v29.14.0...v29.15.0) (2026-02-15)
+
+
+### Features
+
+* **no-conditional-in-test:** only report optional chaining when `allowOptionalChaining` is false ([#1934](https://github.com/jest-community/eslint-plugin-jest/issues/1934)) ([3f5751e](https://github.com/jest-community/eslint-plugin-jest/commit/3f5751e42786a303ac9cd1c1442a7e4aea4c0513))
+
 # [29.14.0](https://github.com/jest-community/eslint-plugin-jest/compare/v29.13.0...v29.14.0) (2026-02-12)
 
 
