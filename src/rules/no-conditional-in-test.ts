@@ -1,7 +1,11 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { createRule, isTypeOfJestFnCall } from './utils';
 
-export default createRule({
+interface RuleOptions {
+  allowOptionalChaining?: boolean;
+}
+
+export default createRule<[RuleOptions], 'conditionalInTest'>({
   name: __filename,
   meta: {
     docs: {
@@ -11,10 +15,20 @@ export default createRule({
       conditionalInTest: 'Avoid having conditionals in tests',
     },
     type: 'problem',
-    schema: [],
+    schema: [
+      {
+        type: 'object',
+        properties: {
+          allowOptionalChaining: {
+            type: 'boolean',
+          },
+        },
+        additionalProperties: false,
+      },
+    ],
   },
-  defaultOptions: [],
-  create(context) {
+  defaultOptions: [{ allowOptionalChaining: true }],
+  create(context, [{ allowOptionalChaining }]) {
     let inTestCase = false;
 
     const maybeReportConditional = (node: TSESTree.Node) => {
@@ -41,7 +55,9 @@ export default createRule({
       SwitchStatement: maybeReportConditional,
       ConditionalExpression: maybeReportConditional,
       LogicalExpression: maybeReportConditional,
-      ChainExpression: maybeReportConditional,
+      ...(!allowOptionalChaining && {
+        ChainExpression: maybeReportConditional,
+      }),
     };
   },
 });

@@ -12,7 +12,7 @@ devoted to it.
 ## Rule details
 
 This rule reports on any use of a conditional statement such as `if`, `switch`,
-ternary expressions, and optional chaining.
+and ternary expressions.
 
 Examples of **incorrect** code for this rule:
 
@@ -34,10 +34,6 @@ it('bar', () => {
   }
 
   expect(fixtures.length).toBeGreaterThan(-1);
-});
-
-it('baz', () => {
-  const value = obj?.bar;
 });
 
 it('qux', async () => {
@@ -81,11 +77,47 @@ const promiseValue = something => {
   return something instanceof Promise ? something : Promise.resolve(something);
 };
 
-it('baz', () => {
-  const value = obj!.bar;
-});
-
 it('qux', async () => {
   await expect(promiseValue()).resolves.toBe(1);
+});
+```
+
+## Options
+
+```json
+{
+  "jest/no-conditional-in-test": [
+    "error",
+    {
+      "allowOptionalChaining": true
+    }
+  ]
+}
+```
+
+### `allowOptionalChaining`
+
+Default: `true`
+
+When set to `false`, optional chaining (`?.`) inside test bodies will be
+reported as a conditional.
+
+Examples of **incorrect** code when `allowOptionalChaining` is `false`:
+
+```js
+it('foo', () => {
+  const value = obj?.bar;
+});
+
+it('bar', () => {
+  obj?.foo();
+});
+```
+
+Examples of **correct** code when `allowOptionalChaining` is `false`:
+
+```js
+it('foo', () => {
+  const value = obj!.bar;
 });
 ```
