@@ -68,7 +68,15 @@ ruleTester.run('valid-mock-module-path', rule, {
     },
     {
       filename: __filename,
+      code: 'jest.doMock("./fixtures/module/tsx/foo", undefined, { virtual: false })',
+    },
+    {
+      filename: __filename,
       code: 'jest.mock("../module/does/not/exist", undefined, { virtual: true })',
+    },
+    {
+      filename: __filename,
+      code: 'jest.doMock("../module/does/not/exist", undefined, { virtual: true })',
     },
   ],
   invalid: [
@@ -164,7 +172,31 @@ ruleTester.run('valid-mock-module-path', rule, {
     },
     {
       filename: __filename,
+      code: 'jest.doMock("jackspeak/dist/commonjs/parse-args.js")',
+      errors: [
+        {
+          messageId: 'invalidMockModulePath',
+          data: { moduleName: '"jackspeak/dist/commonjs/parse-args.js"' },
+          column: 1,
+          line: 1,
+        },
+      ],
+    },
+    {
+      filename: __filename,
       code: "jest.mock('../module/does/not/exist', undefined, { virtual: false })",
+      errors: [
+        {
+          messageId: 'invalidMockModulePath',
+          data: { moduleName: "'../module/does/not/exist'" },
+          column: 1,
+          line: 1,
+        },
+      ],
+    },
+    {
+      filename: __filename,
+      code: "jest.doMock('../module/does/not/exist', undefined, { virtual: false })",
       errors: [
         {
           messageId: 'invalidMockModulePath',
