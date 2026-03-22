@@ -76,19 +76,16 @@ export default createRule<
         if (node.arguments[2]?.type === AST_NODE_TYPES.ObjectExpression) {
           const hasTrueVirtualProperty = node.arguments[2].properties.some(
             expression => {
-              /* istanbul ignore else */
               if (expression.type === AST_NODE_TYPES.Property) {
                 const { key, value } = expression;
 
                 return (
-                  key.type === AST_NODE_TYPES.Identifier &&
-                  key.name === 'virtual' &&
+                  isSupportedAccessor(key, 'virtual') &&
                   value.type === AST_NODE_TYPES.Literal &&
                   value.value
                 );
               }
 
-              /* istanbul ignore next */
               return false;
             },
           );
