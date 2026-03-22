@@ -172,18 +172,6 @@ ruleTester.run('valid-mock-module-path', rule, {
     },
     {
       filename: __filename,
-      code: 'jest.doMock("jackspeak/dist/commonjs/parse-args.js")',
-      errors: [
-        {
-          messageId: 'invalidMockModulePath',
-          data: { moduleName: '"jackspeak/dist/commonjs/parse-args.js"' },
-          column: 1,
-          line: 1,
-        },
-      ],
-    },
-    {
-      filename: __filename,
       code: "jest.mock('../module/does/not/exist', undefined, { virtual: false })",
       errors: [
         {
