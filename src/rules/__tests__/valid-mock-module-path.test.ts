@@ -62,6 +62,14 @@ ruleTester.run('valid-mock-module-path', rule, {
       code: 'jest.mock("./fixtures/module/bar")',
       options: [{ moduleFileExtensions: ['.css'] }],
     },
+    {
+      filename: __filename,
+      code: 'jest.mock("./fixtures/module/tsx/foo", undefined, { virtual: false })',
+    },
+    {
+      filename: __filename,
+      code: 'jest.mock("../module/does/not/exist", undefined, { virtual: true })',
+    },
   ],
   invalid: [
     {
@@ -149,6 +157,18 @@ ruleTester.run('valid-mock-module-path', rule, {
         {
           messageId: 'invalidMockModulePath',
           data: { moduleName: '"jackspeak/dist/commonjs/parse-args.js"' },
+          column: 1,
+          line: 1,
+        },
+      ],
+    },
+    {
+      filename: __filename,
+      code: "jest.mock('../module/does/not/exist', undefined, { virtual: false })",
+      errors: [
+        {
+          messageId: 'invalidMockModulePath',
+          data: { moduleName: "'../module/does/not/exist'" },
           column: 1,
           line: 1,
         },
