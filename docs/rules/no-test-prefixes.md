@@ -1,4 +1,6 @@
-# Require using `.only` and `.skip` over `f` and `x` (`no-test-prefixes`)
+# jest/no-test-prefixes
+
+📝 Require using `.only` and `.skip` over `f` and `x`.
 
 💼 This rule is enabled in the ✅ `recommended`
 [config](https://github.com/jest-community/eslint-plugin-jest/blob/main/README.md#shareable-configurations).

@@ -1,4 +1,6 @@
-# Suggest using the built-in comparison matchers (`prefer-comparison-matcher`)
+# jest/prefer-comparison-matcher
+
+📝 Suggest using the built-in comparison matchers.
 
 🔧 This rule is automatically fixable by the
 [`--fix` CLI option](https://eslint.org/docs/latest/user-guide/command-line-interface#--fix).

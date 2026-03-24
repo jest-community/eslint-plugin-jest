@@ -1,4 +1,6 @@
-# Disallow conditional logic in tests (`no-conditional-in-test`)
+# jest/no-conditional-in-test
+
+📝 Disallow conditional logic in tests.
 
 <!-- end auto-generated rule header -->
 
@@ -34,7 +36,7 @@ it('bar', () => {
   expect(fixtures.length).toBeGreaterThan(-1);
 });
 
-it('baz', async () => {
+it('qux', async () => {
   const promiseValue = () => {
     return something instanceof Promise
       ? something
@@ -75,7 +77,47 @@ const promiseValue = something => {
   return something instanceof Promise ? something : Promise.resolve(something);
 };
 
-it('baz', async () => {
+it('qux', async () => {
   await expect(promiseValue()).resolves.toBe(1);
+});
+```
+
+## Options
+
+```json
+{
+  "jest/no-conditional-in-test": [
+    "error",
+    {
+      "allowOptionalChaining": true
+    }
+  ]
+}
+```
+
+### `allowOptionalChaining`
+
+Default: `true`
+
+When set to `false`, optional chaining (`?.`) inside test bodies will be
+reported as a conditional.
+
+Examples of **incorrect** code when `allowOptionalChaining` is `false`:
+
+```js
+it('foo', () => {
+  const value = obj?.bar;
+});
+
+it('bar', () => {
+  obj?.foo();
+});
+```
+
+Examples of **correct** code when `allowOptionalChaining` is `false`:
+
+```js
+it('foo', () => {
+  const value = obj!.bar;
 });
 ```

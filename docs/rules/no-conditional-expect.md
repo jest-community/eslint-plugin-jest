@@ -1,4 +1,6 @@
-# Disallow calling `expect` conditionally (`no-conditional-expect`)
+# jest/no-conditional-expect
+
+📝 Disallow calling `expect` conditionally.
 
 💼 This rule is enabled in the ✅ `recommended`
 [config](https://github.com/jest-community/eslint-plugin-jest/blob/main/README.md#shareable-configurations).

@@ -46,10 +46,12 @@ export default createRule({
         }
 
         if (node.arguments.length < 1) {
-          return context.report({
+          context.report({
             messageId: 'nameAndCallback',
             loc: node.loc,
           });
+
+          return;
         }
 
         const [, callback] = node.arguments;

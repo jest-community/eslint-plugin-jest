@@ -1,4 +1,6 @@
-# Disallow Jasmine globals (`no-jasmine-globals`)
+# jest/no-jasmine-globals
+
+📝 Disallow Jasmine globals.
 
 💼 This rule is enabled in the ✅ `recommended`
 [config](https://github.com/jest-community/eslint-plugin-jest/blob/main/README.md#shareable-configurations).

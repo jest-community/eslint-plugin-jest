@@ -73,7 +73,7 @@ const reportPreferToBe = (
         replaceAccessorFixer(fixer, expectFnCall.matcher, `toBe${whatToBe}`),
       ];
 
-      if (expectFnCall.args?.length && whatToBe !== '') {
+      if (expectFnCall.args.length && whatToBe !== '') {
         fixes.push(removeExtraArgumentsFixer(fixer, context, func, 0));
       }
 

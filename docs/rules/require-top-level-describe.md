@@ -1,4 +1,6 @@
-# Require test cases and hooks to be inside a `describe` block (`require-top-level-describe`)
+# jest/require-top-level-describe
+
+📝 Require test cases and hooks to be inside a `describe` block.
 
 <!-- end auto-generated rule header -->
 

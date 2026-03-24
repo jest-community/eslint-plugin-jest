@@ -1,4 +1,5 @@
 import { createRequire } from 'module';
+import path from 'path';
 import { TSESLint } from '@typescript-eslint/utils';
 import { version as eslintVersion } from 'eslint/package.json';
 import * as semver from 'semver';
@@ -81,3 +82,71 @@ export class FlatCompatRuleTester extends TSESLint.RuleTester {
     return obj as unknown as T;
   }
 }
+
+export const getFixturesRootDir = () => path.join(__dirname, 'fixtures');
+
+/**
+ * Creates a function for requiring a rule which requires an optional dependency,
+ * which allows having that require throw to aid in testing it is truly optional.
+ *
+ * Also included is a function for setting the fixture filename for tests
+ *
+ * @todo this is a bit sloppy, see if we can clean it up after ESLint v10 & co
+ */
+export const createRuleRequirerTester = <
+  TOptions extends readonly unknown[],
+  TMessageIds extends string,
+>(
+  rulePath: string,
+  depName: string,
+  fixtureFilename: string,
+) => {
+  const TSESLintPluginRef: { throwWhenRequiring: boolean } = {
+    throwWhenRequiring: false,
+  };
+
+  jest.doMock(depName, () => {
+    if (TSESLintPluginRef.throwWhenRequiring) {
+      throw new (class extends Error {
+        public code;
+
+        constructor(message?: string) {
+          super(message);
+          this.code = 'MODULE_NOT_FOUND';
+        }
+      })();
+    }
+
+    return jest.requireActual(depName);
+  });
+
+  const withFixtureFilename = <
+    T extends Array<
+      | (TSESLint.ValidTestCase<TOptions> | string)
+      | TSESLint.InvalidTestCase<TMessageIds, TOptions>
+    >,
+  >(
+    cases: T,
+  ): T extends Array<TSESLint.InvalidTestCase<TMessageIds, TOptions>>
+    ? Array<TSESLint.InvalidTestCase<TMessageIds, TOptions>>
+    : Array<TSESLint.ValidTestCase<TOptions>> => {
+    // @ts-expect-error this is fine, and will go away later once we upgrade
+    return cases.map(code => {
+      const test = typeof code === 'string' ? { code } : code;
+
+      return { filename: fixtureFilename, ...test };
+    });
+  };
+
+  return {
+    TSESLintPluginRef,
+    requireRule(throwWhenRequiring: boolean) {
+      jest.resetModules();
+
+      TSESLintPluginRef.throwWhenRequiring = throwWhenRequiring;
+
+      return require(rulePath).default;
+    },
+    withFixtureFilename,
+  };
+};

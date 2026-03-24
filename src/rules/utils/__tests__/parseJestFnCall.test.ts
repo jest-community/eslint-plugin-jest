@@ -76,13 +76,17 @@ const rule = createRule({
   }),
 });
 
-interface TestResolvedJestFnWithNode
-  extends Omit<ResolvedJestFnWithNode, 'node'> {
+interface TestResolvedJestFnWithNode extends Omit<
+  ResolvedJestFnWithNode,
+  'node'
+> {
   node: string;
 }
 
-interface TestParsedJestFnCall
-  extends Omit<ParsedJestFnCall, 'head' | 'members'> {
+interface TestParsedJestFnCall extends Omit<
+  ParsedJestFnCall,
+  'head' | 'members'
+> {
   head: TestResolvedJestFnWithNode;
   members: string[];
 }

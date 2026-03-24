@@ -1,4 +1,6 @@
-# Enforce lowercase test names (`prefer-lowercase-title`)
+# jest/prefer-lowercase-title
+
+📝 Enforce lowercase test names.
 
 🔧 This rule is automatically fixable by the
 [`--fix` CLI option](https://eslint.org/docs/latest/user-guide/command-line-interface#--fix).

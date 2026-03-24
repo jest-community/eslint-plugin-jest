@@ -1,4 +1,6 @@
-# Prefer mock resolved/rejected shorthands for promises (`prefer-mock-promise-shorthand`)
+# jest/prefer-mock-promise-shorthand
+
+📝 Prefer mock resolved/rejected shorthands for promises.
 
 🔧 This rule is automatically fixable by the
 [`--fix` CLI option](https://eslint.org/docs/latest/user-guide/command-line-interface#--fix).

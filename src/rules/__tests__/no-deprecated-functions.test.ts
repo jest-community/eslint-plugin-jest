@@ -96,7 +96,7 @@ describe('the rule', () => {
   describe.each<JestVersion>([
     14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27,
   ])('when using jest version %i', jestVersion => {
-    beforeEach(async () => {
+    beforeEach(() => {
       detectJestVersionMock.mockReturnValue(jestVersion);
     });
 

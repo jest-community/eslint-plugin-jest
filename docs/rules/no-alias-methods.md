@@ -1,4 +1,6 @@
-# Disallow alias methods (`no-alias-methods`)
+# jest/no-alias-methods
+
+📝 Disallow alias methods.
 
 💼 This rule is enabled in the ✅ `recommended`
 [config](https://github.com/jest-community/eslint-plugin-jest/blob/main/README.md#shareable-configurations).

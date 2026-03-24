@@ -1,6 +1,6 @@
 {
   "name": "eslint-plugin-jest",
-  "version": "29.1.0",
+  "version": "29.15.0",
   "description": "ESLint rules for Jest",
   "keywords": [
     "eslint",
@@ -83,7 +83,7 @@
     "@babel/preset-typescript": "^7.3.3",
     "@commitlint/cli": "^20.0.0",
     "@commitlint/config-conventional": "^20.0.0",
-    "@eslint-community/eslint-plugin-eslint-comments": "^4.3.0",
+    "@eslint-community/eslint-plugin-eslint-comments": "^4.6.0",
     "@schemastore/package": "^0.0.10",
     "@semantic-release/changelog": "^6.0.0",
     "@semantic-release/git": "^10.0.0",
@@ -98,15 +98,15 @@
     "babel-jest": "^30.0.0",
     "babel-plugin-replace-ts-export-assignment": "^0.0.2",
     "dedent": "^1.5.0",
-    "eslint": "^8.57.0",
+    "eslint": "^9.0.0",
     "eslint-config-prettier": "^10.0.0",
-    "eslint-doc-generator": "^2.0.0",
+    "eslint-doc-generator": "^3.0.0",
     "eslint-plugin-eslint-plugin": "^6.0.0",
     "eslint-plugin-import": "^2.25.1",
     "eslint-plugin-n": "^17.0.0",
     "eslint-plugin-prettier": "^5.0.0",
-    "eslint-remote-tester": "^3.0.0",
-    "eslint-remote-tester-repositories": "^1.0.0",
+    "eslint-remote-tester": "^4.0.0",
+    "eslint-remote-tester-repositories": "^2.0.0",
     "husky": "^9.0.1",
     "is-ci": "^4.0.0",
     "jest": "^30.0.0",
@@ -123,8 +123,9 @@
   },
   "peerDependencies": {
     "@typescript-eslint/eslint-plugin": "^8.0.0",
-    "eslint": "^8.57.0 || ^9.0.0",
-    "jest": "*"
+    "eslint": "^8.57.0 || ^9.0.0 || ^10.0.0",
+    "jest": "*",
+    "typescript": ">=4.8.4 <6.0.0"
   },
   "peerDependenciesMeta": {
     "@typescript-eslint/eslint-plugin": {
@@ -132,9 +133,12 @@
     },
     "jest": {
       "optional": true
+    },
+    "typescript": {
+      "optional": true
     }
   },
-  "packageManager": "yarn@4.11.0",
+  "packageManager": "yarn@4.13.0",
   "engines": {
     "node": "^20.12.0 || ^22.0.0 || >=24.0.0"
   }

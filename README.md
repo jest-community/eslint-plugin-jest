@@ -351,6 +351,7 @@ Manually fixable by
 | [no-standalone-expect](docs/rules/no-standalone-expect.md)                           | Disallow using `expect` outside of `it` or `test` blocks                  | ✅  |     |     |     |
 | [no-test-prefixes](docs/rules/no-test-prefixes.md)                                   | Require using `.only` and `.skip` over `f` and `x`                        | ✅  |     | 🔧  |     |
 | [no-test-return-statement](docs/rules/no-test-return-statement.md)                   | Disallow explicitly returning from tests                                  |     |     |     |     |
+| [no-unneeded-async-expect-function](docs/rules/no-unneeded-async-expect-function.md) | Disallow unnecessary async function wrapper for expected promises         |     |     | 🔧  |     |
 | [no-untyped-mock-factory](docs/rules/no-untyped-mock-factory.md)                     | Disallow using `jest.mock()` factories without an explicit type parameter |     |     | 🔧  |     |
 | [padding-around-after-all-blocks](docs/rules/padding-around-after-all-blocks.md)     | Enforce padding around `afterAll` blocks                                  |     |     | 🔧  |     |
 | [padding-around-after-each-blocks](docs/rules/padding-around-after-each-blocks.md)   | Enforce padding around `afterEach` blocks                                 |     |     | 🔧  |     |
@@ -360,7 +361,7 @@ Manually fixable by
 | [padding-around-describe-blocks](docs/rules/padding-around-describe-blocks.md)       | Enforce padding around `describe` blocks                                  |     |     | 🔧  |     |
 | [padding-around-expect-groups](docs/rules/padding-around-expect-groups.md)           | Enforce padding around `expect` groups                                    |     |     | 🔧  |     |
 | [padding-around-test-blocks](docs/rules/padding-around-test-blocks.md)               | Enforce padding around `test` and `it` blocks                             |     |     | 🔧  |     |
-| [prefer-called-with](docs/rules/prefer-called-with.md)                               | Suggest using `toBeCalledWith()` or `toHaveBeenCalledWith()`              |     |     |     |     |
+| [prefer-called-with](docs/rules/prefer-called-with.md)                               | Suggest using `toHaveBeenCalledWith()`                                    |     |     |     |     |
 | [prefer-comparison-matcher](docs/rules/prefer-comparison-matcher.md)                 | Suggest using the built-in comparison matchers                            |     |     | 🔧  |     |
 | [prefer-each](docs/rules/prefer-each.md)                                             | Prefer using `.each` rather than manual loops                             |     |     |     |     |
 | [prefer-ending-with-an-expect](docs/rules/prefer-ending-with-an-expect.md)           | Prefer having the last statement in a test be an assertion                |     |     |     |     |
@@ -373,11 +374,14 @@ Manually fixable by
 | [prefer-jest-mocked](docs/rules/prefer-jest-mocked.md)                               | Prefer `jest.mocked()` over `fn as jest.Mock`                             |     |     | 🔧  |     |
 | [prefer-lowercase-title](docs/rules/prefer-lowercase-title.md)                       | Enforce lowercase test names                                              |     |     | 🔧  |     |
 | [prefer-mock-promise-shorthand](docs/rules/prefer-mock-promise-shorthand.md)         | Prefer mock resolved/rejected shorthands for promises                     |     |     | 🔧  |     |
+| [prefer-mock-return-shorthand](docs/rules/prefer-mock-return-shorthand.md)           | Prefer mock return shorthands                                             |     |     | 🔧  |     |
 | [prefer-snapshot-hint](docs/rules/prefer-snapshot-hint.md)                           | Prefer including a hint with external snapshots                           |     |     |     |     |
 | [prefer-spy-on](docs/rules/prefer-spy-on.md)                                         | Suggest using `jest.spyOn()`                                              |     |     | 🔧  |     |
 | [prefer-strict-equal](docs/rules/prefer-strict-equal.md)                             | Suggest using `toStrictEqual()`                                           |     |     |     | 💡  |
 | [prefer-to-be](docs/rules/prefer-to-be.md)                                           | Suggest using `toBe()` for primitive literals                             | 🎨  |     | 🔧  |     |
 | [prefer-to-contain](docs/rules/prefer-to-contain.md)                                 | Suggest using `toContain()`                                               | 🎨  |     | 🔧  |     |
+| [prefer-to-have-been-called](docs/rules/prefer-to-have-been-called.md)               | Suggest using `toHaveBeenCalled`                                          |     |     | 🔧  |     |
+| [prefer-to-have-been-called-times](docs/rules/prefer-to-have-been-called-times.md)   | Suggest using `toHaveBeenCalledTimes()`                                   |     |     | 🔧  |     |
 | [prefer-to-have-length](docs/rules/prefer-to-have-length.md)                         | Suggest using `toHaveLength()`                                            | 🎨  |     | 🔧  |     |
 | [prefer-todo](docs/rules/prefer-todo.md)                                             | Suggest using `test.todo`                                                 |     |     | 🔧  |     |
 | [require-hook](docs/rules/require-hook.md)                                           | Require setup and teardown code to be within a hook                       |     |     |     |     |
@@ -386,13 +390,17 @@ Manually fixable by
 | [valid-describe-callback](docs/rules/valid-describe-callback.md)                     | Enforce valid `describe()` callback                                       | ✅  |     |     |     |
 | [valid-expect](docs/rules/valid-expect.md)                                           | Enforce valid `expect()` usage                                            | ✅  |     | 🔧  |     |
 | [valid-expect-in-promise](docs/rules/valid-expect-in-promise.md)                     | Require promises that have expectations in their chain to be valid        | ✅  |     |     |     |
+| [valid-mock-module-path](docs/rules/valid-mock-module-path.md)                       | Disallow mocking of non-existing module paths                             |     |     |     |     |
 | [valid-title](docs/rules/valid-title.md)                                             | Enforce valid titles                                                      | ✅  |     | 🔧  |     |
 
 ### Requires Type Checking
 
-| Name                                           | Description                                                  | 💼  | ⚠️  | 🔧  | 💡  |
-| :--------------------------------------------- | :----------------------------------------------------------- | :-- | :-- | :-- | :-- |
-| [unbound-method](docs/rules/unbound-method.md) | Enforce unbound methods are called with their expected scope |     |     |     |     |
+| Name                                                                 | Description                                                                                 | 💼  | ⚠️  | 🔧  | 💡  |
+| :------------------------------------------------------------------- | :------------------------------------------------------------------------------------------ | :-- | :-- | :-- | :-- |
+| [no-error-equal](docs/rules/no-error-equal.md)                       | Disallow using equality matchers on error types                                             |     |     |     |     |
+| [no-unnecessary-assertion](docs/rules/no-unnecessary-assertion.md)   | Disallow unnecessary assertions based on types                                              |     |     |     |     |
+| [unbound-method](docs/rules/unbound-method.md)                       | Enforce unbound methods are called with their expected scope                                |     |     |     |     |
+| [valid-expect-with-promise](docs/rules/valid-expect-with-promise.md) | Require that `resolve` and `reject` modifiers are present (and only) for promise-like types |     |     |     |     |
 
 <!-- end auto-generated rules list -->
 

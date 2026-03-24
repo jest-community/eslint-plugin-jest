@@ -1,4 +1,6 @@
-# Suggest using `expect.assertions()` OR `expect.hasAssertions()` (`prefer-expect-assertions`)
+# jest/prefer-expect-assertions
+
+📝 Suggest using `expect.assertions()` OR `expect.hasAssertions()`.
 
 💡 This rule is manually fixable by
 [editor suggestions](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions).

@@ -1,4 +1,6 @@
-# Suggest using the built-in equality matchers (`prefer-equality-matcher`)
+# jest/prefer-equality-matcher
+
+📝 Suggest using the built-in equality matchers.
 
 💡 This rule is manually fixable by
 [editor suggestions](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions).

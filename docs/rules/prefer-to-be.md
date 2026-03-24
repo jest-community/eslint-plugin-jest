@@ -1,4 +1,6 @@
-# Suggest using `toBe()` for primitive literals (`prefer-to-be`)
+# jest/prefer-to-be
+
+📝 Suggest using `toBe()` for primitive literals.
 
 💼 This rule is enabled in the 🎨 `style`
 [config](https://github.com/jest-community/eslint-plugin-jest/blob/main/README.md#shareable-configurations).

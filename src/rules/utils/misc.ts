@@ -16,7 +16,9 @@ import { type ParsedExpectFnCall, isTypeOfJestFnCall } from './parseJestFnCall';
 
 const REPO_URL = 'https://github.com/jest-community/eslint-plugin-jest';
 
-export const createRule = ESLintUtils.RuleCreator(name => {
+export const createRule = ESLintUtils.RuleCreator<{
+  requiresTypeChecking?: boolean;
+}>(name => {
   const ruleName = parsePath(name).name;
 
   return `${REPO_URL}/blob/v${version}/docs/rules/${ruleName}.md`;
@@ -45,8 +47,9 @@ export interface KnownCallExpression<Name extends string = string>
  *
  * This is `KnownCallExpression` from the perspective of the `MemberExpression` node.
  */
-interface CalledKnownMemberExpression<Name extends string = string>
-  extends KnownMemberExpression<Name> {
+interface CalledKnownMemberExpression<
+  Name extends string = string,
+> extends KnownMemberExpression<Name> {
   parent: KnownCallExpression<Name>;
 }
 
@@ -54,9 +57,10 @@ interface CalledKnownMemberExpression<Name extends string = string>
  * Represents a `CallExpression` with a single argument.
  */
 export interface CallExpressionWithSingleArgument<
-  Argument extends
-    TSESTree.CallExpression['arguments'][number] = TSESTree.CallExpression['arguments'][number],
-> extends TSESTree.CallExpression {
+  Argument extends TSESTree.CallExpression['arguments'][number] =
+    TSESTree.CallExpression['arguments'][number],
+>
+  extends TSESTree.CallExpression {
   arguments: [Argument];
 }
 
@@ -142,7 +146,7 @@ export const getTestCallExpressionsFromDeclaredVariables = (
       .map(({ identifier }) => identifier.parent)
       .filter(
         (node): node is TSESTree.CallExpression =>
-          node?.type === AST_NODE_TYPES.CallExpression &&
+          node.type === AST_NODE_TYPES.CallExpression &&
           isTypeOfJestFnCall(node, context, ['test']),
       ),
   );
@@ -224,4 +228,14 @@ export const getFirstMatcherArg = (
   }
 
   return followTypeAssertionChain(firstArg);
+};
+
+export const findModuleName = (
+  node: TSESTree.Literal | TSESTree.Node,
+): TSESTree.StringLiteral | null => {
+  if (node.type === AST_NODE_TYPES.Literal && typeof node.value === 'string') {
+    return node;
+  }
+
+  return null;
 };

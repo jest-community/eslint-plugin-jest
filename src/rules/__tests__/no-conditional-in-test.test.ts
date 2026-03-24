@@ -5,7 +5,7 @@ import { FlatCompatRuleTester as RuleTester, espreeParser } from './test-utils';
 const ruleTester = new RuleTester({
   parser: espreeParser,
   parserOptions: {
-    ecmaVersion: 2015,
+    ecmaVersion: 2020,
   },
 });
 
@@ -944,6 +944,299 @@ ruleTester.run('if statements', rule, {
           messageId: 'conditionalInTest',
           column: 3,
           line: 9,
+        },
+      ],
+    },
+  ],
+});
+
+ruleTester.run('optional chaining', rule, {
+  valid: [
+    'const x = obj?.foo',
+    dedent`
+      it('foo', () => {
+        const value = obj?.bar;
+      })
+    `,
+    dedent`
+      it('foo', () => {
+        obj?.foo?.bar;
+      })
+    `,
+    dedent`
+      it('foo', () => {
+        obj?.foo();
+      })
+    `,
+    dedent`
+      it('foo', () => {
+        obj?.[key];
+      })
+    `,
+    dedent`
+      test('foo', () => {
+        obj?.bar;
+      })
+    `,
+    dedent`
+      it('is valid', () => {
+        const values = something.map(thing => thing?.foo);
+
+        expect(values).toStrictEqual(['foo']);
+      });
+    `,
+  ],
+  invalid: [],
+});
+
+ruleTester.run('optional chaining with allowOptionalChaining=false', rule, {
+  valid: [
+    {
+      code: 'const x = obj?.foo',
+      options: [{ allowOptionalChaining: false }],
+    },
+    {
+      code: dedent`
+        const foo = obj?.bar;
+
+        it('foo', () => {
+          expect(foo).toBe(undefined);
+        });
+      `,
+      options: [{ allowOptionalChaining: false }],
+    },
+    {
+      code: dedent`
+        describe('foo', () => {
+          const val = obj?.bar;
+        })
+      `,
+      options: [{ allowOptionalChaining: false }],
+    },
+    {
+      code: dedent`
+        describe('foo', () => {
+          beforeEach(() => {
+            const val = obj?.bar;
+          });
+        })
+      `,
+      options: [{ allowOptionalChaining: false }],
+    },
+    {
+      code: dedent`
+        describe('foo', () => {
+          afterEach(() => {
+            const val = obj?.bar;
+          });
+        })
+      `,
+      options: [{ allowOptionalChaining: false }],
+    },
+    {
+      code: dedent`
+        const values = something.map(thing => thing?.foo);
+
+        it('valid', () => {
+          expect(values).toStrictEqual(['foo']);
+        });
+      `,
+      options: [{ allowOptionalChaining: false }],
+    },
+    {
+      code: dedent`
+        describe('valid', () => {
+          const values = something.map(thing => thing?.foo);
+          it('still valid', () => {
+            expect(values).toStrictEqual(['foo']);
+          });
+        });
+      `,
+      options: [{ allowOptionalChaining: false }],
+    },
+  ],
+  invalid: [
+    {
+      code: dedent`
+        it('foo', () => {
+          const value = obj?.bar;
+        })
+      `,
+      options: [{ allowOptionalChaining: false }],
+      errors: [
+        {
+          messageId: 'conditionalInTest',
+          column: 17,
+          line: 2,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        it('foo', () => {
+          obj?.foo?.bar;
+        })
+      `,
+      options: [{ allowOptionalChaining: false }],
+      errors: [
+        {
+          messageId: 'conditionalInTest',
+          column: 3,
+          line: 2,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        it('foo', () => {
+          obj?.foo();
+        })
+      `,
+      options: [{ allowOptionalChaining: false }],
+      errors: [
+        {
+          messageId: 'conditionalInTest',
+          column: 3,
+          line: 2,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        it('foo', () => {
+          obj?.[key];
+        })
+      `,
+      options: [{ allowOptionalChaining: false }],
+      errors: [
+        {
+          messageId: 'conditionalInTest',
+          column: 3,
+          line: 2,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        it.skip('foo', () => {
+          obj?.bar;
+        })
+      `,
+      options: [{ allowOptionalChaining: false }],
+      errors: [
+        {
+          messageId: 'conditionalInTest',
+          column: 3,
+          line: 2,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        it.only('foo', () => {
+          obj?.bar;
+        })
+      `,
+      options: [{ allowOptionalChaining: false }],
+      errors: [
+        {
+          messageId: 'conditionalInTest',
+          column: 3,
+          line: 2,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        test('foo', () => {
+          obj?.bar;
+        })
+      `,
+      options: [{ allowOptionalChaining: false }],
+      errors: [
+        {
+          messageId: 'conditionalInTest',
+          column: 3,
+          line: 2,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        xtest('foo', () => {
+          obj?.bar;
+        })
+      `,
+      options: [{ allowOptionalChaining: false }],
+      errors: [
+        {
+          messageId: 'conditionalInTest',
+          column: 3,
+          line: 2,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        fit('foo', () => {
+          obj?.bar;
+        })
+      `,
+      options: [{ allowOptionalChaining: false }],
+      errors: [
+        {
+          messageId: 'conditionalInTest',
+          column: 3,
+          line: 2,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        xit('foo', () => {
+          obj?.bar;
+        })
+      `,
+      options: [{ allowOptionalChaining: false }],
+      errors: [
+        {
+          messageId: 'conditionalInTest',
+          column: 3,
+          line: 2,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        describe('foo', () => {
+          it('bar', () => {
+            obj?.bar;
+          })
+        })
+      `,
+      options: [{ allowOptionalChaining: false }],
+      errors: [
+        {
+          messageId: 'conditionalInTest',
+          column: 5,
+          line: 3,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        it('is invalid', () => {
+          const values = something.map(thing => thing?.foo);
+
+          expect(values).toStrictEqual(['foo']);
+        });
+      `,
+      options: [{ allowOptionalChaining: false }],
+      errors: [
+        {
+          messageId: 'conditionalInTest',
+          column: 41,
+          line: 2,
         },
       ],
     },

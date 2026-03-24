@@ -1,4 +1,6 @@
-# Disallow using `jest.mock()` factories without an explicit type parameter (`no-untyped-mock-factory`)
+# jest/no-untyped-mock-factory
+
+📝 Disallow using `jest.mock()` factories without an explicit type parameter.
 
 🔧 This rule is automatically fixable by the
 [`--fix` CLI option](https://eslint.org/docs/latest/user-guide/command-line-interface#--fix).

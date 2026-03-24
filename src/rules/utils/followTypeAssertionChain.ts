@@ -10,13 +10,15 @@ type TSTypeCastExpression<
 
 interface AsExpressionChain<
   Expression extends TSESTree.Expression = TSESTree.Expression,
-> extends TSESTree.TSAsExpression {
+>
+  extends TSESTree.TSAsExpression {
   expression: AsExpressionChain<Expression> | Expression;
 }
 
 interface TypeAssertionChain<
   Expression extends TSESTree.Expression = TSESTree.Expression,
-> extends TSESTree.TSTypeAssertion {
+>
+  extends TSESTree.TSTypeAssertion {
   expression: TypeAssertionChain<Expression> | Expression;
 }
 

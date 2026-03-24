@@ -1,4 +1,6 @@
-# Disallow focused tests (`no-focused-tests`)
+# jest/no-focused-tests
+
+📝 Disallow focused tests.
 
 💼 This rule is enabled in the ✅ `recommended`
 [config](https://github.com/jest-community/eslint-plugin-jest/blob/main/README.md#shareable-configurations).

@@ -1,4 +1,6 @@
-# Require promises that have expectations in their chain to be valid (`valid-expect-in-promise`)
+# jest/valid-expect-in-promise
+
+📝 Require promises that have expectations in their chain to be valid.
 
 💼 This rule is enabled in the ✅ `recommended`
 [config](https://github.com/jest-community/eslint-plugin-jest/blob/main/README.md#shareable-configurations).

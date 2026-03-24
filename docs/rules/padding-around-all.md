@@ -1,4 +1,6 @@
-# Enforce padding around Jest functions (`padding-around-all`)
+# jest/padding-around-all
+
+📝 Enforce padding around Jest functions.
 
 🔧 This rule is automatically fixable by the
 [`--fix` CLI option](https://eslint.org/docs/latest/user-guide/command-line-interface#--fix).

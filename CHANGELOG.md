@@ -1,3 +1,186 @@
+# [29.15.0](https://github.com/jest-community/eslint-plugin-jest/compare/v29.14.0...v29.15.0) (2026-02-15)
+
+
+### Features
+
+* **no-conditional-in-test:** only report optional chaining when `allowOptionalChaining` is false ([#1934](https://github.com/jest-community/eslint-plugin-jest/issues/1934)) ([3f5751e](https://github.com/jest-community/eslint-plugin-jest/commit/3f5751e42786a303ac9cd1c1442a7e4aea4c0513))
+
+# [29.14.0](https://github.com/jest-community/eslint-plugin-jest/compare/v29.13.0...v29.14.0) (2026-02-12)
+
+
+### Features
+
+* **no-conditional-in-test:** ban optional chaining ([#1933](https://github.com/jest-community/eslint-plugin-jest/issues/1933)) ([6406493](https://github.com/jest-community/eslint-plugin-jest/commit/64064939d0df526c6ed063a52f7802d76d70bed7))
+
+# [29.13.0](https://github.com/jest-community/eslint-plugin-jest/compare/v29.12.2...v29.13.0) (2026-02-08)
+
+
+### Features
+
+* support ESLint v10 ([#1929](https://github.com/jest-community/eslint-plugin-jest/issues/1929)) ([7735c44](https://github.com/jest-community/eslint-plugin-jest/commit/7735c44b285b3969066e206c71d5f77e20590446))
+
+## [29.12.2](https://github.com/jest-community/eslint-plugin-jest/compare/v29.12.1...v29.12.2) (2026-02-03)
+
+
+### Bug Fixes
+
+* add optional peer dependency on TypeScript ([#1926](https://github.com/jest-community/eslint-plugin-jest/issues/1926)) ([82e3b04](https://github.com/jest-community/eslint-plugin-jest/commit/82e3b043d15d3b9fbffc263fb57631ebe56f9ea7))
+
+## [29.12.1](https://github.com/jest-community/eslint-plugin-jest/compare/v29.12.0...v29.12.1) (2026-01-02)
+
+
+### Bug Fixes
+
+* **no-unnecessary-assertion:** don't report for `any` and `unknown` types ([#1918](https://github.com/jest-community/eslint-plugin-jest/issues/1918)) ([388a36c](https://github.com/jest-community/eslint-plugin-jest/commit/388a36cdb0feb04d04bff4f1398e448aabfeaf8c))
+
+# [29.12.0](https://github.com/jest-community/eslint-plugin-jest/compare/v29.11.4...v29.12.0) (2025-12-30)
+
+
+### Features
+
+* **prefer-mock-return-shorthand:** greatly improve checking if mutable variables are used ([#1914](https://github.com/jest-community/eslint-plugin-jest/issues/1914)) ([13bbd20](https://github.com/jest-community/eslint-plugin-jest/commit/13bbd20dccbd58d9d5b23a1966aca7e8323b27fe))
+
+## [29.11.4](https://github.com/jest-community/eslint-plugin-jest/compare/v29.11.3...v29.11.4) (2025-12-30)
+
+
+### Bug Fixes
+
+* **prefer-mock-return-shorthand:** ignore use of update expressions ([#1913](https://github.com/jest-community/eslint-plugin-jest/issues/1913)) ([5713ac9](https://github.com/jest-community/eslint-plugin-jest/commit/5713ac91804d31f925aeda89ff279d499b650515))
+
+## [29.11.3](https://github.com/jest-community/eslint-plugin-jest/compare/v29.11.2...v29.11.3) (2025-12-30)
+
+
+### Bug Fixes
+
+* **prefer-mock-return-shorthand:** ignore async implementations ([#1912](https://github.com/jest-community/eslint-plugin-jest/issues/1912)) ([80288e2](https://github.com/jest-community/eslint-plugin-jest/commit/80288e270d1d631a20fb4d194525ac1f84a41134))
+
+## [29.11.2](https://github.com/jest-community/eslint-plugin-jest/compare/v29.11.1...v29.11.2) (2025-12-29)
+
+
+### Bug Fixes
+
+* **prefer-mock-return-shorthand:** don't report mutable implementations ([#1908](https://github.com/jest-community/eslint-plugin-jest/issues/1908)) ([b164700](https://github.com/jest-community/eslint-plugin-jest/commit/b1647001613183fbaa406e160810b68c58f96a36))
+
+## [29.11.1](https://github.com/jest-community/eslint-plugin-jest/compare/v29.11.0...v29.11.1) (2025-12-29)
+
+
+### Bug Fixes
+
+* **unbound-method:** ignore inline use of `jest.mocked(...)` ([#1862](https://github.com/jest-community/eslint-plugin-jest/issues/1862)) ([3a50b97](https://github.com/jest-community/eslint-plugin-jest/commit/3a50b97b2c7a2bf33552ca2b56ea24017bee09cc))
+
+# [29.11.0](https://github.com/jest-community/eslint-plugin-jest/compare/v29.10.1...v29.11.0) (2025-12-23)
+
+
+### Features
+
+* create new `prefer-mock-return-shorthand` rule ([#1897](https://github.com/jest-community/eslint-plugin-jest/issues/1897)) ([0eb94b6](https://github.com/jest-community/eslint-plugin-jest/commit/0eb94b6b8b70623e55af1fe7c575edd2c35e00f8))
+
+## [29.10.1](https://github.com/jest-community/eslint-plugin-jest/compare/v29.10.0...v29.10.1) (2025-12-22)
+
+
+### Bug Fixes
+
+* **valid-expect-in-promise:** don't crash on `it.todo` ([#1896](https://github.com/jest-community/eslint-plugin-jest/issues/1896)) ([5511258](https://github.com/jest-community/eslint-plugin-jest/commit/55112586c4a42ccf83783b0d2c81dc09542b50e3))
+
+# [29.10.0](https://github.com/jest-community/eslint-plugin-jest/compare/v29.9.0...v29.10.0) (2025-12-22)
+
+
+### Features
+
+* **valid-title:** ensure printf specifiers in `.each` titles are valid ([#1892](https://github.com/jest-community/eslint-plugin-jest/issues/1892)) ([5db9b3b](https://github.com/jest-community/eslint-plugin-jest/commit/5db9b3b378a627352e44f764d08422b5962541f6))
+
+# [29.9.0](https://github.com/jest-community/eslint-plugin-jest/compare/v29.8.0...v29.9.0) (2025-12-22)
+
+
+### Features
+
+* **no-unnecessary-assertion:** support `toBeNaN` too ([#1890](https://github.com/jest-community/eslint-plugin-jest/issues/1890)) ([1dd5e5d](https://github.com/jest-community/eslint-plugin-jest/commit/1dd5e5d685202177aec147111b728dbf91088330))
+
+# [29.8.0](https://github.com/jest-community/eslint-plugin-jest/compare/v29.7.0...v29.8.0) (2025-12-22)
+
+
+### Features
+
+* create new `valid-expect-with-promise` rule ([#1888](https://github.com/jest-community/eslint-plugin-jest/issues/1888)) ([753e5bb](https://github.com/jest-community/eslint-plugin-jest/commit/753e5bb70779f4085cd0d4e41d19c86e251d4779))
+
+# [29.7.0](https://github.com/jest-community/eslint-plugin-jest/compare/v29.6.1...v29.7.0) (2025-12-22)
+
+
+### Features
+
+* create new `no-error-equal` rule ([#1886](https://github.com/jest-community/eslint-plugin-jest/issues/1886)) ([930edc4](https://github.com/jest-community/eslint-plugin-jest/commit/930edc4e54a67133ce7070f235eb8900aa0610fb))
+
+## [29.6.1](https://github.com/jest-community/eslint-plugin-jest/compare/v29.6.0...v29.6.1) (2025-12-22)
+
+
+### Bug Fixes
+
+* **no-unnecessary-assertion:** ignore `resolve` and `reject` chains (for now) ([#1887](https://github.com/jest-community/eslint-plugin-jest/issues/1887)) ([64a5f0c](https://github.com/jest-community/eslint-plugin-jest/commit/64a5f0c90a3fce91921826d8495a548cb44d5e35))
+
+# [29.6.0](https://github.com/jest-community/eslint-plugin-jest/compare/v29.5.0...v29.6.0) (2025-12-21)
+
+
+### Features
+
+* create new `no-unnecessary-assertion` rule ([#1882](https://github.com/jest-community/eslint-plugin-jest/issues/1882)) ([6a7db49](https://github.com/jest-community/eslint-plugin-jest/commit/6a7db490886460e2c853c259cd295746180dec5b))
+
+# [29.5.0](https://github.com/jest-community/eslint-plugin-jest/compare/v29.4.1...v29.5.0) (2025-12-14)
+
+
+### Features
+
+* create new `no-unneeded-async-expect-function` rule ([#1863](https://github.com/jest-community/eslint-plugin-jest/issues/1863)) ([6b8182d](https://github.com/jest-community/eslint-plugin-jest/commit/6b8182d7382b68c4bce14b5a9dcd8c6c0dab5aa6))
+
+## [29.4.1](https://github.com/jest-community/eslint-plugin-jest/compare/v29.4.0...v29.4.1) (2025-12-14)
+
+
+### Bug Fixes
+
+* **prefer-to-have-been-called-times:** actually check that current matcher is `toHaveLength` ([#1878](https://github.com/jest-community/eslint-plugin-jest/issues/1878)) ([3415744](https://github.com/jest-community/eslint-plugin-jest/commit/341574473a4151f8182e6d6dd41fdd5de6d88058))
+
+# [29.4.0](https://github.com/jest-community/eslint-plugin-jest/compare/v29.3.0...v29.4.0) (2025-12-13)
+
+
+### Features
+
+* create new `prefer-to-have-been-called-times` rule ([281085a](https://github.com/jest-community/eslint-plugin-jest/commit/281085ac5df90b77f8d4bbb7720f17d720add762))
+* create new `prefer-to-have-been-called` rule ([24e2acd](https://github.com/jest-community/eslint-plugin-jest/commit/24e2acd12004731d8162d8eb78eda8385ce896d7))
+
+# [29.3.0](https://github.com/jest-community/eslint-plugin-jest/compare/v29.2.3...v29.3.0) (2025-12-13)
+
+
+### Features
+
+* **prefer-expect-assertions:** support basic uses of `hasAssertions` in `beforeEach` and `afterEach` hooks ([#1871](https://github.com/jest-community/eslint-plugin-jest/issues/1871)) ([eed9acb](https://github.com/jest-community/eslint-plugin-jest/commit/eed9acb98a9d2a64abb42dba2af4a2f36838caff))
+
+## [29.2.3](https://github.com/jest-community/eslint-plugin-jest/compare/v29.2.2...v29.2.3) (2025-12-13)
+
+
+### Bug Fixes
+
+* **prefer-expect-assertions:** use correct word in error message ([#1873](https://github.com/jest-community/eslint-plugin-jest/issues/1873)) ([c48c48c](https://github.com/jest-community/eslint-plugin-jest/commit/c48c48c9d03ed04eda01a78959ab7f794e1fa448))
+
+## [29.2.2](https://github.com/jest-community/eslint-plugin-jest/compare/v29.2.1...v29.2.2) (2025-12-12)
+
+
+### Bug Fixes
+
+* **no-export:** report on `export =` usage ([#1870](https://github.com/jest-community/eslint-plugin-jest/issues/1870)) ([9d90466](https://github.com/jest-community/eslint-plugin-jest/commit/9d90466af1849270ae1652d05f6f233f4f43c8d6))
+
+## [29.2.1](https://github.com/jest-community/eslint-plugin-jest/compare/v29.2.0...v29.2.1) (2025-11-23)
+
+
+### Bug Fixes
+
+* **valid-mock-module-path:** report on `ERR_PACKAGE_PATH_NOT_EXPORTED` errors ([#1860](https://github.com/jest-community/eslint-plugin-jest/issues/1860)) ([6cd4e89](https://github.com/jest-community/eslint-plugin-jest/commit/6cd4e89da0cc2dafbc4b9659800f33143229b7f6))
+
+# [29.2.0](https://github.com/jest-community/eslint-plugin-jest/compare/v29.1.0...v29.2.0) (2025-11-20)
+
+
+### Features
+
+* create new `valid-mock-module-path` rule ([#1845](https://github.com/jest-community/eslint-plugin-jest/issues/1845)) ([a8625f1](https://github.com/jest-community/eslint-plugin-jest/commit/a8625f1e77758aacb1daedc4eb628050a797082a))
+
 # [29.1.0](https://github.com/jest-community/eslint-plugin-jest/compare/v29.0.1...v29.1.0) (2025-11-10)
 
 

@@ -1,4 +1,6 @@
-# Suggest using `toStrictEqual()` (`prefer-strict-equal`)
+# jest/prefer-strict-equal
+
+📝 Suggest using `toStrictEqual()`.
 
 💡 This rule is manually fixable by
 [editor suggestions](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions).

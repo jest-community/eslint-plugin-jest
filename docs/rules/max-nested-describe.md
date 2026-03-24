@@ -1,4 +1,6 @@
-# Enforces a maximum depth to nested describe calls (`max-nested-describe`)
+# jest/max-nested-describe
+
+📝 Enforces a maximum depth to nested describe calls.
 
 <!-- end auto-generated rule header -->
 

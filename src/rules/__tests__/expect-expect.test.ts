@@ -1,4 +1,3 @@
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import dedent from 'dedent';
 import rule from '../expect-expect';
 import { FlatCompatRuleTester as RuleTester, espreeParser } from './test-utils';
@@ -93,7 +92,10 @@ ruleTester.run('expect-expect', rule, {
       errors: [
         {
           messageId: 'noAssertions',
-          type: AST_NODE_TYPES.Identifier,
+          line: 1,
+          column: 1,
+          endLine: 1,
+          endColumn: 3,
         },
       ],
     },
@@ -102,7 +104,10 @@ ruleTester.run('expect-expect', rule, {
       errors: [
         {
           messageId: 'noAssertions',
-          type: AST_NODE_TYPES.Identifier,
+          line: 1,
+          column: 1,
+          endLine: 1,
+          endColumn: 3,
         },
       ],
     },
@@ -111,7 +116,10 @@ ruleTester.run('expect-expect', rule, {
       errors: [
         {
           messageId: 'noAssertions',
-          type: AST_NODE_TYPES.Identifier,
+          line: 1,
+          column: 1,
+          endLine: 1,
+          endColumn: 5,
         },
       ],
     },
@@ -120,7 +128,10 @@ ruleTester.run('expect-expect', rule, {
       errors: [
         {
           messageId: 'noAssertions',
-          type: AST_NODE_TYPES.MemberExpression,
+          line: 1,
+          column: 1,
+          endLine: 1,
+          endColumn: 10,
         },
       ],
     },
@@ -130,7 +141,10 @@ ruleTester.run('expect-expect', rule, {
       errors: [
         {
           messageId: 'noAssertions',
-          type: AST_NODE_TYPES.Identifier,
+          line: 1,
+          column: 1,
+          endLine: 1,
+          endColumn: 10,
         },
       ],
     },
@@ -144,7 +158,10 @@ ruleTester.run('expect-expect', rule, {
       errors: [
         {
           messageId: 'noAssertions',
-          type: AST_NODE_TYPES.Identifier,
+          line: 1,
+          column: 1,
+          endLine: 1,
+          endColumn: 14,
         },
       ],
     },
@@ -153,7 +170,10 @@ ruleTester.run('expect-expect', rule, {
       errors: [
         {
           messageId: 'noAssertions',
-          type: AST_NODE_TYPES.Identifier,
+          line: 1,
+          column: 1,
+          endLine: 1,
+          endColumn: 3,
         },
       ],
     },
@@ -163,7 +183,10 @@ ruleTester.run('expect-expect', rule, {
       errors: [
         {
           messageId: 'noAssertions',
-          type: AST_NODE_TYPES.Identifier,
+          line: 1,
+          column: 1,
+          endLine: 1,
+          endColumn: 5,
         },
       ],
     },
@@ -173,7 +196,10 @@ ruleTester.run('expect-expect', rule, {
       errors: [
         {
           messageId: 'noAssertions',
-          type: AST_NODE_TYPES.Identifier,
+          line: 1,
+          column: 1,
+          endLine: 1,
+          endColumn: 3,
         },
       ],
     },
@@ -235,7 +261,10 @@ ruleTester.run('wildcards', rule, {
       errors: [
         {
           messageId: 'noAssertions',
-          type: AST_NODE_TYPES.Identifier,
+          line: 1,
+          column: 1,
+          endLine: 1,
+          endColumn: 5,
         },
       ],
     },
@@ -245,7 +274,10 @@ ruleTester.run('wildcards', rule, {
       errors: [
         {
           messageId: 'noAssertions',
-          type: AST_NODE_TYPES.Identifier,
+          line: 1,
+          column: 1,
+          endLine: 1,
+          endColumn: 5,
         },
       ],
     },
@@ -255,7 +287,10 @@ ruleTester.run('wildcards', rule, {
       errors: [
         {
           messageId: 'noAssertions',
-          type: AST_NODE_TYPES.Identifier,
+          line: 1,
+          column: 1,
+          endLine: 1,
+          endColumn: 5,
         },
       ],
     },
@@ -265,7 +300,10 @@ ruleTester.run('wildcards', rule, {
       errors: [
         {
           messageId: 'noAssertions',
-          type: AST_NODE_TYPES.Identifier,
+          line: 1,
+          column: 1,
+          endLine: 1,
+          endColumn: 5,
         },
       ],
     },
@@ -275,7 +313,10 @@ ruleTester.run('wildcards', rule, {
       errors: [
         {
           messageId: 'noAssertions',
-          type: AST_NODE_TYPES.Identifier,
+          line: 1,
+          column: 1,
+          endLine: 1,
+          endColumn: 5,
         },
       ],
     },
@@ -338,7 +379,10 @@ ruleTester.run('expect-expect (aliases)', rule, {
       errors: [
         {
           messageId: 'noAssertions',
-          type: AST_NODE_TYPES.Identifier,
+          line: 3,
+          column: 1,
+          endLine: 3,
+          endColumn: 10,
         },
       ],
     },
@@ -354,7 +398,10 @@ ruleTester.run('expect-expect (aliases)', rule, {
       errors: [
         {
           messageId: 'noAssertions',
-          type: AST_NODE_TYPES.MemberExpression,
+          line: 3,
+          column: 1,
+          endLine: 3,
+          endColumn: 15,
         },
       ],
     },

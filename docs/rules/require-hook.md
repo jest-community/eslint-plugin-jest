@@ -1,4 +1,6 @@
-# Require setup and teardown code to be within a hook (`require-hook`)
+# jest/require-hook
+
+📝 Require setup and teardown code to be within a hook.
 
 <!-- end auto-generated rule header -->
 

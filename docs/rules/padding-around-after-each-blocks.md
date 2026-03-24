@@ -1,4 +1,6 @@
-# Enforce padding around `afterEach` blocks (`padding-around-after-each-blocks`)
+# jest/padding-around-after-each-blocks
+
+📝 Enforce padding around `afterEach` blocks.
 
 🔧 This rule is automatically fixable by the
 [`--fix` CLI option](https://eslint.org/docs/latest/user-guide/command-line-interface#--fix).

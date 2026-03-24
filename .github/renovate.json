@@ -10,6 +10,10 @@
     {
       "matchFileNames": [".github/**"],
       "groupName": "workflows"
+    },
+    {
+      "matchDepTypes": ["uses-with"],
+      "enabled": false
     }
   ]
 }

@@ -1,4 +1,6 @@
-# Enforce padding around `expect` groups (`padding-around-expect-groups`)
+# jest/padding-around-expect-groups
+
+📝 Enforce padding around `expect` groups.
 
 🔧 This rule is automatically fixable by the
 [`--fix` CLI option](https://eslint.org/docs/latest/user-guide/command-line-interface#--fix).

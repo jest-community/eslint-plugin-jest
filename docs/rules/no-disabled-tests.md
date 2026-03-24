@@ -1,4 +1,6 @@
-# Disallow disabled tests (`no-disabled-tests`)
+# jest/no-disabled-tests
+
+📝 Disallow disabled tests.
 
 ⚠️ This rule _warns_ in the ✅ `recommended`
 [config](https://github.com/jest-community/eslint-plugin-jest/blob/main/README.md#shareable-configurations).

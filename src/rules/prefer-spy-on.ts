@@ -48,7 +48,7 @@ const getAutoFixMockImplementation = (
   context: TSESLint.RuleContext<'useJestSpyOn', unknown[]>,
 ): string => {
   const hasMockImplementationAlready =
-    jestFnCall.parent?.type === AST_NODE_TYPES.MemberExpression &&
+    jestFnCall.parent.type === AST_NODE_TYPES.MemberExpression &&
     jestFnCall.parent.property.type === AST_NODE_TYPES.Identifier &&
     jestFnCall.parent.property.name === 'mockImplementation';
 

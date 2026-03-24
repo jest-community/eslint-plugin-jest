@@ -1,4 +1,6 @@
-# Enforces a maximum number assertion calls in a test body (`max-expects`)
+# jest/max-expects
+
+📝 Enforces a maximum number assertion calls in a test body.
 
 <!-- end auto-generated rule header -->
 

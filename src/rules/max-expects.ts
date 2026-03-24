@@ -36,7 +36,7 @@ export default createRule({
 
     const maybeResetCount = (node: FunctionExpression) => {
       const isTestFn =
-        node.parent?.type !== AST_NODE_TYPES.CallExpression ||
+        node.parent.type !== AST_NODE_TYPES.CallExpression ||
         isTypeOfJestFnCall(node.parent, context, ['test']);
 
       if (isTestFn) {
@@ -58,7 +58,7 @@ export default createRule({
 
         if (
           jestFnCall?.type !== 'expect' ||
-          jestFnCall.head.node.parent?.type === AST_NODE_TYPES.MemberExpression
+          jestFnCall.head.node.parent.type === AST_NODE_TYPES.MemberExpression
         ) {
           return;
         }

@@ -1,4 +1,6 @@
-# Enforce `test` and `it` usage conventions (`consistent-test-it`)
+# jest/consistent-test-it
+
+📝 Enforce `test` and `it` usage conventions.
 
 🔧 This rule is automatically fixable by the
 [`--fix` CLI option](https://eslint.org/docs/latest/user-guide/command-line-interface#--fix).

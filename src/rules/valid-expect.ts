@@ -28,7 +28,6 @@ import {
 const getPromiseCallExpressionNode = (node: TSESTree.Node) => {
   if (
     node.type === AST_NODE_TYPES.ArrayExpression &&
-    node.parent &&
     node.parent.type === AST_NODE_TYPES.CallExpression
   ) {
     node = node.parent;
@@ -37,8 +36,7 @@ const getPromiseCallExpressionNode = (node: TSESTree.Node) => {
   if (
     node.type === AST_NODE_TYPES.CallExpression &&
     node.callee.type === AST_NODE_TYPES.MemberExpression &&
-    isSupportedAccessor(node.callee.object, 'Promise') &&
-    node.parent
+    isSupportedAccessor(node.callee.object, 'Promise')
   ) {
     return node;
   }
@@ -90,8 +88,7 @@ const getParentIfThenified = (node: TSESTree.Node): TSESTree.Node => {
     isSupportedAccessor(grandParentNode.callee.property) &&
     ['then', 'catch'].includes(
       getAccessorValue(grandParentNode.callee.property),
-    ) &&
-    grandParentNode.parent
+    )
   ) {
     // Just in case `then`s are chained look one above.
     return getParentIfThenified(grandParentNode);
@@ -112,7 +109,7 @@ const isAcceptableReturnNode = (
     return true;
   }
 
-  if (node.type === AST_NODE_TYPES.ConditionalExpression && node.parent) {
+  if (node.type === AST_NODE_TYPES.ConditionalExpression) {
     return isAcceptableReturnNode(node.parent, allowReturn);
   }
 
@@ -252,7 +249,7 @@ export default createRule<[Options], MessageIds>({
 
         if (typeof jestFnCall === 'string') {
           const reportingNode =
-            node.parent?.type === AST_NODE_TYPES.MemberExpression
+            node.parent.type === AST_NODE_TYPES.MemberExpression
               ? findTopMostMemberExpression(node.parent).property
               : node;
 
@@ -292,7 +289,7 @@ export default createRule<[Options], MessageIds>({
 
         const { parent: expect } = jestFnCall.head.node;
 
-        if (expect?.type !== AST_NODE_TYPES.CallExpression) {
+        if (expect.type !== AST_NODE_TYPES.CallExpression) {
           return;
         }
 

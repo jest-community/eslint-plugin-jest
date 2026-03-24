@@ -1,4 +1,6 @@
-# Suggest having hooks before any test cases (`prefer-hooks-on-top`)
+# jest/prefer-hooks-on-top
+
+📝 Suggest having hooks before any test cases.
 
 <!-- end auto-generated rule header -->
 

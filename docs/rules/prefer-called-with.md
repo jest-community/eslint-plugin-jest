@@ -1,10 +1,12 @@
-# Suggest using `toBeCalledWith()` or `toHaveBeenCalledWith()` (`prefer-called-with`)
+# jest/prefer-called-with
+
+📝 Suggest using `toHaveBeenCalledWith()`.
 
 <!-- end auto-generated rule header -->
 
-The `toBeCalled()` matcher is used to assert that a mock function has been
+The `toHaveBeenCalled()` matcher is used to assert that a mock function has been
 called one or more times, without checking the arguments passed. The assertion
-is stronger when arguments are also validated using the `toBeCalledWith()`
+is stronger when arguments are also validated using the `toHaveBeenCalledWith()`
 matcher. When some arguments are difficult to check, using generic match like
 `expect.anything()` at least enforces number and position of arguments.
 
@@ -24,11 +26,14 @@ expect(someFunction).toHaveBeenCalled();
 The following patterns are not warnings:
 
 ```js
-expect(noArgsFunction).toBeCalledWith();
+expect(noArgsFunction).toHaveBeenCalledWith();
 
-expect(roughArgsFunction).toBeCalledWith(expect.anything(), expect.any(Date));
+expect(roughArgsFunction).toHaveBeenCalledWith(
+  expect.anything(),
+  expect.any(Date),
+);
 
-expect(anyArgsFunction).toBeCalledTimes(1);
+expect(anyArgsFunction).toHaveBeenCalledTimes(1);
 
-expect(uncalledFunction).not.toBeCalled();
+expect(uncalledFunction).not.toHaveBeenCalled();
 ```

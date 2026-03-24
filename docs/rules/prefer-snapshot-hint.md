@@ -1,4 +1,6 @@
-# Prefer including a hint with external snapshots (`prefer-snapshot-hint`)
+# jest/prefer-snapshot-hint
+
+📝 Prefer including a hint with external snapshots.
 
 <!-- end auto-generated rule header -->
 

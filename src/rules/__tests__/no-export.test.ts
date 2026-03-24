@@ -65,6 +65,12 @@ ruleTester.run('no-export', rule, {
       errors: [{ endColumn: 29, column: 1, messageId: 'unexpectedExport' }],
     },
     {
+      code: 'export = function() {}; test("a test", () => { expect(1).toBe(1);});',
+      parser: require.resolve('@typescript-eslint/parser'),
+      parserOptions: { sourceType: 'module' },
+      errors: [{ endColumn: 24, column: 1, messageId: 'unexpectedExport' }],
+    },
+    {
       code: 'module.exports["invalid"] = function() {};  test("a test", () => { expect(1).toBe(1);});',
       errors: [{ endColumn: 26, column: 1, messageId: 'unexpectedExport' }],
     },

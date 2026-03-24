@@ -1,4 +1,6 @@
-# Disallow commented out tests (`no-commented-out-tests`)
+# jest/no-commented-out-tests
+
+📝 Disallow commented out tests.
 
 ⚠️ This rule _warns_ in the ✅ `recommended`
 [config](https://github.com/jest-community/eslint-plugin-jest/blob/main/README.md#shareable-configurations).
