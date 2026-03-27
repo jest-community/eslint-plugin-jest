@@ -45,7 +45,7 @@ const { TSESLintPluginRef, requireRule, withFixtureFilename } =
   );
 
 ruleWithoutTypeInfoTester.run(
-  'valid-title without parser services',
+  'title-must-be-string without typecheck services',
   requireRule(false),
   {
     valid: ["it('is a string', () => {});"],
@@ -57,16 +57,6 @@ ruleWithoutTypeInfoTester.run(
     ],
   },
 );
-
-typecheckRuleTester.run('valid-title with typescript', requireRule(false), {
-  valid: withFixtureFilename([
-    {
-      code: "const title: string = 'is a string'; it(title, () => {});",
-      options: [{ typecheck: true }],
-    },
-  ]),
-  invalid: [],
-});
 
 describe('typecheck option availability', () => {
   const parser = '@typescript-eslint/parser';
@@ -86,39 +76,6 @@ describe('typecheck option availability', () => {
 
   it('does not require typescript when the rule is imported', () => {
     expect(() => requireRule(true)).not.toThrow();
-  });
-
-  it('can be used without typechecking available', () => {
-    const linter = createLinter();
-
-    expect(() =>
-      linter.verify("const title = 'is a string'; it(title, () => {});", {
-        parser,
-        parserOptions: { sourceType: 'module' },
-        rules: { 'valid-title': ['error'] },
-      }),
-    ).not.toThrow();
-  });
-
-  it('can be used with typescript available', () => {
-    const linter = createLinter();
-
-    expect(() =>
-      linter.verify(
-        "const title: string = 'is a string'; it(title, () => {});",
-        {
-          parser,
-          parserOptions: {
-            sourceType: 'module',
-            tsconfigRootDir: rootPath,
-            project: './tsconfig.json',
-            disallowAutomaticSingleRunInference: true,
-          },
-          rules: { 'valid-title': ['error', { typecheck: true }] },
-        },
-        fixtureFilename,
-      ),
-    ).not.toThrow();
   });
 
   it('errors with typecheck enabled but no typechecking available', () => {
@@ -156,6 +113,91 @@ describe('typecheck option availability', () => {
     ).toThrow();
   });
 });
+
+typecheckRuleTester.run(
+  'title-must-be-string (typecheck option)',
+  requireRule(false),
+  {
+    valid: withFixtureFilename([
+      {
+        code: dedent`
+          let nameBase = "My name: ";
+
+          const makeName = (suffix: string) => \`first $\{suffix}\`;
+
+          describe(makeName("second"), () => { /* ... */ })
+        `,
+        options: [{ typecheck: true }],
+      },
+      {
+        code: dedent`
+          const title: string = 'is a string';
+
+          it(title, () => {});
+        `,
+        options: [{ typecheck: true }],
+      },
+      {
+        code: dedent`
+          const title = String(/.+/);
+
+          describe(title, () => {});
+        `,
+        options: [{ typecheck: true }],
+      },
+      {
+        code: dedent`
+          const title = Math.random() > 0.5 ? String(1) : 123;
+
+          it(title, () => {});
+        `,
+        options: [{ typecheck: true }],
+      },
+      {
+        code: dedent`
+          const maybeTitle =
+            Math.random() > 0.5 ? undefined : String('configured');
+          const title = maybeTitle ?? 'fallback';
+
+          test(title, () => {});
+        `,
+        options: [{ typecheck: true }],
+      },
+    ]),
+    invalid: withFixtureFilename([
+      {
+        code: dedent`
+          const title = 123;
+
+          it(title, () => {});
+        `,
+        options: [{ typecheck: true }],
+        errors: [
+          {
+            messageId: 'titleMustBeString',
+            column: 4,
+            line: 3,
+          },
+        ],
+      },
+      {
+        code: dedent`
+          const title = () => 'is a string';
+
+          describe(title, () => {});
+        `,
+        options: [{ typecheck: true }],
+        errors: [
+          {
+            messageId: 'titleMustBeString',
+            column: 10,
+            line: 3,
+          },
+        ],
+      },
+    ]),
+  },
+);
 
 ruleTester.run('disallowedWords option', rule, {
   valid: [
@@ -1683,94 +1725,6 @@ ruleTester.run('valid-title (each printf checking)', rule, {
           data: { specifier: '%x' },
           column: 20,
           line: 7,
-        },
-      ],
-    },
-  ],
-});
-
-typecheckRuleTester.run('title-must-be-string (typecheck option)', rule, {
-  valid: [
-    {
-      filename: fixtureFilename,
-      code: dedent`
-        let nameBase = "My name: ";
-
-        const makeName = (suffix: string) => \`first $\{suffix}\`;
-
-        describe(makeName("second"), () => { /* ... */ })
-      `,
-      options: [{ typecheck: true }],
-    },
-    {
-      filename: fixtureFilename,
-      code: dedent`
-        const title: string = 'is a string';
-
-        it(title, () => {});
-      `,
-      options: [{ typecheck: true }],
-    },
-    {
-      filename: fixtureFilename,
-      code: dedent`
-        const title = String(/.+/);
-
-        describe(title, () => {});
-      `,
-      options: [{ typecheck: true }],
-    },
-    {
-      filename: fixtureFilename,
-      code: dedent`
-        const title = Math.random() > 0.5 ? String(1) : 123;
-
-        it(title, () => {});
-      `,
-      options: [{ typecheck: true }],
-    },
-    {
-      filename: fixtureFilename,
-      code: dedent`
-        const maybeTitle =
-          Math.random() > 0.5 ? undefined : String('configured');
-        const title = maybeTitle ?? 'fallback';
-
-        test(title, () => {});
-      `,
-      options: [{ typecheck: true }],
-    },
-  ],
-  invalid: [
-    {
-      filename: fixtureFilename,
-      code: dedent`
-        const title = 123;
-
-        it(title, () => {});
-      `,
-      options: [{ typecheck: true }],
-      errors: [
-        {
-          messageId: 'titleMustBeString',
-          column: 4,
-          line: 3,
-        },
-      ],
-    },
-    {
-      filename: fixtureFilename,
-      code: dedent`
-        const title = () => 'is a string';
-
-        describe(title, () => {});
-      `,
-      options: [{ typecheck: true }],
-      errors: [
-        {
-          messageId: 'titleMustBeString',
-          column: 10,
-          line: 3,
         },
       ],
     },
