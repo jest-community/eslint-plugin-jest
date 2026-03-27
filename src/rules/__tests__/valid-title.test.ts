@@ -1,13 +1,14 @@
 import path from 'path';
 import * as tsParser from '@typescript-eslint/parser';
+import { TSESLint } from '@typescript-eslint/utils';
 import dedent from 'dedent';
-import { Linter } from 'eslint';
 import rule from '../valid-title';
 import {
   FlatCompatRuleTester as RuleTester,
   createRuleRequirerTester,
   espreeParser,
   getFixturesRootDir,
+  usingFlatConfig,
 } from './test-utils';
 
 const rootPath = getFixturesRootDir();
@@ -39,10 +40,12 @@ describe('typecheck option availability', () => {
   const parser = '@typescript-eslint/parser';
 
   const createLinter = () => {
-    const linter = new Linter({ configType: 'eslintrc' });
+    const linter = new TSESLint.Linter();
 
-    linter.defineParser(parser, tsParser);
-    linter.defineRule('valid-title', requireRule(false));
+    if (!usingFlatConfig) {
+      linter.defineParser(parser, tsParser);
+      linter.defineRule('valid-title', requireRule(false));
+    }
 
     return linter;
   };
@@ -59,13 +62,29 @@ describe('typecheck option availability', () => {
     it('does not require typechecking', () => {
       const linter = createLinter();
 
-      expect(() =>
+      expect(() => {
+        /* istanbul ignore if */
+        if (usingFlatConfig) {
+          linter.verify("const title = 'is a string'; it(title, () => {});", [
+            {
+              plugins: { jest: { rules: { 'valid-title': rule } } },
+              languageOptions: {
+                parser: tsParser,
+                parserOptions: { sourceType: 'module' },
+              },
+              rules: { 'jest/valid-title': ['error', { typecheck: false }] },
+            },
+          ]);
+
+          return;
+        }
+
         linter.verify("const title = 'is a string'; it(title, () => {});", {
           parser,
           parserOptions: { sourceType: 'module' },
           rules: { 'valid-title': ['error', { typecheck: false }] },
-        }),
-      ).not.toThrow();
+        });
+      }).not.toThrow();
     });
 
     it('does not require typescript', () => {
@@ -73,7 +92,28 @@ describe('typecheck option availability', () => {
 
       TSESLintPluginRef.throwWhenRequiring = true;
 
-      expect(() =>
+      expect(() => {
+        /* istanbul ignore if */
+        if (usingFlatConfig) {
+          linter.verify("const title = 'is a string'; it(title, () => {});", [
+            {
+              plugins: { jest: { rules: { 'valid-title': rule } } },
+              languageOptions: {
+                parser: tsParser,
+                parserOptions: {
+                  sourceType: 'module',
+                  tsconfigRootDir: rootPath,
+                  project: './tsconfig.json',
+                  disallowAutomaticSingleRunInference: true,
+                },
+              },
+              rules: { 'jest/valid-title': ['error', { typecheck: false }] },
+            },
+          ]);
+
+          return;
+        }
+
         linter.verify(
           'const title = value; it(title, () => {});',
           {
@@ -87,8 +127,8 @@ describe('typecheck option availability', () => {
             rules: { 'valid-title': ['error', { typecheck: false }] },
           },
           fixtureFilename,
-        ),
-      ).not.toThrow();
+        );
+      }).not.toThrow();
     });
   });
 
@@ -96,13 +136,29 @@ describe('typecheck option availability', () => {
     it('requires typechecking', () => {
       const linter = createLinter();
 
-      expect(() =>
+      expect(() => {
+        /* istanbul ignore if */
+        if (usingFlatConfig) {
+          linter.verify("const title = 'is a string'; it(title, () => {});", [
+            {
+              plugins: { jest: { rules: { 'valid-title': rule } } },
+              languageOptions: {
+                parser: tsParser,
+                parserOptions: { sourceType: 'module' },
+              },
+              rules: { 'jest/valid-title': ['error', { typecheck: true }] },
+            },
+          ]);
+
+          return;
+        }
+
         linter.verify("const title = 'is a string'; it(title, () => {});", {
           parser,
           parserOptions: { sourceType: 'module' },
           rules: { 'valid-title': ['error', { typecheck: true }] },
-        }),
-      ).toThrow(/requires type information|parserOptions/iu);
+        });
+      }).toThrow(/requires type information|parserOptions/iu);
     });
 
     it('requires typescript', () => {
@@ -110,7 +166,28 @@ describe('typecheck option availability', () => {
 
       TSESLintPluginRef.throwWhenRequiring = true;
 
-      expect(() =>
+      expect(() => {
+        /* istanbul ignore if */
+        if (usingFlatConfig) {
+          linter.verify("const title = 'is a string'; it(title, () => {});", [
+            {
+              plugins: { jest: { rules: { 'valid-title': rule } } },
+              languageOptions: {
+                sourceType: 'module',
+                parser: tsParser,
+                parserOptions: {
+                  tsconfigRootDir: rootPath,
+                  project: './tsconfig.json',
+                  disallowAutomaticSingleRunInference: true,
+                },
+              },
+              rules: { 'jest/valid-title': ['error', { typecheck: true }] },
+            },
+          ]);
+
+          return;
+        }
+
         linter.verify(
           'const title = value; it(title, () => {});',
           {
@@ -124,8 +201,8 @@ describe('typecheck option availability', () => {
             rules: { 'valid-title': ['error', { typecheck: true }] },
           },
           fixtureFilename,
-        ),
-      ).toThrow();
+        );
+      }).toThrow('Occurred while linting');
     });
   });
 });
