@@ -1,8 +1,11 @@
 import path from 'path';
+import * as tsParser from '@typescript-eslint/parser';
 import dedent from 'dedent';
+import { Linter } from 'eslint';
 import rule from '../valid-title';
 import {
   FlatCompatRuleTester as RuleTester,
+  createRuleRequirerTester,
   espreeParser,
   getFixturesRootDir,
 } from './test-utils';
@@ -25,6 +28,133 @@ const typecheckRuleTester = new RuleTester({
     project: './tsconfig.json',
     disallowAutomaticSingleRunInference: true,
   },
+});
+
+const ruleWithoutTypeInfoTester = new RuleTester({
+  parser: require.resolve('@typescript-eslint/parser'),
+  parserOptions: {
+    sourceType: 'module',
+  },
+});
+
+const { TSESLintPluginRef, requireRule, withFixtureFilename } =
+  createRuleRequirerTester<readonly unknown[], string>(
+    '../valid-title',
+    'typescript',
+    fixtureFilename,
+  );
+
+ruleWithoutTypeInfoTester.run(
+  'valid-title without parser services',
+  requireRule(false),
+  {
+    valid: ["it('is a string', () => {});"],
+    invalid: [
+      {
+        code: "const title = 'is a string'; it(title, () => {});",
+        errors: [{ messageId: 'titleMustBeString' }],
+      },
+    ],
+  },
+);
+
+typecheckRuleTester.run('valid-title with typescript', requireRule(false), {
+  valid: withFixtureFilename([
+    {
+      code: "const title: string = 'is a string'; it(title, () => {});",
+      options: [{ typecheck: true }],
+    },
+  ]),
+  invalid: [],
+});
+
+describe('typecheck option availability', () => {
+  const parser = '@typescript-eslint/parser';
+
+  const createLinter = () => {
+    const linter = new Linter({ configType: 'eslintrc' });
+
+    linter.defineParser(parser, tsParser);
+    linter.defineRule('valid-title', requireRule(false));
+
+    return linter;
+  };
+
+  afterEach(() => {
+    TSESLintPluginRef.throwWhenRequiring = false;
+  });
+
+  it('does not require typescript when the rule is imported', () => {
+    expect(() => requireRule(true)).not.toThrow();
+  });
+
+  it('can be used without typechecking available', () => {
+    const linter = createLinter();
+
+    expect(() =>
+      linter.verify("const title = 'is a string'; it(title, () => {});", {
+        parser,
+        parserOptions: { sourceType: 'module' },
+        rules: { 'valid-title': ['error'] },
+      }),
+    ).not.toThrow();
+  });
+
+  it('can be used with typescript available', () => {
+    const linter = createLinter();
+
+    expect(() =>
+      linter.verify(
+        "const title: string = 'is a string'; it(title, () => {});",
+        {
+          parser,
+          parserOptions: {
+            sourceType: 'module',
+            tsconfigRootDir: rootPath,
+            project: './tsconfig.json',
+            disallowAutomaticSingleRunInference: true,
+          },
+          rules: { 'valid-title': ['error', { typecheck: true }] },
+        },
+        fixtureFilename,
+      ),
+    ).not.toThrow();
+  });
+
+  it('errors with typecheck enabled but no typechecking available', () => {
+    const linter = createLinter();
+
+    expect(() =>
+      linter.verify("const title = 'is a string'; it(title, () => {});", {
+        parser,
+        parserOptions: { sourceType: 'module' },
+        rules: { 'valid-title': ['error', { typecheck: true }] },
+      }),
+    ).toThrow(/requires type information|parserOptions/iu);
+  });
+
+  it('errors with typecheck enabled but without typescript available', () => {
+    const linter = createLinter();
+
+    TSESLintPluginRef.throwWhenRequiring = true;
+
+    expect(() =>
+      linter.verify(
+        'const title = value; it(title, () => {});',
+        {
+          parser,
+          parserOptions: {
+            sourceType: 'module',
+            tsconfigRootDir: rootPath,
+            project: './tsconfig.json',
+            disallowAutomaticSingleRunInference: true,
+          },
+          rules: { 'valid-title': ['error', { typecheck: true }] },
+        },
+        fixtureFilename,
+      ),
+    ).toThrow();
+  });
 });
 
 ruleTester.run('disallowedWords option', rule, {
