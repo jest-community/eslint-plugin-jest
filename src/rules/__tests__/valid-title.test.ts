@@ -13,30 +13,6 @@ import {
 const rootPath = getFixturesRootDir();
 const fixtureFilename = path.join(rootPath, 'file.ts');
 
-const ruleTester = new RuleTester({
-  parser: espreeParser,
-  parserOptions: {
-    ecmaVersion: 2017,
-  },
-});
-
-const typecheckRuleTester = new RuleTester({
-  parser: require.resolve('@typescript-eslint/parser'),
-  parserOptions: {
-    sourceType: 'module',
-    tsconfigRootDir: rootPath,
-    project: './tsconfig.json',
-    disallowAutomaticSingleRunInference: true,
-  },
-});
-
-const ruleWithoutTypeInfoTester = new RuleTester({
-  parser: require.resolve('@typescript-eslint/parser'),
-  parserOptions: {
-    sourceType: 'module',
-  },
-});
-
 const { TSESLintPluginRef, requireRule, withFixtureFilename } =
   createRuleRequirerTester<readonly unknown[], string>(
     '../valid-title',
@@ -44,19 +20,20 @@ const { TSESLintPluginRef, requireRule, withFixtureFilename } =
     fixtureFilename,
   );
 
-ruleWithoutTypeInfoTester.run(
-  'title-must-be-string without typecheck services',
-  requireRule(false),
-  {
-    valid: ["it('is a string', () => {});"],
-    invalid: [
-      {
-        code: "const title = 'is a string'; it(title, () => {});",
-        errors: [{ messageId: 'titleMustBeString' }],
-      },
-    ],
+new RuleTester({
+  parser: require.resolve('@typescript-eslint/parser'),
+  parserOptions: {
+    sourceType: 'module',
   },
-);
+}).run('title-must-be-string without typecheck services', requireRule(false), {
+  valid: ["it('is a string', () => {});"],
+  invalid: [
+    {
+      code: "const title = 'is a string'; it(title, () => {});",
+      errors: [{ messageId: 'titleMustBeString' }],
+    },
+  ],
+});
 
 describe('typecheck option availability', () => {
   const parser = '@typescript-eslint/parser';
@@ -114,90 +91,101 @@ describe('typecheck option availability', () => {
   });
 });
 
-typecheckRuleTester.run(
-  'title-must-be-string (typecheck option)',
-  requireRule(false),
-  {
-    valid: withFixtureFilename([
-      {
-        code: dedent`
+new RuleTester({
+  parser: require.resolve('@typescript-eslint/parser'),
+  parserOptions: {
+    sourceType: 'module',
+    tsconfigRootDir: rootPath,
+    project: './tsconfig.json',
+    disallowAutomaticSingleRunInference: true,
+  },
+}).run('title-must-be-string (typecheck option)', requireRule(false), {
+  valid: withFixtureFilename([
+    {
+      code: dedent`
           let nameBase = "My name: ";
 
           const makeName = (suffix: string) => \`first $\{suffix}\`;
 
           describe(makeName("second"), () => { /* ... */ })
         `,
-        options: [{ typecheck: true }],
-      },
-      {
-        code: dedent`
+      options: [{ typecheck: true }],
+    },
+    {
+      code: dedent`
           const title: string = 'is a string';
 
           it(title, () => {});
         `,
-        options: [{ typecheck: true }],
-      },
-      {
-        code: dedent`
+      options: [{ typecheck: true }],
+    },
+    {
+      code: dedent`
           const title = String(/.+/);
 
           describe(title, () => {});
         `,
-        options: [{ typecheck: true }],
-      },
-      {
-        code: dedent`
+      options: [{ typecheck: true }],
+    },
+    {
+      code: dedent`
           const title = Math.random() > 0.5 ? String(1) : 123;
 
           it(title, () => {});
         `,
-        options: [{ typecheck: true }],
-      },
-      {
-        code: dedent`
+      options: [{ typecheck: true }],
+    },
+    {
+      code: dedent`
           const maybeTitle =
             Math.random() > 0.5 ? undefined : String('configured');
           const title = maybeTitle ?? 'fallback';
 
           test(title, () => {});
         `,
-        options: [{ typecheck: true }],
-      },
-    ]),
-    invalid: withFixtureFilename([
-      {
-        code: dedent`
+      options: [{ typecheck: true }],
+    },
+  ]),
+  invalid: withFixtureFilename([
+    {
+      code: dedent`
           const title = 123;
 
           it(title, () => {});
         `,
-        options: [{ typecheck: true }],
-        errors: [
-          {
-            messageId: 'titleMustBeString',
-            column: 4,
-            line: 3,
-          },
-        ],
-      },
-      {
-        code: dedent`
+      options: [{ typecheck: true }],
+      errors: [
+        {
+          messageId: 'titleMustBeString',
+          column: 4,
+          line: 3,
+        },
+      ],
+    },
+    {
+      code: dedent`
           const title = () => 'is a string';
 
           describe(title, () => {});
         `,
-        options: [{ typecheck: true }],
-        errors: [
-          {
-            messageId: 'titleMustBeString',
-            column: 10,
-            line: 3,
-          },
-        ],
-      },
-    ]),
+      options: [{ typecheck: true }],
+      errors: [
+        {
+          messageId: 'titleMustBeString',
+          column: 10,
+          line: 3,
+        },
+      ],
+    },
+  ]),
+});
+
+const ruleTester = new RuleTester({
+  parser: espreeParser,
+  parserOptions: {
+    ecmaVersion: 2017,
   },
-);
+});
 
 ruleTester.run('disallowedWords option', rule, {
   valid: [
