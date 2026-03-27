@@ -215,7 +215,7 @@ export default createRule<[Options], MessageIds>({
     context,
     [
       {
-        typecheck = false,
+        typecheck,
         ignoreSpaces,
         ignoreTypeOfDescribeName,
         ignoreTypeOfTestName,
