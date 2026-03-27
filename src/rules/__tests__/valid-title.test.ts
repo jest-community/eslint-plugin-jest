@@ -1,11 +1,29 @@
+import path from 'path';
 import dedent from 'dedent';
 import rule from '../valid-title';
-import { FlatCompatRuleTester as RuleTester, espreeParser } from './test-utils';
+import {
+  FlatCompatRuleTester as RuleTester,
+  espreeParser,
+  getFixturesRootDir,
+} from './test-utils';
+
+const rootPath = getFixturesRootDir();
+const fixtureFilename = path.join(rootPath, 'file.ts');
 
 const ruleTester = new RuleTester({
   parser: espreeParser,
   parserOptions: {
     ecmaVersion: 2017,
+  },
+});
+
+const typecheckRuleTester = new RuleTester({
+  parser: require.resolve('@typescript-eslint/parser'),
+  parserOptions: {
+    sourceType: 'module',
+    tsconfigRootDir: rootPath,
+    project: './tsconfig.json',
+    disallowAutomaticSingleRunInference: true,
   },
 });
 
@@ -1535,6 +1553,94 @@ ruleTester.run('valid-title (each printf checking)', rule, {
           data: { specifier: '%x' },
           column: 20,
           line: 7,
+        },
+      ],
+    },
+  ],
+});
+
+typecheckRuleTester.run('title-must-be-string (typecheck option)', rule, {
+  valid: [
+    {
+      filename: fixtureFilename,
+      code: dedent`
+        let nameBase = "My name: ";
+
+        const makeName = (suffix: string) => \`first $\{suffix}\`;
+
+        describe(makeName("second"), () => { /* ... */ })
+      `,
+      options: [{ typecheck: true }],
+    },
+    {
+      filename: fixtureFilename,
+      code: dedent`
+        const title: string = 'is a string';
+
+        it(title, () => {});
+      `,
+      options: [{ typecheck: true }],
+    },
+    {
+      filename: fixtureFilename,
+      code: dedent`
+        const title = String(/.+/);
+
+        describe(title, () => {});
+      `,
+      options: [{ typecheck: true }],
+    },
+    {
+      filename: fixtureFilename,
+      code: dedent`
+        const title = Math.random() > 0.5 ? String(1) : 123;
+
+        it(title, () => {});
+      `,
+      options: [{ typecheck: true }],
+    },
+    {
+      filename: fixtureFilename,
+      code: dedent`
+        const maybeTitle =
+          Math.random() > 0.5 ? undefined : String('configured');
+        const title = maybeTitle ?? 'fallback';
+
+        test(title, () => {});
+      `,
+      options: [{ typecheck: true }],
+    },
+  ],
+  invalid: [
+    {
+      filename: fixtureFilename,
+      code: dedent`
+        const title = 123;
+
+        it(title, () => {});
+      `,
+      options: [{ typecheck: true }],
+      errors: [
+        {
+          messageId: 'titleMustBeString',
+          column: 4,
+          line: 3,
+        },
+      ],
+    },
+    {
+      filename: fixtureFilename,
+      code: dedent`
+        const title = () => 'is a string';
+
+        describe(title, () => {});
+      `,
+      options: [{ typecheck: true }],
+      errors: [
+        {
+          messageId: 'titleMustBeString',
+          column: 10,
+          line: 3,
         },
       ],
     },

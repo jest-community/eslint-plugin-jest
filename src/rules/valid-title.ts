@@ -1,8 +1,11 @@
+import type { ParserServicesWithTypeInformation } from '@typescript-eslint/parser';
 import {
   AST_NODE_TYPES,
+  ESLintUtils,
   type JSONSchema,
   type TSESTree,
 } from '@typescript-eslint/utils';
+import type ts from 'typescript';
 import {
   DescribeAlias,
   type StringNode,
@@ -13,6 +16,14 @@ import {
   isSupportedAccessor,
   parseJestFnCall,
 } from './utils';
+
+const canBe = (firstArgumentType: ts.Type, flag: ts.TypeFlags) => {
+  if (firstArgumentType.isUnion()) {
+    return firstArgumentType.types.some(typ => typ.flags & flag);
+  }
+
+  return firstArgumentType.flags & flag;
+};
 
 const trimFXprefix = (word: string) =>
   ['f', 'x'].includes(word.charAt(0)) ? word.substring(1) : word;
@@ -99,6 +110,7 @@ const MatcherAndMessageSchema: JSONSchema.JSONSchema4 = {
 type MatcherGroups = 'describe' | 'test' | 'it';
 
 interface Options {
+  typecheck?: boolean;
   ignoreSpaces?: boolean;
   ignoreTypeOfDescribeName?: boolean;
   ignoreTypeOfTestName?: boolean;
@@ -148,6 +160,10 @@ export default createRule<[Options], MessageIds>({
       {
         type: 'object',
         properties: {
+          typecheck: {
+            type: 'boolean',
+            default: false,
+          },
           ignoreSpaces: {
             type: 'boolean',
             default: false,
@@ -188,6 +204,7 @@ export default createRule<[Options], MessageIds>({
   },
   defaultOptions: [
     {
+      typecheck: false,
       ignoreSpaces: false,
       ignoreTypeOfDescribeName: false,
       ignoreTypeOfTestName: false,
@@ -198,6 +215,7 @@ export default createRule<[Options], MessageIds>({
     context,
     [
       {
+        typecheck = false,
         ignoreSpaces,
         ignoreTypeOfDescribeName,
         ignoreTypeOfTestName,
@@ -214,6 +232,12 @@ export default createRule<[Options], MessageIds>({
 
     const mustNotMatchPatterns = compileMatcherPatterns(mustNotMatch ?? {});
     const mustMatchPatterns = compileMatcherPatterns(mustMatch ?? {});
+
+    let services: ParserServicesWithTypeInformation | null = null;
+
+    if (typecheck) {
+      services = ESLintUtils.getParserServices(context);
+    }
 
     return {
       CallExpression(node: TSESTree.CallExpression) {
@@ -244,6 +268,17 @@ export default createRule<[Options], MessageIds>({
             ) &&
             argument.type !== AST_NODE_TYPES.TemplateLiteral
           ) {
+            if (services) {
+              // eslint-disable-next-line @typescript-eslint/no-require-imports
+              const { TypeFlags } = require('typescript') as typeof ts;
+
+              if (
+                canBe(services.getTypeAtLocation(argument), TypeFlags.String)
+              ) {
+                return;
+              }
+            }
+
             context.report({
               messageId: 'titleMustBeString',
               loc: argument.loc,
