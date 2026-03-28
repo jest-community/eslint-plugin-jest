@@ -71,6 +71,14 @@ This rule is enabled by default.
 }
 ```
 
+### `typecheck`
+
+Use TypeScript type information to check that `toThrow` assertions are being
+passed a callable.
+
+This option requires type information from `@typescript-eslint/parser`, such as
+a configured `parserOptions.project`.
+
 ### `alwaysAwait`
 
 Enforces to use `await` inside block statements. Using `return` will trigger a

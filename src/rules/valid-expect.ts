@@ -5,6 +5,8 @@
 
 import {
   AST_NODE_TYPES,
+  ESLintUtils,
+  type ParserServicesWithTypeInformation,
   type TSESLint,
   type TSESTree,
 } from '@typescript-eslint/utils';
@@ -123,6 +125,7 @@ const promiseArrayExceptionKey = ({ start, end }: TSESTree.SourceLocation) =>
   `${start.line}:${start.column}-${end.line}:${end.column}`;
 
 interface Options {
+  typecheck?: boolean;
   alwaysAwait?: boolean;
   asyncMatchers?: string[];
   minArgs?: number;
@@ -130,6 +133,7 @@ interface Options {
 }
 
 type MessageIds =
+  | 'toThrowWithoutCallable'
   | 'tooManyArgs'
   | 'notEnoughArgs'
   | 'modifierUnknown'
@@ -147,6 +151,8 @@ export default createRule<[Options], MessageIds>({
       description: 'Enforce valid `expect()` usage',
     },
     messages: {
+      toThrowWithoutCallable:
+        'Expect should be provided a function when using toThrow',
       tooManyArgs: 'Expect takes at most {{ amount }} argument{{ s }}',
       notEnoughArgs: 'Expect requires at least {{ amount }} argument{{ s }}',
       modifierUnknown: 'Expect has an unknown modifier',
@@ -162,6 +168,10 @@ export default createRule<[Options], MessageIds>({
       {
         type: 'object',
         properties: {
+          typecheck: {
+            type: 'boolean',
+            default: false,
+          },
           alwaysAwait: {
             type: 'boolean',
             default: false,
@@ -185,6 +195,7 @@ export default createRule<[Options], MessageIds>({
   },
   defaultOptions: [
     {
+      typecheck: false,
       alwaysAwait: false,
       asyncMatchers: defaultAsyncMatchers,
       minArgs: 1,
@@ -195,6 +206,7 @@ export default createRule<[Options], MessageIds>({
     context,
     [
       {
+        typecheck,
         alwaysAwait,
         asyncMatchers = defaultAsyncMatchers,
         minArgs = 1,
@@ -242,6 +254,12 @@ export default createRule<[Options], MessageIds>({
 
       return topMostMemberExpression;
     };
+
+    let services: ParserServicesWithTypeInformation | null = null;
+
+    if (typecheck) {
+      services = ESLintUtils.getParserServices(context);
+    }
 
     return {
       CallExpression(node) {
@@ -336,6 +354,24 @@ export default createRule<[Options], MessageIds>({
         }
 
         const { matcher } = jestFnCall;
+
+        // when typechecking is available then for toThrow assertions check
+        // that "expect" is being passed a callable, rather than a value
+        if (
+          services &&
+          expect.arguments.length > 0 &&
+          ['toThrow', 'toThrowError'].includes(getAccessorValue(matcher))
+        ) {
+          if (
+            services.getTypeAtLocation(expect.arguments[0]).getCallSignatures()
+              .length === 0
+          ) {
+            context.report({
+              messageId: 'toThrowWithoutCallable',
+              node: expect.arguments[0],
+            });
+          }
+        }
 
         const parentNode = matcher.parent.parent;
         const shouldBeAwaited =
