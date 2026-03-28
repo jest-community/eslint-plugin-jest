@@ -1,8 +1,8 @@
-import type { ParserServicesWithTypeInformation } from '@typescript-eslint/parser';
 import {
   AST_NODE_TYPES,
   ESLintUtils,
   type JSONSchema,
+  type ParserServicesWithTypeInformation,
   type TSESTree,
 } from '@typescript-eslint/utils';
 import type ts from 'typescript';
