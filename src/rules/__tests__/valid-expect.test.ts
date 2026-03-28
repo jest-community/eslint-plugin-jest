@@ -1,4 +1,6 @@
 import path from 'path';
+import * as tsParser from '@typescript-eslint/parser';
+import { TSESLint } from '@typescript-eslint/utils';
 import dedent from 'dedent';
 import rule from '../valid-expect';
 import {
@@ -6,15 +8,141 @@ import {
   createRuleRequirerTester,
   espreeParser,
   getFixturesRootDir,
+  usingFlatConfig,
 } from './test-utils';
 
 const rootPath = getFixturesRootDir();
 const fixtureFilename = path.join(rootPath, 'file.ts');
 
-const { requireRule, withFixtureFilename } = createRuleRequirerTester<
-  readonly unknown[],
-  string
->('../valid-expect', 'typescript', fixtureFilename);
+const { TSESLintPluginRef, requireRule, withFixtureFilename } =
+  createRuleRequirerTester<readonly unknown[], string>(
+    '../valid-expect',
+    'typescript',
+    fixtureFilename,
+  );
+
+describe('typecheck option availability', () => {
+  const parser = '@typescript-eslint/parser';
+
+  const createLinter = () => {
+    const linter = new TSESLint.Linter();
+
+    if (!usingFlatConfig) {
+      linter.defineParser(parser, tsParser);
+      linter.defineRule('valid-expect', requireRule(false));
+    }
+
+    return linter;
+  };
+
+  afterEach(() => {
+    TSESLintPluginRef.throwWhenRequiring = false;
+  });
+
+  it('does not require typescript when the rule is imported', () => {
+    expect(() => requireRule(true)).not.toThrow();
+  });
+
+  describe('when typecheck is disabled', () => {
+    it('does not require typechecking', () => {
+      const linter = createLinter();
+
+      expect(() => {
+        /* istanbul ignore if */
+        if (usingFlatConfig) {
+          linter.verify('expect(() => {}).toThrow()', [
+            {
+              plugins: { jest: { rules: { 'valid-expect': rule } } },
+              languageOptions: {
+                parser: tsParser,
+                parserOptions: { sourceType: 'module' },
+              },
+              rules: { 'jest/valid-expect': ['error', { typecheck: false }] },
+            },
+          ]);
+
+          return;
+        }
+
+        linter.verify('expect(() => {}).toThrow()', {
+          parser,
+          parserOptions: { sourceType: 'module' },
+          rules: { 'valid-expect': ['error', { typecheck: false }] },
+        });
+      }).not.toThrow();
+    });
+
+    it('does not require typescript', () => {
+      const linter = createLinter();
+
+      TSESLintPluginRef.throwWhenRequiring = true;
+
+      expect(() => {
+        /* istanbul ignore if */
+        if (usingFlatConfig) {
+          linter.verify('expect(() => {}).toThrow()', [
+            {
+              plugins: { jest: { rules: { 'valid-expect': rule } } },
+              languageOptions: {
+                parser: tsParser,
+                parserOptions: {
+                  sourceType: 'module',
+                  tsconfigRootDir: rootPath,
+                  project: './tsconfig.json',
+                  disallowAutomaticSingleRunInference: true,
+                },
+              },
+              rules: { 'jest/valid-expect': ['error', { typecheck: false }] },
+            },
+          ]);
+
+          return;
+        }
+
+        linter.verify('expect(() => {}).toThrow()', {
+          parser,
+          parserOptions: {
+            sourceType: 'module',
+            tsconfigRootDir: rootPath,
+            project: './tsconfig.json',
+            disallowAutomaticSingleRunInference: true,
+          },
+          rules: { 'valid-expect': ['error', { typecheck: false }] },
+        });
+      }).not.toThrow();
+    });
+  });
+
+  describe('when typecheck is enabled', () => {
+    it('requires typechecking', () => {
+      const linter = createLinter();
+
+      expect(() => {
+        /* istanbul ignore if */
+        if (usingFlatConfig) {
+          linter.verify('expect(() => {}).toThrow()', [
+            {
+              plugins: { jest: { rules: { 'valid-expect': rule } } },
+              languageOptions: {
+                parser: tsParser,
+                parserOptions: { sourceType: 'module' },
+              },
+              rules: { 'jest/valid-expect': ['error', { typecheck: true }] },
+            },
+          ]);
+
+          return;
+        }
+
+        linter.verify('expect(() => {}).toThrow()', {
+          parser,
+          parserOptions: { sourceType: 'module' },
+          rules: { 'valid-expect': ['error', { typecheck: true }] },
+        });
+      }).toThrow(/requires type information|parserOptions/iu);
+    });
+  });
+});
 
 new RuleTester({
   parser: require.resolve('@typescript-eslint/parser'),
