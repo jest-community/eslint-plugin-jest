@@ -37,13 +37,11 @@ new RuleTester({
 });
 
 describe('typecheck option availability', () => {
-  const parser = '@typescript-eslint/parser';
-
   const createLinter = () => {
     const linter = new TSESLint.Linter();
 
     if (!usingFlatConfig) {
-      linter.defineParser(parser, tsParser);
+      linter.defineParser('@typescript-eslint/parser', tsParser);
       linter.defineRule('valid-title', requireRule(false));
     }
 
@@ -80,7 +78,7 @@ describe('typecheck option availability', () => {
         }
 
         linter.verify("const title = 'is a string'; it(title, () => {});", {
-          parser,
+          parser: '@typescript-eslint/parser',
           parserOptions: { sourceType: 'module' },
           rules: { 'valid-title': ['error', { typecheck: false }] },
         });
@@ -115,7 +113,7 @@ describe('typecheck option availability', () => {
         }
 
         linter.verify('const title = value; it(title, () => {});', {
-          parser,
+          parser: '@typescript-eslint/parser',
           parserOptions: {
             sourceType: 'module',
             tsconfigRootDir: rootPath,
@@ -150,7 +148,7 @@ describe('typecheck option availability', () => {
         }
 
         linter.verify("const title = 'is a string'; it(title, () => {});", {
-          parser,
+          parser: '@typescript-eslint/parser',
           parserOptions: { sourceType: 'module' },
           rules: { 'valid-title': ['error', { typecheck: true }] },
         });
@@ -185,7 +183,7 @@ describe('typecheck option availability', () => {
         }
 
         linter.verify('const title = value; it(title, () => {});', {
-          parser,
+          parser: '@typescript-eslint/parser',
           parserOptions: {
             sourceType: 'module',
             tsconfigRootDir: rootPath,
