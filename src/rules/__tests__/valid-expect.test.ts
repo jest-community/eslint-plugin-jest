@@ -1,6 +1,246 @@
+import path from 'path';
 import dedent from 'dedent';
 import rule from '../valid-expect';
-import { FlatCompatRuleTester as RuleTester, espreeParser } from './test-utils';
+import {
+  FlatCompatRuleTester as RuleTester,
+  createRuleRequirerTester,
+  espreeParser,
+  getFixturesRootDir,
+} from './test-utils';
+
+const rootPath = getFixturesRootDir();
+const fixtureFilename = path.join(rootPath, 'file.ts');
+
+const { requireRule, withFixtureFilename } = createRuleRequirerTester<
+  readonly unknown[],
+  string
+>('../valid-expect', 'typescript', fixtureFilename);
+
+new RuleTester({
+  parser: require.resolve('@typescript-eslint/parser'),
+  parserOptions: {
+    sourceType: 'module',
+    tsconfigRootDir: rootPath,
+    project: './tsconfig.json',
+    disallowAutomaticSingleRunInference: true,
+  },
+}).run('valid-expect (typecheck option)', requireRule(false), {
+  valid: withFixtureFilename([
+    {
+      code: 'expect(() => {}).toThrow()',
+      options: [{ typecheck: true }],
+    },
+    {
+      code: 'expect(function () {}).toThrow()',
+      options: [{ typecheck: true }],
+    },
+
+    {
+      code: dedent`
+        function mx() { return 1; }
+
+        expect(mx()).toBe(1);
+      `,
+      options: [{ typecheck: true }],
+    },
+    {
+      code: dedent`
+        function mx() { return 1; }
+
+        expect(() => mx()).toThrow();
+      `,
+      options: [{ typecheck: true }],
+    },
+    {
+      code: dedent`
+        function mx() { return 1; }
+
+        expect(mx).toThrow();
+      `,
+      options: [{ typecheck: true }],
+    },
+    {
+      code: dedent`
+        function mx() { return () => {}; }
+
+        expect(mx()).toThrow();
+      `,
+      options: [{ typecheck: true }],
+    },
+
+    {
+      code: dedent`
+        const mx = () => { return 1; };
+
+        expect(mx()).toBe(1);
+      `,
+      options: [{ typecheck: true }],
+    },
+    {
+      code: dedent`
+        const mx = () => { return 1; };
+
+        expect(() => mx()).toThrow();
+      `,
+      options: [{ typecheck: true }],
+    },
+    {
+      code: dedent`
+        const mx = () => { return 1; };
+
+        expect(mx).toThrow();
+      `,
+      options: [{ typecheck: true }],
+    },
+    {
+      code: dedent`
+        const mx = () => { return () => {} };
+
+        expect(mx()).toThrow();
+      `,
+      options: [{ typecheck: true }],
+    },
+    {
+      code: dedent`
+        const mx = () => { return () => {} };
+
+        expect(() => { mx() }).toThrow();
+      `,
+      options: [{ typecheck: true }],
+    },
+
+    {
+      code: dedent`
+        const mx = () => 1;
+
+        expect(mx()).toBe(1);
+      `,
+      options: [{ typecheck: true }],
+    },
+    {
+      code: dedent`
+        const mx = () => "hello world";
+
+        expect(() => mx()).toThrow();
+      `,
+      options: [{ typecheck: true }],
+    },
+    {
+      code: dedent`
+        const mx = () => 5;
+
+        expect(mx).toThrow();
+      `,
+      options: [{ typecheck: true }],
+    },
+    {
+      code: dedent`
+        const mx = () => () => {};
+
+        expect(mx()).toThrow();
+      `,
+      options: [{ typecheck: true }],
+    },
+    {
+      code: dedent`
+        const mx = () => () => {};
+
+        expect(() => { mx() }).toThrow();
+      `,
+      options: [{ typecheck: true }],
+    },
+    {
+      code: dedent`
+        const mx = () => () => {};
+
+        expect(function() { mx() }).toThrow();
+      `,
+      options: [{ typecheck: true }],
+    },
+
+    {
+      code: dedent`
+        class Mx { sayHello() {} }
+
+        expect(new Mx().sayHello).toThrow();
+      `,
+      options: [{ typecheck: true }],
+    },
+    {
+      code: dedent`
+        class Mx { sayHello() { return () => {} } }
+
+        expect(new Mx().sayHello).toThrow();
+      `,
+      options: [{ typecheck: true }],
+    },
+  ]),
+  invalid: withFixtureFilename([
+    {
+      code: 'expect(1).toThrow()',
+      options: [{ typecheck: true }],
+      errors: [
+        {
+          messageId: 'toThrowWithoutCallable',
+          column: 8,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: 'expect("hello world").toThrow()',
+      options: [{ typecheck: true }],
+      errors: [
+        {
+          messageId: 'toThrowWithoutCallable',
+          column: 8,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: 'expect(function () { return "hello world" }()).toThrow()',
+      options: [{ typecheck: true }],
+      errors: [
+        {
+          messageId: 'toThrowWithoutCallable',
+          column: 8,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        class Mx { sayHello() {} }
+
+        expect(new Mx().sayHello()).toThrow();
+      `,
+      options: [{ typecheck: true }],
+      errors: [
+        {
+          messageId: 'toThrowWithoutCallable',
+          column: 8,
+          line: 3,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        class Mx { sayHello() { return () => {} } }
+
+        expect(new Mx().sayHello()()).toThrow();
+      `,
+      options: [{ typecheck: true }],
+      errors: [
+        {
+          messageId: 'toThrowWithoutCallable',
+          column: 8,
+          line: 3,
+        },
+      ],
+    },
+  ]),
+});
 
 const ruleTester = new RuleTester({
   parser: espreeParser,
