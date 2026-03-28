@@ -2584,10 +2584,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@schemastore/package@npm:^0.0.10":
-  version: 0.0.10
-  resolution: "@schemastore/package@npm:0.0.10"
-  checksum: 10c0/cffd9121904b4aa96e7d960a3fdb0d35fbd53da2785b12c44f1aa30e943b66d99c35bc3a7f59d74a5769549d209970e73303641cbbce8c79823c2f4132257ab3
+"@schemastore/package@npm:^1.0.0":
+  version: 1.0.2
+  resolution: "@schemastore/package@npm:1.0.2"
+  checksum: 10c0/c8ff7614561dd1d0dcfc854fd69de4f81d4a98a34f97be03f3643d3d9353c58b52956a870f05642bd4e393995b33bc90e708a1a1d8e2ed6148dc4423b203d853
   languageName: node
   linkType: hard
 
@@ -5350,7 +5350,7 @@ __metadata:
     "@commitlint/cli": "npm:^20.0.0"
     "@commitlint/config-conventional": "npm:^20.0.0"
     "@eslint-community/eslint-plugin-eslint-comments": "npm:^4.6.0"
-    "@schemastore/package": "npm:^0.0.10"
+    "@schemastore/package": "npm:^1.0.0"
     "@semantic-release/changelog": "npm:^6.0.0"
     "@semantic-release/git": "npm:^10.0.0"
     "@tsconfig/node20": "npm:^20.0.0"
