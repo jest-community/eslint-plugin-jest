@@ -49,6 +49,10 @@ This rule is enabled by default.
 {
   type: 'object',
   properties: {
+    typecheck: {
+      type: 'boolean',
+      default: false,
+    },
     alwaysAwait: {
       type: 'boolean',
       default: false,
