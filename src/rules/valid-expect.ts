@@ -152,7 +152,7 @@ export default createRule<[Options], MessageIds>({
     },
     messages: {
       toThrowWithoutCallable:
-        'Expect should be provided a function when using toThrow',
+        'Expect should be provided a function when using {{ matcher }}',
       tooManyArgs: 'Expect takes at most {{ amount }} argument{{ s }}',
       notEnoughArgs: 'Expect requires at least {{ amount }} argument{{ s }}',
       modifierUnknown: 'Expect has an unknown modifier',
@@ -360,7 +360,12 @@ export default createRule<[Options], MessageIds>({
         if (
           services &&
           expect.arguments.length > 0 &&
-          ['toThrow', 'toThrowError'].includes(getAccessorValue(matcher))
+          [
+            'toThrow',
+            'toThrowError',
+            'toThrowErrorMatchingSnapshot',
+            'toThrowErrorMatchingInlineSnapshot',
+          ].includes(getAccessorValue(matcher))
         ) {
           if (
             services.getTypeAtLocation(expect.arguments[0]).getCallSignatures()
@@ -368,6 +373,7 @@ export default createRule<[Options], MessageIds>({
           ) {
             context.report({
               messageId: 'toThrowWithoutCallable',
+              data: { matcher: getAccessorValue(matcher) },
               node: expect.arguments[0],
             });
           }
