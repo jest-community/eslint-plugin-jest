@@ -355,6 +355,7 @@ new RuleTester({
     {
       code: 'expect(1).toThrow()',
       options: [{ typecheck: true }],
+      output: 'expect(() => 1).toThrow()',
       errors: [
         {
           messageId: 'toThrowWithoutCallable',
@@ -367,6 +368,7 @@ new RuleTester({
     {
       code: 'expect(1 as unknown).toThrow()',
       options: [{ typecheck: true }],
+      output: 'expect(() => 1 as unknown).toThrow()',
       errors: [
         {
           messageId: 'toThrowWithoutCallable',
@@ -379,6 +381,7 @@ new RuleTester({
     {
       code: 'expect(1 as any).toThrow()',
       options: [{ typecheck: true }],
+      output: 'expect(() => 1 as any).toThrow()',
       errors: [
         {
           messageId: 'toThrowWithoutCallable',
@@ -415,6 +418,7 @@ new RuleTester({
     {
       code: 'expect(1).toThrowError()',
       options: [{ typecheck: true }],
+      output: 'expect(() => 1).toThrowError()',
       errors: [
         {
           messageId: 'toThrowWithoutCallable',
@@ -427,6 +431,7 @@ new RuleTester({
     {
       code: 'expect(1).toThrowErrorMatchingSnapshot()',
       options: [{ typecheck: true }],
+      output: 'expect(() => 1).toThrowErrorMatchingSnapshot()',
       errors: [
         {
           messageId: 'toThrowWithoutCallable',
@@ -439,6 +444,7 @@ new RuleTester({
     {
       code: 'expect(1).toThrowErrorMatchingInlineSnapshot()',
       options: [{ typecheck: true }],
+      output: 'expect(() => 1).toThrowErrorMatchingInlineSnapshot()',
       errors: [
         {
           messageId: 'toThrowWithoutCallable',
@@ -451,6 +457,7 @@ new RuleTester({
     {
       code: 'expect("hello world").toThrow()',
       options: [{ typecheck: true }],
+      output: 'expect(() => "hello world").toThrow()',
       errors: [
         {
           messageId: 'toThrowWithoutCallable',
@@ -463,6 +470,7 @@ new RuleTester({
     {
       code: 'expect(function () { return "hello world" }()).toThrow()',
       options: [{ typecheck: true }],
+      output: 'expect(() => function () { return "hello world" }()).toThrow()',
       errors: [
         {
           messageId: 'toThrowWithoutCallable',
@@ -475,6 +483,8 @@ new RuleTester({
     {
       code: 'expect(function () { return "hello world" }()).toThrowError()',
       options: [{ typecheck: true }],
+      output:
+        'expect(() => function () { return "hello world" }()).toThrowError()',
       errors: [
         {
           messageId: 'toThrowWithoutCallable',
@@ -509,6 +519,11 @@ new RuleTester({
         expect(mx()()).toThrow();
       `,
       options: [{ typecheck: true }],
+      output: dedent`
+        const mx = () => () => {};
+
+        expect(() => mx()()).toThrow();
+      `,
       errors: [
         {
           messageId: 'toThrowWithoutCallable',
@@ -525,6 +540,11 @@ new RuleTester({
         expect(new Mx().sayHello()).toThrow();
       `,
       options: [{ typecheck: true }],
+      output: dedent`
+        class Mx { sayHello() {} }
+
+        expect(() => new Mx().sayHello()).toThrow();
+      `,
       errors: [
         {
           messageId: 'toThrowWithoutCallable',
@@ -541,6 +561,11 @@ new RuleTester({
         expect(new Mx().sayHello()()).toThrow();
       `,
       options: [{ typecheck: true }],
+      output: dedent`
+        class Mx { sayHello() { return () => {} } }
+
+        expect(() => new Mx().sayHello()()).toThrow();
+      `,
       errors: [
         {
           messageId: 'toThrowWithoutCallable',
@@ -557,6 +582,11 @@ new RuleTester({
         expect(new Mx().sayHello()()).toThrowErrorMatchingInlineSnapshot();
       `,
       options: [{ typecheck: true }],
+      output: dedent`
+        class Mx { sayHello() { return () => {} } }
+
+        expect(() => new Mx().sayHello()()).toThrowErrorMatchingInlineSnapshot();
+      `,
       errors: [
         {
           messageId: 'toThrowWithoutCallable',
