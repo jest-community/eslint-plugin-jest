@@ -367,14 +367,21 @@ export default createRule<[Options], MessageIds>({
             'toThrowErrorMatchingInlineSnapshot',
           ].includes(getAccessorValue(matcher))
         ) {
-          if (
-            services.getTypeAtLocation(expect.arguments[0]).getCallSignatures()
-              .length === 0
-          ) {
+          const type = services.getTypeAtLocation(expect.arguments[0]);
+
+          if (type.getCallSignatures().length === 0) {
             context.report({
               messageId: 'toThrowWithoutCallable',
               data: { matcher: getAccessorValue(matcher) },
               node: expect.arguments[0],
+              fix(fixer) {
+                // unions are not safe to fix, since they only _might_ be a callable
+                if (type.isUnion()) {
+                  return null;
+                }
+
+                return fixer.insertTextBefore(expect.arguments[0], '() => ');
+              },
             });
           }
         }
