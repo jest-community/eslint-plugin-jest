@@ -162,6 +162,22 @@ new RuleTester({
       code: 'expect(function () {}).toThrow()',
       options: [{ typecheck: true }],
     },
+    {
+      code: 'expect(1 as () => void).toThrow();',
+      options: [{ typecheck: true }],
+    },
+    {
+      code: 'expect(1 as unknown as () => void).toThrow();',
+      options: [{ typecheck: true }],
+    },
+    {
+      code: 'expect(1 as any as () => void).toThrow();',
+      options: [{ typecheck: true }],
+    },
+    {
+      code: 'expect(1 as unknown & (() => void)).toThrow()',
+      options: [{ typecheck: true }],
+    },
 
     {
       code: dedent`
@@ -279,6 +295,14 @@ new RuleTester({
     },
     {
       code: dedent`
+        const mx = function () { return 1; };
+
+        expect(mx).toThrow();
+      `,
+      options: [{ typecheck: true }],
+    },
+    {
+      code: dedent`
         const mx = () => 5;
 
         expect(mx).toThrowErrorMatchingInlineSnapshot();
@@ -330,6 +354,54 @@ new RuleTester({
   invalid: withFixtureFilename([
     {
       code: 'expect(1).toThrow()',
+      options: [{ typecheck: true }],
+      errors: [
+        {
+          messageId: 'toThrowWithoutCallable',
+          data: { matcher: 'toThrow' },
+          column: 8,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: 'expect(1 as unknown).toThrow()',
+      options: [{ typecheck: true }],
+      errors: [
+        {
+          messageId: 'toThrowWithoutCallable',
+          data: { matcher: 'toThrow' },
+          column: 8,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: 'expect(1 as any).toThrow()',
+      options: [{ typecheck: true }],
+      errors: [
+        {
+          messageId: 'toThrowWithoutCallable',
+          data: { matcher: 'toThrow' },
+          column: 8,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: 'expect(1 as string | (() => void)).toThrow()',
+      options: [{ typecheck: true }],
+      errors: [
+        {
+          messageId: 'toThrowWithoutCallable',
+          data: { matcher: 'toThrow' },
+          column: 8,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: 'expect(1 as (() => void) | string).toThrow()',
       options: [{ typecheck: true }],
       errors: [
         {
@@ -409,6 +481,40 @@ new RuleTester({
           data: { matcher: 'toThrowError' },
           column: 8,
           line: 1,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        const mx = function () {
+          return Math.random() > 0.5 ? () => {} : null;
+        };
+
+        expect(mx()).toThrow();
+      `,
+      options: [{ typecheck: true }],
+      errors: [
+        {
+          messageId: 'toThrowWithoutCallable',
+          data: { matcher: 'toThrow' },
+          column: 8,
+          line: 5,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        const mx = () => () => {};
+
+        expect(mx()()).toThrow();
+      `,
+      options: [{ typecheck: true }],
+      errors: [
+        {
+          messageId: 'toThrowWithoutCallable',
+          data: { matcher: 'toThrow' },
+          column: 8,
+          line: 3,
         },
       ],
     },
