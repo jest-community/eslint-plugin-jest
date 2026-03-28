@@ -358,8 +358,44 @@ new RuleTester({
       `,
       options: [{ typecheck: true, maxArgs: 2 }],
     },
+
+    {
+      code: dedent`
+        const pMx = Promise.resolve(() => {});
+
+        expect(await pMx).toThrow();
+      `,
+      options: [{ typecheck: true }],
+    },
+
+    {
+      code: dedent`
+        it('is a test', async () => {
+          const pMx = Promise.resolve(() => {});
+
+          expect(await pMx).toThrow();
+        });
+      `,
+      options: [{ typecheck: true }],
+    },
   ]),
   invalid: withFixtureFilename([
+    {
+      code: dedent`
+        const pMx = Promise.resolve(() => {});
+
+        expect((await pMx)()).toThrow();
+      `,
+      options: [{ typecheck: true }],
+      errors: [
+        {
+          messageId: 'toThrowWithoutCallable',
+          data: { matcher: 'toThrow' },
+          column: 8,
+          line: 3,
+        },
+      ],
+    },
     {
       code: 'expect(1).toThrow()',
       options: [{ typecheck: true }],
