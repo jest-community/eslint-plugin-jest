@@ -10,6 +10,7 @@ import {
   type TSESLint,
   type TSESTree,
 } from '@typescript-eslint/utils';
+import type ts from 'typescript';
 import {
   type FunctionExpression,
   ModifierName,
@@ -375,8 +376,16 @@ export default createRule<[Options], MessageIds>({
               data: { matcher: getAccessorValue(matcher) },
               node: expect.arguments[0],
               fix(fixer) {
-                // unions are not safe to fix, since they only _might_ be a callable
+                // unions are not safe to fix, since the value might be a callable
                 if (type.isUnion()) {
+                  return null;
+                }
+
+                // eslint-disable-next-line @typescript-eslint/no-require-imports
+                const { TypeFlags } = require('typescript') as typeof ts;
+
+                // any and unknown is not safe to fix, since they might be a callable
+                if (type.flags & (TypeFlags.Any | TypeFlags.Unknown)) {
                   return null;
                 }
 
