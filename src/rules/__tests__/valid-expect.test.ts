@@ -368,7 +368,6 @@ new RuleTester({
     {
       code: 'expect(1 as unknown).toThrow()',
       options: [{ typecheck: true }],
-      output: 'expect(() => 1 as unknown).toThrow()',
       errors: [
         {
           messageId: 'toThrowWithoutCallable',
@@ -381,7 +380,30 @@ new RuleTester({
     {
       code: 'expect(1 as any).toThrow()',
       options: [{ typecheck: true }],
-      output: 'expect(() => 1 as any).toThrow()',
+      errors: [
+        {
+          messageId: 'toThrowWithoutCallable',
+          data: { matcher: 'toThrow' },
+          column: 8,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: 'expect(1 as any | (() => void)).toThrow()',
+      options: [{ typecheck: true }],
+      errors: [
+        {
+          messageId: 'toThrowWithoutCallable',
+          data: { matcher: 'toThrow' },
+          column: 8,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: 'expect(1 as any | string).toThrow()',
+      options: [{ typecheck: true }],
       errors: [
         {
           messageId: 'toThrowWithoutCallable',
