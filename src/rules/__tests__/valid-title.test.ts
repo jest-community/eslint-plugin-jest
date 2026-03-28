@@ -114,20 +114,16 @@ describe('typecheck option availability', () => {
           return;
         }
 
-        linter.verify(
-          'const title = value; it(title, () => {});',
-          {
-            parser,
-            parserOptions: {
-              sourceType: 'module',
-              tsconfigRootDir: rootPath,
-              project: './tsconfig.json',
-              disallowAutomaticSingleRunInference: true,
-            },
-            rules: { 'valid-title': ['error', { typecheck: false }] },
+        linter.verify('const title = value; it(title, () => {});', {
+          parser,
+          parserOptions: {
+            sourceType: 'module',
+            tsconfigRootDir: rootPath,
+            project: './tsconfig.json',
+            disallowAutomaticSingleRunInference: true,
           },
-          fixtureFilename,
-        );
+          rules: { 'valid-title': ['error', { typecheck: false }] },
+        });
       }).not.toThrow();
     });
   });
@@ -188,20 +184,16 @@ describe('typecheck option availability', () => {
           return;
         }
 
-        linter.verify(
-          'const title = value; it(title, () => {});',
-          {
-            parser,
-            parserOptions: {
-              sourceType: 'module',
-              tsconfigRootDir: rootPath,
-              project: './tsconfig.json',
-              disallowAutomaticSingleRunInference: true,
-            },
-            rules: { 'valid-title': ['error', { typecheck: true }] },
+        linter.verify('const title = value; it(title, () => {});', {
+          parser,
+          parserOptions: {
+            sourceType: 'module',
+            tsconfigRootDir: rootPath,
+            project: './tsconfig.json',
+            disallowAutomaticSingleRunInference: true,
           },
-          fixtureFilename,
-        );
+          rules: { 'valid-title': ['error', { typecheck: true }] },
+        });
       }).toThrow('Occurred while linting');
     });
   });
