@@ -61,6 +61,14 @@ new RuleTester({
     },
     {
       code: dedent`
+        function mx() { return 1; }
+
+        expect(mx).toThrowError();
+      `,
+      options: [{ typecheck: true }],
+    },
+    {
+      code: dedent`
         function mx() { return () => {}; }
 
         expect(mx()).toThrow();
@@ -89,6 +97,14 @@ new RuleTester({
         const mx = () => { return 1; };
 
         expect(mx).toThrow();
+      `,
+      options: [{ typecheck: true }],
+    },
+    {
+      code: dedent`
+        const mx = () => { return 1; };
+
+        expect(mx).toThrowErrorMatchingSnapshot();
       `,
       options: [{ typecheck: true }],
     },
@@ -130,6 +146,14 @@ new RuleTester({
         const mx = () => 5;
 
         expect(mx).toThrow();
+      `,
+      options: [{ typecheck: true }],
+    },
+    {
+      code: dedent`
+        const mx = () => 5;
+
+        expect(mx).toThrowErrorMatchingInlineSnapshot();
       `,
       options: [{ typecheck: true }],
     },
@@ -182,6 +206,43 @@ new RuleTester({
       errors: [
         {
           messageId: 'toThrowWithoutCallable',
+          data: { matcher: 'toThrow' },
+          column: 8,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: 'expect(1).toThrowError()',
+      options: [{ typecheck: true }],
+      errors: [
+        {
+          messageId: 'toThrowWithoutCallable',
+          data: { matcher: 'toThrowError' },
+          column: 8,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: 'expect(1).toThrowErrorMatchingSnapshot()',
+      options: [{ typecheck: true }],
+      errors: [
+        {
+          messageId: 'toThrowWithoutCallable',
+          data: { matcher: 'toThrowErrorMatchingSnapshot' },
+          column: 8,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: 'expect(1).toThrowErrorMatchingInlineSnapshot()',
+      options: [{ typecheck: true }],
+      errors: [
+        {
+          messageId: 'toThrowWithoutCallable',
+          data: { matcher: 'toThrowErrorMatchingInlineSnapshot' },
           column: 8,
           line: 1,
         },
@@ -193,6 +254,7 @@ new RuleTester({
       errors: [
         {
           messageId: 'toThrowWithoutCallable',
+          data: { matcher: 'toThrow' },
           column: 8,
           line: 1,
         },
@@ -204,6 +266,19 @@ new RuleTester({
       errors: [
         {
           messageId: 'toThrowWithoutCallable',
+          data: { matcher: 'toThrow' },
+          column: 8,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: 'expect(function () { return "hello world" }()).toThrowError()',
+      options: [{ typecheck: true }],
+      errors: [
+        {
+          messageId: 'toThrowWithoutCallable',
+          data: { matcher: 'toThrowError' },
           column: 8,
           line: 1,
         },
@@ -219,6 +294,7 @@ new RuleTester({
       errors: [
         {
           messageId: 'toThrowWithoutCallable',
+          data: { matcher: 'toThrow' },
           column: 8,
           line: 3,
         },
@@ -234,6 +310,23 @@ new RuleTester({
       errors: [
         {
           messageId: 'toThrowWithoutCallable',
+          data: { matcher: 'toThrow' },
+          column: 8,
+          line: 3,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        class Mx { sayHello() { return () => {} } }
+
+        expect(new Mx().sayHello()()).toThrowErrorMatchingInlineSnapshot();
+      `,
+      options: [{ typecheck: true }],
+      errors: [
+        {
+          messageId: 'toThrowWithoutCallable',
+          data: { matcher: 'toThrowErrorMatchingInlineSnapshot' },
           column: 8,
           line: 3,
         },
