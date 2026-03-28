@@ -350,12 +350,33 @@ new RuleTester({
       `,
       options: [{ typecheck: true }],
     },
+    {
+      code: dedent`
+        class Mx { sayHello() { return () => {} } }
+
+        expect(new Mx().sayHello, 123).toThrow();
+      `,
+      options: [{ typecheck: true, maxArgs: 2 }],
+    },
   ]),
   invalid: withFixtureFilename([
     {
       code: 'expect(1).toThrow()',
       options: [{ typecheck: true }],
       output: 'expect(() => 1).toThrow()',
+      errors: [
+        {
+          messageId: 'toThrowWithoutCallable',
+          data: { matcher: 'toThrow' },
+          column: 8,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: 'expect(1, 123).toThrow()',
+      options: [{ typecheck: true, maxArgs: 2 }],
+      output: 'expect(() => 1, 123).toThrow()',
       errors: [
         {
           messageId: 'toThrowWithoutCallable',
