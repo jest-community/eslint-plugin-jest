@@ -1,3 +1,10 @@
+## [29.15.2](https://github.com/jest-community/eslint-plugin-jest/compare/v29.15.1...v29.15.2) (2026-04-09)
+
+
+### Bug Fixes
+
+* **valid-mock-module-path:** don't report virtual mocks ([#1946](https://github.com/jest-community/eslint-plugin-jest/issues/1946)) ([a1916d1](https://github.com/jest-community/eslint-plugin-jest/commit/a1916d16350344c1693384af34900055ec465e1c))
+
 ## [29.15.1](https://github.com/jest-community/eslint-plugin-jest/compare/v29.15.0...v29.15.1) (2026-03-24)
 
 
