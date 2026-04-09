@@ -10,7 +10,7 @@ import {
 const ruleTester = new RuleTester({
   parser: espreeParser,
   parserOptions: {
-    ecmaVersion: 2015,
+    ecmaVersion: 2018,
   },
 });
 
@@ -69,6 +69,10 @@ ruleTester.run('valid-mock-module-path', rule, {
     {
       filename: __filename,
       code: 'jest.doMock("./fixtures/module/tsx/foo", undefined, { virtual: false })',
+    },
+    {
+      filename: __filename,
+      code: 'jest.doMock("./fixtures/module/tsx/foo", undefined, { ...{} })',
     },
     {
       filename: __filename,
@@ -185,6 +189,19 @@ ruleTester.run('valid-mock-module-path', rule, {
     {
       filename: __filename,
       code: "jest.doMock('../module/does/not/exist', undefined, { virtual: false })",
+      errors: [
+        {
+          messageId: 'invalidMockModulePath',
+          data: { moduleName: "'../module/does/not/exist'" },
+          column: 1,
+          line: 1,
+        },
+      ],
+    },
+    {
+      // we don't attempt to resolve the result of object spreads
+      filename: __filename,
+      code: "jest.doMock('../module/does/not/exist', undefined, { ...{ virtual: true } })",
       errors: [
         {
           messageId: 'invalidMockModulePath',
