@@ -76,11 +76,37 @@ ruleTester.run('valid-mock-module-path', rule, {
     },
     {
       filename: __filename,
+      code: 'jest.doMock("./fixtures/module/tsx/foo", undefined, { virtual: [] })',
+    },
+    {
+      filename: __filename,
       code: 'jest.mock("../module/does/not/exist", undefined, { virtual: true })',
     },
     {
       filename: __filename,
       code: 'jest.doMock("../module/does/not/exist", undefined, { virtual: true })',
+    },
+    {
+      filename: __filename,
+      code: 'jest.doMock("../module/does/not/exist", undefined, { "virtual": true })',
+    },
+    {
+      filename: __filename,
+      code: 'jest.doMock("../module/does/not/exist", undefined, { ["virtual"]: true })',
+    },
+    {
+      filename: __filename,
+      code: 'jest.doMock("../module/does/not/exist", undefined, { [`virtual`]: true })',
+    },
+    {
+      // jest only cares if the value is truthy...
+      filename: __filename,
+      code: 'jest.doMock("../module/does/not/exist", undefined, { virtual: 1 })',
+    },
+    {
+      // jest only cares if the value is truthy...
+      filename: __filename,
+      code: 'jest.doMock("../module/does/not/exist", undefined, { virtual: "yes" })',
     },
   ],
   invalid: [
@@ -176,6 +202,30 @@ ruleTester.run('valid-mock-module-path', rule, {
     },
     {
       filename: __filename,
+      code: "jest.mock('../module/does/not/exist', undefined, {})",
+      errors: [
+        {
+          messageId: 'invalidMockModulePath',
+          data: { moduleName: "'../module/does/not/exist'" },
+          column: 1,
+          line: 1,
+        },
+      ],
+    },
+    {
+      filename: __filename,
+      code: "jest.mock('../module/does/not/exist', undefined, { assumeExists: true })",
+      errors: [
+        {
+          messageId: 'invalidMockModulePath',
+          data: { moduleName: "'../module/does/not/exist'" },
+          column: 1,
+          line: 1,
+        },
+      ],
+    },
+    {
+      filename: __filename,
       code: "jest.mock('../module/does/not/exist', undefined, { virtual: false })",
       errors: [
         {
@@ -195,6 +245,66 @@ ruleTester.run('valid-mock-module-path', rule, {
           data: { moduleName: "'../module/does/not/exist'" },
           column: 1,
           line: 1,
+        },
+      ],
+    },
+    {
+      filename: __filename,
+      code: "jest.doMock('../module/does/not/exist', undefined, { virtual: 0 })",
+      errors: [
+        {
+          messageId: 'invalidMockModulePath',
+          data: { moduleName: "'../module/does/not/exist'" },
+          column: 1,
+          line: 1,
+        },
+      ],
+    },
+    {
+      filename: __filename,
+      code: dedent`
+        const virtual = false;
+
+        jest.doMock('../module/does/not/exist', undefined, { virtual })
+      `,
+      errors: [
+        {
+          messageId: 'invalidMockModulePath',
+          data: { moduleName: "'../module/does/not/exist'" },
+          column: 1,
+          line: 3,
+        },
+      ],
+    },
+    {
+      filename: __filename,
+      code: dedent`
+        const virtual = true;
+
+        jest.doMock('../module/does/not/exist', undefined, { virtual })
+      `,
+      errors: [
+        {
+          messageId: 'invalidMockModulePath',
+          data: { moduleName: "'../module/does/not/exist'" },
+          column: 1,
+          line: 3,
+        },
+      ],
+    },
+    {
+      filename: __filename,
+      code: dedent`
+        const prop = 'virtual';
+
+        jest.doMock('../module/does/not/exist', undefined, { [prop]: true })
+      `,
+      errors: [
+        {
+          messageId: 'invalidMockModulePath',
+          data: { moduleName: "'../module/does/not/exist'" },
+          column: 1,
+          line: 3,
         },
       ],
     },
