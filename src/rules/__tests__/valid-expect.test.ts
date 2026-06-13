@@ -1,6 +1,682 @@
+import path from 'path';
+import * as tsParser from '@typescript-eslint/parser';
+import { TSESLint } from '@typescript-eslint/utils';
 import dedent from 'dedent';
 import rule from '../valid-expect';
-import { FlatCompatRuleTester as RuleTester, espreeParser } from './test-utils';
+import {
+  FlatCompatRuleTester as RuleTester,
+  createRuleRequirerTester,
+  espreeParser,
+  getFixturesRootDir,
+  usingFlatConfig,
+} from './test-utils';
+
+const rootPath = getFixturesRootDir();
+const fixtureFilename = path.join(rootPath, 'file.ts');
+
+const { TSESLintPluginRef, requireRule, withFixtureFilename } =
+  createRuleRequirerTester<readonly unknown[], string>(
+    '../valid-expect',
+    'typescript',
+    fixtureFilename,
+  );
+
+describe('typecheck option availability', () => {
+  const parser = '@typescript-eslint/parser';
+
+  const createLinter = () => {
+    const linter = new TSESLint.Linter();
+
+    if (!usingFlatConfig) {
+      linter.defineParser(parser, tsParser);
+      linter.defineRule('valid-expect', requireRule(false));
+    }
+
+    return linter;
+  };
+
+  afterEach(() => {
+    TSESLintPluginRef.throwWhenRequiring = false;
+  });
+
+  it('does not require typescript when the rule is imported', () => {
+    expect(() => requireRule(true)).not.toThrow();
+  });
+
+  describe('when typecheck is disabled', () => {
+    it('does not require typechecking', () => {
+      const linter = createLinter();
+
+      expect(() => {
+        /* istanbul ignore if */
+        if (usingFlatConfig) {
+          linter.verify('expect(() => {}).toThrow()', [
+            {
+              plugins: { jest: { rules: { 'valid-expect': rule } } },
+              languageOptions: {
+                parser: tsParser,
+                parserOptions: { sourceType: 'module' },
+              },
+              rules: { 'jest/valid-expect': ['error', { typecheck: false }] },
+            },
+          ]);
+
+          return;
+        }
+
+        linter.verify('expect(() => {}).toThrow()', {
+          parser,
+          parserOptions: { sourceType: 'module' },
+          rules: { 'valid-expect': ['error', { typecheck: false }] },
+        });
+      }).not.toThrow();
+    });
+
+    it('does not require typescript', () => {
+      const linter = createLinter();
+
+      TSESLintPluginRef.throwWhenRequiring = true;
+
+      expect(() => {
+        /* istanbul ignore if */
+        if (usingFlatConfig) {
+          linter.verify('expect(() => {}).toThrow()', [
+            {
+              plugins: { jest: { rules: { 'valid-expect': rule } } },
+              languageOptions: {
+                parser: tsParser,
+                parserOptions: {
+                  sourceType: 'module',
+                  tsconfigRootDir: rootPath,
+                  project: './tsconfig.json',
+                  disallowAutomaticSingleRunInference: true,
+                },
+              },
+              rules: { 'jest/valid-expect': ['error', { typecheck: false }] },
+            },
+          ]);
+
+          return;
+        }
+
+        linter.verify('expect(() => {}).toThrow()', {
+          parser,
+          parserOptions: {
+            sourceType: 'module',
+            tsconfigRootDir: rootPath,
+            project: './tsconfig.json',
+            disallowAutomaticSingleRunInference: true,
+          },
+          rules: { 'valid-expect': ['error', { typecheck: false }] },
+        });
+      }).not.toThrow();
+    });
+  });
+
+  describe('when typecheck is enabled', () => {
+    it('requires typechecking', () => {
+      const linter = createLinter();
+
+      expect(() => {
+        /* istanbul ignore if */
+        if (usingFlatConfig) {
+          linter.verify('expect(() => {}).toThrow()', [
+            {
+              plugins: { jest: { rules: { 'valid-expect': rule } } },
+              languageOptions: {
+                parser: tsParser,
+                parserOptions: { sourceType: 'module' },
+              },
+              rules: { 'jest/valid-expect': ['error', { typecheck: true }] },
+            },
+          ]);
+
+          return;
+        }
+
+        linter.verify('expect(() => {}).toThrow()', {
+          parser,
+          parserOptions: { sourceType: 'module' },
+          rules: { 'valid-expect': ['error', { typecheck: true }] },
+        });
+      }).toThrow(/requires type information|parserOptions/iu);
+    });
+  });
+});
+
+new RuleTester({
+  parser: require.resolve('@typescript-eslint/parser'),
+  parserOptions: {
+    sourceType: 'module',
+    tsconfigRootDir: rootPath,
+    project: './tsconfig.json',
+    disallowAutomaticSingleRunInference: true,
+  },
+}).run('valid-expect (typecheck option)', requireRule(false), {
+  valid: withFixtureFilename([
+    {
+      code: 'expect(() => {}).toThrow()',
+      options: [{ typecheck: true }],
+    },
+    {
+      code: 'expect(function () {}).toThrow()',
+      options: [{ typecheck: true }],
+    },
+    {
+      code: 'expect(1 as () => void).toThrow();',
+      options: [{ typecheck: true }],
+    },
+    {
+      code: 'expect(1 as unknown as () => void).toThrow();',
+      options: [{ typecheck: true }],
+    },
+    {
+      code: 'expect(1 as any as () => void).toThrow();',
+      options: [{ typecheck: true }],
+    },
+    {
+      code: 'expect(1 as unknown & (() => void)).toThrow()',
+      options: [{ typecheck: true }],
+    },
+
+    {
+      code: dedent`
+        function mx() { return 1; }
+
+        expect(mx()).toBe(1);
+      `,
+      options: [{ typecheck: true }],
+    },
+    {
+      code: dedent`
+        function mx() { return 1; }
+
+        expect(() => mx()).toThrow();
+      `,
+      options: [{ typecheck: true }],
+    },
+    {
+      code: dedent`
+        function mx() { return 1; }
+
+        expect(mx).toThrow();
+      `,
+      options: [{ typecheck: true }],
+    },
+    {
+      code: dedent`
+        function mx() { return 1; }
+
+        expect(mx).toThrowError();
+      `,
+      options: [{ typecheck: true }],
+    },
+    {
+      code: dedent`
+        function mx() { return () => {}; }
+
+        expect(mx()).toThrow();
+      `,
+      options: [{ typecheck: true }],
+    },
+
+    {
+      code: dedent`
+        const mx = () => { return 1; };
+
+        expect(mx()).toBe(1);
+      `,
+      options: [{ typecheck: true }],
+    },
+    {
+      code: dedent`
+        const mx = () => { return 1; };
+
+        expect(() => mx()).toThrow();
+      `,
+      options: [{ typecheck: true }],
+    },
+    {
+      code: dedent`
+        const mx = () => { return 1; };
+
+        expect(mx).toThrow();
+      `,
+      options: [{ typecheck: true }],
+    },
+    {
+      code: dedent`
+        const mx = () => { return 1; };
+
+        expect(mx).toThrowErrorMatchingSnapshot();
+      `,
+      options: [{ typecheck: true }],
+    },
+    {
+      code: dedent`
+        const mx = () => { return () => {} };
+
+        expect(mx()).toThrow();
+      `,
+      options: [{ typecheck: true }],
+    },
+    {
+      code: dedent`
+        const mx = () => { return () => {} };
+
+        expect(() => { mx() }).toThrow();
+      `,
+      options: [{ typecheck: true }],
+    },
+
+    {
+      code: dedent`
+        const mx = () => 1;
+
+        expect(mx()).toBe(1);
+      `,
+      options: [{ typecheck: true }],
+    },
+    {
+      code: dedent`
+        const mx = () => "hello world";
+
+        expect(() => mx()).toThrow();
+      `,
+      options: [{ typecheck: true }],
+    },
+    {
+      code: dedent`
+        const mx = () => 5;
+
+        expect(mx).toThrow();
+      `,
+      options: [{ typecheck: true }],
+    },
+    {
+      code: dedent`
+        const mx = function () { return 1; };
+
+        expect(mx).toThrow();
+      `,
+      options: [{ typecheck: true }],
+    },
+    {
+      code: dedent`
+        const mx = () => 5;
+
+        expect(mx).toThrowErrorMatchingInlineSnapshot();
+      `,
+      options: [{ typecheck: true }],
+    },
+    {
+      code: dedent`
+        const mx = () => () => {};
+
+        expect(mx()).toThrow();
+      `,
+      options: [{ typecheck: true }],
+    },
+    {
+      code: dedent`
+        const mx = () => () => {};
+
+        expect(() => { mx() }).toThrow();
+      `,
+      options: [{ typecheck: true }],
+    },
+    {
+      code: dedent`
+        const mx = () => () => {};
+
+        expect(function() { mx() }).toThrow();
+      `,
+      options: [{ typecheck: true }],
+    },
+
+    {
+      code: dedent`
+        class Mx { sayHello() {} }
+
+        expect(new Mx().sayHello).toThrow();
+      `,
+      options: [{ typecheck: true }],
+    },
+    {
+      code: dedent`
+        class Mx { sayHello() { return () => {} } }
+
+        expect(new Mx().sayHello).toThrow();
+      `,
+      options: [{ typecheck: true }],
+    },
+    {
+      code: dedent`
+        class Mx { sayHello() { return () => {} } }
+
+        expect(new Mx().sayHello, 123).toThrow();
+      `,
+      options: [{ typecheck: true, maxArgs: 2 }],
+    },
+
+    {
+      code: dedent`
+        const pMx = Promise.resolve(() => {});
+
+        expect(await pMx).toThrow();
+      `,
+      options: [{ typecheck: true }],
+    },
+
+    {
+      code: dedent`
+        it('is a test', async () => {
+          const pMx = Promise.resolve(() => {});
+
+          expect(await pMx).toThrow();
+        });
+      `,
+      options: [{ typecheck: true }],
+    },
+  ]),
+  invalid: withFixtureFilename([
+    {
+      code: dedent`
+        const pMx = Promise.resolve(() => {});
+
+        expect((await pMx)()).toThrow();
+      `,
+      options: [{ typecheck: true }],
+      errors: [
+        {
+          messageId: 'toThrowWithoutCallable',
+          data: { matcher: 'toThrow' },
+          column: 8,
+          line: 3,
+        },
+      ],
+    },
+    {
+      code: 'expect(1).toThrow()',
+      options: [{ typecheck: true }],
+      output: 'expect(() => 1).toThrow()',
+      errors: [
+        {
+          messageId: 'toThrowWithoutCallable',
+          data: { matcher: 'toThrow' },
+          column: 8,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: 'expect(1, 123).toThrow()',
+      options: [{ typecheck: true, maxArgs: 2 }],
+      output: 'expect(() => 1, 123).toThrow()',
+      errors: [
+        {
+          messageId: 'toThrowWithoutCallable',
+          data: { matcher: 'toThrow' },
+          column: 8,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: 'expect(1 as unknown).toThrow()',
+      options: [{ typecheck: true }],
+      errors: [
+        {
+          messageId: 'toThrowWithoutCallable',
+          data: { matcher: 'toThrow' },
+          column: 8,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: 'expect(1 as any).toThrow()',
+      options: [{ typecheck: true }],
+      errors: [
+        {
+          messageId: 'toThrowWithoutCallable',
+          data: { matcher: 'toThrow' },
+          column: 8,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: 'expect(1 as any | (() => void)).toThrow()',
+      options: [{ typecheck: true }],
+      errors: [
+        {
+          messageId: 'toThrowWithoutCallable',
+          data: { matcher: 'toThrow' },
+          column: 8,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: 'expect(1 as any | string).toThrow()',
+      options: [{ typecheck: true }],
+      errors: [
+        {
+          messageId: 'toThrowWithoutCallable',
+          data: { matcher: 'toThrow' },
+          column: 8,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: 'expect(1 as string | (() => void)).toThrow()',
+      options: [{ typecheck: true }],
+      errors: [
+        {
+          messageId: 'toThrowWithoutCallable',
+          data: { matcher: 'toThrow' },
+          column: 8,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: 'expect(1 as (() => void) | string).toThrow()',
+      options: [{ typecheck: true }],
+      errors: [
+        {
+          messageId: 'toThrowWithoutCallable',
+          data: { matcher: 'toThrow' },
+          column: 8,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: 'expect(1).toThrowError()',
+      options: [{ typecheck: true }],
+      output: 'expect(() => 1).toThrowError()',
+      errors: [
+        {
+          messageId: 'toThrowWithoutCallable',
+          data: { matcher: 'toThrowError' },
+          column: 8,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: 'expect(1).toThrowErrorMatchingSnapshot()',
+      options: [{ typecheck: true }],
+      output: 'expect(() => 1).toThrowErrorMatchingSnapshot()',
+      errors: [
+        {
+          messageId: 'toThrowWithoutCallable',
+          data: { matcher: 'toThrowErrorMatchingSnapshot' },
+          column: 8,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: 'expect(1).toThrowErrorMatchingInlineSnapshot()',
+      options: [{ typecheck: true }],
+      output: 'expect(() => 1).toThrowErrorMatchingInlineSnapshot()',
+      errors: [
+        {
+          messageId: 'toThrowWithoutCallable',
+          data: { matcher: 'toThrowErrorMatchingInlineSnapshot' },
+          column: 8,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: 'expect("hello world").toThrow()',
+      options: [{ typecheck: true }],
+      output: 'expect(() => "hello world").toThrow()',
+      errors: [
+        {
+          messageId: 'toThrowWithoutCallable',
+          data: { matcher: 'toThrow' },
+          column: 8,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: 'expect(function () { return "hello world" }()).toThrow()',
+      options: [{ typecheck: true }],
+      output: 'expect(() => function () { return "hello world" }()).toThrow()',
+      errors: [
+        {
+          messageId: 'toThrowWithoutCallable',
+          data: { matcher: 'toThrow' },
+          column: 8,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: 'expect(function () { return "hello world" }()).toThrowError()',
+      options: [{ typecheck: true }],
+      output:
+        'expect(() => function () { return "hello world" }()).toThrowError()',
+      errors: [
+        {
+          messageId: 'toThrowWithoutCallable',
+          data: { matcher: 'toThrowError' },
+          column: 8,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        const mx = function () {
+          return Math.random() > 0.5 ? () => {} : null;
+        };
+
+        expect(mx()).toThrow();
+      `,
+      options: [{ typecheck: true }],
+      errors: [
+        {
+          messageId: 'toThrowWithoutCallable',
+          data: { matcher: 'toThrow' },
+          column: 8,
+          line: 5,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        const mx = () => () => {};
+
+        expect(mx()()).toThrow();
+      `,
+      options: [{ typecheck: true }],
+      output: dedent`
+        const mx = () => () => {};
+
+        expect(() => mx()()).toThrow();
+      `,
+      errors: [
+        {
+          messageId: 'toThrowWithoutCallable',
+          data: { matcher: 'toThrow' },
+          column: 8,
+          line: 3,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        class Mx { sayHello() {} }
+
+        expect(new Mx().sayHello()).toThrow();
+      `,
+      options: [{ typecheck: true }],
+      output: dedent`
+        class Mx { sayHello() {} }
+
+        expect(() => new Mx().sayHello()).toThrow();
+      `,
+      errors: [
+        {
+          messageId: 'toThrowWithoutCallable',
+          data: { matcher: 'toThrow' },
+          column: 8,
+          line: 3,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        class Mx { sayHello() { return () => {} } }
+
+        expect(new Mx().sayHello()()).toThrow();
+      `,
+      options: [{ typecheck: true }],
+      output: dedent`
+        class Mx { sayHello() { return () => {} } }
+
+        expect(() => new Mx().sayHello()()).toThrow();
+      `,
+      errors: [
+        {
+          messageId: 'toThrowWithoutCallable',
+          data: { matcher: 'toThrow' },
+          column: 8,
+          line: 3,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        class Mx { sayHello() { return () => {} } }
+
+        expect(new Mx().sayHello()()).toThrowErrorMatchingInlineSnapshot();
+      `,
+      options: [{ typecheck: true }],
+      output: dedent`
+        class Mx { sayHello() { return () => {} } }
+
+        expect(() => new Mx().sayHello()()).toThrowErrorMatchingInlineSnapshot();
+      `,
+      errors: [
+        {
+          messageId: 'toThrowWithoutCallable',
+          data: { matcher: 'toThrowErrorMatchingInlineSnapshot' },
+          column: 8,
+          line: 3,
+        },
+      ],
+    },
+  ]),
+});
 
 const ruleTester = new RuleTester({
   parser: espreeParser,

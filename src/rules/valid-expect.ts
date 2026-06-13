@@ -5,9 +5,12 @@
 
 import {
   AST_NODE_TYPES,
+  ESLintUtils,
+  type ParserServicesWithTypeInformation,
   type TSESLint,
   type TSESTree,
 } from '@typescript-eslint/utils';
+import type ts from 'typescript';
 import {
   type FunctionExpression,
   ModifierName,
@@ -123,6 +126,7 @@ const promiseArrayExceptionKey = ({ start, end }: TSESTree.SourceLocation) =>
   `${start.line}:${start.column}-${end.line}:${end.column}`;
 
 interface Options {
+  typecheck?: boolean;
   alwaysAwait?: boolean;
   asyncMatchers?: string[];
   minArgs?: number;
@@ -130,6 +134,7 @@ interface Options {
 }
 
 type MessageIds =
+  | 'toThrowWithoutCallable'
   | 'tooManyArgs'
   | 'notEnoughArgs'
   | 'modifierUnknown'
@@ -147,6 +152,8 @@ export default createRule<[Options], MessageIds>({
       description: 'Enforce valid `expect()` usage',
     },
     messages: {
+      toThrowWithoutCallable:
+        'Expect should be provided a function when using {{ matcher }}',
       tooManyArgs: 'Expect takes at most {{ amount }} argument{{ s }}',
       notEnoughArgs: 'Expect requires at least {{ amount }} argument{{ s }}',
       modifierUnknown: 'Expect has an unknown modifier',
@@ -162,6 +169,10 @@ export default createRule<[Options], MessageIds>({
       {
         type: 'object',
         properties: {
+          typecheck: {
+            type: 'boolean',
+            default: false,
+          },
           alwaysAwait: {
             type: 'boolean',
             default: false,
@@ -185,6 +196,7 @@ export default createRule<[Options], MessageIds>({
   },
   defaultOptions: [
     {
+      typecheck: false,
       alwaysAwait: false,
       asyncMatchers: defaultAsyncMatchers,
       minArgs: 1,
@@ -195,6 +207,7 @@ export default createRule<[Options], MessageIds>({
     context,
     [
       {
+        typecheck,
         alwaysAwait,
         asyncMatchers = defaultAsyncMatchers,
         minArgs = 1,
@@ -242,6 +255,12 @@ export default createRule<[Options], MessageIds>({
 
       return topMostMemberExpression;
     };
+
+    let services: ParserServicesWithTypeInformation | null = null;
+
+    if (typecheck) {
+      services = ESLintUtils.getParserServices(context);
+    }
 
     return {
       CallExpression(node) {
@@ -336,6 +355,55 @@ export default createRule<[Options], MessageIds>({
         }
 
         const { matcher } = jestFnCall;
+
+        // when typechecking is available then for toThrow assertions check
+        // that "expect" is being passed a callable, rather than a value
+        if (
+          services &&
+          expect.arguments.length > 0 &&
+          [
+            'toThrow',
+            'toThrowError',
+            'toThrowErrorMatchingSnapshot',
+            'toThrowErrorMatchingInlineSnapshot',
+          ].includes(getAccessorValue(matcher))
+        ) {
+          const [firstArg] = expect.arguments;
+
+          const type = services.getTypeAtLocation(firstArg);
+
+          if (type.getCallSignatures().length === 0) {
+            context.report({
+              messageId: 'toThrowWithoutCallable',
+              data: { matcher: getAccessorValue(matcher) },
+              node: firstArg,
+              fix(fixer) {
+                // might be possible to fix, but could be messy, so leaving it for now
+                if (
+                  firstArg.type === AST_NODE_TYPES.CallExpression &&
+                  firstArg.callee.type === AST_NODE_TYPES.AwaitExpression
+                ) {
+                  return null;
+                }
+
+                // unions are not safe to fix, since the value might be a callable
+                if (type.isUnion()) {
+                  return null;
+                }
+
+                // eslint-disable-next-line @typescript-eslint/no-require-imports
+                const { TypeFlags } = require('typescript') as typeof ts;
+
+                // any and unknown is not safe to fix, since they might be a callable
+                if (type.flags & (TypeFlags.Any | TypeFlags.Unknown)) {
+                  return null;
+                }
+
+                return fixer.insertTextBefore(firstArg, '() => ');
+              },
+            });
+          }
+        }
 
         const parentNode = matcher.parent.parent;
         const shouldBeAwaited =

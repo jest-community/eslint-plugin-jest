@@ -49,6 +49,10 @@ This rule is enabled by default.
 {
   type: 'object',
   properties: {
+    typecheck: {
+      type: 'boolean',
+      default: false,
+    },
     alwaysAwait: {
       type: 'boolean',
       default: false,
@@ -70,6 +74,14 @@ This rule is enabled by default.
   additionalProperties: false,
 }
 ```
+
+### `typecheck`
+
+Use TypeScript type information to check that `toThrow` type assertions are
+being passed a callable.
+
+This option requires type information from `@typescript-eslint/parser`, such as
+a configured `parserOptions.project`.
 
 ### `alwaysAwait`
 
