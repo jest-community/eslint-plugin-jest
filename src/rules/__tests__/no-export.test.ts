@@ -39,6 +39,13 @@ ruleTester.run('no-export', rule, {
         expect(1).toBe(1);
       });
     `,
+    dedent`
+      const exports = 'foo';
+      exports = function () {};
+      test('a test', () => {
+        expect(1).toBe(1);
+      });
+    `,
   ],
   invalid: [
     {
@@ -102,6 +109,24 @@ ruleTester.run('no-export', rule, {
       code: 'module[exports] = function() {}; test("a test", () => { expect(1).toBe(1);});',
       parserOptions: { sourceType: 'script' },
       errors: [{ endColumn: 16, column: 1, messageId: 'unexpectedExport' }],
+    },
+    {
+      code: 'module["exports"] = function() {}; test("a test", () => { expect(1).toBe(1);});',
+      errors: [{ endColumn: 18, column: 1, messageId: 'unexpectedExport' }],
+    },
+    {
+      code: 'module.exports.foo.bar = function() {}; test("a test", () => { expect(1).toBe(1);});',
+      errors: [{ endColumn: 23, column: 1, messageId: 'unexpectedExport' }],
+    },
+    {
+      code: 'exports = function() {}; test("a test", () => { expect(1).toBe(1);});',
+      parserOptions: { sourceType: 'script' },
+      errors: [{ endColumn: 8, column: 1, messageId: 'unexpectedExport' }],
+    },
+    {
+      code: 'exports.foo = function() {}; test("a test", () => { expect(1).toBe(1);});',
+      parserOptions: { sourceType: 'script' },
+      errors: [{ endColumn: 12, column: 1, messageId: 'unexpectedExport' }],
     },
   ],
 });

@@ -1,10 +1,93 @@
-import { AST_NODE_TYPES, type TSESTree } from '@typescript-eslint/utils';
+import {
+  AST_NODE_TYPES,
+  type TSESLint,
+  type TSESTree,
+} from '@typescript-eslint/utils';
 import {
   createRule,
+  isStringNode,
   isSupportedAccessor,
   isTypeOfJestFnCall,
   resolveScope,
 } from './utils';
+
+const isGlobalModuleIdentifier = (
+  node: TSESTree.Identifier,
+  context: TSESLint.RuleContext<string, unknown[]>,
+): boolean =>
+  node.name === 'module' &&
+  resolveScope(context.sourceCode.getScope(node), 'module') === null;
+
+const isGlobalExportsIdentifier = (
+  node: TSESTree.Identifier,
+  context: TSESLint.RuleContext<string, unknown[]>,
+): boolean =>
+  node.name === 'exports' &&
+  resolveScope(context.sourceCode.getScope(node), 'exports') === null;
+
+const isModuleExportsMember = (
+  member: TSESTree.MemberExpression,
+  context: TSESLint.RuleContext<string, unknown[]>,
+): boolean => {
+  const { object, property, computed } = member;
+
+  if (
+    object.type !== AST_NODE_TYPES.Identifier ||
+    !isGlobalModuleIdentifier(object, context)
+  ) {
+    return false;
+  }
+
+  if (!computed) {
+    return isSupportedAccessor(property, 'exports');
+  }
+
+  if (isStringNode(property, 'exports')) {
+    return true;
+  }
+
+  return (
+    property.type === AST_NODE_TYPES.Identifier &&
+    isGlobalExportsIdentifier(property, context)
+  );
+};
+
+const isCommonJsExportAssignment = (
+  node: TSESTree.AssignmentExpression,
+  context: TSESLint.RuleContext<string, unknown[]>,
+): boolean => {
+  const { left } = node;
+
+  if (
+    left.type === AST_NODE_TYPES.Identifier &&
+    isGlobalExportsIdentifier(left, context)
+  ) {
+    return true;
+  }
+
+  if (left.type !== AST_NODE_TYPES.MemberExpression) {
+    return false;
+  }
+
+  let current: TSESTree.Expression = left;
+
+  while (current.type === AST_NODE_TYPES.MemberExpression) {
+    if (isModuleExportsMember(current, context)) {
+      return true;
+    }
+
+    if (
+      current.object.type === AST_NODE_TYPES.Identifier &&
+      isGlobalExportsIdentifier(current.object, context)
+    ) {
+      return true;
+    }
+
+    current = current.object;
+  }
+
+  return false;
+};
 
 export default createRule({
   name: __filename,
@@ -24,7 +107,7 @@ export default createRule({
       | TSESTree.ExportNamedDeclaration
       | TSESTree.ExportDefaultDeclaration
       | TSESTree.TSExportAssignment
-      | TSESTree.MemberExpression
+      | TSESTree.AssignmentExpression['left']
     > = [];
     let hasTestCase = false;
 
@@ -50,38 +133,9 @@ export default createRule({
       ) {
         exportNodes.push(node);
       },
-      'AssignmentExpression > MemberExpression'(
-        node: TSESTree.MemberExpression,
-      ) {
-        let { object, property, computed } = node;
-
-        if (object.type === AST_NODE_TYPES.MemberExpression) {
-          ({ object, property, computed } = object);
-        }
-
-        if (
-          object.type !== AST_NODE_TYPES.Identifier ||
-          object.name !== 'module' ||
-          resolveScope(context.sourceCode.getScope(object), 'module') !== null
-        ) {
-          return;
-        }
-
-        if (!computed) {
-          if (isSupportedAccessor(property, 'exports')) {
-            exportNodes.push(node);
-          }
-
-          return;
-        }
-
-        if (
-          property.type === AST_NODE_TYPES.Identifier &&
-          property.name === 'exports' &&
-          resolveScope(context.sourceCode.getScope(property), 'exports') ===
-            null
-        ) {
-          exportNodes.push(node);
+      AssignmentExpression(node: TSESTree.AssignmentExpression) {
+        if (isCommonJsExportAssignment(node, context)) {
+          exportNodes.push(node.left);
         }
       },
     };
