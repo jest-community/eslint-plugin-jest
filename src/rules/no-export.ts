@@ -1,5 +1,10 @@
 import { AST_NODE_TYPES, type TSESTree } from '@typescript-eslint/utils';
-import { createRule, isTypeOfJestFnCall } from './utils';
+import {
+  createRule,
+  isSupportedAccessor,
+  isTypeOfJestFnCall,
+  resolveScope,
+} from './utils';
 
 export default createRule({
   name: __filename,
@@ -48,17 +53,33 @@ export default createRule({
       'AssignmentExpression > MemberExpression'(
         node: TSESTree.MemberExpression,
       ) {
-        let { object, property } = node;
+        let { object, property, computed } = node;
 
         if (object.type === AST_NODE_TYPES.MemberExpression) {
-          ({ object, property } = object);
+          ({ object, property, computed } = object);
         }
 
         if (
-          'name' in object &&
-          object.name === 'module' &&
+          object.type !== AST_NODE_TYPES.Identifier ||
+          object.name !== 'module' ||
+          resolveScope(context.sourceCode.getScope(object), 'module') !== null
+        ) {
+          return;
+        }
+
+        if (!computed) {
+          if (isSupportedAccessor(property, 'exports')) {
+            exportNodes.push(node);
+          }
+
+          return;
+        }
+
+        if (
           property.type === AST_NODE_TYPES.Identifier &&
-          /^exports?$/u.test(property.name)
+          property.name === 'exports' &&
+          resolveScope(context.sourceCode.getScope(property), 'exports') ===
+            null
         ) {
           exportNodes.push(node);
         }
