@@ -98,5 +98,10 @@ ruleTester.run('no-export', rule, {
       code: 'module.exports = function() {}; ;  test("a test", () => { expect(1).toBe(1);});',
       errors: [{ endColumn: 15, column: 1, messageId: 'unexpectedExport' }],
     },
+    {
+      code: 'module[exports] = function() {}; test("a test", () => { expect(1).toBe(1);});',
+      parserOptions: { sourceType: 'script' },
+      errors: [{ endColumn: 16, column: 1, messageId: 'unexpectedExport' }],
+    },
   ],
 });
