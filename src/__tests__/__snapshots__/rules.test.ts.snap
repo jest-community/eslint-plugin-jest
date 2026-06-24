@@ -225,6 +225,7 @@ exports[`rules should export configs that refer to actual rules 1`] = `
       "jest/no-mocks-import": "error",
       "jest/no-standalone-expect": "error",
       "jest/no-test-prefixes": "error",
+      "jest/no-unneeded-async-expect-function": "error",
       "jest/valid-describe-callback": "error",
       "jest/valid-expect": "error",
       "jest/valid-expect-in-promise": "error",
@@ -260,6 +261,8 @@ exports[`rules should export configs that refer to actual rules 1`] = `
     "rules": {
       "jest/prefer-to-be": "error",
       "jest/prefer-to-contain": "error",
+      "jest/prefer-to-have-been-called": "error",
+      "jest/prefer-to-have-been-called-times": "error",
       "jest/prefer-to-have-length": "error",
     },
   },
@@ -286,6 +289,7 @@ exports[`rules should export configs that refer to actual rules 1`] = `
       "jest/no-mocks-import": "error",
       "jest/no-standalone-expect": "error",
       "jest/no-test-prefixes": "error",
+      "jest/no-unneeded-async-expect-function": "error",
       "jest/valid-describe-callback": "error",
       "jest/valid-expect": "error",
       "jest/valid-expect-in-promise": "error",
@@ -302,6 +306,8 @@ exports[`rules should export configs that refer to actual rules 1`] = `
     "rules": {
       "jest/prefer-to-be": "error",
       "jest/prefer-to-contain": "error",
+      "jest/prefer-to-have-been-called": "error",
+      "jest/prefer-to-have-been-called-times": "error",
       "jest/prefer-to-have-length": "error",
     },
   },
