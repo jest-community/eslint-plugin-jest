@@ -5501,8 +5501,8 @@ __metadata:
   linkType: soft
 
 "eslint-plugin-n@npm:^18.0.0":
-  version: 18.1.0
-  resolution: "eslint-plugin-n@npm:18.1.0"
+  version: 18.2.1
+  resolution: "eslint-plugin-n@npm:18.2.1"
   dependencies:
     "@eslint-community/eslint-utils": "npm:^4.5.0"
     enhanced-resolve: "npm:^5.17.1"
@@ -5521,7 +5521,7 @@ __metadata:
       optional: true
     typescript:
       optional: true
-  checksum: 10c0/19f555e79213a0b2a6ccf1ab6150ecc98ee00cf12e99bf277429793574c25ac47b05b4133eac9a9ee7989ba62793f71dacb8a2b0a001d5e70d96c3dde69c05d3
+  checksum: 10c0/cb2087fd6e1193b180583dbb8bef6a61458d3de2769891cb5eb265f89986ca64eada323fe7fefa1d7b911420ea016d55a8ab94fa3d36f6b3814abe79718711ee
   languageName: node
   linkType: hard
 
