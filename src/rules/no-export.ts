@@ -11,19 +11,13 @@ import {
   resolveScope,
 } from './utils';
 
-const isGlobalModuleIdentifier = (
+const isGlobalIdentifier = (
   node: TSESTree.Identifier,
   context: TSESLint.RuleContext<string, unknown[]>,
+  name: string,
 ): boolean =>
-  node.name === 'module' &&
-  resolveScope(context.sourceCode.getScope(node), 'module') === null;
-
-const isGlobalExportsIdentifier = (
-  node: TSESTree.Identifier,
-  context: TSESLint.RuleContext<string, unknown[]>,
-): boolean =>
-  node.name === 'exports' &&
-  resolveScope(context.sourceCode.getScope(node), 'exports') === null;
+  node.name === name &&
+  resolveScope(context.sourceCode.getScope(node), name) === null;
 
 const isModuleExportsMember = (
   member: TSESTree.MemberExpression,
@@ -33,7 +27,7 @@ const isModuleExportsMember = (
 
   if (
     object.type !== AST_NODE_TYPES.Identifier ||
-    !isGlobalModuleIdentifier(object, context)
+    !isGlobalIdentifier(object, context, 'module')
   ) {
     return false;
   }
@@ -48,7 +42,7 @@ const isModuleExportsMember = (
 
   return (
     property.type === AST_NODE_TYPES.Identifier &&
-    isGlobalExportsIdentifier(property, context)
+    isGlobalIdentifier(property, context, 'exports')
   );
 };
 
@@ -60,7 +54,7 @@ const isCommonJsExportAssignment = (
 
   if (
     left.type === AST_NODE_TYPES.Identifier &&
-    isGlobalExportsIdentifier(left, context)
+    isGlobalIdentifier(left, context, 'exports')
   ) {
     return true;
   }
@@ -78,7 +72,7 @@ const isCommonJsExportAssignment = (
 
     if (
       current.object.type === AST_NODE_TYPES.Identifier &&
-      isGlobalExportsIdentifier(current.object, context)
+      isGlobalIdentifier(current.object, context, 'exports')
     ) {
       return true;
     }
