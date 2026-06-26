@@ -17,10 +17,10 @@ jobs:
 
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
           persist-credentials: false
-      - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
+      - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
         with:
           # This is set to the lowest Node.js version we support
           node-version: 20
@@ -29,7 +29,7 @@ jobs:
           yarn install
           yarn build
           ln -s ../ node_modules/eslint-plugin-jest
-      - uses: AriPerkkio/eslint-remote-tester-run-action@5724813c126b48e735e7fc08f048f318c3df262d # v5
+      - uses: AriPerkkio/eslint-remote-tester-run-action@212a4b725efb5ffce2e15f9ade8c43e252b09ce2 # v6
         with:
           issue-title: 'Results of weekly scheduled smoke test'
           eslint-remote-tester-config: eslint-remote-tester.config.ts
