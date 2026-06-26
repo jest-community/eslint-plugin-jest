@@ -1,3 +1,10 @@
+## [29.15.3](https://github.com/jest-community/eslint-plugin-jest/compare/v29.15.2...v29.15.3) (2026-06-26)
+
+
+### Bug Fixes
+
+* **no-export:** treat describe blocks as test files ([#1978](https://github.com/jest-community/eslint-plugin-jest/issues/1978)) ([70568b0](https://github.com/jest-community/eslint-plugin-jest/commit/70568b0f8f884559661b7c1cca89437a20d5449b))
+
 ## [29.15.2](https://github.com/jest-community/eslint-plugin-jest/compare/v29.15.1...v29.15.2) (2026-04-09)
 
 
