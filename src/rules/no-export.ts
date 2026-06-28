@@ -67,19 +67,10 @@ export default createRule({
           return;
         }
 
-        if (!computed) {
-          if (isSupportedAccessor(property, 'exports')) {
-            exportNodes.push(node);
-          }
-
-          return;
-        }
-
         if (
-          property.type === AST_NODE_TYPES.Identifier &&
-          property.name === 'exports' &&
-          resolveScope(context.sourceCode.getScope(property), 'exports') ===
-            null
+          !computed &&
+          (isSupportedAccessor(property, 'export') ||
+            isSupportedAccessor(property, 'exports'))
         ) {
           exportNodes.push(node);
         }

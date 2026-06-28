@@ -33,12 +33,10 @@ ruleTester.run('no-export', rule, {
         expect(1).toBe(1);
       });
     `,
-    dedent`
-      module.export.invalid = function () {};
-      test('a test', () => {
-        expect(1).toBe(1);
-      });
-    `,
+    {
+      code: 'module[exports] = function() {}; test("a test", () => { expect(1).toBe(1);});',
+      parserOptions: { sourceType: 'script' },
+    },
   ],
   invalid: [
     {
@@ -99,9 +97,8 @@ ruleTester.run('no-export', rule, {
       errors: [{ endColumn: 15, column: 1, messageId: 'unexpectedExport' }],
     },
     {
-      code: 'module[exports] = function() {}; test("a test", () => { expect(1).toBe(1);});',
-      parserOptions: { sourceType: 'script' },
-      errors: [{ endColumn: 16, column: 1, messageId: 'unexpectedExport' }],
+      code: 'module.export.invalid = function() {}; ;  test("a test", () => { expect(1).toBe(1);});',
+      errors: [{ endColumn: 22, column: 1, messageId: 'unexpectedExport' }],
     },
   ],
 });
