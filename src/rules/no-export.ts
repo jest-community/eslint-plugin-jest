@@ -38,7 +38,7 @@ export default createRule({
       },
 
       CallExpression(node) {
-        if (isTypeOfJestFnCall(node, context, ['test'])) {
+        if (isTypeOfJestFnCall(node, context, ['describe', 'test'])) {
           hasTestCase = true;
         }
       },

@@ -100,5 +100,15 @@ ruleTester.run('no-export', rule, {
       code: 'module.export.invalid = function() {}; ;  test("a test", () => { expect(1).toBe(1);});',
       errors: [{ endColumn: 22, column: 1, messageId: 'unexpectedExport' }],
     },
+    {
+      code: dedent`
+        module.exports = function () {};
+
+        describe('a test', () => {
+          expect(1).toBe(1);
+        });
+      `,
+      errors: [{ endColumn: 15, column: 1, messageId: 'unexpectedExport' }],
+    },
   ],
 });
