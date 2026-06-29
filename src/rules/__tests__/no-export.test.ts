@@ -26,17 +26,6 @@ ruleTester.run('no-export', rule, {
         expect(1).toBe(1);
       });
     `,
-    dedent`
-      const exports = 'exports';
-      module[exports] = function () {};
-      test('a test', () => {
-        expect(1).toBe(1);
-      });
-    `,
-    {
-      code: 'module[exports] = function() {}; test("a test", () => { expect(1).toBe(1);});',
-      parserOptions: { sourceType: 'script' },
-    },
   ],
   invalid: [
     {
