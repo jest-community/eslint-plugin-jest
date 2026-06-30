@@ -3,13 +3,7 @@ import {
   type TSESLint,
   type TSESTree,
 } from '@typescript-eslint/utils';
-import {
-  createRule,
-  isStringNode,
-  isSupportedAccessor,
-  isTypeOfJestFnCall,
-  resolveScope,
-} from './utils';
+import { createRule, isTypeOfJestFnCall, resolveScope } from './utils';
 
 const isGlobalIdentifier = (
   node: TSESTree.Identifier,
@@ -19,31 +13,16 @@ const isGlobalIdentifier = (
   node.name === name &&
   resolveScope(context.sourceCode.getScope(node), name) === null;
 
-const isModuleExportsMember = (
+const getMemberExpressionRootIdentifier = (
   member: TSESTree.MemberExpression,
-  context: TSESLint.RuleContext<string, unknown[]>,
-): boolean => {
-  const { object, property, computed } = member;
+): TSESTree.Identifier | null => {
+  let current = member.object;
 
-  if (
-    object.type !== AST_NODE_TYPES.Identifier ||
-    !isGlobalIdentifier(object, context, 'module')
-  ) {
-    return false;
+  while (current.type === AST_NODE_TYPES.MemberExpression) {
+    current = current.object;
   }
 
-  if (!computed) {
-    return isSupportedAccessor(property, 'exports');
-  }
-
-  if (isStringNode(property, 'exports')) {
-    return true;
-  }
-
-  return (
-    property.type === AST_NODE_TYPES.Identifier &&
-    isGlobalIdentifier(property, context, 'exports')
-  );
+  return current.type === AST_NODE_TYPES.Identifier ? current : null;
 };
 
 const isCommonJsExportAssignment = (
@@ -63,24 +42,13 @@ const isCommonJsExportAssignment = (
     return false;
   }
 
-  let current: TSESTree.Expression = left;
+  const root = getMemberExpressionRootIdentifier(left);
 
-  while (current.type === AST_NODE_TYPES.MemberExpression) {
-    if (isModuleExportsMember(current, context)) {
-      return true;
-    }
-
-    if (
-      current.object.type === AST_NODE_TYPES.Identifier &&
-      isGlobalIdentifier(current.object, context, 'exports')
-    ) {
-      return true;
-    }
-
-    current = current.object;
-  }
-
-  return false;
+  return (
+    root !== null &&
+    (isGlobalIdentifier(root, context, 'module') ||
+      isGlobalIdentifier(root, context, 'exports'))
+  );
 };
 
 export default createRule({
@@ -115,7 +83,7 @@ export default createRule({
       },
 
       CallExpression(node) {
-        if (isTypeOfJestFnCall(node, context, ['test'])) {
+        if (isTypeOfJestFnCall(node, context, ['describe', 'test'])) {
           hasTestCase = true;
         }
       },

@@ -14,7 +14,6 @@ ruleTester.run('no-export', rule, {
   valid: [
     'describe("a test", () => { expect(1).toBe(1); })',
     'window.location = "valid"',
-    'module.somethingElse = "foo";',
     'export const myThing = "valid"',
     'export default function () {}',
     'module.exports = function(){}',
@@ -27,14 +26,15 @@ ruleTester.run('no-export', rule, {
       });
     `,
     dedent`
-      const exports = 'exports';
-      module[exports] = function () {};
+      const module = {};
+      module.somethingElse = 'foo';
       test('a test', () => {
         expect(1).toBe(1);
       });
     `,
     dedent`
-      module.export.invalid = function () {};
+      const exports = {};
+      exports.foo = function () {};
       test('a test', () => {
         expect(1).toBe(1);
       });
@@ -98,17 +98,26 @@ ruleTester.run('no-export', rule, {
       errors: [{ endColumn: 24, column: 1, messageId: 'unexpectedExport' }],
     },
     {
+      code: 'module.somethingElse = "foo"; test("a test", () => { expect(1).toBe(1);});',
+      errors: [{ endColumn: 21, column: 1, messageId: 'unexpectedExport' }],
+    },
+    {
+      code: dedent`
+        module.export.invalid = function () {};
+
+        test('a test', () => {
+          expect(1).toBe(1);
+        });
+      `,
+      errors: [{ endColumn: 22, column: 1, messageId: 'unexpectedExport' }],
+    },
+    {
       code: 'module.exports["invalid"] = function() {};  test("a test", () => { expect(1).toBe(1);});',
       errors: [{ endColumn: 26, column: 1, messageId: 'unexpectedExport' }],
     },
     {
       code: 'module.exports = function() {}; ;  test("a test", () => { expect(1).toBe(1);});',
       errors: [{ endColumn: 15, column: 1, messageId: 'unexpectedExport' }],
-    },
-    {
-      code: 'module[exports] = function() {}; test("a test", () => { expect(1).toBe(1);});',
-      parserOptions: { sourceType: 'script' },
-      errors: [{ endColumn: 16, column: 1, messageId: 'unexpectedExport' }],
     },
     {
       code: 'module["exports"] = function() {}; test("a test", () => { expect(1).toBe(1);});',
@@ -127,6 +136,16 @@ ruleTester.run('no-export', rule, {
       code: 'exports.foo = function() {}; test("a test", () => { expect(1).toBe(1);});',
       parserOptions: { sourceType: 'script' },
       errors: [{ endColumn: 12, column: 1, messageId: 'unexpectedExport' }],
+    },
+    {
+      code: dedent`
+        module.exports = function () {};
+
+        describe('a test', () => {
+          expect(1).toBe(1);
+        });
+      `,
+      errors: [{ endColumn: 15, column: 1, messageId: 'unexpectedExport' }],
     },
   ],
 });
