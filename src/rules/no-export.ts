@@ -1,5 +1,5 @@
 import { AST_NODE_TYPES, type TSESTree } from '@typescript-eslint/utils';
-import { createRule, isTypeOfJestFnCall } from './utils';
+import { createRule, isTypeOfJestFnCall, resolveScope } from './utils';
 
 export default createRule({
   name: __filename,
@@ -55,8 +55,14 @@ export default createRule({
         }
 
         if (
-          'name' in object &&
-          object.name === 'module' &&
+          object.type !== AST_NODE_TYPES.Identifier ||
+          object.name !== 'module' ||
+          resolveScope(context.sourceCode.getScope(object), 'module') !== null
+        ) {
+          return;
+        }
+
+        if (
           property.type === AST_NODE_TYPES.Identifier &&
           /^exports?$/u.test(property.name)
         ) {

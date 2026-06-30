@@ -19,6 +19,13 @@ ruleTester.run('no-export', rule, {
     'export default function () {}',
     'module.exports = function(){}',
     'module.exports.myThing = "valid";',
+    dedent`
+      const module = {};
+      module.exports = function () {};
+      test('a test', () => {
+        expect(1).toBe(1);
+      });
+    `,
   ],
   invalid: [
     {
