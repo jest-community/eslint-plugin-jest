@@ -46,6 +46,17 @@ ruleTester.run('no-export', rule, {
         expect(1).toBe(1);
       });
     `,
+    dedent`
+      function getModule() {
+        return module;
+      }
+
+      getModule().exports = function () {};
+
+      test('a test', () => {
+        expect(1).toBe(1);
+      });
+    `,
   ],
   invalid: [
     {
