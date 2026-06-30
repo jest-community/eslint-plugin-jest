@@ -29,9 +29,10 @@ With
 just import the plugin and away you go:
 
 ```js
+const { defineConfig } = require('@eslint/config');
 const pluginJest = require('eslint-plugin-jest');
 
-module.exports = [
+module.exports = defineConfig([
   {
     // update this to match your test files
     files: ['**/*.spec.js', '**/*.test.js'],
@@ -47,7 +48,7 @@ module.exports = [
       'jest/valid-expect': 'error',
     },
   },
-];
+]);
 ```
 
 With legacy configuration, add `jest` to the plugins section of your `.eslintrc`
@@ -146,15 +147,15 @@ For `eslint.config.js` you can use
 [`files` and `ignores`](https://eslint.org/docs/latest/use/configure/configuration-files-new#specifying-files-and-ignores):
 
 ```js
+const { defineConfig } = require('@eslint/config');
 const jest = require('eslint-plugin-jest');
 
-module.exports = [
+module.exports = defaultConfig([
   ...require('@eslint/js').configs.recommended,
   {
     files: ['test/**'],
-    ...jest.configs['flat/recommended'],
+    extends: [jest.configs['flat/recommended']],
     rules: {
-      ...jest.configs['flat/recommended'].rules,
       'jest/prefer-expect-assertions': 'off',
     },
   },
@@ -163,7 +164,7 @@ module.exports = [
     files: ['test/**'],
     rules: { 'jest/prefer-expect-assertions': 'off' },
   },
-];
+]);
 ```
 
 ### Jest `version` setting
@@ -228,16 +229,17 @@ To enable this configuration with `eslint.config.js`, use
 `jest.configs['flat/recommended']`:
 
 ```js
+const { defineConfig } = require('@eslint/config');
 const jest = require('eslint-plugin-jest');
 
-module.exports = [
+module.exports = defineConfig([
   {
     files: [
       /* glob matching your test files */
     ],
-    ...jest.configs['flat/recommended'],
+    extends: [jest.configs['flat/recommended']],
   },
-];
+]);
 ```
 
 ### Style
@@ -259,16 +261,17 @@ To enable this configuration with `eslint.config.js`, use
 `jest.configs['flat/style']`:
 
 ```js
+const { defineConfig } = require('@eslint/config');
 const jest = require('eslint-plugin-jest');
 
-module.exports = [
+module.exports = defineConfig([
   {
     files: [
       /* glob matching your test files */
     ],
-    ...jest.configs['flat/style'],
+    extends: [jest.configs['flat/style']],
   },
-];
+]);
 ```
 
 ### All
@@ -286,16 +289,17 @@ To enable this configuration with `eslint.config.js`, use
 `jest.configs['flat/all']`:
 
 ```js
+const { defineConfig } = require('@eslint/config');
 const jest = require('eslint-plugin-jest');
 
-module.exports = [
+module.exports = defineConfig([
   {
     files: [
       /* glob matching your test files */
     ],
-    ...jest.configs['flat/all'],
+    extends: [jest.configs['flat/all']],
   },
-];
+]);
 ```
 
 While the `recommended` and `style` configurations only change in major versions
