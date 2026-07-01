@@ -5,24 +5,29 @@ import {
 } from '@typescript-eslint/utils';
 import { createRule, isTypeOfJestFnCall, resolveScope } from './utils';
 
-const isGlobalIdentifier = (
+const isGlobalModuleIdentifier = (
   node: TSESTree.Identifier,
   context: TSESLint.RuleContext<string, unknown[]>,
-  name: string,
 ): boolean =>
-  node.name === name &&
-  resolveScope(context.sourceCode.getScope(node), name) === null;
+  node.name === 'module' &&
+  resolveScope(context.sourceCode.getScope(node), 'module') === null;
 
-const getMemberExpressionRootIdentifier = (
+type MemberExpressionWithIdentifierObject = TSESTree.MemberExpression & {
+  object: TSESTree.Identifier;
+};
+
+const getModuleMemberExpressionRoot = (
   member: TSESTree.MemberExpression,
-): TSESTree.Identifier | null => {
-  let current = member.object;
+): MemberExpressionWithIdentifierObject | null => {
+  let current = member;
 
-  while (current.type === AST_NODE_TYPES.MemberExpression) {
+  while (current.object.type === AST_NODE_TYPES.MemberExpression) {
     current = current.object;
   }
 
-  return current.type === AST_NODE_TYPES.Identifier ? current : null;
+  return current.object.type === AST_NODE_TYPES.Identifier
+    ? (current as MemberExpressionWithIdentifierObject)
+    : null;
 };
 
 const isCommonJsExportAssignment = (
@@ -31,23 +36,20 @@ const isCommonJsExportAssignment = (
 ): boolean => {
   const { left } = node;
 
-  if (
-    left.type === AST_NODE_TYPES.Identifier &&
-    isGlobalIdentifier(left, context, 'exports')
-  ) {
-    return true;
-  }
-
   if (left.type !== AST_NODE_TYPES.MemberExpression) {
     return false;
   }
 
-  const root = getMemberExpressionRootIdentifier(left);
+  const root = getModuleMemberExpressionRoot(left);
 
   return (
     root !== null &&
-    (isGlobalIdentifier(root, context, 'module') ||
-      isGlobalIdentifier(root, context, 'exports'))
+    isGlobalModuleIdentifier(root.object, context) &&
+    ((!root.computed &&
+      root.property.type === AST_NODE_TYPES.Identifier &&
+      /^exports?$/u.test(root.property.name)) ||
+      (root.property.type === AST_NODE_TYPES.Literal &&
+        root.property.value === 'exports'))
   );
 };
 

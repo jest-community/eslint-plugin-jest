@@ -33,6 +33,12 @@ ruleTester.run('no-export', rule, {
       });
     `,
     dedent`
+      module.somethingElse = 'foo';
+      test('a test', () => {
+        expect(1).toBe(1);
+      });
+    `,
+    dedent`
       const exports = {};
       exports.foo = function () {};
       test('a test', () => {
@@ -57,6 +63,31 @@ ruleTester.run('no-export', rule, {
         expect(1).toBe(1);
       });
     `,
+    dedent`
+      const exports = 'exports';
+      module[exports] = function () {};
+      test('a test', () => {
+        expect(1).toBe(1);
+      });
+    `,
+    {
+      code: dedent`
+        exports.foo = function () {};
+        test('a test', () => {
+          expect(1).toBe(1);
+        });
+      `,
+      parserOptions: { sourceType: 'script' },
+    },
+    {
+      code: dedent`
+        exports = function () {};
+        test('a test', () => {
+          expect(1).toBe(1);
+        });
+      `,
+      parserOptions: { sourceType: 'script' },
+    },
   ],
   invalid: [
     {
@@ -109,10 +140,6 @@ ruleTester.run('no-export', rule, {
       errors: [{ endColumn: 24, column: 1, messageId: 'unexpectedExport' }],
     },
     {
-      code: 'module.somethingElse = "foo"; test("a test", () => { expect(1).toBe(1);});',
-      errors: [{ endColumn: 21, column: 1, messageId: 'unexpectedExport' }],
-    },
-    {
       code: dedent`
         module.export.invalid = function () {};
 
@@ -137,16 +164,6 @@ ruleTester.run('no-export', rule, {
     {
       code: 'module.exports.foo.bar = function() {}; test("a test", () => { expect(1).toBe(1);});',
       errors: [{ endColumn: 23, column: 1, messageId: 'unexpectedExport' }],
-    },
-    {
-      code: 'exports = function() {}; test("a test", () => { expect(1).toBe(1);});',
-      parserOptions: { sourceType: 'script' },
-      errors: [{ endColumn: 8, column: 1, messageId: 'unexpectedExport' }],
-    },
-    {
-      code: 'exports.foo = function() {}; test("a test", () => { expect(1).toBe(1);});',
-      parserOptions: { sourceType: 'script' },
-      errors: [{ endColumn: 12, column: 1, messageId: 'unexpectedExport' }],
     },
     {
       code: dedent`
