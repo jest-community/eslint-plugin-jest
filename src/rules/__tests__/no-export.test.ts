@@ -14,7 +14,6 @@ ruleTester.run('no-export', rule, {
   valid: [
     'describe("a test", () => { expect(1).toBe(1); })',
     'window.location = "valid"',
-    'module.somethingElse = "foo";',
     'export const myThing = "valid"',
     'export default function () {}',
     'module.exports = function(){}',
@@ -22,6 +21,37 @@ ruleTester.run('no-export', rule, {
     dedent`
       const module = {};
       module.exports = function () {};
+      test('a test', () => {
+        expect(1).toBe(1);
+      });
+    `,
+    dedent`
+      const module = {};
+      module.somethingElse = 'foo';
+      test('a test', () => {
+        expect(1).toBe(1);
+      });
+    `,
+    dedent`
+      module.somethingElse = 'foo';
+      test('a test', () => {
+        expect(1).toBe(1);
+      });
+    `,
+    dedent`
+      function getModule() {
+        return module;
+      }
+
+      getModule().exports = function () {};
+
+      test('a test', () => {
+        expect(1).toBe(1);
+      });
+    `,
+    dedent`
+      const exports = 'exports';
+      module[exports] = function () {};
       test('a test', () => {
         expect(1).toBe(1);
       });
@@ -78,6 +108,16 @@ ruleTester.run('no-export', rule, {
       errors: [{ endColumn: 24, column: 1, messageId: 'unexpectedExport' }],
     },
     {
+      code: dedent`
+        module.export.invalid = function () {};
+
+        test('a test', () => {
+          expect(1).toBe(1);
+        });
+      `,
+      errors: [{ endColumn: 22, column: 1, messageId: 'unexpectedExport' }],
+    },
+    {
       code: 'module.exports["invalid"] = function() {};  test("a test", () => { expect(1).toBe(1);});',
       errors: [{ endColumn: 26, column: 1, messageId: 'unexpectedExport' }],
     },
@@ -86,8 +126,12 @@ ruleTester.run('no-export', rule, {
       errors: [{ endColumn: 15, column: 1, messageId: 'unexpectedExport' }],
     },
     {
-      code: 'module.export.invalid = function() {}; ;  test("a test", () => { expect(1).toBe(1);});',
-      errors: [{ endColumn: 22, column: 1, messageId: 'unexpectedExport' }],
+      code: 'module["exports"] = function() {}; test("a test", () => { expect(1).toBe(1);});',
+      errors: [{ endColumn: 18, column: 1, messageId: 'unexpectedExport' }],
+    },
+    {
+      code: 'module.exports.foo.bar = function() {}; test("a test", () => { expect(1).toBe(1);});',
+      errors: [{ endColumn: 23, column: 1, messageId: 'unexpectedExport' }],
     },
     {
       code: dedent`
