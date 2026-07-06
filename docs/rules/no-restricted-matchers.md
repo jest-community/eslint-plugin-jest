@@ -46,7 +46,7 @@ Examples of **incorrect** code for this rule with the above configuration
 
 ```js
 it('is false', () => {
-  // if this has a modifer (i.e. `not.toBeFalsy`), it would be considered fine
+  // if this has a modifier (i.e. `not.toBeFalsy`), it would be considered fine
   expect(a).toBeFalsy();
 });
 
