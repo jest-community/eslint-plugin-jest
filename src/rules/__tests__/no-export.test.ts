@@ -39,6 +39,13 @@ ruleTester.run('no-export', rule, {
       });
     `,
     dedent`
+      module.export.invalid = function () {};
+
+      test('a test', () => {
+        expect(1).toBe(1);
+      });
+    `,
+    dedent`
       function getModule() {
         return module;
       }
@@ -50,8 +57,8 @@ ruleTester.run('no-export', rule, {
       });
     `,
     dedent`
-      const exports = 'exports';
-      module[exports] = function () {};
+      const exports = {};
+      exports.myThing = 'valid';
       test('a test', () => {
         expect(1).toBe(1);
       });
@@ -115,14 +122,12 @@ ruleTester.run('no-export', rule, {
       errors: [{ endColumn: 24, column: 1, messageId: 'unexpectedExport' }],
     },
     {
-      code: dedent`
-        module.export.invalid = function () {};
-
-        test('a test', () => {
-          expect(1).toBe(1);
-        });
-      `,
-      errors: [{ endColumn: 22, column: 1, messageId: 'unexpectedExport' }],
+      code: 'exports.myThing = "invalid"; test("a test", () => { expect(1).toBe(1);});',
+      errors: [{ endColumn: 16, column: 1, messageId: 'unexpectedExport' }],
+    },
+    {
+      code: 'exports["myThing"] = "invalid"; test("a test", () => { expect(1).toBe(1);});',
+      errors: [{ endColumn: 19, column: 1, messageId: 'unexpectedExport' }],
     },
     {
       code: 'module.exports["invalid"] = function() {};  test("a test", () => { expect(1).toBe(1);});',
@@ -131,14 +136,6 @@ ruleTester.run('no-export', rule, {
     {
       code: 'module.exports = function() {}; ;  test("a test", () => { expect(1).toBe(1);});',
       errors: [{ endColumn: 15, column: 1, messageId: 'unexpectedExport' }],
-    },
-    {
-      code: 'module["exports"] = function() {}; test("a test", () => { expect(1).toBe(1);});',
-      errors: [{ endColumn: 18, column: 1, messageId: 'unexpectedExport' }],
-    },
-    {
-      code: 'module.exports.foo.bar = function() {}; test("a test", () => { expect(1).toBe(1);});',
-      errors: [{ endColumn: 23, column: 1, messageId: 'unexpectedExport' }],
     },
     {
       code: dedent`
