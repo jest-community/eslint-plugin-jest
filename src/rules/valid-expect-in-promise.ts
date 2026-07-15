@@ -127,8 +127,7 @@ const isPromiseMethodThatUsesValue = (
 const isValueAwaitedInElements = (
   name: string,
   elements:
-    | TSESTree.ArrayExpression['elements']
-    | TSESTree.CallExpression['arguments'],
+    TSESTree.ArrayExpression['elements'] | TSESTree.CallExpression['arguments'],
 ): boolean => {
   for (const element of elements) {
     if (

@@ -1,8 +1,7 @@
 import { AST_NODE_TYPES, type TSESTree } from '@typescript-eslint/utils';
 
 export type MaybeTypeCast<Expression extends TSESTree.Expression> =
-  | TSTypeCastExpression<Expression>
-  | Expression;
+  TSTypeCastExpression<Expression> | Expression;
 
 type TSTypeCastExpression<
   Expression extends TSESTree.Expression = TSESTree.Expression,

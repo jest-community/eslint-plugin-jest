@@ -64,8 +64,7 @@ export class FlatCompatRuleTester extends TSESLint.RuleTester {
             // @ts-expect-error: TS thinks the value could the opposite type of whatever option is
             obj.languageOptions[option] =
               val as TSESLint.FlatConfig.LanguageOptions[
-                | 'ecmaVersion'
-                | 'sourceType'];
+                'ecmaVersion' | 'sourceType'];
 
             continue;
           }

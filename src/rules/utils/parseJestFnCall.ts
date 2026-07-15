@@ -55,7 +55,7 @@ export interface ResolvedJestFnWithNode extends ResolvedJestFn {
 }
 
 export type JestFnType =
-  | 'hook'
+  | 'hook' //
   | 'describe'
   | 'test'
   | 'expect'
