@@ -3,6 +3,7 @@ import {
   createRule,
   getAccessorValue,
   isBuiltinSymbolLike,
+  isThenableType,
   parseJestFnCall,
 } from './utils';
 
@@ -44,11 +45,19 @@ export default createRule<Options, MessageIds>({
 
         const [argument] = jestFnCall.head.node.parent.arguments;
 
-        const isPromiseLike = isBuiltinSymbolLike(
-          services.program,
-          services.getTypeAtLocation(argument),
-          'Promise',
-        );
+        const argumentType = services.getTypeAtLocation(argument);
+
+        // in `noLib` environments the global `Promise` is declared outside of
+        // TypeScript's default libraries, which `isBuiltinSymbolLike` will not
+        // recognise, so fall back to checking for a `then` method that accepts
+        // a callback
+        const isPromiseLike =
+          isBuiltinSymbolLike(services.program, argumentType, 'Promise') ||
+          isThenableType(
+            services.program,
+            services.esTreeNodeToTSNodeMap.get(argument),
+            argumentType,
+          );
 
         const promiseModifier = jestFnCall.modifiers.find(
           nod => getAccessorValue(nod) !== 'not',

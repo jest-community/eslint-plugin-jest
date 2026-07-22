@@ -36,6 +36,14 @@ describe('error handling', () => {
   });
 });
 
+const customPromiseDeclaration = dedent`
+  declare class CustomPromise<T> {
+    then<R>(onFulfilled?: (value: T) => R): CustomPromise<R>;
+  }
+
+  declare const promised: CustomPromise<string>;
+`;
+
 ruleTester.run('valid-expect-with-promise', requireRule(false), {
   valid: withFixtureFilename([
     'expect',
@@ -74,6 +82,24 @@ ruleTester.run('valid-expect-with-promise', requireRule(false), {
     `,
     '<T extends Promise<unknown> = Promise<string>>(v: T) => expect(v).resolves.toThrow()',
     '<T = string>(v: T) => expect(v).toBe(1)',
+    dedent`
+      ${customPromiseDeclaration}
+
+      it('works', async () => {
+        await expect(promised).resolves.toBe('value');
+      });
+    `,
+    'expect({ then: 1 }).toBe(1)',
+    'expect().toBe(1)',
+    dedent`
+      declare class Chainable {
+        then(next: string): this;
+      }
+
+      declare const chain: Chainable;
+
+      expect(chain).toEqual(chain);
+    `,
   ]),
   invalid: withFixtureFilename([
     {
@@ -178,6 +204,19 @@ ruleTester.run('valid-expect-with-promise', requireRule(false), {
         {
           messageId: 'poorlyExpectedPromise',
           line: 5,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        ${customPromiseDeclaration}
+
+        expect(promised).toEqual(1);
+      `,
+      errors: [
+        {
+          messageId: 'poorlyExpectedPromise',
+          line: 7,
         },
       ],
     },
