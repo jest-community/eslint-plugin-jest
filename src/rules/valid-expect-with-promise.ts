@@ -9,7 +9,11 @@ import {
 
 export type MessageIds = 'poorlyExpectedPromise' | 'unneededRejectResolve';
 
-export type Options = [];
+export type Options = [
+  {
+    checkThenables?: boolean;
+  },
+];
 
 export default createRule<Options, MessageIds>({
   name: __filename,
@@ -26,10 +30,18 @@ export default createRule<Options, MessageIds>({
         'Subject is not a promise so {{ modifier }} is not needed',
     },
     type: 'suggestion',
-    schema: [],
+    schema: [
+      {
+        type: 'object',
+        properties: {
+          checkThenables: { type: 'boolean' },
+        },
+        additionalProperties: false,
+      },
+    ],
   },
-  defaultOptions: [],
-  create(context) {
+  defaultOptions: [{ checkThenables: false }],
+  create(context, [{ checkThenables }]) {
     const services = ESLintUtils.getParserServices(context);
 
     return {
@@ -47,17 +59,17 @@ export default createRule<Options, MessageIds>({
 
         const argumentType = services.getTypeAtLocation(argument);
 
-        // in `noLib` environments the global `Promise` is declared outside of
-        // TypeScript's default libraries, which `isBuiltinSymbolLike` will not
-        // recognise, so fall back to checking for a `then` method that accepts
-        // a callback
+        // `isBuiltinSymbolLike` only recognises the `Promise` declared in
+        // TypeScript's default libraries, so optionally check for any thenable
+        // (e.g. custom promise types in `noLib` environments, or polyfills)
         const isPromiseLike =
           isBuiltinSymbolLike(services.program, argumentType, 'Promise') ||
-          isThenableType(
-            services.program,
-            services.esTreeNodeToTSNodeMap.get(argument),
-            argumentType,
-          );
+          (checkThenables === true &&
+            isThenableType(
+              services.program,
+              services.esTreeNodeToTSNodeMap.get(argument),
+              argumentType,
+            ));
 
         const promiseModifier = jestFnCall.modifiers.find(
           nod => getAccessorValue(nod) !== 'not',

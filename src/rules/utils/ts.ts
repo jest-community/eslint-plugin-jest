@@ -56,9 +56,9 @@ export function isBuiltinSymbolLike(
 }
 
 /**
- * Checks if the given type is thenable: it has a `then` method that accepts a
- * callback, mirroring what `await` (and jest's own `resolves` and `rejects`
- * modifiers) will actually treat as a promise at runtime.
+ * Checks if the given type is thenable: it has a `then` method that accepts
+ * both a fulfillment and a rejection callback, mirroring the check performed
+ * by typescript-eslint's `no-floating-promises` rule.
  */
 export function isThenableType(
   program: ts.Program,
@@ -79,17 +79,20 @@ export function isThenableType(
     return unionParts(checker.getTypeOfSymbolAtLocation(then, node)).some(
       thenType =>
         thenType.getCallSignatures().some(signature => {
-          const [onFulfilled] = signature.getParameters();
+          const [onFulfilled, onRejected] = signature.getParameters();
 
           return (
-            onFulfilled !== undefined && isCallback(checker, node, onFulfilled)
+            onFulfilled !== undefined &&
+            onRejected !== undefined &&
+            isFunctionParam(checker, node, onFulfilled) &&
+            isFunctionParam(checker, node, onRejected)
           );
         }),
     );
   });
 }
 
-function isCallback(
+function isFunctionParam(
   checker: ts.TypeChecker,
   node: ts.Node,
   param: ts.Symbol,
