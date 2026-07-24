@@ -41,3 +41,65 @@ expect('hello world').toBe('hello sunshine');
 
 expect(new Promise(r => r(0))).rejects.toThrow('oh noes!');
 ```
+
+## Options
+
+```json
+{
+  "jest/valid-expect-with-promise": [
+    "error",
+    {
+      "checkThenables": false
+    }
+  ]
+}
+```
+
+### `checkThenables`
+
+Default: `false`
+
+A
+["Thenable"](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise#thenables)
+value is an object which has a `then` method, such as a `Promise`. Other
+Thenables include TypeScript's built-in `PromiseLike` interface and any custom
+object that happens to have a `.then()`.
+
+The `checkThenables` option triggers `valid-expect-with-promise` to also
+consider all values that satisfy the Thenable shape (a `.then()` method that
+takes two callback parameters), not just Promises. This can be useful if your
+code works with older `Promise` polyfills instead of the native `Promise` class,
+or in environments where the global `Promise` is not declared by TypeScript's
+default libraries (such as with `noLib`).
+
+Examples of **incorrect** code when `checkThenables` is `true`:
+
+```ts
+declare function createPromiseLike(): PromiseLike<string>;
+
+expect(createPromiseLike()).toBe('hello sunshine');
+
+interface MyThenable {
+  then(onFulfilled: () => void, onRejected: () => void): MyThenable;
+}
+
+declare function createMyThenable(): MyThenable;
+
+expect(createMyThenable()).toBe('hello sunshine');
+```
+
+Examples of **correct** code when `checkThenables` is `true`:
+
+```ts
+declare function createPromiseLike(): PromiseLike<string>;
+
+await expect(createPromiseLike()).resolves.toBe('hello sunshine');
+
+interface MyThenable {
+  then(onFulfilled: () => void, onRejected: () => void): MyThenable;
+}
+
+declare function createMyThenable(): MyThenable;
+
+await expect(createMyThenable()).resolves.toBe('hello sunshine');
+```
