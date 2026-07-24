@@ -1,3 +1,10 @@
+# [29.16.0](https://github.com/jest-community/eslint-plugin-jest/compare/v29.15.5...v29.16.0) (2026-07-24)
+
+
+### Features
+
+* **valid-expect-with-promise:** add `checkThenables` option for custom promises ([#1996](https://github.com/jest-community/eslint-plugin-jest/issues/1996)) ([692c748](https://github.com/jest-community/eslint-plugin-jest/commit/692c748bf53ca8cb9cd4f102006c87b47ae57f1d))
+
 ## [29.15.5](https://github.com/jest-community/eslint-plugin-jest/compare/v29.15.4...v29.15.5) (2026-07-20)
 
 
