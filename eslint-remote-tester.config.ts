@@ -16,6 +16,7 @@ const reposToIgnore = new Set<string>([
   'magiclabs/magic-js',
   'Synerise/synerise-design',
   'tannerlinsley/react-location',
+  'tannerlinsley/react-table',
   'trezor/trezor-suite',
   'umbraco/Umbraco.UI',
   'w-okada/image-analyze-workers',

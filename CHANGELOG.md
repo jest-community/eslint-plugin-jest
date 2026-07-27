@@ -1,3 +1,45 @@
+# [29.16.0](https://github.com/jest-community/eslint-plugin-jest/compare/v29.15.5...v29.16.0) (2026-07-24)
+
+
+### Features
+
+* **valid-expect-with-promise:** add `checkThenables` option for custom promises ([#1996](https://github.com/jest-community/eslint-plugin-jest/issues/1996)) ([692c748](https://github.com/jest-community/eslint-plugin-jest/commit/692c748bf53ca8cb9cd4f102006c87b47ae57f1d))
+
+## [29.15.5](https://github.com/jest-community/eslint-plugin-jest/compare/v29.15.4...v29.15.5) (2026-07-20)
+
+
+### Bug Fixes
+
+* allow TypeScript v7 as a peer dependency ([#1992](https://github.com/jest-community/eslint-plugin-jest/issues/1992)) ([155ba2e](https://github.com/jest-community/eslint-plugin-jest/commit/155ba2e2bc547e467ff413f017dace1af9391394))
+
+## [29.15.4](https://github.com/jest-community/eslint-plugin-jest/compare/v29.15.3...v29.15.4) (2026-06-30)
+
+
+### Bug Fixes
+
+* **no-export:** don't report on assignment to locals named `module` ([#1976](https://github.com/jest-community/eslint-plugin-jest/issues/1976)) ([da02c0c](https://github.com/jest-community/eslint-plugin-jest/commit/da02c0cc4fefd2b2f2a929936536603115f3ec86))
+
+## [29.15.3](https://github.com/jest-community/eslint-plugin-jest/compare/v29.15.2...v29.15.3) (2026-06-26)
+
+
+### Bug Fixes
+
+* **no-export:** treat describe blocks as test files ([#1978](https://github.com/jest-community/eslint-plugin-jest/issues/1978)) ([70568b0](https://github.com/jest-community/eslint-plugin-jest/commit/70568b0f8f884559661b7c1cca89437a20d5449b))
+
+## [29.15.2](https://github.com/jest-community/eslint-plugin-jest/compare/v29.15.1...v29.15.2) (2026-04-09)
+
+
+### Bug Fixes
+
+* **valid-mock-module-path:** don't report virtual mocks ([#1946](https://github.com/jest-community/eslint-plugin-jest/issues/1946)) ([a1916d1](https://github.com/jest-community/eslint-plugin-jest/commit/a1916d16350344c1693384af34900055ec465e1c))
+
+## [29.15.1](https://github.com/jest-community/eslint-plugin-jest/compare/v29.15.0...v29.15.1) (2026-03-24)
+
+
+### Bug Fixes
+
+* allow TypeScript@7 in peer dependency ([#1949](https://github.com/jest-community/eslint-plugin-jest/issues/1949)) ([0498c1e](https://github.com/jest-community/eslint-plugin-jest/commit/0498c1e0c5e2914b2071c60980350ea71d80a8b7))
+
 # [29.15.0](https://github.com/jest-community/eslint-plugin-jest/compare/v29.14.0...v29.15.0) (2026-02-15)
 
 

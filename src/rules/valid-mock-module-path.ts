@@ -73,6 +73,28 @@ export default createRule<
           return;
         }
 
+        if (node.arguments[2]?.type === AST_NODE_TYPES.ObjectExpression) {
+          const hasTrueVirtualProperty = node.arguments[2].properties.some(
+            expression => {
+              if (expression.type === AST_NODE_TYPES.Property) {
+                const { key, value } = expression;
+
+                return (
+                  isSupportedAccessor(key, 'virtual') &&
+                  value.type === AST_NODE_TYPES.Literal &&
+                  value.value
+                );
+              }
+
+              return false;
+            },
+          );
+
+          if (hasTrueVirtualProperty) {
+            return;
+          }
+        }
+
         try {
           if (!moduleName.value.startsWith('.')) {
             require.resolve(moduleName.value);

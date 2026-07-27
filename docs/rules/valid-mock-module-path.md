@@ -24,6 +24,9 @@ jest.mock('../../this/module/does/not/exist');
 
 // Local file that cannot be found
 jest.mock('../../this/path/does/not/exist.js');
+
+// Local file that cannot be found and is NOT virtual
+jest.mock('../../this/path/does/not/exist.js', undefined, { virtual: false });
 ```
 
 The following patterns are **not** considered errors:
@@ -38,6 +41,13 @@ jest.mock('../../this/module/really/does/exist');
 
 // Local file that cannot be found
 jest.mock('../../this/path/really/does/exist.js');
+
+// Module(s) that cannot be found but are configured as virtual
+jest.mock('@org/some-module-not-in-package-json', undefined, { virtual: true });
+jest.mock('some-module-not-in-package-json', undefined, { virtual: true });
+
+// Local file that cannot be found but is configured as virtual
+jest.mock('../../this/path/does/not/exist.js', undefined, { virtual: true });
 ```
 
 ## Options

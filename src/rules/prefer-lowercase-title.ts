@@ -13,9 +13,7 @@ import {
 } from './utils';
 
 type IgnorableFunctionExpressions =
-  | TestCaseName.it
-  | TestCaseName.test
-  | DescribeAlias.describe;
+  TestCaseName.it | TestCaseName.test | DescribeAlias.describe;
 
 const hasStringAsFirstArgument = (
   node: TSESTree.CallExpression,

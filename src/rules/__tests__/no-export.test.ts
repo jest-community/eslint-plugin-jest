@@ -19,6 +19,13 @@ ruleTester.run('no-export', rule, {
     'export default function () {}',
     'module.exports = function(){}',
     'module.exports.myThing = "valid";',
+    dedent`
+      const module = {};
+      module.exports = function () {};
+      test('a test', () => {
+        expect(1).toBe(1);
+      });
+    `,
   ],
   invalid: [
     {
@@ -81,6 +88,16 @@ ruleTester.run('no-export', rule, {
     {
       code: 'module.export.invalid = function() {}; ;  test("a test", () => { expect(1).toBe(1);});',
       errors: [{ endColumn: 22, column: 1, messageId: 'unexpectedExport' }],
+    },
+    {
+      code: dedent`
+        module.exports = function () {};
+
+        describe('a test', () => {
+          expect(1).toBe(1);
+        });
+      `,
+      errors: [{ endColumn: 15, column: 1, messageId: 'unexpectedExport' }],
     },
   ],
 });

@@ -232,9 +232,7 @@ const jest = require('eslint-plugin-jest');
 
 module.exports = [
   {
-    files: [
-      /* glob matching your test files */
-    ],
+    files: [/* glob matching your test files */],
     ...jest.configs['flat/recommended'],
   },
 ];
@@ -263,9 +261,7 @@ const jest = require('eslint-plugin-jest');
 
 module.exports = [
   {
-    files: [
-      /* glob matching your test files */
-    ],
+    files: [/* glob matching your test files */],
     ...jest.configs['flat/style'],
   },
 ];
@@ -290,9 +286,7 @@ const jest = require('eslint-plugin-jest');
 
 module.exports = [
   {
-    files: [
-      /* glob matching your test files */
-    ],
+    files: [/* glob matching your test files */],
     ...jest.configs['flat/all'],
   },
 ];

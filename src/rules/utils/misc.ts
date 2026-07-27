@@ -76,24 +76,24 @@ export const hasOnlyOneArgument = (
 ): call is CallExpressionWithSingleArgument => call.arguments.length === 1;
 
 export enum DescribeAlias {
-  'describe' = 'describe',
-  'fdescribe' = 'fdescribe',
-  'xdescribe' = 'xdescribe',
+  describe = 'describe',
+  fdescribe = 'fdescribe',
+  xdescribe = 'xdescribe',
 }
 
 export enum TestCaseName {
-  'fit' = 'fit',
-  'it' = 'it',
-  'test' = 'test',
-  'xit' = 'xit',
-  'xtest' = 'xtest',
+  fit = 'fit',
+  it = 'it',
+  test = 'test',
+  xit = 'xit',
+  xtest = 'xtest',
 }
 
 export enum HookName {
-  'beforeAll' = 'beforeAll',
-  'beforeEach' = 'beforeEach',
-  'afterAll' = 'afterAll',
-  'afterEach' = 'afterEach',
+  beforeAll = 'beforeAll',
+  beforeEach = 'beforeEach',
+  afterAll = 'afterAll',
+  afterEach = 'afterEach',
 }
 
 export enum ModifierName {
@@ -130,8 +130,7 @@ export function getNodeName(node: TSESTree.Node): string | null {
 }
 
 export type FunctionExpression =
-  | TSESTree.ArrowFunctionExpression
-  | TSESTree.FunctionExpression;
+  TSESTree.ArrowFunctionExpression | TSESTree.FunctionExpression;
 
 export const isFunction = (node: TSESTree.Node): node is FunctionExpression =>
   node.type === AST_NODE_TYPES.FunctionExpression ||
