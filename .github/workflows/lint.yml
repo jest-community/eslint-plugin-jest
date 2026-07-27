@@ -31,6 +31,12 @@ jobs:
         with:
           persist-credentials: false
       - name: Danger
-        uses: danger/danger-js@e9b58820039524318198d8059ec98b0c02b7875c # 13.0.10
+        # Use the pre-built GHCR image instead of the danger/danger-js action, which rebuilds its
+        # Dockerfile from source on every run. That Dockerfile runs `yarn remove typescript && yarn
+        # add typescript` (unpinned) at build time, always fetching whatever `typescript@latest` is
+        # on npm. That recently became TypeScript 7.0.2, whose changed internals break danger-js's
+        # bundled transpiler with `TypeError: ts.transpileModule is not a function`. The pre-built
+        # image is frozen at its own release time (TypeScript 6.0.3 here), so it isn't affected.
+        uses: docker://ghcr.io/danger/danger-js@sha256:8470399d296efbc3b4e9ae16c60a84b32dd3ff893e5c558f35d7e656dd34d0b7 # 13.0.10
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
