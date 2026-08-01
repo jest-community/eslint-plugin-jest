@@ -29,10 +29,10 @@
     "index.d.ts"
   ],
   "scripts": {
-    "build": "babel --extensions .js,.ts src --out-dir lib --copy-files --no-copy-ignored",
+    "build": "babel --extensions .js,.ts src --out-dir lib --delete-dir-on-start --copy-files --no-copy-ignored",
     "postinstall": "is-ci || husky",
     "lint": "eslint .",
-    "prepack": "rimraf lib && yarn build",
+    "prepack": "yarn build",
     "prepublishOnly": "pinst --disable",
     "prettier:check": "prettier --check 'docs/**/*.md' README.md '.github/**' package.json tsconfig.json src/globals.json .yarnrc.yml",
     "prettier:write": "prettier --write 'docs/**/*.md' README.md '.github/**' package.json tsconfig.json src/globals.json .yarnrc.yml",
