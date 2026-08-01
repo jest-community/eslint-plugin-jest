@@ -13,7 +13,7 @@ const config = {
     '@babel/preset-typescript',
     ['@babel/preset-env', { targets: { node: supportedNodeVersion } }],
   ],
-  ignore: ['src/**/__tests__/fixtures/**'],
+  ignore: process.env.NODE_ENV === 'test' ? [] : ['**/__tests__/**'],
 };
 
 module.exports = config;
