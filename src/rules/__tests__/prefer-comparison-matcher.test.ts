@@ -265,6 +265,7 @@ ruleTester.run(`prefer-comparison-matcher`, rule, {
     'expect.assertions(1)',
     'expect(true).toBe(...true)',
     'expect()',
+    'expect().toStrictEqual({})',
     'expect({}).toStrictEqual({})',
     'expect(a === b).toBe(true)',
     'expect(a !== 2).toStrictEqual(true)',

@@ -90,7 +90,7 @@ export default createRule({
         const matcherArg = getFirstMatcherArg(jestFnCall);
 
         if (
-          comparison.type !== AST_NODE_TYPES.BinaryExpression ||
+          comparison?.type !== AST_NODE_TYPES.BinaryExpression ||
           isComparingToString(comparison) ||
           !EqualityMatcher.hasOwnProperty(getAccessorValue(matcher)) ||
           !isBooleanLiteral(matcherArg)
