@@ -14,6 +14,11 @@ ruleTester.run('prefer-expect-resolves', rule, {
     'expect.hasAssertions()',
     dedent`
       it('passes', async () => {
+        await expect().resolves.toBe(true);
+      });
+    `,
+    dedent`
+      it('passes', async () => {
         await expect(someValue()).resolves.toBe(true);
       });
     `,
