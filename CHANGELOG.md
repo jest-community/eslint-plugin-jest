@@ -1,3 +1,10 @@
+## [29.16.2](https://github.com/jest-community/eslint-plugin-jest/compare/v29.16.1...v29.16.2) (2026-08-25)
+
+
+### Bug Fixes
+
+* **prefer-equality-matcher:** don't crash on `expect` chain without a value ([#2006](https://github.com/jest-community/eslint-plugin-jest/issues/2006)) ([27665cd](https://github.com/jest-community/eslint-plugin-jest/commit/27665cdddb1971ff2c19b0f897fee83112c95462))
+
 ## [29.16.1](https://github.com/jest-community/eslint-plugin-jest/compare/v29.16.0...v29.16.1) (2026-08-12)
 
 
