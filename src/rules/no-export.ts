@@ -1,5 +1,10 @@
 import { AST_NODE_TYPES, type TSESTree } from '@typescript-eslint/utils';
-import { createRule, isTypeOfJestFnCall, resolveScope } from './utils';
+import {
+  createRule,
+  isSupportedAccessor,
+  isTypeOfJestFnCall,
+  resolveScope,
+} from './utils';
 
 export default createRule({
   name: __filename,
@@ -71,8 +76,8 @@ export default createRule({
 
         if (
           object.name === 'exports' ||
-          (property.type === AST_NODE_TYPES.Identifier &&
-            /^exports?$/u.test(property.name))
+          isSupportedAccessor(property, 'exports') ||
+          isSupportedAccessor(property, 'export')
         ) {
           exportNodes.push(node);
         }
