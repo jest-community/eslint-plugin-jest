@@ -1,3 +1,10 @@
+## [29.16.4](https://github.com/jest-community/eslint-plugin-jest/compare/v29.16.3...v29.16.4) (2026-08-27)
+
+
+### Bug Fixes
+
+* **no-export:** handle nested assignment chains ([#2009](https://github.com/jest-community/eslint-plugin-jest/issues/2009)) ([14b559a](https://github.com/jest-community/eslint-plugin-jest/commit/14b559af7f3d93ca585f65deae97c4b24a83e900))
+
 ## [29.16.3](https://github.com/jest-community/eslint-plugin-jest/compare/v29.16.2...v29.16.3) (2026-08-27)
 
 
