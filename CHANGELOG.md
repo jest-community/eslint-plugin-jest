@@ -1,3 +1,10 @@
+## [29.16.5](https://github.com/jest-community/eslint-plugin-jest/compare/v29.16.4...v29.16.5) (2026-08-27)
+
+
+### Bug Fixes
+
+* **no-export:** handle literal property accessors ([#2011](https://github.com/jest-community/eslint-plugin-jest/issues/2011)) ([d848f70](https://github.com/jest-community/eslint-plugin-jest/commit/d848f70d5ae1a143d4ae2ef52bf00c6658f5070d))
+
 ## [29.16.4](https://github.com/jest-community/eslint-plugin-jest/compare/v29.16.3...v29.16.4) (2026-08-27)
 
 
