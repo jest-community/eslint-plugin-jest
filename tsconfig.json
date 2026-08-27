@@ -16,7 +16,9 @@
     "isolatedModules": true,
     "skipLibCheck": false,
     "allowJs": true,
-    "checkJs": true
+    "checkJs": true,
+
+    "types": ["jest"]
   },
   "files": [
     ".eslint-doc-generatorrc.js",

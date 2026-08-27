@@ -119,7 +119,7 @@
     "semantic-release": "^25.0.0",
     "semver": "^7.3.5",
     "ts-node": "^10.2.1",
-    "typescript": "^5.0.4"
+    "typescript": "^6.0.0"
   },
   "peerDependencies": {
     "@typescript-eslint/eslint-plugin": "^8.0.0",
