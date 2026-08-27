@@ -25,7 +25,7 @@ export default createRule({
 
     return {
       'Program:exit'() {
-        if (hasTestCase && exportNodes.length > 0) {
+        if (hasTestCase) {
           for (const node of exportNodes) {
             context.report({ node, messageId: 'unexpectedExport' });
           }
