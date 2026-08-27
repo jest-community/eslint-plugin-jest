@@ -42,8 +42,8 @@ export default createRule({
         return;
       }
 
-      const fnName = context.sourceCode.text.slice(
-        ...followTypeAssertionChain(node.expression).range,
+      const fnName = context.sourceCode.getText(
+        followTypeAssertionChain(node.expression),
       );
 
       context.report({

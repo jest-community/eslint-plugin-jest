@@ -306,8 +306,8 @@ export default createRule<[Options], MessageIds>({
             messageId: 'accidentalSpace',
             node: argument,
             fix: fixer => [
-              fixer.replaceTextRange(
-                argument.range,
+              fixer.replaceText(
+                argument,
                 quoteStringValue(argument)
                   .replace(/^([`'"]) +?/u, '$1')
                   .replace(/ +?([`'"])$/u, '$1'),
@@ -324,8 +324,8 @@ export default createRule<[Options], MessageIds>({
             messageId: 'duplicatePrefix',
             node: argument,
             fix: fixer => [
-              fixer.replaceTextRange(
-                argument.range,
+              fixer.replaceText(
+                argument,
                 quoteStringValue(argument).replace(/^([`'"]).+? /u, '$1'),
               ),
             ],
