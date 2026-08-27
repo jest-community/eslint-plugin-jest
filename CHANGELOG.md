@@ -1,3 +1,10 @@
+## [29.16.3](https://github.com/jest-community/eslint-plugin-jest/compare/v29.16.2...v29.16.3) (2026-08-27)
+
+
+### Bug Fixes
+
+* **no-export:** check for `exports` global ([#1988](https://github.com/jest-community/eslint-plugin-jest/issues/1988)) ([f506cb2](https://github.com/jest-community/eslint-plugin-jest/commit/f506cb2b90743767d9619f22ebfe29b4ff047783))
+
 ## [29.16.2](https://github.com/jest-community/eslint-plugin-jest/compare/v29.16.1...v29.16.2) (2026-08-25)
 
 
