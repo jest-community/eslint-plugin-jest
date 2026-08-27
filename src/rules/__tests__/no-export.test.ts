@@ -21,6 +21,11 @@ ruleTester.run('no-export', rule, {
     'export default function () {}',
     'module.exports = function(){}',
     'module.exports.exports.exports = function(){}',
+    '["module"].exports.exports.exports = function(){}',
+    'module["exports"].exports.exports = function(){}',
+    'module["exports"]["exports"].exports = function(){}',
+    'module["exports"]["exports"]["exports"] = function(){}',
+    '["exports"]["exports"]["exports"]["exports"] = function(){}',
     'module.exports.myThing = "valid";',
     dedent`
       const module = {};
@@ -89,6 +94,10 @@ ruleTester.run('no-export', rule, {
       errors: [{ endColumn: 15, column: 1, messageId: 'unexpectedExport' }],
     },
     {
+      code: 'module.exports.exports.exports = function() {}; ;  test("a test", () => { expect(1).toBe(1);});',
+      errors: [{ endColumn: 31, column: 1, messageId: 'unexpectedExport' }],
+    },
+    {
       code: 'module.export.invalid = function() {}; ;  test("a test", () => { expect(1).toBe(1);});',
       errors: [{ endColumn: 22, column: 1, messageId: 'unexpectedExport' }],
     },
@@ -105,6 +114,10 @@ ruleTester.run('no-export', rule, {
     {
       code: 'exports["invalid"] = function() {}; ;  test("a test", () => { expect(1).toBe(1);});',
       errors: [{ endColumn: 19, column: 1, messageId: 'unexpectedExport' }],
+    },
+    {
+      code: 'exports.export["invalid"] = function() {}; ;  test("a test", () => { expect(1).toBe(1);});',
+      errors: [{ endColumn: 26, column: 1, messageId: 'unexpectedExport' }],
     },
     {
       code: dedent`

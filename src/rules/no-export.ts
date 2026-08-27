@@ -50,7 +50,7 @@ export default createRule({
       ) {
         let { object, property } = node;
 
-        if (object.type === AST_NODE_TYPES.MemberExpression) {
+        while (object.type === AST_NODE_TYPES.MemberExpression) {
           ({ object, property } = object);
         }
 
