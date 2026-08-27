@@ -15,9 +15,12 @@ ruleTester.run('no-export', rule, {
     'describe("a test", () => { expect(1).toBe(1); })',
     'window.location = "valid"',
     'module.somethingElse = "foo";',
+    'my.exports.myThing = "valid";',
+    'report.myThing = "valid";',
     'export const myThing = "valid"',
     'export default function () {}',
     'module.exports = function(){}',
+    'module.exports.exports.exports = function(){}',
     'module.exports.myThing = "valid";',
     dedent`
       const module = {};
@@ -98,6 +101,20 @@ ruleTester.run('no-export', rule, {
         });
       `,
       errors: [{ endColumn: 15, column: 1, messageId: 'unexpectedExport' }],
+    },
+    {
+      code: 'exports["invalid"] = function() {}; ;  test("a test", () => { expect(1).toBe(1);});',
+      errors: [{ endColumn: 19, column: 1, messageId: 'unexpectedExport' }],
+    },
+    {
+      code: dedent`
+        exports.invalid = function () {};
+
+        describe('a test', () => {
+          expect(1).toBe(1);
+        });
+      `,
+      errors: [{ endColumn: 16, column: 1, messageId: 'unexpectedExport' }],
     },
   ],
 });

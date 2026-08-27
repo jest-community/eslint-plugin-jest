@@ -54,17 +54,25 @@ export default createRule({
           ({ object, property } = object);
         }
 
+        if (object.type !== AST_NODE_TYPES.Identifier) {
+          return;
+        }
+
         if (
-          object.type !== AST_NODE_TYPES.Identifier ||
-          object.name !== 'module' ||
-          resolveScope(context.sourceCode.getScope(object), 'module') !== null
+          (object.name !== 'module' ||
+            resolveScope(context.sourceCode.getScope(object), 'module') !==
+              null) &&
+          (object.name !== 'exports' ||
+            resolveScope(context.sourceCode.getScope(object), 'exports') !==
+              null)
         ) {
           return;
         }
 
         if (
-          property.type === AST_NODE_TYPES.Identifier &&
-          /^exports?$/u.test(property.name)
+          object.name === 'exports' ||
+          (property.type === AST_NODE_TYPES.Identifier &&
+            /^exports?$/u.test(property.name))
         ) {
           exportNodes.push(node);
         }
