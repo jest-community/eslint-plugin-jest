@@ -59,8 +59,8 @@ export default createRule({
               const { sourceCode } = context;
 
               return [
-                fixer.replaceTextRange(
-                  [awaitNode.range[0], awaitNode.range[1]],
+                fixer.replaceText(
+                  awaitNode,
                   sourceCode.getText(innerAsyncFuncCall),
                 ),
               ];
