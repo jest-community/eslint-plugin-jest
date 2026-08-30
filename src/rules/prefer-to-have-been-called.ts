@@ -25,7 +25,7 @@ export default createRule({
       CallExpression(node) {
         const jestFnCall = parseJestFnCall(node, context);
 
-        if (jestFnCall?.type !== 'expect') {
+        if (jestFnCall?.type !== 'expect' || jestFnCall.args.length === 0) {
           return;
         }
 
