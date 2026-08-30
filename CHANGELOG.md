@@ -1,3 +1,11 @@
+## [29.16.6](https://github.com/jest-community/eslint-plugin-jest/compare/v29.16.5...v29.16.6) (2026-08-30)
+
+
+### Bug Fixes
+
+* **prefer-to-have-been-called:** don't crash on matcher without an argument ([#2016](https://github.com/jest-community/eslint-plugin-jest/issues/2016)) ([58e487f](https://github.com/jest-community/eslint-plugin-jest/commit/58e487fecda05ddafcac2fcf67475d90bd515957))
+* **prefer-to-have-length:** don't crash on `expect` chain without a value ([#2014](https://github.com/jest-community/eslint-plugin-jest/issues/2014)) ([3629019](https://github.com/jest-community/eslint-plugin-jest/commit/3629019d8e84e096115c8774a34178ff5b83aaf2))
+
 ## [29.16.5](https://github.com/jest-community/eslint-plugin-jest/compare/v29.16.4...v29.16.5) (2026-08-27)
 
 
