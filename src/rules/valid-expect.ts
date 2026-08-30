@@ -82,8 +82,7 @@ const getParentIfThenified = (node: TSESTree.Node): TSESTree.Node => {
   const grandParentNode = node.parent?.parent;
 
   if (
-    grandParentNode &&
-    grandParentNode.type === AST_NODE_TYPES.CallExpression &&
+    grandParentNode?.type === AST_NODE_TYPES.CallExpression &&
     grandParentNode.callee.type === AST_NODE_TYPES.MemberExpression &&
     isSupportedAccessor(grandParentNode.callee.property) &&
     ['then', 'catch'].includes(
