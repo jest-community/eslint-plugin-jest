@@ -21,6 +21,7 @@ ruleTester.run('prefer-to-have-been-called', rule, {
     'expect(method).toBe([])',
     'expect(fn.mock.calls).toEqual([])',
     'expect(fn.mock.calls).toContain(1, 2, 3)',
+    'expect(method).toBeCalledTimes();',
   ],
 
   invalid: [
