@@ -5,8 +5,7 @@ const pkg = require('./package.json');
 
 const supportedNodeVersion = semver.minVersion(pkg.engines.node)?.version;
 
-/** @type {import('@babel/core').TransformOptions} */
-const config = {
+const config: import('@babel/core').TransformOptions = {
   plugins: ['replace-ts-export-assignment'],
   presets: [
     '@babel/preset-typescript',
