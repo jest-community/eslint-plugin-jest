@@ -118,7 +118,7 @@ const config = [
     files: [
       '.eslint-doc-generatorrc.js',
       'eslint.config.js',
-      'babel.config.js',
+      'babel.config.cts',
     ],
     languageOptions: {
       sourceType: 'commonjs',
