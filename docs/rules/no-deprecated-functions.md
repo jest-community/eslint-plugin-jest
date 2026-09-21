@@ -41,8 +41,8 @@ Jest 27.
 
 These functions were replaced in Jest 21 and removed in Jest 26.
 
-Originally, the `requireActual` & `requireMock` the `requireActual`&
-`requireMock` functions were placed onto the `require` function.
+Originally, the `requireActual` & `requireMock` functions were placed onto the
+`require` function.
 
 These functions were later moved onto the `jest` object in order to be easier
 for type checkers to handle, and their use via `require` deprecated. Finally,

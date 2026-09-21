@@ -116,7 +116,7 @@ describe('MyClass', () => {
 
 This option is used to control whether
 [`todo`](https://jestjs.io/docs/api#testtodoname) Jest functions to be checked
-by this rule. By the default, the option is set to false.
+by this rule. By default, the option is set to false.
 
 Example of **correct** code for the `{ "ignoreTodos": true }` option:
 

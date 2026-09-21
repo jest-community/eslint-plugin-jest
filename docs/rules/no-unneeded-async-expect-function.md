@@ -13,8 +13,8 @@ excessively verbose and make the tests harder to read.
 
 ## Rule details
 
-This rule triggers a warning if `expect` is passed with an an `async` function
-that has a single `await` call.
+This rule triggers a warning if `expect` is passed with an `async` function that
+has a single `await` call.
 
 Examples of **incorrect** code for this rule
 
