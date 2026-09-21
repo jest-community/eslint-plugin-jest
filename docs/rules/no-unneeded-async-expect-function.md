@@ -8,7 +8,7 @@
 <!-- end auto-generated rule header -->
 
 `Jest` can handle fulfilled/rejected promisified function call normally but
-occassionally, engineers wrap said function in another `async` function that is
+occasionally, engineers wrap said function in another `async` function that is
 excessively verbose and make the tests harder to read.
 
 ## Rule details
