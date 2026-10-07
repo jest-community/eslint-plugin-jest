@@ -208,6 +208,7 @@ describe('foo', () => {
 
 ```ts
 interface Options {
+  typecheck?: boolean;
   ignoreSpaces?: boolean;
   ignoreTypeOfDescribeName?: boolean;
   ignoreTypeOfTestName?: boolean;
@@ -216,6 +217,18 @@ interface Options {
   mustMatch?: Partial<Record<'describe' | 'test' | 'it', string>> | string;
 }
 ```
+
+#### `typecheck`
+
+Default: `false`
+
+When enabled, this rule will use TypeScript type information for title
+expressions that are not syntactically strings. This allows string-typed
+identifiers, string literals captured in variables, template-literal string
+types, and string-branded values to be used as titles.
+
+This option requires type information from `@typescript-eslint/parser`, such as
+a configured `parserOptions.project`.
 
 #### `ignoreSpaces`
 
