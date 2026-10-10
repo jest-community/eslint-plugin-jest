@@ -1,3 +1,11 @@
+## [29.16.11](https://github.com/jest-community/eslint-plugin-jest/compare/v29.16.10...v29.16.11) (2026-10-10)
+
+
+### Bug Fixes
+
+* **no-export:** report export all declarations ([#2040](https://github.com/jest-community/eslint-plugin-jest/issues/2040)) ([3ca13a7](https://github.com/jest-community/eslint-plugin-jest/commit/3ca13a79c32cec645fdbd49d4117daf2983352e6))
+* **no-mocks-import:** check dynamic imports ([#2039](https://github.com/jest-community/eslint-plugin-jest/issues/2039)) ([3e363d1](https://github.com/jest-community/eslint-plugin-jest/commit/3e363d14709900f8e347c8e364d1967ccf3c2320))
+
 ## [29.16.10](https://github.com/jest-community/eslint-plugin-jest/compare/v29.16.9...v29.16.10) (2026-10-10)
 
 
