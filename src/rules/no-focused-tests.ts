@@ -66,7 +66,7 @@ export default createRule({
               messageId: 'suggestRemoveFocus',
               fix: fixer =>
                 fixer.removeRange([
-                  onlyNode.range[0] - 1,
+                  onlyNode.range[0] - 1 - (onlyNode.parent.optional ? 1 : 0),
                   onlyNode.range[1] +
                     Number(onlyNode.type !== AST_NODE_TYPES.Identifier),
                 ]),
