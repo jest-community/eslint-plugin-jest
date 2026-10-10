@@ -48,7 +48,12 @@ export default createRule({
         if (
           callback.type === AST_NODE_TYPES.ExpressionStatement &&
           callback.expression.type === AST_NODE_TYPES.AwaitExpression &&
-          callback.expression.argument.type === AST_NODE_TYPES.CallExpression
+          (callback.expression.argument.type ===
+            AST_NODE_TYPES.CallExpression ||
+            (callback.expression.argument.type ===
+              AST_NODE_TYPES.ChainExpression &&
+              callback.expression.argument.expression.type ===
+                AST_NODE_TYPES.CallExpression))
         ) {
           const innerAsyncFuncCall = callback.expression.argument;
 
