@@ -724,6 +724,36 @@ ruleTester.run('valid-expect-in-promise', rule, {
         await somePromise;
       });
     `,
+    {
+      code: dedent`
+        test('promise test', async function () {
+          let somePromise = getPromise().then((data) => {
+            expect(data).toEqual('foo');
+          });
+
+          somePromise = somePromise?.then((data) => {
+            expect(data).toEqual('foo');
+          });
+
+          await somePromise;
+        });
+      `,
+      parserOptions: { ecmaVersion: 2020 },
+    },
+    {
+      code: dedent`
+        it('is valid', () => {
+          const promise = loadNumber()?.then(number => {
+            expect(typeof number).toBe('number');
+
+            return number + 1;
+          });
+
+          expect(promise).resolves.toBe(1);
+        });
+      `,
+      parserOptions: { ecmaVersion: 2020 },
+    },
     dedent`
       test('promise test', async function () {
         let somePromise = getPromise().then((data) => {
@@ -898,6 +928,27 @@ ruleTester.run('valid-expect-in-promise', rule, {
       parserOptions: { ecmaVersion: 2020 },
       errors: [
         { column: 3, endColumn: 6, messageId: 'expectInFloatingPromise' },
+      ],
+    },
+    {
+      code: dedent`
+        it('is valid', async () => {
+          const promise = loadNumber()?.then(number => {
+            expect(typeof number).toBe('number');
+
+            return number + 1;
+          });
+
+          expect(anotherPromise).resolves.toBe(1);
+        });
+      `,
+      parserOptions: { ecmaVersion: 2020 },
+      errors: [
+        {
+          messageId: 'expectInFloatingPromise',
+          line: 2,
+          column: 9,
+        },
       ],
     },
     {
