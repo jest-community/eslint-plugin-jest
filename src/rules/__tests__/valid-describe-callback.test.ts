@@ -210,6 +210,17 @@ ruleTester.run('valid-describe-callback', rule, {
       ],
     },
     {
+      code: dedent`
+        describe('foo', () =>
+          test?.('bar', () => {})
+        )
+      `,
+      parserOptions: { ecmaVersion: 2022 },
+      errors: [
+        { messageId: 'unexpectedReturnInDescribe', line: 1, column: 17 },
+      ],
+    },
+    {
       code: 'describe("foo", done => {})',
       errors: [
         { messageId: 'unexpectedDescribeArgument', line: 1, column: 17 },
