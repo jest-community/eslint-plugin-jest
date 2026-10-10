@@ -230,13 +230,11 @@ export const parseJestFnCallWithReason = (
   node: TSESTree.CallExpression,
   context: TSESLint.RuleContext<string, unknown[]>,
 ): ParsedJestFnCall | string | null => {
-  let parsedJestFnCall = parseJestFnCallCache.get(node);
-
-  if (parsedJestFnCall) {
-    return parsedJestFnCall;
+  if (parseJestFnCallCache.has(node)) {
+    return parseJestFnCallCache.get(node)!;
   }
 
-  parsedJestFnCall = parseJestFnCallWithReasonInner(node, context);
+  const parsedJestFnCall = parseJestFnCallWithReasonInner(node, context);
 
   parseJestFnCallCache.set(node, parsedJestFnCall);
 
