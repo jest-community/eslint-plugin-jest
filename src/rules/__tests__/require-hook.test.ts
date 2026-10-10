@@ -132,6 +132,26 @@ ruleTester.run('require-hook', rule, {
         expect(isCity('San Juan')).toBeTruthy();
       });
     `,
+    {
+      code: dedent`
+        beforeEach(() => {
+          initializeCityDatabase?.();
+        });
+  
+        afterEach(() => {
+          clearCityDatabase?.();
+        });
+  
+        test('city database has Vienna', () => {
+          expect(isCity('Vienna')).toBeTruthy();
+        });
+  
+        test('city database has San Juan', () => {
+          expect(isCity('San Juan')).toBeTruthy();
+        });
+      `,
+      parserOptions: { ecmaVersion: 2022 },
+    },
     dedent`
       describe('cities', () => {
         beforeEach(() => {
@@ -163,10 +183,38 @@ ruleTester.run('require-hook', rule, {
       `,
       options: [{ allowedFunctionCalls: ['enableAutoDestroy'] }],
     },
+    {
+      code: dedent`
+        enableAutoDestroy?.(afterEach);
+
+        describe('some tests', () => {
+          it('is false', () => {
+            expect(true).toBe(true);
+          });
+        });
+      `,
+      options: [{ allowedFunctionCalls: ['enableAutoDestroy'] }],
+      parserOptions: { ecmaVersion: 2020 },
+    },
+    {
+      code: 'jest.useFakeTimers?.();',
+      parserOptions: { ecmaVersion: 2020 },
+    },
   ],
   invalid: [
     {
       code: 'setup();',
+      errors: [
+        {
+          messageId: 'useHook',
+          line: 1,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: 'setup?.();',
+      parserOptions: { ecmaVersion: 2020 },
       errors: [
         {
           messageId: 'useHook',
@@ -197,6 +245,28 @@ ruleTester.run('require-hook', rule, {
           setup();
         });
       `,
+      errors: [
+        {
+          messageId: 'useHook',
+          line: 1,
+          column: 1,
+        },
+        {
+          messageId: 'useHook',
+          line: 4,
+          column: 3,
+        },
+      ],
+    },
+    {
+      code: dedent`
+        let { setup } = require('./test-utils');
+
+        describe('some tests', () => {
+          setup?.();
+        });
+      `,
+      parserOptions: { ecmaVersion: 2020 },
       errors: [
         {
           messageId: 'useHook',
@@ -300,6 +370,17 @@ ruleTester.run('require-hook', rule, {
     },
     {
       code: "let consoleErrorSpy = jest.spyOn(console, 'error'), consoleWarnSpy;",
+      errors: [
+        {
+          messageId: 'useHook',
+          line: 1,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: "let consoleErrorSpy = jest.spyOn?.(console, 'error'), consoleWarnSpy;",
+      parserOptions: { ecmaVersion: 2020 },
       errors: [
         {
           messageId: 'useHook',
