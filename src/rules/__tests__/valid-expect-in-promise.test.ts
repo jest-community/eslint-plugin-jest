@@ -361,6 +361,19 @@ ruleTester.run('valid-expect-in-promise', rule, {
         })
       });
     `,
+    {
+      code: dedent`
+        it('it1', () => {
+          return somePromise?.then(() => {
+            expect(someThing).toEqual(true);
+          })
+          .then(() => {
+            expect(someThing).toEqual(true);
+          })
+        });
+      `,
+      parserOptions: { ecmaVersion: 2020 },
+    },
     dedent`
       it('it1', () => {
         return somePromise.then(() => {
@@ -870,6 +883,19 @@ ruleTester.run('valid-expect-in-promise', rule, {
           });
         });
       `,
+      errors: [
+        { column: 3, endColumn: 6, messageId: 'expectInFloatingPromise' },
+      ],
+    },
+    {
+      code: dedent`
+        it('it1', () => {
+          somePromise?.then(() => {
+            expect(someThing).toEqual(true);
+          });
+        });
+      `,
+      parserOptions: { ecmaVersion: 2020 },
       errors: [
         { column: 3, endColumn: 6, messageId: 'expectInFloatingPromise' },
       ],

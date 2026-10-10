@@ -418,7 +418,11 @@ export default createRule({
           return;
         }
 
-        const { parent } = findTopMostCallExpression(node);
+        let { parent } = findTopMostCallExpression(node);
+
+        if (parent.type === AST_NODE_TYPES.ChainExpression) {
+          parent = parent.parent;
+        }
 
         // if our parent is not directly within the test case, we stop checking
         // because we're most likely in the body of a function being defined
