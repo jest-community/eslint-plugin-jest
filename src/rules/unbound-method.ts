@@ -19,6 +19,18 @@ const toThrowMatchers = [
   'toThrowErrorMatchingInlineSnapshot',
 ];
 
+const getCallExpressionParent = (
+  node: TSESTree.Node,
+): TSESTree.CallExpression | undefined => {
+  let { parent } = node;
+
+  while (parent?.type === AST_NODE_TYPES.ChainExpression) {
+    ({ parent } = parent);
+  }
+
+  return parent?.type === AST_NODE_TYPES.CallExpression ? parent : undefined;
+};
+
 const baseRule = (() => {
   try {
     // eslint-disable-next-line @typescript-eslint/no-require-imports
@@ -82,12 +94,11 @@ export default createRule<Options, MessageIds>({
     const isArgumentToJestMocked = (
       node: TSESTree.MemberExpression,
     ): boolean => {
-      // Check if the immediate parent is a CallExpression
-      if (node.parent?.type !== AST_NODE_TYPES.CallExpression) {
+      const parentCall = getCallExpressionParent(node);
+
+      if (!parentCall) {
         return false;
       }
-
-      const parentCall = node.parent;
 
       return (
         parentCall.callee.type === AST_NODE_TYPES.MemberExpression &&
@@ -103,9 +114,11 @@ export default createRule<Options, MessageIds>({
           return;
         }
 
-        if (node.parent?.type === AST_NODE_TYPES.CallExpression) {
+        const parentCall = getCallExpressionParent(node);
+
+        if (parentCall) {
           const jestFnCall = parseJestFnCall(
-            findTopMostCallExpression(node.parent),
+            findTopMostCallExpression(parentCall),
             context,
           );
 

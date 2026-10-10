@@ -75,6 +75,10 @@ const validTestCases: string[] = [
     'const result = jest.mocked(service.method, true);',
     'jest.mocked(service.method, { shallow: true });',
   ].map(code => [ServiceClassAndMethodCode, code].join('\n')),
+  [
+    ServiceClassAndMethodCode,
+    'expect(service?.method).toHaveBeenCalledWith(config);',
+  ].join('\n'),
 ];
 
 const invalidTestCases: Array<TSESLint.InvalidTestCase<MessageIds, Options>> = [
