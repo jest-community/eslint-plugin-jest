@@ -40,7 +40,7 @@ export default createRule({
 
         // check if the last property in the chain is `calls`
         if (
-          argument.type !== AST_NODE_TYPES.MemberExpression ||
+          argument?.type !== AST_NODE_TYPES.MemberExpression ||
           !isSupportedAccessor(argument.property, 'calls')
         ) {
           return;
