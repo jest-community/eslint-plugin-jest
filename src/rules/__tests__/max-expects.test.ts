@@ -99,7 +99,7 @@ ruleTester.run('max-expects', rule, {
       });
     `,
     dedent`
-      test.each(['should', 'pass'], () => {
+      test.each(['should', 'pass'])('%s', () => {
         expect(true).toBeDefined();
         expect(true).toBeDefined();
         expect(true).toBeDefined();
@@ -566,7 +566,7 @@ ruleTester.run('max-expects', rule, {
     },
     {
       code: dedent`
-        test.each(['should', 'not', 'pass'], () => {
+        test.each(['should', 'not', 'pass'])('%s', () => {
           expect(true).toBeDefined();
           expect(true).toBeDefined();
           expect(true).toBeDefined();
