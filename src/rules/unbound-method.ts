@@ -79,35 +79,31 @@ export default createRule<Options, MessageIds>({
      * This handles cases like `jest.mocked(service.method)` where `service.method`
      * should not be flagged as an unbound method.
      */
-    const isArgumentToJestMocked = (
-      node: TSESTree.MemberExpression,
-    ): boolean => {
+    const isArgumentToJestMocked = (node: TSESTree.Node): boolean => {
       // Check if the immediate parent is a CallExpression
-      if (node.parent?.type !== AST_NODE_TYPES.CallExpression) {
+      if (node.type !== AST_NODE_TYPES.CallExpression) {
         return false;
       }
 
-      const parentCall = node.parent;
-
       return (
-        parentCall.callee.type === AST_NODE_TYPES.MemberExpression &&
-        isSupportedAccessor(parentCall.callee.object, 'jest') &&
-        isSupportedAccessor(parentCall.callee.property, 'mocked')
+        node.callee.type === AST_NODE_TYPES.MemberExpression &&
+        isSupportedAccessor(node.callee.object, 'jest') &&
+        isSupportedAccessor(node.callee.property, 'mocked')
       );
     };
 
     return {
       ...baseSelectors,
       MemberExpression(node: TSESTree.MemberExpression): void {
-        if (isArgumentToJestMocked(node)) {
-          return;
-        }
-
         // if we're in an optional chain, use the chain's parent
         const parent =
           node.parent.type === AST_NODE_TYPES.ChainExpression
             ? node.parent.parent
             : node.parent;
+
+        if (isArgumentToJestMocked(parent)) {
+          return;
+        }
 
         if (parent.type === AST_NODE_TYPES.CallExpression) {
           const jestFnCall = parseJestFnCall(

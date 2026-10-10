@@ -58,6 +58,7 @@ const validTestCases: string[] = [
     'jest.mocked(Console.prototype.log).mockImplementation(() => {});',
     'jest.mocked(Console?.prototype.log).mockImplementation(() => {});',
     'jest.mocked(Console?.prototype?.log).mockImplementation(() => {});',
+    'jest.mocked(console?.log)?.mock.calls[0];',
   ].map(code => [ConsoleClassAndVariableCode, code].join('\n')),
   dedent`
     expect(() => {
