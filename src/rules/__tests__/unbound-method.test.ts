@@ -48,9 +48,16 @@ const toThrowMatchers = [
 const validTestCases: string[] = [
   ...[
     'expect(Console.prototype.log).toHaveBeenCalledTimes(1);',
+    'expect(Console?.prototype.log).toHaveBeenCalledTimes(1);',
+    'expect(Console?.prototype?.log).toHaveBeenCalledTimes(1);',
+    'expect(Console.prototype?.log).toHaveBeenCalledTimes(1);',
     'expect(Console.prototype.log).not.toHaveBeenCalled();',
     'expect(Console.prototype.log).toStrictEqual(somethingElse);',
+    'expect(Console?.prototype.log).toStrictEqual(somethingElse);',
+    'expect(Console?.prototype?.log).toStrictEqual(somethingElse);',
     'jest.mocked(Console.prototype.log).mockImplementation(() => {});',
+    'jest.mocked(Console?.prototype.log).mockImplementation(() => {});',
+    'jest.mocked(Console?.prototype?.log).mockImplementation(() => {});',
   ].map(code => [ConsoleClassAndVariableCode, code].join('\n')),
   dedent`
     expect(() => {
@@ -101,6 +108,15 @@ const invalidTestCases: Array<TSESLint.InvalidTestCase<MessageIds, Options>> = [
     ],
   },
   {
+    code: 'expect(Console.prototype?.log).toHaveBeenCalledTimes',
+    errors: [
+      {
+        line: 1,
+        messageId: 'unboundWithoutThisAnnotation',
+      },
+    ],
+  },
+  {
     code: dedent`
       expect(() => {
         ${ConsoleClassAndVariableCode}
@@ -121,6 +137,19 @@ const invalidTestCases: Array<TSESLint.InvalidTestCase<MessageIds, Options>> = [
       ${ConsoleClassAndVariableCode}
 
       expect(console.log).${matcher}();
+    `,
+    errors: [
+      {
+        line: 9,
+        messageId: 'unboundWithoutThisAnnotation' as const,
+      },
+    ],
+  })),
+  ...toThrowMatchers.map(matcher => ({
+    code: dedent`
+      ${ConsoleClassAndVariableCode}
+
+      expect(console?.log).${matcher}();
     `,
     errors: [
       {
