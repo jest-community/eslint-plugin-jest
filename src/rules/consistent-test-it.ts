@@ -18,7 +18,11 @@ const buildFixer =
   ) =>
   (fixer: TSESLint.RuleFixer) => [
     fixer.replaceText(
-      callee.type === AST_NODE_TYPES.MemberExpression ? callee.object : callee,
+      callee.type === AST_NODE_TYPES.MemberExpression
+        ? callee.object.type === AST_NODE_TYPES.MemberExpression
+          ? callee.object.object
+          : callee.object
+        : callee,
       getPreferredNodeName(nodeName, preferredTestKeyword),
     ),
   ];

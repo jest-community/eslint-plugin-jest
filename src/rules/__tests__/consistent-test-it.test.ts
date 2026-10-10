@@ -191,6 +191,20 @@ ruleTester.run('consistent-test-it with fn=test', rule, {
       ],
     },
     {
+      code: 'it.only.each([])("foo")',
+      output: 'test.only.each([])("foo")',
+      options: [{ fn: TestCaseName.test }],
+      errors: [
+        {
+          messageId: 'consistentMethod',
+          data: {
+            testKeyword: TestCaseName.test,
+            oppositeTestKeyword: TestCaseName.it,
+          },
+        },
+      ],
+    },
+    {
       code: 'it.each``("foo")',
       output: 'test.each``("foo")',
       options: [{ fn: TestCaseName.test }],
