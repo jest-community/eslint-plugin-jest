@@ -19,6 +19,7 @@ ruleTester.run('no-export', rule, {
     'report.myThing = "valid";',
     'export const myThing = "valid"',
     'export default function () {}',
+    'export * from "./elsewhere";',
     'module.exports = function(){}',
     'module["exports"] = function(){}',
     'module.exports.exports.exports = function(){}',
@@ -79,6 +80,11 @@ ruleTester.run('no-export', rule, {
     },
     {
       code: 'export default function() {};  test("a test", () => { expect(1).toBe(1);});',
+      parserOptions: { sourceType: 'module' },
+      errors: [{ endColumn: 29, column: 1, messageId: 'unexpectedExport' }],
+    },
+    {
+      code: 'export * from "./elsewhere"; test("a test", () => { expect(1).toBe(1);});',
       parserOptions: { sourceType: 'module' },
       errors: [{ endColumn: 29, column: 1, messageId: 'unexpectedExport' }],
     },
