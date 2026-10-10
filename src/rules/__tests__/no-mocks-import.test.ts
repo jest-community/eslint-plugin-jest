@@ -14,6 +14,10 @@ ruleTester.run('no-mocks-import', rule, {
       code: 'import something from "something"',
       parserOptions: { sourceType: 'module' },
     },
+    {
+      code: 'import("something")',
+      parserOptions: { sourceType: 'module', ecmaVersion: 2020 },
+    },
     'require("somethingElse")',
     'require("./__mocks__.js")',
     'require("./__mocks__x")',
@@ -53,6 +57,11 @@ ruleTester.run('no-mocks-import', rule, {
       code: 'import thing from "./__mocks__/index"',
       parserOptions: { sourceType: 'module' },
       errors: [{ endColumn: 38, column: 1, messageId: 'noManualImport' }],
+    },
+    {
+      code: 'import("./__mocks__/index")',
+      parserOptions: { sourceType: 'module', ecmaVersion: 2020 },
+      errors: [{ endColumn: 28, column: 1, messageId: 'noManualImport' }],
     },
   ],
 });
