@@ -1,6 +1,6 @@
 {
   "name": "eslint-plugin-jest",
-  "version": "29.16.7",
+  "version": "29.16.8",
   "description": "ESLint rules for Jest",
   "keywords": [
     "eslint",

@@ -1,3 +1,10 @@
+## [29.16.8](https://github.com/jest-community/eslint-plugin-jest/compare/v29.16.7...v29.16.8) (2026-10-10)
+
+
+### Bug Fixes
+
+* **prefer-to-have-been-called-times:** don't crash if there is no argument passed to `expect` ([#2036](https://github.com/jest-community/eslint-plugin-jest/issues/2036)) ([4dc58f0](https://github.com/jest-community/eslint-plugin-jest/commit/4dc58f0ce1d3639314bbff84eeea02c42445418f))
+
 ## [29.16.7](https://github.com/jest-community/eslint-plugin-jest/compare/v29.16.6...v29.16.7) (2026-10-10)
 
 
