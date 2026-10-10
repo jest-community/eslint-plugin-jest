@@ -258,12 +258,18 @@ const isValueAwaitedOrReturned = (
       // (re)assignment changes the runtime value, so if we've not found an
       // await or return already we act as if we've reached the end of the body
       if (node.expression.type === AST_NODE_TYPES.AssignmentExpression) {
+        // if we're in an optional chain, use the chain's expression
+        const right =
+          node.expression.right.type === AST_NODE_TYPES.ChainExpression
+            ? node.expression.right.expression
+            : node.expression.right;
+
         // unless we're assigning to the same identifier, in which case
         // we might be chaining off the existing promise value
         if (
           isIdentifier(node.expression.left, name) &&
-          getNodeName(node.expression.right)?.startsWith(`${name}.`) &&
-          isPromiseChainCall(node.expression.right)
+          getNodeName(right)?.startsWith(`${name}.`) &&
+          isPromiseChainCall(right)
         ) {
           continue;
         }
@@ -418,7 +424,11 @@ export default createRule({
           return;
         }
 
-        const { parent } = findTopMostCallExpression(node);
+        let { parent } = findTopMostCallExpression(node);
+
+        if (parent.type === AST_NODE_TYPES.ChainExpression) {
+          parent = parent.parent;
+        }
 
         // if our parent is not directly within the test case, we stop checking
         // because we're most likely in the body of a function being defined

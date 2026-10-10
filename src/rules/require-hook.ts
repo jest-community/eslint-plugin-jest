@@ -36,6 +36,7 @@ const shouldBeInHook = (
   allowedFunctionCalls: readonly string[] = [],
 ): boolean => {
   switch (node.type) {
+    case AST_NODE_TYPES.ChainExpression:
     case AST_NODE_TYPES.ExpressionStatement:
       return shouldBeInHook(node.expression, context, allowedFunctionCalls);
     case AST_NODE_TYPES.CallExpression:

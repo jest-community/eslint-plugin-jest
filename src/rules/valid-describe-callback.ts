@@ -91,7 +91,11 @@ export default createRule({
           });
         }
 
-        if (callback.body.type === AST_NODE_TYPES.CallExpression) {
+        if (
+          callback.body.type === AST_NODE_TYPES.CallExpression ||
+          (callback.body.type === AST_NODE_TYPES.ChainExpression &&
+            callback.body.expression.type === AST_NODE_TYPES.CallExpression)
+        ) {
           context.report({
             messageId: 'unexpectedReturnInDescribe',
             node: callback,

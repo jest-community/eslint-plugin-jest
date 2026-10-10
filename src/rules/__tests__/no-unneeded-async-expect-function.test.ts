@@ -51,6 +51,16 @@ ruleTester.run('no-unneeded-async-expect-function', rule, {
         }).rejects.toThrow();
       })
     `,
+    {
+      code: dedent`
+        it('pass', async () => {
+          await expect(async () => {
+            obj?.run();
+          }).rejects.toThrow();
+        })
+      `,
+      parserOptions: { ecmaVersion: 2020 },
+    },
     dedent`
       it('pass', async () => {
         await expect(async () => {
@@ -111,6 +121,28 @@ ruleTester.run('no-unneeded-async-expect-function', rule, {
           await expect(doSomethingAsync()).rejects.toThrow(); 
         })
       `,
+      errors: [
+        {
+          endColumn: 4,
+          column: 16,
+          messageId: 'noAsyncWrapperForExpectedPromise',
+        },
+      ],
+    },
+    {
+      code: dedent`
+        it('should be fixed', async () => {
+          await expect(async () => {
+            await obj?.run();
+          }).rejects.toThrow(); 
+        })
+      `,
+      output: dedent`
+        it('should be fixed', async () => {
+          await expect(obj?.run()).rejects.toThrow(); 
+        })
+      `,
+      parserOptions: { ecmaVersion: 2020 },
       errors: [
         {
           endColumn: 4,

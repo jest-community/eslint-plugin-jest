@@ -46,6 +46,25 @@ ruleTester.run('no-focused-tests', rule, {
       ],
     },
     {
+      code: 'describe?.only()',
+      parserOptions: { ecmaVersion: 2020 },
+      errors: [
+        {
+          line: 1,
+          column: 11,
+          endLine: 1,
+          endColumn: 15,
+          messageId: 'focusedTest',
+          suggestions: [
+            {
+              messageId: 'suggestRemoveFocus',
+              output: 'describe()',
+            },
+          ],
+        },
+      ],
+    },
+    {
       code: 'context.only()',
       errors: [
         {
