@@ -1,3 +1,15 @@
+## [29.16.9](https://github.com/jest-community/eslint-plugin-jest/compare/v29.16.8...v29.16.9) (2026-10-10)
+
+
+### Bug Fixes
+
+* **consistent-test-it:** don't drop `only` and `skip` from `each` chains ([#2037](https://github.com/jest-community/eslint-plugin-jest/issues/2037)) ([3f6b5aa](https://github.com/jest-community/eslint-plugin-jest/commit/3f6b5aaaf7a1de417592890aea77abc27f5d7e6b))
+
+
+### Performance Improvements
+
+* cache parsing of nodes that turn out not to be jest function calls ([#2035](https://github.com/jest-community/eslint-plugin-jest/issues/2035)) ([7b11cbd](https://github.com/jest-community/eslint-plugin-jest/commit/7b11cbdf7ab7084259d3de718cc77f9615f9e128))
+
 ## [29.16.8](https://github.com/jest-community/eslint-plugin-jest/compare/v29.16.7...v29.16.8) (2026-10-10)
 
 
