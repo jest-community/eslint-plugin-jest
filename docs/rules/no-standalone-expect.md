@@ -20,8 +20,9 @@ is viable, however, to have an `expect` in a helper function that is called from
 within a `test` or `it` block so `expect` statements in a function will not
 trigger this rule.
 
-Statements like `expect.hasAssertions()` will NOT trigger this rule since these
-calls will execute if they are not in a test block.
+Statements like `expect.hasAssertions()` will NOT trigger this rule when they
+are inside a `beforeAll` or `beforeEach` block, since these calls will execute
+as part of each test.
 
 Examples of **incorrect** code for this rule:
 
@@ -63,7 +64,9 @@ describe('a test', () => {
 });
 
 describe('a test', () => {
-  expect.hasAssertions(1);
+  beforeEach(() => {
+    expect.hasAssertions();
+  });
 });
 ```
 

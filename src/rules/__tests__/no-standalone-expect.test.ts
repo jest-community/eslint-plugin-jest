@@ -56,6 +56,28 @@ ruleTester.run('no-standalone-expect', rule, {
       `,
       options: [{ additionalTestBlockFunctions: ['each.test'] }],
     },
+    'beforeEach(() => expect.hasAssertions())',
+    'beforeAll(() => expect.hasAssertions())',
+    'describe("a test", () => { beforeEach(() => { expect.hasAssertions(); }); });',
+    'describe("a test", () => { beforeAll(() => { expect.hasAssertions(); }); });',
+    'describe("a test", () => { beforeEach(() => { expect.assertions(1); }); });',
+    'function setup() { beforeEach(() => { expect(1).toBe(1); }); }',
+    {
+      code: dedent`
+        import { expect as pleaseExpect } from '@jest/globals';
+
+        describe("a test", () => { beforeEach(() => { pleaseExpect.hasAssertions(); }); });
+      `,
+      parserOptions: { sourceType: 'module' },
+    },
+    {
+      code: dedent`
+        import { expect as pleaseExpect } from '@jest/globals';
+
+        beforeEach(() => pleaseExpect.hasAssertions());
+      `,
+      parserOptions: { sourceType: 'module' },
+    },
   ],
   invalid: [
     {
@@ -169,13 +191,16 @@ ruleTester.run('no-standalone-expect', rule, {
       errors: [{ endColumn: 51, column: 28, messageId: 'unexpectedExpect' }],
     },
     {
-      code: dedent`
-        import { expect as pleaseExpect } from '@jest/globals';
-
-        beforeEach(() => pleaseExpect.hasAssertions());
-      `,
-      parserOptions: { sourceType: 'module' },
-      errors: [{ endColumn: 46, column: 18, messageId: 'unexpectedExpect' }],
+      code: 'describe("a test", () => { expect.hasAssertions(); });',
+      errors: [{ endColumn: 50, column: 28, messageId: 'unexpectedExpect' }],
+    },
+    {
+      code: 'describe("a test", () => { afterEach(() => { expect.hasAssertions(); }); });',
+      errors: [{ endColumn: 68, column: 46, messageId: 'unexpectedExpect' }],
+    },
+    {
+      code: 'describe("a test", () => { afterAll(() => { expect.assertions(1); }); });',
+      errors: [{ endColumn: 65, column: 45, messageId: 'unexpectedExpect' }],
     },
   ],
 });
