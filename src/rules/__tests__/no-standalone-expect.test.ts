@@ -61,6 +61,7 @@ ruleTester.run('no-standalone-expect', rule, {
     'describe("a test", () => { beforeEach(() => { expect.hasAssertions(); }); });',
     'describe("a test", () => { beforeAll(() => { expect.hasAssertions(); }); });',
     'describe("a test", () => { beforeEach(() => { expect.assertions(1); }); });',
+    'function setup() { beforeEach(() => { expect(1).toBe(1); }); }',
     {
       code: dedent`
         import { expect as pleaseExpect } from '@jest/globals';

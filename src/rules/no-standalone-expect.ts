@@ -111,13 +111,9 @@ export default createRule<
             }
           }
 
-          const parent = callStack[callStack.length - 1];
+          const parent = callStack.findLast(blockType => blockType !== 'hook');
 
-          if (
-            !parent ||
-            parent === DescribeAlias.describe ||
-            parent === 'hook'
-          ) {
+          if (!parent || parent === DescribeAlias.describe) {
             context.report({ node, messageId: 'unexpectedExpect' });
           }
 
