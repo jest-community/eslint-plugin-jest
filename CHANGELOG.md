@@ -1,3 +1,10 @@
+## [29.16.7](https://github.com/jest-community/eslint-plugin-jest/compare/v29.16.6...v29.16.7) (2026-10-10)
+
+
+### Bug Fixes
+
+* **unbound-method:** account for optional chaining ([#2034](https://github.com/jest-community/eslint-plugin-jest/issues/2034)) ([b918d73](https://github.com/jest-community/eslint-plugin-jest/commit/b918d73062544db3858300111a50e7bef7f420d6))
+
 ## [29.16.6](https://github.com/jest-community/eslint-plugin-jest/compare/v29.16.5...v29.16.6) (2026-08-30)
 
 
