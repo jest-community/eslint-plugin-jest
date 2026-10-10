@@ -13,6 +13,15 @@ import {
   parseJestFnCall,
 } from './utils';
 
+const isJestBeforeHookCall = (
+  node: TSESTree.CallExpression,
+  context: TSESLint.RuleContext<string, unknown[]>,
+): boolean => {
+  const jestFnCall = parseJestFnCall(node, context);
+
+  return jestFnCall?.type === 'hook' && jestFnCall.name.startsWith('before');
+};
+
 const getBlockType = (
   statement: TSESTree.BlockStatement,
   context: TSESLint.RuleContext<string, unknown[]>,
@@ -82,15 +91,6 @@ export default createRule<
     ): boolean =>
       additionalTestBlockFunctions.includes(getNodeName(node) || '');
 
-    const isJestBeforeHookCall = (node: TSESTree.CallExpression): boolean => {
-      const jestFnCall = parseJestFnCall(node, context);
-
-      return (
-        jestFnCall?.type === 'hook' &&
-        ['beforeAll', 'beforeEach'].includes(jestFnCall.name)
-      );
-    };
-
     return {
       CallExpression(node) {
         const jestFnCall = parseJestFnCall(node, context);
@@ -102,10 +102,10 @@ export default createRule<
             jestFnCall.members.length === 1
           ) {
             if (
+              callStack[callStack.length - 1] === 'hook' ||
               !['assertions', 'hasAssertions'].includes(
                 getAccessorValue(jestFnCall.members[0]),
-              ) ||
-              callStack[callStack.length - 1] === 'hook'
+              )
             ) {
               return;
             }
@@ -122,7 +122,7 @@ export default createRule<
 
         if (jestFnCall?.type === 'test' || isCustomTestBlockFunction(node)) {
           callStack.push('test');
-        } else if (isJestBeforeHookCall(node)) {
+        } else if (isJestBeforeHookCall(node, context)) {
           callStack.push('hook');
         }
 
@@ -138,7 +138,7 @@ export default createRule<
             (isTypeOfJestFnCall(node, context, ['test']) ||
               isCustomTestBlockFunction(node)) &&
             node.callee.type !== AST_NODE_TYPES.MemberExpression) ||
-          (top === 'hook' && isJestBeforeHookCall(node)) ||
+          (top === 'hook' && isJestBeforeHookCall(node, context)) ||
           (top === 'template' &&
             node.callee.type === AST_NODE_TYPES.TaggedTemplateExpression)
         ) {
