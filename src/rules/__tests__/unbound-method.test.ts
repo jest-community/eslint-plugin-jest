@@ -858,7 +858,7 @@ const foo = Foo;
       errors: [
         {
           line: 6,
-          messageId: 'unbound',
+          messageId: 'unboundWithoutThisAnnotation',
         },
       ],
     },
@@ -968,7 +968,7 @@ const unbound = new Foo().unbound;
       errors: [
         {
           line: 5,
-          messageId: 'unbound',
+          messageId: 'unboundWithoutThisAnnotation',
         },
       ],
     },
@@ -996,7 +996,7 @@ const { unbound } = new Foo();
       errors: [
         {
           line: 5,
-          messageId: 'unbound',
+          messageId: 'unboundWithoutThisAnnotation',
         },
       ],
     },
@@ -1026,7 +1026,7 @@ let unbound;
       errors: [
         {
           line: 6,
-          messageId: 'unbound',
+          messageId: 'unboundWithoutThisAnnotation',
         },
       ],
     },
@@ -1040,7 +1040,7 @@ function foo({ unbound }: Foo = new Foo()) {}
       errors: [
         {
           line: 5,
-          messageId: 'unbound',
+          messageId: 'unboundWithoutThisAnnotation',
         },
       ],
     },
@@ -1055,7 +1055,7 @@ function foo({ unbound }: Foo = bar) {}
       errors: [
         {
           line: 6,
-          messageId: 'unbound',
+          messageId: 'unboundWithoutThisAnnotation',
         },
       ],
     },
@@ -1070,7 +1070,7 @@ function foo({ unbound }: Foo = { unbound: () => {} }) {}
       errors: [
         {
           line: 6,
-          messageId: 'unbound',
+          messageId: 'unboundWithoutThisAnnotation',
         },
       ],
     },
@@ -1099,7 +1099,7 @@ function foo({ unbound }: Foo) {}
       errors: [
         {
           line: 5,
-          messageId: 'unbound',
+          messageId: 'unboundWithoutThisAnnotation',
         },
       ],
     },
@@ -1114,7 +1114,7 @@ bar(({ unbound }) => {});
       errors: [
         {
           line: 6,
-          messageId: 'unbound',
+          messageId: 'unboundWithoutThisAnnotation',
         },
       ],
     },
@@ -1129,7 +1129,7 @@ bar(({ unbound } = new Foo()) => {});
       errors: [
         {
           line: 6,
-          messageId: 'unbound',
+          messageId: 'unboundWithoutThisAnnotation',
         },
       ],
     },
@@ -1144,7 +1144,7 @@ for (const { unbound } of [new Foo(), new Foo()]) {
       errors: [
         {
           line: 5,
-          messageId: 'unbound',
+          messageId: 'unboundWithoutThisAnnotation',
         },
       ],
     },
@@ -1159,7 +1159,7 @@ class Foo {
       errors: [
         {
           line: 5,
-          messageId: 'unbound',
+          messageId: 'unboundWithoutThisAnnotation',
         },
       ],
     },
@@ -1176,7 +1176,7 @@ function foo({ unbound }: Foo | Bar) {}
       errors: [
         {
           line: 8,
-          messageId: 'unbound',
+          messageId: 'unboundWithoutThisAnnotation',
         },
       ],
     },
@@ -1190,7 +1190,7 @@ function foo({ unbound }: { unbound: () => string } | Foo) {}
       errors: [
         {
           line: 5,
-          messageId: 'unbound',
+          messageId: 'unboundWithoutThisAnnotation',
         },
       ],
     },
@@ -1207,7 +1207,7 @@ function foo({ unbound }: Foo | Bar) {}
       errors: [
         {
           line: 8,
-          messageId: 'unbound',
+          messageId: 'unboundWithoutThisAnnotation',
         },
       ],
     },
@@ -1221,7 +1221,7 @@ const foo = ({ unbound }: Foo & { foo: () => 'bar' }) => {};
       errors: [
         {
           line: 5,
-          messageId: 'unbound',
+          messageId: 'unboundWithoutThisAnnotation',
         },
       ],
     },
@@ -1238,7 +1238,7 @@ const foo = ({ unbound }: (Foo & { foo: () => 'bar' }) | Bar) => {};
       errors: [
         {
           line: 8,
-          messageId: 'unbound',
+          messageId: 'unboundWithoutThisAnnotation',
         },
       ],
     },
@@ -1255,7 +1255,7 @@ const foo = ({ unbound }: Foo & Bar) => {};
       errors: [
         {
           line: 8,
-          messageId: 'unbound',
+          messageId: 'unboundWithoutThisAnnotation',
         },
       ],
     },
@@ -1274,7 +1274,7 @@ const foo = ({ unbound, ...rest }: Foo & Bar) => {};
       errors: [
         {
           line: 10,
-          messageId: 'unbound',
+          messageId: 'unboundWithoutThisAnnotation',
         },
       ],
     },
