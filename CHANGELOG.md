@@ -1,3 +1,10 @@
+## [29.16.10](https://github.com/jest-community/eslint-plugin-jest/compare/v29.16.9...v29.16.10) (2026-10-10)
+
+
+### Bug Fixes
+
+* make sure most rules account for optional chaining ([#2038](https://github.com/jest-community/eslint-plugin-jest/issues/2038)) ([2d68f61](https://github.com/jest-community/eslint-plugin-jest/commit/2d68f61f8698a6b4d52c7c197e736981c2337a4e))
+
 ## [29.16.9](https://github.com/jest-community/eslint-plugin-jest/compare/v29.16.8...v29.16.9) (2026-10-10)
 
 
