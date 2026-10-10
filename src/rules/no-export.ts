@@ -23,6 +23,7 @@ export default createRule({
     const exportNodes: Array<
       | TSESTree.ExportNamedDeclaration
       | TSESTree.ExportDefaultDeclaration
+      | TSESTree.ExportAllDeclaration
       | TSESTree.TSExportAssignment
       | TSESTree.MemberExpression
     > = [];
@@ -42,10 +43,11 @@ export default createRule({
           hasTestCase = true;
         }
       },
-      'ExportNamedDeclaration, ExportDefaultDeclaration, TSExportAssignment'(
+      'ExportNamedDeclaration, ExportDefaultDeclaration, ExportAllDeclaration, TSExportAssignment'(
         node:
           | TSESTree.ExportNamedDeclaration
           | TSESTree.ExportDefaultDeclaration
+          | TSESTree.ExportAllDeclaration
           | TSESTree.TSExportAssignment,
       ) {
         exportNodes.push(node);
