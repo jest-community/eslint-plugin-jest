@@ -21,8 +21,8 @@ within a `test` or `it` block so `expect` statements in a function will not
 trigger this rule.
 
 Statements like `expect.hasAssertions()` will NOT trigger this rule when they
-are inside a `beforeAll` or `beforeEach` block, since these calls will execute
-as part of each test.
+are inside a `beforeEach` block, since these calls will execute as part of each
+test.
 
 Examples of **incorrect** code for this rule:
 

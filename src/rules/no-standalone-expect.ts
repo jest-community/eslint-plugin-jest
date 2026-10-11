@@ -13,13 +13,13 @@ import {
   parseJestFnCall,
 } from './utils';
 
-const isJestBeforeHookCall = (
+const isJestBeforeEachHookCall = (
   node: TSESTree.CallExpression,
   context: TSESLint.RuleContext<string, unknown[]>,
 ): boolean => {
   const jestFnCall = parseJestFnCall(node, context);
 
-  return jestFnCall?.type === 'hook' && jestFnCall.name.startsWith('before');
+  return jestFnCall?.type === 'hook' && jestFnCall.name === 'beforeEach';
 };
 
 const getBlockType = (
@@ -122,7 +122,7 @@ export default createRule<
 
         if (jestFnCall?.type === 'test' || isCustomTestBlockFunction(node)) {
           callStack.push('test');
-        } else if (isJestBeforeHookCall(node, context)) {
+        } else if (isJestBeforeEachHookCall(node, context)) {
           callStack.push('hook');
         }
 
@@ -138,7 +138,7 @@ export default createRule<
             (isTypeOfJestFnCall(node, context, ['test']) ||
               isCustomTestBlockFunction(node)) &&
             node.callee.type !== AST_NODE_TYPES.MemberExpression) ||
-          (top === 'hook' && isJestBeforeHookCall(node, context)) ||
+          (top === 'hook' && isJestBeforeEachHookCall(node, context)) ||
           (top === 'template' &&
             node.callee.type === AST_NODE_TYPES.TaggedTemplateExpression)
         ) {

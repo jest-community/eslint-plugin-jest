@@ -57,9 +57,7 @@ ruleTester.run('no-standalone-expect', rule, {
       options: [{ additionalTestBlockFunctions: ['each.test'] }],
     },
     'beforeEach(() => expect.hasAssertions())',
-    'beforeAll(() => expect.hasAssertions())',
     'describe("a test", () => { beforeEach(() => { expect.hasAssertions(); }); });',
-    'describe("a test", () => { beforeAll(() => { expect.hasAssertions(); }); });',
     'describe("a test", () => { beforeEach(() => { expect.assertions(1); }); });',
     'function setup() { beforeEach(() => { expect(1).toBe(1); }); }',
     {
@@ -201,6 +199,14 @@ ruleTester.run('no-standalone-expect', rule, {
     {
       code: 'describe("a test", () => { afterAll(() => { expect.assertions(1); }); });',
       errors: [{ endColumn: 65, column: 45, messageId: 'unexpectedExpect' }],
+    },
+    {
+      code: 'beforeAll(() => expect.hasAssertions())',
+      errors: [{ endColumn: 39, column: 17, messageId: 'unexpectedExpect' }],
+    },
+    {
+      code: 'describe("a test", () => { beforeAll(() => { expect.hasAssertions(); }); });',
+      errors: [{ endColumn: 68, column: 46, messageId: 'unexpectedExpect' }],
     },
   ],
 });
