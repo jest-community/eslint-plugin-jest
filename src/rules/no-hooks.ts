@@ -18,8 +18,10 @@ export default createRule<
         properties: {
           allow: {
             type: 'array',
-            // @ts-expect-error https://github.com/eslint/eslint/discussions/17573
-            contains: ['beforeAll', 'beforeEach', 'afterAll', 'afterEach'],
+            items: {
+              type: 'string',
+              enum: ['beforeAll', 'beforeEach', 'afterAll', 'afterEach'],
+            },
           },
         },
         additionalProperties: false,
