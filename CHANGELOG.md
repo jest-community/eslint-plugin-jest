@@ -1,3 +1,10 @@
+# [29.17.0](https://github.com/jest-community/eslint-plugin-jest/compare/v29.16.11...v29.17.0) (2026-10-12)
+
+
+### Features
+
+* **no-standalone-expect:** allow expect assertions in beforeEach hooks ([#2031](https://github.com/jest-community/eslint-plugin-jest/issues/2031)) ([ddcab00](https://github.com/jest-community/eslint-plugin-jest/commit/ddcab0019cbdc516d75ab30ff23338ddb8789563))
+
 ## [29.16.11](https://github.com/jest-community/eslint-plugin-jest/compare/v29.16.10...v29.16.11) (2026-10-10)
 
 
