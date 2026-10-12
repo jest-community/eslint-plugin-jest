@@ -13,6 +13,15 @@ import {
   parseJestFnCall,
 } from './utils';
 
+const isJestBeforeEachHookCall = (
+  node: TSESTree.CallExpression,
+  context: TSESLint.RuleContext<string, unknown[]>,
+): boolean => {
+  const jestFnCall = parseJestFnCall(node, context);
+
+  return jestFnCall?.type === 'hook' && jestFnCall.name === 'beforeEach';
+};
+
 const getBlockType = (
   statement: TSESTree.BlockStatement,
   context: TSESLint.RuleContext<string, unknown[]>,
@@ -44,7 +53,8 @@ const getBlockType = (
   return null;
 };
 
-type BlockType = 'test' | 'function' | 'describe' | 'arrow' | 'template';
+type BlockType =
+  'test' | 'function' | 'describe' | 'hook' | 'arrow' | 'template';
 
 export default createRule<
   [{ additionalTestBlockFunctions?: string[] }],
@@ -90,14 +100,15 @@ export default createRule<
             jestFnCall.head.node.parent.type ===
               AST_NODE_TYPES.MemberExpression &&
             jestFnCall.members.length === 1 &&
-            !['assertions', 'hasAssertions'].includes(
-              getAccessorValue(jestFnCall.members[0]),
-            )
+            (callStack[callStack.length - 1] === 'hook' ||
+              !['assertions', 'hasAssertions'].includes(
+                getAccessorValue(jestFnCall.members[0]),
+              ))
           ) {
             return;
           }
 
-          const parent = callStack[callStack.length - 1];
+          const parent = callStack.findLast(blockType => blockType !== 'hook');
 
           if (!parent || parent === DescribeAlias.describe) {
             context.report({ node, messageId: 'unexpectedExpect' });
@@ -108,6 +119,8 @@ export default createRule<
 
         if (jestFnCall?.type === 'test' || isCustomTestBlockFunction(node)) {
           callStack.push('test');
+        } else if (isJestBeforeEachHookCall(node, context)) {
+          callStack.push('hook');
         }
 
         if (node.callee.type === AST_NODE_TYPES.TaggedTemplateExpression) {
@@ -122,6 +135,7 @@ export default createRule<
             (isTypeOfJestFnCall(node, context, ['test']) ||
               isCustomTestBlockFunction(node)) &&
             node.callee.type !== AST_NODE_TYPES.MemberExpression) ||
+          (top === 'hook' && isJestBeforeEachHookCall(node, context)) ||
           (top === 'template' &&
             node.callee.type === AST_NODE_TYPES.TaggedTemplateExpression)
         ) {
