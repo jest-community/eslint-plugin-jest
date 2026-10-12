@@ -99,16 +99,13 @@ export default createRule<
           if (
             jestFnCall.head.node.parent.type ===
               AST_NODE_TYPES.MemberExpression &&
-            jestFnCall.members.length === 1
-          ) {
-            if (
-              callStack[callStack.length - 1] === 'hook' ||
+            jestFnCall.members.length === 1 &&
+            (callStack[callStack.length - 1] === 'hook' ||
               !['assertions', 'hasAssertions'].includes(
                 getAccessorValue(jestFnCall.members[0]),
-              )
-            ) {
-              return;
-            }
+              ))
+          ) {
+            return;
           }
 
           const parent = callStack.findLast(blockType => blockType !== 'hook');
