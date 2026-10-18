@@ -1,6 +1,6 @@
+import path from 'path';
 import { TSESLint } from '@typescript-eslint/utils';
 import dedent from 'dedent';
-import path from 'path';
 import rule from '../valid-mock-module-path';
 import {
   FlatCompatRuleTester as RuleTester,
@@ -227,6 +227,18 @@ ruleTester.run('valid-mock-module-path', rule, {
         {
           aliases: {
             '@lib/*': path.join(__dirname, 'fixtures/module/*'),
+          },
+        },
+      ],
+      errors: [{ messageId: 'invalidMockModulePath' }],
+    },
+    {
+      filename: __filename,
+      code: 'jest.mock("@lib/foo")',
+      options: [
+        {
+          aliases: {
+            '@lib/*': path.join(__dirname, 'fixtures/module'),
           },
         },
       ],
