@@ -139,7 +139,7 @@ export default createRule<
           const resolvedModulePath = path.resolve(
             aliasPath === undefined
               ? path.dirname(context.filename)
-              : context.cwd || process.cwd(),
+              : context.cwd,
             aliasPath ?? moduleName.value,
           );
 
