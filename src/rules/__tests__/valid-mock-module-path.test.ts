@@ -35,6 +35,11 @@ ruleTester.run('valid-mock-module-path', rule, {
     { filename: __filename, code: 'jest.doMock("./fixtures/module/foo.ts")' },
     { filename: __filename, code: 'jest.mock("./fixtures/module/foo.js")' },
     { filename: __filename, code: 'jest.doMock("./fixtures/module/foo.js")' },
+    {
+      filename: __filename,
+      code: 'jest.mock("eslint")',
+      options: [{ aliases: undefined }],
+    },
     'jest.mock("eslint")',
     'jest.doMock("eslint")',
     'jest.mock("child_process")',
