@@ -20,7 +20,7 @@ function resolveAlias(
   for (const [alias, target] of Object.entries(aliases)) {
     if (
       alias.endsWith('/*') &&
-      target.endsWith('/*') &&
+      target.endsWith('*') &&
       moduleName.startsWith(alias.slice(0, -1))
     ) {
       return target.slice(0, -1) + moduleName.slice(alias.length - 1);
