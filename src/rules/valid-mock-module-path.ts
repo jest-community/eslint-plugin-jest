@@ -75,10 +75,12 @@ export default createRule<
   ],
   create(
     context,
-    [{
-      moduleFileExtensions = ['.js', '.ts', '.tsx', '.jsx', '.json'],
-      aliases = {},
-    }],
+    [
+      {
+        moduleFileExtensions = ['.js', '.ts', '.tsx', '.jsx', '.json'],
+        aliases = {},
+      },
+    ],
   ) {
     return {
       CallExpression(node: TSESTree.CallExpression): void {
