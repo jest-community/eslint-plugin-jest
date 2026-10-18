@@ -105,10 +105,9 @@ module.exports = [
 ];
 ```
 
-For example, `jest.mock('@lib/utils')` checks for
-`src/lib/utils` (including the configured `moduleFileExtensions`). Aliases
-can also map an exact module name, like `@app`, to a specific file. A missing
-aliased file is still reported.
+For example, `jest.mock('@lib/utils')` checks for `src/lib/utils` (including the
+configured `moduleFileExtensions`). Aliases can also map an exact module name,
+like `@app`, to a specific file. A missing aliased file is still reported.
 
 Alias targets may be absolute paths, as in the example, or paths relative to
 ESLint's current working directory. Aliases are not read automatically from
