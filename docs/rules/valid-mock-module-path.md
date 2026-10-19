@@ -57,7 +57,8 @@ jest.mock('../../this/path/does/not/exist.js', undefined, { virtual: true });
   "jest/valid-mock-module-path": [
     "error",
     {
-      "moduleFileExtensions": [".js", ".ts", ".jsx", ".tsx", ".json"]
+      "moduleFileExtensions": [".js", ".ts", ".jsx", ".tsx", ".json"],
+      "aliases": {}
     }
   ]
 }
@@ -76,6 +77,41 @@ existence. The default extensions are:
 
 For any custom extension, a preceding dot **must** be present before the file
 extension for desired effect.
+
+### `aliases`
+
+Configure module aliases used by Jest, TypeScript or your bundler so that mocks
+of aliased files are checked against the mapped paths rather than treated as
+missing packages. Each alias maps to a file path, and a trailing `/*` in both
+the alias and target matches a directory prefix:
+
+```js
+const path = require('node:path');
+
+module.exports = [
+  {
+    rules: {
+      'jest/valid-mock-module-path': [
+        'error',
+        {
+          aliases: {
+            '@lib/*': path.join(__dirname, 'src/lib/*'),
+            '@app': path.join(__dirname, 'src/index.ts'),
+          },
+        },
+      ],
+    },
+  },
+];
+```
+
+For example, `jest.mock('@lib/utils')` checks for `src/lib/utils` (including the
+configured `moduleFileExtensions`). Aliases can also map an exact module name,
+like `@app`, to a specific file. A missing aliased file is still reported.
+
+Alias targets may be absolute paths, as in the example, or paths relative to
+ESLint's current working directory. Aliases are not read automatically from
+`tsconfig.json` or Jest configuration.
 
 ## When Not To Use It
 

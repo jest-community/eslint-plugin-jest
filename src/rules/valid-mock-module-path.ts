@@ -9,10 +9,32 @@ import {
   isTypeOfJestFnCall,
 } from './utils';
 
+function resolveAlias(
+  moduleName: string,
+  aliases: Readonly<Record<string, string>>,
+): string | undefined {
+  if (Object.hasOwn(aliases, moduleName)) {
+    return aliases[moduleName];
+  }
+
+  for (const [alias, target] of Object.entries(aliases)) {
+    if (
+      alias.endsWith('/*') &&
+      target.endsWith('*') &&
+      moduleName.startsWith(alias.slice(0, -1))
+    ) {
+      return target.slice(0, -1) + moduleName.slice(alias.length - 1);
+    }
+  }
+
+  return undefined;
+}
+
 export default createRule<
   [
     Partial<{
       moduleFileExtensions: readonly string[];
+      aliases: Readonly<Record<string, string>>;
     }>,
   ],
   'invalidMockModulePath'
@@ -36,6 +58,10 @@ export default createRule<
             items: { type: 'string' },
             additionalItems: false,
           },
+          aliases: {
+            type: 'object',
+            additionalProperties: { type: 'string', minLength: 1 },
+          },
         },
         additionalProperties: false,
       },
@@ -44,11 +70,17 @@ export default createRule<
   defaultOptions: [
     {
       moduleFileExtensions: ['.js', '.ts', '.tsx', '.jsx', '.json'],
+      aliases: {},
     },
   ],
   create(
     context,
-    [{ moduleFileExtensions = ['.js', '.ts', '.tsx', '.jsx', '.json'] }],
+    [
+      {
+        moduleFileExtensions = ['.js', '.ts', '.tsx', '.jsx', '.json'],
+        aliases = {},
+      },
+    ],
   ) {
     return {
       CallExpression(node: TSESTree.CallExpression): void {
@@ -96,15 +128,19 @@ export default createRule<
         }
 
         try {
-          if (!moduleName.value.startsWith('.')) {
+          const aliasPath = resolveAlias(moduleName.value, aliases);
+
+          if (aliasPath === undefined && !moduleName.value.startsWith('.')) {
             require.resolve(moduleName.value);
 
             return;
           }
 
           const resolvedModulePath = path.resolve(
-            path.dirname(context.filename),
-            moduleName.value,
+            aliasPath === undefined
+              ? path.dirname(context.filename)
+              : context.cwd,
+            aliasPath ?? moduleName.value,
           );
 
           const hasPossiblyModulePaths = ['', ...moduleFileExtensions].some(
