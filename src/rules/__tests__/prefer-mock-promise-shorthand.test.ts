@@ -27,6 +27,9 @@ ruleTester.run('prefer-mock-promise-shorthand', rule, {
     'jest.fn().mockResolvedValue(42)',
     // These values would be evaluated once instead of on every mock invocation.
     'jest.fn().mockImplementation(() => Promise.resolve(createUser()))',
+    'jest.fn().mockImplementation(() => Promise.resolve(-value))',
+    'jest.fn().mockImplementation(() => Promise.resolve(delete value.prop))',
+    'jest.fn().mockImplementation(() => Promise.resolve(void createUser()))',
     'jest.fn().mockImplementationOnce(() => Promise.reject(new Error("failed")))',
     'jest.fn().mockImplementation(() => Promise.resolve({ id: 1 }))',
     'jest.fn().mockImplementation(() => Promise.resolve([1, 2]))',
@@ -71,6 +74,30 @@ ruleTester.run('prefer-mock-promise-shorthand', rule, {
   ],
 
   invalid: [
+    {
+      code: 'jest.fn().mockImplementation(() => Promise.resolve(-42))',
+      output: 'jest.fn().mockResolvedValue(-42)',
+      errors: [
+        {
+          messageId: 'useMockShorthand',
+          data: { replacement: 'mockResolvedValue' },
+          column: 11,
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: 'jest.fn().mockImplementation(() => Promise.resolve(`fixed`))',
+      output: 'jest.fn().mockResolvedValue(`fixed`)',
+      errors: [
+        {
+          messageId: 'useMockShorthand',
+          data: { replacement: 'mockResolvedValue' },
+          column: 11,
+          line: 1,
+        },
+      ],
+    },
     {
       code: 'jest.fn().mockImplementation(() => Promise.resolve(42))',
       output: 'jest.fn().mockResolvedValue(42)',
