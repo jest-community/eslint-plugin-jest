@@ -13,6 +13,24 @@ const withOnce = (name: string, addOnce: boolean): string => {
   return `${name}${addOnce ? 'Once' : ''}`;
 };
 
+// Values created or read when the mock is called cannot be moved to mock setup.
+// Only fixed primitives can be reused without changing when they are evaluated.
+const isFixedPrimitive = (node: TSESTree.Node): boolean => {
+  switch (node.type) {
+    case AST_NODE_TYPES.Literal:
+      return (
+        node.value === null ||
+        ['string', 'number', 'boolean', 'bigint'].includes(typeof node.value)
+      );
+    case AST_NODE_TYPES.TemplateLiteral:
+      return node.expressions.length === 0;
+    case AST_NODE_TYPES.UnaryExpression:
+      return node.operator !== 'delete' && isFixedPrimitive(node.argument);
+    default:
+      return false;
+  }
+};
+
 const findSingleReturnArgumentNode = (
   fnNode: FunctionExpression,
 ): TSESTree.Expression | null => {
@@ -55,6 +73,17 @@ export default createRule({
       const argName = getNodeName(innerArgNode);
 
       if (argName !== 'Promise.resolve' && argName !== 'Promise.reject') {
+        return;
+      }
+
+      // mockImplementation invokes the callback on every call. Converting it to
+      // mockResolvedValue/mockRejectedValue evaluates the value only once.
+      // A call, property lookup or fresh object could behave differently.
+      if (
+        outerArgNode !== innerArgNode &&
+        innerArgNode.arguments.length === 1 &&
+        !isFixedPrimitive(innerArgNode.arguments[0])
+      ) {
         return;
       }
 
