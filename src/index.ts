@@ -46,6 +46,7 @@ const recommendedRules = {
   'jest/no-mocks-import': 'error',
   'jest/no-standalone-expect': 'error',
   'jest/no-test-prefixes': 'error',
+  'jest/no-unneeded-async-expect-function': 'error',
   'jest/valid-describe-callback': 'error',
   'jest/valid-expect': 'error',
   'jest/valid-expect-in-promise': 'error',
@@ -56,6 +57,8 @@ const styleRules = {
   'jest/prefer-to-be': 'error',
   'jest/prefer-to-contain': 'error',
   'jest/prefer-to-have-length': 'error',
+  'jest/prefer-to-have-been-called': 'error',
+  'jest/prefer-to-have-been-called-times': 'error',
 } satisfies Record<string, TSESLint.Linter.RuleLevel>;
 
 const allRules = Object.fromEntries<TSESLint.Linter.RuleLevel>(

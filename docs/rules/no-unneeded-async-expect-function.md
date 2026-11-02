@@ -2,6 +2,9 @@
 
 📝 Disallow unnecessary async function wrapper for expected promises.
 
+💼 This rule is enabled in the ✅ `recommended`
+[config](https://github.com/jest-community/eslint-plugin-jest/blob/main/README.md#shareable-configurations).
+
 🔧 This rule is automatically fixable by the
 [`--fix` CLI option](https://eslint.org/docs/latest/user-guide/command-line-interface#--fix).
 
