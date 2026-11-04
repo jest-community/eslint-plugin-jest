@@ -31,6 +31,6 @@ jobs:
         with:
           persist-credentials: false
       - name: Danger
-        uses: docker://ghcr.io/danger/danger-js@sha256:6b75ca34cad995c5c658372b3b3c96de1b5ff0f71a6fade3b0207397747e9b0f # 13.0.10
+        uses: docker://ghcr.io/danger/danger-js@sha256:a1d290b8d89a9c4b28dccdce9637cbff5665518680bdadd82746c53fa406acae # 13.0.10
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
