@@ -17,6 +17,7 @@ const reposToIgnore = new Set<string>([
   'Synerise/synerise-design',
   'tannerlinsley/react-location',
   'tannerlinsley/react-table',
+  'tannerlinsley/react-query',
   'trezor/trezor-suite',
   'umbraco/Umbraco.UI',
   'w-okada/image-analyze-workers',
