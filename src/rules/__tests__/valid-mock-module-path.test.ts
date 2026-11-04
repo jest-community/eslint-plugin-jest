@@ -1,3 +1,4 @@
+import path from 'path';
 import { TSESLint } from '@typescript-eslint/utils';
 import dedent from 'dedent';
 import rule from '../valid-mock-module-path';
@@ -34,9 +35,73 @@ ruleTester.run('valid-mock-module-path', rule, {
     { filename: __filename, code: 'jest.doMock("./fixtures/module/foo.ts")' },
     { filename: __filename, code: 'jest.mock("./fixtures/module/foo.js")' },
     { filename: __filename, code: 'jest.doMock("./fixtures/module/foo.js")' },
+    {
+      filename: __filename,
+      code: 'jest.mock("eslint")',
+      options: [{ aliases: undefined }],
+    },
     'jest.mock("eslint")',
     'jest.doMock("eslint")',
     'jest.mock("child_process")',
+    {
+      filename: __filename,
+      code: 'jest.mock("@lib/foo")',
+      options: [
+        {
+          aliases: {
+            '@lib/*': path.join(__dirname, 'fixtures/module/*'),
+          },
+        },
+      ],
+    },
+    {
+      filename: __filename,
+      code: 'jest.doMock("@lib/tsx/foo")',
+      options: [
+        {
+          aliases: {
+            '@lib/*': path.join(__dirname, 'fixtures/module/*'),
+          },
+        },
+      ],
+    },
+    {
+      filename: __filename,
+      code: 'jest.mock("@module")',
+      options: [
+        {
+          aliases: {
+            '@module': path.join(__dirname, 'fixtures/module/foo.ts'),
+          },
+        },
+      ],
+    },
+    {
+      filename: __filename,
+      code: 'jest.mock("@lib/foo")',
+      options: [
+        {
+          aliases: {
+            '@lib/*': path.join(__dirname, 'does-not-exist/*'),
+            '@lib/foo': path.join(__dirname, 'fixtures/module/foo.ts'),
+          },
+        },
+      ],
+    },
+    {
+      filename: __filename,
+      code: 'jest.mock("@module")',
+      options: [
+        {
+          aliases: {
+            '@module': path.relative(
+              process.cwd(),
+              path.join(__dirname, 'fixtures/module/foo.ts'),
+            ),
+          },
+        },
+      ],
+    },
     'jest.mock(() => {})',
     {
       filename: __filename,
@@ -159,6 +224,54 @@ ruleTester.run('valid-mock-module-path', rule, {
           line: 1,
         },
       ],
+    },
+    {
+      filename: __filename,
+      code: 'jest.mock("@lib/missing")',
+      options: [
+        {
+          aliases: {
+            '@lib/*': path.join(__dirname, 'fixtures/module/*'),
+          },
+        },
+      ],
+      errors: [{ messageId: 'invalidMockModulePath' }],
+    },
+    {
+      filename: __filename,
+      code: 'jest.mock("@lib/foo")',
+      options: [
+        {
+          aliases: {
+            '@lib/*': path.join(__dirname, 'fixtures/module'),
+          },
+        },
+      ],
+      errors: [{ messageId: 'invalidMockModulePath' }],
+    },
+    {
+      filename: __filename,
+      code: 'jest.mock("@not-aliased/foo")',
+      options: [
+        {
+          aliases: {
+            '@lib/*': path.join(__dirname, 'fixtures/module/*'),
+          },
+        },
+      ],
+      errors: [{ messageId: 'invalidMockModulePath' }],
+    },
+    {
+      filename: __filename,
+      code: 'jest.mock("@module")',
+      options: [
+        {
+          aliases: {
+            '@module': path.join(__dirname, 'fixtures/module/missing.ts'),
+          },
+        },
+      ],
+      errors: [{ messageId: 'invalidMockModulePath' }],
     },
     {
       filename: __filename,
