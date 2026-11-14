@@ -37,12 +37,16 @@ export default createRule({
           node: awaitNode,
           messageId: 'expectResolves',
           fix(fixer) {
+            const argumentText = context.sourceCode.getText(awaitNode.argument);
+
             return [
               fixer.insertTextBefore(parent, 'await '),
-              fixer.removeRange([
-                awaitNode.range[0],
-                awaitNode.argument.range[0],
-              ]),
+              fixer.replaceText(
+                awaitNode,
+                awaitNode.argument.type === AST_NODE_TYPES.SequenceExpression
+                  ? `(${argumentText})`
+                  : argumentText,
+              ),
               fixer.insertTextAfter(parent, '.resolves'),
             ];
           },
