@@ -90,5 +90,72 @@ ruleTester.run('prefer-expect-resolves', rule, {
       parserOptions: { sourceType: 'module' },
       errors: [{ endColumn: 31, column: 16, messageId: 'expectResolves' }],
     },
+    {
+      code: dedent`
+        it('passes', async () => {
+          expect(await (cond ? p1 : p2)).toBe(1);
+        });
+      `,
+      output: dedent`
+        it('passes', async () => {
+          await expect(cond ? p1 : p2).resolves.toBe(1);
+        });
+      `,
+      errors: [{ endColumn: 32, column: 10, messageId: 'expectResolves' }],
+    },
+    {
+      code: dedent`
+        it('passes', async () => {
+          expect(await (p1 ?? p2)).toBe(1);
+        });
+      `,
+      output: dedent`
+        it('passes', async () => {
+          await expect(p1 ?? p2).resolves.toBe(1);
+        });
+      `,
+      parserOptions: { ecmaVersion: 2020 },
+      errors: [{ endColumn: 26, column: 10, messageId: 'expectResolves' }],
+    },
+    {
+      code: dedent`
+        it('passes', async () => {
+          expect(await (a, b)).toBe(1);
+        });
+      `,
+      output: dedent`
+        it('passes', async () => {
+          await expect((a, b)).resolves.toBe(1);
+        });
+      `,
+      errors: [{ endColumn: 22, column: 10, messageId: 'expectResolves' }],
+    },
+    {
+      code: dedent`
+        it('passes', async () => {
+          expect((await p)).toBe(1);
+        });
+      `,
+      output: dedent`
+        it('passes', async () => {
+          await expect((p)).resolves.toBe(1);
+        });
+      `,
+      errors: [{ endColumn: 18, column: 11, messageId: 'expectResolves' }],
+    },
+    {
+      code: dedent`
+        it('passes', async () => {
+          expect(await (p as Promise<number>)).toBe(1);
+        });
+      `,
+      output: dedent`
+        it('passes', async () => {
+          await expect(p as Promise<number>).resolves.toBe(1);
+        });
+      `,
+      parser: require.resolve('@typescript-eslint/parser'),
+      errors: [{ endColumn: 38, column: 10, messageId: 'expectResolves' }],
+    },
   ],
 });
