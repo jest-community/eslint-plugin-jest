@@ -1,3 +1,10 @@
+## [29.17.1](https://github.com/jest-community/eslint-plugin-jest/compare/v29.17.0...v29.17.1) (2026-11-14)
+
+
+### Bug Fixes
+
+* **prefer-expect-resolves:** handle parenthesized await argument ([#2053](https://github.com/jest-community/eslint-plugin-jest/issues/2053)) ([5643365](https://github.com/jest-community/eslint-plugin-jest/commit/564336537fe02e6105724f67b7aee24745b709e7))
+
 # [29.17.0](https://github.com/jest-community/eslint-plugin-jest/compare/v29.16.11...v29.17.0) (2026-10-12)
 
 
