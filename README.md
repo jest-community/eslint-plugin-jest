@@ -345,7 +345,7 @@ Manually fixable by
 | [no-standalone-expect](docs/rules/no-standalone-expect.md)                           | Disallow using `expect` outside of `it` or `test` blocks                  | ✅  |     |     |     |
 | [no-test-prefixes](docs/rules/no-test-prefixes.md)                                   | Require using `.only` and `.skip` over `f` and `x`                        | ✅  |     | 🔧  |     |
 | [no-test-return-statement](docs/rules/no-test-return-statement.md)                   | Disallow explicitly returning from tests                                  |     |     |     |     |
-| [no-unneeded-async-expect-function](docs/rules/no-unneeded-async-expect-function.md) | Disallow unnecessary async function wrapper for expected promises         |     |     | 🔧  |     |
+| [no-unneeded-async-expect-function](docs/rules/no-unneeded-async-expect-function.md) | Disallow unnecessary async function wrapper for expected promises         | ✅  |     | 🔧  |     |
 | [no-untyped-mock-factory](docs/rules/no-untyped-mock-factory.md)                     | Disallow using `jest.mock()` factories without an explicit type parameter |     |     | 🔧  |     |
 | [padding-around-after-all-blocks](docs/rules/padding-around-after-all-blocks.md)     | Enforce padding around `afterAll` blocks                                  |     |     | 🔧  |     |
 | [padding-around-after-each-blocks](docs/rules/padding-around-after-each-blocks.md)   | Enforce padding around `afterEach` blocks                                 |     |     | 🔧  |     |
@@ -374,8 +374,8 @@ Manually fixable by
 | [prefer-strict-equal](docs/rules/prefer-strict-equal.md)                             | Suggest using `toStrictEqual()`                                           |     |     |     | 💡  |
 | [prefer-to-be](docs/rules/prefer-to-be.md)                                           | Suggest using `toBe()` for primitive literals                             | 🎨  |     | 🔧  |     |
 | [prefer-to-contain](docs/rules/prefer-to-contain.md)                                 | Suggest using `toContain()`                                               | 🎨  |     | 🔧  |     |
-| [prefer-to-have-been-called](docs/rules/prefer-to-have-been-called.md)               | Suggest using `toHaveBeenCalled`                                          |     |     | 🔧  |     |
-| [prefer-to-have-been-called-times](docs/rules/prefer-to-have-been-called-times.md)   | Suggest using `toHaveBeenCalledTimes()`                                   |     |     | 🔧  |     |
+| [prefer-to-have-been-called](docs/rules/prefer-to-have-been-called.md)               | Suggest using `toHaveBeenCalled`                                          | 🎨  |     | 🔧  |     |
+| [prefer-to-have-been-called-times](docs/rules/prefer-to-have-been-called-times.md)   | Suggest using `toHaveBeenCalledTimes()`                                   | 🎨  |     | 🔧  |     |
 | [prefer-to-have-length](docs/rules/prefer-to-have-length.md)                         | Suggest using `toHaveLength()`                                            | 🎨  |     | 🔧  |     |
 | [prefer-todo](docs/rules/prefer-todo.md)                                             | Suggest using `test.todo`                                                 |     |     | 🔧  |     |
 | [require-hook](docs/rules/require-hook.md)                                           | Require setup and teardown code to be within a hook                       |     |     |     |     |
