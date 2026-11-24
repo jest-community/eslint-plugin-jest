@@ -9,32 +9,57 @@ import {
   isTypeOfJestFnCall,
 } from './utils';
 
-function resolveAlias(
-  moduleName: string,
-  aliases: Readonly<Record<string, string>>,
-): string | undefined {
-  if (Object.hasOwn(aliases, moduleName)) {
-    return aliases[moduleName];
-  }
+function hasModulePath(
+  modulePath: string,
+  extensions: readonly string[],
+): boolean {
+  return ['', ...extensions].some(ext => {
+    try {
+      statSync(`${modulePath}${ext}`);
 
-  for (const [alias, target] of Object.entries(aliases)) {
-    if (
-      alias.endsWith('/*') &&
-      target.endsWith('*') &&
-      moduleName.startsWith(alias.slice(0, -1))
-    ) {
-      return target.slice(0, -1) + moduleName.slice(alias.length - 1);
+      return true;
+    } catch {
+      return false;
     }
-  }
+  });
+}
 
-  return undefined;
+function resolvesModule(
+  moduleName: string,
+  basedir: string,
+  extensions: readonly string[],
+  mapped = false,
+): boolean {
+  try {
+    if (moduleName.startsWith('.') || (mapped && path.isAbsolute(moduleName))) {
+      return hasModulePath(path.resolve(basedir, moduleName), extensions);
+    }
+
+    require.resolve(moduleName, mapped ? { paths: [basedir] } : undefined);
+
+    return true;
+  } catch (err: unknown) {
+    const { code } = err as { code: string };
+
+    if (
+      code !== 'MODULE_NOT_FOUND' &&
+      code !== 'ERR_PACKAGE_PATH_NOT_EXPORTED'
+    ) {
+      throw new Error(
+        `Error when trying to validate mock module path from \`jest.mock\`: ${err}`,
+      );
+    }
+
+    return false;
+  }
 }
 
 export default createRule<
   [
     Partial<{
       moduleFileExtensions: readonly string[];
-      aliases: Readonly<Record<string, string>>;
+      moduleNameMapper: Readonly<Record<string, string | readonly string[]>>;
+      rootDir: string;
     }>,
   ],
   'invalidMockModulePath'
@@ -58,10 +83,16 @@ export default createRule<
             items: { type: 'string' },
             additionalItems: false,
           },
-          aliases: {
+          moduleNameMapper: {
             type: 'object',
-            additionalProperties: { type: 'string', minLength: 1 },
+            additionalProperties: {
+              oneOf: [
+                { type: 'string' },
+                { type: 'array', items: { type: 'string' } },
+              ],
+            },
           },
+          rootDir: { type: 'string' },
         },
         additionalProperties: false,
       },
@@ -70,7 +101,7 @@ export default createRule<
   defaultOptions: [
     {
       moduleFileExtensions: ['.js', '.ts', '.tsx', '.jsx', '.json'],
-      aliases: {},
+      moduleNameMapper: {},
     },
   ],
   create(
@@ -78,10 +109,49 @@ export default createRule<
     [
       {
         moduleFileExtensions = ['.js', '.ts', '.tsx', '.jsx', '.json'],
-        aliases = {},
+        moduleNameMapper = {},
+        rootDir = context.cwd,
       },
     ],
   ) {
+    const mappings = Object.entries(moduleNameMapper).map(
+      ([pattern, targets]) => ({
+        // eslint-disable-next-line require-unicode-regexp -- Jest uses unflagged patterns.
+        pattern: new RegExp(pattern),
+        targets: (typeof targets === 'string' ? [targets] : targets).map(
+          target =>
+            target.startsWith('<rootDir>')
+              ? path.resolve(
+                  context.cwd,
+                  rootDir,
+                  `./${target.slice('<rootDir>'.length)}`,
+                )
+              : target,
+        ),
+      }),
+    );
+    const basedir = path.dirname(context.filename);
+
+    function moduleExists(moduleName: string): boolean {
+      for (const { pattern, targets } of mappings) {
+        const match = pattern.exec(moduleName);
+
+        if (match) {
+          // Jest only tries the targets of the first matching pattern.
+          return targets.some(target => {
+            const mapped = target.replaceAll(
+              /\$(\d+)/gu,
+              (_, index) => match[Number(index)] || '',
+            );
+
+            return resolvesModule(mapped, basedir, moduleFileExtensions, true);
+          });
+        }
+      }
+
+      return resolvesModule(moduleName, basedir, moduleFileExtensions);
+    }
+
     return {
       CallExpression(node: TSESTree.CallExpression): void {
         if (node.callee.type !== AST_NODE_TYPES.MemberExpression) {
@@ -127,50 +197,8 @@ export default createRule<
           }
         }
 
-        try {
-          const aliasPath = resolveAlias(moduleName.value, aliases);
-
-          if (aliasPath === undefined && !moduleName.value.startsWith('.')) {
-            require.resolve(moduleName.value);
-
-            return;
-          }
-
-          const resolvedModulePath = path.resolve(
-            aliasPath === undefined
-              ? path.dirname(context.filename)
-              : context.cwd,
-            aliasPath ?? moduleName.value,
-          );
-
-          const hasPossiblyModulePaths = ['', ...moduleFileExtensions].some(
-            ext => {
-              try {
-                statSync(`${resolvedModulePath}${ext}`);
-
-                return true;
-              } catch {
-                return false;
-              }
-            },
-          );
-
-          if (hasPossiblyModulePaths) {
-            return;
-          }
-        } catch (err: unknown) {
-          const castedErr = err as { code: string };
-
-          // Reports unexpected issues when attempt to verify mocked module path.
-          // The list of possible errors is non-exhaustive.
-          if (
-            castedErr.code !== 'MODULE_NOT_FOUND' &&
-            castedErr.code !== 'ERR_PACKAGE_PATH_NOT_EXPORTED'
-          ) {
-            throw new Error(
-              `Error when trying to validate mock module path from \`jest.mock\`: ${err}`,
-            );
-          }
+        if (moduleExists(moduleName.value)) {
+          return;
         }
 
         context.report({

@@ -38,7 +38,7 @@ ruleTester.run('valid-mock-module-path', rule, {
     {
       filename: __filename,
       code: 'jest.mock("eslint")',
-      options: [{ aliases: undefined }],
+      options: [{ moduleNameMapper: undefined }],
     },
     'jest.mock("eslint")',
     'jest.doMock("eslint")',
@@ -48,8 +48,8 @@ ruleTester.run('valid-mock-module-path', rule, {
       code: 'jest.mock("@lib/foo")',
       options: [
         {
-          aliases: {
-            '@lib/*': path.join(__dirname, 'fixtures/module/*'),
+          moduleNameMapper: {
+            '^@lib/(.*)$': '<rootDir>/src/rules/__tests__/fixtures/module/$1',
           },
         },
       ],
@@ -59,8 +59,8 @@ ruleTester.run('valid-mock-module-path', rule, {
       code: 'jest.doMock("@lib/tsx/foo")',
       options: [
         {
-          aliases: {
-            '@lib/*': path.join(__dirname, 'fixtures/module/*'),
+          moduleNameMapper: {
+            '^@lib/(.*)/(.*)$': path.join(__dirname, 'fixtures/module/$1/$2'),
           },
         },
       ],
@@ -70,8 +70,8 @@ ruleTester.run('valid-mock-module-path', rule, {
       code: 'jest.mock("@module")',
       options: [
         {
-          aliases: {
-            '@module': path.join(__dirname, 'fixtures/module/foo.ts'),
+          moduleNameMapper: {
+            '^@module$': './fixtures/module/foo.ts',
           },
         },
       ],
@@ -81,25 +81,48 @@ ruleTester.run('valid-mock-module-path', rule, {
       code: 'jest.mock("@lib/foo")',
       options: [
         {
-          aliases: {
-            '@lib/*': path.join(__dirname, 'does-not-exist/*'),
-            '@lib/foo': path.join(__dirname, 'fixtures/module/foo.ts'),
+          rootDir: path.relative(process.cwd(), __dirname),
+          moduleNameMapper: {
+            '^@lib/(.*)$': [
+              'not-an-installed-package',
+              '<rootDir>/does-not-exist/$1',
+              '<rootDir>/fixtures/module/$1',
+            ],
+            '^@lib/foo$': '<rootDir>/does-not-exist',
           },
         },
       ],
     },
     {
       filename: __filename,
-      code: 'jest.mock("@module")',
+      code: 'jest.mock("foo")',
       options: [
         {
-          aliases: {
-            '@module': path.relative(
-              process.cwd(),
-              path.join(__dirname, 'fixtures/module/foo.ts'),
-            ),
+          moduleNameMapper: {
+            '^(@lib/)?(foo)$': path.join(__dirname, 'fixtures/module/$1$2'),
           },
         },
+      ],
+    },
+    {
+      filename: __filename,
+      code: 'jest.mock("@legacy/😀")',
+      options: [
+        {
+          moduleNameMapper: { '^@legacy/..$': './fixtures/module/foo.ts' },
+        },
+      ],
+    },
+    {
+      filename: __filename,
+      code: 'jest.mock("@node/path")',
+      options: [{ moduleNameMapper: { '^@node/(.*)$': 'node:$1' } }],
+    },
+    {
+      filename: __filename,
+      code: 'jest.mock("eslint")',
+      options: [
+        { moduleNameMapper: { '^@eslint$': 'this-module-does-not-exist' } },
       ],
     },
     'jest.mock(() => {})',
@@ -230,8 +253,11 @@ ruleTester.run('valid-mock-module-path', rule, {
       code: 'jest.mock("@lib/missing")',
       options: [
         {
-          aliases: {
-            '@lib/*': path.join(__dirname, 'fixtures/module/*'),
+          moduleNameMapper: {
+            '^@lib/(.*)$': [
+              path.join(__dirname, 'fixtures/module/$1'),
+              'not-an-installed-package',
+            ],
           },
         },
       ],
@@ -242,8 +268,9 @@ ruleTester.run('valid-mock-module-path', rule, {
       code: 'jest.mock("@lib/foo")',
       options: [
         {
-          aliases: {
-            '@lib/*': path.join(__dirname, 'fixtures/module'),
+          moduleNameMapper: {
+            '^@lib/(.*)$': path.join(__dirname, 'does-not-exist/$1'),
+            '^@lib/foo$': path.join(__dirname, 'fixtures/module/foo.ts'),
           },
         },
       ],
@@ -254,8 +281,8 @@ ruleTester.run('valid-mock-module-path', rule, {
       code: 'jest.mock("@not-aliased/foo")',
       options: [
         {
-          aliases: {
-            '@lib/*': path.join(__dirname, 'fixtures/module/*'),
+          moduleNameMapper: {
+            '^@lib/(.*)$': path.join(__dirname, 'fixtures/module/$1'),
           },
         },
       ],
@@ -263,11 +290,11 @@ ruleTester.run('valid-mock-module-path', rule, {
     },
     {
       filename: __filename,
-      code: 'jest.mock("@module")',
+      code: 'jest.mock("eslint")',
       options: [
         {
-          aliases: {
-            '@module': path.join(__dirname, 'fixtures/module/missing.ts'),
+          moduleNameMapper: {
+            '^eslint$': path.join(__dirname, 'does-not-exist'),
           },
         },
       ],
