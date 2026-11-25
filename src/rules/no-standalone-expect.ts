@@ -85,6 +85,7 @@ export default createRule<
   defaultOptions: [{ additionalTestBlockFunctions: [] }],
   create(context, [{ additionalTestBlockFunctions = [] }]) {
     const callStack: BlockType[] = [];
+    const callStackDepths = new WeakMap<TSESTree.CallExpression, number>();
 
     const isCustomTestBlockFunction = (
       node: TSESTree.CallExpression,
@@ -117,6 +118,8 @@ export default createRule<
           return;
         }
 
+        const depth = callStack.length;
+
         if (jestFnCall?.type === 'test' || isCustomTestBlockFunction(node)) {
           callStack.push('test');
         } else if (isJestBeforeEachHookCall(node, context)) {
@@ -126,20 +129,16 @@ export default createRule<
         if (node.callee.type === AST_NODE_TYPES.TaggedTemplateExpression) {
           callStack.push('template');
         }
+
+        if (callStack.length > depth) {
+          callStackDepths.set(node, depth);
+        }
       },
       'CallExpression:exit'(node: TSESTree.CallExpression) {
-        const top = callStack[callStack.length - 1];
+        const depth = callStackDepths.get(node);
 
-        if (
-          (top === 'test' &&
-            (isTypeOfJestFnCall(node, context, ['test']) ||
-              isCustomTestBlockFunction(node)) &&
-            node.callee.type !== AST_NODE_TYPES.MemberExpression) ||
-          (top === 'hook' && isJestBeforeEachHookCall(node, context)) ||
-          (top === 'template' &&
-            node.callee.type === AST_NODE_TYPES.TaggedTemplateExpression)
-        ) {
-          callStack.pop();
+        if (depth !== undefined) {
+          callStack.splice(depth);
         }
       },
 
