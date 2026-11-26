@@ -1,3 +1,10 @@
+## [29.17.2](https://github.com/jest-community/eslint-plugin-jest/compare/v29.17.1...v29.17.2) (2026-11-26)
+
+
+### Bug Fixes
+
+* **no-standalone-expect:** report assertions after qualified test calls ([#2058](https://github.com/jest-community/eslint-plugin-jest/issues/2058)) ([55dce69](https://github.com/jest-community/eslint-plugin-jest/commit/55dce69eda8213aaca8c644d7bc5f9e6f7e32573))
+
 ## [29.17.1](https://github.com/jest-community/eslint-plugin-jest/compare/v29.17.0...v29.17.1) (2026-11-14)
 
 
