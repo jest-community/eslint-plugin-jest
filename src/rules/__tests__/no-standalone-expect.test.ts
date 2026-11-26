@@ -176,6 +176,48 @@ ruleTester.run('no-standalone-expect', rule, {
       errors: [{ endColumn: 87, column: 70, messageId: 'unexpectedExpect' }],
     },
     {
+      code: dedent`
+        test.only('focused', () => {
+          expect(true).toBe(true);
+        });
+        expect(true).toBe(true);
+      `,
+      errors: [{ line: 4, column: 1, messageId: 'unexpectedExpect' }],
+    },
+    {
+      code: dedent`
+        describe('suite', () => {
+          test.concurrent('parallel', () => {
+            expect(true).toBe(true);
+          });
+          expect.hasAssertions();
+        });
+      `,
+      errors: [{ line: 5, column: 3, messageId: 'unexpectedExpect' }],
+    },
+    {
+      code: dedent`
+        test.each\`
+          value
+          \${true}
+        \`('row', ({ value }) => {
+          expect(value).toBe(true);
+        });
+        expect(true).toBe(true);
+      `,
+      errors: [{ line: 7, column: 1, messageId: 'unexpectedExpect' }],
+    },
+    {
+      code: dedent`
+        custom.test('custom', () => {
+          expect(true).toBe(true);
+        });
+        expect(true).toBe(true);
+      `,
+      options: [{ additionalTestBlockFunctions: ['custom.test'] }],
+      errors: [{ line: 4, column: 1, messageId: 'unexpectedExpect' }],
+    },
+    {
       code: 'describe.each([1, true])("trues", value => { expect(value).toBe(true); });',
       errors: [{ endColumn: 70, column: 46, messageId: 'unexpectedExpect' }],
     },
