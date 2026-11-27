@@ -1,3 +1,4 @@
+import path from 'path';
 import { TSESLint } from '@typescript-eslint/utils';
 import dedent from 'dedent';
 import rule from '../valid-mock-module-path';
@@ -34,9 +35,96 @@ ruleTester.run('valid-mock-module-path', rule, {
     { filename: __filename, code: 'jest.doMock("./fixtures/module/foo.ts")' },
     { filename: __filename, code: 'jest.mock("./fixtures/module/foo.js")' },
     { filename: __filename, code: 'jest.doMock("./fixtures/module/foo.js")' },
+    {
+      filename: __filename,
+      code: 'jest.mock("eslint")',
+      options: [{ moduleNameMapper: undefined }],
+    },
     'jest.mock("eslint")',
     'jest.doMock("eslint")',
     'jest.mock("child_process")',
+    {
+      filename: __filename,
+      code: 'jest.mock("@lib/foo")',
+      options: [
+        {
+          moduleNameMapper: {
+            '^@lib/(.*)$': '<rootDir>/src/rules/__tests__/fixtures/module/$1',
+          },
+        },
+      ],
+    },
+    {
+      filename: __filename,
+      code: 'jest.doMock("@lib/tsx/foo")',
+      options: [
+        {
+          moduleNameMapper: {
+            '^@lib/(.*)/(.*)$': path.join(__dirname, 'fixtures/module/$1/$2'),
+          },
+        },
+      ],
+    },
+    {
+      filename: __filename,
+      code: 'jest.mock("@module")',
+      options: [
+        {
+          moduleNameMapper: {
+            '^@module$': './fixtures/module/foo.ts',
+          },
+        },
+      ],
+    },
+    {
+      filename: __filename,
+      code: 'jest.mock("@lib/foo")',
+      options: [
+        {
+          rootDir: path.relative(process.cwd(), __dirname),
+          moduleNameMapper: {
+            '^@lib/(.*)$': [
+              'not-an-installed-package',
+              '<rootDir>/does-not-exist/$1',
+              '<rootDir>/fixtures/module/$1',
+            ],
+            '^@lib/foo$': '<rootDir>/does-not-exist',
+          },
+        },
+      ],
+    },
+    {
+      filename: __filename,
+      code: 'jest.mock("foo")',
+      options: [
+        {
+          moduleNameMapper: {
+            '^(@lib/)?(foo)$': path.join(__dirname, 'fixtures/module/$1$2'),
+          },
+        },
+      ],
+    },
+    {
+      filename: __filename,
+      code: 'jest.mock("@legacy/😀")',
+      options: [
+        {
+          moduleNameMapper: { '^@legacy/..$': './fixtures/module/foo.ts' },
+        },
+      ],
+    },
+    {
+      filename: __filename,
+      code: 'jest.mock("@node/path")',
+      options: [{ moduleNameMapper: { '^@node/(.*)$': 'node:$1' } }],
+    },
+    {
+      filename: __filename,
+      code: 'jest.mock("eslint")',
+      options: [
+        { moduleNameMapper: { '^@eslint$': 'this-module-does-not-exist' } },
+      ],
+    },
     'jest.mock(() => {})',
     {
       filename: __filename,
@@ -159,6 +247,58 @@ ruleTester.run('valid-mock-module-path', rule, {
           line: 1,
         },
       ],
+    },
+    {
+      filename: __filename,
+      code: 'jest.mock("@lib/missing")',
+      options: [
+        {
+          moduleNameMapper: {
+            '^@lib/(.*)$': [
+              path.join(__dirname, 'fixtures/module/$1'),
+              'not-an-installed-package',
+            ],
+          },
+        },
+      ],
+      errors: [{ messageId: 'invalidMockModulePath' }],
+    },
+    {
+      filename: __filename,
+      code: 'jest.mock("@lib/foo")',
+      options: [
+        {
+          moduleNameMapper: {
+            '^@lib/(.*)$': path.join(__dirname, 'does-not-exist/$1'),
+            '^@lib/foo$': path.join(__dirname, 'fixtures/module/foo.ts'),
+          },
+        },
+      ],
+      errors: [{ messageId: 'invalidMockModulePath' }],
+    },
+    {
+      filename: __filename,
+      code: 'jest.mock("@not-aliased/foo")',
+      options: [
+        {
+          moduleNameMapper: {
+            '^@lib/(.*)$': path.join(__dirname, 'fixtures/module/$1'),
+          },
+        },
+      ],
+      errors: [{ messageId: 'invalidMockModulePath' }],
+    },
+    {
+      filename: __filename,
+      code: 'jest.mock("eslint")',
+      options: [
+        {
+          moduleNameMapper: {
+            '^eslint$': path.join(__dirname, 'does-not-exist'),
+          },
+        },
+      ],
+      errors: [{ messageId: 'invalidMockModulePath' }],
     },
     {
       filename: __filename,

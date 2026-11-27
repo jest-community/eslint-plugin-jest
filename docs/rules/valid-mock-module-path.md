@@ -57,7 +57,8 @@ jest.mock('../../this/path/does/not/exist.js', undefined, { virtual: true });
   "jest/valid-mock-module-path": [
     "error",
     {
-      "moduleFileExtensions": [".js", ".ts", ".jsx", ".tsx", ".json"]
+      "moduleFileExtensions": [".js", ".ts", ".jsx", ".tsx", ".json"],
+      "moduleNameMapper": {}
     }
   ]
 }
@@ -76,6 +77,44 @@ existence. The default extensions are:
 
 For any custom extension, a preceding dot **must** be present before the file
 extension for desired effect.
+
+### `moduleNameMapper`
+
+Pass the `moduleNameMapper` object from your Jest configuration to check mocks
+that use mapped module names. The keys are regular expressions and the values
+are strings or ordered arrays of strings. As in Jest, mappings are checked in
+order and only the first matching pattern is used. A target can use capture
+groups such as `$1`; an array lets the rule try the targets in order until it
+finds one that resolves.
+
+```js
+const jest = require('eslint-plugin-jest');
+const { moduleNameMapper } = require('./jest.config');
+
+module.exports = [
+  {
+    plugins: { jest },
+    rules: {
+      'jest/valid-mock-module-path': ['error', { moduleNameMapper }],
+    },
+  },
+];
+```
+
+For example, with a mapping of `'^@lib/(.*)$'` to `'<rootDir>/src/lib/$1'`,
+`jest.mock('@lib/utils')` checks for `src/lib/utils` from the configured root
+using `moduleFileExtensions`. If no target in the matching mapping resolves, the
+rule reports the mock even if the original module name would otherwise resolve.
+If no pattern matches, the rule checks the original module name.
+
+The rule doesn't load the Jest configuration automatically.
+
+### `rootDir`
+
+The `<rootDir>` token in `moduleNameMapper` targets defaults to ESLint's working
+directory. If your Jest project uses a different root, pass it as `rootDir` in
+the rule options. A relative `rootDir` is resolved from ESLint's working
+directory.
 
 ## When Not To Use It
 
